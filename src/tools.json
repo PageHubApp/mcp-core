@@ -1,7 +1,7 @@
 [
   {
-    "name": "list_sections",
-    "description": "Lists all available pre-built section templates with their IDs, descriptions, component structure, and overridable displayNames. Call this FIRST before using add_section so you know what templates exist and how to customize them.",
+    "name": "list_blocks",
+    "description": "Lists all available pre-built block templates with their IDs, descriptions, component structure, and overridable displayNames. Call this FIRST before using add_block so you know what templates exist and how to customize them.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -14,7 +14,7 @@
   },
   {
     "name": "get_component_schema",
-    "description": "Returns the full schema for all available CraftJS components — their types, props, valid values, and responsive breakpoint patterns. Essential reference when building custom sections with add_custom_section.\n\nIncludes: Container, Text, Image, Button, ButtonList, ImageList, Form, FormElement, Divider, Spacer, Video, Audio, Embed.",
+    "description": "Returns the full schema for all available CraftJS components — their types, props, valid values, and responsive breakpoint patterns. Essential reference when building custom blocks with add_custom_block.\n\nIncludes: Container, Text, Image, Button, ButtonList, ImageList, Form, FormElement, Divider, Spacer, Video, Audio, Embed.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -35,7 +35,7 @@
   },
   {
     "name": "get_design_patterns",
-    "description": "Returns concrete CraftJS node structure recipes for building rich, production-quality custom sections. Each pattern is a complete flat node map you can pass directly to add_custom_section (after changing IDs and content).\n\nPatterns cover layouts that pre-built templates do NOT — bento grids, rich contact sections, quote testimonials, menu/offering lists, multi-column footers, etc.\n\nCall this BEFORE building any custom section to get a proven structure instead of guessing.",
+    "description": "Returns concrete CraftJS node structure recipes for building rich, production-quality custom blocks. Each pattern is a complete flat node map you can pass directly to add_custom_block (after changing IDs and content).\n\nPatterns cover layouts that pre-built templates do NOT — bento grids, rich contact blocks, quote testimonials, menu/offering lists, multi-column footers, etc.\n\nCall this BEFORE building any custom block to get a proven structure instead of guessing.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -61,7 +61,7 @@
   },
   {
     "name": "create_template",
-    "description": "Creates a new site from the acme base template with an empty page_home container. Saves to the API and auto-selects as active site.\n\nWorkflow: create_template → set_theme (includes company variables) → add_section (repeat) → set_nav → set_footer → update_page (set SEO title/description)",
+    "description": "Creates a new site from the acme base template with an empty page_home container. Saves to the API and auto-selects as active site.\n\nWorkflow: create_template → set_theme (includes company variables) → add_block (repeat) → set_nav → set_footer → update_page (set SEO title/description)",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -99,7 +99,7 @@
   },
   {
     "name": "set_theme",
-    "description": "Creates or updates the ROOT node theme for the active site — palette colors, styleGuide (spacing, radius, shadows, fonts), Google Fonts, and JSON-LD structured data. If no active site exists, creates one first. Always call this FIRST when building a new site, before adding sections.\n\nIMPORTANT: After set_theme, set company variables on ROOT via patch_site_node with propsPatch: { company: { name, tagline, phone, email, address, location, website, type } }. These populate {{company.name}} etc. throughout the site. Without them, all variable placeholders show defaults (\"Acme Inc.\").\n\nWorkflow: create_template → set_theme → patch company vars on ROOT → add_section (repeat) → set_nav → set_footer → update_page (set pageTitle/pageDescription for SEO)",
+    "description": "Creates or updates the ROOT node theme for the active site — palette colors, styleGuide (spacing, radius, shadows, fonts), Google Fonts, and JSON-LD structured data. If no active site exists, creates one first. Always call this FIRST when building a new site, before adding blocks.\n\nIMPORTANT: After set_theme, set company variables on ROOT via patch_site_node with propsPatch: { company: { name, tagline, phone, email, address, location, website, type } }. These populate {{company.name}} etc. throughout the site. Without them, all variable placeholders show defaults (\"Acme Inc.\").\n\nWorkflow: create_template → set_theme → patch company vars on ROOT → add_block (repeat) → set_nav → set_footer → update_page (set pageTitle/pageDescription for SEO)",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -155,8 +155,8 @@
     }
   },
   {
-    "name": "add_section",
-    "description": "Appends a pre-built section template to the active site. Use list_sections to see all available template IDs and their descriptions.\n\nOverrides let you customize content and styling without hand-crafting nodes. Keys in contentOverrides and propOverrides are matched by the node's custom.displayName (e.g. \"Title\", \"Subtitle\", \"CTA Button\", \"Image\").\n\nCall list_sections first to see available IDs and their displayName targets.",
+    "name": "add_block",
+    "description": "Appends a pre-built block template to the active site. Use list_blocks to see all available template IDs and their descriptions.\n\nOverrides let you customize content and styling without hand-crafting nodes. Keys in contentOverrides and propOverrides are matched by the node's custom.displayName (e.g. \"Title\", \"Subtitle\", \"CTA Button\", \"Image\").\n\nCall list_blocks first to see available IDs and their displayName targets.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -166,7 +166,7 @@
         },
         "templateId": {
           "type": "string",
-          "description": "Section template ID. Use list_sections to see all available IDs. Examples: \"hero-1\", \"hero-2\", \"header-1\", \"footer-1\", \"pricing-1\", \"services-1\", \"imagetext-1\", \"optin-1\", \"texts-1\", \"team-1\"."
+          "description": "Block template ID. Use list_blocks to see all available IDs. Examples: \"hero-1\", \"hero-2\", \"header-1\", \"footer-1\", \"pricing-1\", \"services-1\", \"imagetext-1\", \"optin-1\", \"texts-1\", \"team-1\"."
         },
         "contentOverrides": {
           "type": "object",
@@ -178,7 +178,7 @@
         },
         "pageId": {
           "type": "string",
-          "description": "Target page node ID to add the section to (e.g. \"page_about\"). Default: \"page_home\". Use list_pages to see available pages."
+          "description": "Target page node ID to add the block to (e.g. \"page_about\"). Default: \"page_home\". Use list_pages to see available pages."
         },
         "position": {
           "type": "number",
@@ -191,8 +191,8 @@
     }
   },
   {
-    "name": "add_custom_section",
-    "description": "Merges a hand-crafted flat CraftJS node map into the active site and attaches sectionRootId as a child of page_home (or parentNodeId). Use this when no pre-built section template fits your needs.\n\nUse get_component_schema to see all available component types and their props. Each node in the map must have: type.resolvedName, props (with root, mobile, desktop), parent, nodes[], and custom.displayName.\n\nThe sectionRootId node should have type \"section\" and canDelete: true.",
+    "name": "add_custom_block",
+    "description": "Merges a hand-crafted flat CraftJS node map into the active site and attaches blockRootId as a child of page_home (or parentNodeId). Use this when no pre-built block template fits your needs.\n\nUse get_component_schema to see all available component types and their props. Each node in the map must have: type.resolvedName, props (with root, mobile, desktop), parent, nodes[], and custom.displayName.\n\nThe blockRootId node should have type \"section\" and canDelete: true.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -202,11 +202,11 @@
         },
         "sectionRootId": {
           "type": "string",
-          "description": "Node ID of the section root in your nodes map. This gets attached to page_home. Use descriptive IDs like \"sec_testimonials\", \"sec_gallery\"."
+          "description": "Node ID of the block root in your nodes map. This gets attached to page_home. Use descriptive IDs like \"sec_testimonials\", \"sec_gallery\"."
         },
         "nodes": {
           "type": "object",
-          "description": "Flat CraftJS node map: { nodeId: nodeDefinition, ... }. Each node definition must include:\n\n  {\n    \"type\": { \"resolvedName\": \"Container\" },  // Component type\n    \"isCanvas\": true,                          // true if it can have children\n    \"props\": {\n      \"canDelete\": true,\n      \"canEditName\": true,\n      \"type\": \"section\",                       // \"section\" for root, omit for children\n      \"root\": { \"background\": \"bg-(--ph-primary)\" },\n      \"mobile\": { \"display\": \"flex\", \"flexDirection\": \"flex-col\", \"width\": \"w-full\", \"py\": \"py-12\", \"px\": \"px-6\" },\n      \"desktop\": { \"py\": \"py-20\", \"px\": \"px-16\" },\n      \"custom\": { \"displayName\": \"My Section\" }\n    },\n    \"parent\": \"page_home\",                     // parent node ID\n    \"nodes\": [\"child_id_1\", \"child_id_2\"],     // ordered child IDs\n    \"linkedNodes\": {}\n  }\n\nAvailable component types: Container, Text, Image, Button, ButtonList, ImageList, Form, FormElement, Divider, Spacer, Video, Audio, Embed.\nUse get_component_schema for full prop details."
+          "description": "Flat CraftJS node map: { nodeId: nodeDefinition, ... }. Each node definition must include:\n\n  {\n    \"type\": { \"resolvedName\": \"Container\" },  // Component type\n    \"isCanvas\": true,                          // true if it can have children\n    \"props\": {\n      \"canDelete\": true,\n      \"canEditName\": true,\n      \"type\": \"section\",                       // \"section\" for root, omit for children\n      \"root\": { \"background\": \"bg-(--ph-primary)\" },\n      \"mobile\": { \"display\": \"flex\", \"flexDirection\": \"flex-col\", \"width\": \"w-full\", \"py\": \"py-12\", \"px\": \"px-6\" },\n      \"desktop\": { \"py\": \"py-20\", \"px\": \"px-16\" },\n      \"custom\": { \"displayName\": \"My Block\" }\n    },\n    \"parent\": \"page_home\",                     // parent node ID\n    \"nodes\": [\"child_id_1\", \"child_id_2\"],     // ordered child IDs\n    \"linkedNodes\": {}\n  }\n\nAvailable component types: Container, Text, Image, Button, ButtonList, ImageList, Form, FormElement, Divider, Spacer, Video, Audio, Embed.\nUse get_component_schema for full prop details."
         },
         "parentNodeId": {
           "type": "string",
@@ -448,8 +448,8 @@
     }
   },
   {
-    "name": "list_example_sections",
-    "description": "Lists all top-level sections in a page, showing their node IDs, display names, component types, and descendant counts. Use this to find section root IDs before calling extract_section.",
+    "name": "list_example_blocks",
+    "description": "Lists all top-level blocks in a page, showing their node IDs, display names, component types, and descendant counts. Use this to find block root IDs before calling extract_block.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -465,8 +465,8 @@
     }
   },
   {
-    "name": "extract_section",
-    "description": "Extracts a section from a site and converts it to hierarchical section template format ({type, props, children}). This is the reverse of add_section — useful for mining existing sites into reusable templates.\n\nUse list_example_sections first to find section root IDs. The output can be passed directly to save_as_section_template.",
+    "name": "extract_block",
+    "description": "Extracts a block from a site and converts it to hierarchical block template format ({type, props, children}). This is the reverse of add_block — useful for mining existing sites into reusable templates.\n\nUse list_example_blocks first to find block root IDs. The output can be passed directly to save_as_block_template.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -476,7 +476,7 @@
         },
         "sectionRootId": {
           "type": "string",
-          "description": "Node ID of the section root. Get this from list_example_sections."
+          "description": "Node ID of the block root. Get this from list_example_blocks."
         },
         "templatize": {
           "type": "boolean",
@@ -489,8 +489,8 @@
     }
   },
   {
-    "name": "save_as_section_template",
-    "description": "Saves a section template structure into a category file in data/section-templates/. Creates the category file if it doesn't exist. Template IDs must be globally unique across all categories.\n\nWorkflow: list_example_sections → extract_section → (review/edit) → save_as_section_template",
+    "name": "save_as_block_template",
+    "description": "Saves a block template structure into a category file in data/section-templates/. Creates the category file if it doesn't exist. Template IDs must be globally unique across all categories.\n\nWorkflow: list_example_blocks → extract_block → (review/edit) → save_as_block_template",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -535,8 +535,8 @@
     }
   },
   {
-    "name": "shuffle_section",
-    "description": "Swaps a section with an alternative template of the same type while preserving the user's content. Identifies the section's category (hero, pricing, testimonials, etc.) from its template origin, picks a different template from the same category, extracts text/image content from the old section, and re-applies it to the new layout.\n\nWorkflow: list_example_sections → shuffle_section(sectionRootId) → done.\n\nIf targetTemplateId is omitted, picks a random alternative. Returns the list of remaining alternatives the user can try.",
+    "name": "shuffle_block",
+    "description": "Swaps a block with an alternative template of the same type while preserving the user's content. Identifies the block's category (hero, pricing, testimonials, etc.) from its template origin, picks a different template from the same category, extracts text/image content from the old block, and re-applies it to the new layout.\n\nWorkflow: list_example_blocks → shuffle_block(sectionRootId) → done.\n\nIf targetTemplateId is omitted, picks a random alternative. Returns the list of remaining alternatives the user can try.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -546,7 +546,7 @@
         },
         "sectionRootId": {
           "type": "string",
-          "description": "Node ID of the section root to replace. Get this from list_example_sections."
+          "description": "Node ID of the block root to replace. Get this from list_example_blocks."
         },
         "targetTemplateId": {
           "type": "string",
@@ -877,7 +877,7 @@
   },
   {
     "name": "select_template",
-    "description": "Set the active template context by slug for the current session. Once selected, all editing tools (patch_site_node, patch_site_bulk, add_nodes, update_node, delete_node, insert_node, list_pages, add_page, update_page, delete_page, set_theme, add_section, set_nav, set_footer, etc.) will operate on this template instead of a site. Clears any active site. Requires admin or tenant owner/editor role.",
+    "description": "Set the active template context by slug for the current session. Once selected, all editing tools (patch_site_node, patch_site_bulk, add_nodes, update_node, delete_node, insert_node, list_pages, add_page, update_page, delete_page, set_theme, add_block, set_nav, set_footer, etc.) will operate on this template instead of a site. Clears any active site. Requires admin or tenant owner/editor role.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1210,8 +1210,8 @@
     }
   },
   {
-    "name": "list_components",
-    "description": "Search and browse the component library — reusable UI blocks organized by purpose (Flowbite-style). Components are smaller than sections — they are the building blocks you compose sections from.\n\nSupports full-text search, category filtering, and tag filtering. Returns names, slugs, descriptions, and usage stats (no full structure — use get_component for that).",
+    "name": "search_blocks",
+    "description": "Search and browse the block library — reusable UI blocks organized by purpose (Flowbite-style). Blocks are pre-built page chunks you compose sites from.\n\nSupports full-text search, category filtering, and tag filtering. Returns names, slugs, descriptions, and usage stats (no full structure — use get_block for that).",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1259,14 +1259,14 @@
     }
   },
   {
-    "name": "get_component",
-    "description": "Get a single component by slug with its full CraftJS structure. Use the structure as a building block inside add_custom_section or as reference when hand-crafting nodes.\n\nAlso increments the component's usage counter.",
+    "name": "get_block",
+    "description": "Get a single block by slug with its full CraftJS structure. Use the structure as a building block inside add_custom_block or as reference when hand-crafting nodes.\n\nAlso increments the block's usage counter.",
     "inputSchema": {
       "type": "object",
       "properties": {
         "slug": {
           "type": "string",
-          "description": "Component slug (from list_components results)."
+          "description": "Block slug (from search_blocks results)."
         }
       },
       "required": [
@@ -1275,8 +1275,8 @@
     }
   },
   {
-    "name": "save_component",
-    "description": "Save a new reusable component to the library. Use this after extracting or hand-crafting a UI block you want to reuse across templates.\n\nThe structure format is the same hierarchical {type, props, children} format used by section templates — NOT flat CraftJS node maps.",
+    "name": "save_block",
+    "description": "Save a new reusable block to the library. Use this after extracting or hand-crafting a UI block you want to reuse across templates.\n\nThe structure format is the same hierarchical {type, props, children} format used by block templates — NOT flat CraftJS node maps.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1302,7 +1302,7 @@
         },
         "subcategory": {
           "type": "string",
-          "description": "Subcategory within the category (e.g. \"testimonials\", \"payment-forms\", \"product-cards\"). Creates browsable groups like Flowbite blocks."
+          "description": "Subcategory within the category (e.g. \"testimonials\", \"payment-forms\", \"product-cards\"). Creates browsable groups."
         },
         "tags": {
           "type": "array",
@@ -1325,11 +1325,11 @@
         },
         "isPublic": {
           "type": "boolean",
-          "description": "Make this component visible to all users. Default: false (private to your tenant)."
+          "description": "Make this block visible to all users. Default: false (private to your tenant)."
         },
         "isCategoryPreview": {
           "type": "boolean",
-          "description": "Use this component as the representative preview/thumbnail for its category. Default: false."
+          "description": "Use this block as the representative preview/thumbnail for its category. Default: false."
         }
       },
       "required": [
@@ -1341,14 +1341,14 @@
     }
   },
   {
-    "name": "update_component",
-    "description": "Update an existing component — change its category, name, tags, description, slug, or any other metadata. Use this to move components between categories, fix descriptions, or update structure.",
+    "name": "update_block",
+    "description": "Update an existing block — change its category, name, tags, description, slug, or any other metadata. Use this to move blocks between categories, fix descriptions, or update structure.",
     "inputSchema": {
       "type": "object",
       "properties": {
         "slug": {
           "type": "string",
-          "description": "Current slug of the component to update."
+          "description": "Current slug of the block to update."
         },
         "name": {
           "type": "string",
@@ -1412,14 +1412,14 @@
     }
   },
   {
-    "name": "delete_component",
-    "description": "Delete a component you own from the library.",
+    "name": "delete_block",
+    "description": "Delete a block you own from the library.",
     "inputSchema": {
       "type": "object",
       "properties": {
         "slug": {
           "type": "string",
-          "description": "Component slug to delete."
+          "description": "Block slug to delete."
         }
       },
       "required": [
@@ -1442,7 +1442,7 @@
   },
   {
     "name": "add_page",
-    "description": "Creates a new page in a site. A page is a Container node with type \"page\" added as a direct child of ROOT (alongside header and footer). The page gets an auto-generated node ID based on its name.\n\nThe first page in a site is automatically marked as the home page. Additional pages are accessible via their URL slug (derived from the display name).\n\nAfter creating a page, use add_section or add_custom_section with pageId to add content to it.",
+    "description": "Creates a new page in a site. A page is a Container node with type \"page\" added as a direct child of ROOT (alongside header and footer). The page gets an auto-generated node ID based on its name.\n\nThe first page in a site is automatically marked as the home page. Additional pages are accessible via their URL slug (derived from the display name).\n\nAfter creating a page, use add_block or add_custom_block with pageId to add content to it.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1536,7 +1536,7 @@
   },
   {
     "name": "delete_page",
-    "description": "Deletes a page and all its child sections/nodes from the site. Cannot delete the last remaining page — a site must always have at least one page. If deleting the home page, the next page is automatically promoted to home page.",
+    "description": "Deletes a page and all its child blocks/nodes from the site. Cannot delete the last remaining page — a site must always have at least one page. If deleting the home page, the next page is automatically promoted to home page.",
     "inputSchema": {
       "type": "object",
       "properties": {

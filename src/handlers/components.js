@@ -1,7 +1,7 @@
 const { apiFetch } = require('../api-fetch');
 
 module.exports = {
-  async list_components(args) {
+  async search_blocks(args) {
     const params = new URLSearchParams();
     if (args.q) params.set('q', args.q);
     if (args.category) params.set('category', args.category);
@@ -19,7 +19,7 @@ module.exports = {
     const { components, total, page, pages } = data;
 
     if (!components.length) {
-      return { content: [{ type: 'text', text: 'No components found matching your query.' }] };
+      return { content: [{ type: 'text', text: 'No blocks found matching your query.' }] };
     }
 
     const lines = components.map(c => {
@@ -33,12 +33,12 @@ module.exports = {
     return {
       content: [{
         type: 'text',
-        text: `# Components (${total} total, page ${page}/${pages})\n\n${lines.join('\n\n')}\n\nUse \`get_component(slug)\` to get the full structure for any component.`,
+        text: `# Blocks (${total} total, page ${page}/${pages})\n\n${lines.join('\n\n')}\n\nUse \`get_block(slug)\` to get the full structure for any block.`,
       }],
     };
   },
 
-  async get_component(args) {
+  async get_block(args) {
     const { slug } = args;
     if (!slug) throw new Error('slug is required');
 
@@ -53,7 +53,7 @@ module.exports = {
     };
   },
 
-  async save_component(args) {
+  async save_block(args) {
     const { name, slug, description, visual, category, subcategory, tags, source, group, structure, isPublic, isCategoryPreview } = args;
     if (!name || !slug || !category || !structure) {
       throw new Error('name, slug, category, and structure are required');
@@ -67,12 +67,12 @@ module.exports = {
     return {
       content: [{
         type: 'text',
-        text: `Component saved: **${data.component.name}** (\`${data.component.slug}\`)\nPublic: ${data.component.isPublic}\nCategory: ${data.component.category}`,
+        text: `Block saved: **${data.component.name}** (\`${data.component.slug}\`)\nPublic: ${data.component.isPublic}\nCategory: ${data.component.category}`,
       }],
     };
   },
 
-  async update_component(args) {
+  async update_block(args) {
     const { slug } = args;
     if (!slug) throw new Error('slug is required');
 
@@ -97,15 +97,15 @@ module.exports = {
     return {
       content: [{
         type: 'text',
-        text: `Component updated: **${c.name}** (\`${c.slug}\`)\nCategory: ${c.category}\nPublic: ${c.isPublic}`,
+        text: `Block updated: **${c.name}** (\`${c.slug}\`)\nCategory: ${c.category}\nPublic: ${c.isPublic}`,
       }],
     };
   },
 
-  async delete_component(args) {
+  async delete_block(args) {
     const { slug } = args;
     if (!slug) throw new Error('slug is required');
     await apiFetch(`/api/v1/components/${encodeURIComponent(slug)}`, { method: 'DELETE' });
-    return { content: [{ type: 'text', text: `Component "${slug}" deleted.` }] };
+    return { content: [{ type: 'text', text: `Block "${slug}" deleted.` }] };
   },
 };

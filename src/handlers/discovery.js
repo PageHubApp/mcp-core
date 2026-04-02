@@ -96,7 +96,7 @@ function getDesignPatterns() {
 /* ── Handlers ── */
 
 module.exports = {
-  async list_sections(args) {
+  async list_blocks(args) {
     const params = { limit: '200' };
     if (args.category) params.category = args.category;
     const qs = new URLSearchParams(params).toString();
@@ -104,7 +104,7 @@ module.exports = {
     const components = data.components || [];
 
     if (components.length === 0) {
-      return { content: [{ type: 'text', text: 'No section templates found.' }] };
+      return { content: [{ type: 'text', text: 'No block templates found.' }] };
     }
 
     const byCategory = {};
@@ -127,7 +127,7 @@ module.exports = {
     return {
       content: [{
         type: 'text',
-        text: `# Available Section Templates\n\nUse these IDs with add_section(templateId). Override content/styling by displayName.\n${result.join('\n')}`,
+        text: `# Available Block Templates\n\nUse these IDs with add_block(templateId). Override content/styling by displayName.\n${result.join('\n')}`,
       }],
     };
   },

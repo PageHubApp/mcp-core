@@ -79,13 +79,13 @@ These handlers make API calls to PageHub and are included in this package:
 
 **Pages** — `list_pages`, `add_page`, `update_page`, `delete_page`
 
-**Components** — `list_components`, `get_component`, `save_component`, `update_component`, `delete_component`
+**Blocks** — `search_blocks`, `get_block`, `save_block`, `update_block`, `delete_block`
 
 **Portal** — `set_portal`, `get_portal`, `remove_portal`
 
 ## Full Tool Schema (49 tools)
 
-The `tools.json` file contains schemas for all 49 PageHub tools. The remaining 25 tools (template building, theming, sections, AI generation, audits) require filesystem access to the TemplateBuilder and are implemented in the full [`@pagehub/mcp`](https://github.com/nicholasgcoles/pagehub.dev/tree/main/packages/mcp) server package.
+The `tools.json` file contains schemas for all 49 PageHub tools. The remaining 25 tools (template building, theming, blocks, AI generation, audits) require filesystem access to the TemplateBuilder and are implemented in the full [`@pagehub/mcp`](https://github.com/nicholasgcoles/pagehub.dev/tree/main/packages/mcp) server package.
 
 ## Architecture
 
