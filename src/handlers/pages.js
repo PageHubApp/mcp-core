@@ -1,6 +1,7 @@
 const { apiFetch } = require('../api-fetch');
 const { getContext } = require('../context');
-const { parseMaybeJson, getActiveSiteId } = require('../helpers');
+const { parseMaybeJson, getActiveTarget, fetchTarget, saveTarget } = require('../helpers');
+const { normalizeBaseUrl } = require('../api-fetch');
 
 /** Find all page nodes — direct ROOT children with props.type === 'page'. */
 function findPages(flat) {
@@ -27,14 +28,18 @@ function toSlug(name) {
 
 module.exports = {
   async list_pages(args) {
-    const siteId = getActiveSiteId(args);
-    const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`);
-    if (!data.content) throw new Error('Site has no content.');
-    const flat = data.content;
+    const target = getActiveTarget(args);
+    let flat;
+    if (target.type === 'template') {
+      flat = (await apiFetch(`/api/v1/templates/${encodeURIComponent(target.id)}`)).content;
+    } else {
+      flat = (await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`)).content;
+    }
+    if (!flat) throw new Error(`${target.type === 'template' ? 'Template' : 'Site'} has no content.`);
     const pages = findPages(flat);
 
     if (pages.length === 0) {
-      return { content: [{ type: 'text', text: 'No pages found in this site.' }] };
+      return { content: [{ type: 'text', text: `No pages found in this ${target.type}.` }] };
     }
 
     const lines = pages.map((p, i) => {
@@ -50,10 +55,11 @@ module.exports = {
       return `${i + 1}. **${p.id}** — "${name}" (/${slug}, ${sectionCount} sections)${flagStr}`;
     });
 
+    const label = target.type === 'template' ? `template "${target.id}"` : `site ${target.id}`;
     return {
       content: [{
         type: 'text',
-        text: `# Pages in site ${siteId}\n\n${lines.join('\n')}\n\nUse pageId with add_section, add_custom_section, or update_page.`,
+        text: `# Pages in ${label}\n\n${lines.join('\n')}\n\nUse pageId with add_section, add_custom_section, or update_page.`,
       }],
     };
   },
@@ -62,12 +68,17 @@ module.exports = {
     const { name, isHomePage, is404Page, position } = args;
     if (!name) throw new Error('Page name is required.');
 
-    const siteId = getActiveSiteId(args);
-    const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`);
-    if (!data.content) throw new Error('Site has no content.');
-    const flat = JSON.parse(JSON.stringify(data.content));
+    const target = getActiveTarget(args);
+    let rawContent;
+    if (target.type === 'template') {
+      rawContent = (await apiFetch(`/api/v1/templates/${encodeURIComponent(target.id)}`)).content;
+    } else {
+      rawContent = (await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`)).content;
+    }
+    if (!rawContent) throw new Error(`${target.type === 'template' ? 'Template' : 'Site'} has no content.`);
+    const flat = JSON.parse(JSON.stringify(rawContent));
     const root = flat.ROOT;
-    if (!root) throw new Error('Site has no ROOT node.');
+    if (!root) throw new Error('No ROOT node found.');
 
     const pages = findPages(flat);
     const slug = toSlug(name);
@@ -122,7 +133,6 @@ module.exports = {
     if (position != null) {
       insertPos = position;
     } else {
-      // Find the last page node index, insert after it
       let lastPageIdx = -1;
       for (let i = 0; i < rootNodes.length; i++) {
         const n = flat[rootNodes[i]];
@@ -143,12 +153,16 @@ module.exports = {
       };
     }
 
-    const put = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`, { method: 'PUT', body: { content: flat } });
+    const result = await saveTarget(target.id, target.type, flat);
+    const homeMsg = shouldBeHome ? ' Marked as home page.' : '';
+    if (target.type === 'template') {
+      return { content: [{ type: 'text', text: `Page "${name}" created as ${pageId} (/${slug}) in template "${target.id}".${homeMsg}` }] };
+    }
     const base = normalizeBaseUrl(ctx.apiBaseUrl) || 'https://pagehub.dev';
     return {
       content: [{
         type: 'text',
-        text: `Page "${name}" created as ${pageId} (/${slug}).${shouldBeHome ? ' Marked as home page.' : ''}\nEditor: ${base}/build/${put.id}`,
+        text: `Page "${name}" created as ${pageId} (/${slug}).${homeMsg}\nEditor: ${base}/build/${result.id}`,
       }],
     };
   },
@@ -157,10 +171,15 @@ module.exports = {
     const { pageId, name, isHomePage, is404Page, isHidden } = args;
     if (!pageId) throw new Error('pageId is required.');
 
-    const siteId = getActiveSiteId(args);
-    const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`);
-    if (!data.content) throw new Error('Site has no content.');
-    const flat = JSON.parse(JSON.stringify(data.content));
+    const target = getActiveTarget(args);
+    let rawContent;
+    if (target.type === 'template') {
+      rawContent = (await apiFetch(`/api/v1/templates/${encodeURIComponent(target.id)}`)).content;
+    } else {
+      rawContent = (await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`)).content;
+    }
+    if (!rawContent) throw new Error(`${target.type === 'template' ? 'Template' : 'Site'} has no content.`);
+    const flat = JSON.parse(JSON.stringify(rawContent));
 
     const page = flat[pageId];
     if (!page) throw new Error(`Page node "${pageId}" not found.`);
@@ -168,14 +187,12 @@ module.exports = {
 
     const changes = [];
 
-    // Update display name
     if (name != null) {
       if (!page.custom) page.custom = {};
       page.custom.displayName = name;
       changes.push(`name → "${name}" (/${toSlug(name)})`);
     }
 
-    // Update home page flag
     if (isHomePage === true) {
       const pages = findPages(flat);
       for (const p of pages) {
@@ -188,20 +205,17 @@ module.exports = {
       changes.push('isHomePage → false');
     }
 
-    // Update 404 flag
     if (is404Page != null) {
       page.props.is404Page = is404Page;
       changes.push(`is404Page → ${is404Page}`);
     }
 
-    // Update visibility
     if (isHidden != null) {
       page.props.isHidden = isHidden;
       page.hidden = isHidden;
       changes.push(`isHidden → ${isHidden}`);
     }
 
-    // Update SEO
     const seo = parseMaybeJson(args.seo) || {};
     for (const key of ['pageTitle', 'pageDescription', 'pageKeywords', 'ogTitle', 'ogDescription', 'ogImage', 'ogType', 'canonicalUrl', 'robots']) {
       if (seo[key] != null) {
@@ -214,13 +228,13 @@ module.exports = {
       return { content: [{ type: 'text', text: 'No changes specified.' }] };
     }
 
-    const ctx = getContext();
-    const put = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`, { method: 'PUT', body: { content: flat } });
-    const base = normalizeBaseUrl(ctx.apiBaseUrl) || 'https://pagehub.dev';
+    const result = await saveTarget(target.id, target.type, flat);
+    const label = target.type === 'template' ? `template "${target.id}"` : `site`;
+    const editorLine = target.type === 'site' ? `\nEditor: ${normalizeBaseUrl(getContext().apiBaseUrl) || 'https://pagehub.dev'}/build/${result.id}` : '';
     return {
       content: [{
         type: 'text',
-        text: `Page ${pageId} updated:\n  ${changes.join('\n  ')}\nEditor: ${base}/build/${put.id}`,
+        text: `Page ${pageId} updated in ${label}:\n  ${changes.join('\n  ')}${editorLine}`,
       }],
     };
   },
@@ -229,28 +243,31 @@ module.exports = {
     const { pageId } = args;
     if (!pageId) throw new Error('pageId is required.');
 
-    const siteId = getActiveSiteId(args);
-    const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`);
-    if (!data.content) throw new Error('Site has no content.');
-    const flat = JSON.parse(JSON.stringify(data.content));
+    const target = getActiveTarget(args);
+    let rawContent;
+    if (target.type === 'template') {
+      rawContent = (await apiFetch(`/api/v1/templates/${encodeURIComponent(target.id)}`)).content;
+    } else {
+      rawContent = (await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`)).content;
+    }
+    if (!rawContent) throw new Error(`${target.type === 'template' ? 'Template' : 'Site'} has no content.`);
+    const flat = JSON.parse(JSON.stringify(rawContent));
 
     const page = flat[pageId];
     if (!page) throw new Error(`Page node "${pageId}" not found.`);
     if (page.props?.type !== 'page') throw new Error(`Node "${pageId}" is not a page (type: ${page.props?.type || 'unknown'}).`);
 
     const pages = findPages(flat);
-    if (pages.length <= 1) throw new Error('Cannot delete the last page. A site must have at least one page.');
+    if (pages.length <= 1) throw new Error(`Cannot delete the last page. A ${target.type} must have at least one page.`);
 
     const wasHomePage = page.props?.isHomePage === true;
     const pageName = page.custom?.displayName || page.displayName || pageId;
 
-    // Remove from ROOT.nodes
     const root = flat.ROOT;
     if (root) {
       root.nodes = (root.nodes || []).filter(id => id !== pageId);
     }
 
-    // Delete the page and all descendants
     const deleteSubtree = (id) => {
       const n = flat[id];
       if (!n) return;
@@ -259,7 +276,6 @@ module.exports = {
     };
     deleteSubtree(pageId);
 
-    // If we deleted the home page, promote the first remaining page
     let promotedPage = null;
     if (wasHomePage) {
       const remaining = findPages(flat);
@@ -269,14 +285,16 @@ module.exports = {
       }
     }
 
-    const ctx = getContext();
-    const put = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`, { method: 'PUT', body: { content: flat } });
-    const base = normalizeBaseUrl(ctx.apiBaseUrl) || 'https://pagehub.dev';
+    const result = await saveTarget(target.id, target.type, flat);
     const promoMsg = promotedPage ? ` ${promotedPage} promoted to home page.` : '';
+    if (target.type === 'template') {
+      return { content: [{ type: 'text', text: `Page "${pageName}" (${pageId}) deleted from template "${target.id}".${promoMsg}` }] };
+    }
+    const base = normalizeBaseUrl(getContext().apiBaseUrl) || 'https://pagehub.dev';
     return {
       content: [{
         type: 'text',
-        text: `Page "${pageName}" (${pageId}) deleted.${promoMsg}\nEditor: ${base}/build/${put.id}`,
+        text: `Page "${pageName}" (${pageId}) deleted.${promoMsg}\nEditor: ${base}/build/${result.id}`,
       }],
     };
   },

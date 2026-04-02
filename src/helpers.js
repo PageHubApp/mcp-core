@@ -50,17 +50,36 @@ function normalizeNodePatchArgs(raw) {
   };
 }
 
-// ── Site fetch/save helpers ──
+// ── Target (site OR template) fetch/save helpers ──
 
 const { apiFetch } = require('./api-fetch');
 const { getContext } = require('./context');
 const { normalizeBaseUrl } = require('./api-fetch');
 
-function getActiveSiteId(args) {
+/**
+ * Resolve the active target — either a site or template.
+ * Priority: explicit args > activeTemplate > activeSite.
+ * Returns { type: 'site'|'template', id: string }
+ */
+function getActiveTarget(args = {}) {
   const ctx = getContext();
-  const id = args.id || ctx.activeSite?.id;
-  if (!id) throw new Error('No site id provided and no active site set. Run select_site first.');
-  return id;
+  // Explicit slug → template
+  if (args.slug && !args.id) return { type: 'template', id: args.slug };
+  // Explicit id → site
+  if (args.id) return { type: 'site', id: args.id };
+  // Context: activeTemplate takes priority when set
+  if (ctx.activeTemplate) return { type: 'template', id: ctx.activeTemplate.slug };
+  if (ctx.activeSite) return { type: 'site', id: ctx.activeSite.id };
+  throw new Error('No site or template selected. Run select_site or select_template first.');
+}
+
+/** Backwards-compat: returns the site id or template slug. */
+function getActiveSiteId(args) {
+  return getActiveTarget(args).id;
+}
+
+function isTemplateTarget(args) {
+  try { return getActiveTarget(args).type === 'template'; } catch { return false; }
 }
 
 function getEditorUrl(siteId) {
@@ -69,19 +88,49 @@ function getEditorUrl(siteId) {
   return `${base}/build/${siteId}`;
 }
 
-async function fetchSite(args) {
-  const siteId = getActiveSiteId(args);
-  const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`);
+/**
+ * Fetch content for the active target (site or template).
+ * Returns { targetId, targetType, flat, data }.
+ */
+async function fetchTarget(args) {
+  const target = getActiveTarget(args);
+  if (target.type === 'template') {
+    const data = await apiFetch(`/api/v1/templates/${encodeURIComponent(target.id)}`);
+    if (!data.content || typeof data.content !== 'object') {
+      throw new Error('Template has no decoded content (empty or corrupt).');
+    }
+    return { targetId: target.id, targetType: 'template', flat: JSON.parse(JSON.stringify(data.content)), data };
+  }
+  const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`);
   if (!data.content || typeof data.content !== 'object') {
     throw new Error('Site has no decoded content (empty or corrupt).');
   }
-  return { siteId, flat: JSON.parse(JSON.stringify(data.content)), data };
+  return { targetId: target.id, targetType: 'site', flat: JSON.parse(JSON.stringify(data.content)), data };
 }
 
-async function saveSite(siteId, flat, extra = {}) {
+/** Backwards-compat alias. */
+async function fetchSite(args) {
+  const result = await fetchTarget(args);
+  return { siteId: result.targetId, flat: result.flat, data: result.data };
+}
+
+/**
+ * Save content for the active target (site or template).
+ */
+async function saveTarget(targetId, targetType, flat, extra = {}) {
+  if (targetType === 'template') {
+    const body = { content: flat, ...extra };
+    const put = await apiFetch(`/api/v1/templates/${encodeURIComponent(targetId)}`, { method: 'PUT', body });
+    return { id: put.slug || targetId, url: null, type: 'template' };
+  }
   const body = { content: flat, ...extra };
-  const put = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`, { method: 'PUT', body });
-  return { id: put.id, url: getEditorUrl(put.id || siteId) };
+  const put = await apiFetch(`/api/v1/sites/${encodeURIComponent(targetId)}`, { method: 'PUT', body });
+  return { id: put.id, url: getEditorUrl(put.id || targetId), type: 'site' };
+}
+
+/** Backwards-compat alias. */
+async function saveSite(siteId, flat, extra = {}) {
+  return saveTarget(siteId, 'site', flat, extra);
 }
 
 // ── Image URL validation ──
@@ -124,6 +173,7 @@ function collectAllImageUrls(nodes) {
 
 module.exports = {
   parseMaybeJson, applyNodePatches, normalizeNodePatchArgs,
-  getActiveSiteId, getEditorUrl, fetchSite, saveSite,
+  getActiveTarget, getActiveSiteId, isTemplateTarget,
+  getEditorUrl, fetchTarget, fetchSite, saveTarget, saveSite,
   extractImageUrls, validateImageUrls, collectAllImageUrls,
 };

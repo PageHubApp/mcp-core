@@ -84,6 +84,15 @@
         "hidden": {
           "type": "boolean",
           "description": "If true, hidden from public gallery. Default: false."
+        },
+        "category": {
+          "type": "string",
+          "description": "Template category (e.g. \"landing-page\", \"portfolio\", \"ecommerce\", \"blog\")."
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Tags for discovery (e.g. [\"modern\", \"dark\", \"restaurant\"]). Max 30."
         }
       }
     }
@@ -657,10 +666,23 @@
   },
   {
     "name": "list_templates",
-    "description": "List stock page templates from pagehub.dev catalog (remote, requires API key).",
+    "description": "List stock page templates from pagehub.dev catalog (remote, requires API key). Supports filtering by category, tag, or search query.",
     "inputSchema": {
       "type": "object",
-      "properties": {}
+      "properties": {
+        "category": {
+          "type": "string",
+          "description": "Filter by category (e.g. \"landing-page\", \"portfolio\")."
+        },
+        "tag": {
+          "type": "string",
+          "description": "Filter by tag (e.g. \"modern\", \"dark\")."
+        },
+        "q": {
+          "type": "string",
+          "description": "Full-text search query."
+        }
+      }
     }
   },
   {
@@ -712,6 +734,15 @@
         "isPublic": {
           "type": "boolean",
           "description": "Visible to all users. Default: true"
+        },
+        "category": {
+          "type": "string",
+          "description": "Template category (e.g. \"landing-page\", \"portfolio\", \"ecommerce\", \"blog\")"
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Tags for discovery (e.g. [\"modern\", \"dark\", \"restaurant\"]). Max 30."
         }
       },
       "required": ["slug", "title", "content"]
@@ -719,7 +750,7 @@
   },
   {
     "name": "update_template",
-    "description": "Update an existing template you own (or any template if admin). Change title, description, content, or visibility.",
+    "description": "Update an existing template you own (or any template if admin). Change title, description, content, category, tags, or visibility.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -746,6 +777,15 @@
         "hidden": {
           "type": "boolean",
           "description": "Toggle hidden status"
+        },
+        "category": {
+          "type": "string",
+          "description": "New category"
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "New tags array. Max 30."
         }
       },
       "required": ["slug"]
@@ -775,7 +815,7 @@
   },
   {
     "name": "select_site",
-    "description": "Set the active site context by id for the current session.",
+    "description": "Set the active site context by id for the current session. Clears any active template.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -786,6 +826,22 @@
       },
       "required": [
         "id"
+      ]
+    }
+  },
+  {
+    "name": "select_template",
+    "description": "Set the active template context by slug for the current session. Once selected, all editing tools (patch_site_node, patch_site_bulk, add_nodes, update_node, delete_node, insert_node, list_pages, add_page, update_page, delete_page, set_theme, add_section, set_nav, set_footer, etc.) will operate on this template instead of a site. Clears any active site. Requires admin or tenant owner/editor role.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string",
+          "description": "Template slug to set as active"
+        }
+      },
+      "required": [
+        "slug"
       ]
     }
   },

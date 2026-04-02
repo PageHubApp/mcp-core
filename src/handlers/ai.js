@@ -1,10 +1,14 @@
 const { apiFetch } = require('../api-fetch');
-const { getActiveSiteId, getEditorUrl, applyNodePatches } = require('../helpers');
+const { getActiveTarget, getEditorUrl, applyNodePatches, fetchTarget, saveTarget } = require('../helpers');
 
 module.exports = {
   async generate_image(args) {
     const { prompt, model, size: orientation, nodeId } = args;
-    const siteId = getActiveSiteId(args);
+    const target = getActiveTarget(args);
+    if (target.type === 'template') {
+      throw new Error('generate_image is not supported for templates (no CDN upload). Use hardcoded image URLs (type: "url") instead.');
+    }
+    const siteId = target.id;
     if (!prompt?.trim()) throw new Error('prompt is required.');
 
     const sizeMap = { landscape: { width: 1536, height: 1024 }, portrait: { width: 1024, height: 1536 }, square: { width: 1024, height: 1024 } };
@@ -49,14 +53,19 @@ module.exports = {
 
   async generate_copy(args) {
     const { nodeId, intent, styleTags, text: textOverride } = args;
-    const siteId = getActiveSiteId(args);
+    const target = getActiveTarget(args);
 
     if (!nodeId && !intent && !textOverride) {
       throw new Error('Provide at least one of: nodeId, intent, or text.');
     }
 
-    const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`);
-    if (!data.content) throw new Error('Site has no content.');
+    let data;
+    if (target.type === 'template') {
+      data = await apiFetch(`/api/v1/templates/${encodeURIComponent(target.id)}`);
+    } else {
+      data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`);
+    }
+    if (!data.content) throw new Error(`${target.type === 'template' ? 'Template' : 'Site'} has no content.`);
     const nodes = data.content;
 
     let currentText = textOverride || '';

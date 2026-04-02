@@ -1,5 +1,5 @@
 const { apiFetch } = require('../api-fetch');
-const { getActiveSiteId } = require('../helpers');
+const { getActiveTarget } = require('../helpers');
 
 const GENERIC_LINK_TEXT = /^(click here|read more|learn more|here|link|more|submit|button|download)$/i;
 const PLACEHOLDER_ALT = /^(image|photo|picture|img|untitled|placeholder|alt text|screenshot)$/i;
@@ -146,10 +146,15 @@ module.exports = {
   async audit_seo(args) {
     let data, nodes, label;
 
-    if (args.templateSlug) {
-      // Audit a template by slug
-      const tpl = await apiFetch(`/api/v1/templates/${encodeURIComponent(args.templateSlug)}`);
-      if (!tpl.content) throw new Error(`Template "${args.templateSlug}" has no content.`);
+    // Resolve target: explicit templateSlug, or active target (site/template)
+    const isTemplateAudit = args.templateSlug || (() => {
+      try { return getActiveTarget(args).type === 'template'; } catch { return false; }
+    })();
+
+    if (isTemplateAudit) {
+      const slug = args.templateSlug || getActiveTarget(args).id;
+      const tpl = await apiFetch(`/api/v1/templates/${encodeURIComponent(slug)}`);
+      if (!tpl.content) throw new Error(`Template "${slug}" has no content.`);
       nodes = tpl.content;
       const rootProps = nodes.ROOT?.props || {};
       data = {
@@ -157,14 +162,13 @@ module.exports = {
         description: tpl.description || rootProps.description || '',
         content: nodes,
       };
-      label = `template:${args.templateSlug}`;
+      label = `template:${slug}`;
     } else {
-      // Audit a live site by id
-      const siteId = getActiveSiteId(args);
-      data = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`);
+      const target = getActiveTarget(args);
+      data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`);
       if (!data.content) throw new Error('Site has no content.');
       nodes = data.content;
-      label = siteId;
+      label = target.id;
     }
 
     // Find the home page node — check page_home, then isHomePage flag, then first child of ROOT

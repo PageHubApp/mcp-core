@@ -3,7 +3,8 @@ const { runWithContext, getContext } = require('./context');
 const { apiFetch, normalizeBaseUrl } = require('./api-fetch');
 const {
   parseMaybeJson, applyNodePatches, normalizeNodePatchArgs,
-  getActiveSiteId, getEditorUrl, fetchSite, saveSite,
+  getActiveTarget, getActiveSiteId, isTemplateTarget,
+  getEditorUrl, fetchTarget, fetchSite, saveTarget, saveSite,
   extractImageUrls, validateImageUrls, collectAllImageUrls,
 } = require('./helpers');
 const remoteHandlers = require('./handlers/remote');
@@ -74,9 +75,13 @@ module.exports = {
   parseMaybeJson,
   applyNodePatches,
   normalizeNodePatchArgs,
+  getActiveTarget,
   getActiveSiteId,
+  isTemplateTarget,
   getEditorUrl,
+  fetchTarget,
   fetchSite,
+  saveTarget,
   saveSite,
   extractImageUrls,
   validateImageUrls,

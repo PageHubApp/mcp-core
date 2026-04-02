@@ -1,6 +1,6 @@
 const { apiFetch, normalizeBaseUrl } = require('../api-fetch');
 const { getContext } = require('../context');
-const { parseMaybeJson, applyNodePatches, normalizeNodePatchArgs } = require('../helpers');
+const { parseMaybeJson, applyNodePatches, normalizeNodePatchArgs, getActiveTarget, fetchTarget, saveTarget } = require('../helpers');
 
 /** Collect a node and all its descendants from a flat map */
 function collectSubtree(flat, nodeId) {
@@ -28,18 +28,43 @@ function findSectionRoot(flat, nodeId) {
 }
 
 function getActiveSiteId(args) {
+  return getActiveTarget(args).id;
+}
+
+/** Format result message with editor URL (sites) or slug (templates). */
+function resultMsg(targetId, targetType, msg) {
+  if (targetType === 'template') return `Template "${targetId}": ${msg}`;
   const ctx = getContext();
-  const id = args.id || ctx.activeSite?.id;
-  if (!id) throw new Error('No site id provided and no active site set.');
-  return id;
+  const base = normalizeBaseUrl(ctx.apiBaseUrl) || 'https://pagehub.dev';
+  return `${msg}\nEditor: ${base}/build/${targetId}`;
 }
 
 module.exports = {
-  async list_templates() {
-    const data = await apiFetch('/api/v1/templates');
-    const lines = (data.templates || []).map(t =>
-      `• ${t.slug} — ${t.title}${t.hidden ? ' (hidden)' : ''}`
-    );
+  async select_template(args) {
+    const { slug } = args;
+    if (!slug) throw new Error('slug is required.');
+    const data = await apiFetch(`/api/v1/templates/${encodeURIComponent(slug)}`);
+    const ctx = getContext();
+    ctx.activeTemplate = { slug: data.slug, title: data.title };
+    // Clear activeSite so template takes priority
+    ctx.activeSite = null;
+    return { content: [{ type: 'text', text: `Active template set to "${data.slug}" (${data.title || 'untitled'})` }] };
+  },
+
+  async list_templates(args = {}) {
+    const params = new URLSearchParams();
+    if (args.category) params.set('category', args.category);
+    if (args.tag) params.set('tag', args.tag);
+    if (args.q) params.set('q', args.q);
+    const qs = params.toString();
+    const data = await apiFetch(`/api/v1/templates${qs ? `?${qs}` : ''}`);
+    const lines = (data.templates || []).map(t => {
+      let line = `• ${t.slug} — ${t.title}`;
+      if (t.category) line += ` [${t.category}]`;
+      if (t.tags?.length) line += ` (${t.tags.join(', ')})`;
+      if (t.hidden) line += ' (hidden)';
+      return line;
+    });
     return { content: [{ type: 'text', text: lines.length ? lines.join('\n') : 'No templates found.' }] };
   },
 
@@ -56,13 +81,13 @@ module.exports = {
   },
 
   async save_template(args) {
-    const { slug, title, description, image, content, hidden, isPublic } = args;
+    const { slug, title, description, image, category, tags, content, hidden, isPublic } = args;
     if (!slug || !title || !content) {
       throw new Error('slug, title, and content are required');
     }
     const data = await apiFetch('/api/v1/templates', {
       method: 'POST',
-      body: { slug, title, description, image, content, hidden, isPublic },
+      body: { slug, title, description, image, category, tags, content, hidden, isPublic },
     });
     return {
       content: [{
@@ -76,7 +101,7 @@ module.exports = {
     const { slug } = args;
     if (!slug) throw new Error('slug is required');
     const body = {};
-    for (const f of ['title', 'description', 'image', 'content', 'hidden']) {
+    for (const f of ['title', 'description', 'image', 'category', 'tags', 'content', 'hidden']) {
       if (args[f] !== undefined) body[f] = args[f];
     }
     if (Object.keys(body).length === 0) {
@@ -114,20 +139,29 @@ module.exports = {
     const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(id)}`);
     const ctx = getContext();
     ctx.activeSite = { id: data.id, name: data.name, draftId: data.draftId };
+    // Clear activeTemplate so site takes priority
+    ctx.activeTemplate = null;
     return { content: [{ type: 'text', text: `Active site set to ${data.id} (${data.name || 'unnamed'})` }] };
   },
 
   async pull_site(args) {
-    const siteId = getActiveSiteId(args);
+    const target = getActiveTarget(args);
     const ctx = getContext();
-    // Use pending draft if available (draftMode: unsaved changes from previous patches)
-    const siteContent = ctx._pendingFlatMap || (await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`)).content;
-    if (!siteContent) throw new Error('Site has no content.');
-    const nodeCount = Object.keys(siteContent).length;
+    let content;
+    if (ctx._pendingFlatMap) {
+      content = ctx._pendingFlatMap;
+    } else if (target.type === 'template') {
+      content = (await apiFetch(`/api/v1/templates/${encodeURIComponent(target.id)}`)).content;
+    } else {
+      content = (await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`)).content;
+    }
+    if (!content) throw new Error(`${target.type === 'template' ? 'Template' : 'Site'} has no content.`);
+    const nodeCount = Object.keys(content).length;
+    const label = target.type === 'template' ? `Template "${target.id}"` : `Site ${target.id}`;
     return {
       content: [{
         type: 'text',
-        text: `Site ${siteId} fetched (${nodeCount} nodes).\n\n\`\`\`json\n${JSON.stringify(siteContent, null, 2)}\n\`\`\``,
+        text: `${label} fetched (${nodeCount} nodes).\n\n\`\`\`json\n${JSON.stringify(content, null, 2)}\n\`\`\``,
       }],
     };
   },
@@ -138,16 +172,23 @@ module.exports = {
     if (!content) {
       throw new Error('Provide content (inline JSON), or call patch_site_node/patch_site_bulk first.');
     }
-    const targetId = args.createNew ? null : (args.id || ctx.activeSite?.id);
+
+    const target = (() => {
+      try { return getActiveTarget(args); } catch { return null; }
+    })();
+    const targetId = args.createNew ? null : target?.id;
+    const targetType = target?.type || 'site';
 
     // Dry run: return proposed content without saving
     if (ctx.draftMode) {
       ctx._pendingFlatMap = content;
-      // Diff: only return nodes that are new or changed vs the original site
       let changed = content;
       if (targetId) {
         try {
-          const original = (await apiFetch(`/api/v1/sites/${encodeURIComponent(targetId)}`)).content;
+          const fetchUrl = targetType === 'template'
+            ? `/api/v1/templates/${encodeURIComponent(targetId)}`
+            : `/api/v1/sites/${encodeURIComponent(targetId)}`;
+          const original = (await apiFetch(fetchUrl)).content;
           if (original) {
             const diff = {};
             for (const [id, node] of Object.entries(content)) {
@@ -155,7 +196,6 @@ module.exports = {
                 diff[id] = node;
               }
             }
-            // Include parent nodes so the section tree is complete
             for (const [id, node] of Object.entries(diff)) {
               const parentId = node?.parent;
               if (parentId && content[parentId] && !diff[parentId]) {
@@ -166,23 +206,27 @@ module.exports = {
           }
         } catch {}
       }
+      const label = targetType === 'template' ? `Template "${targetId || 'new'}"` : `Site ${targetId || 'new'}`;
       return {
-        content: [{ type: 'text', text: `Site ${targetId || 'new'} saved successfully (${Object.keys(content).length} nodes).` }],
+        content: [{ type: 'text', text: `${label} saved successfully (${Object.keys(content).length} nodes).` }],
         pendingContent: content,
         changedNodes: changed,
       };
     }
 
     if (targetId) {
-      const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(targetId)}`, {
-        method: 'PUT',
-        body: { content, name: args.name, title: args.title, description: args.description },
+      const result = await saveTarget(targetId, targetType, content, {
+        name: args.name, title: args.title, description: args.description,
       });
+      if (targetType === 'template') {
+        return { content: [{ type: 'text', text: `Template "${result.id}" updated.` }] };
+      }
       const base = normalizeBaseUrl(ctx.apiBaseUrl) || 'https://pagehub.dev';
       return {
-        content: [{ type: 'text', text: `Site ${data.id} updated. View: ${base}/build/${data.id}` }],
+        content: [{ type: 'text', text: `Site ${result.id} updated. View: ${base}/build/${result.id}` }],
       };
     }
+    // Create new — sites only (templates use save_template for creation)
     const data = await apiFetch('/api/v1/sites', {
       method: 'POST',
       body: { content, name: args.name, title: args.title, description: args.description },
@@ -202,11 +246,18 @@ module.exports = {
   },
 
   async add_nodes(args) {
-    const siteId = getActiveSiteId(args);
+    const target = getActiveTarget(args);
     const ctx = getContext();
-    const sourceContent = ctx._pendingFlatMap || (await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`)).content;
+    let sourceContent;
+    if (ctx._pendingFlatMap) {
+      sourceContent = ctx._pendingFlatMap;
+    } else if (target.type === 'template') {
+      sourceContent = (await apiFetch(`/api/v1/templates/${encodeURIComponent(target.id)}`)).content;
+    } else {
+      sourceContent = (await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`)).content;
+    }
     if (!sourceContent || typeof sourceContent !== 'object') {
-      throw new Error('Site has no decoded content.');
+      throw new Error(`${target.type === 'template' ? 'Template' : 'Site'} has no decoded content.`);
     }
     const flat = JSON.parse(JSON.stringify(sourceContent));
     const nodes = parseMaybeJson(args.nodes);
@@ -244,10 +295,9 @@ module.exports = {
       };
     }
 
-    const put = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`, { method: 'PUT', body: { content: flat } });
-    const base = normalizeBaseUrl(ctx.apiBaseUrl) || 'https://pagehub.dev';
+    const result = await saveTarget(target.id, target.type, flat);
     return {
-      content: [{ type: 'text', text: `${Object.keys(nodes).length} nodes added. Editor: ${base}/build/${put.id}` }],
+      content: [{ type: 'text', text: resultMsg(target.id, target.type, `${Object.keys(nodes).length} nodes added.`) }],
       changedNodes,
     };
   },
@@ -263,7 +313,11 @@ module.exports = {
   },
 
   async upload_image(args) {
-    const siteId = getActiveSiteId(args);
+    const target = getActiveTarget(args);
+    if (target.type === 'template') {
+      throw new Error('upload_image is not supported for templates. Use hardcoded image URLs (type: "url") instead.');
+    }
+    const siteId = target.id;
     if (!args.imageUrl && !args.dataBase64) {
       throw new Error('Provide imageUrl or dataBase64.');
     }
@@ -290,12 +344,19 @@ module.exports = {
   },
 
   async patch_site_node(args) {
-    const siteId = getActiveSiteId(args);
+    const target = getActiveTarget(args);
     const { nodeId, name: siteName, title, description, nodesPatch, unsetProps, unsetMobile, unsetRoot } = args;
     const ctx = getContext();
-    const sourceContent = ctx._pendingFlatMap || (await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`)).content;
+    let sourceContent;
+    if (ctx._pendingFlatMap) {
+      sourceContent = ctx._pendingFlatMap;
+    } else if (target.type === 'template') {
+      sourceContent = (await apiFetch(`/api/v1/templates/${encodeURIComponent(target.id)}`)).content;
+    } else {
+      sourceContent = (await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`)).content;
+    }
     if (!sourceContent || typeof sourceContent !== 'object') {
-      throw new Error('Site has no decoded content (empty or corrupt).');
+      throw new Error(`${target.type === 'template' ? 'Template' : 'Site'} has no decoded content (empty or corrupt).`);
     }
     const flat = JSON.parse(JSON.stringify(sourceContent));
     applyNodePatches(flat, nodeId, normalizeNodePatchArgs({ ...args, nodesPatch, unsetProps, unsetMobile, unsetRoot }));
@@ -311,32 +372,35 @@ module.exports = {
       };
     }
 
-    const putBody = { content: flat };
-    if (siteName !== undefined) putBody.name = siteName;
-    if (title !== undefined) putBody.title = title;
-    if (description !== undefined) putBody.description = description;
-    const put = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`, {
-      method: 'PUT',
-      body: putBody,
-    });
-    const base = normalizeBaseUrl(ctx.apiBaseUrl) || 'https://pagehub.dev';
+    const extra = {};
+    if (siteName !== undefined) extra.name = siteName;
+    if (title !== undefined) extra.title = title;
+    if (description !== undefined) extra.description = description;
+    const result = await saveTarget(target.id, target.type, flat, extra);
     return {
-      content: [{ type: 'text', text: `Site ${put.id} updated (node ${nodeId}).\nEditor: ${base}/build/${put.id}` }],
+      content: [{ type: 'text', text: resultMsg(result.id, target.type, `Updated (node ${nodeId}).`) }],
       changedNodes,
     };
   },
 
   async patch_site_bulk(args) {
-    const siteId = getActiveSiteId(args);
+    const target = getActiveTarget(args);
     let list = args.patches;
     if (typeof list === 'string') list = parseMaybeJson(list);
     if (!Array.isArray(list) || list.length === 0) {
       throw new Error('patches must be a non-empty array of { nodeId, ...patch fields }.');
     }
     const ctx = getContext();
-    const sourceContent = ctx._pendingFlatMap || (await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`)).content;
+    let sourceContent;
+    if (ctx._pendingFlatMap) {
+      sourceContent = ctx._pendingFlatMap;
+    } else if (target.type === 'template') {
+      sourceContent = (await apiFetch(`/api/v1/templates/${encodeURIComponent(target.id)}`)).content;
+    } else {
+      sourceContent = (await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`)).content;
+    }
     if (!sourceContent || typeof sourceContent !== 'object') {
-      throw new Error('Site has no decoded content (empty or corrupt).');
+      throw new Error(`${target.type === 'template' ? 'Template' : 'Site'} has no decoded content (empty or corrupt).`);
     }
     const flat = JSON.parse(JSON.stringify(sourceContent));
     const touched = [];
@@ -362,17 +426,13 @@ module.exports = {
     }
 
     const { name: siteName, title, description } = args;
-    const putBody = { content: flat };
-    if (siteName !== undefined) putBody.name = siteName;
-    if (title !== undefined) putBody.title = title;
-    if (description !== undefined) putBody.description = description;
-    const put = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`, {
-      method: 'PUT',
-      body: putBody,
-    });
-    const base = normalizeBaseUrl(ctx.apiBaseUrl) || 'https://pagehub.dev';
+    const extra = {};
+    if (siteName !== undefined) extra.name = siteName;
+    if (title !== undefined) extra.title = title;
+    if (description !== undefined) extra.description = description;
+    const result = await saveTarget(target.id, target.type, flat, extra);
     return {
-      content: [{ type: 'text', text: `Site ${put.id} updated (${touched.length} nodes: ${touched.join(', ')}).\nEditor: ${base}/build/${put.id}` }],
+      content: [{ type: 'text', text: resultMsg(result.id, target.type, `Updated (${touched.length} nodes: ${touched.join(', ')}).`) }],
       changedNodes,
     };
   },
