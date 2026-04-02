@@ -1,0 +1,32 @@
+{
+  "name": "@pagehub/mcp-core",
+  "version": "0.1.0",
+  "description": "Shared tool schemas and HTTP handlers for PageHub MCP + AI agent",
+  "license": "MIT",
+  "main": "src/index.js",
+  "files": [
+    "src/"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {},
+  "keywords": [
+    "pagehub",
+    "mcp",
+    "tools",
+    "ai",
+    "page-builder",
+    "model-context-protocol"
+  ],
+  "homepage": "https://pagehub.dev/developers/mcp",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nicholasgcoles/pagehub.dev",
+    "directory": "packages/mcp-core"
+  },
+  "bugs": {
+    "url": "https://github.com/nicholasgcoles/pagehub.dev/issues"
+  },
+  "author": "PageHub"
+}
