@@ -749,6 +749,52 @@
     }
   },
   {
+    "name": "publish_site_as_template",
+    "description": "Copies the active site's full content into a new template in the catalog. No need to pass content — it reads from the site automatically. Use this after building a site to publish it as a reusable template.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string",
+          "description": "URL-safe unique slug for the template (defaults to site slug)"
+        },
+        "title": {
+          "type": "string",
+          "description": "Human-readable title (defaults to site name)"
+        },
+        "description": {
+          "type": "string",
+          "description": "Short description"
+        },
+        "image": {
+          "type": "string",
+          "description": "Preview image URL (CDN or external)"
+        },
+        "category": {
+          "type": "string",
+          "description": "Template category (e.g. \"landing-page\", \"portfolio\")"
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Tags for discovery. Max 30."
+        },
+        "hidden": {
+          "type": "boolean",
+          "description": "If true, hidden from public gallery"
+        },
+        "isPublic": {
+          "type": "boolean",
+          "description": "Visible to all users. Default: true"
+        },
+        "id": {
+          "type": "string",
+          "description": "Site id (defaults to active site)"
+        }
+      }
+    }
+  },
+  {
     "name": "update_template",
     "description": "Update an existing template you own (or any template if admin). Change title, description, content, category, tags, or visibility.",
     "inputSchema": {

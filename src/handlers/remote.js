@@ -97,6 +97,29 @@ module.exports = {
     };
   },
 
+  async publish_site_as_template(args) {
+    const { slug, title, description, image, category, tags, hidden, isPublic } = args;
+    const target = getActiveTarget(args);
+    if (target.type !== 'site') throw new Error('Active target must be a site. Use select_site first.');
+    const siteData = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`);
+    if (!siteData.content) throw new Error('Site has no content.');
+    const finalSlug = slug || siteData.slug || target.id;
+    const finalTitle = title || siteData.name || siteData.title || finalSlug;
+    const body = {
+      slug: finalSlug, title: finalTitle, content: siteData.content,
+      ...(description && { description }),
+      ...(image && { image }),
+      ...(category && { category }),
+      ...(tags && { tags }),
+      ...(hidden !== undefined && { hidden }),
+      ...(isPublic !== undefined && { isPublic }),
+    };
+    const data = await apiFetch('/api/v1/templates', { method: 'POST', body });
+    return {
+      content: [{ type: 'text', text: `Site published as template: **${data.title}** (\`${data.slug}\`)\nPreview: ${data.image || 'no image set'}` }],
+    };
+  },
+
   async update_template(args) {
     const { slug } = args;
     if (!slug) throw new Error('slug is required');
