@@ -55,6 +55,52 @@ module.exports = {
     };
   },
 
+  async save_template(args) {
+    const { slug, title, description, image, content, hidden, isPublic } = args;
+    if (!slug || !title || !content) {
+      throw new Error('slug, title, and content are required');
+    }
+    const data = await apiFetch('/api/v1/templates', {
+      method: 'POST',
+      body: { slug, title, description, image, content, hidden, isPublic },
+    });
+    return {
+      content: [{
+        type: 'text',
+        text: `Template saved: **${data.title}** (\`${data.slug}\`)`,
+      }],
+    };
+  },
+
+  async update_template(args) {
+    const { slug } = args;
+    if (!slug) throw new Error('slug is required');
+    const body = {};
+    for (const f of ['title', 'description', 'image', 'content', 'hidden']) {
+      if (args[f] !== undefined) body[f] = args[f];
+    }
+    if (Object.keys(body).length === 0) {
+      throw new Error('Nothing to update. Provide at least one field.');
+    }
+    const data = await apiFetch(`/api/v1/templates/${encodeURIComponent(slug)}`, {
+      method: 'PUT',
+      body,
+    });
+    return {
+      content: [{
+        type: 'text',
+        text: `Template updated: **${data.title}** (\`${data.slug}\`)`,
+      }],
+    };
+  },
+
+  async delete_template(args) {
+    const { slug } = args;
+    if (!slug) throw new Error('slug is required');
+    await apiFetch(`/api/v1/templates/${encodeURIComponent(slug)}`, { method: 'DELETE' });
+    return { content: [{ type: 'text', text: `Template "${slug}" deleted.` }] };
+  },
+
   async list_sites() {
     const data = await apiFetch('/api/v1/sites');
     const lines = (data.sites || []).map(s =>

@@ -676,6 +676,92 @@
     }
   },
   {
+    "name": "save_template",
+    "description": "Save a new site template to the catalog. Creates a reusable template from a CraftJS flat node map. Requires admin or tenant owner/editor role.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string",
+          "description": "URL-safe unique slug (e.g. \"bakery-modern\")"
+        },
+        "title": {
+          "type": "string",
+          "description": "Human-readable title"
+        },
+        "description": {
+          "type": "string",
+          "description": "Short description"
+        },
+        "image": {
+          "type": "string",
+          "description": "Preview image URL"
+        },
+        "content": {
+          "type": "object",
+          "description": "Full CraftJS flat node map (same format as pull_site output)"
+        },
+        "hidden": {
+          "type": "boolean",
+          "description": "If true, hidden from public gallery. Default: false"
+        },
+        "isPublic": {
+          "type": "boolean",
+          "description": "Visible to all users. Default: true"
+        }
+      },
+      "required": ["slug", "title", "content"]
+    }
+  },
+  {
+    "name": "update_template",
+    "description": "Update an existing template you own (or any template if admin). Change title, description, content, or visibility.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string",
+          "description": "Slug of the template to update"
+        },
+        "title": {
+          "type": "string",
+          "description": "New title"
+        },
+        "description": {
+          "type": "string",
+          "description": "New description"
+        },
+        "image": {
+          "type": "string",
+          "description": "New preview image URL"
+        },
+        "content": {
+          "type": "object",
+          "description": "Replacement CraftJS flat node map"
+        },
+        "hidden": {
+          "type": "boolean",
+          "description": "Toggle hidden status"
+        }
+      },
+      "required": ["slug"]
+    }
+  },
+  {
+    "name": "delete_template",
+    "description": "Delete a template you own (or any template if admin).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string",
+          "description": "Template slug to delete"
+        }
+      },
+      "required": ["slug"]
+    }
+  },
+  {
     "name": "list_sites",
     "description": "List all sites belonging to the authenticated tenant (remote).",
     "inputSchema": {
