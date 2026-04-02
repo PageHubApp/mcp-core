@@ -167,8 +167,22 @@ module.exports = {
       label = siteId;
     }
 
-    // Find the home page node — templates use the first child of ROOT
-    const pageId = args.pageId || (nodes['page_home'] ? 'page_home' : (nodes.ROOT?.nodes?.[0] || 'ROOT'));
+    // Find the home page node — check page_home, then isHomePage flag, then first child of ROOT
+    let pageId = args.pageId || null;
+    if (!pageId) {
+      if (nodes['page_home']) {
+        pageId = 'page_home';
+      } else {
+        // Search for a node with isHomePage: true
+        for (const [id, node] of Object.entries(nodes)) {
+          if (node?.props?.isHomePage && node?.props?.type === 'page') {
+            pageId = id;
+            break;
+          }
+        }
+        if (!pageId) pageId = nodes.ROOT?.nodes?.[0] || 'ROOT';
+      }
+    }
     if (!nodes[pageId]) throw new Error(`Page "${pageId}" not found. Use list_pages to see available pages.`);
 
     const results = runChecks(data, nodes, pageId);
