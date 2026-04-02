@@ -555,13 +555,17 @@
   },
   {
     "name": "audit_seo",
-    "description": "Analyzes a site's node tree for SEO issues. Checks meta tags (title, description, structured data), heading hierarchy (single h1, no skipped levels), image alt text quality, link/button text quality, and content depth.\n\nReturns a scored report with pass/warn/fail per check and actionable fix suggestions with specific node IDs.\n\nPairs with audit_accessibility for a complete site health check.",
+    "description": "Analyzes a site or template's node tree for SEO issues. Checks meta tags (title, description, structured data), heading hierarchy (single h1, no skipped levels), image alt text quality, link/button text quality, and content depth.\n\nSupports both live sites (by id) and templates (by templateSlug).\n\nReturns a scored report with pass/warn/fail per check and actionable fix suggestions with specific node IDs.\n\nPairs with audit_accessibility for a complete site health check.",
     "inputSchema": {
       "type": "object",
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site)."
+          "description": "Site id (defaults to active site). Mutually exclusive with templateSlug."
+        },
+        "templateSlug": {
+          "type": "string",
+          "description": "Template slug to audit (e.g. \"artist\"). Mutually exclusive with id."
         },
         "pageId": {
           "type": "string",

@@ -11,7 +11,10 @@ function collectNodes(nodes, pageId) {
   const images = [];
   const buttons = [];
 
+  const visited = new Set();
   const walk = (id) => {
+    if (visited.has(id)) return;
+    visited.add(id);
     const node = nodes[id];
     if (!node) return;
     const type = node.type?.resolvedName;
@@ -28,6 +31,10 @@ function collectNodes(nodes, pageId) {
       buttons.push({ id, text: node.props?.text || '', url: node.props?.url || '' });
     }
     for (const childId of node.nodes || []) walk(childId);
+    // Also walk linkedNodes (used by Nav, multi-page templates)
+    if (node.linkedNodes) {
+      for (const linkedId of Object.values(node.linkedNodes)) walk(linkedId);
+    }
   };
   walk(pageId);
   return { texts, headings, images, buttons };
@@ -137,11 +144,31 @@ function runChecks(siteData, nodes, pageId) {
 
 module.exports = {
   async audit_seo(args) {
-    const siteId = getActiveSiteId(args);
-    const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`);
-    if (!data.content) throw new Error('Site has no content.');
-    const nodes = data.content;
-    const pageId = args.pageId || 'page_home';
+    let data, nodes, label;
+
+    if (args.templateSlug) {
+      // Audit a template by slug
+      const tpl = await apiFetch(`/api/v1/templates/${encodeURIComponent(args.templateSlug)}`);
+      if (!tpl.content) throw new Error(`Template "${args.templateSlug}" has no content.`);
+      nodes = tpl.content;
+      const rootProps = nodes.ROOT?.props || {};
+      data = {
+        title: tpl.title || rootProps.title || '',
+        description: tpl.description || rootProps.description || '',
+        content: nodes,
+      };
+      label = `template:${args.templateSlug}`;
+    } else {
+      // Audit a live site by id
+      const siteId = getActiveSiteId(args);
+      data = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`);
+      if (!data.content) throw new Error('Site has no content.');
+      nodes = data.content;
+      label = siteId;
+    }
+
+    // Find the home page node — templates use the first child of ROOT
+    const pageId = args.pageId || (nodes['page_home'] ? 'page_home' : (nodes.ROOT?.nodes?.[0] || 'ROOT'));
     if (!nodes[pageId]) throw new Error(`Page "${pageId}" not found. Use list_pages to see available pages.`);
 
     const results = runChecks(data, nodes, pageId);
@@ -150,7 +177,7 @@ module.exports = {
     const passes = results.filter(r => r.status === 'pass');
     const score = Math.round((passes.length / results.length) * 100);
 
-    const lines = [`# SEO Audit — ${siteId} (${pageId})\n`];
+    const lines = [`# SEO Audit — ${label} (${pageId})\n`];
     lines.push(`**Score: ${score}/100** — ${fails.length} critical, ${warns.length} warnings, ${passes.length} passed\n`);
     if (fails.length > 0) {
       lines.push(`## Critical Issues`);
