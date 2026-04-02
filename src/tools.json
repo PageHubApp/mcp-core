@@ -1019,7 +1019,7 @@
   },
   {
     "name": "list_components",
-    "description": "Search and browse the component library — reusable UI blocks (cards, badges, media blocks, list items, stats, forms, etc.) that can be dropped into any section. Components are smaller than sections — they are the building blocks you compose sections from.\n\nSupports full-text search, category filtering, and tag filtering. Returns names, slugs, descriptions, and usage stats (no full structure — use get_component for that).",
+    "description": "Search and browse the component library — reusable UI blocks organized by purpose (Flowbite-style). Components are smaller than sections — they are the building blocks you compose sections from.\n\nSupports full-text search, category filtering, and tag filtering. Returns names, slugs, descriptions, and usage stats (no full structure — use get_component for that).",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1029,7 +1029,7 @@
         },
         "category": {
           "type": "string",
-          "description": "Filter by category. Available: \"cards\", \"media\", \"lists\", \"badges\", \"forms\", \"navigation\", \"stats\", \"content\", \"layout\", \"social\", \"commerce\"."
+          "description": "Filter by category. Available: \"hero\", \"features\", \"content\", \"testimonials\", \"team\", \"pricing\", \"contact\", \"faq\", \"commerce\", \"stats\", \"social\", \"misc\"."
         },
         "subcategory": {
           "type": "string",
@@ -1106,7 +1106,7 @@
         },
         "category": {
           "type": "string",
-          "description": "Top-level category (any string). Common: \"cards\", \"media\", \"lists\", \"badges\", \"forms\", \"navigation\", \"stats\", \"content\", \"layout\", \"social\", \"commerce\"."
+          "description": "Top-level category (any string). Common: \"hero\", \"features\", \"content\", \"testimonials\", \"team\", \"pricing\", \"contact\", \"faq\", \"commerce\", \"stats\", \"social\", \"misc\"."
         },
         "subcategory": {
           "type": "string",
