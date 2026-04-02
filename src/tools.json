@@ -1029,7 +1029,7 @@
         },
         "category": {
           "type": "string",
-          "description": "Filter by category. Available: \"hero\", \"features\", \"content\", \"testimonials\", \"team\", \"pricing\", \"contact\", \"faq\", \"commerce\", \"navigation\", \"stats\", \"social\", \"misc\"."
+          "description": "Filter by category. Available: \"hero\", \"features\", \"content\", \"cta\", \"testimonials\", \"team\", \"pricing\", \"contact\", \"faq\", \"commerce\", \"navigation\", \"stats\", \"social\", \"misc\"."
         },
         "subcategory": {
           "type": "string",
@@ -1106,7 +1106,7 @@
         },
         "category": {
           "type": "string",
-          "description": "Top-level category (any string). Common: \"hero\", \"features\", \"content\", \"testimonials\", \"team\", \"pricing\", \"contact\", \"faq\", \"commerce\", \"navigation\", \"stats\", \"social\", \"misc\"."
+          "description": "Top-level category (any string). Common: \"hero\", \"features\", \"content\", \"cta\", \"testimonials\", \"team\", \"pricing\", \"contact\", \"faq\", \"commerce\", \"navigation\", \"stats\", \"social\", \"misc\"."
         },
         "subcategory": {
           "type": "string",
