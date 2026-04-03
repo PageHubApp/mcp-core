@@ -2,6 +2,7 @@
 
 const AI_MODELS = [
   { value: "xai/grok-code-fast-1", label: "Auto" },
+  { value: "alibaba/qwen3-coder", label: "Qwen3 Coder" },
 ];
 
 const DEFAULT_MODEL = "xai/grok-code-fast-1";
