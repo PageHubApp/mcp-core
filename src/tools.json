@@ -137,6 +137,14 @@
         },
         "palette": {
           "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "color": { "type": "string" }
+            },
+            "required": ["name", "color"]
+          },
           "description": "Array of exactly 12 color slots defining the design system. Each slot is {name, color}. Order matters — maps to CSS variables.\n\nSlots (in order):\n  0: Primary — main brand color (buttons, links, accents)\n  1: Primary Text — text on primary backgrounds\n  2: Secondary — supporting brand color (cards, badges)\n  3: Secondary Text — text on secondary backgrounds\n  4: Accent — call-to-action color (CTAs, highlights)\n  5: Accent Text — text on accent backgrounds\n  6: Neutral — muted/subtle color (borders, disabled states)\n  7: Neutral Text — text on neutral backgrounds\n  8: Background — page background color\n  9: Text — default body text color\n  10: Alternate Background — alternate section backgrounds, cards\n  11: Alternate Text — text on alternate backgrounds\n\nExample: [{\"name\":\"Primary\",\"color\":\"#2d4a3e\"},{\"name\":\"Primary Text\",\"color\":\"#ffffff\"}, ...]"
         },
         "styleGuide": {
