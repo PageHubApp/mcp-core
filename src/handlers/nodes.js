@@ -5,7 +5,7 @@ const {
   extractImageUrls, validateImageUrls, collectAllImageUrls,
 } = require('../helpers');
 
-const PROTECTED_IDS = ['ROOT', 'page_home', 'hdr_root', 'hdr_section', 'hdr_inner', 'ftr_root', 'ftr_content', 'ftr_inner'];
+const PROTECTED_IDS = ['ROOT', 'page_home'];
 
 module.exports = {
   async update_node(args) {

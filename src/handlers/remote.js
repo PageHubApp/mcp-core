@@ -63,6 +63,14 @@ function sanitizeNodes(rawNodes, existingFlat, sectionContainerId) {
     if (!node.props.root) node.props.root = {};
     if (!node.props.mobile) node.props.mobile = {};
     if (!node.props.desktop) node.props.desktop = {};
+
+    // Strip class/className/style attributes from Text content — AI keeps adding them
+    if (node.type.resolvedName === 'Text' && node.props.root?.text) {
+      node.props.root.text = node.props.root.text
+        .replace(/\s*(class|className|style)="[^"]*"/gi, '')
+        .replace(/<(p|div|h[1-6]|span)[^>]*>/gi, (match, tag) => `<${tag}>`)
+        .trim();
+    }
   }
 
   // Step 3: Remove children references that don't exist in clean or existingFlat
@@ -107,6 +115,21 @@ function sanitizeNodes(rawNodes, existingFlat, sectionContainerId) {
       roots.push(id);
     }
   }
+  // Log sanitizer results for debugging
+  const inputCount = Object.keys(rawNodes).length;
+  const outputCount = Object.keys(clean).length;
+  const stripped = inputCount - outputCount;
+  if (stripped > 0 || roots.length === 0) {
+    console.log(`[sanitize] ${sectionContainerId}: ${inputCount} in → ${outputCount} kept, ${stripped} stripped, ${roots.length} roots`);
+    // Log what was stripped
+    for (const id of Object.keys(rawNodes)) {
+      if (!clean[id] && id !== sectionContainerId) {
+        const raw = typeof rawNodes[id] === 'string' ? rawNodes[id].slice(0, 80) : JSON.stringify(rawNodes[id])?.slice(0, 80);
+        console.log(`  stripped: ${id} → ${raw}`);
+      }
+    }
+  }
+
   return { nodes: clean, roots };
 }
 

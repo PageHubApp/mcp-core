@@ -179,7 +179,7 @@ module.exports = {
       contact_day1: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--text)' },
+          root: { color: 'text-(--foreground)' },
           mobile: { fontSize: 'text-sm', fontWeight: 'font-medium' },
           desktop: {}, text: 'Mon \u2014 Fri', tagName: 'p',
           custom: { displayName: 'Day' } },
@@ -206,7 +206,7 @@ module.exports = {
       contact_day2: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--text)' },
+          root: { color: 'text-(--foreground)' },
           mobile: { fontSize: 'text-sm', fontWeight: 'font-medium' },
           desktop: {}, text: 'Saturday', tagName: 'p',
           custom: { displayName: 'Day' } },
@@ -233,7 +233,7 @@ module.exports = {
       contact_day3: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--text)' },
+          root: { color: 'text-(--foreground)' },
           mobile: { fontSize: 'text-sm', fontWeight: 'font-medium' },
           desktop: {}, text: 'Sunday', tagName: 'p',
           custom: { displayName: 'Day' } },
@@ -378,7 +378,7 @@ module.exports = {
       test_quote1: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--text)' },
+          root: { color: 'text-(--foreground)' },
           mobile: { fontSize: 'text-sm', lineHeight: 'leading-relaxed' },
           desktop: {}, text: '\u201cExactly the kind of spot this neighborhood needed. The coffee is excellent, the vibe is calm, and they actually care about the music.\u201d', tagName: 'p',
           custom: { displayName: 'Quote' } },
@@ -413,7 +413,7 @@ module.exports = {
       test_quote2: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--text)' },
+          root: { color: 'text-(--foreground)' },
           mobile: { fontSize: 'text-sm', lineHeight: 'leading-relaxed' },
           desktop: {}, text: '\u201cI bring work, order a cortado, and somehow finish a whole LP without checking my phone. The quiet hour here is real.\u201d', tagName: 'p',
           custom: { displayName: 'Quote' } },
@@ -481,7 +481,7 @@ module.exports = {
       offer_name1: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--text)' },
+          root: { color: 'text-(--foreground)' },
           mobile: { fontSize: 'text-base', fontWeight: 'font-semibold' },
           desktop: {}, text: 'The Grizzly', tagName: 'h3',
           custom: { displayName: 'Item Name' } },
@@ -508,7 +508,7 @@ module.exports = {
       offer_name2: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--text)' },
+          root: { color: 'text-(--foreground)' },
           mobile: { fontSize: 'text-base', fontWeight: 'font-semibold' },
           desktop: {}, text: 'V60 Filter Coffee', tagName: 'h3',
           custom: { displayName: 'Item Name' } },
@@ -535,7 +535,7 @@ module.exports = {
       offer_name3: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--text)' },
+          root: { color: 'text-(--foreground)' },
           mobile: { fontSize: 'text-base', fontWeight: 'font-semibold' },
           desktop: {}, text: 'Matcha & Chai Latte', tagName: 'h3',
           custom: { displayName: 'Item Name' } },

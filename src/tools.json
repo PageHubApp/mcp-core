@@ -14,13 +14,13 @@
   },
   {
     "name": "get_component_schema",
-    "description": "Returns the full schema for all available CraftJS components — their types, props, valid values, and responsive breakpoint patterns. Essential reference when building custom blocks with add_custom_block.\n\nIncludes: Container, Text, Image, Button, ButtonList, ImageList, Form, FormElement, Divider, Spacer, Video, Audio, Embed.",
+    "description": "Returns full schemas for CraftJS components — types, props, valid values, and responsive patterns. Pass one or more component names to get exactly what you need in a single call.\n\nAvailable: Background, Container, ContainerGroup, Text, Image, ImageList, Button, ButtonList, Form, FormElement, Divider, Spacer, Video, Audio, Embed, Header, Footer, Map, MapPoint.",
     "inputSchema": {
       "type": "object",
       "properties": {
-        "component": {
+        "components": {
           "type": "string",
-          "description": "Optional: get schema for a specific component (e.g. \"Container\", \"Text\", \"Image\"). Omit for all components."
+          "description": "Comma-separated component names (e.g. \"Container,Text,Button,Image\"). Omit for all."
         }
       }
     }
@@ -263,7 +263,7 @@
         },
         "headerColor": {
           "type": "string",
-          "description": "Tailwind text color class for header text/links. Use: \"text-(--text)\", \"text-(--primary-foreground)\"."
+          "description": "Tailwind text color class for header text/links. Use: \"text-(--foreground)\", \"text-(--primary-foreground)\", \"text-(--muted-foreground)\"."
         },
         "links": {
           "type": "array",
