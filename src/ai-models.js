@@ -1,10 +1,10 @@
 /** Shared AI model configuration — used by both server and client. */
 
 const AI_MODELS = [
-  { value: "anthropic/claude-3-haiku", label: "Auto" },
+  { value: "xai/grok-code-fast-1", label: "Auto" },
 ];
 
-const DEFAULT_MODEL = "openai/gpt-4o-mini";
+const DEFAULT_MODEL = "xai/grok-code-fast-1";
 
 const ALLOWED_MODEL_VALUES = new Set(AI_MODELS.map(m => m.value));
 
