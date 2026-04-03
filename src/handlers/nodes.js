@@ -4,6 +4,7 @@ const {
   fetchTarget, saveTarget,
   extractImageUrls, validateImageUrls, collectAllImageUrls,
 } = require('../helpers');
+const { getContext } = require('../context');
 
 const PROTECTED_IDS = ['ROOT', 'page_home'];
 
@@ -35,7 +36,17 @@ module.exports = {
   async delete_node(args) {
     const { nodeId } = args;
     if (PROTECTED_IDS.includes(nodeId)) throw new Error(`Cannot delete structural node: ${nodeId}`);
-    const { targetId, targetType, flat } = await fetchTarget(args);
+    const ctx = getContext();
+    // In draftMode, operate on _pendingFlatMap if available; otherwise fetch live content
+    let flat, targetId, targetType;
+    if (ctx.draftMode && ctx._pendingFlatMap) {
+      flat = JSON.parse(JSON.stringify(ctx._pendingFlatMap));
+      const target = require('../helpers').getActiveTarget(args);
+      targetId = target.id;
+      targetType = target.type;
+    } else {
+      ({ targetId, targetType, flat } = await fetchTarget(args));
+    }
     if (!flat[nodeId]) throw new Error(`Node ${nodeId} not found`);
     const parentId = flat[nodeId].parent;
     if (parentId && flat[parentId]) {
@@ -48,6 +59,10 @@ module.exports = {
       delete flat[id];
     };
     deleteSubtree(nodeId);
+    if (ctx.draftMode) {
+      ctx._pendingFlatMap = flat;
+      return { content: [{ type: 'text', text: `Node ${nodeId} (and descendants) deleted.` }] };
+    }
     const result = await saveTarget(targetId, targetType, flat);
     const label = targetType === 'template' ? `Node ${nodeId} (and descendants) deleted from template "${targetId}".` : `Node ${nodeId} (and descendants) deleted.\nEditor: ${result.url}`;
     return { content: [{ type: 'text', text: label }] };
