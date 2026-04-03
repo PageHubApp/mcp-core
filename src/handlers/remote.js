@@ -459,4 +459,84 @@ module.exports = {
       changedNodes,
     };
   },
+
+  async set_theme(args) {
+    const { preset, palette, styleGuide, fonts, jsonLd } = args;
+    const target = getActiveTarget(args);
+    const ctx = getContext();
+
+    // Load current content
+    let sourceContent;
+    if (ctx._pendingFlatMap) {
+      sourceContent = ctx._pendingFlatMap;
+    } else if (target.type === 'template') {
+      sourceContent = (await apiFetch(`/api/v1/templates/${encodeURIComponent(target.id)}`)).content;
+    } else {
+      sourceContent = (await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`)).content;
+    }
+    if (!sourceContent?.ROOT) throw new Error('Site/template has no ROOT node.');
+
+    const flat = JSON.parse(JSON.stringify(sourceContent));
+    const rootProps = flat.ROOT.props;
+
+    // Resolve preset values (explicit args override preset)
+    let resolvedPalette = parseMaybeJson(palette);
+    let resolvedStyleGuide = parseMaybeJson(styleGuide);
+    let resolvedFonts = parseMaybeJson(fonts);
+    if (preset) {
+      const presetData = await apiFetch(`/api/v1/presets/${encodeURIComponent(preset)}`);
+      const found = presetData.preset;
+      if (!found) throw new Error(`Preset "${preset}" not found. Use list_presets to see available presets.`);
+      if (!resolvedPalette) resolvedPalette = found.palette;
+      if (!resolvedStyleGuide) resolvedStyleGuide = found.styleGuide;
+      if (!resolvedFonts) resolvedFonts = found.fonts;
+    }
+
+    // Apply palette → ROOT.props.pallet (note: legacy misspelling)
+    if (resolvedPalette) rootProps.pallet = resolvedPalette;
+
+    // Merge styleGuide
+    if (resolvedStyleGuide) {
+      rootProps.styleGuide = { ...(rootProps.styleGuide || {}), ...resolvedStyleGuide };
+    }
+
+    // Build header with Google Fonts + JSON-LD
+    const pre =
+      '<link rel="preconnect" href="https://fonts.googleapis.com">' +
+      '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>';
+    let fontBlock = '';
+    if (resolvedFonts?.url) {
+      fontBlock = `<link href="${resolvedFonts.url}" rel="stylesheet">`;
+    } else if (resolvedFonts?.families?.length) {
+      const q = resolvedFonts.families.map(f => `family=${f.replace(/ /g, '+')}`).join('&');
+      fontBlock = `<link href="https://fonts.googleapis.com/css2?${q}&display=swap" rel="stylesheet">`;
+    }
+    let ld = '';
+    const resolvedJsonLd = parseMaybeJson(jsonLd);
+    if (resolvedJsonLd) {
+      ld = `<script type="application/ld+json">${JSON.stringify(resolvedJsonLd)}</script>`;
+    }
+    if (fontBlock || ld) {
+      rootProps.header = pre + fontBlock + ld;
+    }
+
+    const changedNodes = { ROOT: flat.ROOT };
+    const presetMsg = preset ? ` (preset: ${preset})` : '';
+
+    // Draft mode: store in pending flat map for aiDraft save
+    if (ctx.draftMode) {
+      ctx._pendingFlatMap = flat;
+      return {
+        content: [{ type: 'text', text: `Theme updated${presetMsg}.` }],
+        pendingContent: flat,
+        changedNodes,
+      };
+    }
+
+    const result = await saveTarget(target.id, target.type, flat);
+    return {
+      content: [{ type: 'text', text: resultMsg(result.id, target.type, `Theme updated${presetMsg}.`) }],
+      changedNodes,
+    };
+  },
 };
