@@ -141,7 +141,7 @@
         },
         "styleGuide": {
           "type": "object",
-          "description": "Design tokens object. All values become CSS variables (--ph-*).\n\nCommon keys:\n  borderRadius: \"0.5rem\" — buttons, cards, inputs\n  buttonPadding: \"0.75rem 1.5rem\" — button padding (Y X)\n  containerPadding: \"2rem 2rem\" — section inner padding (Y X)\n  sectionGap: \"4rem\" — vertical space between sections\n  containerGap: \"1.5rem\" — gap between items in a section\n  contentWidth: \"80rem\" — max-width for content containers\n  headingFont: \"font-bold\" — Tailwind font-weight for headings\n  headingFontFamily: \"Playfair Display\" — Google Font name for headings\n  bodyFont: \"font-normal\" — Tailwind font-weight for body\n  bodyFontFamily: \"Inter\" — Google Font name for body text\n  shadowStyle: \"0 1px 3px rgba(0,0,0,0.1)\" — default box-shadow\n  inputBorderWidth: \"1px\"\n  inputBorderColor: \"#e2e8f0\"\n  inputBorderRadius: \"0.375rem\"\n  inputBgColor: \"#ffffff\"\n  inputPlaceholderColor: \"#94a3b8\"\n  inputFocusRingColor: \"#3b82f6\"\n  linkColor: \"#2563eb\"\n  linkHoverColor: \"#1d4ed8\""
+          "description": "Design tokens object. All values become CSS variables (--*).\n\nCommon keys:\n  borderRadius: \"0.5rem\" — buttons, cards, inputs\n  buttonPadding: \"0.75rem 1.5rem\" — button padding (Y X)\n  containerPadding: \"2rem 2rem\" — section inner padding (Y X)\n  sectionGap: \"4rem\" — vertical space between sections\n  containerGap: \"1.5rem\" — gap between items in a section\n  contentWidth: \"80rem\" — max-width for content containers\n  headingFont: \"font-bold\" — Tailwind font-weight for headings\n  headingFontFamily: \"Playfair Display\" — Google Font name for headings\n  bodyFont: \"font-normal\" — Tailwind font-weight for body\n  bodyFontFamily: \"Inter\" — Google Font name for body text\n  shadowStyle: \"0 1px 3px rgba(0,0,0,0.1)\" — default box-shadow\n  inputBorderWidth: \"1px\"\n  inputBorderColor: \"#e2e8f0\"\n  inputBorderRadius: \"0.375rem\"\n  inputBgColor: \"#ffffff\"\n  inputPlaceholderColor: \"#94a3b8\"\n  inputFocusRingColor: \"#3b82f6\"\n  linkColor: \"#2563eb\"\n  linkHoverColor: \"#1d4ed8\""
         },
         "fonts": {
           "type": "object",
@@ -174,7 +174,7 @@
         },
         "propOverrides": {
           "type": "object",
-          "description": "Map of displayName → style patches. Each value can have { root, mobile, desktop } keys with Tailwind class objects.\n\nExample:\n  {\"Section\": {\"root\": {\"background\": \"bg-(--ph-primary)\"}, \"mobile\": {\"py\": \"py-20\"}, \"desktop\": {\"py\": \"py-32\"}}}"
+          "description": "Map of displayName → style patches. Each value can have { root, mobile, desktop } keys with Tailwind class objects.\n\nExample:\n  {\"Section\": {\"root\": {\"background\": \"bg-(--primary)\"}, \"mobile\": {\"py\": \"py-20\"}, \"desktop\": {\"py\": \"py-32\"}}}"
         },
         "pageId": {
           "type": "string",
@@ -206,7 +206,7 @@
         },
         "nodes": {
           "type": "object",
-          "description": "Flat CraftJS node map: { nodeId: nodeDefinition, ... }. Each node definition must include:\n\n  {\n    \"type\": { \"resolvedName\": \"Container\" },  // Component type\n    \"isCanvas\": true,                          // true if it can have children\n    \"props\": {\n      \"canDelete\": true,\n      \"canEditName\": true,\n      \"type\": \"section\",                       // \"section\" for root, omit for children\n      \"root\": { \"background\": \"bg-(--ph-primary)\" },\n      \"mobile\": { \"display\": \"flex\", \"flexDirection\": \"flex-col\", \"width\": \"w-full\", \"py\": \"py-12\", \"px\": \"px-6\" },\n      \"desktop\": { \"py\": \"py-20\", \"px\": \"px-16\" },\n      \"custom\": { \"displayName\": \"My Block\" }\n    },\n    \"parent\": \"page_home\",                     // parent node ID\n    \"nodes\": [\"child_id_1\", \"child_id_2\"],     // ordered child IDs\n    \"linkedNodes\": {}\n  }\n\nAvailable component types: Container, Text, Image, Button, ButtonList, ImageList, Form, FormElement, Divider, Spacer, Video, Audio, Embed.\nUse get_component_schema for full prop details."
+          "description": "Flat CraftJS node map: { nodeId: nodeDefinition, ... }. Each node definition must include:\n\n  {\n    \"type\": { \"resolvedName\": \"Container\" },  // Component type\n    \"isCanvas\": true,                          // true if it can have children\n    \"props\": {\n      \"canDelete\": true,\n      \"canEditName\": true,\n      \"type\": \"section\",                       // \"section\" for root, omit for children\n      \"root\": { \"background\": \"bg-(--primary)\" },\n      \"mobile\": { \"display\": \"flex\", \"flexDirection\": \"flex-col\", \"width\": \"w-full\", \"py\": \"py-12\", \"px\": \"px-6\" },\n      \"desktop\": { \"py\": \"py-20\", \"px\": \"px-16\" },\n      \"custom\": { \"displayName\": \"My Block\" }\n    },\n    \"parent\": \"page_home\",                     // parent node ID\n    \"nodes\": [\"child_id_1\", \"child_id_2\"],     // ordered child IDs\n    \"linkedNodes\": {}\n  }\n\nAvailable component types: Container, Text, Image, Button, ButtonList, ImageList, Form, FormElement, Divider, Spacer, Video, Audio, Embed.\nUse get_component_schema for full prop details."
         },
         "parentNodeId": {
           "type": "string",
@@ -251,11 +251,11 @@
         },
         "headerBg": {
           "type": "string",
-          "description": "Tailwind background class for the header. Use palette vars: \"bg-(--ph-background)\", \"bg-(--ph-primary)\", \"bg-transparent\"."
+          "description": "Tailwind background class for the header. Use palette vars: \"bg-(--background)\", \"bg-(--primary)\", \"bg-transparent\"."
         },
         "headerColor": {
           "type": "string",
-          "description": "Tailwind text color class for header text/links. Use: \"text-(--ph-text)\", \"text-(--ph-primary-text)\"."
+          "description": "Tailwind text color class for header text/links. Use: \"text-(--text)\", \"text-(--primary-foreground)\"."
         },
         "links": {
           "type": "array",
@@ -312,11 +312,11 @@
         },
         "contentBackground": {
           "type": "string",
-          "description": "Tailwind background class for footer container. Example: \"bg-(--ph-primary)\", \"bg-(--ph-alternate-background)\"."
+          "description": "Tailwind background class for footer container. Example: \"bg-(--primary)\", \"bg-(--card)\"."
         },
         "contentColor": {
           "type": "string",
-          "description": "Tailwind text color class for footer. Example: \"text-(--ph-primary-text)\"."
+          "description": "Tailwind text color class for footer. Example: \"text-(--primary-foreground)\"."
         },
         "copyrightHtml": {
           "type": "string",
@@ -335,7 +335,7 @@
   },
   {
     "name": "update_node",
-    "description": "Surgically patches a single node on the active site (GET → patch → PUT). Same as patch_site_node but with image URL validation.\n\nPatches are shallow-merged into the target object. Use unset* arrays to remove keys that merges cannot delete.\n\nCommon uses:\n  - Change text: propsPatch: { \"text\": \"New heading\" }\n  - Change colors: rootPatch: { \"background\": \"bg-(--ph-accent)\", \"color\": \"text-(--ph-accent-text)\" }\n  - Change mobile layout: mobilePatch: { \"flexDirection\": \"flex-col\", \"py\": \"py-8\" }\n  - Change desktop layout: propsPatch: { \"desktop\": { \"gridCols\": \"grid-cols-3\" } }\n  - Reorder children: nodesPatch: [\"child2\", \"child1\", \"child3\"]\n  - Remove a prop: unsetMobile: [\"gap\"] removes gap from mobile styles",
+    "description": "Surgically patches a single node on the active site (GET → patch → PUT). Same as patch_site_node but with image URL validation.\n\nPatches are shallow-merged into the target object. Use unset* arrays to remove keys that merges cannot delete.\n\nCommon uses:\n  - Change text: propsPatch: { \"text\": \"New heading\" }\n  - Change colors: rootPatch: { \"background\": \"bg-(--accent)\", \"color\": \"text-(--accent-foreground)\" }\n  - Change mobile layout: mobilePatch: { \"flexDirection\": \"flex-col\", \"py\": \"py-8\" }\n  - Change desktop layout: propsPatch: { \"desktop\": { \"gridCols\": \"grid-cols-3\" } }\n  - Reorder children: nodesPatch: [\"child2\", \"child1\", \"child3\"]\n  - Remove a prop: unsetMobile: [\"gap\"] removes gap from mobile styles",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -357,7 +357,7 @@
         },
         "rootPatch": {
           "type": "object",
-          "description": "Shallow merge into node.props.root. Visual props: background, color, border, borderColor, radius, shadow, bgOpacity, fontFamily, fontSize, fontWeight, lineHeight, textAlign, textDecoration. Always use CSS vars: bg-[var(--ph-primary)]."
+          "description": "Shallow merge into node.props.root. Visual props: background, color, border, borderColor, radius, shadow, bgOpacity, fontFamily, fontSize, fontWeight, lineHeight, textAlign, textDecoration. Always use CSS vars: bg-[var(--primary)]."
         },
         "nodesPatch": {
           "type": "array",

@@ -9,43 +9,43 @@ const STYLE_REFERENCE = `# PageHub Style Reference
 
 | Variable | Slot | Typical Use |
 |----------|------|-------------|
-| var(--ph-primary) | 0 | Main brand color (buttons, links, hero backgrounds) |
-| var(--ph-primary-text) | 1 | Text on primary backgrounds |
-| var(--ph-secondary) | 2 | Supporting color (cards, badges, secondary buttons) |
-| var(--ph-secondary-text) | 3 | Text on secondary backgrounds |
-| var(--ph-accent) | 4 | CTA/highlight color (call-to-action buttons, emphasis) |
-| var(--ph-accent-text) | 5 | Text on accent backgrounds |
-| var(--ph-neutral) | 6 | Muted color (borders, disabled, subtle backgrounds) |
-| var(--ph-neutral-text) | 7 | Text on neutral backgrounds |
-| var(--ph-background) | 8 | Page/site background |
-| var(--ph-text) | 9 | Default body text |
-| var(--ph-alternate-background) | 10 | Alternate section backgrounds, cards, dividers |
-| var(--ph-alternate-text) | 11 | Text on alternate backgrounds |
+| var(--primary) | 0 | Main brand color (buttons, links, hero backgrounds) |
+| var(--primary-foreground) | 1 | Text on primary backgrounds |
+| var(--secondary) | 2 | Supporting color (cards, badges, secondary buttons) |
+| var(--secondary-foreground) | 3 | Text on secondary backgrounds |
+| var(--accent) | 4 | CTA/highlight color (call-to-action buttons, emphasis) |
+| var(--accent-foreground) | 5 | Text on accent backgrounds |
+| var(--muted) | 6 | Muted color (borders, disabled, subtle backgrounds) |
+| var(--muted-foreground) | 7 | Text on neutral backgrounds |
+| var(--background) | 8 | Page/site background |
+| var(--text) | 9 | Default body text |
+| var(--card) | 10 | Alternate section backgrounds, cards, dividers |
+| var(--card-foreground) | 11 | Text on alternate backgrounds |
 
 ## Style Guide CSS Variables (set via set_theme styleGuide)
 
 | Variable | Key | Default |
 |----------|-----|---------|
-| --ph-border-radius | borderRadius | 0.5rem |
-| --ph-button-padding-x / -y | buttonPadding | 1.5rem 0.75rem |
-| --ph-container-padding / -x / -y | containerPadding | 2rem 2rem |
-| --ph-section-gap | sectionGap | 4rem |
-| --ph-container-gap | containerGap | 1.5rem |
-| --ph-content-width | contentWidth | 80rem |
-| --ph-shadow-style | shadowStyle | 0 1px 3px rgba(0,0,0,0.1) |
-| --ph-heading-font-family | headingFontFamily | (from Google Fonts) |
-| --ph-body-font-family | bodyFontFamily | (from Google Fonts) |
+| --radius | borderRadius | 0.5rem |
+| --button-padding-x / -y | buttonPadding | 1.5rem 0.75rem |
+| --container-padding / -x / -y | containerPadding | 2rem 2rem |
+| --section-gap | sectionGap | 4rem |
+| --container-gap | containerGap | 1.5rem |
+| --content-width | contentWidth | 80rem |
+| --shadow-style | shadowStyle | 0 1px 3px rgba(0,0,0,0.1) |
+| --heading-font-family | headingFontFamily | (from Google Fonts) |
+| --body-font-family | bodyFontFamily | (from Google Fonts) |
 
 ## Using Variables in Props
 
 ALWAYS use CSS variables via Tailwind arbitrary syntax — never hardcode hex or named colors:
 
-  root.background: "bg-(--ph-primary)"
-  root.color: "text-(--ph-primary-text)"
-  root.borderColor: "border-(--ph-alternate-background)"
-  root.radius: "rounded-(--ph-border-radius)"
-  mobile.gap: "gap-(--ph-container-gap)"
-  mobile.maxWidth: "max-w-(--ph-content-width)"
+  root.background: "bg-(--primary)"
+  root.color: "text-(--primary-foreground)"
+  root.borderColor: "border-(--card)"
+  root.radius: "rounded-(--radius)"
+  mobile.gap: "gap-(--container-gap)"
+  mobile.maxWidth: "max-w-(--content-width)"
 
 Exception: bg-transparent, bg-white/10 (opacity modifiers) are OK.
 
@@ -83,7 +83,7 @@ fontSize, fontWeight, fontFamily, textAlign, lineHeight, textDecoration
 1. Page containers (type: "page") must NOT have gap, py, px, p, my, mx — spacing goes on sections.
 2. ROOT node must NOT have gap or spacing.
 3. Text "text" values: NO block tags. Only inline: <strong>, <em>, <br/>, <span>, <a>, <ul>/<li>.
-4. Always match text color to background: bg-(--ph-primary) → text-[var(--ph-primary-text)].
+4. Always match text color to background: bg-(--primary) → text-[var(--primary-foreground)].
 5. Use descriptive node IDs: "sec_hero", "hero_title", etc.
 `;
 

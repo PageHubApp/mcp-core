@@ -11,8 +11,8 @@ module.exports = {
       sec_gallery: {
         type: { resolvedName: 'Container' }, isCanvas: true,
         props: { canDelete: true, canEditName: true, type: 'section',
-          root: { background: 'bg-(--ph-alternate-background)' },
-          mobile: { display: 'flex', flexDirection: 'flex-col', width: 'w-full', py: 'py-16', px: 'px-(--ph-container-padding-x)' },
+          root: { background: 'bg-(--card)' },
+          mobile: { display: 'flex', flexDirection: 'flex-col', width: 'w-full', py: 'py-16', px: 'px-(--container-padding-x)' },
           desktop: { py: 'py-24' },
           custom: { displayName: 'Gallery Section' } },
         displayName: 'Container', parent: 'page_home', nodes: ['gallery_header', 'gallery_grid'], linkedNodes: {}
@@ -20,7 +20,7 @@ module.exports = {
       gallery_header: {
         type: { resolvedName: 'Container' }, isCanvas: true,
         props: { canDelete: true, canEditName: true, root: {},
-          mobile: { display: 'flex', flexDirection: 'flex-col', alignItems: 'items-center', gap: 'gap-2', width: 'w-full', maxWidth: 'max-w-(--ph-content-width)', mx: 'mx-auto', mb: 'mb-12' },
+          mobile: { display: 'flex', flexDirection: 'flex-col', alignItems: 'items-center', gap: 'gap-2', width: 'w-full', maxWidth: 'max-w-(--content-width)', mx: 'mx-auto', mb: 'mb-12' },
           desktop: {},
           custom: { displayName: 'Gallery Header' } },
         displayName: 'Container', parent: 'sec_gallery', nodes: ['gallery_eyebrow', 'gallery_title'], linkedNodes: {}
@@ -28,7 +28,7 @@ module.exports = {
       gallery_eyebrow: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-accent)', fontFamily: 'var(--ph-body-font-family)' },
+          root: { color: 'text-(--accent)', fontFamily: 'var(--body-font-family)' },
           mobile: { fontSize: 'text-xs', fontWeight: 'font-bold', letterSpacing: 'tracking-widest', textAlign: 'text-center' },
           desktop: {}, text: 'EXPERIENCE \u00b7 EXPLORE', tagName: 'p',
           custom: { displayName: 'Eyebrow' } },
@@ -37,7 +37,7 @@ module.exports = {
       gallery_title: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-primary)', fontFamily: 'var(--ph-heading-font-family)' },
+          root: { color: 'text-(--primary)', fontFamily: 'var(--heading-font-family)' },
           mobile: { fontSize: 'text-3xl', fontWeight: 'font-bold', textAlign: 'text-center' },
           desktop: { fontSize: 'text-4xl' }, text: 'The Space', tagName: 'h2',
           custom: { displayName: 'Title' } },
@@ -46,7 +46,7 @@ module.exports = {
       gallery_grid: {
         type: { resolvedName: 'Container' }, isCanvas: true,
         props: { canDelete: true, canEditName: true, root: {},
-          mobile: { display: 'grid', gridCols: 'grid-cols-1', gap: 'gap-4', width: 'w-full', maxWidth: 'max-w-(--ph-content-width)', mx: 'mx-auto' },
+          mobile: { display: 'grid', gridCols: 'grid-cols-1', gap: 'gap-4', width: 'w-full', maxWidth: 'max-w-(--content-width)', mx: 'mx-auto' },
           desktop: { gridCols: 'grid-cols-4' },
           custom: { displayName: 'Grid' } },
         displayName: 'Container', parent: 'sec_gallery', nodes: ['gallery_img1', 'gallery_img2', 'gallery_img3', 'gallery_card'], linkedNodes: {}
@@ -55,7 +55,7 @@ module.exports = {
         type: { resolvedName: 'Image' }, isCanvas: false,
         props: { canDelete: true, canEditName: true, type: 'url',
           content: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600',
-          alt: 'Interior view', root: { radius: 'rounded-(--ph-border-radius)' },
+          alt: 'Interior view', root: { radius: 'rounded-(--radius)' },
           mobile: { width: 'w-full', height: 'h-[250px]', objectFit: 'object-cover' },
           desktop: { height: 'h-[300px]', gridCols: 'col-span-2' },
           custom: { displayName: 'Photo 1' } },
@@ -65,7 +65,7 @@ module.exports = {
         type: { resolvedName: 'Image' }, isCanvas: false,
         props: { canDelete: true, canEditName: true, type: 'url',
           content: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600',
-          alt: 'Detail shot', root: { radius: 'rounded-(--ph-border-radius)' },
+          alt: 'Detail shot', root: { radius: 'rounded-(--radius)' },
           mobile: { width: 'w-full', height: 'h-[250px]', objectFit: 'object-cover' },
           desktop: { height: 'h-[300px]', gridCols: 'col-span-2' },
           custom: { displayName: 'Photo 2' } },
@@ -75,7 +75,7 @@ module.exports = {
         type: { resolvedName: 'Image' }, isCanvas: false,
         props: { canDelete: true, canEditName: true, type: 'url',
           content: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600',
-          alt: 'Atmosphere shot', root: { radius: 'rounded-(--ph-border-radius)' },
+          alt: 'Atmosphere shot', root: { radius: 'rounded-(--radius)' },
           mobile: { width: 'w-full', height: 'h-[250px]', objectFit: 'object-cover' },
           desktop: { height: 'h-[320px]', gridCols: 'col-span-2' },
           custom: { displayName: 'Photo 3' } },
@@ -84,7 +84,7 @@ module.exports = {
       gallery_card: {
         type: { resolvedName: 'Container' }, isCanvas: true,
         props: { canDelete: true, canEditName: true,
-          root: { background: 'bg-(--ph-background)', radius: 'rounded-(--ph-border-radius)', shadow: 'shadow-lg' },
+          root: { background: 'bg-(--background)', radius: 'rounded-(--radius)', shadow: 'shadow-lg' },
           mobile: { display: 'flex', flexDirection: 'flex-col', justifyContent: 'justify-center', p: 'p-8', gap: 'gap-3', width: 'w-full', height: 'h-full' },
           desktop: { gridCols: 'col-span-2' },
           custom: { displayName: 'Info Card' } },
@@ -93,7 +93,7 @@ module.exports = {
       gallery_card_title: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-primary)', fontFamily: 'var(--ph-heading-font-family)' },
+          root: { color: 'text-(--primary)', fontFamily: 'var(--heading-font-family)' },
           mobile: { fontSize: 'text-xl', fontWeight: 'font-bold' },
           desktop: {}, text: 'Coworking', tagName: 'h3',
           custom: { displayName: 'Card Title' } },
@@ -102,7 +102,7 @@ module.exports = {
       gallery_card_body: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-alternate-text)' },
+          root: { color: 'text-(--card-foreground)' },
           mobile: { fontSize: 'text-sm', lineHeight: 'leading-relaxed' },
           desktop: {}, text: 'Grab a table, plug in, and work while the espresso machine hums in the background.', tagName: 'p',
           custom: { displayName: 'Card Body' } },
@@ -118,8 +118,8 @@ module.exports = {
       sec_contact: {
         type: { resolvedName: 'Container' }, isCanvas: true,
         props: { canDelete: true, canEditName: true, type: 'section',
-          root: { background: 'bg-(--ph-alternate-background)' },
-          mobile: { display: 'flex', flexDirection: 'flex-col', width: 'w-full', py: 'py-16', px: 'px-(--ph-container-padding-x)' },
+          root: { background: 'bg-(--card)' },
+          mobile: { display: 'flex', flexDirection: 'flex-col', width: 'w-full', py: 'py-16', px: 'px-(--container-padding-x)' },
           desktop: { py: 'py-24' },
           custom: { displayName: 'Contact Section' } },
         displayName: 'Container', parent: 'page_home', nodes: ['contact_inner'], linkedNodes: {}
@@ -127,7 +127,7 @@ module.exports = {
       contact_inner: {
         type: { resolvedName: 'Container' }, isCanvas: true,
         props: { canDelete: true, canEditName: true, root: {},
-          mobile: { display: 'flex', flexDirection: 'flex-col', gap: 'gap-12', width: 'w-full', maxWidth: 'max-w-(--ph-content-width)', mx: 'mx-auto' },
+          mobile: { display: 'flex', flexDirection: 'flex-col', gap: 'gap-12', width: 'w-full', maxWidth: 'max-w-(--content-width)', mx: 'mx-auto' },
           desktop: { flexDirection: 'flex-row', gap: 'gap-16' },
           custom: { displayName: 'Contact Inner' } },
         displayName: 'Container', parent: 'sec_contact', nodes: ['contact_info', 'contact_form_wrap'], linkedNodes: {}
@@ -143,7 +143,7 @@ module.exports = {
       contact_title: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-primary)', fontFamily: 'var(--ph-heading-font-family)' },
+          root: { color: 'text-(--primary)', fontFamily: 'var(--heading-font-family)' },
           mobile: { fontSize: 'text-3xl', fontWeight: 'font-bold' },
           desktop: { fontSize: 'text-4xl' }, text: 'Find us in {{company.location}}', tagName: 'h2',
           custom: { displayName: 'Title' } },
@@ -152,7 +152,7 @@ module.exports = {
       contact_address: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-alternate-text)' },
+          root: { color: 'text-(--card-foreground)' },
           mobile: { fontSize: 'text-base', lineHeight: 'leading-relaxed' },
           desktop: {}, text: '{{company.address}}<br/>{{company.location}}<br/>{{company.phone}}', tagName: 'p',
           custom: { displayName: 'Address' } },
@@ -161,7 +161,7 @@ module.exports = {
       contact_hours_label: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-primary)', fontFamily: 'var(--ph-heading-font-family)' },
+          root: { color: 'text-(--primary)', fontFamily: 'var(--heading-font-family)' },
           mobile: { fontSize: 'text-lg', fontWeight: 'font-bold', mt: 'mt-4' },
           desktop: {}, text: 'Opening hours', tagName: 'h3',
           custom: { displayName: 'Hours Label' } },
@@ -179,7 +179,7 @@ module.exports = {
       contact_day1: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-text)' },
+          root: { color: 'text-(--text)' },
           mobile: { fontSize: 'text-sm', fontWeight: 'font-medium' },
           desktop: {}, text: 'Mon \u2014 Fri', tagName: 'p',
           custom: { displayName: 'Day' } },
@@ -188,7 +188,7 @@ module.exports = {
       contact_time1: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-alternate-text)' },
+          root: { color: 'text-(--card-foreground)' },
           mobile: { fontSize: 'text-sm' },
           desktop: {}, text: '08:00 \u2014 17:00', tagName: 'p',
           custom: { displayName: 'Time' } },
@@ -206,7 +206,7 @@ module.exports = {
       contact_day2: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-text)' },
+          root: { color: 'text-(--text)' },
           mobile: { fontSize: 'text-sm', fontWeight: 'font-medium' },
           desktop: {}, text: 'Saturday', tagName: 'p',
           custom: { displayName: 'Day' } },
@@ -215,7 +215,7 @@ module.exports = {
       contact_time2: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-alternate-text)' },
+          root: { color: 'text-(--card-foreground)' },
           mobile: { fontSize: 'text-sm' },
           desktop: {}, text: '10:00 \u2014 16:00', tagName: 'p',
           custom: { displayName: 'Time' } },
@@ -233,7 +233,7 @@ module.exports = {
       contact_day3: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-text)' },
+          root: { color: 'text-(--text)' },
           mobile: { fontSize: 'text-sm', fontWeight: 'font-medium' },
           desktop: {}, text: 'Sunday', tagName: 'p',
           custom: { displayName: 'Day' } },
@@ -242,7 +242,7 @@ module.exports = {
       contact_time3: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-alternate-text)' },
+          root: { color: 'text-(--card-foreground)' },
           mobile: { fontSize: 'text-sm' },
           desktop: {}, text: 'Closed', tagName: 'p',
           custom: { displayName: 'Time' } },
@@ -251,7 +251,7 @@ module.exports = {
       contact_form_wrap: {
         type: { resolvedName: 'Container' }, isCanvas: true,
         props: { canDelete: true, canEditName: true,
-          root: { background: 'bg-(--ph-background)', radius: 'rounded-(--ph-border-radius)', shadow: 'shadow-md' },
+          root: { background: 'bg-(--background)', radius: 'rounded-(--radius)', shadow: 'shadow-md' },
           mobile: { display: 'flex', flexDirection: 'flex-col', width: 'w-full', p: 'p-8' },
           desktop: { width: 'w-1/2', p: 'p-10' },
           custom: { displayName: 'Form Card' } },
@@ -260,7 +260,7 @@ module.exports = {
       contact_form_title: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-primary)', fontFamily: 'var(--ph-heading-font-family)' },
+          root: { color: 'text-(--primary)', fontFamily: 'var(--heading-font-family)' },
           mobile: { fontSize: 'text-xl', fontWeight: 'font-bold', mb: 'mb-4' },
           desktop: {}, text: 'Send a message', tagName: 'h3',
           custom: { displayName: 'Form Title' } },
@@ -278,31 +278,31 @@ module.exports = {
       contact_field_name: {
         type: { resolvedName: 'FormElement' }, isCanvas: false,
         props: { canDelete: true, canEditName: true, type: 'text', name: 'name', placeholder: 'Name', required: true,
-          root: { border: 'border', borderWidth: 'border-(--ph-input-border-width)', borderStyle: 'border-solid', borderColor: 'border-(--ph-input-border-color)', radius: 'rounded-(--ph-input-border-radius)', background: 'bg-(--ph-input-bg-color)', color: 'text-(--ph-input-text-color)' },
-          mobile: { p: 'p-(--ph-input-padding)', width: 'w-full' }, desktop: {},
+          root: { border: 'border', borderWidth: 'border-(--input-border-width)', borderStyle: 'border-solid', borderColor: 'border-(--input-border-color)', radius: 'rounded-(--input-border-radius)', background: 'bg-(--input-bg-color)', color: 'text-(--input-text-color)' },
+          mobile: { p: 'p-(--input-padding)', width: 'w-full' }, desktop: {},
           custom: { displayName: 'Name Field' } },
         displayName: 'FormElement', parent: 'contact_form', nodes: [], linkedNodes: {}
       },
       contact_field_email: {
         type: { resolvedName: 'FormElement' }, isCanvas: false,
         props: { canDelete: true, canEditName: true, type: 'email', name: 'email', placeholder: 'Email', required: true,
-          root: { border: 'border', borderWidth: 'border-(--ph-input-border-width)', borderStyle: 'border-solid', borderColor: 'border-(--ph-input-border-color)', radius: 'rounded-(--ph-input-border-radius)', background: 'bg-(--ph-input-bg-color)', color: 'text-(--ph-input-text-color)' },
-          mobile: { p: 'p-(--ph-input-padding)', width: 'w-full' }, desktop: {},
+          root: { border: 'border', borderWidth: 'border-(--input-border-width)', borderStyle: 'border-solid', borderColor: 'border-(--input-border-color)', radius: 'rounded-(--input-border-radius)', background: 'bg-(--input-bg-color)', color: 'text-(--input-text-color)' },
+          mobile: { p: 'p-(--input-padding)', width: 'w-full' }, desktop: {},
           custom: { displayName: 'Email Field' } },
         displayName: 'FormElement', parent: 'contact_form', nodes: [], linkedNodes: {}
       },
       contact_field_msg: {
         type: { resolvedName: 'FormElement' }, isCanvas: false,
         props: { canDelete: true, canEditName: true, type: 'textarea', name: 'message', placeholder: 'Your message', required: false,
-          root: { border: 'border', borderWidth: 'border-(--ph-input-border-width)', borderStyle: 'border-solid', borderColor: 'border-(--ph-input-border-color)', radius: 'rounded-(--ph-input-border-radius)', background: 'bg-(--ph-input-bg-color)', color: 'text-(--ph-input-text-color)' },
-          mobile: { p: 'p-(--ph-input-padding)', width: 'w-full' }, desktop: {},
+          root: { border: 'border', borderWidth: 'border-(--input-border-width)', borderStyle: 'border-solid', borderColor: 'border-(--input-border-color)', radius: 'rounded-(--input-border-radius)', background: 'bg-(--input-bg-color)', color: 'text-(--input-text-color)' },
+          mobile: { p: 'p-(--input-padding)', width: 'w-full' }, desktop: {},
           custom: { displayName: 'Message Field' } },
         displayName: 'FormElement', parent: 'contact_form', nodes: [], linkedNodes: {}
       },
       contact_submit: {
         type: { resolvedName: 'Button' }, isCanvas: false,
         props: { canDelete: true, canEditName: true, type: 'submit', text: 'Send',
-          root: { background: 'bg-(--ph-primary)', color: 'text-(--ph-primary-text)', radius: 'rounded-(--ph-border-radius)' },
+          root: { background: 'bg-(--primary)', color: 'text-(--primary-foreground)', radius: 'rounded-(--radius)' },
           mobile: { width: 'w-full', py: 'py-3', fontWeight: 'font-bold', textAlign: 'text-center' },
           desktop: {},
           custom: { displayName: 'Submit Button' } },
@@ -318,8 +318,8 @@ module.exports = {
       sec_testimonials: {
         type: { resolvedName: 'Container' }, isCanvas: true,
         props: { canDelete: true, canEditName: true, type: 'section',
-          root: { background: 'bg-(--ph-background)' },
-          mobile: { display: 'flex', flexDirection: 'flex-col', alignItems: 'items-center', width: 'w-full', py: 'py-16', px: 'px-(--ph-container-padding-x)', gap: 'gap-10' },
+          root: { background: 'bg-(--background)' },
+          mobile: { display: 'flex', flexDirection: 'flex-col', alignItems: 'items-center', width: 'w-full', py: 'py-16', px: 'px-(--container-padding-x)', gap: 'gap-10' },
           desktop: { py: 'py-24' },
           custom: { displayName: 'Testimonials Section' } },
         displayName: 'Container', parent: 'page_home', nodes: ['test_header', 'test_grid'], linkedNodes: {}
@@ -335,7 +335,7 @@ module.exports = {
       test_eyebrow: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-accent)' },
+          root: { color: 'text-(--accent)' },
           mobile: { fontSize: 'text-xs', fontWeight: 'font-bold', letterSpacing: 'tracking-widest', textAlign: 'text-center' },
           desktop: {}, text: 'HAPPY GUESTS', tagName: 'p',
           custom: { displayName: 'Eyebrow' } },
@@ -344,7 +344,7 @@ module.exports = {
       test_title: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-primary)', fontFamily: 'var(--ph-heading-font-family)' },
+          root: { color: 'text-(--primary)', fontFamily: 'var(--heading-font-family)' },
           mobile: { fontSize: 'text-3xl', fontWeight: 'font-bold', textAlign: 'text-center' },
           desktop: { fontSize: 'text-4xl' }, text: 'What customers say', tagName: 'h2',
           custom: { displayName: 'Title' } },
@@ -361,7 +361,7 @@ module.exports = {
       test_card1: {
         type: { resolvedName: 'Container' }, isCanvas: true,
         props: { canDelete: true, canEditName: true,
-          root: { background: 'bg-(--ph-background)', radius: 'rounded-(--ph-border-radius)', border: 'border', borderColor: 'border-(--ph-alternate-background)', shadow: 'shadow-sm' },
+          root: { background: 'bg-(--background)', radius: 'rounded-(--radius)', border: 'border', borderColor: 'border-(--card)', shadow: 'shadow-sm' },
           mobile: { display: 'flex', flexDirection: 'flex-col', gap: 'gap-4', p: 'p-6', width: 'w-full' },
           desktop: { p: 'p-8' },
           custom: { displayName: 'Quote Card' } },
@@ -378,7 +378,7 @@ module.exports = {
       test_quote1: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-text)' },
+          root: { color: 'text-(--text)' },
           mobile: { fontSize: 'text-sm', lineHeight: 'leading-relaxed' },
           desktop: {}, text: '\u201cExactly the kind of spot this neighborhood needed. The coffee is excellent, the vibe is calm, and they actually care about the music.\u201d', tagName: 'p',
           custom: { displayName: 'Quote' } },
@@ -387,7 +387,7 @@ module.exports = {
       test_author1: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-alternate-text)' },
+          root: { color: 'text-(--card-foreground)' },
           mobile: { fontSize: 'text-xs', fontWeight: 'font-medium' },
           desktop: {}, text: 'Mara K. \u2014 Regular', tagName: 'p',
           custom: { displayName: 'Author' } },
@@ -396,7 +396,7 @@ module.exports = {
       test_card2: {
         type: { resolvedName: 'Container' }, isCanvas: true,
         props: { canDelete: true, canEditName: true,
-          root: { background: 'bg-(--ph-background)', radius: 'rounded-(--ph-border-radius)', border: 'border', borderColor: 'border-(--ph-alternate-background)', shadow: 'shadow-sm' },
+          root: { background: 'bg-(--background)', radius: 'rounded-(--radius)', border: 'border', borderColor: 'border-(--card)', shadow: 'shadow-sm' },
           mobile: { display: 'flex', flexDirection: 'flex-col', gap: 'gap-4', p: 'p-6', width: 'w-full' },
           desktop: { p: 'p-8' },
           custom: { displayName: 'Quote Card' } },
@@ -413,7 +413,7 @@ module.exports = {
       test_quote2: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-text)' },
+          root: { color: 'text-(--text)' },
           mobile: { fontSize: 'text-sm', lineHeight: 'leading-relaxed' },
           desktop: {}, text: '\u201cI bring work, order a cortado, and somehow finish a whole LP without checking my phone. The quiet hour here is real.\u201d', tagName: 'p',
           custom: { displayName: 'Quote' } },
@@ -422,7 +422,7 @@ module.exports = {
       test_author2: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-alternate-text)' },
+          root: { color: 'text-(--card-foreground)' },
           mobile: { fontSize: 'text-xs', fontWeight: 'font-medium' },
           desktop: {}, text: 'Ellis P. \u2014 Weekday regular', tagName: 'p',
           custom: { displayName: 'Author' } },
@@ -438,8 +438,8 @@ module.exports = {
       sec_offerings: {
         type: { resolvedName: 'Container' }, isCanvas: true,
         props: { canDelete: true, canEditName: true, type: 'section',
-          root: { background: 'bg-(--ph-background)' },
-          mobile: { display: 'flex', flexDirection: 'flex-col', width: 'w-full', py: 'py-16', px: 'px-(--ph-container-padding-x)' },
+          root: { background: 'bg-(--background)' },
+          mobile: { display: 'flex', flexDirection: 'flex-col', width: 'w-full', py: 'py-16', px: 'px-(--container-padding-x)' },
           desktop: { py: 'py-24' },
           custom: { displayName: 'Offerings Section' } },
         displayName: 'Container', parent: 'page_home', nodes: ['offer_inner'], linkedNodes: {}
@@ -455,7 +455,7 @@ module.exports = {
       offer_title: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-primary)', fontFamily: 'var(--ph-heading-font-family)' },
+          root: { color: 'text-(--primary)', fontFamily: 'var(--heading-font-family)' },
           mobile: { fontSize: 'text-3xl', fontWeight: 'font-bold' },
           desktop: { fontSize: 'text-4xl' }, text: 'What we serve', tagName: 'h2',
           custom: { displayName: 'Title' } },
@@ -472,7 +472,7 @@ module.exports = {
       offer_item1: {
         type: { resolvedName: 'Container' }, isCanvas: true,
         props: { canDelete: true, canEditName: true,
-          root: { border: 'border-b', borderColor: 'border-(--ph-alternate-background)' },
+          root: { border: 'border-b', borderColor: 'border-(--card)' },
           mobile: { display: 'flex', flexDirection: 'flex-col', gap: 'gap-1', py: 'py-5', width: 'w-full' },
           desktop: {},
           custom: { displayName: 'Menu Item' } },
@@ -481,7 +481,7 @@ module.exports = {
       offer_name1: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-text)' },
+          root: { color: 'text-(--text)' },
           mobile: { fontSize: 'text-base', fontWeight: 'font-semibold' },
           desktop: {}, text: 'The Grizzly', tagName: 'h3',
           custom: { displayName: 'Item Name' } },
@@ -490,7 +490,7 @@ module.exports = {
       offer_desc1: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-alternate-text)' },
+          root: { color: 'text-(--card-foreground)' },
           mobile: { fontSize: 'text-sm' },
           desktop: {}, text: 'Double-shot espresso with oat milk and cinnamon. Our house signature since day one.', tagName: 'p',
           custom: { displayName: 'Item Description' } },
@@ -499,7 +499,7 @@ module.exports = {
       offer_item2: {
         type: { resolvedName: 'Container' }, isCanvas: true,
         props: { canDelete: true, canEditName: true,
-          root: { border: 'border-b', borderColor: 'border-(--ph-alternate-background)' },
+          root: { border: 'border-b', borderColor: 'border-(--card)' },
           mobile: { display: 'flex', flexDirection: 'flex-col', gap: 'gap-1', py: 'py-5', width: 'w-full' },
           desktop: {},
           custom: { displayName: 'Menu Item' } },
@@ -508,7 +508,7 @@ module.exports = {
       offer_name2: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-text)' },
+          root: { color: 'text-(--text)' },
           mobile: { fontSize: 'text-base', fontWeight: 'font-semibold' },
           desktop: {}, text: 'V60 Filter Coffee', tagName: 'h3',
           custom: { displayName: 'Item Name' } },
@@ -517,7 +517,7 @@ module.exports = {
       offer_desc2: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-alternate-text)' },
+          root: { color: 'text-(--card-foreground)' },
           mobile: { fontSize: 'text-sm' },
           desktop: {}, text: 'Hand-poured from a rotating roster of single-origin beans. Ask the barista what is on today.', tagName: 'p',
           custom: { displayName: 'Item Description' } },
@@ -526,7 +526,7 @@ module.exports = {
       offer_item3: {
         type: { resolvedName: 'Container' }, isCanvas: true,
         props: { canDelete: true, canEditName: true,
-          root: { border: 'border-b', borderColor: 'border-(--ph-alternate-background)' },
+          root: { border: 'border-b', borderColor: 'border-(--card)' },
           mobile: { display: 'flex', flexDirection: 'flex-col', gap: 'gap-1', py: 'py-5', width: 'w-full' },
           desktop: {},
           custom: { displayName: 'Menu Item' } },
@@ -535,7 +535,7 @@ module.exports = {
       offer_name3: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-text)' },
+          root: { color: 'text-(--text)' },
           mobile: { fontSize: 'text-base', fontWeight: 'font-semibold' },
           desktop: {}, text: 'Matcha & Chai Latte', tagName: 'h3',
           custom: { displayName: 'Item Name' } },
@@ -544,7 +544,7 @@ module.exports = {
       offer_desc3: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-alternate-text)' },
+          root: { color: 'text-(--card-foreground)' },
           mobile: { fontSize: 'text-sm' },
           desktop: {}, text: 'Ceremonial-grade matcha or house-blended chai with your choice of milk.', tagName: 'p',
           custom: { displayName: 'Item Description' } },
@@ -560,7 +560,7 @@ module.exports = {
       sec_footer: {
         type: { resolvedName: 'Container' }, isCanvas: true,
         props: { canDelete: true, canEditName: true,
-          root: { background: 'bg-(--ph-primary)' },
+          root: { background: 'bg-(--primary)' },
           mobile: { display: 'flex', flexDirection: 'flex-col', alignItems: 'items-center', width: 'w-full', py: 'py-12', px: 'px-6', gap: 'gap-6' },
           desktop: { py: 'py-16' },
           custom: { displayName: 'Footer Section' } },
@@ -569,7 +569,7 @@ module.exports = {
       ftr_brand: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-primary-text)', fontFamily: 'var(--ph-heading-font-family)' },
+          root: { color: 'text-(--primary-foreground)', fontFamily: 'var(--heading-font-family)' },
           mobile: { fontSize: 'text-lg', fontWeight: 'font-bold', textAlign: 'text-center' },
           desktop: {}, text: '{{company.name}}', tagName: 'h3',
           custom: { displayName: 'Brand' } },
@@ -578,7 +578,7 @@ module.exports = {
       ftr_address: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-primary-text)' },
+          root: { color: 'text-(--primary-foreground)' },
           mobile: { fontSize: 'text-sm', textAlign: 'text-center' },
           desktop: {}, text: '{{company.address}} \u00b7 {{company.location}} \u00b7 {{company.phone}}', tagName: 'p',
           custom: { displayName: 'Address Line' } },
@@ -595,7 +595,7 @@ module.exports = {
       ftr_link1: {
         type: { resolvedName: 'Button' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { background: 'bg-transparent', color: 'text-(--ph-primary-text)' },
+          root: { background: 'bg-transparent', color: 'text-(--primary-foreground)' },
           mobile: { fontSize: 'text-sm', px: 'px-0', py: 'py-0' },
           desktop: {}, text: 'Privacy Policy', url: '/privacy',
           custom: { displayName: 'Link' } },
@@ -604,7 +604,7 @@ module.exports = {
       ftr_link2: {
         type: { resolvedName: 'Button' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { background: 'bg-transparent', color: 'text-(--ph-primary-text)' },
+          root: { background: 'bg-transparent', color: 'text-(--primary-foreground)' },
           mobile: { fontSize: 'text-sm', px: 'px-0', py: 'py-0' },
           desktop: {}, text: 'Terms of Service', url: '/terms',
           custom: { displayName: 'Link' } },
@@ -613,7 +613,7 @@ module.exports = {
       ftr_link3: {
         type: { resolvedName: 'Button' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { background: 'bg-transparent', color: 'text-(--ph-primary-text)' },
+          root: { background: 'bg-transparent', color: 'text-(--primary-foreground)' },
           mobile: { fontSize: 'text-sm', px: 'px-0', py: 'py-0' },
           desktop: {}, text: 'Contact', url: 'mailto:{{company.email}}',
           custom: { displayName: 'Link' } },
@@ -622,7 +622,7 @@ module.exports = {
       ftr_copy: {
         type: { resolvedName: 'Text' }, isCanvas: false,
         props: { canDelete: true, canEditName: true,
-          root: { color: 'text-(--ph-primary-text)' },
+          root: { color: 'text-(--primary-foreground)' },
           mobile: { fontSize: 'text-xs', textAlign: 'text-center' },
           desktop: {}, text: '\u00a9 {{year}} {{company.name}}. All rights reserved.', tagName: 'p',
           custom: { displayName: 'Copyright' } },
