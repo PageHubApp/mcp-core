@@ -630,4 +630,339 @@ module.exports = {
       },
     },
   },
+
+  'hero': {
+    description: 'Split hero — left column has eyebrow label, large heading, subheading, and CTA button row. Right column has a tall image. Equal columns on desktop, stacked on mobile. Strong first impression, works for any brand.',
+    usage: 'Swap image URL, update heading/subheading copy, adjust CTA button text and URL. Use backgroundOverlay on the section for dark/light mood.',
+    nodes: {
+      sec_hero: {
+        type: { resolvedName: 'Container' }, isCanvas: true,
+        props: { canDelete: true, canEditName: true, type: 'section',
+          root: { background: 'bg-(--background)' },
+          mobile: { display: 'flex', flexDirection: 'flex-col', width: 'w-full', py: 'py-16', px: 'px-(--container-padding-x)' },
+          desktop: { py: 'py-24' },
+          custom: { displayName: 'Hero Section' } },
+        displayName: 'Container', parent: 'page_home', nodes: ['hero_inner'], linkedNodes: {}
+      },
+      hero_inner: {
+        type: { resolvedName: 'Container' }, isCanvas: true,
+        props: { canDelete: true, canEditName: true, root: {},
+          mobile: { display: 'flex', flexDirection: 'flex-col', gap: 'gap-10', width: 'w-full', maxWidth: 'max-w-(--content-width)', mx: 'mx-auto', alignItems: 'items-center' },
+          desktop: { flexDirection: 'flex-row', gap: 'gap-16', alignItems: 'items-center' },
+          custom: { displayName: 'Hero Inner' } },
+        displayName: 'Container', parent: 'sec_hero', nodes: ['hero_copy', 'hero_image'], linkedNodes: {}
+      },
+      hero_copy: {
+        type: { resolvedName: 'Container' }, isCanvas: true,
+        props: { canDelete: true, canEditName: true, root: {},
+          mobile: { display: 'flex', flexDirection: 'flex-col', gap: 'gap-5', flex: 'flex-1', width: 'w-full' },
+          desktop: {},
+          custom: { displayName: 'Hero Copy' } },
+        displayName: 'Container', parent: 'hero_inner', nodes: ['hero_eyebrow', 'hero_title', 'hero_subtitle', 'hero_ctas'], linkedNodes: {}
+      },
+      hero_eyebrow: {
+        type: { resolvedName: 'Text' }, isCanvas: false,
+        props: { canDelete: true, canEditName: true,
+          root: { color: 'text-(--accent)', fontFamily: 'var(--body-font-family)' },
+          mobile: { fontSize: 'text-xs', fontWeight: 'font-bold', letterSpacing: 'tracking-widest' },
+          desktop: {}, text: '{{company.type}}', tagName: 'p',
+          custom: { displayName: 'Eyebrow' } },
+        displayName: 'Text', parent: 'hero_copy', nodes: [], linkedNodes: {}
+      },
+      hero_title: {
+        type: { resolvedName: 'Text' }, isCanvas: false,
+        props: { canDelete: true, canEditName: true,
+          root: { color: 'text-(--foreground)', fontFamily: 'var(--heading-font-family)' },
+          mobile: { fontSize: 'text-4xl', fontWeight: 'font-bold', lineHeight: 'leading-tight' },
+          desktop: { fontSize: 'text-6xl' }, text: '{{company.tagline}}', tagName: 'h1',
+          custom: { displayName: 'Hero Title' } },
+        displayName: 'Text', parent: 'hero_copy', nodes: [], linkedNodes: {}
+      },
+      hero_subtitle: {
+        type: { resolvedName: 'Text' }, isCanvas: false,
+        props: { canDelete: true, canEditName: true,
+          root: { color: 'text-(--muted-foreground)' },
+          mobile: { fontSize: 'text-lg', lineHeight: 'leading-relaxed' },
+          desktop: {}, text: 'Welcome to {{company.name}}. Discover what makes us different.', tagName: 'p',
+          custom: { displayName: 'Hero Subtitle' } },
+        displayName: 'Text', parent: 'hero_copy', nodes: [], linkedNodes: {}
+      },
+      hero_ctas: {
+        type: { resolvedName: 'ButtonList' }, isCanvas: true,
+        props: { canDelete: true, canEditName: true, root: {},
+          mobile: { display: 'flex', flexDirection: 'flex-row', gap: 'gap-3', flexWrap: 'flex-wrap' },
+          desktop: {},
+          custom: { displayName: 'CTA Buttons' } },
+        displayName: 'ButtonList', parent: 'hero_copy', nodes: ['hero_btn_primary', 'hero_btn_secondary'], linkedNodes: {}
+      },
+      hero_btn_primary: {
+        type: { resolvedName: 'Button' }, isCanvas: false,
+        props: { canDelete: true, canEditName: true,
+          root: { background: 'bg-(--primary)', color: 'text-(--primary-foreground)', radius: 'rounded-(--radius)' },
+          mobile: { px: 'px-(--button-padding-x)', py: 'py-(--button-padding-y)' }, desktop: {}, text: 'Get Started', url: '#',
+          custom: { displayName: 'Primary CTA' } },
+        displayName: 'Button', parent: 'hero_ctas', nodes: [], linkedNodes: {}
+      },
+      hero_btn_secondary: {
+        type: { resolvedName: 'Button' }, isCanvas: false,
+        props: { canDelete: true, canEditName: true,
+          root: { background: 'bg-transparent', color: 'text-(--foreground)', border: 'border', borderColor: 'border-(--muted)', radius: 'rounded-(--radius)' },
+          mobile: { px: 'px-(--button-padding-x)', py: 'py-(--button-padding-y)' }, desktop: {}, text: 'Learn More', url: '#',
+          custom: { displayName: 'Secondary CTA' } },
+        displayName: 'Button', parent: 'hero_ctas', nodes: [], linkedNodes: {}
+      },
+      hero_image: {
+        type: { resolvedName: 'Image' }, isCanvas: false,
+        props: { canDelete: true, canEditName: true, type: 'url',
+          content: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800',
+          alt: '{{company.name}}',
+          root: { radius: 'rounded-(--radius)' },
+          mobile: { width: 'w-full', height: 'h-[300px]', objectFit: 'object-cover' },
+          desktop: { flex: 'flex-1', height: 'h-[500px]' },
+          custom: { displayName: 'Hero Image' } },
+        displayName: 'Image', parent: 'hero_inner', nodes: [], linkedNodes: {}
+      },
+    },
+  },
+
+  'features': {
+    description: '3-column feature cards grid with eyebrow, heading, and subheading above. Each card has an icon (Google Material Symbol), bold title, and short description. Clean, versatile — works for services, benefits, or product features.',
+    usage: 'Change icon names (use bare Material Symbols names like "star", "bolt", "favorite" — NOT ref-google: prefix), card titles, and descriptions. Add/remove cards. Adjust gridCols for 2 or 4 columns.',
+    nodes: {
+      sec_features: {
+        type: { resolvedName: 'Container' }, isCanvas: true,
+        props: { canDelete: true, canEditName: true, type: 'section',
+          root: { background: 'bg-(--card)' },
+          mobile: { display: 'flex', flexDirection: 'flex-col', width: 'w-full', py: 'py-16', px: 'px-(--container-padding-x)' },
+          desktop: { py: 'py-24' },
+          custom: { displayName: 'Features Section' } },
+        displayName: 'Container', parent: 'page_home', nodes: ['feat_inner'], linkedNodes: {}
+      },
+      feat_inner: {
+        type: { resolvedName: 'Container' }, isCanvas: true,
+        props: { canDelete: true, canEditName: true, root: {},
+          mobile: { display: 'flex', flexDirection: 'flex-col', gap: 'gap-12', width: 'w-full', maxWidth: 'max-w-(--content-width)', mx: 'mx-auto' },
+          desktop: {},
+          custom: { displayName: 'Inner' } },
+        displayName: 'Container', parent: 'sec_features', nodes: ['feat_header', 'feat_grid'], linkedNodes: {}
+      },
+      feat_header: {
+        type: { resolvedName: 'Container' }, isCanvas: true,
+        props: { canDelete: true, canEditName: true, root: {},
+          mobile: { display: 'flex', flexDirection: 'flex-col', alignItems: 'items-center', gap: 'gap-3', width: 'w-full' },
+          desktop: {},
+          custom: { displayName: 'Section Header' } },
+        displayName: 'Container', parent: 'feat_inner', nodes: ['feat_eyebrow', 'feat_title', 'feat_subtitle'], linkedNodes: {}
+      },
+      feat_eyebrow: {
+        type: { resolvedName: 'Text' }, isCanvas: false,
+        props: { canDelete: true, canEditName: true,
+          root: { color: 'text-(--accent)', fontFamily: 'var(--body-font-family)' },
+          mobile: { fontSize: 'text-xs', fontWeight: 'font-bold', letterSpacing: 'tracking-widest', textAlign: 'text-center' },
+          desktop: {}, text: 'FEATURES', tagName: 'p',
+          custom: { displayName: 'Eyebrow' } },
+        displayName: 'Text', parent: 'feat_header', nodes: [], linkedNodes: {}
+      },
+      feat_title: {
+        type: { resolvedName: 'Text' }, isCanvas: false,
+        props: { canDelete: true, canEditName: true,
+          root: { color: 'text-(--primary)', fontFamily: 'var(--heading-font-family)' },
+          mobile: { fontSize: 'text-3xl', fontWeight: 'font-bold', textAlign: 'text-center' },
+          desktop: { fontSize: 'text-4xl' }, text: 'Why choose us', tagName: 'h2',
+          custom: { displayName: 'Title' } },
+        displayName: 'Text', parent: 'feat_header', nodes: [], linkedNodes: {}
+      },
+      feat_subtitle: {
+        type: { resolvedName: 'Text' }, isCanvas: false,
+        props: { canDelete: true, canEditName: true,
+          root: { color: 'text-(--muted-foreground)' },
+          mobile: { fontSize: 'text-base', textAlign: 'text-center', maxWidth: 'max-w-xl', mx: 'mx-auto' },
+          desktop: {}, text: 'Everything you need, nothing you don\'t.', tagName: 'p',
+          custom: { displayName: 'Subtitle' } },
+        displayName: 'Text', parent: 'feat_header', nodes: [], linkedNodes: {}
+      },
+      feat_grid: {
+        type: { resolvedName: 'Container' }, isCanvas: true,
+        props: { canDelete: true, canEditName: true, root: {},
+          mobile: { display: 'grid', gridCols: 'grid-cols-1', gap: 'gap-6', width: 'w-full' },
+          desktop: { gridCols: 'grid-cols-3' },
+          custom: { displayName: 'Features Grid' } },
+        displayName: 'Container', parent: 'feat_inner', nodes: ['feat_card1', 'feat_card2', 'feat_card3'], linkedNodes: {}
+      },
+      feat_card1: {
+        type: { resolvedName: 'Container' }, isCanvas: true,
+        props: { canDelete: true, canEditName: true,
+          root: { background: 'bg-(--background)', radius: 'rounded-(--radius)', shadow: 'shadow-(--shadow-style)' },
+          mobile: { display: 'flex', flexDirection: 'flex-col', gap: 'gap-3', p: 'p-6' },
+          desktop: {},
+          custom: { displayName: 'Feature Card' } },
+        displayName: 'Container', parent: 'feat_grid', nodes: ['feat_icon1', 'feat_card1_title', 'feat_card1_body'], linkedNodes: {}
+      },
+      feat_icon1: {
+        type: { resolvedName: 'Text' }, isCanvas: false,
+        props: { canDelete: true, canEditName: true,
+          root: { color: 'text-(--primary)', fontFamily: 'Material Symbols Outlined' },
+          mobile: { fontSize: 'text-3xl' },
+          desktop: {}, text: 'star', tagName: 'p',
+          custom: { displayName: 'Icon' } },
+        displayName: 'Text', parent: 'feat_card1', nodes: [], linkedNodes: {}
+      },
+      feat_card1_title: {
+        type: { resolvedName: 'Text' }, isCanvas: false,
+        props: { canDelete: true, canEditName: true,
+          root: { color: 'text-(--foreground)', fontFamily: 'var(--heading-font-family)' },
+          mobile: { fontSize: 'text-lg', fontWeight: 'font-semibold' },
+          desktop: {}, text: 'Feature One', tagName: 'h3',
+          custom: { displayName: 'Card Title' } },
+        displayName: 'Text', parent: 'feat_card1', nodes: [], linkedNodes: {}
+      },
+      feat_card1_body: {
+        type: { resolvedName: 'Text' }, isCanvas: false,
+        props: { canDelete: true, canEditName: true,
+          root: { color: 'text-(--muted-foreground)' },
+          mobile: { fontSize: 'text-sm', lineHeight: 'leading-relaxed' },
+          desktop: {}, text: 'A short description of this feature and why it matters to your customers.', tagName: 'p',
+          custom: { displayName: 'Card Body' } },
+        displayName: 'Text', parent: 'feat_card1', nodes: [], linkedNodes: {}
+      },
+      feat_card2: {
+        type: { resolvedName: 'Container' }, isCanvas: true,
+        props: { canDelete: true, canEditName: true,
+          root: { background: 'bg-(--background)', radius: 'rounded-(--radius)', shadow: 'shadow-(--shadow-style)' },
+          mobile: { display: 'flex', flexDirection: 'flex-col', gap: 'gap-3', p: 'p-6' },
+          desktop: {},
+          custom: { displayName: 'Feature Card' } },
+        displayName: 'Container', parent: 'feat_grid', nodes: ['feat_icon2', 'feat_card2_title', 'feat_card2_body'], linkedNodes: {}
+      },
+      feat_icon2: {
+        type: { resolvedName: 'Text' }, isCanvas: false,
+        props: { canDelete: true, canEditName: true,
+          root: { color: 'text-(--primary)', fontFamily: 'Material Symbols Outlined' },
+          mobile: { fontSize: 'text-3xl' },
+          desktop: {}, text: 'bolt', tagName: 'p',
+          custom: { displayName: 'Icon' } },
+        displayName: 'Text', parent: 'feat_card2', nodes: [], linkedNodes: {}
+      },
+      feat_card2_title: {
+        type: { resolvedName: 'Text' }, isCanvas: false,
+        props: { canDelete: true, canEditName: true,
+          root: { color: 'text-(--foreground)', fontFamily: 'var(--heading-font-family)' },
+          mobile: { fontSize: 'text-lg', fontWeight: 'font-semibold' },
+          desktop: {}, text: 'Feature Two', tagName: 'h3',
+          custom: { displayName: 'Card Title' } },
+        displayName: 'Text', parent: 'feat_card2', nodes: [], linkedNodes: {}
+      },
+      feat_card2_body: {
+        type: { resolvedName: 'Text' }, isCanvas: false,
+        props: { canDelete: true, canEditName: true,
+          root: { color: 'text-(--muted-foreground)' },
+          mobile: { fontSize: 'text-sm', lineHeight: 'leading-relaxed' },
+          desktop: {}, text: 'A short description of this feature and why it matters to your customers.', tagName: 'p',
+          custom: { displayName: 'Card Body' } },
+        displayName: 'Text', parent: 'feat_card2', nodes: [], linkedNodes: {}
+      },
+      feat_card3: {
+        type: { resolvedName: 'Container' }, isCanvas: true,
+        props: { canDelete: true, canEditName: true,
+          root: { background: 'bg-(--background)', radius: 'rounded-(--radius)', shadow: 'shadow-(--shadow-style)' },
+          mobile: { display: 'flex', flexDirection: 'flex-col', gap: 'gap-3', p: 'p-6' },
+          desktop: {},
+          custom: { displayName: 'Feature Card' } },
+        displayName: 'Container', parent: 'feat_grid', nodes: ['feat_icon3', 'feat_card3_title', 'feat_card3_body'], linkedNodes: {}
+      },
+      feat_icon3: {
+        type: { resolvedName: 'Text' }, isCanvas: false,
+        props: { canDelete: true, canEditName: true,
+          root: { color: 'text-(--primary)', fontFamily: 'Material Symbols Outlined' },
+          mobile: { fontSize: 'text-3xl' },
+          desktop: {}, text: 'favorite', tagName: 'p',
+          custom: { displayName: 'Icon' } },
+        displayName: 'Text', parent: 'feat_card3', nodes: [], linkedNodes: {}
+      },
+      feat_card3_title: {
+        type: { resolvedName: 'Text' }, isCanvas: false,
+        props: { canDelete: true, canEditName: true,
+          root: { color: 'text-(--foreground)', fontFamily: 'var(--heading-font-family)' },
+          mobile: { fontSize: 'text-lg', fontWeight: 'font-semibold' },
+          desktop: {}, text: 'Feature Three', tagName: 'h3',
+          custom: { displayName: 'Card Title' } },
+        displayName: 'Text', parent: 'feat_card3', nodes: [], linkedNodes: {}
+      },
+      feat_card3_body: {
+        type: { resolvedName: 'Text' }, isCanvas: false,
+        props: { canDelete: true, canEditName: true,
+          root: { color: 'text-(--muted-foreground)' },
+          mobile: { fontSize: 'text-sm', lineHeight: 'leading-relaxed' },
+          desktop: {}, text: 'A short description of this feature and why it matters to your customers.', tagName: 'p',
+          custom: { displayName: 'Card Body' } },
+        displayName: 'Text', parent: 'feat_card3', nodes: [], linkedNodes: {}
+      },
+    },
+  },
+
+  'cta': {
+    description: 'Centered CTA band — bold heading, supporting text, and two buttons (primary + ghost). High-contrast background using --primary. Tight and punchy, slots between any two sections.',
+    usage: 'Change heading, subtext, button labels and URLs. Swap background to --accent for variety.',
+    nodes: {
+      sec_cta: {
+        type: { resolvedName: 'Container' }, isCanvas: true,
+        props: { canDelete: true, canEditName: true, type: 'section',
+          root: { background: 'bg-(--primary)' },
+          mobile: { display: 'flex', flexDirection: 'flex-col', alignItems: 'items-center', width: 'w-full', py: 'py-16', px: 'px-(--container-padding-x)' },
+          desktop: { py: 'py-20' },
+          custom: { displayName: 'CTA Section' } },
+        displayName: 'Container', parent: 'page_home', nodes: ['cta_inner'], linkedNodes: {}
+      },
+      cta_inner: {
+        type: { resolvedName: 'Container' }, isCanvas: true,
+        props: { canDelete: true, canEditName: true, root: {},
+          mobile: { display: 'flex', flexDirection: 'flex-col', alignItems: 'items-center', gap: 'gap-6', width: 'w-full', maxWidth: 'max-w-2xl', mx: 'mx-auto' },
+          desktop: {},
+          custom: { displayName: 'CTA Inner' } },
+        displayName: 'Container', parent: 'sec_cta', nodes: ['cta_title', 'cta_subtitle', 'cta_buttons'], linkedNodes: {}
+      },
+      cta_title: {
+        type: { resolvedName: 'Text' }, isCanvas: false,
+        props: { canDelete: true, canEditName: true,
+          root: { color: 'text-(--primary-foreground)', fontFamily: 'var(--heading-font-family)' },
+          mobile: { fontSize: 'text-3xl', fontWeight: 'font-bold', textAlign: 'text-center', lineHeight: 'leading-tight' },
+          desktop: { fontSize: 'text-4xl' }, text: 'Ready to get started?', tagName: 'h2',
+          custom: { displayName: 'CTA Title' } },
+        displayName: 'Text', parent: 'cta_inner', nodes: [], linkedNodes: {}
+      },
+      cta_subtitle: {
+        type: { resolvedName: 'Text' }, isCanvas: false,
+        props: { canDelete: true, canEditName: true,
+          root: { color: 'text-(--primary-foreground)' },
+          mobile: { fontSize: 'text-lg', textAlign: 'text-center', opacity: 'opacity-80' },
+          desktop: {}, text: 'Join thousands of happy customers. No commitment required.', tagName: 'p',
+          custom: { displayName: 'CTA Subtitle' } },
+        displayName: 'Text', parent: 'cta_inner', nodes: [], linkedNodes: {}
+      },
+      cta_buttons: {
+        type: { resolvedName: 'ButtonList' }, isCanvas: true,
+        props: { canDelete: true, canEditName: true, root: {},
+          mobile: { display: 'flex', flexDirection: 'flex-row', gap: 'gap-3', justifyContent: 'justify-center', flexWrap: 'flex-wrap' },
+          desktop: {},
+          custom: { displayName: 'CTA Buttons' } },
+        displayName: 'ButtonList', parent: 'cta_inner', nodes: ['cta_btn_primary', 'cta_btn_ghost'], linkedNodes: {}
+      },
+      cta_btn_primary: {
+        type: { resolvedName: 'Button' }, isCanvas: false,
+        props: { canDelete: true, canEditName: true,
+          root: { background: 'bg-(--primary-foreground)', color: 'text-(--primary)', radius: 'rounded-(--radius)' },
+          mobile: { px: 'px-(--button-padding-x)', py: 'py-(--button-padding-y)' }, desktop: {}, text: 'Get Started', url: '#',
+          custom: { displayName: 'Primary Button' } },
+        displayName: 'Button', parent: 'cta_buttons', nodes: [], linkedNodes: {}
+      },
+      cta_btn_ghost: {
+        type: { resolvedName: 'Button' }, isCanvas: false,
+        props: { canDelete: true, canEditName: true,
+          root: { background: 'bg-transparent', color: 'text-(--primary-foreground)', border: 'border', borderColor: 'border-(--primary-foreground)', radius: 'rounded-(--radius)' },
+          mobile: { px: 'px-(--button-padding-x)', py: 'py-(--button-padding-y)' }, desktop: {}, text: 'Learn More', url: '#',
+          custom: { displayName: 'Ghost Button' } },
+        displayName: 'Button', parent: 'cta_buttons', nodes: [], linkedNodes: {}
+      },
+    },
+  },
 };

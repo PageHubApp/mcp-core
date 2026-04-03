@@ -185,7 +185,10 @@ module.exports = {
   async get_design_patterns(args) {
     const patterns = getDesignPatterns();
     if (args.pattern) {
-      const pattern = patterns[args.pattern];
+      // Aliases for common section type names
+      const ALIASES = { footer: 'structured-footer', gallery: 'bento-gallery', testimonials: 'quote-testimonials', services: 'offering-list', menu: 'offering-list', contact: 'rich-contact' };
+      const key = ALIASES[args.pattern] || args.pattern;
+      const pattern = patterns[key];
       if (!pattern) return { content: [{ type: 'text', text: `Unknown pattern: "${args.pattern}". Available: ${Object.keys(patterns).join(', ')}` }] };
       return { content: [{ type: 'text', text: `# Design Pattern: ${args.pattern}\n\n${pattern.description}\n\n**Usage:** ${pattern.usage}\n\n## Node Map\n\nPass this to add_custom_section(slug, sectionRootId: "${Object.keys(pattern.nodes)[0]}", nodes: <the nodes below>).\n\n\`\`\`json\n${JSON.stringify(pattern.nodes, null, 2)}\n\`\`\`` }] };
     }

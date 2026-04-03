@@ -41,7 +41,7 @@
       "properties": {
         "pattern": {
           "type": "string",
-          "description": "Optional: specific pattern name. Available patterns:\n  \"bento-gallery\" — asymmetric photo grid (2×2 with one tall image)\n  \"rich-contact\" — hours + address + map placeholder + multi-field form\n  \"quote-testimonials\" — star ratings + quote cards in a grid\n  \"offering-list\" — menu/service list with title, description, optional price\n  \"split-feature\" — text left + image right (or reversed), with eyebrow label\n  \"multi-column-footer\" — 3-4 column footer with nav links, contact, social\n  \"horizontal-scroller\" — horizontal scroll strip of tags/categories\nOmit for all patterns."
+          "description": "Optional: specific pattern name. Available patterns:\n  \"hero\" — split hero with eyebrow, h1, subtitle, 2 CTA buttons left + image right\n  \"features\" — 3-column icon feature cards with section header\n  \"cta\" — centered CTA band with bold heading, subtext, 2 buttons on --primary bg\n  \"bento-gallery\" — asymmetric photo grid (2×2 with one tall image)\n  \"rich-contact\" — hours + address + multi-field form, two columns\n  \"quote-testimonials\" — star ratings + quote cards in a 2-col grid\n  \"offering-list\" — menu/service list with title and description rows\n  \"structured-footer\" — centered footer with brand, address, links, copyright\nOmit for all patterns."
         }
       }
     }

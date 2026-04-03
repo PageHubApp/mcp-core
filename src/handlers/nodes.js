@@ -96,6 +96,121 @@ module.exports = {
     return { content: [{ type: 'text', text: label }] };
   },
 
+  async set_footer(args) {
+    const { targetId, targetType, flat } = await fetchTarget(args);
+
+    // Patch footer container background/color
+    if (!flat.ftr_content) throw new Error('No ftr_content node found. Is this a PageHub site?');
+    if (args.contentBackground || args.contentColor) {
+      flat.ftr_content.props.root = flat.ftr_content.props.root || {};
+      if (args.contentBackground) flat.ftr_content.props.root.background = args.contentBackground;
+      if (args.contentColor) flat.ftr_content.props.root.color = args.contentColor;
+    }
+
+    // Patch copyright text node
+    if (flat.ftr_text) {
+      if (args.copyrightHtml) flat.ftr_text.props.text = args.copyrightHtml;
+      if (args.copyrightTagName) flat.ftr_text.props.tagName = args.copyrightTagName;
+      if (args.copyrightRootColor) {
+        flat.ftr_text.props.root = flat.ftr_text.props.root || {};
+        flat.ftr_text.props.root.color = args.copyrightRootColor;
+      }
+    }
+
+    const result = await saveTarget(targetId, targetType, flat);
+    const label = targetType === 'template' ? `Footer updated in template "${targetId}".` : `Footer updated.\nEditor: ${result.url}`;
+    return { content: [{ type: 'text', text: label }] };
+  },
+
+  async set_nav(args) {
+    const { targetId, targetType, flat } = await fetchTarget(args);
+
+    if (!flat.hdr_section) throw new Error('No hdr_section node found. Is this a PageHub site?');
+    if (!flat.hdr_nav) throw new Error('No hdr_nav node found.');
+
+    // Patch header background/color
+    flat.hdr_section.props.root = flat.hdr_section.props.root || {};
+    if (args.headerBg) flat.hdr_section.props.root.background = args.headerBg;
+    if (args.headerColor) flat.hdr_section.props.root.color = args.headerColor;
+
+    // Patch logo
+    if (flat.hdr_logo) {
+      if (args.logoText) flat.hdr_logo.props.text = args.logoText;
+      if (args.logoFont) {
+        flat.hdr_logo.props.root = flat.hdr_logo.props.root || {};
+        flat.hdr_logo.props.root.fontFamily = args.logoFont;
+      }
+    }
+
+    // Remove old deletable desktop nav links from hdr_nav
+    const oldDesktopLinks = (flat.hdr_nav.nodes || []).filter(id => flat[id]?.props?.canDelete !== false);
+    for (const id of oldDesktopLinks) delete flat[id];
+    flat.hdr_nav.nodes = (flat.hdr_nav.nodes || []).filter(id => flat[id]);
+
+    // Remove old mobile link items from acme-mobile-items
+    const mobileItems = flat['acme-mobile-items'];
+    if (mobileItems) {
+      for (const id of (mobileItems.nodes || [])) delete flat[id];
+      mobileItems.nodes = [];
+    }
+
+    // Add new nav links
+    if (args.links && Array.isArray(args.links)) {
+      const linkColor = args.headerColor || 'text-(--foreground)';
+      for (let i = 0; i < args.links.length; i++) {
+        const link = args.links[i];
+        const desktopId = `nav_link_${i}`;
+        const mobileId = `nav_mobile_link_${i}`;
+
+        // Desktop button (hidden on mobile)
+        flat[desktopId] = {
+          type: { resolvedName: 'Button' }, isCanvas: false,
+          props: { canDelete: true, canEditName: true, text: link.text, url: link.url || '#',
+            root: { background: 'bg-transparent', color: linkColor },
+            mobile: { fontSize: 'text-sm', display: 'hidden', px: 'px-(--button-padding-x)', py: 'py-(--button-padding-y)' },
+            desktop: { display: 'block' },
+            custom: { displayName: link.text } },
+          displayName: 'Button', parent: 'hdr_nav', nodes: [], linkedNodes: {}
+        };
+        flat.hdr_nav.nodes.push(desktopId);
+
+        // Mobile menu button
+        if (mobileItems) {
+          flat[mobileId] = {
+            type: { resolvedName: 'Button' }, isCanvas: false,
+            props: { canDelete: true, canEditName: true, text: link.text, url: link.url || '#',
+              root: { background: 'bg-transparent', color: 'text-(--foreground)' },
+              mobile: { fontSize: 'text-lg', fontWeight: 'font-medium', px: 'px-4', py: 'py-3', width: 'w-full' },
+              desktop: {},
+              custom: { displayName: link.text } },
+            displayName: 'Button', parent: 'acme-mobile-items', nodes: [], linkedNodes: {}
+          };
+          mobileItems.nodes.push(mobileId);
+        }
+      }
+    }
+
+    // Add phone link to header if provided
+    if (args.phone) {
+      const phoneId = 'nav_phone';
+      if (flat[phoneId]) delete flat[phoneId];
+      flat[phoneId] = {
+        type: { resolvedName: 'Button' }, isCanvas: false,
+        props: { canDelete: true, canEditName: true, text: args.phone.text, url: args.phone.url,
+          root: { background: 'bg-transparent', color: args.headerColor || 'text-(--foreground)' },
+          mobile: { fontSize: 'text-sm', px: 'px-(--button-padding-x)', py: 'py-(--button-padding-y)' },
+          desktop: {},
+          custom: { displayName: 'Phone' } },
+        displayName: 'Button', parent: 'hdr_nav', nodes: [], linkedNodes: {}
+      };
+      flat.hdr_nav.nodes.push(phoneId);
+    }
+
+    const result = await saveTarget(targetId, targetType, flat);
+    const label = targetType === 'template' ? `Nav updated in template "${targetId}".` : `Nav updated.\nEditor: ${result.url}`;
+    return { content: [{ type: 'text', text: label }] };
+  },
+
   async set_integrations(args) {
     const { targetId, targetType, flat } = await fetchTarget(args);
     if (!flat.ROOT?.props) throw new Error('No ROOT node found.');
