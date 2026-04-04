@@ -1,0 +1,257 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "type": "section",
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "alignItems": "items-center",
+      "justifyContent": "justify-center",
+      "width": "w-full",
+      "py": "py-12",
+      "px": "px-4"
+    },
+    "desktop": {
+      "py": "py-16",
+      "px": "px-6"
+    },
+    "custom": {
+      "displayName": "Heading and email form"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "py": "py-3",
+          "px": "px-3",
+          "mx": "mx-auto",
+          "display": "flex",
+          "justifyContent": "justify-center",
+          "flexDirection": "flex-col",
+          "width": "w-full",
+          "gap": "gap-6",
+          "maxWidth": "max-w-(--content-width)"
+        },
+        "desktop": {
+          "maxWidth": "max-w-3xl"
+        },
+        "hidden": false,
+        "custom": {
+          "displayName": "Inner"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "justifyContent": "justify-center",
+              "flexDirection": "flex-col",
+              "width": "w-full",
+              "gap": "gap-4",
+              "alignItems": "items-stretch"
+            },
+            "desktop": {
+              "alignItems": "items-center",
+              "gap": "gap-6",
+              "px": "px-4"
+            },
+            "custom": {
+              "displayName": "Copy and form"
+            }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "text": "Get the changelog, not the spam",
+                "tagName": "h2",
+                "root": {
+                  "preset": "h4",
+                  "fontFamily": "var(--heading-font-family)",
+                  "fontWeight": "font-bold",
+                  "lineHeight": "leading-tight",
+                  "color": "text-(--foreground)"
+                },
+                "mobile": {
+                  "fontSize": "text-2xl",
+                  "textAlign": "text-center"
+                },
+                "desktop": {
+                  "fontSize": "text-4xl",
+                  "textAlign": "text-center"
+                },
+                "custom": {
+                  "displayName": "Heading"
+                }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "text": "Drop your work email for release notes, template drops, and builder tips. PageHub does not sell the list.",
+                "tagName": "p",
+                "root": {
+                  "color": "text-(--muted-foreground)",
+                  "lineHeight": "leading-relaxed"
+                },
+                "mobile": {
+                  "fontSize": "text-base",
+                  "textAlign": "text-center"
+                },
+                "desktop": {
+                  "fontSize": "text-xl",
+                  "textAlign": "text-center",
+                  "lineHeight": "leading-snug"
+                },
+                "custom": {
+                  "displayName": "Body"
+                }
+              }
+            },
+            {
+              "type": "Form",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "formName": "centered-heading-capture",
+                "formType": "subscribe",
+                "root": {
+                  "width": "w-full"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "width": "w-full",
+                  "minWidth": "min-w-0",
+                  "mt": "mt-2"
+                },
+                "desktop": {
+                  "maxWidth": "max-w-md",
+                  "minWidth": "min-w-0",
+                  "mx": "mx-auto",
+                  "width": "w-full"
+                },
+                "custom": {
+                  "displayName": "Subscribe form"
+                }
+              },
+              "children": [
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {
+                      "background": "bg-(--background)",
+                      "border": "border",
+                      "borderColor": "border-(--border)",
+                      "radius": "rounded-(--radius)"
+                    },
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-row",
+                      "alignItems": "items-stretch",
+                      "width": "w-full",
+                      "overflow": "overflow-hidden"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Email row"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "FormElement",
+                      "props": {
+                        "type": "email",
+                        "name": "email",
+                        "label": "",
+                        "placeholder": "you@company.com",
+                        "required": true,
+                        "autocomplete": "email",
+                        "root": {
+                          "border": "border-0",
+                          "radius": "rounded-none",
+                          "background": "bg-transparent",
+                          "color": "text-(--input-text-color)",
+                          "placeholderColor": "placeholder:text-(--input-placeholder-color)",
+                          "focus": {
+                            "ring": "focus:ring-0",
+                            "outline": "focus:outline-none"
+                          }
+                        },
+                        "mobile": {
+                          "p": "px-3",
+                          "py": "py-2.5",
+                          "width": "w-full",
+                          "flex": "flex-1",
+                          "minWidth": "min-w-0",
+                          "fontSize": "text-sm"
+                        },
+                        "desktop": {},
+                        "canDelete": true,
+                        "canEditName": true,
+                        "custom": {
+                          "displayName": "Email"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Button",
+                      "props": {
+                        "text": "Subscribe",
+                        "type": "submit",
+                        "root": {
+                          "background": "bg-(--primary)",
+                          "color": "text-(--primary-foreground)",
+                          "radius": "rounded-none",
+                          "border": "border-0"
+                        },
+                        "mobile": {
+                          "display": "inline-flex",
+                          "alignItems": "items-center",
+                          "justifyContent": "justify-center",
+                          "shrink": "shrink-0",
+                          "px": "px-4",
+                          "py": "py-2.5",
+                          "fontSize": "text-sm",
+                          "fontWeight": "font-semibold",
+                          "border": "border-l",
+                          "borderColor": "border-(--border)"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Submit"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

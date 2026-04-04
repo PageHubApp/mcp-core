@@ -81,7 +81,10 @@
             "desktop": {
               "height": "h-96",
               "backgroundSize": "bg-cover",
-              "width": "w-1/3"
+              "width": "w-1/3",
+              "py": "",
+              "px": "",
+              "mx": ""
             },
             "backgroundImage": "https://imagedelivery.net/8PYt12v3QMuDRiYrOftNUQ/49f0f18e-83d4-496a-00a6-3a377b459d00/public",
             "backgroundImageType": "img",
@@ -115,8 +118,11 @@
             "desktop": {
               "backgroundSize": "bg-cover",
               "backgroundPosition": "bg-bottom",
-              "height": "h-full",
-              "width": "w-1/3"
+              "height": "h-96",
+              "width": "w-1/3",
+              "py": "",
+              "px": "",
+              "mx": ""
             },
             "backgroundImageType": "img",
             "backgroundImage": "https://imagedelivery.net/8PYt12v3QMuDRiYrOftNUQ/31136527-d1f2-4693-fb22-3c35df38ca00/public",
@@ -150,8 +156,11 @@
             "desktop": {
               "backgroundSize": "bg-cover",
               "backgroundPosition": "bg-right",
-              "height": "h-full",
-              "width": "w-1/3"
+              "height": "h-96",
+              "width": "w-1/3",
+              "py": "",
+              "px": "",
+              "mx": ""
             },
             "backgroundImageType": "img",
             "backgroundImage": "https://imagedelivery.net/8PYt12v3QMuDRiYrOftNUQ/6db3c432-a391-4375-d4d6-20a3434f1200/public",

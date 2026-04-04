@@ -4,12 +4,22 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)"
+    },
     "mobile": {
       "display": "flex",
       "flexDirection": "flex-col",
       "alignItems": "items-center",
       "justifyContent": "justify-center",
-      "width": "w-full"
+      "width": "w-full",
+      "py": "py-12",
+      "px": "px-4"
+    },
+    "desktop": {
+      "py": "py-16",
+      "px": "px-6"
     },
     "custom": {
       "displayName": "Column Container Section"
@@ -22,7 +32,9 @@
         "canDelete": true,
         "canEditName": true,
         "root": {
-          "background": "bg-(--muted)"
+          "background": "bg-(--muted)",
+          "radius": "rounded-(--card-radius)",
+          "color": "text-(--foreground)"
         },
         "mobile": {
           "py": "py-3",
@@ -32,17 +44,18 @@
           "justifyContent": "justify-end",
           "flexDirection": "flex-col",
           "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
           "gap": "gap-3",
-          "height": "h-96",
+          "minHeight": "min-h-96",
           "backgroundSize": "bg-contain",
           "backgroundPosition": "bg-top",
-          "alignItems": "",
-          "justifyItems": "",
-          "backgroundRepeat": "bg-no-repeat"
+          "backgroundRepeat": "bg-no-repeat",
+          "overflow": "overflow-hidden"
         },
         "desktop": {
           "flexDirection": "flex-row",
-          "height": "h-screen",
+          "minHeight": "min-h-screen",
+          "height": "",
           "backgroundSize": "bg-cover",
           "backgroundPosition": "bg-bottom-left",
           "py": "",
@@ -53,13 +66,7 @@
         },
         "backgroundImageType": "img",
         "backgroundImage": "https://imagedelivery.net/8PYt12v3QMuDRiYrOftNUQ/f4722fe1-53f8-4804-1d6c-2d3dac4cd000/public",
-        "className": [
-          "h-[440px]"
-        ],
         "hidden": false,
-        "hasMany": [
-          "B-vGYd8I6y"
-        ],
         "custom": {
           "displayName": "Column Container"
         }
@@ -71,31 +78,29 @@
             "canDelete": true,
             "canEditName": true,
             "root": {
-              "color": "text-(--background)",
-              "presetMaxWidth": "max-w-(--breakpoint-lg)"
+              "color": "text-(--background)"
             },
             "mobile": {
-              "py": "py-3",
-              "px": "px-3",
+              "py": "py-6",
+              "px": "px-4",
               "display": "flex",
               "justifyContent": "justify-center",
               "flexDirection": "flex-col",
               "width": "w-full",
-              "gap": "gap-3",
+              "gap": "gap-4",
               "height": "h-auto",
-              "maxWidth": "max-w-(--breakpoint-lg)"
+              "maxWidth": "max-w-(--content-width)"
             },
             "desktop": {
-              "height": "",
-              "width": "w-[px]",
+              "width": "w-full",
+              "maxWidth": "max-w-2xl",
+              "py": "py-10",
+              "px": "px-8",
               "my": "",
-              "maxWidth": "max-w-[740px]"
+              "height": ""
             },
-            "hasMany": [
-              "VOVGS1syh6"
-            ],
             "custom": {
-              "displayName": "Row Container"
+              "displayName": "Copy column"
             }
           },
           "children": [
@@ -104,21 +109,26 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "text": "Dolore qui anim ut dolore.",
+                "text": "Ship the story and the structure together",
+                "tagName": "h2",
                 "root": {
                   "preset": "h4",
-                  "tagName": "h2"
+                  "fontFamily": "var(--heading-font-family)",
+                  "fontWeight": "font-bold",
+                  "lineHeight": "leading-tight",
+                  "color": "text-(--background)"
                 },
                 "mobile": {
-                  "fontSize": "text-2xl"
+                  "fontSize": "text-2xl",
+                  "textAlign": "text-center"
                 },
                 "desktop": {
                   "fontSize": "text-4xl",
-                  "textAlign": "text-center"
+                  "textAlign": "text-right"
                 },
-                "hasMany": [
-                  "jGQInE3_Vw"
-                ]
+                "custom": {
+                  "displayName": "Heading"
+                }
               }
             },
             {
@@ -126,22 +136,26 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "text": "Aliqua cillum aliqua magna sit eu excepteur eiusmod sit labore nisi Lorem dolor. Dolore reprehenderit nulla aliquip amet officia anim ad. ",
+                "text": "PageHub keeps blocks, presets, and tokens wired the same way across pages, so your team spends less time fixing drift and more time publishing.",
+                "tagName": "p",
                 "root": {
-                  "preset": "h5",
-                  "tagName": "h2"
+                  "color": "text-(--background)",
+                  "lineHeight": "leading-relaxed"
                 },
                 "mobile": {
-                  "fontSize": "text-xl"
+                  "fontSize": "text-base",
+                  "textAlign": "text-center",
+                  "opacity": "opacity-90"
                 },
                 "desktop": {
-                  "fontSize": "text-3xl",
-                  "textAlign": "text-center",
-                  "lineHeight": "leading-10"
+                  "fontSize": "text-xl",
+                  "textAlign": "text-right",
+                  "lineHeight": "leading-snug",
+                  "opacity": "opacity-90"
                 },
-                "hasMany": [
-                  "xQW0hDluc6"
-                ]
+                "custom": {
+                  "displayName": "Body"
+                }
               }
             }
           ]

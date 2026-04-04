@@ -4,15 +4,25 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)"
+    },
     "mobile": {
       "display": "flex",
       "flexDirection": "flex-col",
       "alignItems": "items-center",
       "justifyContent": "justify-center",
-      "width": "w-full"
+      "width": "w-full",
+      "py": "py-12",
+      "px": "px-4"
+    },
+    "desktop": {
+      "py": "py-16",
+      "px": "px-6"
     },
     "custom": {
-      "displayName": "Row Container Section"
+      "displayName": "Outline CTA section"
     }
   },
   "children": [
@@ -21,9 +31,7 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {
-          "presetMaxWidth": "max-w-(--breakpoint-lg)"
-        },
+        "root": {},
         "mobile": {
           "py": "py-3",
           "px": "px-3",
@@ -31,21 +39,19 @@
           "display": "flex",
           "justifyContent": "justify-center",
           "flexDirection": "flex-col",
+          "alignItems": "items-center",
           "width": "w-full",
           "gap": "gap-9",
           "height": "h-auto",
-          "maxWidth": "max-w-(--breakpoint-lg)"
+          "maxWidth": "max-w-(--content-width)"
         },
         "desktop": {
-          "width": "w-10/12",
+          "width": "w-full",
           "gap": "gap-12"
         },
-        "hasMany": [
-          "yP4zLb5Jmk"
-        ],
         "hidden": false,
         "custom": {
-          "displayName": "Row Container"
+          "displayName": "Stack"
         }
       },
       "children": [
@@ -54,20 +60,25 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "text": "Fugiat aliqua laboris anim",
-            "desktop": {
-              "textAlign": "text-center",
-              "fontSize": "text-6xl"
-            },
-            "hasMany": [
-              "3BcYyAP4QI"
-            ],
+            "text": "Put structure where your instincts already live",
+            "tagName": "h2",
             "root": {
-              "preset": "h2",
-              "tagName": "h2"
+              "preset": "h3",
+              "fontFamily": "var(--heading-font-family)",
+              "fontWeight": "font-bold",
+              "lineHeight": "leading-tight",
+              "color": "text-(--foreground)"
             },
             "mobile": {
-              "fontSize": "text-4xl"
+              "fontSize": "text-3xl",
+              "textAlign": "text-center"
+            },
+            "desktop": {
+              "textAlign": "text-center",
+              "fontSize": "text-5xl"
+            },
+            "custom": {
+              "displayName": "Heading"
             }
           }
         },
@@ -76,21 +87,24 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "text": "Non deserunt ullamco veniam.",
-            "desktop": {
-              "textAlign": "text-center",
-              "fontSize": "text-4xl",
-              "lineHeight": "leading-snug"
-            },
-            "hasMany": [
-              "97PhIKo2lX"
-            ],
+            "text": "PageHub turns reusable blocks and presets into the default path, so experiments stay fast without forked layouts.",
+            "tagName": "p",
             "root": {
-              "preset": "h4",
-              "tagName": "h2"
+              "color": "text-(--muted-foreground)",
+              "lineHeight": "leading-relaxed"
             },
             "mobile": {
-              "fontSize": "text-2xl"
+              "fontSize": "text-lg",
+              "textAlign": "text-center",
+              "maxWidth": "max-w-3xl"
+            },
+            "desktop": {
+              "textAlign": "text-center",
+              "fontSize": "text-2xl",
+              "lineHeight": "leading-snug"
+            },
+            "custom": {
+              "displayName": "Subcopy"
             }
           }
         },
@@ -99,10 +113,11 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
+            "url": "",
             "buttons": [
               {
-                "text": "About Us",
-                "url": "/about"
+                "text": "Contact sales",
+                "url": "/contact"
               }
             ],
             "desktop": {
@@ -118,28 +133,24 @@
               "justifyContent": "justify-center"
             },
             "iconFontSize": "",
-            "hasMany": [
-              "D7l8f2xy4l"
-            ],
+            "className": ["border-dashed"],
             "root": {
-              "background": "bg-(--secondary)",
-              "radius": "rounded-2xl",
-              "borderColor": "border-(--primary)",
+              "background": "bg-transparent",
+              "radius": "rounded-(--radius-lg)",
+              "borderColor": "border-(--foreground)",
               "border": "border-4",
-              "color": "text-(--card-foreground)",
-              "animation": "spring"
+              "color": "text-(--foreground)"
             },
             "mobile": {
-              "flexDirection": "",
               "justifyContent": "justify-center",
-              "px": "px-24",
+              "px": "px-20",
               "py": "py-9"
             },
             "hover": {
-              "background": "bg-(--primary)",
-              "color": "text-(--secondary)"
+              "borderColor": "border-(--accent)",
+              "color": "text-(--accent)",
+              "background": "bg-transparent"
             },
-            "url": "ref:Xh6BuJJmYV",
             "custom": {
               "displayName": "Button List"
             }
@@ -150,11 +161,12 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "text": "About Us",
-                "url": "ref:Xh6BuJJmYV",
+                "text": "Contact sales",
+                "url": "/contact",
                 "type": "button",
                 "root": {
-                  "background": ""
+                  "background": "bg-transparent",
+                  "color": "text-(--foreground)"
                 },
                 "mobile": {
                   "display": "flex",
@@ -169,11 +181,11 @@
                   "fontSize": "text-2xl"
                 },
                 "hover": {
-                  "background": "bg-(--primary)",
-                  "color": "text-(--secondary)"
+                  "background": "bg-transparent",
+                  "color": "text-(--accent)"
                 },
                 "custom": {
-                  "displayName": "About Us"
+                  "displayName": "Contact sales"
                 }
               }
             }

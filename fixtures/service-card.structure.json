@@ -8,20 +8,9 @@
       "background": "bg-(--background)",
       "color": "text-(--foreground)"
     },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "width": "w-full",
-      "py": "py-16",
-      "px": "px-6"
-    },
-    "desktop": {
-      "py": "py-24",
-      "px": "px-8"
-    },
-    "custom": {
-      "displayName": "Commerce Bento Showcase"
-    }
+    "mobile": { "display": "flex", "flexDirection": "flex-col", "width": "w-full", "py": "py-16", "px": "px-6" },
+    "desktop": { "py": "py-24", "px": "px-8" },
+    "custom": { "displayName": "Commerce Bento Showcase" }
   },
   "children": [
     {
@@ -29,15 +18,7 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "alignItems": "items-center",
-          "gap": "gap-4",
-          "width": "w-full",
-          "textAlign": "text-center",
-          "mb": "mb-16"
-        },
+        "mobile": { "display": "flex", "flexDirection": "flex-col", "alignItems": "items-center", "gap": "gap-4", "width": "w-full", "textAlign": "text-center", "mb": "mb-16" },
         "desktop": { "textAlign": "text-center", "alignItems": "items-center", "maxWidth": "max-w-2xl", "mx": "mx-auto" },
         "custom": { "displayName": "Bento Header" }
       },
@@ -70,14 +51,7 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "mobile": {
-          "display": "grid",
-          "gridCols": "grid-cols-1",
-          "gap": "gap-8",
-          "width": "w-full",
-          "maxWidth": "max-w-7xl",
-          "mx": "mx-auto"
-        },
+        "mobile": { "display": "grid", "gridCols": "grid-cols-1", "gap": "gap-8", "width": "w-full", "maxWidth": "max-w-7xl", "mx": "mx-auto" },
         "desktop": { "gridCols": "grid-cols-12", "height": "h-[700px]", "gap": "gap-6" },
         "custom": { "displayName": "Bento Grid" }
       },
@@ -96,8 +70,8 @@
             {
               "type": "Image",
               "props": {
-                "content": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=800&fit=crop",
-                "alt": "Analytics dashboard mockup",
+                "content": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200",
+                "alt": "Bento 1",
                 "mobile": { "position": "absolute", "inset": "inset-0", "width": "w-full", "height": "h-full", "objectFit": "object-cover", "opacity": "opacity-20" },
                 "custom": { "displayName": "Background Image" }
               }
@@ -167,8 +141,8 @@
                 {
                   "type": "Image",
                   "props": {
-                    "content": "https://images.unsplash.com/photo-1586769852836-bc069f19e1b6?w=600&h=400&fit=crop",
-                    "alt": "Logistics",
+                    "content": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800",
+                    "alt": "Bento 2",
                     "mobile": { "position": "absolute", "inset": "inset-0", "width": "w-full", "height": "h-full", "objectFit": "object-cover", "opacity": "opacity-10" },
                     "custom": { "displayName": "Overlay Image" }
                   }
@@ -217,8 +191,8 @@
                 {
                   "type": "Image",
                   "props": {
-                    "content": "https://images.unsplash.com/photo-1551288049-bbdac8626ad1?w=600&h=400&fit=crop",
-                    "alt": "Data view",
+                    "content": "https://images.unsplash.com/photo-1542744159-2c810ae2f01f?auto=format&fit=crop&q=80&w=800",
+                    "alt": "Bento 3",
                     "mobile": { "position": "absolute", "inset": "inset-0", "width": "w-full", "height": "h-full", "objectFit": "object-cover", "opacity": "opacity-10" },
                     "custom": { "displayName": "Overlay Image" }
                   }

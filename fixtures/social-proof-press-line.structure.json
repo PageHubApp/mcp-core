@@ -1,0 +1,194 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "type": "section",
+    "root": {
+      "background": "bg-(--muted)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "alignItems": "items-center",
+      "width": "w-full",
+      "py": "py-10",
+      "px": "px-4"
+    },
+    "desktop": {
+      "py": "py-14",
+      "px": "px-6"
+    },
+    "custom": {
+      "displayName": "Press logos section"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "alignItems": "items-center",
+          "gap": "gap-8",
+          "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
+          "mx": "mx-auto"
+        },
+        "custom": {
+          "displayName": "Inner"
+        }
+      },
+      "children": [
+        {
+          "type": "Text",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "text": "AS SEEN IN",
+            "tagName": "p",
+            "root": {
+              "color": "text-(--muted-foreground)",
+              "fontSize": "text-xs",
+              "fontWeight": "font-bold",
+              "letterSpacing": "tracking-widest"
+            },
+            "mobile": {
+              "textAlign": "text-center"
+            },
+            "custom": {
+              "displayName": "Eyebrow"
+            }
+          }
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-row",
+              "flexWrap": "flex-wrap",
+              "justifyContent": "justify-center",
+              "alignItems": "items-center",
+              "gap": "gap-8",
+              "width": "w-full"
+            },
+            "custom": {
+              "displayName": "Logo row"
+            }
+          },
+          "children": [
+            {
+              "type": "Image",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "content": "https://dummyimage.com/140x40/e2e8f0/64748b.png&text=PRESS+01",
+                "alt": "Press outlet one",
+                "root": {
+                  "bgOpacity": "opacity-70"
+                },
+                "mobile": {
+                  "height": "h-6",
+                  "width": "w-auto",
+                  "objectFit": "object-contain"
+                },
+                "custom": {
+                  "displayName": "Logo 1"
+                }
+              }
+            },
+            {
+              "type": "Image",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "content": "https://dummyimage.com/140x40/e2e8f0/64748b.png&text=PRESS+02",
+                "alt": "Press outlet two",
+                "root": {
+                  "bgOpacity": "opacity-70"
+                },
+                "mobile": {
+                  "height": "h-6",
+                  "width": "w-auto",
+                  "objectFit": "object-contain"
+                },
+                "custom": {
+                  "displayName": "Logo 2"
+                }
+              }
+            },
+            {
+              "type": "Image",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "content": "https://dummyimage.com/140x40/e2e8f0/64748b.png&text=PRESS+03",
+                "alt": "Press outlet three",
+                "root": {
+                  "bgOpacity": "opacity-70"
+                },
+                "mobile": {
+                  "height": "h-6",
+                  "width": "w-auto",
+                  "objectFit": "object-contain"
+                },
+                "custom": {
+                  "displayName": "Logo 3"
+                }
+              }
+            },
+            {
+              "type": "Image",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "content": "https://dummyimage.com/140x40/e2e8f0/64748b.png&text=PRESS+04",
+                "alt": "Press outlet four",
+                "root": {
+                  "bgOpacity": "opacity-70"
+                },
+                "mobile": {
+                  "height": "h-6",
+                  "width": "w-auto",
+                  "objectFit": "object-contain"
+                },
+                "custom": {
+                  "displayName": "Logo 4"
+                }
+              }
+            },
+            {
+              "type": "Image",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "content": "https://dummyimage.com/140x40/e2e8f0/64748b.png&text=PRESS+05",
+                "alt": "Press outlet five",
+                "root": {
+                  "bgOpacity": "opacity-70"
+                },
+                "mobile": {
+                  "height": "h-6",
+                  "width": "w-auto",
+                  "objectFit": "object-contain"
+                },
+                "custom": {
+                  "displayName": "Logo 5"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

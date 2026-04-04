@@ -4,15 +4,25 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)"
+    },
     "mobile": {
       "display": "flex",
       "flexDirection": "flex-col",
       "alignItems": "items-center",
       "justifyContent": "justify-center",
-      "width": "w-full"
+      "width": "w-full",
+      "py": "py-12",
+      "px": "px-4"
+    },
+    "desktop": {
+      "py": "py-16",
+      "px": "px-6"
     },
     "custom": {
-      "displayName": "Column Container Section"
+      "displayName": "Split copy and photo"
     }
   },
   "children": [
@@ -21,9 +31,7 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {
-          "presetMaxWidth": "max-w-(--breakpoint-lg)"
-        },
+        "root": {},
         "mobile": {
           "py": "py-3",
           "px": "px-3",
@@ -32,24 +40,18 @@
           "justifyContent": "justify-center",
           "flexDirection": "flex-col",
           "width": "w-full",
-          "gap": "gap-3",
+          "gap": "gap-8",
           "height": "h-auto",
-          "maxWidth": "max-w-(--breakpoint-lg)"
+          "maxWidth": "max-w-(--content-width)"
         },
         "desktop": {
           "flexDirection": "flex-row",
-          "justifyItems": "",
-          "alignItems": "items-center"
+          "alignItems": "items-center",
+          "gap": "gap-12"
         },
-        "hasMany": [
-          "fTv9-OJbzl",
-          "BP-977gssF",
-          "9VWAjEHOBt",
-          "FXVVFbhrOB"
-        ],
         "hidden": false,
         "custom": {
-          "displayName": "Column Container"
+          "displayName": "Split row"
         }
       },
       "children": [
@@ -58,31 +60,23 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
+            "root": {},
             "mobile": {
-              "py": "",
-              "px": "",
-              "mx": "mx-auto",
               "display": "flex",
               "justifyContent": "justify-center",
               "flexDirection": "flex-col",
               "width": "w-full",
-              "gap": "gap-3",
+              "gap": "gap-4",
               "height": "h-auto"
             },
             "desktop": {
-              "alignItems": "items-center",
-              "gap": "gap-8",
-              "px": "px-20",
-              "width": "w-1/2"
+              "alignItems": "items-start",
+              "gap": "gap-6",
+              "width": "w-1/2",
+              "px": "px-4"
             },
-            "hasMany": [
-              "f8-6DuKUQl",
-              "j2xQdYkkaL",
-              "N0TAirqJLZ",
-              "Auryh2YR3k"
-            ],
             "custom": {
-              "displayName": "Row Container"
+              "displayName": "Copy column"
             }
           },
           "children": [
@@ -91,24 +85,26 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "text": "Mollit officia ullamco nostrud aute anim consectetur eu.",
-                "desktop": {
-                  "fontSize": "text-4xl",
-                  "textAlign": "text-center"
-                },
+                "text": "Layouts that stay legible under pressure",
+                "tagName": "h2",
                 "root": {
                   "preset": "h4",
-                  "tagName": "h2"
+                  "fontFamily": "var(--heading-font-family)",
+                  "fontWeight": "font-bold",
+                  "lineHeight": "leading-tight",
+                  "color": "text-(--foreground)"
                 },
                 "mobile": {
-                  "fontSize": "text-2xl"
+                  "fontSize": "text-2xl",
+                  "textAlign": "text-center"
                 },
-                "hasMany": [
-                  "uoED8VbpaL",
-                  "t3dU8jE9qK",
-                  "Vrlv6dLi87",
-                  "D0lt_hZNin"
-                ]
+                "desktop": {
+                  "fontSize": "text-4xl",
+                  "textAlign": "text-left"
+                },
+                "custom": {
+                  "displayName": "Heading"
+                }
               }
             },
             {
@@ -116,25 +112,24 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "text": "Ipsum est sint ea excepteur pariatur excepteur cupidatat exercitation officia.",
-                "desktop": {
-                  "fontSize": "text-3xl",
-                  "textAlign": "text-center",
-                  "lineHeight": "leading-loose"
-                },
+                "text": "PageHub keeps typography, spacing, and section shells consistent so marketing and product can iterate without breaking the grid.",
+                "tagName": "p",
                 "root": {
-                  "preset": "h5",
-                  "tagName": "h2"
+                  "color": "text-(--muted-foreground)",
+                  "lineHeight": "leading-relaxed"
                 },
                 "mobile": {
-                  "fontSize": "text-xl"
+                  "fontSize": "text-base",
+                  "textAlign": "text-center"
                 },
-                "hasMany": [
-                  "eRopkcldSs",
-                  "YzrVhv_1ye",
-                  "lADlhBikxG",
-                  "OpGdzOOy2x"
-                ]
+                "desktop": {
+                  "fontSize": "text-xl",
+                  "textAlign": "text-left",
+                  "lineHeight": "leading-snug"
+                },
+                "custom": {
+                  "displayName": "Body"
+                }
               }
             }
           ]
@@ -144,6 +139,9 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
+            "root": {
+              "radius": "rounded-(--card-radius)"
+            },
             "mobile": {
               "py": "py-3",
               "px": "px-3",
@@ -153,26 +151,22 @@
               "flexDirection": "flex-col",
               "width": "w-full",
               "gap": "gap-3",
-              "height": "h-72",
+              "minHeight": "min-h-72",
               "backgroundSize": "bg-cover",
-              "backgroundPosition": "bg-center"
+              "backgroundPosition": "bg-center",
+              "overflow": "overflow-hidden"
             },
             "desktop": {
               "backgroundSize": "bg-cover",
               "backgroundPosition": "bg-bottom",
-              "height": "h-96",
+              "minHeight": "min-h-96",
+              "height": "",
               "width": "w-1/2"
             },
             "backgroundImageType": "img",
             "backgroundImage": "https://imagedelivery.net/8PYt12v3QMuDRiYrOftNUQ/de5f5647-5125-4662-488c-04981ac98500/public",
-            "hasMany": [
-              "SdQEFdeVFr",
-              "HgnvRHBBH3",
-              "g2MWtwepk5",
-              "PBthyKGmUY"
-            ],
             "custom": {
-              "displayName": "Row Container"
+              "displayName": "Photo column"
             }
           }
         }

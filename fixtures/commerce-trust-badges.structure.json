@@ -1,0 +1,407 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "type": "section",
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "alignItems": "items-center",
+      "width": "w-full",
+      "py": "py-10",
+      "px": "px-4"
+    },
+    "desktop": {
+      "py": "py-12",
+      "px": "px-6"
+    },
+    "custom": {
+      "displayName": "Trust badges section"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "alignItems": "items-center",
+          "gap": "gap-6",
+          "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
+          "mx": "mx-auto"
+        },
+        "custom": {
+          "displayName": "Inner"
+        }
+      },
+      "children": [
+        {
+          "type": "Text",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "text": "CHECKOUT YOU CAN STAND BEHIND",
+            "tagName": "p",
+            "root": {
+              "color": "text-(--muted-foreground)",
+              "fontSize": "text-xs",
+              "fontWeight": "font-bold",
+              "letterSpacing": "tracking-widest"
+            },
+            "mobile": {
+              "textAlign": "text-center"
+            },
+            "custom": {
+              "displayName": "Eyebrow"
+            }
+          }
+        },
+        {
+          "type": "Text",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "text": "Trust signals shoppers look for before they buy",
+            "tagName": "h2",
+            "root": {
+              "fontFamily": "var(--heading-font-family)",
+              "fontWeight": "font-bold",
+              "lineHeight": "leading-tight",
+              "color": "text-(--foreground)"
+            },
+            "mobile": {
+              "fontSize": "text-2xl",
+              "textAlign": "text-center",
+              "maxWidth": "max-w-xl"
+            },
+            "desktop": {
+              "fontSize": "text-3xl"
+            },
+            "custom": {
+              "displayName": "Heading"
+            }
+          }
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-row",
+              "flexWrap": "flex-wrap",
+              "justifyContent": "justify-center",
+              "alignItems": "items-center",
+              "gap": "gap-3",
+              "width": "w-full"
+            },
+            "desktop": {
+              "gap": "gap-4"
+            },
+            "custom": {
+              "displayName": "Badge row"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "color": "text-(--card-foreground)",
+                  "border": "border",
+                  "borderColor": "border-(--border)",
+                  "radius": "rounded-(--radius-full)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-row",
+                  "alignItems": "items-center",
+                  "gap": "gap-2",
+                  "px": "px-4",
+                  "py": "py-2"
+                },
+                "custom": {
+                  "displayName": "Secure checkout"
+                }
+              },
+              "children": [
+                {
+                  "type": "Button",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "text": " ",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent"
+                    },
+                    "mobile": {
+                      "px": "px-0",
+                      "py": "py-0"
+                    },
+                    "icon": {
+                      "value": "ref-google:lock",
+                      "only": true,
+                      "size": "w-5 h-5",
+                      "color": "text-(--primary)"
+                    },
+                    "custom": {
+                      "displayName": "Icon"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "text": "Secure checkout",
+                    "tagName": "span",
+                    "root": {
+                      "fontWeight": "font-medium",
+                      "color": "text-(--card-foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm"
+                    },
+                    "custom": {
+                      "displayName": "Label"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "color": "text-(--card-foreground)",
+                  "border": "border",
+                  "borderColor": "border-(--border)",
+                  "radius": "rounded-(--radius-full)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-row",
+                  "alignItems": "items-center",
+                  "gap": "gap-2",
+                  "px": "px-4",
+                  "py": "py-2"
+                },
+                "custom": {
+                  "displayName": "Verified"
+                }
+              },
+              "children": [
+                {
+                  "type": "Button",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "text": " ",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent"
+                    },
+                    "mobile": {
+                      "px": "px-0",
+                      "py": "py-0"
+                    },
+                    "icon": {
+                      "value": "ref-google:verified_user",
+                      "only": true,
+                      "size": "w-5 h-5",
+                      "color": "text-(--primary)"
+                    },
+                    "custom": {
+                      "displayName": "Icon"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "text": "Verified shop",
+                    "tagName": "span",
+                    "root": {
+                      "fontWeight": "font-medium",
+                      "color": "text-(--card-foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm"
+                    },
+                    "custom": {
+                      "displayName": "Label"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "color": "text-(--card-foreground)",
+                  "border": "border",
+                  "borderColor": "border-(--border)",
+                  "radius": "rounded-(--radius-full)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-row",
+                  "alignItems": "items-center",
+                  "gap": "gap-2",
+                  "px": "px-4",
+                  "py": "py-2"
+                },
+                "custom": {
+                  "displayName": "Returns"
+                }
+              },
+              "children": [
+                {
+                  "type": "Button",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "text": " ",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent"
+                    },
+                    "mobile": {
+                      "px": "px-0",
+                      "py": "py-0"
+                    },
+                    "icon": {
+                      "value": "ref-google:assignment_return",
+                      "only": true,
+                      "size": "w-5 h-5",
+                      "color": "text-(--primary)"
+                    },
+                    "custom": {
+                      "displayName": "Icon"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "text": "30-day returns",
+                    "tagName": "span",
+                    "root": {
+                      "fontWeight": "font-medium",
+                      "color": "text-(--card-foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm"
+                    },
+                    "custom": {
+                      "displayName": "Label"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "color": "text-(--card-foreground)",
+                  "border": "border",
+                  "borderColor": "border-(--border)",
+                  "radius": "rounded-(--radius-full)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-row",
+                  "alignItems": "items-center",
+                  "gap": "gap-2",
+                  "px": "px-4",
+                  "py": "py-2"
+                },
+                "custom": {
+                  "displayName": "Support"
+                }
+              },
+              "children": [
+                {
+                  "type": "Button",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "text": " ",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent"
+                    },
+                    "mobile": {
+                      "px": "px-0",
+                      "py": "py-0"
+                    },
+                    "icon": {
+                      "value": "ref-google:support_agent",
+                      "only": true,
+                      "size": "w-5 h-5",
+                      "color": "text-(--primary)"
+                    },
+                    "custom": {
+                      "displayName": "Icon"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "text": "Human support",
+                    "tagName": "span",
+                    "root": {
+                      "fontWeight": "font-medium",
+                      "color": "text-(--card-foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm"
+                    },
+                    "custom": {
+                      "displayName": "Label"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
