@@ -1,0 +1,305 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "type": "section",
+    "root": {
+      "background": "bg-(--muted)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "width": "w-full",
+      "py": "py-16",
+      "px": "px-6"
+    },
+    "desktop": {
+      "py": "py-24",
+      "px": "px-8"
+    },
+    "custom": {
+      "displayName": "Simple Product Carousel"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "alignItems": "items-center",
+          "gap": "gap-4",
+          "width": "w-full",
+          "textAlign": "text-center"
+        },
+        "desktop": { "textAlign": "text-left", "alignItems": "items-start", "maxWidth": "max-w-6xl", "mx": "mx-auto", "mb": "mb-12" },
+        "custom": { "displayName": "Intro Header" }
+      },
+      "children": [
+        {
+          "type": "Text",
+          "props": {
+            "text": "FEATURED SELECTIONS",
+            "tagName": "p",
+            "root": { "color": "text-(--accent)", "fontWeight": "font-bold", "letterSpacing": "tracking-widest" },
+            "mobile": { "fontSize": "text-xs" },
+            "custom": { "displayName": "Eyebrow" }
+          }
+        },
+        {
+          "type": "Text",
+          "props": {
+            "text": "The Essence of Performance",
+            "tagName": "h2",
+            "root": { "fontWeight": "font-black", "fontFamily": "var(--heading-font-family)", "lineHeight": "leading-tight" },
+            "mobile": { "fontSize": "text-3xl" },
+            "desktop": { "fontSize": "text-5xl" },
+            "custom": { "displayName": "Headline" }
+          }
+        },
+        {
+          "type": "Text",
+          "props": {
+            "text": "Discover our most requested items, shipping direct to your door.",
+            "tagName": "p",
+            "root": { "color": "text-(--muted-foreground)" },
+            "mobile": { "fontSize": "text-base" },
+            "desktop": { "fontSize": "text-lg" },
+            "custom": { "displayName": "Subhead" }
+          }
+        }
+      ]
+    },
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "mobile": {
+          "display": "grid",
+          "gridCols": "grid-cols-1",
+          "gap": "gap-8",
+          "width": "w-full",
+          "maxWidth": "max-w-6xl",
+          "mx": "mx-auto"
+        },
+        "desktop": { "gridCols": "grid-cols-3" },
+        "custom": { "displayName": "Product Grid" }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "width": "w-full",
+              "background": "bg-(--card)",
+              "radius": "rounded-(--card-radius)",
+              "border": "border",
+              "borderColor": "border-(--border)",
+              "overflow": "overflow-hidden"
+            },
+            "custom": { "displayName": "Product 1" }
+          },
+          "children": [
+            {
+              "type": "Image",
+              "props": {
+                "content": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&h=600&fit=crop",
+                "alt": "Elite Training Shoe",
+                "mobile": { "width": "w-full", "height": "h-auto", "objectFit": "object-cover", "aspectRatio": "aspect-square" },
+                "custom": { "displayName": "Product Image" }
+              }
+            },
+            {
+              "type": "Container",
+              "props": {
+                "mobile": { "display": "flex", "flexDirection": "flex-col", "gap": "gap-4", "p": "p-6" },
+                "custom": { "displayName": "Body" }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Elite Training Shoe",
+                    "tagName": "h3",
+                    "root": { "fontWeight": "font-bold", "fontFamily": "var(--heading-font-family)" },
+                    "mobile": { "fontSize": "text-lg" },
+                    "custom": { "displayName": "Product Title" }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "$129.00",
+                    "tagName": "p",
+                    "root": { "fontWeight": "font-bold", "color": "text-(--primary)" },
+                    "mobile": { "fontSize": "text-base" },
+                    "custom": { "displayName": "Price" }
+                  }
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Buy with Stripe",
+                    "url": "#",
+                    "root": { "background": "bg-(--primary)", "color": "text-(--primary-foreground)", "radius": "rounded-(--radius)" },
+                    "mobile": { "display": "flex", "alignItems": "items-center", "justifyContent": "justify-center", "gap": "gap-2", "py": "py-2.5", "px": "px-4", "fontSize": "text-sm", "fontWeight": "font-bold", "width": "w-full" },
+                    "icon": { "value": "ref-google:shopping_cart", "size": "w-4 h-4", "position": "left" },
+                    "custom": { "displayName": "Buy Button" }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "width": "w-full",
+              "background": "bg-(--card)",
+              "radius": "rounded-(--card-radius)",
+              "border": "border",
+              "borderColor": "border-(--border)",
+              "overflow": "overflow-hidden"
+            },
+            "custom": { "displayName": "Product 2" }
+          },
+          "children": [
+            {
+              "type": "Image",
+              "props": {
+                "content": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&h=600&fit=crop",
+                "alt": "Performance Tee",
+                "mobile": { "width": "w-full", "height": "h-auto", "objectFit": "object-cover", "aspectRatio": "aspect-square" },
+                "custom": { "displayName": "Product Image" }
+              }
+            },
+            {
+              "type": "Container",
+              "props": {
+                "mobile": { "display": "flex", "flexDirection": "flex-col", "gap": "gap-4", "p": "p-6" },
+                "custom": { "displayName": "Body" }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Performance Tee",
+                    "tagName": "h3",
+                    "root": { "fontWeight": "font-bold", "fontFamily": "var(--heading-font-family)" },
+                    "mobile": { "fontSize": "text-lg" },
+                    "custom": { "displayName": "Product Title" }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "$45.00",
+                    "tagName": "p",
+                    "root": { "fontWeight": "font-bold", "color": "text-(--primary)" },
+                    "mobile": { "fontSize": "text-base" },
+                    "custom": { "displayName": "Price" }
+                  }
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Buy with Stripe",
+                    "url": "#",
+                    "root": { "background": "bg-(--primary)", "color": "text-(--primary-foreground)", "radius": "rounded-(--radius)" },
+                    "mobile": { "display": "flex", "alignItems": "items-center", "justifyContent": "justify-center", "gap": "gap-2", "py": "py-2.5", "px": "px-4", "fontSize": "text-sm", "fontWeight": "font-bold", "width": "w-full" },
+                    "icon": { "value": "ref-google:shopping_cart", "size": "w-4 h-4", "position": "left" },
+                    "custom": { "displayName": "Buy Button" }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "width": "w-full",
+              "background": "bg-(--card)",
+              "radius": "rounded-(--card-radius)",
+              "border": "border",
+              "borderColor": "border-(--border)",
+              "overflow": "overflow-hidden"
+            },
+            "custom": { "displayName": "Product 3" }
+          },
+          "children": [
+            {
+              "type": "Image",
+              "props": {
+                "content": "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600&h=600&fit=crop",
+                "alt": "Recover Tech Crew",
+                "mobile": { "width": "w-full", "height": "h-auto", "objectFit": "object-cover", "aspectRatio": "aspect-square" },
+                "custom": { "displayName": "Product Image" }
+              }
+            },
+            {
+              "type": "Container",
+              "props": {
+                "mobile": { "display": "flex", "flexDirection": "flex-col", "gap": "gap-4", "p": "p-6" },
+                "custom": { "displayName": "Body" }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Recover Tech Crew",
+                    "tagName": "h3",
+                    "root": { "fontWeight": "font-bold", "fontFamily": "var(--heading-font-family)" },
+                    "mobile": { "fontSize": "text-lg" },
+                    "custom": { "displayName": "Product Title" }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "$75.00",
+                    "tagName": "p",
+                    "root": { "fontWeight": "font-bold", "color": "text-(--primary)" },
+                    "mobile": { "fontSize": "text-base" },
+                    "custom": { "displayName": "Price" }
+                  }
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Buy with Stripe",
+                    "url": "#",
+                    "root": { "background": "bg-(--primary)", "color": "text-(--primary-foreground)", "radius": "rounded-(--radius)" },
+                    "mobile": { "display": "flex", "alignItems": "items-center", "justifyContent": "justify-center", "gap": "gap-2", "py": "py-2.5", "px": "px-4", "fontSize": "text-sm", "fontWeight": "font-bold", "width": "w-full" },
+                    "icon": { "value": "ref-google:shopping_cart", "size": "w-4 h-4", "position": "left" },
+                    "custom": { "displayName": "Buy Button" }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

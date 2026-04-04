@@ -1,0 +1,162 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "type": "section",
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "width": "w-full",
+      "py": "py-16",
+      "px": "px-6"
+    },
+    "desktop": {
+      "py": "py-24",
+      "px": "px-8"
+    },
+    "custom": {
+      "displayName": "Single Product Checkout"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "alignItems": "items-center",
+          "gap": "gap-12",
+          "width": "w-full",
+          "maxWidth": "max-w-6xl",
+          "mx": "mx-auto"
+        },
+        "desktop": {
+          "flexDirection": "flex-row",
+          "alignItems": "items-center",
+          "gap": "gap-16"
+        },
+        "custom": { "displayName": "Inner" }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "width": "w-full",
+              "maxWidth": "max-w-md",
+              "radius": "rounded-(--card-radius)",
+              "overflow": "overflow-hidden",
+              "border": "border",
+              "borderColor": "border-(--border)",
+              "background": "bg-(--card)"
+            },
+            "desktop": { "flex": "flex-1" },
+            "custom": { "displayName": "Product Image Card" }
+          },
+          "children": [
+            {
+              "type": "Image",
+              "props": {
+                "content": "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=1000&h=1000&fit=crop",
+                "alt": "Premium apparel showcase",
+                "mobile": { "width": "w-full", "height": "h-auto", "objectFit": "object-cover", "aspectRatio": "aspect-square" },
+                "custom": { "displayName": "Product Image" }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "gap": "gap-6",
+              "width": "w-full"
+            },
+            "desktop": { "flex": "flex-1" },
+            "custom": { "displayName": "Product Info" }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "text": "LIMITED EDITION RELEASE",
+                "tagName": "p",
+                "root": { "color": "text-(--accent)", "fontWeight": "font-bold", "letterSpacing": "tracking-widest" },
+                "mobile": { "fontSize": "text-xs" },
+                "custom": { "displayName": "Eyebrow" }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "The Signature Performance Hoodie",
+                "tagName": "h1",
+                "root": { "fontWeight": "font-black", "fontFamily": "var(--heading-font-family)", "lineHeight": "leading-tight" },
+                "mobile": { "fontSize": "text-3xl" },
+                "desktop": { "fontSize": "text-5xl" },
+                "custom": { "displayName": "Product Name" }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "$89.00 USD",
+                "tagName": "p",
+                "root": { "fontWeight": "font-bold", "color": "text-(--primary)" },
+                "mobile": { "fontSize": "text-2xl" },
+                "custom": { "displayName": "Price" }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Crafted from sustainable bamboo fibers with a tailored athletic fit. Moisture-wicking, antimicrobial, and built to last five times longer than standard cotton alternatives.",
+                "tagName": "p",
+                "root": { "color": "text-(--muted-foreground)", "lineHeight": "leading-relaxed" },
+                "mobile": { "fontSize": "text-base" },
+                "custom": { "displayName": "Description" }
+              }
+            },
+            {
+              "type": "Button",
+              "props": {
+                "text": "Buy Now with Stripe",
+                "url": "#",
+                "root": { "background": "bg-(--primary)", "color": "text-(--primary-foreground)", "radius": "rounded-(--radius)" },
+                "mobile": { "display": "flex", "alignItems": "items-center", "justifyContent": "justify-center", "gap": "gap-2", "py": "py-4", "px": "px-8", "fontSize": "text-lg", "fontWeight": "font-bold", "width": "w-full" },
+                "desktop": { "width": "w-max" },
+                "icon": { "value": "ref-google:shopping_cart", "size": "w-5 h-5", "position": "left" },
+                "custom": { "displayName": "Buy Button" }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Secure checkout powered by Stripe. Shipping worldwide from our London warehouse.",
+                "tagName": "p",
+                "root": { "color": "text-(--muted-foreground)", "fontSize": "text-xs" },
+                "custom": { "displayName": "Trust Note" }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -3,22 +3,24 @@
   "props": {
     "canDelete": true,
     "canEditName": true,
+    "type": "section",
     "root": {
-      "background": "bg-(--card)",
-      "color": "text-(--card-foreground)",
-      "border": "border",
-      "borderColor": "border-(--border)",
-      "radius": "rounded-(--card-radius)"
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)"
     },
     "mobile": {
       "display": "flex",
       "flexDirection": "flex-col",
       "width": "w-full",
-      "overflow": "overflow-hidden"
+      "py": "py-16",
+      "px": "px-6"
     },
-    "desktop": {},
+    "desktop": {
+      "py": "py-24",
+      "px": "px-8"
+    },
     "custom": {
-      "displayName": "Service Card"
+      "displayName": "Commerce Bento Showcase"
     }
   },
   "children": [
@@ -27,39 +29,57 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {
-          "background": "bg-(--accent)"
-        },
         "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "alignItems": "items-center",
+          "gap": "gap-4",
           "width": "w-full",
-          "height": "h-1"
+          "textAlign": "text-center",
+          "mb": "mb-16"
         },
-        "desktop": {},
-        "custom": {
-          "displayName": "Accent stripe"
+        "desktop": { "textAlign": "text-center", "alignItems": "items-center", "maxWidth": "max-w-2xl", "mx": "mx-auto" },
+        "custom": { "displayName": "Bento Header" }
+      },
+      "children": [
+        {
+          "type": "Text",
+          "props": {
+            "text": "OUR OFFERINGS",
+            "tagName": "p",
+            "root": { "color": "text-(--accent)", "fontWeight": "font-bold", "letterSpacing": "tracking-widest" },
+            "mobile": { "fontSize": "text-xs" },
+            "custom": { "displayName": "Eyebrow" }
+          }
+        },
+        {
+          "type": "Text",
+          "props": {
+            "text": "Master Your Workflow",
+            "tagName": "h2",
+            "root": { "fontWeight": "font-black", "fontFamily": "var(--heading-font-family)", "lineHeight": "leading-tight" },
+            "mobile": { "fontSize": "text-3xl" },
+            "desktop": { "fontSize": "text-5xl" },
+            "custom": { "displayName": "Headline" }
+          }
         }
-      }
+      ]
     },
     {
       "type": "Container",
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
         "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "gap": "gap-5",
+          "display": "grid",
+          "gridCols": "grid-cols-1",
+          "gap": "gap-8",
           "width": "w-full",
-          "p": "p-7"
+          "maxWidth": "max-w-7xl",
+          "mx": "mx-auto"
         },
-        "desktop": {
-          "gap": "gap-6",
-          "p": "p-8"
-        },
-        "custom": {
-          "displayName": "Card body"
-        }
+        "desktop": { "gridCols": "grid-cols-12", "height": "h-[700px]", "gap": "gap-6" },
+        "custom": { "displayName": "Bento Grid" }
       },
       "children": [
         {
@@ -67,161 +87,174 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {
-              "background": "bg-(--muted)",
-              "border": "border",
-              "borderColor": "border-(--border)",
-              "radius": "rounded-2xl"
-            },
-            "mobile": {
-              "display": "flex",
-              "alignItems": "items-center",
-              "justifyContent": "justify-center",
-              "width": "w-14",
-              "height": "h-14"
-            },
-            "desktop": {
-              "width": "w-16",
-              "height": "h-16"
-            },
-            "custom": {
-              "displayName": "Icon frame"
-            }
+            "root": { "background": "bg-(--primary)", "color": "text-(--primary-foreground)", "radius": "rounded-(--card-radius)", "shadow": "shadow-lg" },
+            "mobile": { "display": "flex", "flexDirection": "flex-col", "justifyContent": "justify-between", "padding": "p-10", "minHeight": "min-h-[500px]", "position": "relative", "overflow": "overflow-hidden" },
+            "desktop": { "gridColStart": "col-start-1", "gridColEnd": "col-end-9" },
+            "custom": { "displayName": "Feature Block 1" }
           },
           "children": [
             {
-              "type": "Button",
+              "type": "Image",
               "props": {
-                "canDelete": true,
-                "canEditName": true,
-                "text": "Design and product engineering",
-                "url": "#",
-                "root": {
-                  "background": "bg-transparent",
-                  "color": "text-(--primary)",
-                  "radius": "rounded-(--radius)"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "alignItems": "items-center",
-                  "justifyContent": "justify-center",
-                  "py": "py-0",
-                  "px": "px-0"
-                },
-                "desktop": {},
-                "icon": {
-                  "value": "ref-google:design_services",
-                  "only": true,
-                  "size": "w-8 h-8",
-                  "color": "text-(--primary)"
-                },
-                "custom": {
-                  "displayName": "Service icon"
-                }
+                "content": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=800&fit=crop",
+                "alt": "Analytics dashboard mockup",
+                "mobile": { "position": "absolute", "inset": "inset-0", "width": "w-full", "height": "h-full", "objectFit": "object-cover", "opacity": "opacity-20" },
+                "custom": { "displayName": "Background Image" }
               }
+            },
+            {
+              "type": "Container",
+              "props": {
+                "mobile": { "position": "relative", "zIndex": "z-10", "display": "flex", "flexDirection": "flex-col", "gap": "gap-4", "height": "h-full", "justifyContent": "justify-end" },
+                "custom": { "displayName": "Content Layer" }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "The Complete System",
+                    "tagName": "h3",
+                    "root": { "fontWeight": "font-black", "fontFamily": "var(--heading-font-family)" },
+                    "mobile": { "fontSize": "text-3xl" },
+                    "desktop": { "fontSize": "text-5xl" },
+                    "custom": { "displayName": "Title" }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "A high-performance commerce engine built for precision. Scale without the overhead.",
+                    "tagName": "p",
+                    "root": { "bgOpacity": "opacity-90", "lineHeight": "leading-relaxed" },
+                    "mobile": { "fontSize": "text-lg", "maxWidth": "max-w-xl" },
+                    "custom": { "displayName": "Description" }
+                  }
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Get Started Now",
+                    "url": "#",
+                    "root": { "background": "bg-(--primary-foreground)", "color": "text-(--primary)", "radius": "rounded-(--radius)" },
+                    "mobile": { "display": "flex", "alignItems": "items-center", "justifyContent": "justify-center", "py": "py-4", "px": "px-10", "fontSize": "text-base", "fontWeight": "font-bold", "mt": "mt-4", "width": "w-max" },
+                    "custom": { "displayName": "CTA" }
+                  }
+                }
+              ]
             }
           ]
         },
         {
-          "type": "Text",
+          "type": "Container",
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "text": "What we ship",
-            "tagName": "p",
-            "root": {
-              "color": "text-(--accent)",
-              "fontWeight": "font-bold",
-              "letterSpacing": "tracking-widest"
+            "mobile": { "display": "flex", "flexDirection": "flex-col", "gap": "gap-6" },
+            "desktop": { "gridColStart": "col-start-9", "gridColEnd": "col-end-13" },
+            "custom": { "displayName": "Stack Container" }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": { "background": "bg-(--card)", "border": "border", "borderColor": "border-(--border)", "radius": "rounded-(--card-radius)" },
+                "mobile": { "display": "flex", "flexDirection": "flex-col", "justifyContent": "justify-between", "padding": "p-8", "flex": "flex-1", "minHeight": "min-h-[300px]", "position": "relative", "overflow": "overflow-hidden" },
+                "custom": { "displayName": "Feature Block 2" }
+              },
+              "children": [
+                {
+                  "type": "Image",
+                  "props": {
+                    "content": "https://images.unsplash.com/photo-1586769852836-bc069f19e1b6?w=600&h=400&fit=crop",
+                    "alt": "Logistics",
+                    "mobile": { "position": "absolute", "inset": "inset-0", "width": "w-full", "height": "h-full", "objectFit": "object-cover", "opacity": "opacity-10" },
+                    "custom": { "displayName": "Overlay Image" }
+                  }
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "mobile": { "position": "relative", "zIndex": "z-10", "display": "flex", "flexDirection": "flex-col", "gap": "gap-2" },
+                    "custom": { "displayName": "Content Layer" }
+                  },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "props": {
+                        "text": "Global Logistics",
+                        "tagName": "h3",
+                        "root": { "fontWeight": "font-bold", "fontFamily": "var(--heading-font-family)", "color": "text-(--foreground)" },
+                        "mobile": { "fontSize": "text-2xl" },
+                        "custom": { "displayName": "Title" }
+                      }
+                    },
+                    {
+                      "type": "Text",
+                      "props": {
+                        "text": "Shipping to 180+ countries with automated customs handling.",
+                        "tagName": "p",
+                        "root": { "color": "text-(--muted-foreground)", "lineHeight": "leading-relaxed" },
+                        "mobile": { "fontSize": "text-base" },
+                        "custom": { "displayName": "Description" }
+                      }
+                    }
+                  ]
+                }
+              ]
             },
-            "mobile": {
-              "fontSize": "text-xs"
-            },
-            "desktop": {},
-            "className": ["uppercase"],
-            "custom": {
-              "displayName": "Eyebrow"
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": { "background": "bg-(--muted)", "radius": "rounded-(--card-radius)" },
+                "mobile": { "display": "flex", "flexDirection": "flex-col", "justifyContent": "justify-between", "padding": "p-8", "flex": "flex-1", "minHeight": "min-h-[300px]", "position": "relative", "overflow": "overflow-hidden" },
+                "custom": { "displayName": "Feature Block 3" }
+              },
+              "children": [
+                {
+                  "type": "Image",
+                  "props": {
+                    "content": "https://images.unsplash.com/photo-1551288049-bbdac8626ad1?w=600&h=400&fit=crop",
+                    "alt": "Data view",
+                    "mobile": { "position": "absolute", "inset": "inset-0", "width": "w-full", "height": "h-full", "objectFit": "object-cover", "opacity": "opacity-10" },
+                    "custom": { "displayName": "Overlay Image" }
+                  }
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "mobile": { "position": "relative", "zIndex": "z-10", "display": "flex", "flexDirection": "flex-col", "gap": "gap-2" },
+                    "custom": { "displayName": "Content Layer" }
+                  },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "props": {
+                        "text": "Unified Analytics",
+                        "tagName": "h3",
+                        "root": { "fontWeight": "font-bold", "fontFamily": "var(--heading-font-family)", "color": "text-(--foreground)" },
+                        "mobile": { "fontSize": "text-2xl" },
+                        "custom": { "displayName": "Title" }
+                      }
+                    },
+                    {
+                      "type": "Text",
+                      "props": {
+                        "text": "Track conversion and global performance in one dashboard.",
+                        "tagName": "p",
+                        "root": { "color": "text-(--muted-foreground)", "lineHeight": "leading-relaxed" },
+                        "mobile": { "fontSize": "text-base" },
+                        "custom": { "displayName": "Description" }
+                      }
+                    }
+                  ]
+                }
+              ]
             }
-          }
-        },
-        {
-          "type": "Text",
-          "props": {
-            "canDelete": true,
-            "canEditName": true,
-            "text": "Product design & UI engineering",
-            "tagName": "h3",
-            "root": {
-              "fontWeight": "font-bold",
-              "fontFamily": "var(--heading-font-family)",
-              "lineHeight": "leading-snug",
-              "color": "text-(--foreground)"
-            },
-            "mobile": {
-              "fontSize": "text-lg"
-            },
-            "desktop": {
-              "fontSize": "text-xl"
-            },
-            "custom": {
-              "displayName": "Title"
-            }
-          }
-        },
-        {
-          "type": "Text",
-          "props": {
-            "canDelete": true,
-            "canEditName": true,
-            "text": "Discovery workshops, interface systems, and production-ready components your team can reuse without fighting the codebase.",
-            "tagName": "p",
-            "root": {
-              "color": "text-(--muted-foreground)",
-              "lineHeight": "leading-relaxed"
-            },
-            "mobile": {
-              "fontSize": "text-sm"
-            },
-            "desktop": {
-              "fontSize": "text-base"
-            },
-            "custom": {
-              "displayName": "Description"
-            }
-          }
-        },
-        {
-          "type": "Button",
-          "props": {
-            "canDelete": true,
-            "canEditName": true,
-            "text": "See how we work",
-            "url": "#",
-            "root": {
-              "background": "bg-transparent",
-              "color": "text-(--primary)",
-              "radius": "rounded-(--radius)"
-            },
-            "mobile": {
-              "display": "inline-flex",
-              "alignItems": "items-center",
-              "gap": "gap-1.5",
-              "py": "py-0",
-              "px": "px-0",
-              "fontSize": "text-sm",
-              "fontWeight": "font-semibold",
-              "mt": "mt-1"
-            },
-            "desktop": {},
-            "icon": {
-              "value": "ref-google:arrow_forward",
-              "position": "right",
-              "size": "w-5 h-5"
-            },
-            "custom": {
-              "displayName": "Link"
-            }
-          }
+          ]
         }
       ]
     }

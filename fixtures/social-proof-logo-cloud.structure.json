@@ -1,0 +1,198 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "type": "section",
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "alignItems": "items-center",
+      "textAlign": "text-center",
+      "width": "w-full",
+      "py": "py-16",
+      "px": "px-6"
+    },
+    "desktop": {
+      "py": "py-24",
+      "px": "px-8"
+    },
+    "custom": {
+      "displayName": "Social Proof Trusted Row"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "alignItems": "items-center",
+          "gap": "gap-12",
+          "width": "w-full",
+          "maxWidth": "max-w-6xl",
+          "mx": "mx-auto"
+        },
+        "desktop": {
+          "flexDirection": "flex-row",
+          "gap": "gap-20"
+        },
+        "custom": { "displayName": "Inner" }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "alignItems": "items-center",
+              "gap": "gap-4",
+              "width": "w-full",
+              "textAlign": "text-center"
+            },
+            "desktop": {
+              "alignItems": "items-start",
+              "textAlign": "text-left",
+              "flex": "flex-1"
+            },
+            "custom": { "displayName": "Content" }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "text": "TRUSTED BY TEAMS WORLDWIDE",
+                "tagName": "p",
+                "root": {
+                  "color": "text-(--accent)",
+                  "fontSize": "text-xs",
+                  "fontWeight": "font-bold",
+                  "letterSpacing": "tracking-widest"
+                },
+                "custom": { "displayName": "Eyebrow" }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "The backbone of high-performance marketing.",
+                "tagName": "h2",
+                "root": {
+                  "fontWeight": "font-bold",
+                  "fontFamily": "var(--heading-font-family)",
+                  "lineHeight": "leading-tight"
+                },
+                "mobile": { "fontSize": "text-2xl" },
+                "desktop": { "fontSize": "text-3xl" },
+                "custom": { "displayName": "Headline" }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Join over 2,500+ teams who have already moved to PageHub for their deployment needs.",
+                "tagName": "p",
+                "root": { "color": "text-(--muted-foreground)" },
+                "mobile": { "fontSize": "text-sm", "maxWidth": "max-w-md" },
+                "desktop": { "fontSize": "text-base" },
+                "custom": { "displayName": "Subhead" }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "mobile": {
+              "display": "grid",
+              "gridCols": "grid-cols-2",
+              "gap": "gap-8",
+              "width": "w-full",
+              "alignItems": "items-center"
+            },
+            "desktop": {
+              "gridCols": "grid-cols-3",
+              "gap": "gap-12",
+              "flex": "flex-1"
+            },
+            "custom": { "displayName": "Logo Grid" }
+          },
+          "children": [
+            {
+              "type": "Image",
+              "props": {
+                "content": "https://dummyimage.com/150x50/ffffff/94a3b8.png&text=NEBULA",
+                "alt": "Nebula",
+                "root": { "bgOpacity": "opacity-60" },
+                "mobile": { "height": "h-7", "width": "w-auto", "objectFit": "object-contain", "mx": "mx-auto" },
+                "custom": { "displayName": "Logo 1" }
+              }
+            },
+            {
+              "type": "Image",
+              "props": {
+                "content": "https://dummyimage.com/150x50/ffffff/94a3b8.png&text=CYBERIA",
+                "alt": "Cyberia",
+                "root": { "bgOpacity": "opacity-60" },
+                "mobile": { "height": "h-7", "width": "w-auto", "objectFit": "object-contain", "mx": "mx-auto" },
+                "custom": { "displayName": "Logo 2" }
+              }
+            },
+            {
+              "type": "Image",
+              "props": {
+                "content": "https://dummyimage.com/150x50/ffffff/94a3b8.png&text=VELOCITY",
+                "alt": "Velocity",
+                "root": { "bgOpacity": "opacity-60" },
+                "mobile": { "height": "h-7", "width": "w-auto", "objectFit": "object-contain", "mx": "mx-auto" },
+                "custom": { "displayName": "Logo 3" }
+              }
+            },
+            {
+              "type": "Image",
+              "props": {
+                "content": "https://dummyimage.com/150x50/ffffff/94a3b8.png&text=QUANTUM",
+                "alt": "Quantum",
+                "root": { "bgOpacity": "opacity-60" },
+                "mobile": { "height": "h-7", "width": "w-auto", "objectFit": "object-contain", "mx": "mx-auto" },
+                "custom": { "displayName": "Logo 4" }
+              }
+            },
+            {
+              "type": "Image",
+              "props": {
+                "content": "https://dummyimage.com/150x50/ffffff/94a3b8.png&text=LUMINA",
+                "alt": "Lumina",
+                "root": { "bgOpacity": "opacity-60" },
+                "mobile": { "height": "h-7", "width": "w-auto", "objectFit": "object-contain", "mx": "mx-auto" },
+                "custom": { "displayName": "Logo 5" }
+              }
+            },
+            {
+              "type": "Image",
+              "props": {
+                "content": "https://dummyimage.com/150x50/ffffff/94a3b8.png&text=STRATUS",
+                "alt": "Stratus",
+                "root": { "bgOpacity": "opacity-60" },
+                "mobile": { "height": "h-7", "width": "w-auto", "objectFit": "object-contain", "mx": "mx-auto" },
+                "custom": { "displayName": "Logo 6" }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
