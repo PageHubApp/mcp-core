@@ -1,0 +1,1554 @@
+{
+  "type": "Container",
+  "props": {
+    "type": "section",
+    "canDelete": true,
+    "canEditName": true,
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "width": "w-full",
+      "py": "py-16",
+      "px": "px-6",
+      "gap": "gap-12"
+    },
+    "desktop": {
+      "py": "py-24",
+      "px": "px-8",
+      "gap": "gap-14"
+    },
+    "custom": {
+      "displayName": "Pricing section"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
+          "mx": "mx-auto",
+          "gap": "gap-10"
+        },
+        "desktop": {
+          "gap": "gap-12"
+        },
+        "custom": {
+          "displayName": "Pricing content"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "alignItems": "items-center",
+              "textAlign": "text-center",
+              "width": "w-full",
+              "maxWidth": "max-w-2xl",
+              "mx": "mx-auto",
+              "gap": "gap-3"
+            },
+            "desktop": {},
+            "custom": {
+              "displayName": "Section header"
+            }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "text": "PRICING",
+                "tagName": "p",
+                "root": {
+                  "color": "text-(--primary)",
+                  "fontSize": "text-xs",
+                  "fontWeight": "font-bold",
+                  "letterSpacing": "tracking-widest"
+                },
+                "mobile": {},
+                "desktop": {},
+                "custom": {
+                  "displayName": "Eyebrow"
+                }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Plans that scale with your roadmap.",
+                "tagName": "h2",
+                "root": {
+                  "color": "text-(--foreground)",
+                  "fontWeight": "font-bold",
+                  "fontFamily": "var(--heading-font-family)",
+                  "lineHeight": "leading-tight"
+                },
+                "mobile": {
+                  "fontSize": "text-3xl"
+                },
+                "desktop": {
+                  "fontSize": "text-4xl"
+                },
+                "custom": {
+                  "displayName": "Heading"
+                }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Choose a tier, ship with confidence, and move up when your team needs more guardrails — core workflows stay predictable.",
+                "tagName": "p",
+                "root": {
+                  "color": "text-(--muted-foreground)"
+                },
+                "mobile": {
+                  "fontSize": "text-base",
+                  "lineHeight": "leading-relaxed"
+                },
+                "desktop": {
+                  "fontSize": "text-lg"
+                },
+                "custom": {
+                  "displayName": "Intro"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "grid",
+              "gridCols": "grid-cols-1",
+              "gap": "gap-8",
+              "width": "w-full",
+              "alignItems": "items-stretch"
+            },
+            "desktop": {
+              "gridCols": "grid-cols-3",
+              "gap": "gap-8"
+            },
+            "custom": {
+              "displayName": "Plan grid"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "color": "text-(--card-foreground)",
+                  "radius": "rounded-(--card-radius)",
+                  "shadow": "shadow-sm",
+                  "border": "border",
+                  "borderColor": "border-(--muted)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "alignItems": "items-center",
+                  "textAlign": "text-center",
+                  "width": "w-full",
+                  "p": "p-8",
+                  "gap": "gap-6"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Launch plan"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Launch",
+                    "tagName": "h3",
+                    "root": {
+                      "fontWeight": "font-bold",
+                      "fontFamily": "var(--heading-font-family)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-lg"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Plan name"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Best when you are proving product-market fit with a small crew and a tight scope.",
+                    "tagName": "p",
+                    "root": {
+                      "color": "text-(--muted-foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm",
+                      "lineHeight": "leading-relaxed"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Pitch"
+                    }
+                  }
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {},
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-row",
+                      "alignItems": "items-baseline",
+                      "justifyContent": "justify-center",
+                      "gap": "gap-1",
+                      "width": "w-full"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Price row"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "props": {
+                        "text": "$39",
+                        "tagName": "span",
+                        "root": {
+                          "fontWeight": "font-bold",
+                          "fontFamily": "var(--heading-font-family)",
+                          "lineHeight": "leading-none"
+                        },
+                        "mobile": {
+                          "fontSize": "text-4xl"
+                        },
+                        "desktop": {
+                          "fontSize": "text-5xl"
+                        },
+                        "custom": {
+                          "displayName": "Amount"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Text",
+                      "props": {
+                        "text": "/month",
+                        "tagName": "span",
+                        "root": {
+                          "color": "text-(--muted-foreground)",
+                          "fontWeight": "font-medium"
+                        },
+                        "mobile": {
+                          "fontSize": "text-sm"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Term"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {
+                      "border": "border-t",
+                      "borderColor": "border-(--muted)"
+                    },
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-col",
+                      "gap": "gap-3",
+                      "pt": "pt-6",
+                      "width": "w-full",
+                      "maxWidth": "max-w-xs",
+                      "mx": "mx-auto",
+                      "textAlign": "text-left"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Features"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {},
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-row",
+                          "gap": "gap-3",
+                          "alignItems": "items-start",
+                          "width": "w-full"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Feature"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "\u2713",
+                            "tagName": "span",
+                            "root": {
+                              "color": "text-(--primary)",
+                              "fontWeight": "font-bold",
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-none"
+                            },
+                            "mobile": {
+                              "mt": "mt-1"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Check"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "Up to <strong>3</strong> live projects",
+                            "tagName": "p",
+                            "root": {
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-snug"
+                            },
+                            "mobile": {},
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Line"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {},
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-row",
+                          "gap": "gap-3",
+                          "alignItems": "items-start",
+                          "width": "w-full"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Feature"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "\u2713",
+                            "tagName": "span",
+                            "root": {
+                              "color": "text-(--primary)",
+                              "fontWeight": "font-bold",
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-none"
+                            },
+                            "mobile": {
+                              "mt": "mt-1"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Check"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "<strong>10 GB</strong> media storage",
+                            "tagName": "p",
+                            "root": {
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-snug"
+                            },
+                            "mobile": {},
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Line"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {},
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-row",
+                          "gap": "gap-3",
+                          "alignItems": "items-start",
+                          "width": "w-full"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Feature"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "\u2713",
+                            "tagName": "span",
+                            "root": {
+                              "color": "text-(--primary)",
+                              "fontWeight": "font-bold",
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-none"
+                            },
+                            "mobile": {
+                              "mt": "mt-1"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Check"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "Email help within <strong>48 hours</strong>",
+                            "tagName": "p",
+                            "root": {
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-snug"
+                            },
+                            "mobile": {},
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Line"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {},
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-row",
+                          "gap": "gap-3",
+                          "alignItems": "items-start",
+                          "width": "w-full"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Feature"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "\u2713",
+                            "tagName": "span",
+                            "root": {
+                              "color": "text-(--primary)",
+                              "fontWeight": "font-bold",
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-none"
+                            },
+                            "mobile": {
+                              "mt": "mt-1"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Check"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "Core analytics snapshot",
+                            "tagName": "p",
+                            "root": {
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-snug"
+                            },
+                            "mobile": {},
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Line"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {},
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-row",
+                          "gap": "gap-3",
+                          "alignItems": "items-start",
+                          "width": "w-full"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Feature"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "\u2713",
+                            "tagName": "span",
+                            "root": {
+                              "color": "text-(--primary)",
+                              "fontWeight": "font-bold",
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-none"
+                            },
+                            "mobile": {
+                              "mt": "mt-1"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Check"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "Cancel <strong>anytime</strong>",
+                            "tagName": "p",
+                            "root": {
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-snug"
+                            },
+                            "mobile": {},
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Line"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Start with Launch",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-(--primary)",
+                      "color": "text-(--primary-foreground)",
+                      "radius": "rounded-(--radius)"
+                    },
+                    "mobile": {
+                      "width": "w-full",
+                      "py": "py-3",
+                      "px": "px-6",
+                      "textAlign": "text-center",
+                      "fontSize": "text-sm",
+                      "fontWeight": "font-medium",
+                      "mt": "mt-2"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "CTA"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "color": "text-(--card-foreground)",
+                  "radius": "rounded-(--card-radius)",
+                  "shadow": "shadow-lg",
+                  "border": "border-2",
+                  "borderColor": "border-(--primary)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "alignItems": "items-center",
+                  "textAlign": "text-center",
+                  "width": "w-full",
+                  "p": "p-8",
+                  "gap": "gap-6"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Growth plan"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Growth",
+                    "tagName": "h3",
+                    "root": {
+                      "fontWeight": "font-bold",
+                      "fontFamily": "var(--heading-font-family)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-lg"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Plan name"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "The sweet spot for product teams sharing libraries, reviews, and release cadence.",
+                    "tagName": "p",
+                    "root": {
+                      "color": "text-(--muted-foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm",
+                      "lineHeight": "leading-relaxed"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Pitch"
+                    }
+                  }
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {},
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-row",
+                      "alignItems": "items-baseline",
+                      "justifyContent": "justify-center",
+                      "gap": "gap-1",
+                      "width": "w-full"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Price row"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "props": {
+                        "text": "$129",
+                        "tagName": "span",
+                        "root": {
+                          "fontWeight": "font-bold",
+                          "fontFamily": "var(--heading-font-family)",
+                          "lineHeight": "leading-none"
+                        },
+                        "mobile": {
+                          "fontSize": "text-4xl"
+                        },
+                        "desktop": {
+                          "fontSize": "text-5xl"
+                        },
+                        "custom": {
+                          "displayName": "Amount"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Text",
+                      "props": {
+                        "text": "/month",
+                        "tagName": "span",
+                        "root": {
+                          "color": "text-(--muted-foreground)",
+                          "fontWeight": "font-medium"
+                        },
+                        "mobile": {
+                          "fontSize": "text-sm"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Term"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {
+                      "border": "border-t",
+                      "borderColor": "border-(--muted)"
+                    },
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-col",
+                      "gap": "gap-3",
+                      "pt": "pt-6",
+                      "width": "w-full",
+                      "maxWidth": "max-w-xs",
+                      "mx": "mx-auto",
+                      "textAlign": "text-left"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Features"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {},
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-row",
+                          "gap": "gap-3",
+                          "alignItems": "items-start",
+                          "width": "w-full"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Feature"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "\u2713",
+                            "tagName": "span",
+                            "root": {
+                              "color": "text-(--primary)",
+                              "fontWeight": "font-bold",
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-none"
+                            },
+                            "mobile": {
+                              "mt": "mt-1"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Check"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "<strong>Unlimited</strong> projects",
+                            "tagName": "p",
+                            "root": {
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-snug"
+                            },
+                            "mobile": {},
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Line"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {},
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-row",
+                          "gap": "gap-3",
+                          "alignItems": "items-start",
+                          "width": "w-full"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Feature"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "\u2713",
+                            "tagName": "span",
+                            "root": {
+                              "color": "text-(--primary)",
+                              "fontWeight": "font-bold",
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-none"
+                            },
+                            "mobile": {
+                              "mt": "mt-1"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Check"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "<strong>250 GB</strong> storage + CDN",
+                            "tagName": "p",
+                            "root": {
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-snug"
+                            },
+                            "mobile": {},
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Line"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {},
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-row",
+                          "gap": "gap-3",
+                          "alignItems": "items-start",
+                          "width": "w-full"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Feature"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "\u2713",
+                            "tagName": "span",
+                            "root": {
+                              "color": "text-(--primary)",
+                              "fontWeight": "font-bold",
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-none"
+                            },
+                            "mobile": {
+                              "mt": "mt-1"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Check"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "Shared <strong>component libraries</strong>",
+                            "tagName": "p",
+                            "root": {
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-snug"
+                            },
+                            "mobile": {},
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Line"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {},
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-row",
+                          "gap": "gap-3",
+                          "alignItems": "items-start",
+                          "width": "w-full"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Feature"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "\u2713",
+                            "tagName": "span",
+                            "root": {
+                              "color": "text-(--primary)",
+                              "fontWeight": "font-bold",
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-none"
+                            },
+                            "mobile": {
+                              "mt": "mt-1"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Check"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "Priority chat inside <strong>24 hours</strong>",
+                            "tagName": "p",
+                            "root": {
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-snug"
+                            },
+                            "mobile": {},
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Line"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {},
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-row",
+                          "gap": "gap-3",
+                          "alignItems": "items-start",
+                          "width": "w-full"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Feature"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "\u2713",
+                            "tagName": "span",
+                            "root": {
+                              "color": "text-(--primary)",
+                              "fontWeight": "font-bold",
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-none"
+                            },
+                            "mobile": {
+                              "mt": "mt-1"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Check"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "<strong>Quarterly</strong> roadmap reviews",
+                            "tagName": "p",
+                            "root": {
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-snug"
+                            },
+                            "mobile": {},
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Line"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Choose Growth",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-(--primary)",
+                      "color": "text-(--primary-foreground)",
+                      "radius": "rounded-(--radius)"
+                    },
+                    "mobile": {
+                      "width": "w-full",
+                      "py": "py-3",
+                      "px": "px-6",
+                      "textAlign": "text-center",
+                      "fontSize": "text-sm",
+                      "fontWeight": "font-medium",
+                      "mt": "mt-2"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "CTA"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "color": "text-(--card-foreground)",
+                  "radius": "rounded-(--card-radius)",
+                  "shadow": "shadow-sm",
+                  "border": "border",
+                  "borderColor": "border-(--muted)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "alignItems": "items-center",
+                  "textAlign": "text-center",
+                  "width": "w-full",
+                  "p": "p-8",
+                  "gap": "gap-6"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Scale plan"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Scale",
+                    "tagName": "h3",
+                    "root": {
+                      "fontWeight": "font-bold",
+                      "fontFamily": "var(--heading-font-family)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-lg"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Plan name"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "For orgs that need enterprise controls, tighter SLAs, and a human on speed-dial.",
+                    "tagName": "p",
+                    "root": {
+                      "color": "text-(--muted-foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm",
+                      "lineHeight": "leading-relaxed"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Pitch"
+                    }
+                  }
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {},
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-row",
+                      "alignItems": "items-baseline",
+                      "justifyContent": "justify-center",
+                      "gap": "gap-1",
+                      "width": "w-full"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Price row"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "props": {
+                        "text": "$499",
+                        "tagName": "span",
+                        "root": {
+                          "fontWeight": "font-bold",
+                          "fontFamily": "var(--heading-font-family)",
+                          "lineHeight": "leading-none"
+                        },
+                        "mobile": {
+                          "fontSize": "text-4xl"
+                        },
+                        "desktop": {
+                          "fontSize": "text-5xl"
+                        },
+                        "custom": {
+                          "displayName": "Amount"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Text",
+                      "props": {
+                        "text": "/month",
+                        "tagName": "span",
+                        "root": {
+                          "color": "text-(--muted-foreground)",
+                          "fontWeight": "font-medium"
+                        },
+                        "mobile": {
+                          "fontSize": "text-sm"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Term"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {
+                      "border": "border-t",
+                      "borderColor": "border-(--muted)"
+                    },
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-col",
+                      "gap": "gap-3",
+                      "pt": "pt-6",
+                      "width": "w-full",
+                      "maxWidth": "max-w-xs",
+                      "mx": "mx-auto",
+                      "textAlign": "text-left"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Features"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {},
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-row",
+                          "gap": "gap-3",
+                          "alignItems": "items-start",
+                          "width": "w-full"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Feature"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "\u2713",
+                            "tagName": "span",
+                            "root": {
+                              "color": "text-(--primary)",
+                              "fontWeight": "font-bold",
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-none"
+                            },
+                            "mobile": {
+                              "mt": "mt-1"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Check"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "<strong>Dedicated</strong> success partner",
+                            "tagName": "p",
+                            "root": {
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-snug"
+                            },
+                            "mobile": {},
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Line"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {},
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-row",
+                          "gap": "gap-3",
+                          "alignItems": "items-start",
+                          "width": "w-full"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Feature"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "\u2713",
+                            "tagName": "span",
+                            "root": {
+                              "color": "text-(--primary)",
+                              "fontWeight": "font-bold",
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-none"
+                            },
+                            "mobile": {
+                              "mt": "mt-1"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Check"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "<strong>SSO</strong> plus advanced roles",
+                            "tagName": "p",
+                            "root": {
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-snug"
+                            },
+                            "mobile": {},
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Line"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {},
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-row",
+                          "gap": "gap-3",
+                          "alignItems": "items-start",
+                          "width": "w-full"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Feature"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "\u2713",
+                            "tagName": "span",
+                            "root": {
+                              "color": "text-(--primary)",
+                              "fontWeight": "font-bold",
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-none"
+                            },
+                            "mobile": {
+                              "mt": "mt-1"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Check"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "<strong>99.9%</strong> uptime SLA",
+                            "tagName": "p",
+                            "root": {
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-snug"
+                            },
+                            "mobile": {},
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Line"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {},
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-row",
+                          "gap": "gap-3",
+                          "alignItems": "items-start",
+                          "width": "w-full"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Feature"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "\u2713",
+                            "tagName": "span",
+                            "root": {
+                              "color": "text-(--primary)",
+                              "fontWeight": "font-bold",
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-none"
+                            },
+                            "mobile": {
+                              "mt": "mt-1"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Check"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "<strong>Private</strong> Slack channel",
+                            "tagName": "p",
+                            "root": {
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-snug"
+                            },
+                            "mobile": {},
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Line"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {},
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-row",
+                          "gap": "gap-3",
+                          "alignItems": "items-start",
+                          "width": "w-full"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Feature"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "\u2713",
+                            "tagName": "span",
+                            "root": {
+                              "color": "text-(--primary)",
+                              "fontWeight": "font-bold",
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-none"
+                            },
+                            "mobile": {
+                              "mt": "mt-1"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Check"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "<strong>Custom</strong> billing and terms",
+                            "tagName": "p",
+                            "root": {
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-snug"
+                            },
+                            "mobile": {},
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Line"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Talk with sales",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-(--primary)",
+                      "color": "text-(--primary-foreground)",
+                      "radius": "rounded-(--radius)"
+                    },
+                    "mobile": {
+                      "width": "w-full",
+                      "py": "py-3",
+                      "px": "px-6",
+                      "textAlign": "text-center",
+                      "fontSize": "text-sm",
+                      "fontWeight": "font-medium",
+                      "mt": "mt-2"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "CTA"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

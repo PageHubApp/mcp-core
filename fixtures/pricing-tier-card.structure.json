@@ -1,0 +1,1095 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "root": {
+      "background": "bg-(--card)",
+      "color": "text-(--card-foreground)",
+      "radius": "rounded-(--card-radius)",
+      "shadow": "shadow-sm",
+      "border": "border",
+      "borderColor": "border-(--muted)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "gap": "gap-6",
+      "width": "w-full",
+      "p": "p-8",
+      "overflow": "overflow-hidden"
+    },
+    "desktop": {},
+    "custom": {
+      "displayName": "Pricing tier card"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-row",
+          "justifyContent": "justify-between",
+          "alignItems": "items-start",
+          "gap": "gap-4",
+          "width": "w-full"
+        },
+        "desktop": {},
+        "custom": {
+          "displayName": "Plan header"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "gap": "gap-2",
+              "flex": "flex-1",
+              "minWidth": "min-w-0"
+            },
+            "desktop": {},
+            "custom": {
+              "displayName": "Plan copy"
+            }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "text": "Scale workspace",
+                "tagName": "h3",
+                "root": {
+                  "fontWeight": "font-bold",
+                  "fontFamily": "var(--heading-font-family)",
+                  "lineHeight": "leading-tight",
+                  "color": "text-(--card-foreground)"
+                },
+                "mobile": {
+                  "fontSize": "text-xl"
+                },
+                "desktop": {
+                  "fontSize": "text-xl"
+                },
+                "custom": {
+                  "displayName": "Plan name"
+                }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Best for high-traffic programs, partner resale, and teams that need room to extend terms.",
+                "tagName": "p",
+                "root": {
+                  "color": "text-(--muted-foreground)"
+                },
+                "mobile": {
+                  "fontSize": "text-sm",
+                  "lineHeight": "leading-relaxed"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Plan pitch"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "alignItems": "items-end",
+              "textAlign": "text-right",
+              "gap": "gap-1"
+            },
+            "desktop": {},
+            "className": ["shrink-0"],
+            "custom": {
+              "displayName": "Price stack"
+            }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "text": "$589",
+                "tagName": "p",
+                "root": {
+                  "fontWeight": "font-bold",
+                  "fontFamily": "var(--heading-font-family)",
+                  "lineHeight": "leading-none",
+                  "color": "text-(--card-foreground)"
+                },
+                "mobile": {
+                  "fontSize": "text-3xl"
+                },
+                "desktop": {
+                  "fontSize": "text-4xl"
+                },
+                "custom": {
+                  "displayName": "Amount"
+                }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "per month",
+                "tagName": "p",
+                "root": {
+                  "color": "text-(--muted-foreground)",
+                  "fontWeight": "font-medium"
+                },
+                "mobile": {
+                  "fontSize": "text-sm"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Cadence"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Button",
+      "props": {
+        "text": "Upgrade now",
+        "url": "#",
+        "root": {
+          "background": "bg-(--primary)",
+          "color": "text-(--primary-foreground)",
+          "radius": "rounded-(--radius)"
+        },
+        "mobile": {
+          "width": "w-full",
+          "py": "py-3",
+          "px": "px-6",
+          "textAlign": "text-center",
+          "fontSize": "text-sm",
+          "fontWeight": "font-medium"
+        },
+        "desktop": {},
+        "custom": {
+          "displayName": "Primary CTA"
+        }
+      }
+    },
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {
+          "border": "border-t",
+          "borderColor": "border-(--muted)"
+        },
+        "mobile": {
+          "display": "grid",
+          "gridCols": "grid-cols-1",
+          "gap": "gap-3",
+          "width": "w-full",
+          "pt": "pt-6"
+        },
+        "desktop": {
+          "gridCols": "grid-cols-2"
+        },
+        "className": ["md:gap-x-10", "md:gap-y-3"],
+        "custom": {
+          "displayName": "Included features"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-row",
+              "gap": "gap-3",
+              "alignItems": "items-center",
+              "width": "w-full"
+            },
+            "desktop": {},
+            "custom": {
+              "displayName": "Feature"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--primary)",
+                  "color": "text-(--primary-foreground)",
+                  "radius": "rounded-full"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "width": "w-5",
+                  "height": "h-5",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-center"
+                },
+                "desktop": {},
+                "className": ["shrink-0"],
+                "custom": {
+                  "displayName": "Check"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "\u2713",
+                    "tagName": "span",
+                    "root": {
+                      "fontSize": "text-xs",
+                      "fontWeight": "font-bold",
+                      "lineHeight": "leading-none"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Mark"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Cohort experiment controls",
+                "tagName": "p",
+                "root": {
+                  "fontSize": "text-sm",
+                  "lineHeight": "leading-tight",
+                  "color": "text-(--muted-foreground)"
+                },
+                "mobile": {
+                  "flex": "flex-1",
+                  "minWidth": "min-w-0"
+                },
+                "desktop": {
+                  "flex": "flex-1",
+                  "minWidth": "min-w-0"
+                },
+                "custom": {
+                  "displayName": "Label"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-row",
+              "gap": "gap-3",
+              "alignItems": "items-center",
+              "width": "w-full"
+            },
+            "desktop": {},
+            "custom": {
+              "displayName": "Feature"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--primary)",
+                  "color": "text-(--primary-foreground)",
+                  "radius": "rounded-full"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "width": "w-5",
+                  "height": "h-5",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-center"
+                },
+                "desktop": {},
+                "className": ["shrink-0"],
+                "custom": {
+                  "displayName": "Check"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "\u2713",
+                    "tagName": "span",
+                    "root": {
+                      "fontSize": "text-xs",
+                      "fontWeight": "font-bold",
+                      "lineHeight": "leading-none"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Mark"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Behavioral audience splits",
+                "tagName": "p",
+                "root": {
+                  "fontSize": "text-sm",
+                  "lineHeight": "leading-tight",
+                  "color": "text-(--muted-foreground)"
+                },
+                "mobile": {
+                  "flex": "flex-1",
+                  "minWidth": "min-w-0"
+                },
+                "desktop": {
+                  "flex": "flex-1",
+                  "minWidth": "min-w-0"
+                },
+                "custom": {
+                  "displayName": "Label"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-row",
+              "gap": "gap-3",
+              "alignItems": "items-center",
+              "width": "w-full"
+            },
+            "desktop": {},
+            "custom": {
+              "displayName": "Feature"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--primary)",
+                  "color": "text-(--primary-foreground)",
+                  "radius": "rounded-full"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "width": "w-5",
+                  "height": "h-5",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-center"
+                },
+                "desktop": {},
+                "className": ["shrink-0"],
+                "custom": {
+                  "displayName": "Check"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "\u2713",
+                    "tagName": "span",
+                    "root": {
+                      "fontSize": "text-xs",
+                      "fontWeight": "font-bold",
+                      "lineHeight": "leading-none"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Mark"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "24/7 email & chat routing",
+                "tagName": "p",
+                "root": {
+                  "fontSize": "text-sm",
+                  "lineHeight": "leading-tight",
+                  "color": "text-(--muted-foreground)"
+                },
+                "mobile": {
+                  "flex": "flex-1",
+                  "minWidth": "min-w-0"
+                },
+                "desktop": {
+                  "flex": "flex-1",
+                  "minWidth": "min-w-0"
+                },
+                "custom": {
+                  "displayName": "Label"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-row",
+              "gap": "gap-3",
+              "alignItems": "items-center",
+              "width": "w-full"
+            },
+            "desktop": {},
+            "custom": {
+              "displayName": "Feature"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--primary)",
+                  "color": "text-(--primary-foreground)",
+                  "radius": "rounded-full"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "width": "w-5",
+                  "height": "h-5",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-center"
+                },
+                "desktop": {},
+                "className": ["shrink-0"],
+                "custom": {
+                  "displayName": "Check"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "\u2713",
+                    "tagName": "span",
+                    "root": {
+                      "fontSize": "text-xs",
+                      "fontWeight": "font-bold",
+                      "lineHeight": "leading-none"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Mark"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Multi-arm funnel tests",
+                "tagName": "p",
+                "root": {
+                  "fontSize": "text-sm",
+                  "lineHeight": "leading-tight",
+                  "color": "text-(--muted-foreground)"
+                },
+                "mobile": {
+                  "flex": "flex-1",
+                  "minWidth": "min-w-0"
+                },
+                "desktop": {
+                  "flex": "flex-1",
+                  "minWidth": "min-w-0"
+                },
+                "custom": {
+                  "displayName": "Label"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-row",
+              "gap": "gap-3",
+              "alignItems": "items-center",
+              "width": "w-full"
+            },
+            "desktop": {},
+            "custom": {
+              "displayName": "Feature"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--primary)",
+                  "color": "text-(--primary-foreground)",
+                  "radius": "rounded-full"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "width": "w-5",
+                  "height": "h-5",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-center"
+                },
+                "desktop": {},
+                "className": ["shrink-0"],
+                "custom": {
+                  "displayName": "Check"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "\u2713",
+                    "tagName": "span",
+                    "root": {
+                      "fontSize": "text-xs",
+                      "fontWeight": "font-bold",
+                      "lineHeight": "leading-none"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Mark"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Fully white-labeled surfaces",
+                "tagName": "p",
+                "root": {
+                  "fontSize": "text-sm",
+                  "lineHeight": "leading-tight",
+                  "color": "text-(--muted-foreground)"
+                },
+                "mobile": {
+                  "flex": "flex-1",
+                  "minWidth": "min-w-0"
+                },
+                "desktop": {
+                  "flex": "flex-1",
+                  "minWidth": "min-w-0"
+                },
+                "custom": {
+                  "displayName": "Label"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-row",
+              "gap": "gap-3",
+              "alignItems": "items-center",
+              "width": "w-full"
+            },
+            "desktop": {},
+            "custom": {
+              "displayName": "Feature"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--primary)",
+                  "color": "text-(--primary-foreground)",
+                  "radius": "rounded-full"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "width": "w-5",
+                  "height": "h-5",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-center"
+                },
+                "desktop": {},
+                "className": ["shrink-0"],
+                "custom": {
+                  "displayName": "Check"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "\u2713",
+                    "tagName": "span",
+                    "root": {
+                      "fontSize": "text-xs",
+                      "fontWeight": "font-bold",
+                      "lineHeight": "leading-none"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Mark"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Benchmark reporting pairs",
+                "tagName": "p",
+                "root": {
+                  "fontSize": "text-sm",
+                  "lineHeight": "leading-tight",
+                  "color": "text-(--muted-foreground)"
+                },
+                "mobile": {
+                  "flex": "flex-1",
+                  "minWidth": "min-w-0"
+                },
+                "desktop": {
+                  "flex": "flex-1",
+                  "minWidth": "min-w-0"
+                },
+                "custom": {
+                  "displayName": "Label"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-row",
+              "gap": "gap-3",
+              "alignItems": "items-center",
+              "width": "w-full"
+            },
+            "desktop": {},
+            "custom": {
+              "displayName": "Feature"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--primary)",
+                  "color": "text-(--primary-foreground)",
+                  "radius": "rounded-full"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "width": "w-5",
+                  "height": "h-5",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-center"
+                },
+                "desktop": {},
+                "className": ["shrink-0"],
+                "custom": {
+                  "displayName": "Check"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "\u2713",
+                    "tagName": "span",
+                    "root": {
+                      "fontSize": "text-xs",
+                      "fontWeight": "font-bold",
+                      "lineHeight": "leading-none"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Mark"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Editorial drafting copilot",
+                "tagName": "p",
+                "root": {
+                  "fontSize": "text-sm",
+                  "lineHeight": "leading-tight",
+                  "color": "text-(--muted-foreground)"
+                },
+                "mobile": {
+                  "flex": "flex-1",
+                  "minWidth": "min-w-0"
+                },
+                "desktop": {
+                  "flex": "flex-1",
+                  "minWidth": "min-w-0"
+                },
+                "custom": {
+                  "displayName": "Label"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-row",
+              "gap": "gap-3",
+              "alignItems": "items-center",
+              "width": "w-full"
+            },
+            "desktop": {},
+            "custom": {
+              "displayName": "Feature"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--primary)",
+                  "color": "text-(--primary-foreground)",
+                  "radius": "rounded-full"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "width": "w-5",
+                  "height": "h-5",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-center"
+                },
+                "desktop": {},
+                "className": ["shrink-0"],
+                "custom": {
+                  "displayName": "Check"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "\u2713",
+                    "tagName": "span",
+                    "root": {
+                      "fontSize": "text-xs",
+                      "fontWeight": "font-bold",
+                      "lineHeight": "leading-none"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Mark"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Saved section blueprints",
+                "tagName": "p",
+                "root": {
+                  "fontSize": "text-sm",
+                  "lineHeight": "leading-tight",
+                  "color": "text-(--muted-foreground)"
+                },
+                "mobile": {
+                  "flex": "flex-1",
+                  "minWidth": "min-w-0"
+                },
+                "desktop": {
+                  "flex": "flex-1",
+                  "minWidth": "min-w-0"
+                },
+                "custom": {
+                  "displayName": "Label"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-row",
+              "gap": "gap-3",
+              "alignItems": "items-center",
+              "width": "w-full"
+            },
+            "desktop": {},
+            "custom": {
+              "displayName": "Feature"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--primary)",
+                  "color": "text-(--primary-foreground)",
+                  "radius": "rounded-full"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "width": "w-5",
+                  "height": "h-5",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-center"
+                },
+                "desktop": {},
+                "className": ["shrink-0"],
+                "custom": {
+                  "displayName": "Check"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "\u2713",
+                    "tagName": "span",
+                    "root": {
+                      "fontSize": "text-xs",
+                      "fontWeight": "font-bold",
+                      "lineHeight": "leading-none"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Mark"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Visual site studio",
+                "tagName": "p",
+                "root": {
+                  "fontSize": "text-sm",
+                  "lineHeight": "leading-tight",
+                  "color": "text-(--muted-foreground)"
+                },
+                "mobile": {
+                  "flex": "flex-1",
+                  "minWidth": "min-w-0"
+                },
+                "desktop": {
+                  "flex": "flex-1",
+                  "minWidth": "min-w-0"
+                },
+                "custom": {
+                  "displayName": "Label"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-row",
+              "gap": "gap-3",
+              "alignItems": "items-center",
+              "width": "w-full"
+            },
+            "desktop": {},
+            "custom": {
+              "displayName": "Feature"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--primary)",
+                  "color": "text-(--primary-foreground)",
+                  "radius": "rounded-full"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "width": "w-5",
+                  "height": "h-5",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-center"
+                },
+                "desktop": {},
+                "className": ["shrink-0"],
+                "custom": {
+                  "displayName": "Check"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "\u2713",
+                    "tagName": "span",
+                    "root": {
+                      "fontSize": "text-xs",
+                      "fontWeight": "font-bold",
+                      "lineHeight": "leading-none"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Mark"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Adaptive content modules",
+                "tagName": "p",
+                "root": {
+                  "fontSize": "text-sm",
+                  "lineHeight": "leading-tight",
+                  "color": "text-(--muted-foreground)"
+                },
+                "mobile": {
+                  "flex": "flex-1",
+                  "minWidth": "min-w-0"
+                },
+                "desktop": {
+                  "flex": "flex-1",
+                  "minWidth": "min-w-0"
+                },
+                "custom": {
+                  "displayName": "Label"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

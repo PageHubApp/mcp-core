@@ -121,13 +121,14 @@
                     "type": "url",
                     "content": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=96&h=96&fit=crop&facepad=2&q=80",
                     "alt": "Portrait of the customer who gave this testimonial",
-                    "root": { "radius": "rounded-(--radius-full)", "overflow": "overflow-hidden" },
+                    "root": { "radius": "rounded-(--radius-full)" },
                     "mobile": {
                       "width": "w-6",
                       "height": "h-6",
                       "flexShrink": "shrink-0",
                       "objectFit": "object-cover",
-                      "objectPosition": "object-center"
+                      "objectPosition": "object-center",
+                      "overflow": "overflow-hidden"
                     },
                     "desktop": {},
                     "custom": { "displayName": "Avatar" }

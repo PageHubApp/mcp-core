@@ -45,14 +45,14 @@
               "radius": "rounded-(--card-radius)",
               "border": "border",
               "borderColor": "border-(--border)",
-              "shadow": "shadow-lg",
-              "overflow": "overflow-hidden"
+              "shadow": "shadow-lg"
             },
             "mobile": {
               "display": "flex",
               "flexDirection": "flex-col",
               "width": "w-full",
-              "alignItems": "items-stretch"
+              "alignItems": "items-stretch",
+              "overflow": "overflow-hidden"
             },
             "className": ["lg:flex-row"],
             "desktop": {},

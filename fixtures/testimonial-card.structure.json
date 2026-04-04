@@ -179,13 +179,14 @@
                         "type": "url",
                         "content": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=128&h=128&fit=crop&q=80",
                         "alt": "Portrait of Alicia Nguyen",
-                        "root": { "radius": "rounded-(--radius-full)", "overflow": "overflow-hidden" },
+                        "root": { "radius": "rounded-(--radius-full)" },
                         "mobile": {
                           "width": "w-10",
                           "height": "h-10",
                           "flexShrink": "shrink-0",
                           "objectFit": "object-cover",
-                          "objectPosition": "object-center"
+                          "objectPosition": "object-center",
+                          "overflow": "overflow-hidden"
                         },
                         "desktop": {},
                         "custom": { "displayName": "Avatar" }
@@ -309,13 +310,14 @@
                         "type": "url",
                         "content": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=128&h=128&fit=crop&q=80",
                         "alt": "Portrait of Marcus Bell",
-                        "root": { "radius": "rounded-(--radius-full)", "overflow": "overflow-hidden" },
+                        "root": { "radius": "rounded-(--radius-full)" },
                         "mobile": {
                           "width": "w-10",
                           "height": "h-10",
                           "flexShrink": "shrink-0",
                           "objectFit": "object-cover",
-                          "objectPosition": "object-center"
+                          "objectPosition": "object-center",
+                          "overflow": "overflow-hidden"
                         },
                         "desktop": {},
                         "custom": { "displayName": "Avatar" }

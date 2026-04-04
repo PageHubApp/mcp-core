@@ -1,0 +1,568 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "root": {},
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "gap": "gap-8",
+      "width": "w-full",
+      "flex": "flex-1",
+      "minWidth": "min-w-0"
+    },
+    "desktop": {},
+    "custom": {
+      "displayName": "Upgrade story column"
+    }
+  },
+  "children": [
+    {
+      "type": "Text",
+      "props": {
+        "text": "Why teams graduate past the starter tier",
+        "tagName": "h2",
+        "root": {
+          "fontWeight": "font-bold",
+          "fontFamily": "var(--heading-font-family)",
+          "lineHeight": "leading-tight",
+          "color": "text-(--foreground)"
+        },
+        "mobile": {
+          "fontSize": "text-3xl"
+        },
+        "desktop": {
+          "fontSize": "text-4xl"
+        },
+        "custom": {
+          "displayName": "Section heading"
+        }
+      }
+    },
+    {
+      "type": "Text",
+      "props": {
+        "text": "We focus on markets where reliable data, tight iteration, and capital discipline stack — so your roadmap tracks what is measurable, not what is comfortable.",
+        "tagName": "p",
+        "root": {
+          "color": "text-(--muted-foreground)"
+        },
+        "mobile": {
+          "fontSize": "text-base",
+          "lineHeight": "leading-relaxed"
+        },
+        "desktop": {
+          "fontSize": "text-lg"
+        },
+        "custom": {
+          "displayName": "Intro"
+        }
+      }
+    },
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "gap": "gap-8",
+          "width": "w-full"
+        },
+        "desktop": {},
+        "custom": {
+          "displayName": "Proof points"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-row",
+              "gap": "gap-4",
+              "alignItems": "items-start",
+              "width": "w-full"
+            },
+            "desktop": {},
+            "custom": {
+              "displayName": "Proof row"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--muted)",
+                  "radius": "rounded-(--radius-lg)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "width": "w-12",
+                  "height": "h-12",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-center"
+                },
+                "desktop": {},
+                "className": ["shrink-0"],
+                "custom": {
+                  "displayName": "Icon shell"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "1",
+                    "tagName": "span",
+                    "root": {
+                      "fontSize": "text-sm",
+                      "fontWeight": "font-bold",
+                      "color": "text-(--foreground)",
+                      "lineHeight": "leading-none"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Icon glyph"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {},
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-1",
+                  "flex": "flex-1",
+                  "minWidth": "min-w-0"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Copy stack"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Category velocity",
+                    "tagName": "h3",
+                    "root": {
+                      "fontWeight": "font-semibold",
+                      "fontFamily": "var(--heading-font-family)",
+                      "fontSize": "text-base",
+                      "color": "text-(--foreground)",
+                      "lineHeight": "leading-snug"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Row title"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Benchmark demand inside your vertical, spot whitespace, and line up launches with where budgets are actually moving.",
+                    "tagName": "p",
+                    "root": {
+                      "fontSize": "text-sm",
+                      "color": "text-(--muted-foreground)",
+                      "lineHeight": "leading-relaxed"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Row body"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-row",
+              "gap": "gap-4",
+              "alignItems": "items-start",
+              "width": "w-full"
+            },
+            "desktop": {},
+            "custom": {
+              "displayName": "Proof row"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--muted)",
+                  "radius": "rounded-(--radius-lg)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "width": "w-12",
+                  "height": "h-12",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-center"
+                },
+                "desktop": {},
+                "className": ["shrink-0"],
+                "custom": {
+                  "displayName": "Icon shell"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "2",
+                    "tagName": "span",
+                    "root": {
+                      "fontSize": "text-sm",
+                      "fontWeight": "font-bold",
+                      "color": "text-(--foreground)",
+                      "lineHeight": "leading-none"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Icon glyph"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {},
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-1",
+                  "flex": "flex-1",
+                  "minWidth": "min-w-0"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Copy stack"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Competitor forensics",
+                    "tagName": "h3",
+                    "root": {
+                      "fontWeight": "font-semibold",
+                      "fontFamily": "var(--heading-font-family)",
+                      "fontSize": "text-base",
+                      "color": "text-(--foreground)",
+                      "lineHeight": "leading-snug"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Row title"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Trace acquisition patterns, landing rhythms, and partner bets so you are not guessing what rivals ship next.",
+                    "tagName": "p",
+                    "root": {
+                      "fontSize": "text-sm",
+                      "color": "text-(--muted-foreground)",
+                      "lineHeight": "leading-relaxed"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Row body"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-row",
+              "gap": "gap-4",
+              "alignItems": "items-start",
+              "width": "w-full"
+            },
+            "desktop": {},
+            "custom": {
+              "displayName": "Proof row"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--muted)",
+                  "radius": "rounded-(--radius-lg)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "width": "w-12",
+                  "height": "h-12",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-center"
+                },
+                "desktop": {},
+                "className": ["shrink-0"],
+                "custom": {
+                  "displayName": "Icon shell"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "3",
+                    "tagName": "span",
+                    "root": {
+                      "fontSize": "text-sm",
+                      "fontWeight": "font-bold",
+                      "color": "text-(--foreground)",
+                      "lineHeight": "leading-none"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Icon glyph"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {},
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-1",
+                  "flex": "flex-1",
+                  "minWidth": "min-w-0"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Copy stack"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Product signals",
+                    "tagName": "h3",
+                    "root": {
+                      "fontWeight": "font-semibold",
+                      "fontFamily": "var(--heading-font-family)",
+                      "fontSize": "text-base",
+                      "color": "text-(--foreground)",
+                      "lineHeight": "leading-snug"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Row title"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Read category momentum, breakout SKUs, and install curves so roadmap bets follow traction, not noise.",
+                    "tagName": "p",
+                    "root": {
+                      "fontSize": "text-sm",
+                      "color": "text-(--muted-foreground)",
+                      "lineHeight": "leading-relaxed"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Row body"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-row",
+              "gap": "gap-4",
+              "alignItems": "items-start",
+              "width": "w-full"
+            },
+            "desktop": {},
+            "custom": {
+              "displayName": "Proof row"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--muted)",
+                  "radius": "rounded-(--radius-lg)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "width": "w-12",
+                  "height": "h-12",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-center"
+                },
+                "desktop": {},
+                "className": ["shrink-0"],
+                "custom": {
+                  "displayName": "Icon shell"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "4",
+                    "tagName": "span",
+                    "root": {
+                      "fontSize": "text-sm",
+                      "fontWeight": "font-bold",
+                      "color": "text-(--foreground)",
+                      "lineHeight": "leading-none"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Icon glyph"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {},
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-1",
+                  "flex": "flex-1",
+                  "minWidth": "min-w-0"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Copy stack"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Audience resolution",
+                    "tagName": "h3",
+                    "root": {
+                      "fontWeight": "font-semibold",
+                      "fontFamily": "var(--heading-font-family)",
+                      "fontSize": "text-base",
+                      "color": "text-(--foreground)",
+                      "lineHeight": "leading-snug"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Row title"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Layer intent, firmographics, and lifecycle cues so campaigns tighten without turning segmentation into a science project.",
+                    "tagName": "p",
+                    "root": {
+                      "fontSize": "text-sm",
+                      "color": "text-(--muted-foreground)",
+                      "lineHeight": "leading-relaxed"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Row body"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
