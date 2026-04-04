@@ -1,0 +1,500 @@
+{
+  "type": "Container",
+  "props": {
+    "type": "section",
+    "canDelete": true,
+    "canEditName": true,
+    "root": {
+      "background": "bg-(--foreground)",
+      "color": "text-(--background)",
+      "border": "border-b",
+      "borderColor": "border-(--border)"
+    },
+    "mobile": {
+      "display": "block",
+      "width": "w-full",
+      "maxWidth": "max-w-none"
+    },
+    "desktop": {},
+    "custom": {
+      "displayName": "Navbar section"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-row",
+          "justifyContent": "justify-between",
+          "alignItems": "items-center",
+          "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
+          "mx": "mx-auto",
+          "gap": "gap-4",
+          "py": "py-4",
+          "px": "px-6",
+          "minWidth": "min-w-0"
+        },
+        "desktop": {
+          "px": "px-8"
+        },
+        "custom": {
+          "displayName": "Navbar inner"
+        }
+      },
+      "children": [
+        {
+          "type": "Text",
+          "props": {
+            "text": "Acme Inc",
+            "tagName": "p",
+            "root": {
+              "fontWeight": "font-bold",
+              "fontFamily": "var(--heading-font-family)",
+              "color": "text-(--background)"
+            },
+            "mobile": {
+              "fontSize": "text-lg"
+            },
+            "desktop": {},
+            "custom": {
+              "displayName": "Logo"
+            }
+          }
+        },
+        {
+          "type": "Nav",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "menu": {
+              "enabled": true,
+              "id": "blocks-navbar-menu",
+              "side": "left",
+              "type": "slide",
+              "breakpoint": "mobile"
+            },
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-row",
+              "justifyContent": "flex-end",
+              "alignItems": "items-center",
+              "gap": "gap-(--container-gap)",
+              "flex": "flex-none",
+              "ml": "ml-auto",
+              "minWidth": "min-w-0"
+            },
+            "desktop": {},
+            "custom": {
+              "displayName": "Nav"
+            }
+          },
+          "children": [
+            {
+              "type": "Button",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "text": "Home",
+                "url": "#",
+                "root": {
+                  "background": "bg-transparent",
+                  "color": "text-(--background)"
+                },
+                "mobile": {
+                  "display": "hidden",
+                  "fontSize": "text-sm",
+                  "fontWeight": "font-medium",
+                  "px": "px-(--button-padding-x)",
+                  "py": "py-(--button-padding-y)",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-1.5",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-center"
+                },
+                "desktop": {
+                  "display": "block"
+                },
+                "custom": {
+                  "displayName": "Home"
+                }
+              }
+            },
+            {
+              "type": "Button",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "text": "About",
+                "url": "#",
+                "root": {
+                  "background": "bg-transparent",
+                  "color": "text-(--background)"
+                },
+                "mobile": {
+                  "display": "hidden",
+                  "fontSize": "text-sm",
+                  "px": "px-(--button-padding-x)",
+                  "py": "py-(--button-padding-y)",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-1.5",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-center"
+                },
+                "desktop": {
+                  "display": "block"
+                },
+                "custom": {
+                  "displayName": "About"
+                }
+              }
+            },
+            {
+              "type": "Button",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "text": "Services",
+                "url": "#",
+                "root": {
+                  "background": "bg-transparent",
+                  "color": "text-(--background)"
+                },
+                "mobile": {
+                  "display": "hidden",
+                  "fontSize": "text-sm",
+                  "px": "px-(--button-padding-x)",
+                  "py": "py-(--button-padding-y)",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-1.5",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-center"
+                },
+                "desktop": {
+                  "display": "block"
+                },
+                "custom": {
+                  "displayName": "Services"
+                }
+              }
+            },
+            {
+              "type": "Button",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "text": "Contact",
+                "url": "#",
+                "root": {
+                  "background": "bg-(--primary)",
+                  "color": "text-(--primary-foreground)",
+                  "radius": "rounded-(--radius)"
+                },
+                "mobile": {
+                  "display": "hidden",
+                  "fontSize": "text-sm",
+                  "fontWeight": "font-medium",
+                  "px": "px-(--button-padding-x)",
+                  "py": "py-(--button-padding-y)",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-1.5",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-center"
+                },
+                "desktop": {
+                  "display": "block"
+                },
+                "custom": {
+                  "displayName": "Contact CTA"
+                }
+              }
+            },
+            {
+              "type": "Button",
+              "props": {
+                "canDelete": false,
+                "canEditName": false,
+                "text": "Menu",
+                "url": "",
+                "click": {
+                  "type": "click",
+                  "direction": "show",
+                  "value": "blocks-navbar-menu"
+                },
+                "icon": {
+                  "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 448 512\"><path d=\"M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z\"/></svg>",
+                  "only": true
+                },
+                "root": {
+                  "border": "border-0",
+                  "color": "text-(--background)"
+                },
+                "mobile": {
+                  "display": "block",
+                  "px": "px-(--button-padding-x)",
+                  "py": "py-(--button-padding-y)"
+                },
+                "desktop": {
+                  "display": "hidden"
+                },
+                "custom": {
+                  "displayName": "Menu toggle"
+                }
+              }
+            },
+            {
+              "type": "Container",
+              "props": {
+                "id": "blocks-navbar-menu",
+                "canDelete": false,
+                "canEditName": false,
+                "root": {
+                  "background": "bg-black/50"
+                },
+                "mobile": {
+                  "display": "hidden",
+                  "position": "fixed",
+                  "height": "h-screen",
+                  "width": "w-screen",
+                  "top": "top-0",
+                  "left": "left-0",
+                  "zIndex": "z-50"
+                },
+                "desktop": {
+                  "display": "hidden"
+                },
+                "click": {
+                  "type": "click",
+                  "direction": "hide",
+                  "value": "blocks-navbar-menu"
+                },
+                "custom": {
+                  "displayName": "Mobile menu overlay"
+                }
+              },
+              "children": [
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": false,
+                    "canEditName": false,
+                    "root": {
+                      "background": "bg-(--background)",
+                      "color": "text-(--foreground)",
+                      "shadow": "shadow-xl"
+                    },
+                    "mobile": {
+                      "height": "h-full",
+                      "width": "w-80",
+                      "maxWidth": "max-w-sm"
+                    },
+                    "desktop": {},
+                    "click": {
+                      "type": "click",
+                      "direction": "toggle",
+                      "value": "blocks-navbar-menu"
+                    },
+                    "custom": {
+                      "displayName": "Mobile menu panel"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": false,
+                        "canEditName": false,
+                        "root": {
+                          "border": "border-b",
+                          "borderColor": "border-(--border)"
+                        },
+                        "mobile": {
+                          "display": "flex",
+                          "alignItems": "items-center",
+                          "justifyContent": "justify-end",
+                          "px": "px-(--container-padding-x)",
+                          "py": "py-(--container-padding-y)"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Mobile nav header"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Button",
+                          "props": {
+                            "canDelete": false,
+                            "canEditName": false,
+                            "click": {
+                              "type": "click",
+                              "direction": "hide",
+                              "value": "blocks-navbar-menu"
+                            },
+                            "text": "\u00d7",
+                            "url": "",
+                            "root": {
+                              "border": "border-0",
+                              "color": "text-(--foreground)"
+                            },
+                            "mobile": {
+                              "px": "px-(--button-padding-x)",
+                              "py": "py-(--button-padding-y)",
+                              "fontSize": "text-xl",
+                              "fontWeight": "font-bold"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Close"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "ButtonList",
+                      "props": {
+                        "canDelete": false,
+                        "canEditName": false,
+                        "root": {
+                          "border": "border-0"
+                        },
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-col",
+                          "gap": "gap-(--container-gap)",
+                          "width": "w-full",
+                          "px": "px-(--container-padding-x)",
+                          "py": "py-(--container-padding-y)"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Mobile navigation"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Button",
+                          "props": {
+                            "canDelete": true,
+                            "canEditName": true,
+                            "text": "Home",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--foreground)",
+                              "border": "border-0"
+                            },
+                            "mobile": {
+                              "display": "flex",
+                              "width": "w-full",
+                              "justifyContent": "justify-start",
+                              "px": "px-(--button-padding-x)",
+                              "py": "py-(--button-padding-y)",
+                              "fontSize": "text-sm",
+                              "fontWeight": "font-medium"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Mobile Home"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "canDelete": true,
+                            "canEditName": true,
+                            "text": "About",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--foreground)",
+                              "border": "border-0"
+                            },
+                            "mobile": {
+                              "display": "flex",
+                              "width": "w-full",
+                              "justifyContent": "justify-start",
+                              "px": "px-(--button-padding-x)",
+                              "py": "py-(--button-padding-y)",
+                              "fontSize": "text-sm"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Mobile About"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "canDelete": true,
+                            "canEditName": true,
+                            "text": "Services",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--foreground)",
+                              "border": "border-0"
+                            },
+                            "mobile": {
+                              "display": "flex",
+                              "width": "w-full",
+                              "justifyContent": "justify-start",
+                              "px": "px-(--button-padding-x)",
+                              "py": "py-(--button-padding-y)",
+                              "fontSize": "text-sm"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Mobile Services"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "canDelete": true,
+                            "canEditName": true,
+                            "text": "Contact",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-(--primary)",
+                              "color": "text-(--primary-foreground)",
+                              "radius": "rounded-(--radius)",
+                              "border": "border-0"
+                            },
+                            "mobile": {
+                              "display": "flex",
+                              "width": "w-full",
+                              "justifyContent": "justify-center",
+                              "px": "px-(--button-padding-x)",
+                              "py": "py-(--button-padding-y)",
+                              "fontSize": "text-sm",
+                              "fontWeight": "font-semibold"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Mobile Contact"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

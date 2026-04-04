@@ -1,0 +1,591 @@
+{
+  "type": "Container",
+  "props": {
+    "type": "section",
+    "canDelete": true,
+    "canEditName": true,
+    "root": {
+      "background": "bg-(--muted)",
+      "color": "text-(--foreground)",
+      "border": "border-t",
+      "borderColor": "border-(--border)"
+    },
+    "mobile": {
+      "display": "block",
+      "width": "w-full",
+      "maxWidth": "max-w-none"
+    },
+    "desktop": {},
+    "custom": {
+      "displayName": "Footer section"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "gap": "gap-12",
+          "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
+          "mx": "mx-auto",
+          "px": "px-6",
+          "py": "py-12"
+        },
+        "desktop": {
+          "gap": "gap-16",
+          "py": "py-16"
+        },
+        "custom": {
+          "displayName": "Footer inner"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "grid",
+              "gridCols": "grid-cols-1",
+              "gap": "gap-10",
+              "width": "w-full"
+            },
+            "desktop": {
+              "gridCols": "grid-cols-4",
+              "gap": "gap-12"
+            },
+            "custom": {
+              "displayName": "Link grid"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {},
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-4",
+                  "width": "w-full"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Brand column"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Acme Inc",
+                    "tagName": "p",
+                    "root": {
+                      "fontWeight": "font-bold",
+                      "fontFamily": "var(--heading-font-family)",
+                      "color": "text-(--foreground)",
+                      "lineHeight": "leading-tight"
+                    },
+                    "mobile": {
+                      "fontSize": "text-xl"
+                    },
+                    "desktop": {
+                      "fontSize": "text-2xl"
+                    },
+                    "custom": {
+                      "displayName": "Brand"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Design-led product studio shipping marketing sites, dashboards, and design systems.",
+                    "tagName": "p",
+                    "root": {
+                      "color": "text-(--muted-foreground)",
+                      "lineHeight": "leading-relaxed"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm"
+                    },
+                    "desktop": {
+                      "fontSize": "text-base"
+                    },
+                    "custom": {
+                      "displayName": "About blurb"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {},
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-3",
+                  "width": "w-full"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Product column"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Product",
+                    "tagName": "p",
+                    "root": {
+                      "color": "text-(--foreground)",
+                      "fontWeight": "font-bold",
+                      "letterSpacing": "tracking-widest"
+                    },
+                    "mobile": {
+                      "fontSize": "text-xs",
+                      "mb": "mb-2"
+                    },
+                    "desktop": {},
+                    "className": ["uppercase"],
+                    "custom": {
+                      "displayName": "Heading"
+                    }
+                  }
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Features",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--muted-foreground)",
+                      "border": "border-0"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm",
+                      "px": "px-0",
+                      "py": "py-0",
+                      "justifyContent": "justify-start"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Features"
+                    }
+                  }
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Pricing",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--muted-foreground)",
+                      "border": "border-0"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm",
+                      "px": "px-0",
+                      "py": "py-0",
+                      "justifyContent": "justify-start"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Pricing"
+                    }
+                  }
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Templates",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--muted-foreground)",
+                      "border": "border-0"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm",
+                      "px": "px-0",
+                      "py": "py-0",
+                      "justifyContent": "justify-start"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Templates"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {},
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-3",
+                  "width": "w-full"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Company column"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Company",
+                    "tagName": "p",
+                    "root": {
+                      "color": "text-(--foreground)",
+                      "fontWeight": "font-bold",
+                      "letterSpacing": "tracking-widest"
+                    },
+                    "mobile": {
+                      "fontSize": "text-xs",
+                      "mb": "mb-2"
+                    },
+                    "desktop": {},
+                    "className": ["uppercase"],
+                    "custom": {
+                      "displayName": "Heading"
+                    }
+                  }
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "About",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--muted-foreground)",
+                      "border": "border-0"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm",
+                      "px": "px-0",
+                      "py": "py-0",
+                      "justifyContent": "justify-start"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "About"
+                    }
+                  }
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Blog",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--muted-foreground)",
+                      "border": "border-0"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm",
+                      "px": "px-0",
+                      "py": "py-0",
+                      "justifyContent": "justify-start"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Blog"
+                    }
+                  }
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Careers",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--muted-foreground)",
+                      "border": "border-0"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm",
+                      "px": "px-0",
+                      "py": "py-0",
+                      "justifyContent": "justify-start"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Careers"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {},
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-3",
+                  "width": "w-full"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Legal column"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Legal",
+                    "tagName": "p",
+                    "root": {
+                      "color": "text-(--foreground)",
+                      "fontWeight": "font-bold",
+                      "letterSpacing": "tracking-widest"
+                    },
+                    "mobile": {
+                      "fontSize": "text-xs",
+                      "mb": "mb-2"
+                    },
+                    "desktop": {},
+                    "className": ["uppercase"],
+                    "custom": {
+                      "displayName": "Heading"
+                    }
+                  }
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Privacy Policy",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--muted-foreground)",
+                      "border": "border-0"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm",
+                      "px": "px-0",
+                      "py": "py-0",
+                      "justifyContent": "justify-start"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Privacy"
+                    }
+                  }
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Terms of use",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--muted-foreground)",
+                      "border": "border-0"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm",
+                      "px": "px-0",
+                      "py": "py-0",
+                      "justifyContent": "justify-start"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Terms"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {
+              "border": "border-t",
+              "borderColor": "border-(--border)"
+            },
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "alignItems": "center",
+              "textAlign": "text-center",
+              "gap": "gap-6",
+              "width": "w-full",
+              "pt": "pt-8"
+            },
+            "desktop": {
+              "flexDirection": "flex-row",
+              "justifyContent": "justify-between",
+              "alignItems": "items-center",
+              "textAlign": "text-left"
+            },
+            "custom": {
+              "displayName": "Bottom bar"
+            }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "text": "\u00a9 2026 Acme Inc. All rights reserved.",
+                "tagName": "p",
+                "root": {
+                  "color": "text-(--muted-foreground)"
+                },
+                "mobile": {
+                  "fontSize": "text-xs"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Copyright"
+                }
+              }
+            },
+            {
+              "type": "ButtonList",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {},
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-row",
+                  "justifyContent": "justify-center",
+                  "alignItems": "items-center",
+                  "gap": "gap-2"
+                },
+                "desktop": {
+                  "justifyContent": "justify-end"
+                },
+                "custom": {
+                  "displayName": "Social icons"
+                }
+              },
+              "children": [
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "GitHub profile",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-(--card)",
+                      "color": "text-(--foreground)",
+                      "border": "border",
+                      "borderColor": "border-(--border)",
+                      "radius": "rounded-(--radius-lg)"
+                    },
+                    "mobile": {
+                      "display": "inline-flex",
+                      "px": "px-3",
+                      "py": "py-3"
+                    },
+                    "desktop": {},
+                    "icon": {
+                      "value": "ref-google:code",
+                      "only": true,
+                      "size": "w-5 h-5"
+                    },
+                    "custom": {
+                      "displayName": "GitHub"
+                    }
+                  }
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Official site",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-(--card)",
+                      "color": "text-(--foreground)",
+                      "border": "border",
+                      "borderColor": "border-(--border)",
+                      "radius": "rounded-(--radius-lg)"
+                    },
+                    "mobile": {
+                      "display": "inline-flex",
+                      "px": "px-3",
+                      "py": "py-3"
+                    },
+                    "desktop": {},
+                    "icon": {
+                      "value": "ref-google:public",
+                      "only": true,
+                      "size": "w-5 h-5"
+                    },
+                    "custom": {
+                      "displayName": "Website"
+                    }
+                  }
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Share",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-(--card)",
+                      "color": "text-(--foreground)",
+                      "border": "border",
+                      "borderColor": "border-(--border)",
+                      "radius": "rounded-(--radius-lg)"
+                    },
+                    "mobile": {
+                      "display": "inline-flex",
+                      "px": "px-3",
+                      "py": "py-3"
+                    },
+                    "desktop": {},
+                    "icon": {
+                      "value": "ref-google:share",
+                      "only": true,
+                      "size": "w-5 h-5"
+                    },
+                    "custom": {
+                      "displayName": "Share"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,161 @@
+{
+  "type": "Container",
+  "props": {
+    "type": "section",
+    "canDelete": true,
+    "canEditName": true,
+    "root": {
+      "background": "bg-(--muted)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "width": "w-full",
+      "maxWidth": "max-w-none",
+      "py": "py-10",
+      "px": "px-4"
+    },
+    "desktop": {
+      "py": "py-12",
+      "px": "px-6"
+    },
+    "custom": {
+      "displayName": "Gallery card section"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "width": "w-full",
+          "maxWidth": "max-w-xl",
+          "mx": "mx-auto"
+        },
+        "desktop": {},
+        "custom": {
+          "displayName": "Gallery card inner"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {
+              "radius": "rounded-(--card-radius)"
+            },
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "width": "w-full",
+              "position": "relative",
+              "minHeight": "min-h-[240px]",
+              "overflow": "overflow-hidden"
+            },
+            "desktop": {
+              "minHeight": "min-h-[300px]"
+            },
+            "custom": {
+              "displayName": "Gallery Card"
+            }
+          },
+          "children": [
+            {
+              "type": "Image",
+              "props": {
+                "content": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&h=400&fit=crop",
+                "type": "url",
+                "alt": "Gallery image",
+                "root": {},
+                "mobile": {
+                  "width": "w-full",
+                  "height": "h-full",
+                  "objectFit": "object-cover",
+                  "position": "absolute",
+                  "top": "top-0",
+                  "left": "left-0"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Image"
+                }
+              }
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {},
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "justifyContent": "justify-end",
+                  "p": "p-6",
+                  "position": "relative",
+                  "zIndex": "z-10",
+                  "minHeight": "min-h-[240px]"
+                },
+                "desktop": {
+                  "minHeight": "min-h-[300px]"
+                },
+                "custom": {
+                  "displayName": "Overlay"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "PHOTOGRAPHY",
+                    "tagName": "p",
+                    "root": {
+                      "color": "text-white"
+                    },
+                    "mobile": {
+                      "fontSize": "text-xs",
+                      "fontWeight": "font-bold",
+                      "letterSpacing": "tracking-widest",
+                      "mb": "mb-1"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Category"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Abstract Landscapes",
+                    "tagName": "h3",
+                    "root": {
+                      "color": "text-white",
+                      "fontFamily": "var(--heading-font-family)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-lg",
+                      "fontWeight": "font-bold"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Title"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

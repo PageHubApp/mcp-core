@@ -1,0 +1,640 @@
+{
+  "type": "Container",
+  "props": {
+    "type": "section",
+    "canDelete": true,
+    "canEditName": true,
+    "root": {
+      "background": "bg-(--muted)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "width": "w-full",
+      "py": "py-12",
+      "px": "px-4",
+      "gap": "gap-8"
+    },
+    "desktop": {
+      "py": "py-16",
+      "px": "px-8"
+    },
+    "custom": {
+      "displayName": "Product cards section"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "grid",
+          "gridCols": "grid-cols-1",
+          "gap": "gap-6",
+          "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
+          "mx": "mx-auto"
+        },
+        "desktop": {
+          "gridCols": "grid-cols-2",
+          "gap": "gap-8"
+        },
+        "custom": {
+          "displayName": "Product grid"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {
+              "background": "bg-(--card)",
+              "color": "text-(--card-foreground)",
+              "border": "border",
+              "borderColor": "border-(--border)",
+              "radius": "rounded-(--card-radius)"
+            },
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "width": "w-full",
+              "overflow": "overflow-hidden"
+            },
+            "desktop": {},
+            "custom": {
+              "displayName": "Product card (left)"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--muted)"
+                },
+                "mobile": {
+                  "width": "w-full",
+                  "display": "block",
+                  "position": "relative"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Media"
+                }
+              },
+              "children": [
+                {
+                  "type": "Image",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "content": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=750&fit=crop",
+                    "alt": "Minimal wristwatch on neutral backdrop",
+                    "root": {},
+                    "mobile": {
+                      "width": "w-full",
+                      "height": "h-64",
+                      "objectFit": "object-cover"
+                    },
+                    "desktop": {
+                      "height": "h-72"
+                    },
+                    "custom": {
+                      "displayName": "Product image"
+                    }
+                  }
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {
+                      "background": "bg-(--accent)",
+                      "color": "text-(--accent-foreground)",
+                      "radius": "rounded-(--radius)"
+                    },
+                    "mobile": {
+                      "position": "absolute",
+                      "top": "top-3",
+                      "left": "left-3",
+                      "display": "inline-flex",
+                      "py": "py-1",
+                      "px": "px-2.5"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Badge"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "text": "Staff pick",
+                        "tagName": "span",
+                        "root": {
+                          "fontWeight": "font-bold",
+                          "letterSpacing": "tracking-wide"
+                        },
+                        "mobile": {
+                          "fontSize": "text-xs"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Badge label"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {},
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-3",
+                  "width": "w-full",
+                  "p": "p-5"
+                },
+                "desktop": {
+                  "gap": "gap-4",
+                  "p": "p-6"
+                },
+                "custom": {
+                  "displayName": "Product body"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "text": "Wearables",
+                    "tagName": "p",
+                    "root": {
+                      "color": "text-(--muted-foreground)",
+                      "fontWeight": "font-semibold",
+                      "letterSpacing": "tracking-wide"
+                    },
+                    "mobile": {
+                      "fontSize": "text-xs"
+                    },
+                    "desktop": {},
+                    "className": ["uppercase"],
+                    "custom": {
+                      "displayName": "Category"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "text": "Arc tide chronograph",
+                    "tagName": "h3",
+                    "root": {
+                      "fontWeight": "font-bold",
+                      "fontFamily": "var(--heading-font-family)",
+                      "lineHeight": "leading-snug",
+                      "color": "text-(--card-foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-lg"
+                    },
+                    "desktop": {
+                      "fontSize": "text-xl"
+                    },
+                    "custom": {
+                      "displayName": "Product name"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "text": "Sapphire glass, 5ATM shell, and a band that swaps without tools.",
+                    "tagName": "p",
+                    "root": {
+                      "color": "text-(--muted-foreground)",
+                      "lineHeight": "leading-relaxed"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Description"
+                    }
+                  }
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {},
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-row",
+                      "alignItems": "items-baseline",
+                      "gap": "gap-2",
+                      "width": "w-full"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Price row"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "text": "$129.00",
+                        "tagName": "span",
+                        "root": {
+                          "fontWeight": "font-bold",
+                          "color": "text-(--primary)"
+                        },
+                        "mobile": {
+                          "fontSize": "text-xl"
+                        },
+                        "desktop": {
+                          "fontSize": "text-2xl"
+                        },
+                        "custom": {
+                          "displayName": "Price"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "text": "Add to cart",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-(--primary)",
+                      "color": "text-(--primary-foreground)",
+                      "radius": "rounded-(--radius-full)"
+                    },
+                    "mobile": {
+                      "display": "inline-flex",
+                      "alignItems": "items-center",
+                      "justifyContent": "justify-center",
+                      "gap": "gap-2",
+                      "width": "w-full",
+                      "py": "py-3",
+                      "px": "px-5",
+                      "fontSize": "text-sm",
+                      "fontWeight": "font-semibold",
+                      "mt": "mt-1"
+                    },
+                    "desktop": {},
+                    "icon": {
+                      "value": "ref-google:shopping_cart",
+                      "position": "left",
+                      "size": "w-5 h-5"
+                    },
+                    "custom": {
+                      "displayName": "Add to cart"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {
+              "background": "bg-(--card)",
+              "color": "text-(--card-foreground)",
+              "border": "border",
+              "borderColor": "border-(--border)",
+              "radius": "rounded-(--card-radius)"
+            },
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "width": "w-full",
+              "overflow": "overflow-hidden"
+            },
+            "desktop": {},
+            "custom": {
+              "displayName": "Product card (right)"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--muted)"
+                },
+                "mobile": {
+                  "width": "w-full",
+                  "display": "block",
+                  "position": "relative"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Media"
+                }
+              },
+              "children": [
+                {
+                  "type": "Image",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "content": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=750&fit=crop",
+                    "alt": "Over-ear headphones on yellow background",
+                    "root": {},
+                    "mobile": {
+                      "width": "w-full",
+                      "height": "h-64",
+                      "objectFit": "object-cover"
+                    },
+                    "desktop": {
+                      "height": "h-72"
+                    },
+                    "custom": {
+                      "displayName": "Product image"
+                    }
+                  }
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {
+                      "background": "bg-(--primary)",
+                      "color": "text-(--primary-foreground)",
+                      "radius": "rounded-(--radius)"
+                    },
+                    "mobile": {
+                      "position": "absolute",
+                      "top": "top-3",
+                      "left": "left-3",
+                      "display": "inline-flex",
+                      "py": "py-1",
+                      "px": "px-2.5"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Badge"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "text": "Sale",
+                        "tagName": "span",
+                        "root": {
+                          "fontWeight": "font-bold",
+                          "letterSpacing": "tracking-wide"
+                        },
+                        "mobile": {
+                          "fontSize": "text-xs"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Badge label"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {},
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-3",
+                  "width": "w-full",
+                  "p": "p-5"
+                },
+                "desktop": {
+                  "gap": "gap-4",
+                  "p": "p-6"
+                },
+                "custom": {
+                  "displayName": "Product body"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "text": "Audio",
+                    "tagName": "p",
+                    "root": {
+                      "color": "text-(--muted-foreground)",
+                      "fontWeight": "font-semibold",
+                      "letterSpacing": "tracking-wide"
+                    },
+                    "mobile": {
+                      "fontSize": "text-xs"
+                    },
+                    "desktop": {},
+                    "className": ["uppercase"],
+                    "custom": {
+                      "displayName": "Category"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "text": "Pulse studio cans",
+                    "tagName": "h3",
+                    "root": {
+                      "fontWeight": "font-bold",
+                      "fontFamily": "var(--heading-font-family)",
+                      "lineHeight": "leading-snug",
+                      "color": "text-(--card-foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-lg"
+                    },
+                    "desktop": {
+                      "fontSize": "text-xl"
+                    },
+                    "custom": {
+                      "displayName": "Product name"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "text": "40mm drivers, dual-device pairing, and a 32-hour touring battery.",
+                    "tagName": "p",
+                    "root": {
+                      "color": "text-(--muted-foreground)",
+                      "lineHeight": "leading-relaxed"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Description"
+                    }
+                  }
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {},
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-row",
+                      "alignItems": "items-baseline",
+                      "gap": "gap-2",
+                      "flexWrap": "flex-wrap",
+                      "width": "w-full"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Price row"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "text": "$89.00",
+                        "tagName": "span",
+                        "root": {
+                          "fontWeight": "font-bold",
+                          "color": "text-(--primary)"
+                        },
+                        "mobile": {
+                          "fontSize": "text-xl"
+                        },
+                        "desktop": {
+                          "fontSize": "text-2xl"
+                        },
+                        "custom": {
+                          "displayName": "Sale price"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Text",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "text": "$112.00",
+                        "tagName": "span",
+                        "root": {
+                          "color": "text-(--muted-foreground)",
+                          "fontWeight": "font-medium"
+                        },
+                        "mobile": {
+                          "fontSize": "text-sm"
+                        },
+                        "desktop": {},
+                        "className": ["line-through"],
+                        "custom": {
+                          "displayName": "Compare-at price"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "text": "Add to cart",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-(--primary)",
+                      "color": "text-(--primary-foreground)",
+                      "radius": "rounded-(--radius-full)"
+                    },
+                    "mobile": {
+                      "display": "inline-flex",
+                      "alignItems": "items-center",
+                      "justifyContent": "justify-center",
+                      "gap": "gap-2",
+                      "width": "w-full",
+                      "py": "py-3",
+                      "px": "px-5",
+                      "fontSize": "text-sm",
+                      "fontWeight": "font-semibold",
+                      "mt": "mt-1"
+                    },
+                    "desktop": {},
+                    "icon": {
+                      "value": "ref-google:shopping_cart",
+                      "position": "left",
+                      "size": "w-5 h-5"
+                    },
+                    "custom": {
+                      "displayName": "Add to cart"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

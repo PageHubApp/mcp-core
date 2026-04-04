@@ -1,0 +1,214 @@
+{
+  "type": "Container",
+  "props": {
+    "type": "section",
+    "canDelete": true,
+    "canEditName": true,
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)",
+      "border": "border-b",
+      "borderColor": "border-(--border)"
+    },
+    "mobile": {
+      "display": "block",
+      "width": "w-full",
+      "maxWidth": "max-w-none"
+    },
+    "desktop": {},
+    "custom": {
+      "displayName": "Breadcrumb bar section"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "gap": "gap-4",
+          "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
+          "mx": "mx-auto",
+          "px": "px-6",
+          "py": "py-4"
+        },
+        "desktop": {
+          "flexDirection": "flex-row",
+          "flexWrap": "flex-wrap",
+          "justifyContent": "justify-between",
+          "alignItems": "items-center",
+          "gap": "gap-4",
+          "py": "py-3"
+        },
+        "custom": {
+          "displayName": "Bar inner"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-row",
+              "flexWrap": "flex-wrap",
+              "alignItems": "items-center",
+              "gap": "gap-1.5",
+              "width": "w-full",
+              "minWidth": "min-w-0"
+            },
+            "desktop": {
+              "flex": "flex-1",
+              "minWidth": "min-w-0"
+            },
+            "custom": {
+              "displayName": "Trail"
+            }
+          },
+          "children": [
+            {
+              "type": "Button",
+              "props": {
+                "text": "Home",
+                "url": "/",
+                "root": {
+                  "background": "bg-transparent",
+                  "color": "text-(--primary)",
+                  "border": "border-0"
+                },
+                "mobile": {
+                  "fontSize": "text-xs",
+                  "fontWeight": "font-medium",
+                  "px": "px-0",
+                  "py": "py-0"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Home"
+                }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "/",
+                "tagName": "span",
+                "root": {
+                  "color": "text-(--muted-foreground)"
+                },
+                "mobile": {
+                  "fontSize": "text-xs"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Sep"
+                }
+              }
+            },
+            {
+              "type": "Button",
+              "props": {
+                "text": "Settings",
+                "url": "/settings",
+                "root": {
+                  "background": "bg-transparent",
+                  "color": "text-(--primary)",
+                  "border": "border-0"
+                },
+                "mobile": {
+                  "fontSize": "text-xs",
+                  "fontWeight": "font-medium",
+                  "px": "px-0",
+                  "py": "py-0"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Settings"
+                }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "/",
+                "tagName": "span",
+                "root": {
+                  "color": "text-(--muted-foreground)"
+                },
+                "mobile": {
+                  "fontSize": "text-xs"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Sep"
+                }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Billing",
+                "tagName": "span",
+                "root": {
+                  "color": "text-(--foreground)",
+                  "fontWeight": "font-semibold"
+                },
+                "mobile": {
+                  "fontSize": "text-xs"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Current"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Button",
+          "props": {
+            "text": "Help center",
+            "url": "#",
+            "root": {
+              "background": "bg-(--card)",
+              "color": "text-(--foreground)",
+              "border": "border",
+              "borderColor": "border-(--border)",
+              "radius": "rounded-(--radius)"
+            },
+            "mobile": {
+              "display": "inline-flex",
+              "alignSelf": "flex-start",
+              "alignItems": "items-center",
+              "gap": "gap-2",
+              "py": "py-2",
+              "px": "px-4",
+              "fontSize": "text-xs",
+              "fontWeight": "font-medium"
+            },
+            "desktop": {
+              "alignSelf": "auto",
+              "flex": "flex-none"
+            },
+            "icon": {
+              "value": "ref-google:open_in_new",
+              "position": "right",
+              "size": "w-4 h-4"
+            },
+            "custom": {
+              "displayName": "Secondary action"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

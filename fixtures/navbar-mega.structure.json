@@ -1,0 +1,1479 @@
+{
+  "type": "Container",
+  "props": {
+    "type": "section",
+    "canDelete": true,
+    "canEditName": true,
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)",
+      "border": "border-b",
+      "borderColor": "border-(--border)"
+    },
+    "mobile": {
+      "display": "block",
+      "width": "w-full",
+      "maxWidth": "max-w-none"
+    },
+    "desktop": {},
+    "custom": {
+      "displayName": "Mega navbar section"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
+          "mx": "mx-auto",
+          "px": "px-4",
+          "minWidth": "min-w-0"
+        },
+        "desktop": {
+          "px": "px-6"
+        },
+        "custom": {
+          "displayName": "Mega navbar inner"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-row",
+              "flexWrap": "flex-wrap",
+              "alignItems": "items-center",
+              "justifyContent": "justify-between",
+              "gap": "gap-3",
+              "py": "py-3",
+              "width": "w-full",
+              "minWidth": "min-w-0"
+            },
+            "desktop": {
+              "gap": "gap-6",
+              "flexWrap": "flex-nowrap"
+            },
+            "custom": {
+              "displayName": "Top bar row"
+            }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "text": "PageHub",
+                "tagName": "p",
+                "root": {
+                  "fontWeight": "font-bold",
+                  "fontFamily": "var(--heading-font-family)",
+                  "color": "text-(--foreground)"
+                },
+                "mobile": {
+                  "fontSize": "text-lg"
+                },
+                "desktop": {
+                  "fontSize": "text-xl"
+                },
+                "custom": {
+                  "displayName": "Logo"
+                }
+              }
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {},
+                "mobile": {
+                  "display": "hidden",
+                  "flexDirection": "flex-row",
+                  "alignItems": "items-stretch",
+                  "flexBase": "flex-1",
+                  "minWidth": "min-w-0",
+                  "maxWidth": "max-w-2xl",
+                  "mx": "mx-4"
+                },
+                "desktop": {
+                  "display": "flex"
+                },
+                "custom": {
+                  "displayName": "Search cluster (desktop)"
+                }
+              },
+              "children": [
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {
+                      "border": "border",
+                      "borderColor": "border-(--border)",
+                      "radius": "rounded-(--radius)"
+                    },
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-row",
+                      "alignItems": "items-stretch",
+                      "width": "w-full",
+                      "minWidth": "min-w-0",
+                      "overflow": "overflow-hidden"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Search composite"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {},
+                        "mobile": {
+                          "position": "relative",
+                          "display": "flex",
+                          "flexDirection": "flex-col",
+                          "flex": "flex-none"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Scope dropdown wrap"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Button",
+                          "props": {
+                            "canDelete": true,
+                            "canEditName": true,
+                            "text": "All",
+                            "url": "",
+                            "click": {
+                              "type": "click",
+                              "direction": "toggle",
+                              "value": "blocks-megabar-scope-dd",
+                              "method": "class"
+                            },
+                            "icon": {
+                              "value": "ref-google:expand_more",
+                              "position": "right",
+                              "size": "w-4 h-4"
+                            },
+                            "root": {
+                              "background": "bg-(--muted)",
+                              "color": "text-(--foreground)",
+                              "border": "border-0",
+                              "radius": "rounded-none"
+                            },
+                            "mobile": {
+                              "display": "inline-flex",
+                              "alignItems": "items-center",
+                              "gap": "gap-1",
+                              "px": "px-3",
+                              "py": "py-2",
+                              "fontSize": "text-sm",
+                              "fontWeight": "font-medium",
+                              "border": "border-r",
+                              "borderColor": "border-(--border)"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Search scope trigger"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Container",
+                          "props": {
+                            "id": "blocks-megabar-scope-dd",
+                            "canDelete": true,
+                            "canEditName": true,
+                            "root": {
+                              "background": "bg-(--card)",
+                              "color": "text-(--card-foreground)",
+                              "border": "border",
+                              "borderColor": "border-(--border)",
+                              "radius": "rounded-(--radius)",
+                              "shadow": "shadow-lg"
+                            },
+                            "mobile": {
+                              "display": "hidden",
+                              "position": "absolute",
+                              "top": "top-full",
+                              "left": "left-0",
+                              "mt": "mt-1",
+                              "zIndex": "z-50",
+                              "minWidth": "min-w-48",
+                              "py": "py-1",
+                              "flexDirection": "flex-col",
+                              "gap": "gap-0"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Scope menu"
+                            }
+                          },
+                          "children": [
+                            {
+                              "type": "Button",
+                              "props": {
+                                "text": "Everything",
+                                "url": "#",
+                                "root": {
+                                  "background": "bg-transparent",
+                                  "color": "text-(--foreground)",
+                                  "border": "border-0",
+                                  "radius": "rounded-none"
+                                },
+                                "mobile": {
+                                  "display": "flex",
+                                  "width": "w-full",
+                                  "justifyContent": "justify-start",
+                                  "px": "px-4",
+                                  "py": "py-2",
+                                  "fontSize": "text-sm"
+                                },
+                                "desktop": {},
+                                "custom": {
+                                  "displayName": "Scope all"
+                                }
+                              }
+                            },
+                            {
+                              "type": "Button",
+                              "props": {
+                                "text": "Documentation",
+                                "url": "#",
+                                "root": {
+                                  "background": "bg-transparent",
+                                  "color": "text-(--foreground)",
+                                  "border": "border-0",
+                                  "radius": "rounded-none"
+                                },
+                                "mobile": {
+                                  "display": "flex",
+                                  "width": "w-full",
+                                  "justifyContent": "justify-start",
+                                  "px": "px-4",
+                                  "py": "py-2",
+                                  "fontSize": "text-sm"
+                                },
+                                "desktop": {},
+                                "custom": {
+                                  "displayName": "Scope docs"
+                                }
+                              }
+                            },
+                            {
+                              "type": "Button",
+                              "props": {
+                                "text": "Blog & updates",
+                                "url": "#",
+                                "root": {
+                                  "background": "bg-transparent",
+                                  "color": "text-(--foreground)",
+                                  "border": "border-0",
+                                  "radius": "rounded-none"
+                                },
+                                "mobile": {
+                                  "display": "flex",
+                                  "width": "w-full",
+                                  "justifyContent": "justify-start",
+                                  "px": "px-4",
+                                  "py": "py-2",
+                                  "fontSize": "text-sm"
+                                },
+                                "desktop": {},
+                                "custom": {
+                                  "displayName": "Scope blog"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FormElement",
+                      "props": {
+                        "type": "search",
+                        "name": "q",
+                        "placeholder": "Search docs, blocks, and guides\u2026",
+                        "root": {
+                          "border": "border-0",
+                          "radius": "rounded-none",
+                          "background": "bg-(--background)",
+                          "color": "text-(--foreground)",
+                          "placeholderColor": "placeholder:text-(--muted-foreground)",
+                          "focus": {
+                            "ring": "focus:ring-0",
+                            "outline": "focus:outline-none"
+                          }
+                        },
+                        "mobile": {
+                          "flexBase": "flex-1",
+                          "minWidth": "min-w-0",
+                          "p": "px-3",
+                          "py": "py-2",
+                          "width": "w-full"
+                        },
+                        "desktop": {},
+                        "canDelete": true,
+                        "canEditName": true,
+                        "custom": {
+                          "displayName": "Search field"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Button",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "text": "Search",
+                        "url": "#",
+                        "type": "button",
+                        "icon": {
+                          "value": "ref-google:search",
+                          "position": "left",
+                          "size": "w-4 h-4"
+                        },
+                        "root": {
+                          "background": "bg-(--primary)",
+                          "color": "text-(--primary-foreground)",
+                          "border": "border-0",
+                          "radius": "rounded-none"
+                        },
+                        "mobile": {
+                          "display": "inline-flex",
+                          "alignItems": "items-center",
+                          "gap": "gap-2",
+                          "px": "px-4",
+                          "py": "py-2",
+                          "fontSize": "text-sm",
+                          "fontWeight": "font-medium"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Search submit"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Nav",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "menu": {
+                  "enabled": true,
+                  "id": "blocks-megabar-menu",
+                  "side": "right",
+                  "type": "slide",
+                  "breakpoint": "mobile"
+                },
+                "root": {},
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-row",
+                  "justifyContent": "flex-end",
+                  "alignItems": "items-center",
+                  "gap": "gap-2",
+                  "flex": "flex-none",
+                  "ml": "ml-auto",
+                  "minWidth": "min-w-0"
+                },
+                "desktop": {
+                  "gap": "gap-3"
+                },
+                "custom": {
+                  "displayName": "Nav cluster"
+                }
+              },
+              "children": [
+                {
+                  "type": "Button",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "text": "Saved",
+                    "url": "#",
+                    "icon": {
+                      "value": "ref-google:bookmark",
+                      "position": "left",
+                      "size": "w-4 h-4"
+                    },
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--foreground)",
+                      "border": "border-0"
+                    },
+                    "mobile": {
+                      "display": "hidden",
+                      "fontSize": "text-sm",
+                      "fontWeight": "font-medium",
+                      "px": "px-2",
+                      "py": "py-2"
+                    },
+                    "desktop": {
+                      "display": "inline-flex"
+                    },
+                    "custom": {
+                      "displayName": "Saved"
+                    }
+                  }
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {},
+                    "mobile": {
+                      "position": "relative",
+                      "display": "hidden"
+                    },
+                    "desktop": {
+                      "display": "block"
+                    },
+                    "custom": {
+                      "displayName": "Account dropdown wrap"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Button",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "text": "Account",
+                        "url": "",
+                        "click": {
+                          "type": "click",
+                          "direction": "toggle",
+                          "value": "blocks-megabar-account-dd",
+                          "method": "class"
+                        },
+                        "icon": {
+                          "value": "ref-google:person",
+                          "position": "left",
+                          "size": "w-4 h-4"
+                        },
+                        "root": {
+                          "background": "bg-transparent",
+                          "color": "text-(--foreground)",
+                          "border": "border-0"
+                        },
+                        "mobile": {
+                          "display": "inline-flex",
+                          "alignItems": "items-center",
+                          "gap": "gap-1",
+                          "fontSize": "text-sm",
+                          "fontWeight": "font-medium",
+                          "px": "px-2",
+                          "py": "py-2"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Account trigger"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Container",
+                      "props": {
+                        "id": "blocks-megabar-account-dd",
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {
+                          "background": "bg-(--card)",
+                          "color": "text-(--card-foreground)",
+                          "border": "border",
+                          "borderColor": "border-(--border)",
+                          "radius": "rounded-(--radius)",
+                          "shadow": "shadow-lg"
+                        },
+                        "mobile": {
+                          "display": "hidden",
+                          "position": "absolute",
+                          "top": "top-full",
+                          "right": "right-0",
+                          "mt": "mt-2",
+                          "zIndex": "z-50",
+                          "width": "w-72",
+                          "p": "p-4",
+                          "flexDirection": "flex-col",
+                          "gap": "gap-3"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Account panel"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Container",
+                          "props": {
+                            "canDelete": true,
+                            "canEditName": true,
+                            "root": {
+                              "border": "border-b",
+                              "borderColor": "border-(--border)"
+                            },
+                            "mobile": {
+                              "display": "flex",
+                              "flexDirection": "flex-row",
+                              "alignItems": "items-center",
+                              "gap": "gap-3",
+                              "pb": "pb-3",
+                              "width": "w-full"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Account profile row"
+                            }
+                          },
+                          "children": [
+                            {
+                              "type": "Image",
+                              "props": {
+                                "content": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=128&h=128&fit=crop&q=80",
+                                "type": "url",
+                                "alt": "Account avatar",
+                                "root": {},
+                                "mobile": {
+                                  "width": "w-11",
+                                  "height": "h-11",
+                                  "radius": "rounded-(--radius-full)",
+                                  "objectFit": "object-cover",
+                                  "shrink": "shrink-0"
+                                },
+                                "desktop": {},
+                                "custom": {
+                                  "displayName": "Avatar"
+                                }
+                              }
+                            },
+                            {
+                              "type": "Container",
+                              "props": {
+                                "canDelete": true,
+                                "canEditName": true,
+                                "root": {},
+                                "mobile": {
+                                  "display": "flex",
+                                  "flexDirection": "flex-col",
+                                  "gap": "gap-0.5",
+                                  "minWidth": "min-w-0",
+                                  "flexBase": "flex-1"
+                                },
+                                "desktop": {},
+                                "custom": {
+                                  "displayName": "Account text"
+                                }
+                              },
+                              "children": [
+                                {
+                                  "type": "Text",
+                                  "props": {
+                                    "text": "Alex Morgan",
+                                    "tagName": "p",
+                                    "root": {
+                                      "fontWeight": "font-semibold",
+                                      "color": "text-(--foreground)"
+                                    },
+                                    "mobile": {
+                                      "fontSize": "text-sm"
+                                    },
+                                    "desktop": {},
+                                    "custom": {
+                                      "displayName": "Account name"
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "Text",
+                                  "props": {
+                                    "text": "alex@company.com",
+                                    "tagName": "p",
+                                    "root": {
+                                      "color": "text-(--muted-foreground)"
+                                    },
+                                    "mobile": {
+                                      "fontSize": "text-xs"
+                                    },
+                                    "desktop": {},
+                                    "custom": {
+                                      "displayName": "Account email"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "text": "Workspace",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-(--muted)",
+                              "color": "text-(--foreground)",
+                              "border": "border-0",
+                              "radius": "rounded-(--radius)"
+                            },
+                            "mobile": {
+                              "display": "flex",
+                              "width": "w-full",
+                              "justifyContent": "justify-center",
+                              "py": "py-2",
+                              "fontSize": "text-sm",
+                              "fontWeight": "font-medium"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Workspace CTA"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "text": "Sign out",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--primary)",
+                              "border": "border-0"
+                            },
+                            "mobile": {
+                              "display": "flex",
+                              "width": "w-full",
+                              "justifyContent": "justify-start",
+                              "py": "py-1",
+                              "fontSize": "text-sm",
+                              "fontWeight": "font-medium"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Sign out"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "canDelete": false,
+                    "canEditName": false,
+                    "text": "Menu",
+                    "url": "",
+                    "click": {
+                      "type": "click",
+                      "direction": "show",
+                      "value": "blocks-megabar-menu"
+                    },
+                    "icon": {
+                      "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 448 512\"><path d=\"M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z\"/></svg>",
+                      "only": true
+                    },
+                    "root": {
+                      "border": "border-0",
+                      "color": "text-(--foreground)"
+                    },
+                    "mobile": {
+                      "display": "block",
+                      "px": "px-2",
+                      "py": "py-2"
+                    },
+                    "desktop": {
+                      "display": "hidden"
+                    },
+                    "custom": {
+                      "displayName": "Menu toggle"
+                    }
+                  }
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "id": "blocks-megabar-menu",
+                    "canDelete": false,
+                    "canEditName": false,
+                    "root": {
+                      "background": "bg-black/50"
+                    },
+                    "mobile": {
+                      "display": "hidden",
+                      "position": "fixed",
+                      "height": "h-screen",
+                      "width": "w-screen",
+                      "top": "top-0",
+                      "left": "left-0",
+                      "zIndex": "z-50"
+                    },
+                    "desktop": {
+                      "display": "hidden"
+                    },
+                    "click": {
+                      "type": "click",
+                      "direction": "hide",
+                      "value": "blocks-megabar-menu"
+                    },
+                    "custom": {
+                      "displayName": "Mobile overlay"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": false,
+                        "canEditName": false,
+                        "root": {
+                          "background": "bg-(--background)",
+                          "color": "text-(--foreground)",
+                          "shadow": "shadow-xl"
+                        },
+                        "mobile": {
+                          "height": "h-full",
+                          "width": "w-full",
+                          "maxWidth": "max-w-sm",
+                          "ml": "ml-auto"
+                        },
+                        "desktop": {},
+                        "click": {
+                          "type": "click",
+                          "direction": "toggle",
+                          "value": "blocks-megabar-menu"
+                        },
+                        "custom": {
+                          "displayName": "Mobile panel"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Container",
+                          "props": {
+                            "canDelete": false,
+                            "canEditName": false,
+                            "root": {
+                              "border": "border-b",
+                              "borderColor": "border-(--border)"
+                            },
+                            "mobile": {
+                              "display": "flex",
+                              "alignItems": "items-center",
+                              "justifyContent": "justify-between",
+                              "px": "px-4",
+                              "py": "py-3"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Mobile panel header"
+                            }
+                          },
+                          "children": [
+                            {
+                              "type": "Text",
+                              "props": {
+                                "text": "Menu",
+                                "tagName": "p",
+                                "root": {
+                                  "fontWeight": "font-semibold",
+                                  "color": "text-(--foreground)"
+                                },
+                                "mobile": {
+                                  "fontSize": "text-sm"
+                                },
+                                "desktop": {},
+                                "custom": {
+                                  "displayName": "Mobile panel title"
+                                }
+                              }
+                            },
+                            {
+                              "type": "Button",
+                              "props": {
+                                "canDelete": false,
+                                "canEditName": false,
+                                "click": {
+                                  "type": "click",
+                                  "direction": "hide",
+                                  "value": "blocks-megabar-menu"
+                                },
+                                "text": "\u00d7",
+                                "url": "",
+                                "root": {
+                                  "border": "border-0",
+                                  "color": "text-(--foreground)"
+                                },
+                                "mobile": {
+                                  "px": "px-2",
+                                  "py": "py-1",
+                                  "fontSize": "text-xl",
+                                  "fontWeight": "font-bold"
+                                },
+                                "desktop": {},
+                                "custom": {
+                                  "displayName": "Close menu"
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Container",
+                          "props": {
+                            "canDelete": true,
+                            "canEditName": true,
+                            "root": {},
+                            "mobile": {
+                              "display": "flex",
+                              "flexDirection": "flex-col",
+                              "gap": "gap-3",
+                              "px": "px-4",
+                              "py": "py-4",
+                              "width": "w-full"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Mobile search block"
+                            }
+                          },
+                          "children": [
+                            {
+                              "type": "FormElement",
+                              "props": {
+                                "type": "search",
+                                "name": "q-mobile",
+                                "placeholder": "Search\u2026",
+                                "root": {
+                                  "border": "border",
+                                  "borderWidth": "border-(--input-border-width)",
+                                  "borderStyle": "border-solid",
+                                  "borderColor": "border-(--input-border-color)",
+                                  "radius": "rounded-(--input-border-radius)",
+                                  "background": "bg-(--input-bg-color)",
+                                  "color": "text-(--input-text-color)",
+                                  "placeholderColor": "placeholder:text-(--input-placeholder-color)",
+                                  "focus": {
+                                    "ring": "focus:ring-(--input-focus-ring)",
+                                    "ringColor": "focus:ring-(--input-focus-ring-color)",
+                                    "outline": "focus:outline-none"
+                                  }
+                                },
+                                "mobile": {
+                                  "p": "p-(--input-padding)",
+                                  "width": "w-full"
+                                },
+                                "desktop": {},
+                                "canDelete": true,
+                                "canEditName": true,
+                                "custom": {
+                                  "displayName": "Mobile search field"
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "ButtonList",
+                          "props": {
+                            "canDelete": false,
+                            "canEditName": false,
+                            "root": {
+                              "border": "border-0"
+                            },
+                            "mobile": {
+                              "display": "flex",
+                              "flexDirection": "flex-col",
+                              "gap": "gap-1",
+                              "width": "w-full",
+                              "px": "px-4",
+                              "pb": "pb-6"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Mobile links"
+                            }
+                          },
+                          "children": [
+                            {
+                              "type": "Button",
+                              "props": {
+                                "text": "Docs",
+                                "url": "#",
+                                "root": {
+                                  "background": "bg-transparent",
+                                  "color": "text-(--foreground)",
+                                  "border": "border-0"
+                                },
+                                "mobile": {
+                                  "display": "flex",
+                                  "width": "w-full",
+                                  "justifyContent": "justify-start",
+                                  "py": "py-2",
+                                  "fontSize": "text-sm",
+                                  "fontWeight": "font-medium"
+                                },
+                                "desktop": {},
+                                "custom": {
+                                  "displayName": "Mobile Docs"
+                                }
+                              }
+                            },
+                            {
+                              "type": "Button",
+                              "props": {
+                                "text": "Pricing",
+                                "url": "#",
+                                "root": {
+                                  "background": "bg-transparent",
+                                  "color": "text-(--foreground)",
+                                  "border": "border-0"
+                                },
+                                "mobile": {
+                                  "display": "flex",
+                                  "width": "w-full",
+                                  "justifyContent": "justify-start",
+                                  "py": "py-2",
+                                  "fontSize": "text-sm"
+                                },
+                                "desktop": {},
+                                "custom": {
+                                  "displayName": "Mobile Pricing"
+                                }
+                              }
+                            },
+                            {
+                              "type": "Button",
+                              "props": {
+                                "text": "Guides",
+                                "url": "#",
+                                "root": {
+                                  "background": "bg-transparent",
+                                  "color": "text-(--foreground)",
+                                  "border": "border-0"
+                                },
+                                "mobile": {
+                                  "display": "flex",
+                                  "width": "w-full",
+                                  "justifyContent": "justify-start",
+                                  "py": "py-2",
+                                  "fontSize": "text-sm"
+                                },
+                                "desktop": {},
+                                "custom": {
+                                  "displayName": "Mobile Guides"
+                                }
+                              }
+                            },
+                            {
+                              "type": "Button",
+                              "props": {
+                                "text": "Resources",
+                                "url": "#",
+                                "root": {
+                                  "background": "bg-transparent",
+                                  "color": "text-(--foreground)",
+                                  "border": "border-0"
+                                },
+                                "mobile": {
+                                  "display": "flex",
+                                  "width": "w-full",
+                                  "justifyContent": "justify-start",
+                                  "py": "py-2",
+                                  "fontSize": "text-sm"
+                                },
+                                "desktop": {},
+                                "custom": {
+                                  "displayName": "Mobile Resources"
+                                }
+                              }
+                            },
+                            {
+                              "type": "Button",
+                              "props": {
+                                "text": "Status",
+                                "url": "#",
+                                "root": {
+                                  "background": "bg-transparent",
+                                  "color": "text-(--foreground)",
+                                  "border": "border-0"
+                                },
+                                "mobile": {
+                                  "display": "flex",
+                                  "width": "w-full",
+                                  "justifyContent": "justify-start",
+                                  "py": "py-2",
+                                  "fontSize": "text-sm"
+                                },
+                                "desktop": {},
+                                "custom": {
+                                  "displayName": "Mobile Status"
+                                }
+                              }
+                            },
+                            {
+                              "type": "Button",
+                              "props": {
+                                "text": "Saved",
+                                "url": "#",
+                                "icon": {
+                                  "value": "ref-google:bookmark",
+                                  "position": "left",
+                                  "size": "w-4 h-4"
+                                },
+                                "root": {
+                                  "background": "bg-transparent",
+                                  "color": "text-(--foreground)",
+                                  "border": "border-0"
+                                },
+                                "mobile": {
+                                  "display": "flex",
+                                  "width": "w-full",
+                                  "justifyContent": "justify-start",
+                                  "py": "py-2",
+                                  "fontSize": "text-sm"
+                                },
+                                "desktop": {},
+                                "custom": {
+                                  "displayName": "Mobile Saved"
+                                }
+                              }
+                            },
+                            {
+                              "type": "Button",
+                              "props": {
+                                "text": "Account",
+                                "url": "#",
+                                "root": {
+                                  "background": "bg-(--primary)",
+                                  "color": "text-(--primary-foreground)",
+                                  "border": "border-0",
+                                  "radius": "rounded-(--radius)"
+                                },
+                                "mobile": {
+                                  "display": "flex",
+                                  "width": "w-full",
+                                  "justifyContent": "justify-center",
+                                  "py": "py-3",
+                                  "mt": "mt-2",
+                                  "fontSize": "text-sm",
+                                  "fontWeight": "font-semibold"
+                                },
+                                "desktop": {},
+                                "custom": {
+                                  "displayName": "Mobile Account"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {
+              "border": "border-t",
+              "borderColor": "border-(--border)"
+            },
+            "mobile": {
+              "display": "hidden",
+              "width": "w-full",
+              "py": "py-2"
+            },
+            "desktop": {
+              "display": "block"
+            },
+            "custom": {
+              "displayName": "Secondary bar (desktop)"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {},
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-row",
+                  "flexWrap": "flex-wrap",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-between",
+                  "gap": "gap-4",
+                  "width": "w-full"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Secondary bar inner"
+                }
+              },
+              "children": [
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {},
+                    "mobile": {
+                      "position": "relative",
+                      "display": "flex",
+                      "flexDirection": "flex-col"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Explore dropdown wrap"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Button",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "text": "Explore",
+                        "url": "",
+                        "click": {
+                          "type": "click",
+                          "direction": "toggle",
+                          "value": "blocks-megabar-explore-dd",
+                          "method": "class"
+                        },
+                        "icon": {
+                          "value": "ref-google:list_alt",
+                          "position": "left",
+                          "size": "w-4 h-4"
+                        },
+                        "root": {
+                          "background": "bg-transparent",
+                          "color": "text-(--foreground)",
+                          "border": "border-0"
+                        },
+                        "mobile": {
+                          "display": "inline-flex",
+                          "alignItems": "items-center",
+                          "gap": "gap-2",
+                          "fontSize": "text-sm",
+                          "fontWeight": "font-semibold",
+                          "px": "px-0",
+                          "py": "py-1"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Explore trigger"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Container",
+                      "props": {
+                        "id": "blocks-megabar-explore-dd",
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {
+                          "background": "bg-(--card)",
+                          "color": "text-(--card-foreground)",
+                          "border": "border",
+                          "borderColor": "border-(--border)",
+                          "radius": "rounded-(--radius)",
+                          "shadow": "shadow-lg"
+                        },
+                        "mobile": {
+                          "display": "hidden",
+                          "position": "absolute",
+                          "top": "top-full",
+                          "left": "left-0",
+                          "mt": "mt-1",
+                          "zIndex": "z-40",
+                          "minWidth": "min-w-56",
+                          "py": "py-1"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Explore menu"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Button",
+                          "props": {
+                            "text": "Block library",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--foreground)",
+                              "border": "border-0",
+                              "radius": "rounded-none"
+                            },
+                            "mobile": {
+                              "display": "flex",
+                              "width": "w-full",
+                              "justifyContent": "justify-start",
+                              "px": "px-4",
+                              "py": "py-2",
+                              "fontSize": "text-sm"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Explore blocks"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "text": "Templates",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--foreground)",
+                              "border": "border-0",
+                              "radius": "rounded-none"
+                            },
+                            "mobile": {
+                              "display": "flex",
+                              "width": "w-full",
+                              "justifyContent": "justify-start",
+                              "px": "px-4",
+                              "py": "py-2",
+                              "fontSize": "text-sm"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Explore templates"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "text": "Integrations",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--foreground)",
+                              "border": "border-0",
+                              "radius": "rounded-none"
+                            },
+                            "mobile": {
+                              "display": "flex",
+                              "width": "w-full",
+                              "justifyContent": "justify-start",
+                              "px": "px-4",
+                              "py": "py-2",
+                              "fontSize": "text-sm"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Explore integrations"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "text": "What's new",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--foreground)",
+                              "border": "border-0",
+                              "radius": "rounded-none"
+                            },
+                            "mobile": {
+                              "display": "flex",
+                              "width": "w-full",
+                              "justifyContent": "justify-start",
+                              "px": "px-4",
+                              "py": "py-2",
+                              "fontSize": "text-sm"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Explore whats new"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "ButtonList",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {},
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-row",
+                      "flexWrap": "flex-wrap",
+                      "alignItems": "items-center",
+                      "gap": "gap-1",
+                      "justifyContent": "justify-end",
+                      "flexBase": "flex-1",
+                      "minWidth": "min-w-0"
+                    },
+                    "desktop": {
+                      "gap": "gap-2"
+                    },
+                    "custom": {
+                      "displayName": "Secondary links"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Button",
+                      "props": {
+                        "text": "Docs",
+                        "url": "#",
+                        "root": {
+                          "background": "bg-transparent",
+                          "color": "text-(--muted-foreground)",
+                          "border": "border-0"
+                        },
+                        "mobile": {
+                          "fontSize": "text-sm",
+                          "fontWeight": "font-medium",
+                          "px": "px-3",
+                          "py": "py-1"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Link Docs"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Button",
+                      "props": {
+                        "text": "Pricing",
+                        "url": "#",
+                        "root": {
+                          "background": "bg-transparent",
+                          "color": "text-(--muted-foreground)",
+                          "border": "border-0"
+                        },
+                        "mobile": {
+                          "fontSize": "text-sm",
+                          "fontWeight": "font-medium",
+                          "px": "px-3",
+                          "py": "py-1"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Link Pricing"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Button",
+                      "props": {
+                        "text": "Guides",
+                        "url": "#",
+                        "root": {
+                          "background": "bg-transparent",
+                          "color": "text-(--muted-foreground)",
+                          "border": "border-0"
+                        },
+                        "mobile": {
+                          "fontSize": "text-sm",
+                          "fontWeight": "font-medium",
+                          "px": "px-3",
+                          "py": "py-1"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Link Guides"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Button",
+                      "props": {
+                        "text": "Resources",
+                        "url": "#",
+                        "root": {
+                          "background": "bg-transparent",
+                          "color": "text-(--muted-foreground)",
+                          "border": "border-0"
+                        },
+                        "mobile": {
+                          "fontSize": "text-sm",
+                          "fontWeight": "font-medium",
+                          "px": "px-3",
+                          "py": "py-1"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Link Resources"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Button",
+                      "props": {
+                        "text": "Status",
+                        "url": "#",
+                        "root": {
+                          "background": "bg-transparent",
+                          "color": "text-(--muted-foreground)",
+                          "border": "border-0"
+                        },
+                        "mobile": {
+                          "fontSize": "text-sm",
+                          "fontWeight": "font-medium",
+                          "px": "px-3",
+                          "py": "py-1"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Link Status"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

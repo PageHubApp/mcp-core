@@ -1,0 +1,381 @@
+{
+  "type": "Container",
+  "props": {
+    "type": "section",
+    "canDelete": true,
+    "canEditName": true,
+    "root": {
+      "background": "bg-(--muted)",
+      "color": "text-(--foreground)",
+      "border": "border-t",
+      "borderColor": "border-(--border)"
+    },
+    "mobile": {
+      "display": "block",
+      "width": "w-full",
+      "maxWidth": "max-w-none"
+    },
+    "desktop": {},
+    "custom": {
+      "displayName": "Footer section"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "alignItems": "items-center",
+          "textAlign": "text-center",
+          "gap": "gap-6",
+          "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
+          "mx": "mx-auto",
+          "px": "px-6",
+          "py": "py-12"
+        },
+        "desktop": {
+          "py": "py-16",
+          "gap": "gap-8"
+        },
+        "custom": {
+          "displayName": "Footer inner"
+        }
+      },
+      "children": [
+        {
+          "type": "Text",
+          "props": {
+            "text": "Resources",
+            "tagName": "p",
+            "root": {
+              "color": "text-(--primary)",
+              "fontWeight": "font-bold",
+              "letterSpacing": "tracking-widest"
+            },
+            "mobile": {
+              "fontSize": "text-xs"
+            },
+            "desktop": {},
+            "className": ["uppercase"],
+            "custom": {
+              "displayName": "Eyebrow"
+            }
+          }
+        },
+        {
+          "type": "Text",
+          "props": {
+            "text": "Acme Inc",
+            "tagName": "p",
+            "root": {
+              "fontWeight": "font-bold",
+              "fontFamily": "var(--heading-font-family)",
+              "color": "text-(--foreground)",
+              "lineHeight": "leading-tight"
+            },
+            "mobile": {
+              "fontSize": "text-2xl"
+            },
+            "desktop": {
+              "fontSize": "text-3xl"
+            },
+            "custom": {
+              "displayName": "Brand"
+            }
+          }
+        },
+        {
+          "type": "Text",
+          "props": {
+            "text": "Interfaces, content systems, and launch playbooks for teams shipping on deadline.",
+            "tagName": "p",
+            "root": {
+              "color": "text-(--muted-foreground)",
+              "lineHeight": "leading-relaxed"
+            },
+            "mobile": {
+              "fontSize": "text-sm"
+            },
+            "desktop": {
+              "fontSize": "text-base"
+            },
+            "custom": {
+              "displayName": "Tagline"
+            }
+          }
+        },
+        {
+          "type": "ButtonList",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-row",
+              "flexWrap": "flex-wrap",
+              "justifyContent": "justify-center",
+              "alignItems": "items-center",
+              "gap": "gap-6"
+            },
+            "desktop": {
+              "gap": "gap-8"
+            },
+            "custom": {
+              "displayName": "Legal links"
+            }
+          },
+          "children": [
+            {
+              "type": "Button",
+              "props": {
+                "text": "Privacy Policy",
+                "url": "#",
+                "root": {
+                  "background": "bg-transparent",
+                  "color": "text-(--foreground)",
+                  "border": "border-0"
+                },
+                "mobile": {
+                  "fontSize": "text-sm",
+                  "fontWeight": "font-medium",
+                  "px": "px-0",
+                  "py": "py-0"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Privacy"
+                }
+              }
+            },
+            {
+              "type": "Button",
+              "props": {
+                "text": "Terms of use",
+                "url": "#",
+                "root": {
+                  "background": "bg-transparent",
+                  "color": "text-(--foreground)",
+                  "border": "border-0"
+                },
+                "mobile": {
+                  "fontSize": "text-sm",
+                  "fontWeight": "font-medium",
+                  "px": "px-0",
+                  "py": "py-0"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Terms"
+                }
+              }
+            },
+            {
+              "type": "Button",
+              "props": {
+                "text": "Contact",
+                "url": "#",
+                "root": {
+                  "background": "bg-transparent",
+                  "color": "text-(--foreground)",
+                  "border": "border-0"
+                },
+                "mobile": {
+                  "fontSize": "text-sm",
+                  "fontWeight": "font-medium",
+                  "px": "px-0",
+                  "py": "py-0"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Contact"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {
+              "border": "border-t",
+              "borderColor": "border-(--border)"
+            },
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "alignItems": "items-center",
+              "gap": "gap-5",
+              "width": "w-full",
+              "maxWidth": "max-w-md",
+              "pt": "pt-8",
+              "mt": "mt-2"
+            },
+            "desktop": {},
+            "custom": {
+              "displayName": "Social row"
+            }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "text": "Follow the build log",
+                "tagName": "p",
+                "root": {
+                  "color": "text-(--muted-foreground)",
+                  "fontWeight": "font-semibold",
+                  "letterSpacing": "tracking-wide"
+                },
+                "mobile": {
+                  "fontSize": "text-xs"
+                },
+                "desktop": {},
+                "className": ["uppercase"],
+                "custom": {
+                  "displayName": "Social label"
+                }
+              }
+            },
+            {
+              "type": "ButtonList",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {},
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-row",
+                  "justifyContent": "justify-center",
+                  "alignItems": "items-center",
+                  "gap": "gap-2"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Social icons"
+                }
+              },
+              "children": [
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Code repository",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-(--card)",
+                      "color": "text-(--foreground)",
+                      "border": "border",
+                      "borderColor": "border-(--border)",
+                      "radius": "rounded-(--radius-lg)"
+                    },
+                    "mobile": {
+                      "display": "inline-flex",
+                      "alignItems": "items-center",
+                      "justifyContent": "justify-center",
+                      "px": "px-3",
+                      "py": "py-3"
+                    },
+                    "desktop": {},
+                    "icon": {
+                      "value": "ref-google:code",
+                      "only": true,
+                      "size": "w-5 h-5"
+                    },
+                    "custom": {
+                      "displayName": "GitHub"
+                    }
+                  }
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Official site",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-(--card)",
+                      "color": "text-(--foreground)",
+                      "border": "border",
+                      "borderColor": "border-(--border)",
+                      "radius": "rounded-(--radius-lg)"
+                    },
+                    "mobile": {
+                      "display": "inline-flex",
+                      "alignItems": "items-center",
+                      "justifyContent": "justify-center",
+                      "px": "px-3",
+                      "py": "py-3"
+                    },
+                    "desktop": {},
+                    "icon": {
+                      "value": "ref-google:public",
+                      "only": true,
+                      "size": "w-5 h-5"
+                    },
+                    "custom": {
+                      "displayName": "Website"
+                    }
+                  }
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Share",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-(--card)",
+                      "color": "text-(--foreground)",
+                      "border": "border",
+                      "borderColor": "border-(--border)",
+                      "radius": "rounded-(--radius-lg)"
+                    },
+                    "mobile": {
+                      "display": "inline-flex",
+                      "alignItems": "items-center",
+                      "justifyContent": "justify-center",
+                      "px": "px-3",
+                      "py": "py-3"
+                    },
+                    "desktop": {},
+                    "icon": {
+                      "value": "ref-google:share",
+                      "only": true,
+                      "size": "w-5 h-5"
+                    },
+                    "custom": {
+                      "displayName": "Social share"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Text",
+          "props": {
+            "text": "\u00a9 2026 Acme Inc. All rights reserved.",
+            "tagName": "p",
+            "root": {
+              "color": "text-(--muted-foreground)"
+            },
+            "mobile": {
+              "fontSize": "text-xs"
+            },
+            "desktop": {},
+            "custom": {
+              "displayName": "Copyright"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

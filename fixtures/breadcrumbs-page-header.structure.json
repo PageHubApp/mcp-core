@@ -1,0 +1,258 @@
+{
+  "type": "Container",
+  "props": {
+    "type": "section",
+    "canDelete": true,
+    "canEditName": true,
+    "root": {
+      "background": "bg-(--muted)",
+      "color": "text-(--foreground)",
+      "border": "border-b",
+      "borderColor": "border-(--border)"
+    },
+    "mobile": {
+      "display": "block",
+      "width": "w-full",
+      "maxWidth": "max-w-none"
+    },
+    "desktop": {},
+    "custom": {
+      "displayName": "Page header section"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "gap": "gap-6",
+          "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
+          "mx": "mx-auto",
+          "px": "px-6",
+          "py": "py-8"
+        },
+        "desktop": {
+          "gap": "gap-8",
+          "py": "py-10"
+        },
+        "custom": {
+          "displayName": "Page header inner"
+        }
+      },
+      "children": [
+        {
+          "type": "Text",
+          "props": {
+            "text": "Knowledge base",
+            "tagName": "p",
+            "root": {
+              "color": "text-(--primary)",
+              "fontWeight": "font-bold",
+              "letterSpacing": "tracking-widest"
+            },
+            "mobile": {
+              "fontSize": "text-xs"
+            },
+            "desktop": {},
+            "className": ["uppercase"],
+            "custom": {
+              "displayName": "Eyebrow"
+            }
+          }
+        },
+        {
+          "type": "Text",
+          "props": {
+            "text": "Download center",
+            "tagName": "h1",
+            "root": {
+              "fontWeight": "font-bold",
+              "fontFamily": "var(--heading-font-family)",
+              "lineHeight": "leading-tight",
+              "color": "text-(--foreground)"
+            },
+            "mobile": {
+              "fontSize": "text-3xl"
+            },
+            "desktop": {
+              "fontSize": "text-4xl"
+            },
+            "custom": {
+              "displayName": "Page title"
+            }
+          }
+        },
+        {
+          "type": "Text",
+          "props": {
+            "text": "Installers, release notes, and checksums for every supported channel.",
+            "tagName": "p",
+            "root": {
+              "color": "text-(--muted-foreground)",
+              "lineHeight": "leading-relaxed"
+            },
+            "mobile": {
+              "fontSize": "text-sm"
+            },
+            "desktop": {
+              "fontSize": "text-base",
+              "maxWidth": "max-w-2xl"
+            },
+            "custom": {
+              "displayName": "Intro"
+            }
+          }
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {
+              "border": "border-b",
+              "borderColor": "border-(--border)"
+            },
+            "mobile": {
+              "width": "w-full",
+              "pb": "pb-5"
+            },
+            "desktop": {
+              "pb": "pb-6"
+            },
+            "custom": {
+              "displayName": "Divider"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {},
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-row",
+                  "flexWrap": "flex-wrap",
+                  "alignItems": "items-center",
+                  "gap": "gap-2",
+                  "width": "w-full"
+                },
+                "desktop": {
+                  "gap": "gap-2.5"
+                },
+                "custom": {
+                  "displayName": "Breadcrumb trail"
+                }
+              },
+              "children": [
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Home",
+                    "url": "/",
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--primary)",
+                      "border": "border-0"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm",
+                      "fontWeight": "font-medium",
+                      "px": "px-0",
+                      "py": "py-0"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Home"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "/",
+                    "tagName": "span",
+                    "root": {
+                      "color": "text-(--muted-foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Separator"
+                    }
+                  }
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Resources",
+                    "url": "/resources",
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--primary)",
+                      "border": "border-0"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm",
+                      "fontWeight": "font-medium",
+                      "px": "px-0",
+                      "py": "py-0"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Resources"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "/",
+                    "tagName": "span",
+                    "root": {
+                      "color": "text-(--muted-foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Separator"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Downloads",
+                    "tagName": "span",
+                    "root": {
+                      "color": "text-(--foreground)",
+                      "fontWeight": "font-semibold"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm"
+                    },
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Current page"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

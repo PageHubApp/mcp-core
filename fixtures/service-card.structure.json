@@ -1,0 +1,229 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "root": {
+      "background": "bg-(--card)",
+      "color": "text-(--card-foreground)",
+      "border": "border",
+      "borderColor": "border-(--border)",
+      "radius": "rounded-(--card-radius)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "width": "w-full",
+      "overflow": "overflow-hidden"
+    },
+    "desktop": {},
+    "custom": {
+      "displayName": "Service Card"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {
+          "background": "bg-(--accent)"
+        },
+        "mobile": {
+          "width": "w-full",
+          "height": "h-1"
+        },
+        "desktop": {},
+        "custom": {
+          "displayName": "Accent stripe"
+        }
+      }
+    },
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "gap": "gap-5",
+          "width": "w-full",
+          "p": "p-7"
+        },
+        "desktop": {
+          "gap": "gap-6",
+          "p": "p-8"
+        },
+        "custom": {
+          "displayName": "Card body"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {
+              "background": "bg-(--muted)",
+              "border": "border",
+              "borderColor": "border-(--border)",
+              "radius": "rounded-2xl"
+            },
+            "mobile": {
+              "display": "flex",
+              "alignItems": "items-center",
+              "justifyContent": "justify-center",
+              "width": "w-14",
+              "height": "h-14"
+            },
+            "desktop": {
+              "width": "w-16",
+              "height": "h-16"
+            },
+            "custom": {
+              "displayName": "Icon frame"
+            }
+          },
+          "children": [
+            {
+              "type": "Button",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "text": "Design and product engineering",
+                "url": "#",
+                "root": {
+                  "background": "bg-transparent",
+                  "color": "text-(--primary)",
+                  "radius": "rounded-(--radius)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-center",
+                  "py": "py-0",
+                  "px": "px-0"
+                },
+                "desktop": {},
+                "icon": {
+                  "value": "ref-google:design_services",
+                  "only": true,
+                  "size": "w-8 h-8",
+                  "color": "text-(--primary)"
+                },
+                "custom": {
+                  "displayName": "Service icon"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Text",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "text": "What we ship",
+            "tagName": "p",
+            "root": {
+              "color": "text-(--accent)",
+              "fontWeight": "font-bold",
+              "letterSpacing": "tracking-widest"
+            },
+            "mobile": {
+              "fontSize": "text-xs"
+            },
+            "desktop": {},
+            "className": ["uppercase"],
+            "custom": {
+              "displayName": "Eyebrow"
+            }
+          }
+        },
+        {
+          "type": "Text",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "text": "Product design & UI engineering",
+            "tagName": "h3",
+            "root": {
+              "fontWeight": "font-bold",
+              "fontFamily": "var(--heading-font-family)",
+              "lineHeight": "leading-snug",
+              "color": "text-(--foreground)"
+            },
+            "mobile": {
+              "fontSize": "text-lg"
+            },
+            "desktop": {
+              "fontSize": "text-xl"
+            },
+            "custom": {
+              "displayName": "Title"
+            }
+          }
+        },
+        {
+          "type": "Text",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "text": "Discovery workshops, interface systems, and production-ready components your team can reuse without fighting the codebase.",
+            "tagName": "p",
+            "root": {
+              "color": "text-(--muted-foreground)",
+              "lineHeight": "leading-relaxed"
+            },
+            "mobile": {
+              "fontSize": "text-sm"
+            },
+            "desktop": {
+              "fontSize": "text-base"
+            },
+            "custom": {
+              "displayName": "Description"
+            }
+          }
+        },
+        {
+          "type": "Button",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "text": "See how we work",
+            "url": "#",
+            "root": {
+              "background": "bg-transparent",
+              "color": "text-(--primary)",
+              "radius": "rounded-(--radius)"
+            },
+            "mobile": {
+              "display": "inline-flex",
+              "alignItems": "items-center",
+              "gap": "gap-1.5",
+              "py": "py-0",
+              "px": "px-0",
+              "fontSize": "text-sm",
+              "fontWeight": "font-semibold",
+              "mt": "mt-1"
+            },
+            "desktop": {},
+            "icon": {
+              "value": "ref-google:arrow_forward",
+              "position": "right",
+              "size": "w-5 h-5"
+            },
+            "custom": {
+              "displayName": "Link"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

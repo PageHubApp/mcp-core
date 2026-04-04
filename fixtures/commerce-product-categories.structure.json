@@ -1,0 +1,675 @@
+{
+  "type": "Container",
+  "props": {
+    "type": "section",
+    "canDelete": true,
+    "canEditName": true,
+    "root": {
+      "background": "bg-(--muted)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "width": "w-full",
+      "py": "py-16",
+      "px": "px-6",
+      "gap": "gap-10"
+    },
+    "desktop": {
+      "py": "py-20",
+      "px": "px-8",
+      "gap": "gap-12"
+    },
+    "custom": {
+      "displayName": "Product categories section"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
+          "mx": "mx-auto",
+          "gap": "gap-10"
+        },
+        "desktop": {},
+        "custom": {
+          "displayName": "Categories inner"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "alignItems": "items-start",
+              "gap": "gap-4",
+              "width": "w-full"
+            },
+            "desktop": {
+              "flexDirection": "flex-row",
+              "justifyContent": "justify-between",
+              "alignItems": "items-center",
+              "gap": "gap-6"
+            },
+            "custom": {
+              "displayName": "Section header row"
+            }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "text": "Collections worth opening first",
+                "tagName": "h2",
+                "root": {
+                  "fontWeight": "font-bold",
+                  "fontFamily": "var(--heading-font-family)",
+                  "lineHeight": "leading-tight",
+                  "color": "text-(--foreground)"
+                },
+                "mobile": {
+                  "fontSize": "text-2xl"
+                },
+                "desktop": {
+                  "fontSize": "text-3xl"
+                },
+                "custom": {
+                  "displayName": "Heading"
+                }
+              }
+            },
+            {
+              "type": "Button",
+              "props": {
+                "text": "Browse full catalog",
+                "url": "/shop",
+                "root": {
+                  "background": "bg-(--card)",
+                  "color": "text-(--foreground)",
+                  "radius": "rounded-(--radius)",
+                  "border": "border",
+                  "borderColor": "border-(--border)"
+                },
+                "mobile": {
+                  "py": "py-2.5",
+                  "px": "px-4",
+                  "fontSize": "text-sm",
+                  "fontWeight": "font-medium"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "See all CTA"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "grid",
+              "gridCols": "grid-cols-2",
+              "gap": "gap-4",
+              "width": "w-full"
+            },
+            "desktop": {
+              "gridCols": "grid-cols-4",
+              "gap": "gap-5"
+            },
+            "custom": {
+              "displayName": "Category grid"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "radius": "rounded-(--card-radius)",
+                  "border": "border",
+                  "borderColor": "border-(--muted)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-center",
+                  "width": "w-full",
+                  "minHeight": "min-h-[148px]",
+                  "p": "p-5"
+                },
+                "desktop": {
+                  "minHeight": "min-h-[160px]",
+                  "p": "p-6"
+                },
+                "custom": {
+                  "displayName": "Category cell"
+                }
+              },
+              "children": [
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Laptops & workstations",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--foreground)"
+                    },
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-col",
+                      "alignItems": "items-center",
+                      "justifyContent": "justify-center",
+                      "gap": "gap-3",
+                      "py": "py-0",
+                      "px": "px-0",
+                      "fontSize": "text-sm",
+                      "fontWeight": "font-semibold",
+                      "textAlign": "text-center",
+                      "width": "w-full"
+                    },
+                    "desktop": {},
+                    "icon": {
+                      "value": "ref-google:laptop_mac",
+                      "position": "top",
+                      "size": "w-12 h-12",
+                      "gap": "gap-3",
+                      "color": "text-(--muted-foreground)"
+                    },
+                    "custom": {
+                      "displayName": "Category link"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "radius": "rounded-(--card-radius)",
+                  "border": "border",
+                  "borderColor": "border-(--muted)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-center",
+                  "width": "w-full",
+                  "minHeight": "min-h-[148px]",
+                  "p": "p-5"
+                },
+                "desktop": {
+                  "minHeight": "min-h-[160px]",
+                  "p": "p-6"
+                },
+                "custom": {
+                  "displayName": "Category cell"
+                }
+              },
+              "children": [
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Displays & projectors",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--foreground)"
+                    },
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-col",
+                      "alignItems": "items-center",
+                      "justifyContent": "justify-center",
+                      "gap": "gap-3",
+                      "py": "py-0",
+                      "px": "px-0",
+                      "fontSize": "text-sm",
+                      "fontWeight": "font-semibold",
+                      "textAlign": "text-center",
+                      "width": "w-full"
+                    },
+                    "desktop": {},
+                    "icon": {
+                      "value": "ref-google:tv",
+                      "position": "top",
+                      "size": "w-12 h-12",
+                      "gap": "gap-3",
+                      "color": "text-(--muted-foreground)"
+                    },
+                    "custom": {
+                      "displayName": "Category link"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "radius": "rounded-(--card-radius)",
+                  "border": "border",
+                  "borderColor": "border-(--muted)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-center",
+                  "width": "w-full",
+                  "minHeight": "min-h-[148px]",
+                  "p": "p-5"
+                },
+                "desktop": {
+                  "minHeight": "min-h-[160px]",
+                  "p": "p-6"
+                },
+                "custom": {
+                  "displayName": "Category cell"
+                }
+              },
+              "children": [
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Tablets & readers",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--foreground)"
+                    },
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-col",
+                      "alignItems": "items-center",
+                      "justifyContent": "justify-center",
+                      "gap": "gap-3",
+                      "py": "py-0",
+                      "px": "px-0",
+                      "fontSize": "text-sm",
+                      "fontWeight": "font-semibold",
+                      "textAlign": "text-center",
+                      "width": "w-full"
+                    },
+                    "desktop": {},
+                    "icon": {
+                      "value": "ref-google:tablet_mac",
+                      "position": "top",
+                      "size": "w-12 h-12",
+                      "gap": "gap-3",
+                      "color": "text-(--muted-foreground)"
+                    },
+                    "custom": {
+                      "displayName": "Category link"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "radius": "rounded-(--card-radius)",
+                  "border": "border",
+                  "borderColor": "border-(--muted)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-center",
+                  "width": "w-full",
+                  "minHeight": "min-h-[148px]",
+                  "p": "p-5"
+                },
+                "desktop": {
+                  "minHeight": "min-h-[160px]",
+                  "p": "p-6"
+                },
+                "custom": {
+                  "displayName": "Category cell"
+                }
+              },
+              "children": [
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Personal audio",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--foreground)"
+                    },
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-col",
+                      "alignItems": "items-center",
+                      "justifyContent": "justify-center",
+                      "gap": "gap-3",
+                      "py": "py-0",
+                      "px": "px-0",
+                      "fontSize": "text-sm",
+                      "fontWeight": "font-semibold",
+                      "textAlign": "text-center",
+                      "width": "w-full"
+                    },
+                    "desktop": {},
+                    "icon": {
+                      "value": "ref-google:headphones",
+                      "position": "top",
+                      "size": "w-12 h-12",
+                      "gap": "gap-3",
+                      "color": "text-(--muted-foreground)"
+                    },
+                    "custom": {
+                      "displayName": "Category link"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "radius": "rounded-(--card-radius)",
+                  "border": "border",
+                  "borderColor": "border-(--muted)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-center",
+                  "width": "w-full",
+                  "minHeight": "min-h-[148px]",
+                  "p": "p-5"
+                },
+                "desktop": {
+                  "minHeight": "min-h-[160px]",
+                  "p": "p-6"
+                },
+                "custom": {
+                  "displayName": "Category cell"
+                }
+              },
+              "children": [
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Printers & supplies",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--foreground)"
+                    },
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-col",
+                      "alignItems": "items-center",
+                      "justifyContent": "justify-center",
+                      "gap": "gap-3",
+                      "py": "py-0",
+                      "px": "px-0",
+                      "fontSize": "text-sm",
+                      "fontWeight": "font-semibold",
+                      "textAlign": "text-center",
+                      "width": "w-full"
+                    },
+                    "desktop": {},
+                    "icon": {
+                      "value": "ref-google:print",
+                      "position": "top",
+                      "size": "w-12 h-12",
+                      "gap": "gap-3",
+                      "color": "text-(--muted-foreground)"
+                    },
+                    "custom": {
+                      "displayName": "Category link"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "radius": "rounded-(--card-radius)",
+                  "border": "border",
+                  "borderColor": "border-(--muted)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-center",
+                  "width": "w-full",
+                  "minHeight": "min-h-[148px]",
+                  "p": "p-5"
+                },
+                "desktop": {
+                  "minHeight": "min-h-[160px]",
+                  "p": "p-6"
+                },
+                "custom": {
+                  "displayName": "Category cell"
+                }
+              },
+              "children": [
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Keyboards & input",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--foreground)"
+                    },
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-col",
+                      "alignItems": "items-center",
+                      "justifyContent": "justify-center",
+                      "gap": "gap-3",
+                      "py": "py-0",
+                      "px": "px-0",
+                      "fontSize": "text-sm",
+                      "fontWeight": "font-semibold",
+                      "textAlign": "text-center",
+                      "width": "w-full"
+                    },
+                    "desktop": {},
+                    "icon": {
+                      "value": "ref-google:keyboard",
+                      "position": "top",
+                      "size": "w-12 h-12",
+                      "gap": "gap-3",
+                      "color": "text-(--muted-foreground)"
+                    },
+                    "custom": {
+                      "displayName": "Category link"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "radius": "rounded-(--card-radius)",
+                  "border": "border",
+                  "borderColor": "border-(--muted)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-center",
+                  "width": "w-full",
+                  "minHeight": "min-h-[148px]",
+                  "p": "p-5"
+                },
+                "desktop": {
+                  "minHeight": "min-h-[160px]",
+                  "p": "p-6"
+                },
+                "custom": {
+                  "displayName": "Category cell"
+                }
+              },
+              "children": [
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Routers & mesh Wi-Fi",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--foreground)"
+                    },
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-col",
+                      "alignItems": "items-center",
+                      "justifyContent": "justify-center",
+                      "gap": "gap-3",
+                      "py": "py-0",
+                      "px": "px-0",
+                      "fontSize": "text-sm",
+                      "fontWeight": "font-semibold",
+                      "textAlign": "text-center",
+                      "width": "w-full"
+                    },
+                    "desktop": {},
+                    "icon": {
+                      "value": "ref-google:router",
+                      "position": "top",
+                      "size": "w-12 h-12",
+                      "gap": "gap-3",
+                      "color": "text-(--muted-foreground)"
+                    },
+                    "custom": {
+                      "displayName": "Category link"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "radius": "rounded-(--card-radius)",
+                  "border": "border",
+                  "borderColor": "border-(--muted)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-center",
+                  "width": "w-full",
+                  "minHeight": "min-h-[148px]",
+                  "p": "p-5"
+                },
+                "desktop": {
+                  "minHeight": "min-h-[160px]",
+                  "p": "p-6"
+                },
+                "custom": {
+                  "displayName": "Category cell"
+                }
+              },
+              "children": [
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Deals & open-box",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--foreground)"
+                    },
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-col",
+                      "alignItems": "items-center",
+                      "justifyContent": "justify-center",
+                      "gap": "gap-3",
+                      "py": "py-0",
+                      "px": "px-0",
+                      "fontSize": "text-sm",
+                      "fontWeight": "font-semibold",
+                      "textAlign": "text-center",
+                      "width": "w-full"
+                    },
+                    "desktop": {},
+                    "icon": {
+                      "value": "ref-google:sell",
+                      "position": "top",
+                      "size": "w-12 h-12",
+                      "gap": "gap-3",
+                      "color": "text-(--muted-foreground)"
+                    },
+                    "custom": {
+                      "displayName": "Category link"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

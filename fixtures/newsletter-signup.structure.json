@@ -1,0 +1,132 @@
+{
+  "type": "Container",
+  "props": {
+    "type": "section",
+    "canDelete": true,
+    "canEditName": true,
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "width": "w-full",
+      "maxWidth": "max-w-none",
+      "py": "py-10",
+      "px": "px-4"
+    },
+    "desktop": {
+      "py": "py-12",
+      "px": "px-6"
+    },
+    "custom": {
+      "displayName": "Newsletter compact section"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "width": "w-full",
+          "maxWidth": "max-w-md",
+          "mx": "mx-auto"
+        },
+        "desktop": {},
+        "custom": {
+          "displayName": "Newsletter compact inner"
+        }
+      },
+      "children": [
+        {
+          "type": "Form",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "formName": "newsletter",
+            "formType": "subscribe",
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "gap": "gap-3",
+              "width": "w-full"
+            },
+            "desktop": {},
+            "custom": {
+              "displayName": "Newsletter Form"
+            }
+          },
+          "children": [
+            {
+              "type": "FormElement",
+              "props": {
+                "type": "email",
+                "name": "email",
+                "label": "",
+                "placeholder": "Enter your email",
+                "required": true,
+                "autocomplete": "email",
+                "root": {
+                  "border": "border",
+                  "borderWidth": "border-(--input-border-width)",
+                  "borderStyle": "border-solid",
+                  "borderColor": "border-(--input-border-color)",
+                  "radius": "rounded-(--input-border-radius)",
+                  "background": "bg-(--input-bg-color)",
+                  "color": "text-(--input-text-color)",
+                  "placeholderColor": "placeholder:text-(--input-placeholder-color)",
+                  "focus": {
+                    "ring": "focus:ring-(--input-focus-ring)",
+                    "ringColor": "focus:ring-(--input-focus-ring-color)",
+                    "outline": "focus:outline-none"
+                  }
+                },
+                "mobile": {
+                  "p": "p-(--input-padding)",
+                  "width": "w-full"
+                },
+                "desktop": {},
+                "canDelete": true,
+                "canEditName": true,
+                "custom": {
+                  "displayName": "Email Input"
+                }
+              }
+            },
+            {
+              "type": "Button",
+              "props": {
+                "text": "Subscribe",
+                "type": "submit",
+                "root": {
+                  "background": "bg-(--primary)",
+                  "color": "text-(--primary-foreground)",
+                  "radius": "rounded-(--radius)"
+                },
+                "mobile": {
+                  "width": "w-full",
+                  "py": "py-3",
+                  "px": "px-6",
+                  "textAlign": "text-center",
+                  "fontSize": "text-sm",
+                  "fontWeight": "font-medium"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Submit"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

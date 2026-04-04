@@ -11,6 +11,7 @@
       "display": "flex",
       "flexDirection": "flex-col",
       "width": "w-full",
+      "maxWidth": "max-w-none",
       "py": "py-12",
       "px": "px-4"
     },
