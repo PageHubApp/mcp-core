@@ -1,0 +1,430 @@
+{
+  "type": "Container",
+  "props": {
+    "type": "section",
+    "canDelete": true,
+    "canEditName": true,
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "width": "w-full",
+      "py": "py-16",
+      "px": "px-6",
+      "gap": "gap-0"
+    },
+    "desktop": {
+      "py": "py-24",
+      "px": "px-8"
+    },
+    "custom": {
+      "displayName": "FAQ panel split section"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
+          "mx": "mx-auto",
+          "gap": "gap-12"
+        },
+        "desktop": {
+          "flexDirection": "flex-row",
+          "gap": "gap-16",
+          "alignItems": "items-start"
+        },
+        "custom": {
+          "displayName": "Split body"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "gap": "gap-5",
+              "width": "w-full",
+              "flex": "flex-1",
+              "minWidth": "min-w-0"
+            },
+            "desktop": {
+              "maxWidth": "max-w-md"
+            },
+            "custom": {
+              "displayName": "Intro column"
+            }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "text": "HELP CENTER",
+                "tagName": "p",
+                "root": {
+                  "color": "text-(--primary)",
+                  "fontSize": "text-xs",
+                  "fontWeight": "font-bold",
+                  "letterSpacing": "tracking-widest"
+                },
+                "mobile": {},
+                "desktop": {},
+                "custom": {
+                  "displayName": "Eyebrow"
+                }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Still deciding? Here is the fine print, plain language.",
+                "tagName": "h2",
+                "root": {
+                  "fontWeight": "font-bold",
+                  "fontFamily": "var(--heading-font-family)",
+                  "lineHeight": "leading-tight",
+                  "color": "text-(--foreground)"
+                },
+                "mobile": {
+                  "fontSize": "text-3xl"
+                },
+                "desktop": {
+                  "fontSize": "text-4xl"
+                },
+                "custom": {
+                  "displayName": "Heading"
+                }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "If something is not covered, email us — we route technical questions to engineers, not scripts.",
+                "tagName": "p",
+                "root": {
+                  "color": "text-(--muted-foreground)"
+                },
+                "mobile": {
+                  "fontSize": "text-base",
+                  "lineHeight": "leading-relaxed"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Support blurb"
+                }
+              }
+            },
+            {
+              "type": "Button",
+              "props": {
+                "text": "Email support",
+                "url": "mailto:support@example.com",
+                "root": {
+                  "background": "bg-(--primary)",
+                  "color": "text-(--primary-foreground)",
+                  "radius": "rounded-(--radius)"
+                },
+                "mobile": {
+                  "width": "w-full",
+                  "maxWidth": "max-w-xs",
+                  "py": "py-3",
+                  "px": "px-6",
+                  "textAlign": "text-center",
+                  "fontSize": "text-sm",
+                  "fontWeight": "font-medium",
+                  "mt": "mt-2"
+                },
+                "desktop": {
+                  "width": "w-auto",
+                  "maxWidth": "max-w-none"
+                },
+                "custom": {
+                  "displayName": "Support CTA"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {
+              "background": "bg-(--card)",
+              "radius": "rounded-(--card-radius)",
+              "border": "border",
+              "borderColor": "border-(--muted)"
+            },
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "width": "w-full",
+              "flex": "flex-1",
+              "minWidth": "min-w-0",
+              "p": "p-6"
+            },
+            "desktop": {
+              "p": "p-8"
+            },
+            "custom": {
+              "displayName": "FAQ stack card"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "border": "border-b",
+                  "borderColor": "border-(--muted)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-2",
+                  "pb": "pb-6",
+                  "mb": "mb-6",
+                  "width": "w-full"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "FAQ row"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Can we trial Enterprise controls?",
+                    "tagName": "h3",
+                    "root": {
+                      "fontWeight": "font-semibold",
+                      "fontFamily": "var(--heading-font-family)",
+                      "fontSize": "text-base",
+                      "color": "text-(--card-foreground)"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Question"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Yes — fourteen days with SAML, audit exports, and IP allowlists enabled on a sandbox workspace.",
+                    "tagName": "p",
+                    "root": {
+                      "color": "text-(--muted-foreground)",
+                      "fontSize": "text-sm",
+                      "lineHeight": "leading-relaxed"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Answer"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "border": "border-b",
+                  "borderColor": "border-(--muted)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-2",
+                  "pb": "pb-6",
+                  "mb": "mb-6",
+                  "width": "w-full"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "FAQ row"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Do you sign a DPA?",
+                    "tagName": "h3",
+                    "root": {
+                      "fontWeight": "font-semibold",
+                      "fontFamily": "var(--heading-font-family)",
+                      "fontSize": "text-base",
+                      "color": "text-(--card-foreground)"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Question"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Standard DPA with subprocessors listed publicly; redlines handled in under five business days.",
+                    "tagName": "p",
+                    "root": {
+                      "color": "text-(--muted-foreground)",
+                      "fontSize": "text-sm",
+                      "lineHeight": "leading-relaxed"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Answer"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "border": "border-b",
+                  "borderColor": "border-(--muted)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-2",
+                  "pb": "pb-6",
+                  "mb": "mb-6",
+                  "width": "w-full"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "FAQ row"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "What happens if we exceed usage?",
+                    "tagName": "h3",
+                    "root": {
+                      "fontWeight": "font-semibold",
+                      "fontFamily": "var(--heading-font-family)",
+                      "fontSize": "text-base",
+                      "color": "text-(--card-foreground)"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Question"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "We notify at eighty percent; bursts are tolerated for forty-eight hours before we ask you to bump the plan.",
+                    "tagName": "p",
+                    "root": {
+                      "color": "text-(--muted-foreground)",
+                      "fontSize": "text-sm",
+                      "lineHeight": "leading-relaxed"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Answer"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {},
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-2",
+                  "width": "w-full"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "FAQ row"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Are refunds prorated?",
+                    "tagName": "h3",
+                    "root": {
+                      "fontWeight": "font-semibold",
+                      "fontFamily": "var(--heading-font-family)",
+                      "fontSize": "text-base",
+                      "color": "text-(--card-foreground)"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Question"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Within the first thirty days we refund unused months; after that credits apply to your next renewal.",
+                    "tagName": "p",
+                    "root": {
+                      "color": "text-(--muted-foreground)",
+                      "fontSize": "text-sm",
+                      "lineHeight": "leading-relaxed"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": {
+                      "displayName": "Answer"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
