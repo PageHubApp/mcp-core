@@ -1,0 +1,166 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "type": "section",
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "alignItems": "items-center",
+      "justifyContent": "justify-center",
+      "width": "w-full",
+      "py": "py-12",
+      "px": "px-4"
+    },
+    "desktop": {
+      "py": "py-16",
+      "px": "px-6"
+    },
+    "custom": {
+      "displayName": "Image Cards Section"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "py": "py-3",
+          "px": "px-3",
+          "mx": "mx-auto",
+          "display": "flex",
+          "justifyContent": "justify-center",
+          "flexDirection": "flex-col",
+          "width": "w-full",
+          "gap": "gap-10",
+          "height": "h-auto",
+          "maxWidth": "max-w-(--content-width)"
+        },
+        "desktop": {
+          "flexDirection": "flex-row"
+        },
+        "hidden": false,
+        "custom": {
+          "displayName": "Image Cards"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {
+              "radius": "rounded-(--card-radius)",
+              "backgroundGradient": "",
+              "backgroundGradientTo": "to-(--primary)",
+              "backgroundGradientFrom": "from-(--primary)"
+            },
+            "mobile": {
+              "py": "py-3",
+              "px": "px-3",
+              "mx": "mx-auto",
+              "display": "flex",
+              "justifyContent": "justify-center",
+              "flexDirection": "flex-col",
+              "width": "w-full",
+              "gap": "gap-3",
+              "height": "h-72",
+              "backgroundSize": "bg-cover",
+              "backgroundPosition": "bg-left",
+              "overflow": "overflow-hidden"
+            },
+            "desktop": {
+              "height": "h-96",
+              "backgroundSize": "bg-cover",
+              "width": "w-1/3"
+            },
+            "backgroundImage": "https://imagedelivery.net/8PYt12v3QMuDRiYrOftNUQ/49f0f18e-83d4-496a-00a6-3a377b459d00/public",
+            "backgroundImageType": "img",
+            "custom": {
+              "displayName": "Card 1"
+            }
+          }
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {
+              "radius": "rounded-(--card-radius)"
+            },
+            "mobile": {
+              "py": "py-3",
+              "px": "px-3",
+              "mx": "mx-auto",
+              "display": "flex",
+              "justifyContent": "justify-center",
+              "flexDirection": "flex-col",
+              "width": "w-full",
+              "gap": "gap-3",
+              "height": "h-72",
+              "backgroundSize": "bg-cover",
+              "backgroundPosition": "bg-right",
+              "overflow": "overflow-hidden"
+            },
+            "desktop": {
+              "backgroundSize": "bg-cover",
+              "backgroundPosition": "bg-bottom",
+              "height": "h-full",
+              "width": "w-1/3"
+            },
+            "backgroundImageType": "img",
+            "backgroundImage": "https://imagedelivery.net/8PYt12v3QMuDRiYrOftNUQ/31136527-d1f2-4693-fb22-3c35df38ca00/public",
+            "custom": {
+              "displayName": "Card 2"
+            }
+          }
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {
+              "radius": "rounded-(--card-radius)"
+            },
+            "mobile": {
+              "py": "py-3",
+              "px": "px-3",
+              "mx": "mx-auto",
+              "display": "flex",
+              "justifyContent": "justify-center",
+              "flexDirection": "flex-col",
+              "width": "w-full",
+              "gap": "gap-3",
+              "height": "h-72",
+              "backgroundSize": "bg-cover",
+              "backgroundPosition": "bg-right",
+              "overflow": "overflow-hidden"
+            },
+            "desktop": {
+              "backgroundSize": "bg-cover",
+              "backgroundPosition": "bg-right",
+              "height": "h-full",
+              "width": "w-1/3"
+            },
+            "backgroundImageType": "img",
+            "backgroundImage": "https://imagedelivery.net/8PYt12v3QMuDRiYrOftNUQ/6db3c432-a391-4375-d4d6-20a3434f1200/public",
+            "custom": {
+              "displayName": "Card 3"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

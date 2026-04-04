@@ -105,7 +105,7 @@
             {
               "type": "Container",
               "props": {
-                "mobile": { "position": "relative", "zIndex": "z-10", "display": "flex", "flexDirection": "flex-col", "gap": "gap-6", "height": "h-full", "justifyContent": "justify-end", "padding": "p-12" },
+                "mobile": { "position": "relative", "zIndex": "z-10", "display": "flex", "flexDirection": "flex-col", "gap": "gap-6", "height": "h-full", "justifyContent": "justify-end", "px": "px-12", "pb": "pb-12" },
                 "custom": { "displayName": "Content Layer" }
               },
               "children": [
@@ -160,7 +160,7 @@
                 "canDelete": true,
                 "canEditName": true,
                 "root": { "background": "bg-(--secondary)", "color": "text-(--secondary-foreground)", "radius": "rounded-(--card-radius)" },
-                "mobile": { "display": "flex", "flexDirection": "flex-col", "justifyContent": "justify-between", "flex": "flex-1", "minHeight": "min-h-[300px]", "position": "relative", "overflow": "overflow-hidden" },
+                "mobile": { "display": "flex", "flexDirection": "flex-col", "justifyContent": "justify-between", "flex": "flex-1", "minHeight": "min-h-[310px]", "position": "relative", "overflow": "overflow-hidden" },
                 "custom": { "displayName": "Feature Block 2" }
               },
               "children": [
@@ -176,7 +176,7 @@
                 {
                   "type": "Container",
                   "props": {
-                    "mobile": { "position": "relative", "zIndex": "z-10", "display": "flex", "flexDirection": "flex-col", "gap": "gap-4", "height": "h-full", "justifyContent": "justify-end", "padding": "p-12" },
+                    "mobile": { "position": "relative", "zIndex": "z-10", "display": "flex", "flexDirection": "flex-col", "gap": "gap-4", "height": "h-full", "justifyContent": "justify-end", "px": "px-10", "pb": "pb-10" },
                     "custom": { "displayName": "Content Layer" }
                   },
                   "children": [
@@ -210,7 +210,7 @@
                 "canDelete": true,
                 "canEditName": true,
                 "root": { "background": "bg-(--muted)", "radius": "rounded-(--card-radius)" },
-                "mobile": { "display": "flex", "flexDirection": "flex-col", "justifyContent": "justify-between", "flex": "flex-1", "minHeight": "min-h-[300px]", "position": "relative", "overflow": "overflow-hidden" },
+                "mobile": { "display": "flex", "flexDirection": "flex-col", "justifyContent": "justify-between", "flex": "flex-1", "minHeight": "min-h-[310px]", "position": "relative", "overflow": "overflow-hidden" },
                 "custom": { "displayName": "Feature Block 3" }
               },
               "children": [
@@ -226,7 +226,7 @@
                 {
                   "type": "Container",
                   "props": {
-                    "mobile": { "position": "relative", "zIndex": "z-10", "display": "flex", "flexDirection": "flex-col", "gap": "gap-4", "height": "h-full", "justifyContent": "justify-end", "padding": "p-12" },
+                    "mobile": { "position": "relative", "zIndex": "z-10", "display": "flex", "flexDirection": "flex-col", "gap": "gap-4", "height": "h-full", "justifyContent": "justify-end", "px": "px-10", "pb": "pb-10" },
                     "custom": { "displayName": "Content Layer" }
                   },
                   "children": [

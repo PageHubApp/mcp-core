@@ -1,0 +1,152 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "type": "section",
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "alignItems": "items-center",
+      "justifyContent": "justify-center",
+      "width": "w-full"
+    },
+    "custom": {
+      "displayName": "Column Container Section"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {
+          "background": "bg-(--muted)"
+        },
+        "mobile": {
+          "py": "py-3",
+          "px": "px-3",
+          "mx": "mx-auto",
+          "display": "flex",
+          "justifyContent": "justify-end",
+          "flexDirection": "flex-col",
+          "width": "w-full",
+          "gap": "gap-3",
+          "height": "h-96",
+          "backgroundSize": "bg-contain",
+          "backgroundPosition": "bg-top",
+          "alignItems": "",
+          "justifyItems": "",
+          "backgroundRepeat": "bg-no-repeat"
+        },
+        "desktop": {
+          "flexDirection": "flex-row",
+          "height": "h-screen",
+          "backgroundSize": "bg-cover",
+          "backgroundPosition": "bg-bottom-left",
+          "py": "",
+          "px": "",
+          "justifyContent": "justify-center",
+          "alignItems": "items-end",
+          "backgroundAttachment": "bg-fixed"
+        },
+        "backgroundImageType": "img",
+        "backgroundImage": "https://imagedelivery.net/8PYt12v3QMuDRiYrOftNUQ/f4722fe1-53f8-4804-1d6c-2d3dac4cd000/public",
+        "className": [
+          "h-[440px]"
+        ],
+        "hidden": false,
+        "hasMany": [
+          "B-vGYd8I6y"
+        ],
+        "custom": {
+          "displayName": "Column Container"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {
+              "color": "text-(--background)",
+              "presetMaxWidth": "max-w-(--breakpoint-lg)"
+            },
+            "mobile": {
+              "py": "py-3",
+              "px": "px-3",
+              "display": "flex",
+              "justifyContent": "justify-center",
+              "flexDirection": "flex-col",
+              "width": "w-full",
+              "gap": "gap-3",
+              "height": "h-auto",
+              "maxWidth": "max-w-(--breakpoint-lg)"
+            },
+            "desktop": {
+              "height": "",
+              "width": "w-[px]",
+              "my": "",
+              "maxWidth": "max-w-[740px]"
+            },
+            "hasMany": [
+              "VOVGS1syh6"
+            ],
+            "custom": {
+              "displayName": "Row Container"
+            }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "text": "Dolore qui anim ut dolore.",
+                "root": {
+                  "preset": "h4",
+                  "tagName": "h2"
+                },
+                "mobile": {
+                  "fontSize": "text-2xl"
+                },
+                "desktop": {
+                  "fontSize": "text-4xl",
+                  "textAlign": "text-center"
+                },
+                "hasMany": [
+                  "jGQInE3_Vw"
+                ]
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "text": "Aliqua cillum aliqua magna sit eu excepteur eiusmod sit labore nisi Lorem dolor. Dolore reprehenderit nulla aliquip amet officia anim ad. ",
+                "root": {
+                  "preset": "h5",
+                  "tagName": "h2"
+                },
+                "mobile": {
+                  "fontSize": "text-xl"
+                },
+                "desktop": {
+                  "fontSize": "text-3xl",
+                  "textAlign": "text-center",
+                  "lineHeight": "leading-10"
+                },
+                "hasMany": [
+                  "xQW0hDluc6"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

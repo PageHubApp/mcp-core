@@ -1,0 +1,185 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "type": "section",
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "alignItems": "items-center",
+      "justifyContent": "justify-center",
+      "width": "w-full"
+    },
+    "custom": {
+      "displayName": "Row Container Section"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {
+          "presetMaxWidth": "max-w-(--breakpoint-lg)"
+        },
+        "mobile": {
+          "py": "py-3",
+          "px": "px-3",
+          "mx": "mx-auto",
+          "display": "flex",
+          "justifyContent": "justify-center",
+          "flexDirection": "flex-col",
+          "width": "w-full",
+          "gap": "gap-9",
+          "height": "h-auto",
+          "maxWidth": "max-w-(--breakpoint-lg)"
+        },
+        "desktop": {
+          "width": "w-10/12",
+          "gap": "gap-12"
+        },
+        "hasMany": [
+          "yP4zLb5Jmk"
+        ],
+        "hidden": false,
+        "custom": {
+          "displayName": "Row Container"
+        }
+      },
+      "children": [
+        {
+          "type": "Text",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "text": "Fugiat aliqua laboris anim",
+            "desktop": {
+              "textAlign": "text-center",
+              "fontSize": "text-6xl"
+            },
+            "hasMany": [
+              "3BcYyAP4QI"
+            ],
+            "root": {
+              "preset": "h2",
+              "tagName": "h2"
+            },
+            "mobile": {
+              "fontSize": "text-4xl"
+            }
+          }
+        },
+        {
+          "type": "Text",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "text": "Non deserunt ullamco veniam.",
+            "desktop": {
+              "textAlign": "text-center",
+              "fontSize": "text-4xl",
+              "lineHeight": "leading-snug"
+            },
+            "hasMany": [
+              "97PhIKo2lX"
+            ],
+            "root": {
+              "preset": "h4",
+              "tagName": "h2"
+            },
+            "mobile": {
+              "fontSize": "text-2xl"
+            }
+          }
+        },
+        {
+          "type": "ButtonList",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "buttons": [
+              {
+                "text": "About Us",
+                "url": "/about"
+              }
+            ],
+            "desktop": {
+              "width": "",
+              "alignItems": "items-center",
+              "px": "px-20",
+              "py": "py-9",
+              "fontSize": "text-2xl",
+              "fontWeight": "font-semibold",
+              "lineHeight": "leading-normal",
+              "textAlign": "text-center",
+              "flexDirection": "flex-col",
+              "justifyContent": "justify-center"
+            },
+            "iconFontSize": "",
+            "hasMany": [
+              "D7l8f2xy4l"
+            ],
+            "root": {
+              "background": "bg-(--secondary)",
+              "radius": "rounded-2xl",
+              "borderColor": "border-(--primary)",
+              "border": "border-4",
+              "color": "text-(--card-foreground)",
+              "animation": "spring"
+            },
+            "mobile": {
+              "flexDirection": "",
+              "justifyContent": "justify-center",
+              "px": "px-24",
+              "py": "py-9"
+            },
+            "hover": {
+              "background": "bg-(--primary)",
+              "color": "text-(--secondary)"
+            },
+            "url": "ref:Xh6BuJJmYV",
+            "custom": {
+              "displayName": "Button List"
+            }
+          },
+          "children": [
+            {
+              "type": "Button",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "text": "About Us",
+                "url": "ref:Xh6BuJJmYV",
+                "type": "button",
+                "root": {
+                  "background": ""
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-row",
+                  "alignItems": "items-center",
+                  "gap": "gap-2"
+                },
+                "desktop": {
+                  "flexDirection": "flex-row",
+                  "alignItems": "items-center",
+                  "gap": "gap-2",
+                  "fontSize": "text-2xl"
+                },
+                "hover": {
+                  "background": "bg-(--primary)",
+                  "color": "text-(--secondary)"
+                },
+                "custom": {
+                  "displayName": "About Us"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

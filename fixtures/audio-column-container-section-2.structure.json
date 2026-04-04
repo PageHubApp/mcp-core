@@ -1,0 +1,182 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "type": "section",
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "alignItems": "items-center",
+      "justifyContent": "justify-center",
+      "width": "w-full"
+    },
+    "custom": {
+      "displayName": "Column Container Section"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {
+          "presetMaxWidth": "max-w-(--breakpoint-lg)"
+        },
+        "mobile": {
+          "py": "py-3",
+          "px": "px-3",
+          "mx": "mx-auto",
+          "display": "flex",
+          "justifyContent": "justify-center",
+          "flexDirection": "flex-col",
+          "width": "w-full",
+          "gap": "gap-3",
+          "height": "h-auto",
+          "maxWidth": "max-w-(--breakpoint-lg)"
+        },
+        "desktop": {
+          "flexDirection": "flex-row",
+          "justifyItems": "",
+          "alignItems": "items-center"
+        },
+        "hasMany": [
+          "fTv9-OJbzl",
+          "BP-977gssF",
+          "9VWAjEHOBt",
+          "FXVVFbhrOB"
+        ],
+        "hidden": false,
+        "custom": {
+          "displayName": "Column Container"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "mobile": {
+              "py": "",
+              "px": "",
+              "mx": "mx-auto",
+              "display": "flex",
+              "justifyContent": "justify-center",
+              "flexDirection": "flex-col",
+              "width": "w-full",
+              "gap": "gap-3",
+              "height": "h-auto"
+            },
+            "desktop": {
+              "alignItems": "items-center",
+              "gap": "gap-8",
+              "px": "px-20",
+              "width": "w-1/2"
+            },
+            "hasMany": [
+              "f8-6DuKUQl",
+              "j2xQdYkkaL",
+              "N0TAirqJLZ",
+              "Auryh2YR3k"
+            ],
+            "custom": {
+              "displayName": "Row Container"
+            }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "text": "Mollit officia ullamco nostrud aute anim consectetur eu.",
+                "desktop": {
+                  "fontSize": "text-4xl",
+                  "textAlign": "text-center"
+                },
+                "root": {
+                  "preset": "h4",
+                  "tagName": "h2"
+                },
+                "mobile": {
+                  "fontSize": "text-2xl"
+                },
+                "hasMany": [
+                  "uoED8VbpaL",
+                  "t3dU8jE9qK",
+                  "Vrlv6dLi87",
+                  "D0lt_hZNin"
+                ]
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "text": "Ipsum est sint ea excepteur pariatur excepteur cupidatat exercitation officia.",
+                "desktop": {
+                  "fontSize": "text-3xl",
+                  "textAlign": "text-center",
+                  "lineHeight": "leading-loose"
+                },
+                "root": {
+                  "preset": "h5",
+                  "tagName": "h2"
+                },
+                "mobile": {
+                  "fontSize": "text-xl"
+                },
+                "hasMany": [
+                  "eRopkcldSs",
+                  "YzrVhv_1ye",
+                  "lADlhBikxG",
+                  "OpGdzOOy2x"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "mobile": {
+              "py": "py-3",
+              "px": "px-3",
+              "mx": "mx-auto",
+              "display": "flex",
+              "justifyContent": "justify-center",
+              "flexDirection": "flex-col",
+              "width": "w-full",
+              "gap": "gap-3",
+              "height": "h-72",
+              "backgroundSize": "bg-cover",
+              "backgroundPosition": "bg-center"
+            },
+            "desktop": {
+              "backgroundSize": "bg-cover",
+              "backgroundPosition": "bg-bottom",
+              "height": "h-96",
+              "width": "w-1/2"
+            },
+            "backgroundImageType": "img",
+            "backgroundImage": "https://imagedelivery.net/8PYt12v3QMuDRiYrOftNUQ/de5f5647-5125-4662-488c-04981ac98500/public",
+            "hasMany": [
+              "SdQEFdeVFr",
+              "HgnvRHBBH3",
+              "g2MWtwepk5",
+              "PBthyKGmUY"
+            ],
+            "custom": {
+              "displayName": "Row Container"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
