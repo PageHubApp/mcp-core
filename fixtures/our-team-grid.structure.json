@@ -1,0 +1,1364 @@
+{
+  "type": "Container",
+  "props": {
+    "type": "section",
+    "canDelete": true,
+    "canEditName": true,
+    "root": {
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "width": "w-full",
+      "py": "py-16",
+      "px": "px-6",
+      "gap": "gap-12"
+    },
+    "desktop": {
+      "py": "py-24",
+      "px": "px-8",
+      "gap": "gap-14"
+    },
+    "custom": {
+      "displayName": "Our Team Section"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
+          "mx": "mx-auto",
+          "gap": "gap-10"
+        },
+        "desktop": {
+          "gap": "gap-12"
+        },
+        "custom": {
+          "displayName": "Team Content"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "alignItems": "items-center",
+              "textAlign": "text-center",
+              "width": "w-full",
+              "maxWidth": "max-w-2xl",
+              "mx": "mx-auto",
+              "gap": "gap-3"
+            },
+            "desktop": {},
+            "custom": {
+              "displayName": "Section Header"
+            }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "text": "Our Team",
+                "tagName": "h2",
+                "root": {
+                  "color": "text-(--foreground)"
+                },
+                "mobile": {
+                  "fontWeight": "font-bold",
+                  "fontFamily": "var(--heading-font-family)",
+                  "lineHeight": "leading-tight",
+                  "fontSize": "text-3xl"
+                },
+                "desktop": {
+                  "fontSize": "text-4xl"
+                },
+                "custom": {
+                  "displayName": "Heading"
+                }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Meet the people who design, build, and support the experience you see here.",
+                "tagName": "p",
+                "root": {
+                  "color": "text-(--muted-foreground)"
+                },
+                "mobile": {
+                  "fontSize": "text-base",
+                  "lineHeight": "leading-relaxed"
+                },
+                "desktop": {},
+                "custom": {
+                  "displayName": "Intro"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "grid",
+              "gridCols": "grid-cols-1",
+              "width": "w-full",
+              "gap": "gap-6"
+            },
+            "desktop": {
+              "gridCols": "grid-cols-2",
+              "gap": "gap-6"
+            },
+            "custom": {
+              "displayName": "Team Grid"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "color": "text-(--card-foreground)",
+                  "border": "border",
+                  "borderColor": "border-(--border)",
+                  "radius": "rounded-lg",
+                  "shadow": "shadow-sm",
+                  "overflow": "overflow-hidden"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "width": "w-full",
+                  "alignItems": "items-stretch"
+                },
+                "desktop": {
+                  "flexDirection": "flex-row"
+                },
+                "custom": {
+                  "displayName": "Team member — Bonnie Green"
+                }
+              },
+              "children": [
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {},
+                    "mobile": {
+                      "width": "w-full",
+                      "shrink": "shrink-0",
+                      "overflow": "overflow-hidden",
+                      "radius": "rounded-t-lg"
+                    },
+                    "desktop": {
+                      "width": "w-48",
+                      "shrink": "shrink-0",
+                      "alignSelf": "self-stretch",
+                      "overflow": "overflow-hidden",
+                      "radius": "rounded-l-lg rounded-t-none"
+                    },
+                    "custom": {
+                      "displayName": "Photo column"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Image",
+                      "props": {
+                        "content": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop&q=80",
+                        "type": "url",
+                        "alt": "Portrait of Bonnie Green",
+                        "root": {},
+                        "mobile": {
+                          "width": "w-full",
+                          "height": "h-56",
+                          "objectFit": "object-cover"
+                        },
+                        "desktop": {
+                          "width": "w-full",
+                          "height": "h-48",
+                          "objectFit": "object-cover"
+                        },
+                        "custom": {
+                          "displayName": "Portrait"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {},
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-col",
+                      "gap": "gap-2",
+                      "p": "p-6",
+                      "flexBase": "flex-1",
+                      "minWidth": "min-w-0",
+                      "justifyContent": "justify-start"
+                    },
+                    "desktop": {
+                      "justifyContent": "justify-between",
+                      "p": "p-6",
+                      "gap": "gap-3"
+                    },
+                    "custom": {
+                      "displayName": "Details"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {},
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-col",
+                          "gap": "gap-2"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Text stack"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "Bonnie Green",
+                            "tagName": "h3",
+                            "root": {},
+                            "mobile": {
+                              "fontWeight": "font-bold",
+                              "fontSize": "text-lg",
+                              "fontFamily": "var(--heading-font-family)",
+                              "color": "text-(--foreground)",
+                              "letterSpacing": "tracking-tight"
+                            },
+                            "desktop": {
+                              "fontSize": "text-xl"
+                            },
+                            "custom": {
+                              "displayName": "Name"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "CEO & Web Developer",
+                            "tagName": "p",
+                            "root": {
+                              "color": "text-(--muted-foreground)"
+                            },
+                            "mobile": {
+                              "fontSize": "text-sm",
+                              "fontWeight": "font-medium"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Role"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "Sets product direction and keeps every launch on brand, fast, and dependable.",
+                            "tagName": "p",
+                            "root": {
+                              "color": "text-(--muted-foreground)"
+                            },
+                            "mobile": {
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-relaxed",
+                              "fontWeight": "font-normal",
+                              "mt": "mt-2"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Bio"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "ButtonList",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {},
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-row",
+                          "gap": "gap-1",
+                          "wrap": "flex-wrap",
+                          "mt": "mt-3"
+                        },
+                        "desktop": {
+                          "mt": "mt-4"
+                        },
+                        "custom": {
+                          "displayName": "Social links"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Button",
+                          "props": {
+                            "text": "Community profile",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--muted-foreground)",
+                              "radius": "rounded-md"
+                            },
+                            "mobile": {
+                              "py": "py-2",
+                              "px": "px-2"
+                            },
+                            "desktop": {},
+                            "icon": {
+                              "value": "ref-google:groups",
+                              "only": true,
+                              "size": "w-5 h-5"
+                            },
+                            "custom": {
+                              "displayName": "Community profile"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "text": "Share or social link",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--muted-foreground)",
+                              "radius": "rounded-md"
+                            },
+                            "mobile": {
+                              "py": "py-2",
+                              "px": "px-2"
+                            },
+                            "desktop": {},
+                            "icon": {
+                              "value": "ref-google:share",
+                              "only": true,
+                              "size": "w-5 h-5"
+                            },
+                            "custom": {
+                              "displayName": "Share or social link"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "text": "Code repository",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--muted-foreground)",
+                              "radius": "rounded-md"
+                            },
+                            "mobile": {
+                              "py": "py-2",
+                              "px": "px-2"
+                            },
+                            "desktop": {},
+                            "icon": {
+                              "value": "ref-google:code",
+                              "only": true,
+                              "size": "w-5 h-5"
+                            },
+                            "custom": {
+                              "displayName": "Code repository"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "text": "Website",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--muted-foreground)",
+                              "radius": "rounded-md"
+                            },
+                            "mobile": {
+                              "py": "py-2",
+                              "px": "px-2"
+                            },
+                            "desktop": {},
+                            "icon": {
+                              "value": "ref-google:public",
+                              "only": true,
+                              "size": "w-5 h-5"
+                            },
+                            "custom": {
+                              "displayName": "Website"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "color": "text-(--card-foreground)",
+                  "border": "border",
+                  "borderColor": "border-(--border)",
+                  "radius": "rounded-lg",
+                  "shadow": "shadow-sm",
+                  "overflow": "overflow-hidden"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "width": "w-full",
+                  "alignItems": "items-stretch"
+                },
+                "desktop": {
+                  "flexDirection": "flex-row"
+                },
+                "custom": {
+                  "displayName": "Team member — Jese Leos"
+                }
+              },
+              "children": [
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {},
+                    "mobile": {
+                      "width": "w-full",
+                      "shrink": "shrink-0",
+                      "overflow": "overflow-hidden",
+                      "radius": "rounded-t-lg"
+                    },
+                    "desktop": {
+                      "width": "w-48",
+                      "shrink": "shrink-0",
+                      "alignSelf": "self-stretch",
+                      "overflow": "overflow-hidden",
+                      "radius": "rounded-l-lg rounded-t-none"
+                    },
+                    "custom": {
+                      "displayName": "Photo column"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Image",
+                      "props": {
+                        "content": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&q=80",
+                        "type": "url",
+                        "alt": "Portrait of Jese Leos",
+                        "root": {},
+                        "mobile": {
+                          "width": "w-full",
+                          "height": "h-56",
+                          "objectFit": "object-cover"
+                        },
+                        "desktop": {
+                          "width": "w-full",
+                          "height": "h-48",
+                          "objectFit": "object-cover"
+                        },
+                        "custom": {
+                          "displayName": "Portrait"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {},
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-col",
+                      "gap": "gap-2",
+                      "p": "p-6",
+                      "flexBase": "flex-1",
+                      "minWidth": "min-w-0",
+                      "justifyContent": "justify-start"
+                    },
+                    "desktop": {
+                      "justifyContent": "justify-between",
+                      "p": "p-6",
+                      "gap": "gap-3"
+                    },
+                    "custom": {
+                      "displayName": "Details"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {},
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-col",
+                          "gap": "gap-2"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Text stack"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "Jese Leos",
+                            "tagName": "h3",
+                            "root": {},
+                            "mobile": {
+                              "fontWeight": "font-bold",
+                              "fontSize": "text-lg",
+                              "fontFamily": "var(--heading-font-family)",
+                              "color": "text-(--foreground)",
+                              "letterSpacing": "tracking-tight"
+                            },
+                            "desktop": {
+                              "fontSize": "text-xl"
+                            },
+                            "custom": {
+                              "displayName": "Name"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "CTO",
+                            "tagName": "p",
+                            "root": {
+                              "color": "text-(--muted-foreground)"
+                            },
+                            "mobile": {
+                              "fontSize": "text-sm",
+                              "fontWeight": "font-medium"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Role"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "Owns technical architecture, reliability, and how the platform scales safely over time.",
+                            "tagName": "p",
+                            "root": {
+                              "color": "text-(--muted-foreground)"
+                            },
+                            "mobile": {
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-relaxed",
+                              "fontWeight": "font-normal",
+                              "mt": "mt-2"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Bio"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "ButtonList",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {},
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-row",
+                          "gap": "gap-1",
+                          "wrap": "flex-wrap",
+                          "mt": "mt-3"
+                        },
+                        "desktop": {
+                          "mt": "mt-4"
+                        },
+                        "custom": {
+                          "displayName": "Social links"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Button",
+                          "props": {
+                            "text": "Community profile",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--muted-foreground)",
+                              "radius": "rounded-md"
+                            },
+                            "mobile": {
+                              "py": "py-2",
+                              "px": "px-2"
+                            },
+                            "desktop": {},
+                            "icon": {
+                              "value": "ref-google:groups",
+                              "only": true,
+                              "size": "w-5 h-5"
+                            },
+                            "custom": {
+                              "displayName": "Community profile"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "text": "Share or social link",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--muted-foreground)",
+                              "radius": "rounded-md"
+                            },
+                            "mobile": {
+                              "py": "py-2",
+                              "px": "px-2"
+                            },
+                            "desktop": {},
+                            "icon": {
+                              "value": "ref-google:share",
+                              "only": true,
+                              "size": "w-5 h-5"
+                            },
+                            "custom": {
+                              "displayName": "Share or social link"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "text": "Code repository",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--muted-foreground)",
+                              "radius": "rounded-md"
+                            },
+                            "mobile": {
+                              "py": "py-2",
+                              "px": "px-2"
+                            },
+                            "desktop": {},
+                            "icon": {
+                              "value": "ref-google:code",
+                              "only": true,
+                              "size": "w-5 h-5"
+                            },
+                            "custom": {
+                              "displayName": "Code repository"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "text": "Website",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--muted-foreground)",
+                              "radius": "rounded-md"
+                            },
+                            "mobile": {
+                              "py": "py-2",
+                              "px": "px-2"
+                            },
+                            "desktop": {},
+                            "icon": {
+                              "value": "ref-google:public",
+                              "only": true,
+                              "size": "w-5 h-5"
+                            },
+                            "custom": {
+                              "displayName": "Website"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "color": "text-(--card-foreground)",
+                  "border": "border",
+                  "borderColor": "border-(--border)",
+                  "radius": "rounded-lg",
+                  "shadow": "shadow-sm",
+                  "overflow": "overflow-hidden"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "width": "w-full",
+                  "alignItems": "items-stretch"
+                },
+                "desktop": {
+                  "flexDirection": "flex-row"
+                },
+                "custom": {
+                  "displayName": "Team member — Michael Gough"
+                }
+              },
+              "children": [
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {},
+                    "mobile": {
+                      "width": "w-full",
+                      "shrink": "shrink-0",
+                      "overflow": "overflow-hidden",
+                      "radius": "rounded-t-lg"
+                    },
+                    "desktop": {
+                      "width": "w-48",
+                      "shrink": "shrink-0",
+                      "alignSelf": "self-stretch",
+                      "overflow": "overflow-hidden",
+                      "radius": "rounded-l-lg rounded-t-none"
+                    },
+                    "custom": {
+                      "displayName": "Photo column"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Image",
+                      "props": {
+                        "content": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&q=80",
+                        "type": "url",
+                        "alt": "Portrait of Michael Gough",
+                        "root": {},
+                        "mobile": {
+                          "width": "w-full",
+                          "height": "h-56",
+                          "objectFit": "object-cover"
+                        },
+                        "desktop": {
+                          "width": "w-full",
+                          "height": "h-48",
+                          "objectFit": "object-cover"
+                        },
+                        "custom": {
+                          "displayName": "Portrait"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {},
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-col",
+                      "gap": "gap-2",
+                      "p": "p-6",
+                      "flexBase": "flex-1",
+                      "minWidth": "min-w-0",
+                      "justifyContent": "justify-start"
+                    },
+                    "desktop": {
+                      "justifyContent": "justify-between",
+                      "p": "p-6",
+                      "gap": "gap-3"
+                    },
+                    "custom": {
+                      "displayName": "Details"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {},
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-col",
+                          "gap": "gap-2"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Text stack"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "Michael Gough",
+                            "tagName": "h3",
+                            "root": {},
+                            "mobile": {
+                              "fontWeight": "font-bold",
+                              "fontSize": "text-lg",
+                              "fontFamily": "var(--heading-font-family)",
+                              "color": "text-(--foreground)",
+                              "letterSpacing": "tracking-tight"
+                            },
+                            "desktop": {
+                              "fontSize": "text-xl"
+                            },
+                            "custom": {
+                              "displayName": "Name"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "Senior Front-end Developer",
+                            "tagName": "p",
+                            "root": {
+                              "color": "text-(--muted-foreground)"
+                            },
+                            "mobile": {
+                              "fontSize": "text-sm",
+                              "fontWeight": "font-medium"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Role"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "Ships accessible interfaces, performance budgets, and the polish users feel in the details.",
+                            "tagName": "p",
+                            "root": {
+                              "color": "text-(--muted-foreground)"
+                            },
+                            "mobile": {
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-relaxed",
+                              "fontWeight": "font-normal",
+                              "mt": "mt-2"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Bio"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "ButtonList",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {},
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-row",
+                          "gap": "gap-1",
+                          "wrap": "flex-wrap",
+                          "mt": "mt-3"
+                        },
+                        "desktop": {
+                          "mt": "mt-4"
+                        },
+                        "custom": {
+                          "displayName": "Social links"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Button",
+                          "props": {
+                            "text": "Community profile",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--muted-foreground)",
+                              "radius": "rounded-md"
+                            },
+                            "mobile": {
+                              "py": "py-2",
+                              "px": "px-2"
+                            },
+                            "desktop": {},
+                            "icon": {
+                              "value": "ref-google:groups",
+                              "only": true,
+                              "size": "w-5 h-5"
+                            },
+                            "custom": {
+                              "displayName": "Community profile"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "text": "Share or social link",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--muted-foreground)",
+                              "radius": "rounded-md"
+                            },
+                            "mobile": {
+                              "py": "py-2",
+                              "px": "px-2"
+                            },
+                            "desktop": {},
+                            "icon": {
+                              "value": "ref-google:share",
+                              "only": true,
+                              "size": "w-5 h-5"
+                            },
+                            "custom": {
+                              "displayName": "Share or social link"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "text": "Code repository",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--muted-foreground)",
+                              "radius": "rounded-md"
+                            },
+                            "mobile": {
+                              "py": "py-2",
+                              "px": "px-2"
+                            },
+                            "desktop": {},
+                            "icon": {
+                              "value": "ref-google:code",
+                              "only": true,
+                              "size": "w-5 h-5"
+                            },
+                            "custom": {
+                              "displayName": "Code repository"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "text": "Website",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--muted-foreground)",
+                              "radius": "rounded-md"
+                            },
+                            "mobile": {
+                              "py": "py-2",
+                              "px": "px-2"
+                            },
+                            "desktop": {},
+                            "icon": {
+                              "value": "ref-google:public",
+                              "only": true,
+                              "size": "w-5 h-5"
+                            },
+                            "custom": {
+                              "displayName": "Website"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "color": "text-(--card-foreground)",
+                  "border": "border",
+                  "borderColor": "border-(--border)",
+                  "radius": "rounded-lg",
+                  "shadow": "shadow-sm",
+                  "overflow": "overflow-hidden"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "width": "w-full",
+                  "alignItems": "items-stretch"
+                },
+                "desktop": {
+                  "flexDirection": "flex-row"
+                },
+                "custom": {
+                  "displayName": "Team member — Lana Byrd"
+                }
+              },
+              "children": [
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {},
+                    "mobile": {
+                      "width": "w-full",
+                      "shrink": "shrink-0",
+                      "overflow": "overflow-hidden",
+                      "radius": "rounded-t-lg"
+                    },
+                    "desktop": {
+                      "width": "w-48",
+                      "shrink": "shrink-0",
+                      "alignSelf": "self-stretch",
+                      "overflow": "overflow-hidden",
+                      "radius": "rounded-l-lg rounded-t-none"
+                    },
+                    "custom": {
+                      "displayName": "Photo column"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Image",
+                      "props": {
+                        "content": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop&q=80",
+                        "type": "url",
+                        "alt": "Portrait of Lana Byrd",
+                        "root": {},
+                        "mobile": {
+                          "width": "w-full",
+                          "height": "h-56",
+                          "objectFit": "object-cover"
+                        },
+                        "desktop": {
+                          "width": "w-full",
+                          "height": "h-48",
+                          "objectFit": "object-cover"
+                        },
+                        "custom": {
+                          "displayName": "Portrait"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {},
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-col",
+                      "gap": "gap-2",
+                      "p": "p-6",
+                      "flexBase": "flex-1",
+                      "minWidth": "min-w-0",
+                      "justifyContent": "justify-start"
+                    },
+                    "desktop": {
+                      "justifyContent": "justify-between",
+                      "p": "p-6",
+                      "gap": "gap-3"
+                    },
+                    "custom": {
+                      "displayName": "Details"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {},
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-col",
+                          "gap": "gap-2"
+                        },
+                        "desktop": {},
+                        "custom": {
+                          "displayName": "Text stack"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "Lana Byrd",
+                            "tagName": "h3",
+                            "root": {},
+                            "mobile": {
+                              "fontWeight": "font-bold",
+                              "fontSize": "text-lg",
+                              "fontFamily": "var(--heading-font-family)",
+                              "color": "text-(--foreground)",
+                              "letterSpacing": "tracking-tight"
+                            },
+                            "desktop": {
+                              "fontSize": "text-xl"
+                            },
+                            "custom": {
+                              "displayName": "Name"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "Marketing & Sales",
+                            "tagName": "p",
+                            "root": {
+                              "color": "text-(--muted-foreground)"
+                            },
+                            "mobile": {
+                              "fontSize": "text-sm",
+                              "fontWeight": "font-medium"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Role"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "Shapes the story in market, the funnel, and the follow-up that turns interest into trust.",
+                            "tagName": "p",
+                            "root": {
+                              "color": "text-(--muted-foreground)"
+                            },
+                            "mobile": {
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-relaxed",
+                              "fontWeight": "font-normal",
+                              "mt": "mt-2"
+                            },
+                            "desktop": {},
+                            "custom": {
+                              "displayName": "Bio"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "ButtonList",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {},
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-row",
+                          "gap": "gap-1",
+                          "wrap": "flex-wrap",
+                          "mt": "mt-3"
+                        },
+                        "desktop": {
+                          "mt": "mt-4"
+                        },
+                        "custom": {
+                          "displayName": "Social links"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Button",
+                          "props": {
+                            "text": "Community profile",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--muted-foreground)",
+                              "radius": "rounded-md"
+                            },
+                            "mobile": {
+                              "py": "py-2",
+                              "px": "px-2"
+                            },
+                            "desktop": {},
+                            "icon": {
+                              "value": "ref-google:groups",
+                              "only": true,
+                              "size": "w-5 h-5"
+                            },
+                            "custom": {
+                              "displayName": "Community profile"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "text": "Share or social link",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--muted-foreground)",
+                              "radius": "rounded-md"
+                            },
+                            "mobile": {
+                              "py": "py-2",
+                              "px": "px-2"
+                            },
+                            "desktop": {},
+                            "icon": {
+                              "value": "ref-google:share",
+                              "only": true,
+                              "size": "w-5 h-5"
+                            },
+                            "custom": {
+                              "displayName": "Share or social link"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "text": "Code repository",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--muted-foreground)",
+                              "radius": "rounded-md"
+                            },
+                            "mobile": {
+                              "py": "py-2",
+                              "px": "px-2"
+                            },
+                            "desktop": {},
+                            "icon": {
+                              "value": "ref-google:code",
+                              "only": true,
+                              "size": "w-5 h-5"
+                            },
+                            "custom": {
+                              "displayName": "Code repository"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "text": "Website",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--muted-foreground)",
+                              "radius": "rounded-md"
+                            },
+                            "mobile": {
+                              "py": "py-2",
+                              "px": "px-2"
+                            },
+                            "desktop": {},
+                            "icon": {
+                              "value": "ref-google:public",
+                              "only": true,
+                              "size": "w-5 h-5"
+                            },
+                            "custom": {
+                              "displayName": "Website"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

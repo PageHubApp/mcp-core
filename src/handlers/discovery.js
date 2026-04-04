@@ -86,6 +86,7 @@ fontSize, fontWeight, fontFamily, textAlign, lineHeight, textDecoration
 3. Text "text" values: NO block tags. Only inline: <strong>, <em>, <br/>, <span>, <a>, <ul>/<li>.
 4. Always match text color to background: bg-(--primary) → text-(--primary-foreground); bg-(--background) → text-(--foreground).
 5. Use descriptive node IDs: "sec_hero", "hero_title", etc.
+6. **Blocks / kit / library JSON:** Put layout in **mobile** / **desktop** (mobile = base). Put surface design (background, color, border, radius, shadow) in **root**. **Do not** use **props.root.style** on library blocks — use tokens; for rare viewport breakout use **props.className** (array of Tailwind class strings only). See repo **BLOCKS-AI-CONTEXT.md** ("Props layering").
 `;
 
 /* ── Design patterns (lazy-loaded) ── */
@@ -110,10 +111,10 @@ const TECHNIQUE_TRANSFER_RULES = `
   - Form cards: shadow, header, subtitle, response-time note, input styling
   - Split sections: column ratio, vertical alignment, content arrangement
 - Visual depth techniques:
-  - Background images with gradient overlays — use root.style for linear-gradient + Container with backgroundImage
+  - Background images with gradient overlays — prefer **backgroundOverlay** on Container with **backgroundImage**; avoid root.style in block/kit JSON.
   - Section background rhythm — alternate white/tinted/white/dark, never 4+ same bg
-  - Background overlays: use "backgroundOverlay" prop (NOT root.style). Presets: "dark-left", "dark-right", "dark-bottom", "dark-top", "dark", "light". Custom: { direction: "to right", from: { color: "#000", opacity: 85 }, to: { color: "#000", opacity: 20 } }
-  - root.style effects: backdrop-filter: blur(), rgba backgrounds (but NOT for bg image overlays — use backgroundOverlay)
+  - Background overlays: use "backgroundOverlay" prop. Presets: "dark-left", "dark-right", "dark-bottom", "dark-top", "dark", "light". Custom: { direction: "to right", from: { color: "#000", opacity: 85 }, to: { color: "#000", opacity: 20 } }
+  - For ad-hoc editor sites only (not library blocks): root.style may be used for backdrop-filter, rgba fills, etc. — never for image overlays (use backgroundOverlay).
 - Before building each section: check "which extracted techniques am I applying here?" If none, you're building generic.
 - Structural patterns transfer 1:1. Brand identity (palette, copy, imagery) gets replaced.`;
 

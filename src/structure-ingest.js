@@ -165,8 +165,129 @@ function walkApplyKitOverrides(nodes, rootId, contentOverrides, propOverrides) {
   visit(rootId);
 }
 
+/** Stable prefix for library block patching (same slug always yields same lib_* ids). */
+function makeLibraryInstancePrefix(slug) {
+  const h = crypto
+    .createHash('sha256')
+    .update(`library-block\n${String(slug)}`, 'utf8')
+    .digest('hex')
+    .slice(0, 8);
+  return `lib_${slugify(slug)}_${h}`;
+}
+
+/**
+ * Flatten stored hierarchical block structure for MCP patching (deterministic node ids).
+ * @param {object} structure - { type, props, children? }
+ * @param {string} slug - Block slug (use the same string as list_block_nodes / get_block)
+ * @returns {{ nodes: Record<string, object>, rootId: string }}
+ */
+function hierarchicalLibraryToFlat(structure, slug) {
+  if (!structure?.type) throw new Error('Block structure must have a root "type".');
+  const prefix = makeLibraryInstancePrefix(slug);
+  let seq = 0;
+  const nodes = {};
+
+  function walk(s, parentId, parentIsExternal) {
+    const resolvedName = s.type;
+    if (!VALID_COMPONENTS.has(resolvedName)) {
+      throw new Error(`Unsupported component type in block structure: "${resolvedName}"`);
+    }
+    const id = `${prefix}_n${seq++}`;
+    const props = normalizeTemplateProps(s.props || {}, resolvedName);
+    const customCopy = props.custom ? { ...props.custom } : undefined;
+    if (props.custom) delete props.custom;
+    const node = {
+      type: { resolvedName },
+      isCanvas: CANVAS_COMPONENTS.has(resolvedName),
+      hidden: false,
+      props,
+      displayName: resolvedName,
+      custom: customCopy || {},
+      parent: parentId,
+      nodes: [],
+      linkedNodes: {},
+    };
+    nodes[id] = node;
+    if (!parentIsExternal && parentId && nodes[parentId]) {
+      nodes[parentId].nodes.push(id);
+    }
+    for (const ch of s.children || []) {
+      walk(ch, id, false);
+    }
+    return id;
+  }
+
+  const rootId = walk(structure, null, true);
+  nodes[rootId].parent = null;
+  return { nodes, rootId };
+}
+
+/**
+ * Convert patched flat map back to hierarchical block structure for PUT /api/v1/components.
+ */
+function flatLibraryToHierarchical(flatMap, rootId) {
+  if (!flatMap || !flatMap[rootId]) {
+    throw new Error('Invalid flat map or missing rootId after patch.');
+  }
+
+  function toHier(id) {
+    const n = flatMap[id];
+    if (!n || !n.type?.resolvedName) {
+      throw new Error(`Missing or invalid node "${id}" while rebuilding hierarchy.`);
+    }
+    const props = deepClone(n.props || {});
+    const custom = n.custom && typeof n.custom === 'object' && Object.keys(n.custom).length ? { ...n.custom } : null;
+    if (custom) {
+      props.custom = { ...(props.custom || {}), ...custom };
+    }
+    const childIds = n.nodes || [];
+    const children = childIds.map((cid) => toHier(cid));
+    const out = { type: n.type.resolvedName, props };
+    if (children.length) out.children = children;
+    return out;
+  }
+
+  return toHier(rootId);
+}
+
+/** DFS node ids from root (stable human order for manifests). */
+function collectLibraryFlatIdsDfs(flatMap, rootId) {
+  const out = [];
+  const walk = (id) => {
+    if (!flatMap[id]) return;
+    out.push(id);
+    for (const c of flatMap[id].nodes || []) walk(c);
+  };
+  walk(rootId);
+  return out;
+}
+
+/**
+ * Text manifest of lib_* node ids for agents (same idea as apply_kit_block kit_* list).
+ */
+function formatBlockNodeManifest(flatMap, rootId, slug, maxLines = 120) {
+  const ids = collectLibraryFlatIdsDfs(flatMap, rootId);
+  const head = ids.slice(0, maxLines);
+  const lines = head.map((id) => {
+    const n = flatMap[id];
+    const rn = n?.type?.resolvedName || '?';
+    const label = n?.custom?.displayName ? ` label="${n.custom.displayName}"` : '';
+    return `  ${id} | ${rn}${label}`;
+  });
+  const tail = ids.length > maxLines ? `\n  …and ${ids.length - maxLines} more (same \`lib_…\` prefix)` : '';
+  return (
+    `Block slug: \`${slug}\`\n` +
+    `Library root id: \`${rootId}\`\n` +
+    `Use these node ids in patch_block / patch_block_bulk (copy exactly):\n` +
+    `${lines.join('\n')}${tail}`
+  );
+}
+
 module.exports = {
   hierarchicalStructureToFlat,
+  hierarchicalLibraryToFlat,
+  flatLibraryToHierarchical,
+  formatBlockNodeManifest,
   walkApplyKitOverrides,
   VALID_COMPONENTS,
 };

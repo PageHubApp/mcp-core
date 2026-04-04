@@ -79,7 +79,7 @@ These handlers make API calls to PageHub and are included in this package:
 
 **Pages** — `list_pages`, `add_page`, `update_page`, `delete_page`
 
-**Blocks** — `search_blocks`, `get_block`, `save_block`, `update_block`, `delete_block`
+**Blocks** — `search_blocks`, `get_block`, `list_block_nodes`, `patch_block`, `patch_block_bulk`, `save_block`, `update_block`, `delete_block`
 
 **Portal** — `set_portal`, `get_portal`, `remove_portal`
 

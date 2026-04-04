@@ -1,0 +1,377 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "type": "section",
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "width": "w-full",
+      "py": "py-16",
+      "px": "px-6"
+    },
+    "desktop": {
+      "py": "py-24"
+    },
+    "custom": {
+      "displayName": "Newsletter CTA section"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {
+          "maxWidth": "max-w-2xl",
+          "width": "w-full"
+        },
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "alignItems": "items-center",
+          "gap": "gap-8",
+          "mx": "mx-auto"
+        },
+        "custom": {
+          "displayName": "Content"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {
+              "textAlign": "text-center",
+              "width": "w-full"
+            },
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "gap": "gap-4",
+              "width": "w-full"
+            },
+            "custom": {
+              "displayName": "Intro"
+            }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "text": "Jump in with a single email",
+                "tagName": "h2",
+                "root": {
+                  "fontFamily": "var(--heading-font-family)",
+                  "fontWeight": "font-bold"
+                },
+                "mobile": {
+                  "fontSize": "text-2xl",
+                  "width": "w-full",
+                  "lineHeight": "leading-tight"
+                },
+                "desktop": {
+                  "fontSize": "text-3xl"
+                },
+                "custom": {
+                  "displayName": "Heading"
+                }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Low-volume sends with build notes, fresh layouts, and timing that respects your inbox. Opt out any time; we keep the list tight.",
+                "tagName": "p",
+                "root": {
+                  "color": "text-(--muted-foreground)"
+                },
+                "mobile": {
+                  "fontSize": "text-base",
+                  "lineHeight": "leading-relaxed",
+                  "width": "w-full",
+                  "maxWidth": "max-w-xl",
+                  "mx": "mx-auto"
+                },
+                "desktop": {
+                  "fontSize": "text-lg"
+                },
+                "custom": {
+                  "displayName": "Subhead"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Form",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "formName": "cta-split",
+            "formType": "subscribe",
+            "root": {
+              "width": "w-full"
+            },
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "gap": "gap-4",
+              "width": "w-full"
+            },
+            "custom": {
+              "displayName": "Subscribe form"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--input-bg-color)",
+                  "border": "border",
+                  "borderColor": "border-(--input-border-color)",
+                  "radius": "rounded-lg"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-row",
+                  "alignItems": "items-stretch",
+                  "width": "w-full",
+                  "overflow": "overflow-hidden"
+                },
+                "custom": {
+                  "displayName": "Email + button row"
+                }
+              },
+              "children": [
+                {
+                  "type": "Button",
+                  "props": {
+                    "type": "button",
+                    "text": "Email",
+                    "icon": {
+                      "value": "ref-google:mail",
+                      "only": true,
+                      "size": "w-5 h-5"
+                    },
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--muted-foreground)"
+                    },
+                    "mobile": {
+                      "display": "flex",
+                      "alignItems": "items-center",
+                      "justifyContent": "justify-center",
+                      "px": "px-3",
+                      "py": "py-0",
+                      "width": "w-auto",
+                      "minWidth": "min-w-0",
+                      "shrink": "shrink-0"
+                    },
+                    "custom": {
+                      "displayName": "Mail icon"
+                    }
+                  }
+                },
+                {
+                  "type": "FormElement",
+                  "props": {
+                    "type": "email",
+                    "name": "email",
+                    "label": "",
+                    "placeholder": "you@site.com",
+                    "required": true,
+                    "autocomplete": "email",
+                    "root": {
+                      "border": "border-0",
+                      "borderWidth": "border-0",
+                      "radius": "rounded-none",
+                      "background": "bg-transparent",
+                      "color": "text-(--input-text-color)",
+                      "placeholderColor": "placeholder:text-(--input-placeholder-color)",
+                      "focus": {
+                        "ring": "focus:ring-0",
+                        "outline": "focus:outline-none"
+                      }
+                    },
+                    "mobile": {
+                      "p": "py-3",
+                      "px": "px-0",
+                      "width": "w-full",
+                      "flex": "flex-1",
+                      "minWidth": "min-w-0"
+                    },
+                    "custom": {
+                      "displayName": "Email"
+                    }
+                  }
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "type": "submit",
+                    "text": "Subscribe",
+                    "root": {
+                      "background": "bg-(--primary)",
+                      "color": "text-(--primary-foreground)",
+                      "radius": "rounded-none"
+                    },
+                    "mobile": {
+                      "shrink": "shrink-0",
+                      "px": "px-6",
+                      "py": "py-3",
+                      "fontWeight": "font-semibold",
+                      "fontSize": "text-sm",
+                      "textAlign": "text-center",
+                      "display": "flex",
+                      "justifyContent": "justify-center",
+                      "alignItems": "items-center",
+                      "border": "border-l",
+                      "borderColor": "border-(--input-border-color)"
+                    },
+                    "custom": {
+                      "displayName": "Subscribe"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "width": "w-full",
+                  "textAlign": "text-center"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "flexWrap": "flex-wrap",
+                  "alignItems": "items-baseline",
+                  "justifyContent": "justify-center",
+                  "gap": "gap-x-1",
+                  "width": "w-full"
+                },
+                "custom": {
+                  "displayName": "Legal note"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Inbox only—no checkout step.",
+                    "tagName": "span",
+                    "root": {
+                      "color": "text-(--muted-foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm",
+                      "lineHeight": "leading-relaxed"
+                    },
+                    "custom": {
+                      "displayName": "Legal lead"
+                    }
+                  }
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Terms of use",
+                    "url": "/terms",
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--primary)"
+                    },
+                    "mobile": {
+                      "p": "p-0",
+                      "py": "py-0",
+                      "px": "px-0",
+                      "width": "w-auto",
+                      "minWidth": "min-w-0",
+                      "fontSize": "text-sm",
+                      "fontWeight": "font-semibold",
+                      "display": "inline-flex"
+                    },
+                    "custom": {
+                      "displayName": "Terms link"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "and",
+                    "tagName": "span",
+                    "root": {
+                      "color": "text-(--muted-foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm"
+                    },
+                    "custom": {
+                      "displayName": "Legal and"
+                    }
+                  }
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Privacy policy",
+                    "url": "/privacy",
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--primary)"
+                    },
+                    "mobile": {
+                      "p": "p-0",
+                      "py": "py-0",
+                      "px": "px-0",
+                      "width": "w-auto",
+                      "minWidth": "min-w-0",
+                      "fontSize": "text-sm",
+                      "fontWeight": "font-semibold",
+                      "display": "inline-flex"
+                    },
+                    "custom": {
+                      "displayName": "Privacy link"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": ".",
+                    "tagName": "span",
+                    "root": {
+                      "color": "text-(--muted-foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm"
+                    },
+                    "custom": {
+                      "displayName": "Legal end"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

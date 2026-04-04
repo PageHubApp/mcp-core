@@ -1259,7 +1259,7 @@
         },
         "category": {
           "type": "string",
-          "description": "Filter by category. Available: \"hero\", \"features\", \"content\", \"cta\", \"testimonials\", \"team\", \"pricing\", \"contact\", \"faq\", \"commerce\", \"navigation\", \"stats\", \"social\", \"misc\"."
+          "description": "Filter by category. Available: \"hero\", \"features\", \"content\", \"cta\", \"testimonials\", \"team\", \"pricing\", \"contact\", \"faq\", \"commerce\", \"navigation\", \"social\"."
         },
         "subcategory": {
           "type": "string",
@@ -1298,13 +1298,29 @@
   },
   {
     "name": "get_block",
-    "description": "Get a single block by slug with its full CraftJS structure. Use the structure as a building block inside add_custom_block or as reference when hand-crafting nodes.\n\nAlso increments the block's usage counter.",
+    "description": "Get a single block by slug with its full hierarchical structure. Use the structure as a building block inside add_custom_block or as reference when hand-crafting nodes.\n\nFor small edits without replacing the whole tree, prefer list_block_nodes then patch_block / patch_block_bulk (same patch fields as patch_site_node).\n\nAlso increments the block's usage counter.",
     "inputSchema": {
       "type": "object",
       "properties": {
         "slug": {
           "type": "string",
           "description": "Block slug (from search_blocks results)."
+        }
+      },
+      "required": [
+        "slug"
+      ]
+    }
+  },
+  {
+    "name": "list_block_nodes",
+    "description": "Lists deterministic flat node ids (lib_*) for a library block — same patch field semantics as patch_site_node. Call before patch_block / patch_block_bulk so you copy real ids (not guessed). Ids are derived from the block slug + tree shape; use the same slug string when patching.\n\nAlso increments the block usage counter (same GET as get_block).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string",
+          "description": "Block slug (from search_blocks)."
         }
       },
       "required": [
@@ -1368,7 +1384,7 @@
         },
         "category": {
           "type": "string",
-          "description": "Top-level category (any string). Common: \"hero\", \"features\", \"content\", \"cta\", \"testimonials\", \"team\", \"pricing\", \"contact\", \"faq\", \"commerce\", \"navigation\", \"stats\", \"social\", \"misc\"."
+          "description": "Top-level category (any string). Common: \"hero\", \"features\", \"content\", \"cta\", \"testimonials\", \"team\", \"pricing\", \"contact\", \"faq\", \"commerce\", \"navigation\", \"social\"."
         },
         "subcategory": {
           "type": "string",
@@ -1412,7 +1428,7 @@
   },
   {
     "name": "update_block",
-    "description": "Update an existing block — change its category, name, tags, description, slug, or any other metadata. Use this to move blocks between categories, fix descriptions, or update structure.",
+    "description": "Update an existing block — change its category, name, tags, description, slug, or any other metadata. Use this to move blocks between categories, fix descriptions, or replace the entire structure.\n\nFor partial structure edits (text, styles, layout props on specific nodes), prefer list_block_nodes + patch_block or patch_block_bulk instead of hand-editing the full structure JSON.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1478,6 +1494,145 @@
       },
       "required": [
         "slug"
+      ]
+    }
+  },
+  {
+    "name": "patch_block",
+    "description": "Patch one node inside a library block's stored structure (GET, flatten, merge, PUT). Same patch fields as patch_site_node: propsPatch, mobilePatch, desktopPatch, rootPatch, nodesPatch, unset*. Node ids are lib_* from list_block_nodes for this slug — not kit_* (those only exist after apply_kit_block on a site). Does not create nodes; use update_block(structure: ...) for wholesale replacement.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string",
+          "description": "Block slug (same string used in list_block_nodes)."
+        },
+        "nodeId": {
+          "type": "string",
+          "description": "Flat node id from list_block_nodes (lib_*)."
+        },
+        "propsPatch": {
+          "type": "object"
+        },
+        "mobilePatch": {
+          "type": "object"
+        },
+        "desktopPatch": {
+          "type": "object",
+          "description": "Shallow merge into node.props.desktop"
+        },
+        "rootPatch": {
+          "type": "object"
+        },
+        "nodesPatch": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unsetProps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unsetMobile": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unsetDesktop": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unsetRoot": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "slug",
+        "nodeId"
+      ]
+    }
+  },
+  {
+    "name": "patch_block_bulk",
+    "description": "Same as patch_block but one GET and one PUT: patch many lib_* nodes atomically. patches MUST be a native JSON array. Each item: { nodeId, propsPatch?, mobilePatch?, desktopPatch?, rootPatch?, nodesPatch?, unset*? }. Slug must match list_block_nodes.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string",
+          "description": "Block slug (same string used in list_block_nodes)."
+        },
+        "patches": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "nodeId": {
+                "type": "string",
+                "description": "lib_* id from list_block_nodes"
+              },
+              "propsPatch": {
+                "type": "object"
+              },
+              "mobilePatch": {
+                "type": "object"
+              },
+              "desktopPatch": {
+                "type": "object"
+              },
+              "rootPatch": {
+                "type": "object"
+              },
+              "nodesPatch": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "unsetProps": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "unsetMobile": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "unsetDesktop": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "unsetRoot": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "nodeId"
+            ]
+          },
+          "description": "Non-empty array of per-node patches (same keys as patch_block)."
+        }
+      },
+      "required": [
+        "slug",
+        "patches"
       ]
     }
   },

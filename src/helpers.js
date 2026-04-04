@@ -13,7 +13,7 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
     propsPatch, mobilePatch, desktopPatch, rootPatch, nodesPatch,
     unsetProps, unsetMobile, unsetDesktop, unsetRoot,
   } = patchArgs;
-  if (!flatMap[nodeId]) {
+    if (!flatMap[nodeId]) {
     let hint = '';
     if (String(nodeId).startsWith('kit_')) {
       const similar = Object.keys(flatMap).filter((k) => k.startsWith('kit_')).slice(0, 12);
@@ -21,6 +21,9 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
         similar.length > 0
           ? ` Known kit_* ids in this map start with: ${similar.join(', ')}. Use ids from the apply_kit_block tool reply, not get_component_schema.`
           : ' Use node ids from the latest apply_kit_block tool reply (copy exactly).';
+    } else if (String(nodeId).startsWith('lib_')) {
+      hint =
+        ' Use node ids from list_block_nodes for this block slug (copy exactly). Ids are deterministic from the slug.';
     }
     throw new Error(`Node ${nodeId} not found.${hint}`);
   }
@@ -70,8 +73,14 @@ const PATCH_BODY_KEYS = [
 /** Allowed top-level keys for patch_site_node. */
 const PATCH_SITE_NODE_ARG_KEYS = new Set(['id', 'slug', 'nodeId', ...PATCH_BODY_KEYS, 'name', 'title', 'description']);
 
+/** Allowed keys for patch_block (block library slug + same patch fields as site nodes). */
+const PATCH_BLOCK_NODE_ARG_KEYS = new Set(['slug', 'nodeId', ...PATCH_BODY_KEYS]);
+
 /** Allowed keys on each patch_site_bulk array element (no nested "patches"). */
 const PATCH_BULK_ITEM_KEYS = new Set(['nodeId', ...PATCH_BODY_KEYS, 'name', 'title', 'description', 'id']);
+
+/** Allowed keys on each patch_block_bulk array element. */
+const PATCH_BLOCK_BULK_ITEM_KEYS = new Set(['nodeId', ...PATCH_BODY_KEYS]);
 
 const UNSUPPORTED_PATCH_FIELD_HINTS = {
   children:
@@ -95,6 +104,14 @@ function assertPatchSiteNodeArgs(args) {
 
 function assertPatchBulkItem(item, index) {
   assertPatchKeys(item, PATCH_BULK_ITEM_KEYS, `patch_site_bulk patches[${index}]`);
+}
+
+function assertPatchBlockNodeArgs(args) {
+  assertPatchKeys(args, PATCH_BLOCK_NODE_ARG_KEYS, 'patch_block');
+}
+
+function assertPatchBlockBulkItem(item, index) {
+  assertPatchKeys(item, PATCH_BLOCK_BULK_ITEM_KEYS, `patch_block_bulk patches[${index}]`);
 }
 
 /** Normalize raw patch args (parse JSON strings). */
@@ -425,6 +442,8 @@ module.exports = {
   normalizeBulkPatchesFromArgs,
   assertPatchSiteNodeArgs,
   assertPatchBulkItem,
+  assertPatchBlockNodeArgs,
+  assertPatchBlockBulkItem,
   getActiveTarget, getActiveSiteId, isTemplateTarget,
   getEditorUrl, fetchTarget, fetchSite, saveTarget, saveSite,
   extractImageUrls, validateImageUrls, collectAllImageUrls,
