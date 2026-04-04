@@ -142,7 +142,7 @@
                   "color": "text-(--card-foreground)",
                   "border": "border",
                   "borderColor": "border-(--border)",
-                  "radius": "rounded-lg",
+                  "radius": "rounded-(--radius)",
                   "shadow": "shadow-sm",
                   "overflow": "overflow-hidden"
                 },
@@ -170,14 +170,14 @@
                       "width": "w-full",
                       "shrink": "shrink-0",
                       "overflow": "overflow-hidden",
-                      "radius": "rounded-t-lg"
+                      "radius": "rounded-t-(--radius)"
                     },
                     "desktop": {
                       "width": "w-48",
                       "shrink": "shrink-0",
                       "alignSelf": "self-stretch",
                       "overflow": "overflow-hidden",
-                      "radius": "rounded-l-lg rounded-t-none"
+                      "radius": "rounded-l-(--radius) rounded-t-none"
                     },
                     "custom": {
                       "displayName": "Photo column"
@@ -340,7 +340,7 @@
                             "root": {
                               "background": "bg-transparent",
                               "color": "text-(--muted-foreground)",
-                              "radius": "rounded-md"
+                              "radius": "rounded-(--radius)"
                             },
                             "mobile": {
                               "py": "py-2",
@@ -365,7 +365,7 @@
                             "root": {
                               "background": "bg-transparent",
                               "color": "text-(--muted-foreground)",
-                              "radius": "rounded-md"
+                              "radius": "rounded-(--radius)"
                             },
                             "mobile": {
                               "py": "py-2",
@@ -390,7 +390,7 @@
                             "root": {
                               "background": "bg-transparent",
                               "color": "text-(--muted-foreground)",
-                              "radius": "rounded-md"
+                              "radius": "rounded-(--radius)"
                             },
                             "mobile": {
                               "py": "py-2",
@@ -415,7 +415,7 @@
                             "root": {
                               "background": "bg-transparent",
                               "color": "text-(--muted-foreground)",
-                              "radius": "rounded-md"
+                              "radius": "rounded-(--radius)"
                             },
                             "mobile": {
                               "py": "py-2",
@@ -448,7 +448,7 @@
                   "color": "text-(--card-foreground)",
                   "border": "border",
                   "borderColor": "border-(--border)",
-                  "radius": "rounded-lg",
+                  "radius": "rounded-(--radius)",
                   "shadow": "shadow-sm",
                   "overflow": "overflow-hidden"
                 },
@@ -476,14 +476,14 @@
                       "width": "w-full",
                       "shrink": "shrink-0",
                       "overflow": "overflow-hidden",
-                      "radius": "rounded-t-lg"
+                      "radius": "rounded-t-(--radius)"
                     },
                     "desktop": {
                       "width": "w-48",
                       "shrink": "shrink-0",
                       "alignSelf": "self-stretch",
                       "overflow": "overflow-hidden",
-                      "radius": "rounded-l-lg rounded-t-none"
+                      "radius": "rounded-l-(--radius) rounded-t-none"
                     },
                     "custom": {
                       "displayName": "Photo column"
@@ -646,7 +646,7 @@
                             "root": {
                               "background": "bg-transparent",
                               "color": "text-(--muted-foreground)",
-                              "radius": "rounded-md"
+                              "radius": "rounded-(--radius)"
                             },
                             "mobile": {
                               "py": "py-2",
@@ -671,7 +671,7 @@
                             "root": {
                               "background": "bg-transparent",
                               "color": "text-(--muted-foreground)",
-                              "radius": "rounded-md"
+                              "radius": "rounded-(--radius)"
                             },
                             "mobile": {
                               "py": "py-2",
@@ -696,7 +696,7 @@
                             "root": {
                               "background": "bg-transparent",
                               "color": "text-(--muted-foreground)",
-                              "radius": "rounded-md"
+                              "radius": "rounded-(--radius)"
                             },
                             "mobile": {
                               "py": "py-2",
@@ -721,7 +721,7 @@
                             "root": {
                               "background": "bg-transparent",
                               "color": "text-(--muted-foreground)",
-                              "radius": "rounded-md"
+                              "radius": "rounded-(--radius)"
                             },
                             "mobile": {
                               "py": "py-2",
@@ -754,7 +754,7 @@
                   "color": "text-(--card-foreground)",
                   "border": "border",
                   "borderColor": "border-(--border)",
-                  "radius": "rounded-lg",
+                  "radius": "rounded-(--radius)",
                   "shadow": "shadow-sm",
                   "overflow": "overflow-hidden"
                 },
@@ -782,14 +782,14 @@
                       "width": "w-full",
                       "shrink": "shrink-0",
                       "overflow": "overflow-hidden",
-                      "radius": "rounded-t-lg"
+                      "radius": "rounded-t-(--radius)"
                     },
                     "desktop": {
                       "width": "w-48",
                       "shrink": "shrink-0",
                       "alignSelf": "self-stretch",
                       "overflow": "overflow-hidden",
-                      "radius": "rounded-l-lg rounded-t-none"
+                      "radius": "rounded-l-(--radius) rounded-t-none"
                     },
                     "custom": {
                       "displayName": "Photo column"
@@ -952,7 +952,7 @@
                             "root": {
                               "background": "bg-transparent",
                               "color": "text-(--muted-foreground)",
-                              "radius": "rounded-md"
+                              "radius": "rounded-(--radius)"
                             },
                             "mobile": {
                               "py": "py-2",
@@ -977,7 +977,7 @@
                             "root": {
                               "background": "bg-transparent",
                               "color": "text-(--muted-foreground)",
-                              "radius": "rounded-md"
+                              "radius": "rounded-(--radius)"
                             },
                             "mobile": {
                               "py": "py-2",
@@ -1002,7 +1002,7 @@
                             "root": {
                               "background": "bg-transparent",
                               "color": "text-(--muted-foreground)",
-                              "radius": "rounded-md"
+                              "radius": "rounded-(--radius)"
                             },
                             "mobile": {
                               "py": "py-2",
@@ -1027,7 +1027,7 @@
                             "root": {
                               "background": "bg-transparent",
                               "color": "text-(--muted-foreground)",
-                              "radius": "rounded-md"
+                              "radius": "rounded-(--radius)"
                             },
                             "mobile": {
                               "py": "py-2",
@@ -1060,7 +1060,7 @@
                   "color": "text-(--card-foreground)",
                   "border": "border",
                   "borderColor": "border-(--border)",
-                  "radius": "rounded-lg",
+                  "radius": "rounded-(--radius)",
                   "shadow": "shadow-sm",
                   "overflow": "overflow-hidden"
                 },
@@ -1088,14 +1088,14 @@
                       "width": "w-full",
                       "shrink": "shrink-0",
                       "overflow": "overflow-hidden",
-                      "radius": "rounded-t-lg"
+                      "radius": "rounded-t-(--radius)"
                     },
                     "desktop": {
                       "width": "w-48",
                       "shrink": "shrink-0",
                       "alignSelf": "self-stretch",
                       "overflow": "overflow-hidden",
-                      "radius": "rounded-l-lg rounded-t-none"
+                      "radius": "rounded-l-(--radius) rounded-t-none"
                     },
                     "custom": {
                       "displayName": "Photo column"
@@ -1258,7 +1258,7 @@
                             "root": {
                               "background": "bg-transparent",
                               "color": "text-(--muted-foreground)",
-                              "radius": "rounded-md"
+                              "radius": "rounded-(--radius)"
                             },
                             "mobile": {
                               "py": "py-2",
@@ -1283,7 +1283,7 @@
                             "root": {
                               "background": "bg-transparent",
                               "color": "text-(--muted-foreground)",
-                              "radius": "rounded-md"
+                              "radius": "rounded-(--radius)"
                             },
                             "mobile": {
                               "py": "py-2",
@@ -1308,7 +1308,7 @@
                             "root": {
                               "background": "bg-transparent",
                               "color": "text-(--muted-foreground)",
-                              "radius": "rounded-md"
+                              "radius": "rounded-(--radius)"
                             },
                             "mobile": {
                               "py": "py-2",
@@ -1333,7 +1333,7 @@
                             "root": {
                               "background": "bg-transparent",
                               "color": "text-(--muted-foreground)",
-                              "radius": "rounded-md"
+                              "radius": "rounded-(--radius)"
                             },
                             "mobile": {
                               "py": "py-2",

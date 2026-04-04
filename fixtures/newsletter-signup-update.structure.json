@@ -141,7 +141,7 @@
                   "background": "bg-(--input-bg-color)",
                   "border": "border",
                   "borderColor": "border-(--input-border-color)",
-                  "radius": "rounded-lg"
+                  "radius": "rounded-(--radius)"
                 },
                 "mobile": {
                   "display": "flex",

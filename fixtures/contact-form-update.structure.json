@@ -5,19 +5,16 @@
     "canEditName": true,
     "type": "section",
     "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
+      "background": "bg-(--background)"
     },
     "mobile": {
       "display": "flex",
       "flexDirection": "flex-col",
       "width": "w-full",
-      "py": "py-16",
-      "px": "px-6"
+      "pb": "pb-20"
     },
     "desktop": {
-      "py": "py-24",
-      "px": "px-10"
+      "pb": "pb-28"
     },
     "custom": {
       "displayName": "Contact Section"
@@ -29,200 +26,409 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
+        "backgroundImage": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1600&h=700&fit=crop&q=80",
+        "backgroundImageType": "url",
+        "backgroundOverlay": "dark",
         "root": {
-          "maxWidth": "max-w-xl",
-          "width": "w-full"
+          "color": "text-white",
+          "position": "relative"
         },
         "mobile": {
           "display": "flex",
           "flexDirection": "flex-col",
-          "alignItems": "items-start",
-          "gap": "gap-6",
-          "mx": "mx-auto"
+          "alignItems": "items-center",
+          "justifyContent": "justify-center",
+          "width": "w-full",
+          "py": "py-20",
+          "px": "px-6",
+          "backgroundSize": "bg-cover",
+          "backgroundPosition": "bg-center",
+          "backgroundRepeat": "bg-no-repeat",
+          "minHeight": "min-h-[300px]"
         },
         "desktop": {
-          "mx": "mx-0"
+          "py": "py-28",
+          "minHeight": "min-h-[340px]"
         },
         "custom": {
-          "displayName": "Content"
+          "displayName": "Contact hero"
         }
       },
       "children": [
         {
-          "type": "Form",
+          "type": "Container",
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "formName": "contact",
-            "formType": "contact",
             "root": {
+              "maxWidth": "max-w-3xl",
               "width": "w-full"
             },
             "mobile": {
               "display": "flex",
               "flexDirection": "flex-col",
-              "gap": "gap-5",
-              "width": "w-full"
+              "alignItems": "items-center",
+              "gap": "gap-4",
+              "textAlign": "text-center",
+              "mx": "mx-auto"
             },
-            "desktop": {},
+            "desktop": {
+              "gap": "gap-5"
+            },
             "custom": {
-              "displayName": "Contact Form"
+              "displayName": "Hero copy"
             }
           },
           "children": [
             {
-              "type": "FormElement",
+              "type": "Text",
               "props": {
-                "type": "text",
-                "name": "name",
-                "label": "Name:",
-                "placeholder": "Enter your name",
-                "required": true,
-                "autocomplete": "name",
-                "root": {
-                  "border": "border",
-                  "borderWidth": "border-(--input-border-width)",
-                  "borderStyle": "border-solid",
-                  "borderColor": "border-(--input-border-color)",
-                  "radius": "rounded-(--input-border-radius)",
-                  "background": "bg-(--input-bg-color)",
-                  "color": "text-(--input-text-color)",
-                  "placeholderColor": "placeholder:text-(--input-placeholder-color)",
-                  "focus": {
-                    "ring": "focus:ring-(--input-focus-ring)",
-                    "ringColor": "focus:ring-(--input-focus-ring-color)",
-                    "outline": "focus:outline-none"
-                  }
-                },
+                "text": "Contact Us",
+                "tagName": "h2",
                 "mobile": {
-                  "p": "p-(--input-padding)",
-                  "width": "w-full"
+                  "fontSize": "text-4xl",
+                  "fontWeight": "font-bold",
+                  "fontFamily": "var(--heading-font-family)",
+                  "lineHeight": "leading-tight"
                 },
-                "desktop": {},
+                "desktop": {
+                  "fontSize": "text-5xl"
+                },
+                "canDelete": true,
+                "canEditName": true,
                 "custom": {
-                  "displayName": "Name"
+                  "displayName": "Title"
                 }
               }
             },
             {
-              "type": "FormElement",
+              "type": "Text",
               "props": {
-                "type": "email",
-                "name": "email",
-                "label": "Email:",
-                "placeholder": "Enter your email",
-                "required": true,
-                "autocomplete": "email",
+                "text": "We work in tight feedback loops—test ideas early, listen often, and keep your audience at the center of every decision.",
+                "tagName": "p",
                 "root": {
-                  "border": "border",
-                  "borderWidth": "border-(--input-border-width)",
-                  "borderStyle": "border-solid",
-                  "borderColor": "border-(--input-border-color)",
-                  "radius": "rounded-(--input-border-radius)",
-                  "background": "bg-(--input-bg-color)",
-                  "color": "text-(--input-text-color)",
-                  "placeholderColor": "placeholder:text-(--input-placeholder-color)",
-                  "focus": {
-                    "ring": "focus:ring-(--input-focus-ring)",
-                    "ringColor": "focus:ring-(--input-focus-ring-color)",
-                    "outline": "focus:outline-none"
-                  }
+                  "color": "text-white/80"
                 },
                 "mobile": {
-                  "p": "p-(--input-padding)",
-                  "width": "w-full"
+                  "fontSize": "text-base",
+                  "lineHeight": "leading-relaxed",
+                  "maxWidth": "max-w-2xl"
                 },
-                "desktop": {},
+                "desktop": {
+                  "fontSize": "text-lg"
+                },
+                "canDelete": true,
+                "canEditName": true,
                 "custom": {
-                  "displayName": "Email"
+                  "displayName": "Description"
                 }
               }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {
+          "position": "relative",
+          "zIndex": "z-10",
+          "width": "w-full"
+        },
+        "mobile": {
+          "display": "flex",
+          "justifyContent": "justify-center",
+          "width": "w-full",
+          "px": "px-4",
+          "mt": "-mt-14"
+        },
+        "desktop": {
+          "mt": "-mt-20",
+          "px": "px-8"
+        },
+        "custom": {
+          "displayName": "Form shell"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {
+              "background": "bg-(--card)",
+              "radius": "rounded-(--card-radius)",
+              "shadow": "shadow-lg",
+              "border": "border",
+              "borderColor": "border-(--border)",
+              "maxWidth": "max-w-3xl",
+              "width": "w-full",
+              "color": "text-(--foreground)"
             },
-            {
-              "type": "FormElement",
-              "props": {
-                "type": "textarea",
-                "name": "message",
-                "label": "Message:",
-                "placeholder": "Enter your message",
-                "required": true,
-                "rows": 6,
-                "root": {
-                  "border": "border",
-                  "borderWidth": "border-(--input-border-width)",
-                  "borderStyle": "border-solid",
-                  "borderColor": "border-(--input-border-color)",
-                  "radius": "rounded-(--input-border-radius)",
-                  "background": "bg-(--input-bg-color)",
-                  "color": "text-(--input-text-color)",
-                  "placeholderColor": "placeholder:text-(--input-placeholder-color)",
-                  "focus": {
-                    "ring": "focus:ring-(--input-focus-ring)",
-                    "ringColor": "focus:ring-(--input-focus-ring-color)",
-                    "outline": "focus:outline-none"
-                  }
-                },
-                "mobile": {
-                  "p": "p-(--input-padding)",
-                  "width": "w-full",
-                  "minHeight": "min-h-[140px]"
-                },
-                "desktop": {},
-                "custom": {
-                  "displayName": "Message"
-                }
-              }
+            "mobile": {
+              "p": "p-8",
+              "mx": "mx-auto"
             },
+            "desktop": {
+              "p": "p-10"
+            },
+            "custom": {
+              "displayName": "Form card"
+            }
+          },
+          "children": [
             {
-              "type": "Container",
+              "type": "Form",
               "props": {
                 "canDelete": true,
                 "canEditName": true,
+                "formName": "contact",
+                "formType": "contact",
                 "root": {
-                  "color": "text-(--muted-foreground)",
                   "width": "w-full"
                 },
                 "mobile": {
                   "display": "flex",
-                  "flexDirection": "flex-row",
-                  "flexWrap": "flex-wrap",
-                  "alignItems": "items-start",
-                  "gap": "gap-2",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-6",
                   "width": "w-full"
                 },
                 "desktop": {},
                 "custom": {
-                  "displayName": "Disclaimer"
+                  "displayName": "Contact Form"
                 }
               },
               "children": [
                 {
-                  "type": "Button",
+                  "type": "Container",
                   "props": {
-                    "text": "Form requirements",
-                    "url": "#",
-                    "icon": {
-                      "value": "ref-google:info",
-                      "only": true,
-                      "size": "w-4 h-4"
-                    },
+                    "canDelete": true,
+                    "canEditName": true,
                     "root": {
-                      "background": "bg-transparent",
-                      "color": "text-(--muted-foreground)"
+                      "width": "w-full"
                     },
                     "mobile": {
-                      "p": "p-0",
-                      "py": "py-0",
-                      "px": "px-0",
-                      "width": "w-auto",
-                      "minWidth": "min-w-0",
-                      "shrink": "shrink-0",
-                      "display": "flex",
-                      "mt": "mt-0.5"
+                      "display": "grid",
+                      "gridCols": "grid-cols-1",
+                      "gap": "gap-4",
+                      "width": "w-full"
+                    },
+                    "desktop": {
+                      "gridCols": "grid-cols-2"
+                    },
+                    "custom": {
+                      "displayName": "Name row"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "FormElement",
+                      "props": {
+                        "type": "text",
+                        "name": "firstName",
+                        "label": "First name",
+                        "placeholder": "Jane",
+                        "required": true,
+                        "autocomplete": "given-name",
+                        "root": {
+                          "border": "border",
+                          "borderWidth": "border-(--input-border-width)",
+                          "borderStyle": "border-solid",
+                          "borderColor": "border-(--input-border-color)",
+                          "radius": "rounded-(--input-border-radius)",
+                          "background": "bg-(--input-bg-color)",
+                          "color": "text-(--input-text-color)",
+                          "placeholderColor": "placeholder:text-(--input-placeholder-color)",
+                          "focus": {
+                            "ring": "focus:ring-(--input-focus-ring)",
+                            "ringColor": "focus:ring-(--input-focus-ring-color)",
+                            "outline": "focus:outline-none"
+                          }
+                        },
+                        "mobile": {
+                          "p": "p-(--input-padding)",
+                          "width": "w-full"
+                        },
+                        "desktop": {},
+                        "canDelete": true,
+                        "canEditName": true,
+                        "custom": {
+                          "displayName": "First name"
+                        }
+                      }
+                    },
+                    {
+                      "type": "FormElement",
+                      "props": {
+                        "type": "text",
+                        "name": "lastName",
+                        "label": "Last name",
+                        "placeholder": "Doe",
+                        "required": true,
+                        "autocomplete": "family-name",
+                        "root": {
+                          "border": "border",
+                          "borderWidth": "border-(--input-border-width)",
+                          "borderStyle": "border-solid",
+                          "borderColor": "border-(--input-border-color)",
+                          "radius": "rounded-(--input-border-radius)",
+                          "background": "bg-(--input-bg-color)",
+                          "color": "text-(--input-text-color)",
+                          "placeholderColor": "placeholder:text-(--input-placeholder-color)",
+                          "focus": {
+                            "ring": "focus:ring-(--input-focus-ring)",
+                            "ringColor": "focus:ring-(--input-focus-ring-color)",
+                            "outline": "focus:outline-none"
+                          }
+                        },
+                        "mobile": {
+                          "p": "p-(--input-padding)",
+                          "width": "w-full"
+                        },
+                        "desktop": {},
+                        "canDelete": true,
+                        "canEditName": true,
+                        "custom": {
+                          "displayName": "Last name"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {
+                      "width": "w-full"
+                    },
+                    "mobile": {
+                      "display": "grid",
+                      "gridCols": "grid-cols-1",
+                      "gap": "gap-4",
+                      "width": "w-full"
+                    },
+                    "desktop": {
+                      "gridCols": "grid-cols-2"
+                    },
+                    "custom": {
+                      "displayName": "Contact row"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "FormElement",
+                      "props": {
+                        "type": "email",
+                        "name": "email",
+                        "label": "Your email",
+                        "placeholder": "name@company.com",
+                        "required": true,
+                        "autocomplete": "email",
+                        "root": {
+                          "border": "border",
+                          "borderWidth": "border-(--input-border-width)",
+                          "borderStyle": "border-solid",
+                          "borderColor": "border-(--input-border-color)",
+                          "radius": "rounded-(--input-border-radius)",
+                          "background": "bg-(--input-bg-color)",
+                          "color": "text-(--input-text-color)",
+                          "placeholderColor": "placeholder:text-(--input-placeholder-color)",
+                          "focus": {
+                            "ring": "focus:ring-(--input-focus-ring)",
+                            "ringColor": "focus:ring-(--input-focus-ring-color)",
+                            "outline": "focus:outline-none"
+                          }
+                        },
+                        "mobile": {
+                          "p": "p-(--input-padding)",
+                          "width": "w-full"
+                        },
+                        "desktop": {},
+                        "canDelete": true,
+                        "canEditName": true,
+                        "custom": {
+                          "displayName": "Email"
+                        }
+                      }
+                    },
+                    {
+                      "type": "FormElement",
+                      "props": {
+                        "type": "tel",
+                        "name": "phone",
+                        "label": "Phone number",
+                        "placeholder": "+1 234 567 8900",
+                        "required": false,
+                        "autocomplete": "tel",
+                        "root": {
+                          "border": "border",
+                          "borderWidth": "border-(--input-border-width)",
+                          "borderStyle": "border-solid",
+                          "borderColor": "border-(--input-border-color)",
+                          "radius": "rounded-(--input-border-radius)",
+                          "background": "bg-(--input-bg-color)",
+                          "color": "text-(--input-text-color)",
+                          "placeholderColor": "placeholder:text-(--input-placeholder-color)",
+                          "focus": {
+                            "ring": "focus:ring-(--input-focus-ring)",
+                            "ringColor": "focus:ring-(--input-focus-ring-color)",
+                            "outline": "focus:outline-none"
+                          }
+                        },
+                        "mobile": {
+                          "p": "p-(--input-padding)",
+                          "width": "w-full"
+                        },
+                        "desktop": {},
+                        "canDelete": true,
+                        "canEditName": true,
+                        "custom": {
+                          "displayName": "Phone"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "FormElement",
+                  "props": {
+                    "type": "textarea",
+                    "name": "message",
+                    "label": "Your message",
+                    "placeholder": "How can we help?",
+                    "required": true,
+                    "rows": 6,
+                    "root": {
+                      "border": "border",
+                      "borderWidth": "border-(--input-border-width)",
+                      "borderStyle": "border-solid",
+                      "borderColor": "border-(--input-border-color)",
+                      "radius": "rounded-(--input-border-radius)",
+                      "background": "bg-(--input-bg-color)",
+                      "color": "text-(--input-text-color)",
+                      "placeholderColor": "placeholder:text-(--input-placeholder-color)",
+                      "focus": {
+                        "ring": "focus:ring-(--input-focus-ring)",
+                        "ringColor": "focus:ring-(--input-focus-ring-color)",
+                        "outline": "focus:outline-none"
+                      }
+                    },
+                    "mobile": {
+                      "p": "p-(--input-padding)",
+                      "width": "w-full",
+                      "minHeight": "min-h-[140px]"
                     },
                     "desktop": {},
+                    "canDelete": true,
+                    "canEditName": true,
                     "custom": {
-                      "displayName": "Info Icon"
+                      "displayName": "Message"
                     }
                   }
                 },
@@ -231,46 +437,37 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
+                    "root": {
+                      "color": "text-(--muted-foreground)",
+                      "width": "w-full"
+                    },
                     "mobile": {
                       "display": "flex",
-                      "flexDirection": "row",
+                      "flexDirection": "flex-row",
                       "flexWrap": "flex-wrap",
-                      "alignItems": "items-baseline",
-                      "gap": "gap-x-1",
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
+                      "alignItems": "items-start",
+                      "gap": "gap-2",
+                      "width": "w-full"
                     },
                     "desktop": {},
                     "custom": {
-                      "displayName": "Disclaimer copy"
+                      "displayName": "Disclaimer"
                     }
                   },
                   "children": [
                     {
-                      "type": "Text",
-                      "props": {
-                        "text": "All the fields are required. By sending the form you agree to the",
-                        "tagName": "span",
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-relaxed"
-                        },
-                        "desktop": {},
-                        "custom": {
-                          "displayName": "Disclaimer lead"
-                        }
-                      }
-                    },
-                    {
                       "type": "Button",
                       "props": {
-                        "text": "Terms & Conditions",
-                        "url": "/terms",
+                        "text": "Form requirements",
+                        "url": "#",
+                        "icon": {
+                          "value": "ref-google:info",
+                          "only": true,
+                          "size": "w-4 h-4"
+                        },
                         "root": {
                           "background": "bg-transparent",
-                          "color": "text-(--foreground)",
-                          "textDecoration": "underline"
+                          "color": "text-(--muted-foreground)"
                         },
                         "mobile": {
                           "p": "p-0",
@@ -278,115 +475,184 @@
                           "px": "px-0",
                           "width": "w-auto",
                           "minWidth": "min-w-0",
-                          "fontSize": "text-sm",
-                          "fontWeight": "font-medium",
-                          "display": "inline-flex"
+                          "shrink": "shrink-0",
+                          "display": "flex",
+                          "mt": "mt-0.5"
                         },
                         "desktop": {},
+                        "canDelete": true,
+                        "canEditName": true,
                         "custom": {
-                          "displayName": "Terms link"
+                          "displayName": "Info Icon"
                         }
                       }
                     },
                     {
-                      "type": "Text",
+                      "type": "Container",
                       "props": {
-                        "text": "and",
-                        "tagName": "span",
-                        "root": {
-                          "color": "text-(--muted-foreground)"
-                        },
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {},
                         "mobile": {
-                          "fontSize": "text-sm"
+                          "display": "flex",
+                          "flexDirection": "row",
+                          "flexWrap": "flex-wrap",
+                          "alignItems": "items-baseline",
+                          "gap": "gap-x-1",
+                          "flex": "flex-1",
+                          "minWidth": "min-w-0"
                         },
                         "desktop": {},
                         "custom": {
-                          "displayName": "Disclaimer and"
+                          "displayName": "Disclaimer copy"
                         }
-                      }
-                    },
-                    {
-                      "type": "Button",
-                      "props": {
-                        "text": "Privacy Policy",
-                        "url": "/privacy",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--foreground)",
-                          "textDecoration": "underline"
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "Required fields must be filled in. By sending this form you agree to the",
+                            "tagName": "span",
+                            "mobile": {
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-relaxed"
+                            },
+                            "desktop": {},
+                            "canDelete": true,
+                            "canEditName": true,
+                            "custom": {
+                              "displayName": "Disclaimer lead"
+                            }
+                          }
                         },
-                        "mobile": {
-                          "p": "p-0",
-                          "py": "py-0",
-                          "px": "px-0",
-                          "width": "w-auto",
-                          "minWidth": "min-w-0",
-                          "fontSize": "text-sm",
-                          "fontWeight": "font-medium",
-                          "display": "inline-flex"
+                        {
+                          "type": "Button",
+                          "props": {
+                            "text": "Terms & Conditions",
+                            "url": "/terms",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--primary)",
+                              "textDecoration": "underline"
+                            },
+                            "mobile": {
+                              "p": "p-0",
+                              "py": "py-0",
+                              "px": "px-0",
+                              "width": "w-auto",
+                              "minWidth": "min-w-0",
+                              "fontSize": "text-sm",
+                              "fontWeight": "font-medium",
+                              "display": "inline-flex"
+                            },
+                            "desktop": {},
+                            "canDelete": true,
+                            "canEditName": true,
+                            "custom": {
+                              "displayName": "Terms link"
+                            }
+                          }
                         },
-                        "desktop": {},
-                        "custom": {
-                          "displayName": "Privacy link"
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "and",
+                            "tagName": "span",
+                            "root": {
+                              "color": "text-(--muted-foreground)"
+                            },
+                            "mobile": {
+                              "fontSize": "text-sm"
+                            },
+                            "desktop": {},
+                            "canDelete": true,
+                            "canEditName": true,
+                            "custom": {
+                              "displayName": "Disclaimer and"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "text": "Privacy Policy",
+                            "url": "/privacy",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--primary)",
+                              "textDecoration": "underline"
+                            },
+                            "mobile": {
+                              "p": "p-0",
+                              "py": "py-0",
+                              "px": "px-0",
+                              "width": "w-auto",
+                              "minWidth": "min-w-0",
+                              "fontSize": "text-sm",
+                              "fontWeight": "font-medium",
+                              "display": "inline-flex"
+                            },
+                            "desktop": {},
+                            "canDelete": true,
+                            "canEditName": true,
+                            "custom": {
+                              "displayName": "Privacy link"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": ".",
+                            "tagName": "span",
+                            "root": {
+                              "color": "text-(--muted-foreground)"
+                            },
+                            "mobile": {
+                              "fontSize": "text-sm"
+                            },
+                            "desktop": {},
+                            "canDelete": true,
+                            "canEditName": true,
+                            "custom": {
+                              "displayName": "Disclaimer end"
+                            }
+                          }
                         }
-                      }
-                    },
-                    {
-                      "type": "Text",
-                      "props": {
-                        "text": ".",
-                        "tagName": "span",
-                        "root": {
-                          "color": "text-(--muted-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm"
-                        },
-                        "desktop": {},
-                        "custom": {
-                          "displayName": "Disclaimer end"
-                        }
-                      }
+                      ]
                     }
                   ]
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "type": "submit",
+                    "text": "Send message",
+                    "root": {
+                      "background": "bg-(--primary)",
+                      "color": "text-(--primary-foreground)",
+                      "radius": "rounded-(--radius)"
+                    },
+                    "mobile": {
+                      "width": "w-auto",
+                      "py": "py-3",
+                      "px": "px-6",
+                      "fontWeight": "font-semibold",
+                      "fontSize": "text-sm",
+                      "textAlign": "text-center",
+                      "display": "inline-flex",
+                      "justifyContent": "justify-center",
+                      "alignItems": "items-center"
+                    },
+                    "desktop": {},
+                    "canDelete": true,
+                    "canEditName": true,
+                    "custom": {
+                      "displayName": "Submit"
+                    }
+                  }
                 }
               ]
-            },
-            {
-              "type": "Button",
-              "props": {
-                "type": "submit",
-                "text": "SEND MESSAGE",
-                "icon": {
-                  "value": "ref-google:auto_awesome",
-                  "position": "right",
-                  "size": "w-5 h-5",
-                  "gap": "gap-2"
-                },
-                "root": {
-                  "background": "bg-(--background)",
-                  "color": "text-(--foreground)",
-                  "border": "border-2",
-                  "borderColor": "border-(--foreground)",
-                  "radius": "rounded-full"
-                },
-                "mobile": {
-                  "width": "w-full",
-                  "py": "py-3.5",
-                  "px": "px-6",
-                  "fontWeight": "font-bold",
-                  "fontSize": "text-sm",
-                  "letterSpacing": "tracking-wide",
-                  "textAlign": "text-center",
-                  "display": "flex",
-                  "justifyContent": "justify-center",
-                  "alignItems": "items-center"
-                },
-                "desktop": {},
-                "custom": {
-                  "displayName": "Submit"
-                }
-              }
             }
           ]
         }
