@@ -1,0 +1,219 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "type": "section",
+    "root": { "background": "bg-(--background)", "color": "text-(--foreground)" },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "alignItems": "items-center",
+      "width": "w-full",
+      "py": "py-10",
+      "px": "px-4"
+    },
+    "desktop": { "py": "py-16", "px": "px-6" },
+    "custom": { "displayName": "Asymmetric image gallery" }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "alignItems": "items-center",
+          "gap": "gap-10",
+          "width": "w-full",
+          "maxWidth": "max-w-7xl",
+          "mx": "mx-auto"
+        },
+        "desktop": {},
+        "custom": { "displayName": "Gallery content" }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "alignItems": "items-center",
+              "gap": "gap-4",
+              "textAlign": "text-center",
+              "width": "w-full",
+              "maxWidth": "max-w-3xl",
+              "mx": "mx-auto"
+            },
+            "desktop": {},
+            "custom": { "displayName": "Section header" }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "text": "We didn\u2019t reinvent the wheel",
+                "tagName": "h2",
+                "root": {
+                  "fontWeight": "font-bold",
+                  "fontFamily": "var(--heading-font-family)",
+                  "lineHeight": "leading-tight",
+                  "color": "text-(--foreground)"
+                },
+                "mobile": { "fontSize": "text-3xl", "width": "w-full" },
+                "desktop": { "fontSize": "text-4xl" },
+                "custom": { "displayName": "Heading" }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "We are strategists, designers and developers. Innovators and problem solvers. Small enough to be simple and quick, but big enough to deliver the scope you want at the pace you need.",
+                "tagName": "p",
+                "root": { "color": "text-(--card-foreground)", "lineHeight": "leading-relaxed" },
+                "mobile": { "fontSize": "text-base", "width": "w-full" },
+                "desktop": { "fontSize": "text-lg" },
+                "custom": { "displayName": "Intro" }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "className": ["lg:grid-cols-4"],
+            "mobile": { "display": "grid", "gridCols": "grid-cols-1", "gap": "gap-4", "width": "w-full" },
+            "desktop": {},
+            "custom": { "displayName": "Image grid" }
+          },
+          "children": [
+            {
+              "type": "Image",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "className": ["lg:col-span-2", "lg:h-64"],
+                "content": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=900&h=560&fit=crop&q=80",
+                "alt": "Team collaborating at a table",
+                "root": { "radius": "rounded-(--card-radius)", "overflow": "overflow-hidden" },
+                "mobile": {
+                  "width": "w-full",
+                  "height": "h-52",
+                  "objectFit": "object-cover",
+                  "objectPosition": "object-center"
+                },
+                "desktop": {},
+                "custom": { "displayName": "Gallery image 1" }
+              }
+            },
+            {
+              "type": "Image",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "className": ["lg:col-span-1", "lg:h-64"],
+                "content": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=500&h=620&fit=crop&q=80",
+                "alt": "Modern office space",
+                "root": { "radius": "rounded-(--card-radius)", "overflow": "overflow-hidden" },
+                "mobile": {
+                  "width": "w-full",
+                  "height": "h-52",
+                  "objectFit": "object-cover",
+                  "objectPosition": "object-center"
+                },
+                "desktop": {},
+                "custom": { "displayName": "Gallery image 2" }
+              }
+            },
+            {
+              "type": "Image",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "className": ["lg:col-span-1", "lg:h-64"],
+                "content": "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=500&h=620&fit=crop&q=80",
+                "alt": "Workspace with natural light",
+                "root": { "radius": "rounded-(--card-radius)", "overflow": "overflow-hidden" },
+                "mobile": {
+                  "width": "w-full",
+                  "height": "h-52",
+                  "objectFit": "object-cover",
+                  "objectPosition": "object-center"
+                },
+                "desktop": {},
+                "custom": { "displayName": "Gallery image 3" }
+              }
+            },
+            {
+              "type": "Image",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "className": ["lg:col-span-1", "lg:h-64"],
+                "content": "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=500&h=620&fit=crop&q=80",
+                "alt": "Laptop on a desk",
+                "root": { "radius": "rounded-(--card-radius)", "overflow": "overflow-hidden" },
+                "mobile": {
+                  "width": "w-full",
+                  "height": "h-52",
+                  "objectFit": "object-cover",
+                  "objectPosition": "object-center"
+                },
+                "desktop": {},
+                "custom": { "displayName": "Gallery image 4" }
+              }
+            },
+            {
+              "type": "Image",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "className": ["lg:col-span-2", "lg:h-64"],
+                "content": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=900&h=560&fit=crop&q=80",
+                "alt": "Team workshop",
+                "root": { "radius": "rounded-(--card-radius)", "overflow": "overflow-hidden" },
+                "mobile": {
+                  "width": "w-full",
+                  "height": "h-52",
+                  "objectFit": "object-cover",
+                  "objectPosition": "object-center"
+                },
+                "desktop": {},
+                "custom": { "displayName": "Gallery image 5" }
+              }
+            },
+            {
+              "type": "Image",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "className": ["lg:col-span-1", "lg:h-64"],
+                "content": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=500&h=620&fit=crop&q=80",
+                "alt": "Creative team meeting",
+                "root": { "radius": "rounded-(--card-radius)", "overflow": "overflow-hidden" },
+                "mobile": {
+                  "width": "w-full",
+                  "height": "h-52",
+                  "objectFit": "object-cover",
+                  "objectPosition": "object-center"
+                },
+                "desktop": {},
+                "custom": { "displayName": "Gallery image 6" }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

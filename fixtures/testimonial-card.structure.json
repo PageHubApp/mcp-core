@@ -1,0 +1,368 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "type": "section",
+    "root": { "background": "bg-(--background)", "color": "text-(--foreground)" },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "alignItems": "items-center",
+      "width": "w-full",
+      "py": "py-12",
+      "px": "px-4"
+    },
+    "className": ["lg:py-20", "lg:px-6"],
+    "desktop": {},
+    "custom": { "displayName": "Testimonial cards section" }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "alignItems": "items-center",
+          "gap": "gap-10",
+          "width": "w-full",
+          "maxWidth": "max-w-7xl",
+          "mx": "mx-auto"
+        },
+        "desktop": {},
+        "custom": { "displayName": "Section content" }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "alignItems": "items-center",
+              "gap": "gap-4",
+              "textAlign": "text-center",
+              "width": "w-full",
+              "maxWidth": "max-w-2xl",
+              "mx": "mx-auto"
+            },
+            "desktop": {},
+            "custom": { "displayName": "Section header" }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "text": "Stories from real teams",
+                "tagName": "h2",
+                "root": {
+                  "fontWeight": "font-bold",
+                  "fontFamily": "var(--heading-font-family)",
+                  "lineHeight": "leading-tight",
+                  "color": "text-(--foreground)"
+                },
+                "mobile": { "fontSize": "text-3xl", "width": "w-full" },
+                "className": ["lg:text-4xl"],
+                "desktop": {},
+                "custom": { "displayName": "Heading" }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Short blurbs from people who needed momentum more than another blank document.",
+                "tagName": "p",
+                "root": { "color": "text-(--muted-foreground)", "lineHeight": "leading-relaxed" },
+                "mobile": { "fontSize": "text-base", "width": "w-full" },
+                "className": ["lg:text-lg"],
+                "desktop": {},
+                "custom": { "displayName": "Subtitle" }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": { "display": "grid", "gridCols": "grid-cols-1", "gap": "gap-8", "width": "w-full" },
+            "className": ["lg:grid-cols-2", "lg:gap-10"],
+            "desktop": {},
+            "custom": { "displayName": "Cards grid" }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "radius": "rounded-(--card-radius)",
+                  "shadow": "shadow-md"
+                },
+                "className": ["border-l-4", "border-l-(--primary)"],
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-5",
+                  "width": "w-full",
+                  "p": "p-8",
+                  "alignItems": "items-start",
+                  "textAlign": "text-left"
+                },
+                "desktop": {},
+                "custom": { "displayName": "Testimonial card" }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "We shipped the whole flow without filing a ticket",
+                    "tagName": "h3",
+                    "root": {
+                      "fontWeight": "font-bold",
+                      "fontFamily": "var(--heading-font-family)",
+                      "lineHeight": "leading-snug",
+                      "color": "text-(--foreground)"
+                    },
+                    "mobile": { "fontSize": "text-lg", "width": "w-full" },
+                    "className": ["lg:text-xl"],
+                    "desktop": {},
+                    "custom": { "displayName": "Card title" }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "PageHub turned a Friday proof-of-concept into our default launch path. Designers own the page, engineering stays focused on the product.",
+                    "tagName": "p",
+                    "root": { "color": "text-(--card-foreground)", "lineHeight": "leading-relaxed" },
+                    "mobile": { "fontSize": "text-sm", "width": "w-full" },
+                    "className": ["lg:text-base"],
+                    "desktop": {},
+                    "custom": { "displayName": "Quote" }
+                  }
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {},
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-row",
+                      "alignItems": "items-center",
+                      "gap": "gap-3",
+                      "width": "w-full",
+                      "mt": "mt-1"
+                    },
+                    "desktop": {},
+                    "custom": { "displayName": "Attribution" }
+                  },
+                  "children": [
+                    {
+                      "type": "Image",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "type": "url",
+                        "content": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=128&h=128&fit=crop&q=80",
+                        "alt": "Portrait of Alicia Nguyen",
+                        "root": { "radius": "rounded-(--radius-full)", "overflow": "overflow-hidden" },
+                        "mobile": {
+                          "width": "w-10",
+                          "height": "h-10",
+                          "flexShrink": "shrink-0",
+                          "objectFit": "object-cover",
+                          "objectPosition": "object-center"
+                        },
+                        "desktop": {},
+                        "custom": { "displayName": "Avatar" }
+                      }
+                    },
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {},
+                        "mobile": { "display": "flex", "flexDirection": "flex-col", "gap": "gap-0.5", "alignItems": "items-start" },
+                        "desktop": {},
+                        "custom": { "displayName": "Name and role" }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "Alicia Nguyen",
+                            "tagName": "p",
+                            "root": { "fontWeight": "font-semibold", "fontSize": "text-sm", "color": "text-(--foreground)" },
+                            "mobile": {},
+                            "desktop": {},
+                            "custom": { "displayName": "Name" }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "Design Lead, Harbor Stack",
+                            "tagName": "p",
+                            "root": { "fontSize": "text-xs", "color": "text-(--muted-foreground)" },
+                            "mobile": {},
+                            "desktop": {},
+                            "custom": { "displayName": "Role" }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "radius": "rounded-(--card-radius)",
+                  "shadow": "shadow-md"
+                },
+                "className": ["border-l-4", "border-l-(--primary)"],
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-5",
+                  "width": "w-full",
+                  "p": "p-8",
+                  "alignItems": "items-start",
+                  "textAlign": "text-left"
+                },
+                "desktop": {},
+                "custom": { "displayName": "Testimonial card" }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Marketing and product finally share one canvas",
+                    "tagName": "h3",
+                    "root": {
+                      "fontWeight": "font-bold",
+                      "fontFamily": "var(--heading-font-family)",
+                      "lineHeight": "leading-snug",
+                      "color": "text-(--foreground)"
+                    },
+                    "mobile": { "fontSize": "text-lg", "width": "w-full" },
+                    "className": ["lg:text-xl"],
+                    "desktop": {},
+                    "custom": { "displayName": "Card title" }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Revisions that used to ping-pong in comments now resolve in a single preview link. Stakeholders see exactly what ships.",
+                    "tagName": "p",
+                    "root": { "color": "text-(--card-foreground)", "lineHeight": "leading-relaxed" },
+                    "mobile": { "fontSize": "text-sm", "width": "w-full" },
+                    "className": ["lg:text-base"],
+                    "desktop": {},
+                    "custom": { "displayName": "Quote" }
+                  }
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {},
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-row",
+                      "alignItems": "items-center",
+                      "gap": "gap-3",
+                      "width": "w-full",
+                      "mt": "mt-1"
+                    },
+                    "desktop": {},
+                    "custom": { "displayName": "Attribution" }
+                  },
+                  "children": [
+                    {
+                      "type": "Image",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "type": "url",
+                        "content": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=128&h=128&fit=crop&q=80",
+                        "alt": "Portrait of Marcus Bell",
+                        "root": { "radius": "rounded-(--radius-full)", "overflow": "overflow-hidden" },
+                        "mobile": {
+                          "width": "w-10",
+                          "height": "h-10",
+                          "flexShrink": "shrink-0",
+                          "objectFit": "object-cover",
+                          "objectPosition": "object-center"
+                        },
+                        "desktop": {},
+                        "custom": { "displayName": "Avatar" }
+                      }
+                    },
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {},
+                        "mobile": { "display": "flex", "flexDirection": "flex-col", "gap": "gap-0.5", "alignItems": "items-start" },
+                        "desktop": {},
+                        "custom": { "displayName": "Name and role" }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "Marcus Bell",
+                            "tagName": "p",
+                            "root": { "fontWeight": "font-semibold", "fontSize": "text-sm", "color": "text-(--foreground)" },
+                            "mobile": {},
+                            "desktop": {},
+                            "custom": { "displayName": "Name" }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "Head of Product, Relay North",
+                            "tagName": "p",
+                            "root": { "fontSize": "text-xs", "color": "text-(--muted-foreground)" },
+                            "mobile": {},
+                            "desktop": {},
+                            "custom": { "displayName": "Role" }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -5,11 +5,14 @@
     "canEditName": true,
     "type": "section",
     "root": {
-      "background": "bg-(--background)"
+      "background": "bg-(--background)",
+      "width": "w-full",
+      "maxWidth": "max-w-none"
     },
     "mobile": {
       "display": "flex",
       "flexDirection": "flex-col",
+      "alignItems": "items-stretch",
       "width": "w-full",
       "pb": "pb-20"
     },
@@ -29,15 +32,20 @@
         "backgroundImage": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1600&h=700&fit=crop&q=80",
         "backgroundImageType": "url",
         "backgroundOverlay": "dark",
+        "type": "container",
         "root": {
           "color": "text-white",
-          "position": "relative"
+          "position": "relative",
+          "width": "w-full",
+          "maxWidth": "max-w-none"
         },
         "mobile": {
           "display": "flex",
           "flexDirection": "flex-col",
+          "gap": "gap-6",
           "alignItems": "items-center",
-          "justifyContent": "justify-center",
+          "textAlign": "text-center",
+          "alignSelf": "self-stretch",
           "width": "w-full",
           "py": "py-20",
           "px": "px-6",
@@ -47,7 +55,8 @@
           "minHeight": "min-h-[300px]"
         },
         "desktop": {
-          "py": "py-28",
+          "py": "py-32",
+          "px": "px-8",
           "minHeight": "min-h-[340px]"
         },
         "custom": {
@@ -56,75 +65,49 @@
       },
       "children": [
         {
-          "type": "Container",
+          "type": "Text",
           "props": {
-            "canDelete": true,
-            "canEditName": true,
-            "root": {
-              "maxWidth": "max-w-3xl",
-              "width": "w-full"
-            },
+            "text": "Contact Us",
+            "tagName": "h2",
             "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "alignItems": "items-center",
-              "gap": "gap-4",
-              "textAlign": "text-center",
-              "mx": "mx-auto"
+              "fontSize": "text-4xl",
+              "fontWeight": "font-bold",
+              "fontFamily": "var(--heading-font-family)",
+              "lineHeight": "leading-tight",
+              "maxWidth": "max-w-3xl"
             },
             "desktop": {
-              "gap": "gap-5"
+              "fontSize": "text-5xl"
             },
+            "canDelete": true,
+            "canEditName": true,
             "custom": {
-              "displayName": "Hero copy"
+              "displayName": "Title"
             }
-          },
-          "children": [
-            {
-              "type": "Text",
-              "props": {
-                "text": "Contact Us",
-                "tagName": "h2",
-                "mobile": {
-                  "fontSize": "text-4xl",
-                  "fontWeight": "font-bold",
-                  "fontFamily": "var(--heading-font-family)",
-                  "lineHeight": "leading-tight"
-                },
-                "desktop": {
-                  "fontSize": "text-5xl"
-                },
-                "canDelete": true,
-                "canEditName": true,
-                "custom": {
-                  "displayName": "Title"
-                }
-              }
+          }
+        },
+        {
+          "type": "Text",
+          "props": {
+            "text": "We work in tight feedback loops—test ideas early, listen often, and keep your audience at the center of every decision.",
+            "tagName": "p",
+            "root": {
+              "color": "text-white/80"
             },
-            {
-              "type": "Text",
-              "props": {
-                "text": "We work in tight feedback loops—test ideas early, listen often, and keep your audience at the center of every decision.",
-                "tagName": "p",
-                "root": {
-                  "color": "text-white/80"
-                },
-                "mobile": {
-                  "fontSize": "text-base",
-                  "lineHeight": "leading-relaxed",
-                  "maxWidth": "max-w-2xl"
-                },
-                "desktop": {
-                  "fontSize": "text-lg"
-                },
-                "canDelete": true,
-                "canEditName": true,
-                "custom": {
-                  "displayName": "Description"
-                }
-              }
+            "mobile": {
+              "fontSize": "text-base",
+              "lineHeight": "leading-relaxed",
+              "maxWidth": "max-w-2xl"
+            },
+            "desktop": {
+              "fontSize": "text-lg"
+            },
+            "canDelete": true,
+            "canEditName": true,
+            "custom": {
+              "displayName": "Description"
             }
-          ]
+          }
         }
       ]
     },

@@ -1,0 +1,255 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "type": "section",
+    "root": { "background": "bg-(--background)", "color": "text-(--foreground)" },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "alignItems": "items-center",
+      "width": "w-full",
+      "py": "py-12",
+      "px": "px-4"
+    },
+    "className": ["lg:py-16", "lg:px-6"],
+    "desktop": {},
+    "custom": { "displayName": "Testimonial stars section" }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "alignItems": "items-center",
+          "width": "w-full",
+          "maxWidth": "max-w-xl",
+          "mx": "mx-auto"
+        },
+        "desktop": {},
+        "custom": { "displayName": "Center column" }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {
+              "background": "bg-(--card)",
+              "radius": "rounded-(--card-radius)",
+              "border": "border",
+              "borderColor": "border-(--border)",
+              "shadow": "shadow-md"
+            },
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "alignItems": "items-center",
+              "textAlign": "text-center",
+              "gap": "gap-6",
+              "width": "w-full",
+              "p": "p-8"
+            },
+            "className": ["lg:p-10"],
+            "desktop": {},
+            "custom": { "displayName": "Review card" }
+          },
+          "children": [
+            {
+              "type": "ButtonList",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {},
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-row",
+                  "flexWrap": "flex-wrap",
+                  "justifyContent": "justify-center",
+                  "alignItems": "items-center",
+                  "gap": "gap-0.5",
+                  "width": "w-full"
+                },
+                "desktop": {},
+                "custom": { "displayName": "Star rating" }
+              },
+              "children": [
+                {
+                  "type": "Button",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "text": "5 star rating, star 1 of 5",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--accent)",
+                      "radius": "rounded-(--radius)"
+                    },
+                    "mobile": { "py": "py-0", "px": "px-0.5", "minWidth": "min-w-0" },
+                    "desktop": {},
+                    "icon": { "value": "ref-google:star", "only": true, "size": "w-7 h-7" },
+                    "custom": { "displayName": "Star 1" }
+                  }
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "text": "5 star rating, star 2 of 5",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--accent)",
+                      "radius": "rounded-(--radius)"
+                    },
+                    "mobile": { "py": "py-0", "px": "px-0.5", "minWidth": "min-w-0" },
+                    "desktop": {},
+                    "icon": { "value": "ref-google:star", "only": true, "size": "w-7 h-7" },
+                    "custom": { "displayName": "Star 2" }
+                  }
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "text": "5 star rating, star 3 of 5",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--accent)",
+                      "radius": "rounded-(--radius)"
+                    },
+                    "mobile": { "py": "py-0", "px": "px-0.5", "minWidth": "min-w-0" },
+                    "desktop": {},
+                    "icon": { "value": "ref-google:star", "only": true, "size": "w-7 h-7" },
+                    "custom": { "displayName": "Star 3" }
+                  }
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "text": "5 star rating, star 4 of 5",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--accent)",
+                      "radius": "rounded-(--radius)"
+                    },
+                    "mobile": { "py": "py-0", "px": "px-0.5", "minWidth": "min-w-0" },
+                    "desktop": {},
+                    "icon": { "value": "ref-google:star", "only": true, "size": "w-7 h-7" },
+                    "custom": { "displayName": "Star 4" }
+                  }
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "text": "5 star rating, star 5 of 5",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--accent)",
+                      "radius": "rounded-(--radius)"
+                    },
+                    "mobile": { "py": "py-0", "px": "px-0.5", "minWidth": "min-w-0" },
+                    "desktop": {},
+                    "icon": { "value": "ref-google:star", "only": true, "size": "w-7 h-7" },
+                    "custom": { "displayName": "Star 5" }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "We rolled PageHub out to three squads in a week. Handoffs are quieter, launches feel calmer, and nobody is hunting for the latest screenshot anymore.",
+                "tagName": "p",
+                "root": {
+                  "fontWeight": "font-medium",
+                  "color": "text-(--foreground)",
+                  "lineHeight": "leading-relaxed",
+                  "fontFamily": "var(--body-font-family)"
+                },
+                "mobile": { "fontSize": "text-base", "width": "w-full" },
+                "className": ["lg:text-lg"],
+                "desktop": {},
+                "custom": { "displayName": "Quote" }
+              }
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": { "background": "bg-(--muted)", "radius": "rounded-(--radius)" },
+                "mobile": { "width": "w-full", "height": "h-px", "maxWidth": "max-w-xs" },
+                "desktop": {},
+                "custom": { "displayName": "Divider" }
+              },
+              "children": []
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {},
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-1",
+                  "alignItems": "items-center",
+                  "width": "w-full"
+                },
+                "desktop": {},
+                "custom": { "displayName": "Attribution" }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Priya Shah",
+                    "tagName": "p",
+                    "root": {
+                      "fontWeight": "font-semibold",
+                      "fontSize": "text-sm",
+                      "color": "text-(--foreground)"
+                    },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": { "displayName": "Name" }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Director of Ops, Fieldline Analytics",
+                    "tagName": "p",
+                    "root": { "fontSize": "text-xs", "color": "text-(--muted-foreground)" },
+                    "mobile": {},
+                    "desktop": {},
+                    "custom": { "displayName": "Role" }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

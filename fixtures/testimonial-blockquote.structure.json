@@ -1,0 +1,194 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "type": "section",
+    "root": { "background": "bg-(--background)", "color": "text-(--foreground)" },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "alignItems": "items-center",
+      "width": "w-full",
+      "py": "py-10",
+      "px": "px-4"
+    },
+    "className": ["lg:py-16", "lg:px-6"],
+    "desktop": {},
+    "custom": { "displayName": "Testimonial Blockquote" }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "alignItems": "items-center",
+          "textAlign": "text-center",
+          "width": "w-full",
+          "maxWidth": "max-w-7xl",
+          "mx": "mx-auto"
+        },
+        "desktop": {},
+        "custom": { "displayName": "Band" }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "alignItems": "items-center",
+              "gap": "gap-3",
+              "width": "w-full",
+              "maxWidth": "max-w-3xl",
+              "mx": "mx-auto"
+            },
+            "desktop": {},
+            "custom": { "displayName": "Figure" }
+          },
+          "children": [
+            {
+              "type": "Image",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "type": "url",
+                "content": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2052%2040%22%20fill%3D%22none%22%20aria-hidden%3D%22true%22%3E%3Cpath%20fill%3D%22%2394a3b8%22%20d%3D%22M0%2032V19.2C0%2010.6%205.4%204.4%2014.2%203L16%206.4c-5.6%201.4-8.4%205.6-8.4%2011.2h8.4V32H0zm30%200V19.2c0-8.6%205.4-14.8%2014.2-16.2L46%206.4c-5.6%201.4-8.4%205.6-8.4%2011.2H46V32H30z%22%2F%3E%3C%2Fsvg%3E",
+                "alt": "",
+                "root": {},
+                "mobile": {
+                  "width": "w-12",
+                  "height": "h-12",
+                  "mx": "mx-auto",
+                  "mb": "mb-1",
+                  "objectFit": "object-contain"
+                },
+                "desktop": {},
+                "custom": { "displayName": "Quote mark" }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "\u201CPageHub let our team ship polished landing pages without waiting on engineering. What used to take two sprints now ships in a single afternoon.\u201D",
+                "tagName": "blockquote",
+                "root": {
+                  "fontWeight": "font-medium",
+                  "color": "text-(--foreground)",
+                  "lineHeight": "leading-relaxed",
+                  "fontFamily": "var(--body-font-family)"
+                },
+                "mobile": { "fontSize": "text-xl", "width": "w-full" },
+                "className": ["lg:text-2xl"],
+                "desktop": {},
+                "custom": { "displayName": "Quote" }
+              }
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {},
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-center",
+                  "gap": "gap-3",
+                  "width": "w-full",
+                  "mt": "mt-6"
+                },
+                "className": ["sm:flex-row", "sm:flex-wrap"],
+                "desktop": {},
+                "custom": { "displayName": "Attribution" }
+              },
+              "children": [
+                {
+                  "type": "Image",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "type": "url",
+                    "content": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=96&h=96&fit=crop&facepad=2&q=80",
+                    "alt": "Portrait of the customer who gave this testimonial",
+                    "root": { "radius": "rounded-(--radius-full)", "overflow": "overflow-hidden" },
+                    "mobile": {
+                      "width": "w-6",
+                      "height": "h-6",
+                      "flexShrink": "shrink-0",
+                      "objectFit": "object-cover",
+                      "objectPosition": "object-center"
+                    },
+                    "desktop": {},
+                    "custom": { "displayName": "Avatar" }
+                  }
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {},
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-col",
+                      "alignItems": "items-center",
+                      "gap": "gap-2"
+                    },
+                    "className": ["sm:flex-row", "sm:items-center", "sm:divide-x", "sm:divide-(--border)"],
+                    "desktop": {},
+                    "custom": { "displayName": "Name and role" }
+                  },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "props": {
+                        "text": "Jordan A. Reeves",
+                        "tagName": "p",
+                        "root": {
+                          "fontWeight": "font-semibold",
+                          "fontSize": "text-sm",
+                          "color": "text-(--foreground)"
+                        },
+                        "mobile": {},
+                        "className": ["sm:pr-3"],
+                        "desktop": {},
+                        "custom": { "displayName": "Name" }
+                      }
+                    },
+                    {
+                      "type": "Text",
+                      "props": {
+                        "text": "Head of Marketing, Northline Studio",
+                        "tagName": "p",
+                        "root": {
+                          "fontSize": "text-sm",
+                          "fontWeight": "font-normal",
+                          "color": "text-(--muted-foreground)"
+                        },
+                        "mobile": {},
+                        "className": ["sm:pl-3"],
+                        "desktop": {},
+                        "custom": { "displayName": "Role" }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
