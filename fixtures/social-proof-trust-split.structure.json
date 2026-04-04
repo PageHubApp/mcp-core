@@ -1,0 +1,501 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "type": "section",
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "width": "w-full",
+      "py": "py-16",
+      "px": "px-6"
+    },
+    "desktop": {
+      "py": "py-24",
+      "px": "px-8"
+    },
+    "custom": {
+      "displayName": "Social Proof Trust Split"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "gap": "gap-14",
+          "width": "w-full",
+          "maxWidth": "max-w-6xl",
+          "mx": "mx-auto"
+        },
+        "desktop": {
+          "flexDirection": "flex-row",
+          "gap": "gap-16",
+          "alignItems": "items-start"
+        },
+        "custom": {
+          "displayName": "Inner"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "gap": "gap-4",
+              "width": "w-full"
+            },
+            "desktop": {
+              "width": "w-2/5"
+            },
+            "custom": {
+              "displayName": "Left Column"
+            }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "text": "TRUSTED WORLDWIDE",
+                "tagName": "p",
+                "root": {
+                  "color": "text-(--primary)",
+                  "fontSize": "text-xs",
+                  "fontWeight": "font-bold",
+                  "letterSpacing": "tracking-widest"
+                },
+                "custom": {
+                  "displayName": "Eyebrow"
+                }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Trusted by teams who ship business-critical pages",
+                "tagName": "h2",
+                "root": {
+                  "fontWeight": "font-bold",
+                  "fontFamily": "var(--heading-font-family)",
+                  "lineHeight": "leading-tight"
+                },
+                "mobile": {
+                  "fontSize": "text-3xl"
+                },
+                "desktop": {
+                  "fontSize": "text-4xl"
+                },
+                "custom": {
+                  "displayName": "Heading"
+                }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Security, reliability, and clear ownership matter when your site is part of revenue. PageHub is built for teams that need predictable publishing, strong defaults, and a path to compliance-friendly workflows.",
+                "tagName": "p",
+                "root": {
+                  "color": "text-(--muted-foreground)",
+                  "fontSize": "text-base",
+                  "lineHeight": "leading-relaxed"
+                },
+                "custom": {
+                  "displayName": "Body"
+                }
+              }
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "border": "border-t",
+                  "borderColor": "border-(--muted)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-3",
+                  "pt": "pt-6",
+                  "mt": "mt-2",
+                  "width": "w-full"
+                },
+                "custom": {
+                  "displayName": "Link Group"
+                }
+              },
+              "children": [
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Explore security overview >",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--primary)",
+                      "fontSize": "text-sm",
+                      "fontWeight": "font-semibold"
+                    },
+                    "mobile": {
+                      "px": "px-0",
+                      "py": "py-0"
+                    },
+                    "custom": {
+                      "displayName": "Link Security"
+                    }
+                  }
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Visit the Trust Center >",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--primary)",
+                      "fontSize": "text-sm",
+                      "fontWeight": "font-semibold"
+                    },
+                    "mobile": {
+                      "px": "px-0",
+                      "py": "py-0"
+                    },
+                    "custom": {
+                      "displayName": "Link Trust"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "mobile": {
+              "display": "grid",
+              "gridCols": "grid-cols-1",
+              "gap": "gap-10",
+              "width": "w-full"
+            },
+            "desktop": {
+              "gridCols": "grid-cols-2",
+              "gap": "gap-x-12",
+              "gap-y": "gap-y-10",
+              "width": "w-3/5",
+              "flex": "flex-1"
+            },
+            "custom": {
+              "displayName": "Stat Grid"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-3",
+                  "width": "w-full",
+                  "alignItems": "items-start"
+                },
+                "custom": {
+                  "displayName": "Cell Uptime"
+                }
+              },
+              "children": [
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": " ",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent"
+                    },
+                    "mobile": {
+                      "px": "px-0",
+                      "py": "py-0"
+                    },
+                    "icon": {
+                      "value": "ref-google:dns",
+                      "only": true,
+                      "size": "w-8 h-8",
+                      "color": "text-(--primary)"
+                    },
+                    "custom": {
+                      "displayName": "Icon Uptime"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "99.99% uptime",
+                    "tagName": "p",
+                    "root": {
+                      "fontWeight": "font-bold",
+                      "fontSize": "text-lg",
+                      "lineHeight": "leading-snug"
+                    },
+                    "custom": {
+                      "displayName": "Metric"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Measured across core PageHub services with published status and maintenance notices.",
+                    "tagName": "p",
+                    "root": {
+                      "color": "text-(--muted-foreground)",
+                      "fontSize": "text-sm",
+                      "lineHeight": "leading-relaxed"
+                    },
+                    "custom": {
+                      "displayName": "Caption"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-3",
+                  "width": "w-full",
+                  "alignItems": "items-start"
+                },
+                "custom": {
+                  "displayName": "Cell Workspaces"
+                }
+              },
+              "children": [
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": " ",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent"
+                    },
+                    "mobile": {
+                      "px": "px-0",
+                      "py": "py-0"
+                    },
+                    "icon": {
+                      "value": "ref-google:groups",
+                      "only": true,
+                      "size": "w-8 h-8",
+                      "color": "text-(--primary)"
+                    },
+                    "custom": {
+                      "displayName": "Icon Teams"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "600K+ workspaces",
+                    "tagName": "p",
+                    "root": {
+                      "fontWeight": "font-bold",
+                      "fontSize": "text-lg",
+                      "lineHeight": "leading-snug"
+                    },
+                    "custom": {
+                      "displayName": "Metric"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Teams collaborating in PageHub to draft, review, and publish pages without losing context.",
+                    "tagName": "p",
+                    "root": {
+                      "color": "text-(--muted-foreground)",
+                      "fontSize": "text-sm",
+                      "lineHeight": "leading-relaxed"
+                    },
+                    "custom": {
+                      "displayName": "Caption"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-3",
+                  "width": "w-full",
+                  "alignItems": "items-start"
+                },
+                "custom": {
+                  "displayName": "Cell Global"
+                }
+              },
+              "children": [
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": " ",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent"
+                    },
+                    "mobile": {
+                      "px": "px-0",
+                      "py": "py-0"
+                    },
+                    "icon": {
+                      "value": "ref-google:public",
+                      "only": true,
+                      "size": "w-8 h-8",
+                      "color": "text-(--primary)"
+                    },
+                    "custom": {
+                      "displayName": "Icon Globe"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "100+ countries",
+                    "tagName": "p",
+                    "root": {
+                      "fontWeight": "font-bold",
+                      "fontSize": "text-lg",
+                      "lineHeight": "leading-snug"
+                    },
+                    "custom": {
+                      "displayName": "Metric"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Organizations using PageHub to ship localized landing pages and regional campaigns.",
+                    "tagName": "p",
+                    "root": {
+                      "color": "text-(--muted-foreground)",
+                      "fontSize": "text-sm",
+                      "lineHeight": "leading-relaxed"
+                    },
+                    "custom": {
+                      "displayName": "Caption"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-3",
+                  "width": "w-full",
+                  "alignItems": "items-start"
+                },
+                "custom": {
+                  "displayName": "Cell Events"
+                }
+              },
+              "children": [
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": " ",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent"
+                    },
+                    "mobile": {
+                      "px": "px-0",
+                      "py": "py-0"
+                    },
+                    "icon": {
+                      "value": "ref-google:shopping_cart",
+                      "only": true,
+                      "size": "w-8 h-8",
+                      "color": "text-(--primary)"
+                    },
+                    "custom": {
+                      "displayName": "Icon Scale"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "5M+ events",
+                    "tagName": "p",
+                    "root": {
+                      "fontWeight": "font-bold",
+                      "fontSize": "text-lg",
+                      "lineHeight": "leading-snug"
+                    },
+                    "custom": {
+                      "displayName": "Metric"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Server-side analytics and automation events processed on a typical high-traffic day.",
+                    "tagName": "p",
+                    "root": {
+                      "color": "text-(--muted-foreground)",
+                      "fontSize": "text-sm",
+                      "lineHeight": "leading-relaxed"
+                    },
+                    "custom": {
+                      "displayName": "Caption"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

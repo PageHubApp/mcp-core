@@ -1,0 +1,229 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "type": "section",
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "width": "w-full",
+      "py": "py-20",
+      "px": "px-6"
+    },
+    "desktop": {
+      "py": "py-28",
+      "px": "px-8"
+    },
+    "custom": {
+      "displayName": "Social Proof Stat Trio"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "gap": "gap-14",
+          "width": "w-full",
+          "maxWidth": "max-w-5xl",
+          "mx": "mx-auto",
+          "alignItems": "items-center"
+        },
+        "desktop": {
+          "flexDirection": "flex-row",
+          "gap": "gap-0",
+          "justifyContent": "justify-between"
+        },
+        "custom": {
+          "displayName": "Stats Row"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "gap": "gap-2",
+              "alignItems": "items-center",
+              "textAlign": "text-center",
+              "width": "w-full"
+            },
+            "desktop": {
+              "width": "w-1/3"
+            },
+            "custom": {
+              "displayName": "Stat 1"
+            }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "text": "2.4M+",
+                "tagName": "p",
+                "root": {
+                  "fontWeight": "font-bold",
+                  "fontFamily": "var(--heading-font-family)",
+                  "lineHeight": "leading-none"
+                },
+                "mobile": {
+                  "fontSize": "text-4xl"
+                },
+                "desktop": {
+                  "fontSize": "text-5xl"
+                },
+                "custom": {
+                  "displayName": "Value"
+                }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "pages live",
+                "tagName": "p",
+                "root": {
+                  "color": "text-(--muted-foreground)",
+                  "fontSize": "text-sm",
+                  "fontWeight": "font-normal"
+                },
+                "custom": {
+                  "displayName": "Label"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "gap": "gap-2",
+              "alignItems": "items-center",
+              "textAlign": "text-center",
+              "width": "w-full"
+            },
+            "desktop": {
+              "width": "w-1/3"
+            },
+            "custom": {
+              "displayName": "Stat 2"
+            }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "text": "890K+",
+                "tagName": "p",
+                "root": {
+                  "fontWeight": "font-bold",
+                  "fontFamily": "var(--heading-font-family)",
+                  "lineHeight": "leading-none"
+                },
+                "mobile": {
+                  "fontSize": "text-4xl"
+                },
+                "desktop": {
+                  "fontSize": "text-5xl"
+                },
+                "custom": {
+                  "displayName": "Value"
+                }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "publishes per week",
+                "tagName": "p",
+                "root": {
+                  "color": "text-(--muted-foreground)",
+                  "fontSize": "text-sm",
+                  "fontWeight": "font-normal"
+                },
+                "custom": {
+                  "displayName": "Label"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "gap": "gap-2",
+              "alignItems": "items-center",
+              "textAlign": "text-center",
+              "width": "w-full"
+            },
+            "desktop": {
+              "width": "w-1/3"
+            },
+            "custom": {
+              "displayName": "Stat 3"
+            }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "text": "14K+",
+                "tagName": "p",
+                "root": {
+                  "fontWeight": "font-bold",
+                  "fontFamily": "var(--heading-font-family)",
+                  "lineHeight": "leading-none"
+                },
+                "mobile": {
+                  "fontSize": "text-4xl"
+                },
+                "desktop": {
+                  "fontSize": "text-5xl"
+                },
+                "custom": {
+                  "displayName": "Value"
+                }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "teams shipping",
+                "tagName": "p",
+                "root": {
+                  "color": "text-(--muted-foreground)",
+                  "fontSize": "text-sm",
+                  "fontWeight": "font-normal"
+                },
+                "custom": {
+                  "displayName": "Label"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

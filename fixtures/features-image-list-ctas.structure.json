@@ -1,0 +1,561 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "type": "section",
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "width": "w-full",
+      "py": "py-16",
+      "px": "px-6"
+    },
+    "desktop": {
+      "py": "py-24",
+      "px": "px-8"
+    },
+    "custom": {
+      "displayName": "Features Image List CTAs"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "gap": "gap-12",
+          "width": "w-full",
+          "maxWidth": "max-w-6xl",
+          "mx": "mx-auto",
+          "alignItems": "items-start"
+        },
+        "desktop": {
+          "flexDirection": "flex-row",
+          "gap": "gap-14",
+          "alignItems": "items-start"
+        },
+        "custom": {
+          "displayName": "Section Inner"
+        }
+      },
+      "children": [
+        {
+          "type": "Image",
+          "props": {
+            "content": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=960&fit=crop",
+            "alt": "Team collaborating at a table with laptops",
+            "root": {
+              "radius": "rounded-2xl"
+            },
+            "mobile": {
+              "width": "w-full",
+              "height": "h-72",
+              "objectFit": "object-cover"
+            },
+            "desktop": {
+              "width": "w-1/2",
+              "height": "h-full",
+              "minHeight": "min-h-[28rem]",
+              "objectFit": "object-cover"
+            },
+            "custom": {
+              "displayName": "Feature Image"
+            }
+          }
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "gap": "gap-10",
+              "width": "w-full"
+            },
+            "desktop": {
+              "width": "w-1/2",
+              "flex": "flex-1"
+            },
+            "custom": {
+              "displayName": "Content Column"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-4",
+                  "width": "w-full"
+                },
+                "custom": {
+                  "displayName": "Intro"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Designed for business teams",
+                    "tagName": "h2",
+                    "root": {
+                      "fontWeight": "font-bold",
+                      "fontFamily": "var(--heading-font-family)",
+                      "lineHeight": "leading-tight"
+                    },
+                    "mobile": {
+                      "fontSize": "text-3xl"
+                    },
+                    "desktop": {
+                      "fontSize": "text-4xl"
+                    },
+                    "custom": {
+                      "displayName": "Heading"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Ship updates with confidence: keep marketing, design, and engineering aligned without turning every tweak into a ticket queue.",
+                    "tagName": "p",
+                    "root": {
+                      "color": "text-(--muted-foreground)",
+                      "fontSize": "text-base",
+                      "lineHeight": "leading-relaxed"
+                    },
+                    "custom": {
+                      "displayName": "Intro"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "width": "w-full"
+                },
+                "custom": {
+                  "displayName": "Feature List"
+                }
+              },
+              "children": [
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-row",
+                      "gap": "gap-4",
+                      "width": "w-full",
+                      "alignItems": "items-start",
+                      "py": "py-6"
+                    },
+                    "custom": {
+                      "displayName": "Feature — Security"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {
+                          "background": "bg-(--primary)",
+                          "color": "text-(--primary-foreground)",
+                          "radius": "rounded-full"
+                        },
+                        "mobile": {
+                          "display": "flex",
+                          "width": "w-12",
+                          "height": "h-12",
+                          "minWidth": "min-w-12",
+                          "alignItems": "items-center",
+                          "justifyContent": "justify-center"
+                        },
+                        "custom": {
+                          "displayName": "Icon 1"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "L",
+                            "tagName": "span",
+                            "root": {
+                              "fontWeight": "font-bold",
+                              "fontSize": "text-sm"
+                            },
+                            "custom": {
+                              "displayName": "Glyph"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-col",
+                          "gap": "gap-2",
+                          "flex": "flex-1"
+                        },
+                        "custom": {
+                          "displayName": "Copy 1"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "Keep your data secure",
+                            "tagName": "h3",
+                            "root": {
+                              "fontWeight": "font-semibold",
+                              "fontSize": "text-lg",
+                              "lineHeight": "leading-snug"
+                            },
+                            "custom": {
+                              "displayName": "Title"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "Granular access, sane defaults, and clear audit trails so the right people can publish without opening the floodgates.",
+                            "tagName": "p",
+                            "root": {
+                              "color": "text-(--muted-foreground)",
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-relaxed"
+                            },
+                            "custom": {
+                              "displayName": "Description"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "text": "Learn more >",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--primary)",
+                              "fontSize": "text-sm",
+                              "fontWeight": "font-semibold"
+                            },
+                            "mobile": {
+                              "px": "px-0",
+                              "py": "py-0",
+                              "mt": "mt-1"
+                            },
+                            "custom": {
+                              "displayName": "CTA 1"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {
+                      "border": "border-t",
+                      "borderColor": "border-(--muted)"
+                    },
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-row",
+                      "gap": "gap-4",
+                      "width": "w-full",
+                      "alignItems": "items-start",
+                      "py": "py-6"
+                    },
+                    "custom": {
+                      "displayName": "Feature — Insight"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {
+                          "background": "bg-(--accent)",
+                          "color": "text-(--accent-foreground)",
+                          "radius": "rounded-full"
+                        },
+                        "mobile": {
+                          "display": "flex",
+                          "width": "w-12",
+                          "height": "h-12",
+                          "minWidth": "min-w-12",
+                          "alignItems": "items-center",
+                          "justifyContent": "justify-center"
+                        },
+                        "custom": {
+                          "displayName": "Icon 2"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "M",
+                            "tagName": "span",
+                            "root": {
+                              "fontWeight": "font-bold",
+                              "fontSize": "text-sm"
+                            },
+                            "custom": {
+                              "displayName": "Glyph"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-col",
+                          "gap": "gap-2",
+                          "flex": "flex-1"
+                        },
+                        "custom": {
+                          "displayName": "Copy 2"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "Insights at a glance",
+                            "tagName": "h3",
+                            "root": {
+                              "fontWeight": "font-semibold",
+                              "fontSize": "text-lg",
+                              "lineHeight": "leading-snug"
+                            },
+                            "custom": {
+                              "displayName": "Title"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "Connect analytics once, then see what resonates—from first visit to conversion—without exporting spreadsheets every Monday.",
+                            "tagName": "p",
+                            "root": {
+                              "color": "text-(--muted-foreground)",
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-relaxed"
+                            },
+                            "custom": {
+                              "displayName": "Description"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "text": "Learn more >",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--accent)",
+                              "fontSize": "text-sm",
+                              "fontWeight": "font-semibold"
+                            },
+                            "mobile": {
+                              "px": "px-0",
+                              "py": "py-0",
+                              "mt": "mt-1"
+                            },
+                            "custom": {
+                              "displayName": "CTA 2"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {
+                      "border": "border-t",
+                      "borderColor": "border-(--muted)"
+                    },
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-row",
+                      "gap": "gap-4",
+                      "width": "w-full",
+                      "alignItems": "items-start",
+                      "py": "py-6"
+                    },
+                    "custom": {
+                      "displayName": "Feature — Build"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "root": {
+                          "background": "bg-(--secondary)",
+                          "color": "text-(--secondary-foreground)",
+                          "radius": "rounded-full"
+                        },
+                        "mobile": {
+                          "display": "flex",
+                          "width": "w-12",
+                          "height": "h-12",
+                          "minWidth": "min-w-12",
+                          "alignItems": "items-center",
+                          "justifyContent": "justify-center"
+                        },
+                        "custom": {
+                          "displayName": "Icon 3"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "C",
+                            "tagName": "span",
+                            "root": {
+                              "fontWeight": "font-bold",
+                              "fontSize": "text-sm"
+                            },
+                            "custom": {
+                              "displayName": "Glyph"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Container",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-col",
+                          "gap": "gap-2",
+                          "flex": "flex-1"
+                        },
+                        "custom": {
+                          "displayName": "Copy 3"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "Automate workflows",
+                            "tagName": "h3",
+                            "root": {
+                              "fontWeight": "font-semibold",
+                              "fontSize": "text-lg",
+                              "lineHeight": "leading-snug"
+                            },
+                            "custom": {
+                              "displayName": "Title"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "text": "Hook up webhooks, forms, and your favorite tools so repetitive work happens in the background—not in someone’s inbox.",
+                            "tagName": "p",
+                            "root": {
+                              "color": "text-(--muted-foreground)",
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-relaxed"
+                            },
+                            "custom": {
+                              "displayName": "Description"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Button",
+                          "props": {
+                            "text": "Learn more >",
+                            "url": "#",
+                            "root": {
+                              "background": "bg-transparent",
+                              "color": "text-(--secondary)",
+                              "fontSize": "text-sm",
+                              "fontWeight": "font-semibold"
+                            },
+                            "mobile": {
+                              "px": "px-0",
+                              "py": "py-0",
+                              "mt": "mt-1"
+                            },
+                            "custom": {
+                              "displayName": "CTA 3"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
