@@ -1,9 +1,6 @@
 /** Shared AI model configuration — used by both server and client. */
 
-const AI_MODELS = [
-  { value: "alibaba/qwen3-coder-30b-a3b", label: "Auto" },
-  { value: "xai/grok-code-fast-1", label: "Fast" },
-];
+const AI_MODELS = [{ value: "alibaba/qwen3-coder-30b-a3b", label: "Auto" }];
 
 const DEFAULT_MODEL = "alibaba/qwen3-coder-30b-a3b";
 

@@ -1,4 +1,5 @@
 const { apiFetch } = require('../api-fetch');
+const { getContext } = require('../context');
 const { parseMaybeJson } = require('../helpers');
 
 /* ── Style reference ── */
@@ -120,6 +121,42 @@ function getDesignPatterns() {
   return require('../data/patterns');
 }
 
+/** Shrink schema JSON for parallel fills — full props enums blow context (100k+ tokens). */
+function compactComponentSchemaForFill(schema) {
+  if (!schema || typeof schema !== 'object') return schema;
+  const propsIn = schema.props || {};
+  const propsOut = {};
+  const keys = Object.keys(propsIn);
+  const maxProps = 28;
+  for (let i = 0; i < keys.length && i < maxProps; i++) {
+    const k = keys[i];
+    const v = propsIn[k];
+    if (!v || typeof v !== 'object') {
+      propsOut[k] = v;
+      continue;
+    }
+    propsOut[k] = {
+      type: v.type,
+      description: typeof v.description === 'string' ? v.description.slice(0, 160) : v.description,
+    };
+    if (Array.isArray(v.enum) && v.enum.length) {
+      propsOut[k].enum = v.enum.length <= 12 ? v.enum : v.enum.slice(0, 12).concat(['…']);
+    }
+    if (v.default !== undefined) propsOut[k].default = v.default;
+  }
+  if (keys.length > maxProps) {
+    propsOut._truncatedPropKeys = keys.length - maxProps;
+  }
+  return {
+    name: schema.name,
+    description: schema.description,
+    requiredProps: schema.requiredProps,
+    supportsChildren: schema.supportsChildren,
+    childrenType: schema.childrenType,
+    props: propsOut,
+  };
+}
+
 /* ── Handlers ── */
 
 module.exports = {
@@ -160,6 +197,7 @@ module.exports = {
   },
 
   async get_component_schema(args) {
+    const fillMode = !!getContext().fillMode;
     // Accept single component, comma-separated list, or omit for all
     const requested = args.components || args.component;
     if (requested) {
@@ -167,12 +205,27 @@ module.exports = {
       const schemas = {};
       for (const name of names) {
         const data = await apiFetch(`/api/v1/schemas?component=${encodeURIComponent(name)}`);
-        if (!data.error) schemas[name] = data.schema;
+        if (!data.error) {
+          schemas[name] = fillMode ? compactComponentSchemaForFill(data.schema) : data.schema;
+        }
       }
       if (Object.keys(schemas).length === 0) {
         return { content: [{ type: 'text', text: `No schemas found for: ${names.join(', ')}` }] };
       }
-      return { content: [{ type: 'text', text: JSON.stringify(schemas, null, 2) }] };
+      const note = fillMode
+        ? '\n\n(Fill mode: prop lists are truncated — ask for a specific component again if you need more detail.)\n'
+        : '';
+      return { content: [{ type: 'text', text: `${JSON.stringify(schemas, null, 2)}${note}` }] };
+    }
+    if (fillMode) {
+      return {
+        content: [{
+          type: 'text',
+          text:
+            'In parallel fill, omitting `components` is not supported — pass a comma list (e.g. `Container,Text,Button`). ' +
+            'Prefer `search_blocks` + `apply_kit_block` instead of loading all schemas.',
+        }],
+      };
     }
     const data = await apiFetch('/api/v1/schemas');
     return { content: [{ type: 'text', text: JSON.stringify(data.schemas, null, 2) }] };
@@ -184,12 +237,29 @@ module.exports = {
 
   async get_design_patterns(args) {
     const patterns = getDesignPatterns();
+    const fillMode = !!getContext().fillMode;
     if (args.pattern) {
       // Aliases for common section type names
       const ALIASES = { footer: 'structured-footer', gallery: 'bento-gallery', testimonials: 'quote-testimonials', services: 'offering-list', menu: 'offering-list', contact: 'rich-contact' };
       const key = ALIASES[args.pattern] || args.pattern;
       const pattern = patterns[key];
       if (!pattern) return { content: [{ type: 'text', text: `Unknown pattern: "${args.pattern}". Available: ${Object.keys(patterns).join(', ')}` }] };
+      // Parallel section fills: full node maps are huge and slow — kit path should win; keep recipe text only.
+      if (fillMode) {
+        const roots = Object.keys(pattern.nodes || {});
+        const rootLine = roots.length
+          ? `\n**Top-level node ids in this recipe:** ${roots.slice(0, 8).join(', ')}${roots.length > 8 ? ', ...' : ''}\n`
+          : '';
+        return {
+          content: [{
+            type: 'text',
+            text:
+              `# Design pattern (summary only): ${key}\n\n${pattern.description}\n\n**Usage:** ${pattern.usage}${rootLine}\n` +
+              `**Parallel fill:** You should already have tried \`search_blocks\` + \`apply_kit_block\`. Full JSON node map is omitted here (too large). ` +
+              `If no kit block worked, use \`get_component_schema\` + \`add_nodes\` and follow the usage above — do not wait for a full map dump.`,
+          }],
+        };
+      }
       return { content: [{ type: 'text', text: `# Design Pattern: ${args.pattern}\n\n${pattern.description}\n\n**Usage:** ${pattern.usage}\n\n## Node Map\n\nPass this to add_custom_section(slug, sectionRootId: "${Object.keys(pattern.nodes)[0]}", nodes: <the nodes below>).\n\n\`\`\`json\n${JSON.stringify(pattern.nodes, null, 2)}\n\`\`\`` }] };
     }
     const summary = Object.entries(patterns).map(([k, v]) => `### ${k}\n${v.description}`).join('\n\n');
@@ -197,7 +267,8 @@ module.exports = {
   },
 
   async list_presets(args) {
-    const qs = args.mood ? `?mood=${encodeURIComponent(args.mood)}` : '';
+    const a = args && typeof args === 'object' ? args : {};
+    const qs = a.mood ? `?mood=${encodeURIComponent(a.mood)}` : '';
     const data = await apiFetch(`/api/v1/presets${qs}`);
     const presets = data.presets || [];
 
@@ -205,14 +276,33 @@ module.exports = {
       return { content: [{ type: 'text', text: 'No presets found.' }] };
     }
 
-    const lines = presets.map(p => {
-      const palettePreview = p.palette.slice(0, 6).map(c => `${c.name}: ${c.color}`).join(', ');
-      return `### ${p.presetId}\n**${p.name}** — ${p.description}\nMoods: ${(p.mood || []).join(', ')}\nFonts: heading=${p.styleGuide?.headingFontFamily || '?'}, body=${p.styleGuide?.bodyFontFamily || '?'}\nPalette: ${palettePreview}\nRadius: ${p.styleGuide?.borderRadius || '?'} | Shadow: ${p.styleGuide?.shadowStyle || 'none'}`;
+    // compact / brief: id + human name only (planner default via agent) — saves thousands of tokens vs description blurbs
+    const useCompact = a.compact === true || a.brief === true;
+    if (useCompact) {
+      const lines = presets.map((p) => `• \`${p.presetId}\` — ${p.name || p.presetId}`);
+      return {
+        content: [{
+          type: 'text',
+          text:
+            '# Theme presets (compact)\n\n' +
+            'Use `set_theme({ preset: "preset-id" })`. Full palette/fonts load from the preset.\n\n' +
+            `${lines.join('\n')}\n\n` +
+            'Pass `{ compact: false }` if you need longer descriptions per preset.',
+        }],
+      };
+    }
+
+    const lines = presets.map((p) => {
+      const desc = (p.description || '').replace(/\s+/g, ' ').trim();
+      const short = desc.length > 140 ? `${desc.slice(0, 137)}…` : desc;
+      return `• \`${p.presetId}\` — **${p.name}** — ${short}`;
     });
     return {
       content: [{
         type: 'text',
-        text: `# Theme Presets\n\nUse with set_theme(preset: "preset-id"). Individual palette/fonts/styleGuide params override preset values.\n\n${lines.join('\n\n')}`,
+        text:
+          '# Theme Presets\n\nUse `set_theme({ preset: "preset-id" })`. One line per preset — pick by name/mood; full palette loads from the preset.\n\n' +
+          `${lines.join('\n')}`,
       }],
     };
   },

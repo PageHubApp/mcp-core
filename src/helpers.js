@@ -10,13 +10,26 @@ function parseMaybeJson(v) {
 /** Shallow-merge patch objects into a flat node map entry. */
 function applyNodePatches(flatMap, nodeId, patchArgs) {
   const {
-    propsPatch, mobilePatch, rootPatch, nodesPatch,
-    unsetProps, unsetMobile, unsetRoot,
+    propsPatch, mobilePatch, desktopPatch, rootPatch, nodesPatch,
+    unsetProps, unsetMobile, unsetDesktop, unsetRoot,
   } = patchArgs;
-  if (!flatMap[nodeId]) throw new Error(`Node ${nodeId} not found`);
+  if (!flatMap[nodeId]) {
+    let hint = '';
+    if (String(nodeId).startsWith('kit_')) {
+      const similar = Object.keys(flatMap).filter((k) => k.startsWith('kit_')).slice(0, 12);
+      hint =
+        similar.length > 0
+          ? ` Known kit_* ids in this map start with: ${similar.join(', ')}. Use ids from the apply_kit_block tool reply, not get_component_schema.`
+          : ' Use node ids from the latest apply_kit_block tool reply (copy exactly).';
+    }
+    throw new Error(`Node ${nodeId} not found.${hint}`);
+  }
   if (propsPatch) flatMap[nodeId].props = { ...flatMap[nodeId].props, ...propsPatch };
   if (mobilePatch) {
     flatMap[nodeId].props.mobile = { ...(flatMap[nodeId].props.mobile || {}), ...mobilePatch };
+  }
+  if (desktopPatch) {
+    flatMap[nodeId].props.desktop = { ...(flatMap[nodeId].props.desktop || {}), ...desktopPatch };
   }
   if (rootPatch) {
     flatMap[nodeId].props.root = { ...(flatMap[nodeId].props.root || {}), ...rootPatch };
@@ -30,6 +43,11 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
     for (const k of unsetMobile) delete m[k];
     flatMap[nodeId].props.mobile = m;
   }
+  if (Array.isArray(unsetDesktop)) {
+    const d = flatMap[nodeId].props.desktop || {};
+    for (const k of unsetDesktop) delete d[k];
+    flatMap[nodeId].props.desktop = d;
+  }
   if (Array.isArray(unsetRoot)) {
     const r = flatMap[nodeId].props.root || {};
     for (const k of unsetRoot) delete r[k];
@@ -37,17 +55,199 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
   }
 }
 
+const PATCH_BODY_KEYS = [
+  'propsPatch',
+  'mobilePatch',
+  'desktopPatch',
+  'rootPatch',
+  'nodesPatch',
+  'unsetProps',
+  'unsetMobile',
+  'unsetDesktop',
+  'unsetRoot',
+];
+
+/** Allowed top-level keys for patch_site_node. */
+const PATCH_SITE_NODE_ARG_KEYS = new Set(['id', 'slug', 'nodeId', ...PATCH_BODY_KEYS, 'name', 'title', 'description']);
+
+/** Allowed keys on each patch_site_bulk array element (no nested "patches"). */
+const PATCH_BULK_ITEM_KEYS = new Set(['nodeId', ...PATCH_BODY_KEYS, 'name', 'title', 'description', 'id']);
+
+const UNSUPPORTED_PATCH_FIELD_HINTS = {
+  children:
+    'Field "children" is not supported. Patch each child node by its kit_* id (e.g. Button nodes under ButtonList) using propsPatch for text, icon, and root styles — copy ids from the apply_kit_block reply.',
+};
+
+function assertPatchKeys(obj, allowedSet, label) {
+  if (!obj || typeof obj !== 'object') return;
+  for (const k of Object.keys(obj)) {
+    if (allowedSet.has(k)) continue;
+    const hint =
+      UNSUPPORTED_PATCH_FIELD_HINTS[k] ||
+      `Unknown field "${k}". Allowed: ${[...allowedSet].sort().join(', ')}.`;
+    throw new Error(`${label}: ${hint}`);
+  }
+}
+
+function assertPatchSiteNodeArgs(args) {
+  assertPatchKeys(args, PATCH_SITE_NODE_ARG_KEYS, 'patch_site_node');
+}
+
+function assertPatchBulkItem(item, index) {
+  assertPatchKeys(item, PATCH_BULK_ITEM_KEYS, `patch_site_bulk patches[${index}]`);
+}
+
 /** Normalize raw patch args (parse JSON strings). */
 function normalizeNodePatchArgs(raw) {
   return {
     propsPatch: parseMaybeJson(raw.propsPatch) ?? raw.propsPatch,
     mobilePatch: parseMaybeJson(raw.mobilePatch) ?? raw.mobilePatch,
+    desktopPatch: parseMaybeJson(raw.desktopPatch) ?? raw.desktopPatch,
     rootPatch: parseMaybeJson(raw.rootPatch) ?? raw.rootPatch,
     nodesPatch: raw.nodesPatch,
     unsetProps: raw.unsetProps,
     unsetMobile: raw.unsetMobile,
+    unsetDesktop: raw.unsetDesktop,
     unsetRoot: raw.unsetRoot,
   };
+}
+
+/**
+ * Parse patches JSON string; tolerate markdown fences and trailing commas (common model mistakes).
+ */
+function parseBulkPatchesJsonString(raw) {
+  const trimmed = raw.trim().replace(/^\uFEFF/, '');
+  if (!trimmed) return null;
+  const unfenced = trimmed
+    .replace(/^```(?:json)?\s*/i, '')
+    .replace(/\s*```\s*$/i, '')
+    .trim();
+  const smartQuotes = unfenced
+    .replace(/[\u201c\u201d]/g, '"')
+    .replace(/[\u2018\u2019]/g, "'");
+  const variants = [unfenced, smartQuotes];
+  const attempts = [];
+  for (const v of variants) {
+    attempts.push(v, v.replace(/,\s*([\]}])/g, '$1'));
+  }
+  for (const s of attempts) {
+    try {
+      return JSON.parse(s);
+    } catch {
+      /* try next */
+    }
+  }
+  return null;
+}
+
+/** Split `[a,b,c]` inner by commas at depth 0 (respects strings). */
+function splitTopLevelCommaSeparatedJsonValues(inner) {
+  const segs = [];
+  let depth = 0;
+  let start = 0;
+  let inString = false;
+  let esc = false;
+  for (let i = 0; i < inner.length; i++) {
+    const c = inner[i];
+    if (inString) {
+      if (esc) esc = false;
+      else if (c === '\\') esc = true;
+      else if (c === '"') inString = false;
+      continue;
+    }
+    if (c === '"') {
+      inString = true;
+      continue;
+    }
+    if (c === '{' || c === '[') depth++;
+    else if (c === '}' || c === ']') depth--;
+    if (c === ',' && depth === 0) {
+      segs.push(inner.slice(start, i).trim());
+      start = i + 1;
+    }
+  }
+  segs.push(inner.slice(start).trim());
+  return segs.filter((x) => x.length > 0);
+}
+
+/**
+ * When the full array string fails JSON.parse, try parsing each `{...}` segment (models often break only one object).
+ */
+function tryParseBulkPatchArrayElementsFromString(raw) {
+  const trimmed = raw.trim().replace(/^\uFEFF/, '');
+  const unfenced = trimmed
+    .replace(/^```(?:json)?\s*/i, '')
+    .replace(/\s*```\s*$/i, '')
+    .trim();
+  if (!unfenced.startsWith('[') || !unfenced.endsWith(']')) return null;
+  const inner = unfenced.slice(1, -1).trim();
+  if (!inner) return [];
+  const segs = splitTopLevelCommaSeparatedJsonValues(inner);
+  const out = [];
+  for (const seg of segs) {
+    const frag = seg.trim();
+    if (!frag.startsWith('{')) return null;
+    let parsed;
+    try {
+      parsed = JSON.parse(frag);
+    } catch {
+      try {
+        parsed = JSON.parse(frag.replace(/,\s*}$/, '}'));
+      } catch {
+        return null;
+      }
+    }
+    if (!parsed || typeof parsed !== 'object' || typeof parsed.nodeId !== 'string') return null;
+    out.push(parsed);
+  }
+  return out.length > 0 ? out : null;
+}
+
+/**
+ * Coerce patch_site_bulk input from common model mistakes into an array of patch objects.
+ * Handles: JSON string, single { nodeId, ... }, { patches: [...] }, array-like { "0": {...} }.
+ */
+function normalizeBulkPatchesFromArgs(args = {}) {
+  let list = args.patches != null ? args.patches : args.patch;
+  let safety = 0;
+  while (list != null && safety++ < 10) {
+    if (typeof list === 'string') {
+      const trimmed = list.trim();
+      if (!trimmed) return null;
+      let next = parseMaybeJson(trimmed);
+      if (next === list) {
+        next = parseBulkPatchesJsonString(trimmed);
+      }
+      if (next == null || next === list) {
+        next = tryParseBulkPatchArrayElementsFromString(trimmed);
+      }
+      if (next == null || next === list) return null;
+      list = next;
+      continue;
+    }
+    if (Array.isArray(list)) {
+      return list.filter((x) => x != null && typeof x === 'object');
+    }
+    if (typeof list === 'object') {
+      if (typeof list.nodeId === 'string') {
+        return [list];
+      }
+      if (Array.isArray(list.patches)) {
+        list = list.patches;
+        continue;
+      }
+      const keys = Object.keys(list);
+      if (keys.length && keys.every((k) => /^\d+$/.test(k))) {
+        return keys
+          .sort((a, b) => Number(a) - Number(b))
+          .map((k) => list[k])
+          .filter((x) => x != null && typeof x === 'object');
+      }
+      return null;
+    }
+    return null;
+  }
+  return null;
 }
 
 // ── Target (site OR template) fetch/save helpers ──
@@ -171,9 +371,62 @@ function collectAllImageUrls(nodes) {
   return urls;
 }
 
+/** All node ids in the subtree rooted at rootId (includes rootId). */
+function collectSubtreeNodeIds(flat, rootId) {
+  const ids = new Set();
+  const walk = (id) => {
+    if (!id || !flat[id] || ids.has(id)) return;
+    ids.add(id);
+    for (const c of flat[id].nodes || []) walk(c);
+  };
+  walk(rootId);
+  return ids;
+}
+
+/** Parallel section fills may only patch nodes inside the assigned section canvas. */
+function assertFillModePatchAllowed(flat, nodeId, ctx) {
+  if (!ctx?.fillMode || !ctx.sectionNodeId) return;
+  const sec = String(ctx.sectionNodeId);
+  if (!flat[sec]) return;
+  const allowed = collectSubtreeNodeIds(flat, sec);
+  if (!allowed.has(nodeId)) {
+    throw new Error(
+      `Parallel fill: cannot edit node "${nodeId}" — only nodes inside your section "${sec}" are editable. Do not patch other sections.`
+    );
+  }
+}
+
+/**
+ * Fill mode: validate every patch target before applying any (avoids partial applies + clearer errors when one bulk mixes sec_*).
+ */
+function assertFillModeBulkPatchesAllowed(flat, patchList, ctx) {
+  if (!ctx?.fillMode || !ctx.sectionNodeId || !Array.isArray(patchList)) return;
+  const sec = String(ctx.sectionNodeId);
+  if (!flat[sec]) return;
+  const allowed = collectSubtreeNodeIds(flat, sec);
+  const bad = [];
+  for (const item of patchList) {
+    const nid = item?.nodeId;
+    if (typeof nid !== 'string') continue;
+    if (!allowed.has(nid)) bad.push(nid);
+  }
+  if (bad.length === 0) return;
+  const uniq = [...new Set(bad)];
+  throw new Error(
+    `Parallel fill: patch_site_bulk lists node(s) outside your section "${sec}": ${uniq.join(', ')}. ` +
+      `Remove those entries — only kit_* ids from your apply_kit_block reply under "${sec}". Never include sibling sec_* containers (e.g. sec_hero fill must not patch sec_features).`
+  );
+}
+
 module.exports = {
-  parseMaybeJson, applyNodePatches, normalizeNodePatchArgs,
+  parseMaybeJson,
+  applyNodePatches,
+  normalizeNodePatchArgs,
+  normalizeBulkPatchesFromArgs,
+  assertPatchSiteNodeArgs,
+  assertPatchBulkItem,
   getActiveTarget, getActiveSiteId, isTemplateTarget,
   getEditorUrl, fetchTarget, fetchSite, saveTarget, saveSite,
   extractImageUrls, validateImageUrls, collectAllImageUrls,
+  collectSubtreeNodeIds, assertFillModePatchAllowed, assertFillModeBulkPatchesAllowed,
 };

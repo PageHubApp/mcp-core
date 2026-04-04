@@ -15,8 +15,32 @@ module.exports = {
     if (args.limit) params.set('limit', String(args.limit));
 
     const qs = params.toString();
-    const data = await apiFetch(`/api/v1/components${qs ? `?${qs}` : ''}`);
-    const { components, total, page, pages } = data;
+    let data = await apiFetch(`/api/v1/components${qs ? `?${qs}` : ''}`);
+    let { components, total, page, pages } = data;
+    let broadened = false;
+
+    if (!components.length && args.q) {
+      const wide = new URLSearchParams();
+      if (args.category) wide.set('category', args.category);
+      if (args.subcategory) wide.set('subcategory', args.subcategory);
+      if (args.tag) wide.set('tag', args.tag);
+      if (args.source) wide.set('source', args.source);
+      if (args.group) wide.set('group', args.group);
+      if (args.featured) wide.set('featured', 'true');
+      if (args.sort) wide.set('sort', args.sort);
+      if (args.page) wide.set('page', String(args.page));
+      if (args.limit) wide.set('limit', String(args.limit));
+      const qs2 = wide.toString();
+      const data2 = await apiFetch(`/api/v1/components${qs2 ? `?${qs2}` : ''}`);
+      if (data2.components?.length) {
+        data = data2;
+        components = data2.components;
+        total = data2.total;
+        page = data2.page;
+        pages = data2.pages;
+        broadened = true;
+      }
+    }
 
     if (!components.length) {
       return { content: [{ type: 'text', text: 'No blocks found matching your query.' }] };
@@ -30,10 +54,23 @@ module.exports = {
       return line;
     });
 
+    const pageCount = pages != null ? pages : 1;
+    const pageNum = page != null ? page : 1;
+    const totalCount = total != null ? total : components.length;
+    const paginationNote =
+      pageCount > 1
+        ? `**More exist:** ${totalCount} total — this is **page ${pageNum} of ${pageCount}**. Call \`search_blocks\` again with the same filters and \`page: ${pageNum + 1}\` (etc.) to see more. For a full category slug list in one shot, use \`list_blocks({ category: "…" })\` (planner only).\n\n`
+        : totalCount > components.length
+          ? `**Note:** ${totalCount} total matches; this response lists ${components.length}. If you need more breadth, raise \`limit\` (max 100) or use \`list_blocks\`.\n\n`
+          : '';
+
+    const head = broadened
+      ? `# Blocks (${totalCount} total, page ${pageNum}/${pageCount})\n\n*(Search widened: dropped text query \`q\` because it returned no hits — prefer category/tag alone next time.)*\n\n${paginationNote}`
+      : `# Blocks (${totalCount} total, page ${pageNum}/${pageCount})\n\n${paginationNote}`;
     return {
       content: [{
         type: 'text',
-        text: `# Blocks (${total} total, page ${page}/${pages})\n\n${lines.join('\n\n')}\n\nUse \`get_block(slug)\` to get the full structure for any block.`,
+        text: `${head}${lines.join('\n\n')}\n\n**Selection:** Read name, description, and tags; shortlist 2–4 finalists that match the user request, then pick one slug **exactly** as shown in backticks. If the header is **page 1 of 1** and the number of bullets matches total N, this response is the **full** result set for that query. If **Y > 1**, more pages exist — call \`search_blocks\` with \`page: 2\` (etc.) before claiming you listed every block.\n\nUse \`get_block(slug)\` for full structure (heavy); prefer comparing metadata above first.`,
       }],
     };
   },

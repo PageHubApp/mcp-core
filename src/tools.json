@@ -1,7 +1,7 @@
 [
   {
     "name": "list_blocks",
-    "description": "Lists all available pre-built block templates with their IDs, descriptions, component structure, and overridable displayNames. Call this FIRST before using add_block so you know what templates exist and how to customize them.",
+    "description": "Lists block templates (up to ~200 per call), grouped by category — slug + name + short tags/visual per entry. Use when the user wants a **broad menu** of options or when search_blocks returned only one page but you need the full category inventory. For ranked/filtered discovery prefer search_blocks. Planner only — not used in parallel section fill.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -14,13 +14,13 @@
   },
   {
     "name": "get_component_schema",
-    "description": "Returns full schemas for CraftJS components — types, props, valid values, and responsive patterns. Pass one or more component names to get exactly what you need in a single call.\n\nAvailable: Background, Container, ContainerGroup, Text, Image, ImageList, Button, ButtonList, Form, FormElement, Divider, Spacer, Video, Audio, Embed, Header, Footer, Map, MapPoint.",
+    "description": "Returns full schemas for CraftJS components — types, props, valid values, and responsive patterns. Pass one or more component names to get exactly what you need in a single call.\n\nAvailable: Background, Container, ContainerGroup, Text, Image, ImageList, Button, ButtonList, Form, FormElement, Divider, Spacer, Video, Audio, Embed, Header, Footer, Map, MapPoint.\n\nParallel section fill: responses are compact (truncated props). Omitting `components` is rejected in fill — always pass a comma list. Prefer search_blocks + apply_kit_block over schema dumps.",
     "inputSchema": {
       "type": "object",
       "properties": {
         "components": {
           "type": "string",
-          "description": "Comma-separated component names (e.g. \"Container,Text,Button,Image\"). Omit for all."
+          "description": "Comma-separated component names (e.g. \"Container,Text,Button,Image\"). Omit for all (non-fill only)."
         }
       }
     }
@@ -48,13 +48,21 @@
   },
   {
     "name": "list_presets",
-    "description": "Lists curated theme presets — complete palette + font + styleGuide bundles tagged by mood. Each preset is a ready-to-use design system. Use a preset ID with set_theme(preset) to apply a complete theme in one call instead of hand-picking 12 colors.",
+    "description": "Lists curated theme presets. With compact:true (PageHub planner default): id + display name only, minimal tokens. With compact:false: id, name, and ~140 char description each. Full palette/fonts apply when you call set_theme(preset).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "mood": {
           "type": "string",
           "description": "Filter by mood keyword (e.g. \"warm\", \"modern\", \"dark\", \"restaurant\", \"medical\"). Omit for all presets."
+        },
+        "compact": {
+          "type": "boolean",
+          "description": "If true: each preset is only backtick id + name (use for planner to save context). If false: include short description blurbs. Standalone MCP defaults to false when omitted."
+        },
+        "brief": {
+          "type": "boolean",
+          "description": "Alias for compact: true."
         }
       }
     }
@@ -343,7 +351,7 @@
   },
   {
     "name": "update_node",
-    "description": "Surgically patches a single node on the active site (GET → patch → PUT). Same as patch_site_node but with image URL validation.\n\nPatches are shallow-merged into the target object. Use unset* arrays to remove keys that merges cannot delete.\n\nCommon uses:\n  - Change text: propsPatch: { \"text\": \"New heading\" }\n  - Change colors: rootPatch: { \"background\": \"bg-(--accent)\", \"color\": \"text-(--accent-foreground)\" }\n  - Change mobile layout: mobilePatch: { \"flexDirection\": \"flex-col\", \"py\": \"py-8\" }\n  - Change desktop layout: propsPatch: { \"desktop\": { \"gridCols\": \"grid-cols-3\" } }\n  - Reorder children: nodesPatch: [\"child2\", \"child1\", \"child3\"]\n  - Remove a prop: unsetMobile: [\"gap\"] removes gap from mobile styles",
+    "description": "Surgically patches a single node on the active site (GET → patch → PUT). Same as patch_site_node but with image URL validation.\n\nPatches are shallow-merged into the target object. Use unset* arrays to remove keys that merges cannot delete.\n\nCommon uses:\n  - Change text: propsPatch: { \"text\": \"New heading\" }\n  - Change colors: rootPatch: { \"background\": \"bg-(--accent)\", \"color\": \"text-(--accent-foreground)\" }\n  - Change mobile layout: mobilePatch: { \"flexDirection\": \"flex-col\", \"py\": \"py-8\" }\n  - Change desktop layout: desktopPatch: { \"gridCols\": \"grid-cols-3\" } (or propsPatch: { \"desktop\": { ... } })\n  - Reorder children: nodesPatch: [\"child2\", \"child1\", \"child3\"]\n  - Remove a prop: unsetMobile: [\"gap\"] removes gap from mobile styles; unsetDesktop for props.desktop",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -362,6 +370,10 @@
         "mobilePatch": {
           "type": "object",
           "description": "Shallow merge into node.props.mobile. Layout props: display, flexDirection, gridCols, gap, width, maxWidth, height, minHeight, py, px, p, my, mx, m, alignItems, justifyContent, overflow, position, inset, zIndex."
+        },
+        "desktopPatch": {
+          "type": "object",
+          "description": "Shallow merge into node.props.desktop (md: breakpoint overrides). Same shape as mobilePatch: gridCols, gap, flexDirection, etc."
         },
         "rootPatch": {
           "type": "object",
@@ -387,6 +399,13 @@
             "type": "string"
           },
           "description": "Keys to delete from props.mobile."
+        },
+        "unsetDesktop": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Keys to delete from props.desktop."
         },
         "unsetRoot": {
           "type": "array",
@@ -993,7 +1012,7 @@
   },
   {
     "name": "patch_site_node",
-    "description": "Edit one node on a live site (GET, patch, PUT). For multiple nodes use patch_site_bulk (atomic, no races). Same patch fields as update_node (propsPatch, mobilePatch, rootPatch, unset*). Example: nodeId page_home, unsetMobile [\"py\"] removes page wrapper vertical padding.",
+    "description": "Edit one node on a live site (GET, patch, PUT). For multiple nodes use patch_site_bulk (atomic, no races). Same patch fields as update_node (propsPatch, mobilePatch, desktopPatch, rootPatch, nodesPatch, unsetProps, unsetMobile, unsetDesktop, unsetRoot). Do not send \"children\" or ad-hoc node graphs — patch child Button/Text nodes by their kit_* nodeIds from apply_kit_block. Example: nodeId page_home, unsetMobile [\"py\"] removes page wrapper vertical padding.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1011,6 +1030,10 @@
         "mobilePatch": {
           "type": "object"
         },
+        "desktopPatch": {
+          "type": "object",
+          "description": "Shallow merge into node.props.desktop"
+        },
         "rootPatch": {
           "type": "object"
         },
@@ -1027,6 +1050,12 @@
           }
         },
         "unsetMobile": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unsetDesktop": {
           "type": "array",
           "items": {
             "type": "string"
@@ -1056,7 +1085,7 @@
   },
   {
     "name": "patch_site_bulk",
-    "description": "Same as patch_site_node but one GET and one PUT: apply many node patches atomically (no lost updates from parallel calls). Use for multi-field or multi-node edits. patches is an array of { nodeId, propsPatch?, mobilePatch?, rootPatch?, nodesPatch?, unset* }.",
+    "description": "Same as patch_site_node but one GET and one PUT: apply many node patches atomically (no lost updates from parallel calls). patches MUST be a native JSON array in the tool args (not a stringified JSON string — avoids parse errors from quotes in text). Each item: { nodeId, propsPatch?, mobilePatch?, desktopPatch?, rootPatch?, nodesPatch?, unsetProps?, unsetMobile?, unsetDesktop?, unsetRoot? } — never \"children\"; patch Buttons by kit_* id.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1065,61 +1094,62 @@
           "description": "Site id (defaults to active site)"
         },
         "patches": {
-          "oneOf": [
-            {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "nodeId": {
-                    "type": "string",
-                    "description": "Craft node id e.g. page_home, ROOT"
-                  },
-                  "propsPatch": {
-                    "type": "object"
-                  },
-                  "mobilePatch": {
-                    "type": "object"
-                  },
-                  "rootPatch": {
-                    "type": "object"
-                  },
-                  "nodesPatch": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "unsetProps": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "unsetMobile": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "unsetRoot": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "required": [
-                  "nodeId"
-                ]
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "nodeId": {
+                "type": "string",
+                "description": "Craft node id e.g. page_home, ROOT"
               },
-              "description": "Ordered list of patches; all applied to the same fetched document before save."
+              "propsPatch": {
+                "type": "object"
+              },
+              "mobilePatch": {
+                "type": "object"
+              },
+              "desktopPatch": {
+                "type": "object"
+              },
+              "rootPatch": {
+                "type": "object"
+              },
+              "nodesPatch": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "unsetProps": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "unsetMobile": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "unsetDesktop": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "unsetRoot": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
             },
-            {
-              "type": "string",
-              "description": "JSON string of the patches array (for clients that pass stringified payloads)."
-            }
-          ]
+            "required": [
+              "nodeId"
+            ]
+          },
+          "description": "Ordered list of patches; all applied to the same fetched document before save. Pass as a real array, not a string."
         },
         "name": {
           "type": "string",
@@ -1219,13 +1249,13 @@
   },
   {
     "name": "search_blocks",
-    "description": "Search and browse the block library — reusable UI blocks organized by purpose (Flowbite-style). Blocks are pre-built page chunks you compose sites from.\n\nSupports full-text search, category filtering, and tag filtering. Returns names, slugs, descriptions, and usage stats (no full structure — use get_block for that).",
+    "description": "Search the block library — returns **one page** of matches with names, slugs, descriptions, tags, uses/likes (no full structure — use get_block for JSON).\n\n**Pagination:** Header shows **total N** and **page X of Y**. The server does **not** auto-fetch page 2. If **Y === 1** and the listed rows match N, that is the **complete** result set for those filters (common when the library fits one page). If **Y > 1**, call again with `page: 2` (same filters) or raise `limit` (max 100); in planner, `list_blocks({ category })` can list many slugs at once.\n\n**Picking a block:** Compare 2–4 finalists using description + tags vs the user request; use the slug **exactly** as shown in backticks. Prefer category or tag filters; optional `q` can over-narrow (server may widen).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "q": {
           "type": "string",
-          "description": "Full-text search query across name, description, visual, and tags."
+          "description": "Optional full-text search. Prefer category or tag alone first — combining q with category often returns zero hits; the server will retry without q if needed."
         },
         "category": {
           "type": "string",
@@ -1275,6 +1305,38 @@
         "slug": {
           "type": "string",
           "description": "Block slug (from search_blocks results)."
+        }
+      },
+      "required": [
+        "slug"
+      ]
+    }
+  },
+  {
+    "name": "apply_kit_block",
+    "description": "Apply a library block (from search_blocks) into an existing **empty** section Container (isCanvas section).\n\n**Main agent / planner (this chat):** sectionContainerId is REQUIRED. First create the empty section with add_nodes (rootNodeId = new sec_* id, parentId = page_home, empty nodes: []), then search_blocks → apply_kit_block(slug, sectionContainerId: \"sec_cta\"). Calling apply_kit_block without sectionContainerId in planner mode always fails.\n\n**Parallel section fill workers only:** omit sectionContainerId — the server pins to the assigned section automatically. Never pass sectionContainerId in fill mode (it is ignored).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string",
+          "description": "Block slug from search_blocks (e.g. \"split-hero-with-image\")."
+        },
+        "sectionContainerId": {
+          "type": "string",
+          "description": "Required in main agent: id of an existing empty section container (e.g. sec_cta). Create it with add_nodes first if missing. Omit only in parallel fill mode."
+        },
+        "contentOverrides": {
+          "type": "string",
+          "description": "Optional JSON object: keys are custom.displayName from the block, values are { text, url, content, alt, ... } per node type — same idea as add_block overrides."
+        },
+        "propOverrides": {
+          "type": "string",
+          "description": "Optional JSON object: keys are custom.displayName, values are { root, mobile, desktop } partial prop patches."
+        },
+        "position": {
+          "type": "number",
+          "description": "Insert index under the section container (default: append)."
         }
       },
       "required": [

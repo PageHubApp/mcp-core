@@ -8,6 +8,7 @@ const {
   extractImageUrls, validateImageUrls, collectAllImageUrls,
 } = require('./helpers');
 const remoteHandlers = require('./handlers/remote');
+const kitHandlers = require('./handlers/kit');
 const componentHandlers = require('./handlers/components');
 const portalHandlers = require('./handlers/portal');
 const pageHandlers = require('./handlers/pages');
@@ -19,6 +20,7 @@ const aiHandlers = require('./handlers/ai');
 // All HTTP handlers merged into a single dispatch map
 const handlers = {
   ...remoteHandlers,
+  ...kitHandlers,
   ...componentHandlers,
   ...portalHandlers,
   ...pageHandlers,

@@ -1,4 +1,5 @@
 const { apiFetch } = require('../api-fetch');
+const { getContext } = require('../context');
 const { getActiveTarget, getEditorUrl, applyNodePatches, fetchTarget, saveTarget } = require('../helpers');
 
 module.exports = {
@@ -54,6 +55,7 @@ module.exports = {
   async generate_copy(args) {
     const { nodeId, intent, styleTags, text: textOverride } = args;
     const target = getActiveTarget(args);
+    const ctx = getContext();
 
     if (!nodeId && !intent && !textOverride) {
       throw new Error('Provide at least one of: nodeId, intent, or text.');
@@ -65,8 +67,12 @@ module.exports = {
     } else {
       data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`);
     }
-    if (!data.content) throw new Error(`${target.type === 'template' ? 'Template' : 'Site'} has no content.`);
-    const nodes = data.content;
+
+    const pending = ctx._pendingFlatMap && typeof ctx._pendingFlatMap === 'object' ? ctx._pendingFlatMap : null;
+    const nodes = pending || data.content;
+    if (!nodes || typeof nodes !== 'object') {
+      throw new Error(`${target.type === 'template' ? 'Template' : 'Site'} has no content.`);
+    }
 
     let currentText = textOverride || '';
     let nodeLabel = '';
@@ -105,7 +111,11 @@ module.exports = {
 
     const lines = [`**Generated copy:**\n\n${result.result}`];
     if (currentText.trim()) lines.push(`\n\n**Original:**\n\n${currentText}`);
-    if (nodeId) lines.push(`\n\nApply with: update_node(nodeId: "${nodeId}", propsPatch: { text: "..." })`);
+    if (nodeId) {
+      lines.push(
+        `\n\nApply with: patch_site_node(nodeId: "${nodeId}", propsPatch: { text: "<escaped result>" })`
+      );
+    }
     return { content: [{ type: 'text', text: lines.join('') }] };
   },
 };

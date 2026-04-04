@@ -172,14 +172,22 @@ module.exports = {
     if (!pageId) throw new Error('pageId is required.');
 
     const target = getActiveTarget(args);
-    let rawContent;
-    if (target.type === 'template') {
-      rawContent = (await apiFetch(`/api/v1/templates/${encodeURIComponent(target.id)}`)).content;
+    const ctx = getContext();
+
+    // In draft mode, operate on _pendingFlatMap so SEO changes survive into the skeleton
+    let flat;
+    if (ctx.draftMode && ctx._pendingFlatMap) {
+      flat = JSON.parse(JSON.stringify(ctx._pendingFlatMap));
     } else {
-      rawContent = (await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`)).content;
+      let rawContent;
+      if (target.type === 'template') {
+        rawContent = (await apiFetch(`/api/v1/templates/${encodeURIComponent(target.id)}`)).content;
+      } else {
+        rawContent = (await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`)).content;
+      }
+      if (!rawContent) throw new Error(`${target.type === 'template' ? 'Template' : 'Site'} has no content.`);
+      flat = JSON.parse(JSON.stringify(rawContent));
     }
-    if (!rawContent) throw new Error(`${target.type === 'template' ? 'Template' : 'Site'} has no content.`);
-    const flat = JSON.parse(JSON.stringify(rawContent));
 
     const page = flat[pageId];
     if (!page) throw new Error(`Page node "${pageId}" not found.`);
@@ -226,6 +234,14 @@ module.exports = {
 
     if (changes.length === 0) {
       return { content: [{ type: 'text', text: 'No changes specified.' }] };
+    }
+
+    // Draft mode: persist into _pendingFlatMap so signal_sections picks up SEO changes
+    if (ctx.draftMode) {
+      ctx._pendingFlatMap = flat;
+      return {
+        content: [{ type: 'text', text: `Page ${pageId} updated:\n  ${changes.join('\n  ')}` }],
+      };
     }
 
     const result = await saveTarget(target.id, target.type, flat);

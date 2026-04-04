@@ -1,6 +1,18 @@
 const { apiFetch, normalizeBaseUrl } = require('../api-fetch');
 const { getContext } = require('../context');
-const { parseMaybeJson, applyNodePatches, normalizeNodePatchArgs, getActiveTarget, fetchTarget, saveTarget } = require('../helpers');
+const {
+  parseMaybeJson,
+  applyNodePatches,
+  normalizeNodePatchArgs,
+  normalizeBulkPatchesFromArgs,
+  assertPatchSiteNodeArgs,
+  assertPatchBulkItem,
+  getActiveTarget,
+  fetchTarget,
+  saveTarget,
+  assertFillModePatchAllowed,
+  assertFillModeBulkPatchesAllowed,
+} = require('../helpers');
 
 /** Collect a node and all its descendants from a flat map */
 function collectSubtree(flat, nodeId) {
@@ -390,6 +402,11 @@ module.exports = {
   async add_nodes(args) {
     const target = getActiveTarget(args);
     const ctx = getContext();
+    if (ctx.fillMode && ctx._fillStructureLocked) {
+      throw new Error(
+        'This fill already created structure (kit or prior add_nodes). Use patch_site_node / patch_site_bulk only — do not call add_nodes again.'
+      );
+    }
     let sourceContent;
     if (ctx._pendingFlatMap) {
       sourceContent = ctx._pendingFlatMap;
@@ -402,9 +419,21 @@ module.exports = {
       throw new Error(`${target.type === 'template' ? 'Template' : 'Site'} has no decoded content.`);
     }
     const flat = JSON.parse(JSON.stringify(sourceContent));
+
+    let parentId = args.parentId != null && args.parentId !== '' ? String(args.parentId) : 'page_home';
+    if (ctx.fillMode && ctx.sectionNodeId) {
+      const sec = String(ctx.sectionNodeId);
+      if (args.parentId == null || args.parentId === '') {
+        parentId = sec;
+      } else if (parentId !== sec) {
+        throw new Error(
+          `Parallel fill: add_nodes parentId must be your section "${sec}". Omit parentId to default there — never use page_home or another section.`
+        );
+      }
+    }
+
     const rawNodes = parseMaybeJson(args.nodes);
     if (!rawNodes || typeof rawNodes !== 'object') throw new Error('nodes must be an object map of nodeId → node definition.');
-    const parentId = args.parentId || 'page_home';
     if (!flat[parentId]) throw new Error(`Parent node "${parentId}" not found.`);
 
     // Sanitize: parse strings, validate types, rebuild parent↔children, reparent orphans
@@ -500,7 +529,18 @@ module.exports = {
 
   async patch_site_node(args) {
     const target = getActiveTarget(args);
-    const { nodeId, name: siteName, title, description, nodesPatch, unsetProps, unsetMobile, unsetRoot } = args;
+    assertPatchSiteNodeArgs(args);
+    const {
+      nodeId,
+      name: siteName,
+      title,
+      description,
+      nodesPatch,
+      unsetProps,
+      unsetMobile,
+      unsetDesktop,
+      unsetRoot,
+    } = args;
     const ctx = getContext();
     let sourceContent;
     if (ctx._pendingFlatMap) {
@@ -514,12 +554,21 @@ module.exports = {
       throw new Error(`${target.type === 'template' ? 'Template' : 'Site'} has no decoded content (empty or corrupt).`);
     }
     const flat = JSON.parse(JSON.stringify(sourceContent));
-    applyNodePatches(flat, nodeId, normalizeNodePatchArgs({ ...args, nodesPatch, unsetProps, unsetMobile, unsetRoot }));
+    assertFillModePatchAllowed(flat, nodeId, ctx);
+    applyNodePatches(
+      flat,
+      nodeId,
+      normalizeNodePatchArgs({ ...args, nodesPatch, unsetProps, unsetMobile, unsetDesktop, unsetRoot })
+    );
     const changedNodes = collectSubtree(flat, findSectionRoot(flat, nodeId));
 
     // Dry run: return proposed changes without saving
     if (ctx.draftMode) {
       ctx._pendingFlatMap = flat;
+      if (ctx.fillMode && changedNodes) {
+        if (!ctx._fillPatch) ctx._fillPatch = {};
+        Object.assign(ctx._fillPatch, changedNodes);
+      }
       return {
         content: [{ type: 'text', text: `Node ${nodeId} updated successfully.` }],
         pendingContent: flat,
@@ -540,10 +589,26 @@ module.exports = {
 
   async patch_site_bulk(args) {
     const target = getActiveTarget(args);
-    let list = args.patches;
-    if (typeof list === 'string') list = parseMaybeJson(list);
+    const list = normalizeBulkPatchesFromArgs(args);
     if (!Array.isArray(list) || list.length === 0) {
-      throw new Error('patches must be a non-empty array of { nodeId, ...patch fields }.');
+      const p = args.patches !== undefined ? args.patches : args.patch;
+      let received = 'missing patches';
+      if (p !== undefined) {
+        if (p === null) received = 'null';
+        else if (typeof p === 'string') received = `string (length ${p.length})`;
+        else if (Array.isArray(p)) received = `array length ${p.length}`;
+        else if (typeof p === 'object') received = `object keys: ${Object.keys(p).slice(0, 12).join(', ')}`;
+        else received = typeof p;
+      }
+      let jsonHint = '';
+      if (typeof p === 'string' && p.length > 0) {
+        jsonHint =
+          ' Prefer patches as a native JSON array (not a string). If string: valid JSON only — escape quotes in text or use patch_site_node.';
+      }
+      throw new Error(
+        `patches must be a non-empty array of { nodeId, propsPatch?, mobilePatch?, ... }. ` +
+          `Always use an array even for one node, e.g. [{ "nodeId": "kit_text_1", "propsPatch": { ... } }]. (${received})${jsonHint}`
+      );
     }
     const ctx = getContext();
     let sourceContent;
@@ -558,13 +623,16 @@ module.exports = {
       throw new Error(`${target.type === 'template' ? 'Template' : 'Site'} has no decoded content (empty or corrupt).`);
     }
     const flat = JSON.parse(JSON.stringify(sourceContent));
+    assertFillModeBulkPatchesAllowed(flat, list, ctx);
     const touched = [];
     for (let i = 0; i < list.length; i++) {
       const item = list[i];
       if (!item || typeof item.nodeId !== 'string') {
         throw new Error(`patches[${i}]: missing nodeId`);
       }
+      assertPatchBulkItem(item, i);
       const { nodeId: nid, name: _name, title: _title, description: _desc, id: _id, patches: _patches, ...rest } = item;
+      assertFillModePatchAllowed(flat, nid, ctx);
       applyNodePatches(flat, nid, normalizeNodePatchArgs(rest));
       touched.push(nid);
     }
@@ -573,6 +641,10 @@ module.exports = {
     // Dry run: return proposed changes without saving
     if (ctx.draftMode) {
       ctx._pendingFlatMap = flat;
+      if (ctx.fillMode && changedNodes) {
+        if (!ctx._fillPatch) ctx._fillPatch = {};
+        Object.assign(ctx._fillPatch, changedNodes);
+      }
       return {
         content: [{ type: 'text', text: `${touched.length} nodes updated successfully: ${touched.join(', ')}.` }],
         pendingContent: flat,
@@ -615,13 +687,14 @@ module.exports = {
     let resolvedPalette = parseMaybeJson(palette);
     let resolvedStyleGuide = parseMaybeJson(styleGuide);
     let resolvedFonts = parseMaybeJson(fonts);
+    let presetRecord = null;
     if (preset) {
       const presetData = await apiFetch(`/api/v1/presets/${encodeURIComponent(preset)}`);
-      const found = presetData.preset;
-      if (!found) throw new Error(`Preset "${preset}" not found. Use list_presets to see available presets.`);
-      if (!resolvedPalette) resolvedPalette = found.palette;
-      if (!resolvedStyleGuide) resolvedStyleGuide = found.styleGuide;
-      if (!resolvedFonts) resolvedFonts = found.fonts;
+      presetRecord = presetData.preset;
+      if (!presetRecord) throw new Error(`Preset "${preset}" not found. Use list_presets to see available presets.`);
+      if (!resolvedPalette) resolvedPalette = presetRecord.palette;
+      if (!resolvedStyleGuide) resolvedStyleGuide = presetRecord.styleGuide;
+      if (!resolvedFonts) resolvedFonts = presetRecord.fonts;
     }
 
     // Apply palette → ROOT.props.pallet (note: legacy misspelling)
@@ -630,6 +703,23 @@ module.exports = {
     // Merge styleGuide
     if (resolvedStyleGuide) {
       rootProps.styleGuide = { ...(rootProps.styleGuide || {}), ...resolvedStyleGuide };
+    }
+
+    // Presets often omit link tokens; merged styleGuide would keep starter blues. Tie links to palette.
+    if (preset && presetRecord?.styleGuide && rootProps.pallet?.length) {
+      const presetSg = presetRecord.styleGuide;
+      const merged = rootProps.styleGuide;
+      if (presetSg.linkColor == null) {
+        const pal = rootProps.pallet;
+        const byName = (n) => pal.find((p) => String(p.name || '').toLowerCase() === n);
+        const fromPal = byName('accent') || byName('primary');
+        if (fromPal?.color) {
+          merged.linkColor = fromPal.color;
+          if (presetSg.linkHoverColor == null) {
+            merged.linkHoverColor = fromPal.color;
+          }
+        }
+      }
     }
 
     // Build header with Google Fonts + JSON-LD
