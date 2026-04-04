@@ -377,7 +377,7 @@
         },
         "rootPatch": {
           "type": "object",
-          "description": "Shallow merge into node.props.root. Visual props: background, color, border, borderColor, radius, shadow, bgOpacity, fontFamily, fontSize, fontWeight, lineHeight, textAlign, textDecoration. Always use CSS vars: bg-[var(--primary)]."
+          "description": "Shallow merge into node.props.root. Visual props: background, color, border, borderColor, radius, shadow, bgOpacity, fontFamily, fontSize, fontWeight, lineHeight, textAlign, textDecoration. Prefer design tokens: bg-(--primary), text-(--foreground), border-(--muted). Keep fontFamily as var(--heading-font-family) when needed."
         },
         "nodesPatch": {
           "type": "array",
