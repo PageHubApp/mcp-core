@@ -1,0 +1,107 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "type": "section",
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)",
+      "border": "border-t",
+      "borderColor": "border-(--border)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "px": "px-4",
+      "py": "py-20",
+      "width": "w-full"
+    },
+    "desktop": {
+      "flexDirection": "flex-row",
+      "px": "px-8",
+      "py": "py-28",
+      "gap": "gap-16"
+    },
+    "custom": {
+      "displayName": "Editorial quote"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
+          "mx": "mx-auto",
+          "gap": "gap-12"
+        },
+        "desktop": {
+          "flexDirection": "flex-row",
+          "gap": "gap-24"
+        },
+        "custom": {
+          "displayName": "Inner"
+        }
+      },
+      "children": [
+        {
+          "type": "Text",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "text": "02 / WHY PAGEHUB",
+            "tagName": "p",
+            "root": {
+              "color": "text-(--muted-foreground)"
+            },
+            "mobile": {
+              "fontSize": "text-sm",
+              "letterSpacing": "tracking-[0.35em]",
+              "width": "w-full"
+            },
+            "desktop": {
+              "width": "w-1/4",
+              "shrink": "shrink-0"
+            },
+            "custom": {
+              "displayName": "Kicker"
+            }
+          }
+        },
+        {
+          "type": "Text",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "text": "PageHub is built for teams who want structure without sacrificing craft. Blocks stay on rails, tokens stay consistent, and every page still feels authored—not assembled from a single rigid template.",
+            "tagName": "blockquote",
+            "root": {
+              "color": "text-(--foreground)"
+            },
+            "mobile": {
+              "fontSize": "text-xl",
+              "fontWeight": "font-light",
+              "lineHeight": "leading-relaxed",
+              "letterSpacing": "tracking-wide",
+              "width": "w-full"
+            },
+            "desktop": {
+              "fontSize": "text-3xl",
+              "width": "w-3/4"
+            },
+            "custom": {
+              "displayName": "Quote"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,708 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "type": "section",
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "width": "w-full",
+      "py": "py-12",
+      "px": "px-4"
+    },
+    "desktop": {
+      "py": "py-16",
+      "px": "px-6"
+    },
+    "custom": {
+      "displayName": "Related products section"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "gap": "gap-8",
+          "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
+          "mx": "mx-auto"
+        },
+        "custom": {
+          "displayName": "Inner"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "gap": "gap-2",
+              "width": "w-full"
+            },
+            "desktop": {
+              "flexDirection": "flex-row",
+              "alignItems": "items-end",
+              "justifyContent": "justify-between",
+              "gap": "gap-8"
+            },
+            "custom": {
+              "displayName": "Header row"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {},
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-2",
+                  "width": "w-full"
+                },
+                "desktop": {
+                  "maxWidth": "max-w-2xl"
+                },
+                "custom": {
+                  "displayName": "Titles"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "text": "YOU MAY ALSO LIKE",
+                    "tagName": "p",
+                    "root": {
+                      "color": "text-(--muted-foreground)",
+                      "fontSize": "text-xs",
+                      "fontWeight": "font-bold",
+                      "letterSpacing": "tracking-widest"
+                    },
+                    "custom": {
+                      "displayName": "Eyebrow"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "text": "Pair it with these picks",
+                    "tagName": "h2",
+                    "root": {
+                      "fontFamily": "var(--heading-font-family)",
+                      "fontWeight": "font-bold",
+                      "lineHeight": "leading-tight",
+                      "color": "text-(--foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-2xl"
+                    },
+                    "desktop": {
+                      "fontSize": "text-3xl"
+                    },
+                    "custom": {
+                      "displayName": "Heading"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "text": "Shoppers who viewed this bundle often add these PageHub sample SKUs before checkout.",
+                    "tagName": "p",
+                    "root": {
+                      "color": "text-(--muted-foreground)",
+                      "lineHeight": "leading-relaxed"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm",
+                      "mt": "mt-1"
+                    },
+                    "desktop": {
+                      "fontSize": "text-base"
+                    },
+                    "custom": {
+                      "displayName": "Subhead"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Button",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "text": "View all",
+                "url": "#",
+                "root": {
+                  "background": "bg-transparent",
+                  "color": "text-(--primary)",
+                  "border": "border",
+                  "borderColor": "border-(--border)",
+                  "radius": "rounded-(--radius)"
+                },
+                "mobile": {
+                  "display": "inline-flex",
+                  "alignSelf": "self-start",
+                  "py": "py-2",
+                  "px": "px-4",
+                  "fontSize": "text-sm",
+                  "fontWeight": "font-medium",
+                  "mt": "mt-2"
+                },
+                "desktop": {
+                  "mt": "mt-0",
+                  "shrink": "shrink-0"
+                },
+                "custom": {
+                  "displayName": "View all"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "grid",
+              "gridCols": "grid-cols-2",
+              "gap": "gap-4",
+              "width": "w-full"
+            },
+            "desktop": {
+              "gridCols": "grid-cols-4",
+              "gap": "gap-6"
+            },
+            "custom": {
+              "displayName": "Product row"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "color": "text-(--card-foreground)",
+                  "border": "border",
+                  "borderColor": "border-(--border)",
+                  "radius": "rounded-(--card-radius)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "width": "w-full",
+                  "overflow": "overflow-hidden"
+                },
+                "custom": {
+                  "displayName": "Card 1"
+                }
+              },
+              "children": [
+                {
+                  "type": "Image",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "content": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop",
+                    "alt": "Minimal watch product sample",
+                    "mobile": {
+                      "width": "w-full",
+                      "aspectRatio": "aspect-square",
+                      "objectFit": "object-cover"
+                    },
+                    "custom": {
+                      "displayName": "Image"
+                    }
+                  }
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {},
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-col",
+                      "gap": "gap-2",
+                      "p": "p-4"
+                    },
+                    "custom": {
+                      "displayName": "Body"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "text": "Studio steel watch",
+                        "tagName": "h3",
+                        "root": {
+                          "fontWeight": "font-semibold",
+                          "fontFamily": "var(--heading-font-family)",
+                          "color": "text-(--card-foreground)"
+                        },
+                        "mobile": {
+                          "fontSize": "text-sm",
+                          "lineHeight": "leading-snug"
+                        },
+                        "custom": {
+                          "displayName": "Title"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Text",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "text": "$189",
+                        "tagName": "p",
+                        "root": {
+                          "fontWeight": "font-bold",
+                          "color": "text-(--primary)"
+                        },
+                        "mobile": {
+                          "fontSize": "text-sm"
+                        },
+                        "custom": {
+                          "displayName": "Price"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Button",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "text": "View",
+                        "url": "#",
+                        "root": {
+                          "background": "bg-transparent",
+                          "color": "text-(--primary)"
+                        },
+                        "mobile": {
+                          "py": "py-0",
+                          "px": "px-0",
+                          "fontSize": "text-xs",
+                          "fontWeight": "font-semibold"
+                        },
+                        "custom": {
+                          "displayName": "Link"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "color": "text-(--card-foreground)",
+                  "border": "border",
+                  "borderColor": "border-(--border)",
+                  "radius": "rounded-(--card-radius)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "width": "w-full",
+                  "overflow": "overflow-hidden"
+                },
+                "custom": {
+                  "displayName": "Card 2"
+                }
+              },
+              "children": [
+                {
+                  "type": "Image",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "content": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop",
+                    "alt": "Headphones product sample",
+                    "mobile": {
+                      "width": "w-full",
+                      "aspectRatio": "aspect-square",
+                      "objectFit": "object-cover"
+                    },
+                    "custom": {
+                      "displayName": "Image"
+                    }
+                  }
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {},
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-col",
+                      "gap": "gap-2",
+                      "p": "p-4"
+                    },
+                    "custom": {
+                      "displayName": "Body"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "text": "Noise-calm headphones",
+                        "tagName": "h3",
+                        "root": {
+                          "fontWeight": "font-semibold",
+                          "fontFamily": "var(--heading-font-family)",
+                          "color": "text-(--card-foreground)"
+                        },
+                        "mobile": {
+                          "fontSize": "text-sm",
+                          "lineHeight": "leading-snug"
+                        },
+                        "custom": {
+                          "displayName": "Title"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Text",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "text": "$249",
+                        "tagName": "p",
+                        "root": {
+                          "fontWeight": "font-bold",
+                          "color": "text-(--primary)"
+                        },
+                        "mobile": {
+                          "fontSize": "text-sm"
+                        },
+                        "custom": {
+                          "displayName": "Price"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Button",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "text": "View",
+                        "url": "#",
+                        "root": {
+                          "background": "bg-transparent",
+                          "color": "text-(--primary)"
+                        },
+                        "mobile": {
+                          "py": "py-0",
+                          "px": "px-0",
+                          "fontSize": "text-xs",
+                          "fontWeight": "font-semibold"
+                        },
+                        "custom": {
+                          "displayName": "Link"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "color": "text-(--card-foreground)",
+                  "border": "border",
+                  "borderColor": "border-(--border)",
+                  "radius": "rounded-(--card-radius)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "width": "w-full",
+                  "overflow": "overflow-hidden"
+                },
+                "custom": {
+                  "displayName": "Card 3"
+                }
+              },
+              "children": [
+                {
+                  "type": "Image",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "content": "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400&h=400&fit=crop",
+                    "alt": "Camera product sample",
+                    "mobile": {
+                      "width": "w-full",
+                      "aspectRatio": "aspect-square",
+                      "objectFit": "object-cover"
+                    },
+                    "custom": {
+                      "displayName": "Image"
+                    }
+                  }
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {},
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-col",
+                      "gap": "gap-2",
+                      "p": "p-4"
+                    },
+                    "custom": {
+                      "displayName": "Body"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "text": "Field compact camera",
+                        "tagName": "h3",
+                        "root": {
+                          "fontWeight": "font-semibold",
+                          "fontFamily": "var(--heading-font-family)",
+                          "color": "text-(--card-foreground)"
+                        },
+                        "mobile": {
+                          "fontSize": "text-sm",
+                          "lineHeight": "leading-snug"
+                        },
+                        "custom": {
+                          "displayName": "Title"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Text",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "text": "$429",
+                        "tagName": "p",
+                        "root": {
+                          "fontWeight": "font-bold",
+                          "color": "text-(--primary)"
+                        },
+                        "mobile": {
+                          "fontSize": "text-sm"
+                        },
+                        "custom": {
+                          "displayName": "Price"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Button",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "text": "View",
+                        "url": "#",
+                        "root": {
+                          "background": "bg-transparent",
+                          "color": "text-(--primary)"
+                        },
+                        "mobile": {
+                          "py": "py-0",
+                          "px": "px-0",
+                          "fontSize": "text-xs",
+                          "fontWeight": "font-semibold"
+                        },
+                        "custom": {
+                          "displayName": "Link"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "color": "text-(--card-foreground)",
+                  "border": "border",
+                  "borderColor": "border-(--border)",
+                  "radius": "rounded-(--card-radius)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "width": "w-full",
+                  "overflow": "overflow-hidden"
+                },
+                "custom": {
+                  "displayName": "Card 4"
+                }
+              },
+              "children": [
+                {
+                  "type": "Image",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "content": "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=400&fit=crop",
+                    "alt": "Sunglasses product sample",
+                    "mobile": {
+                      "width": "w-full",
+                      "aspectRatio": "aspect-square",
+                      "objectFit": "object-cover"
+                    },
+                    "custom": {
+                      "displayName": "Image"
+                    }
+                  }
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {},
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-col",
+                      "gap": "gap-2",
+                      "p": "p-4"
+                    },
+                    "custom": {
+                      "displayName": "Body"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "text": "Polarized carry shades",
+                        "tagName": "h3",
+                        "root": {
+                          "fontWeight": "font-semibold",
+                          "fontFamily": "var(--heading-font-family)",
+                          "color": "text-(--card-foreground)"
+                        },
+                        "mobile": {
+                          "fontSize": "text-sm",
+                          "lineHeight": "leading-snug"
+                        },
+                        "custom": {
+                          "displayName": "Title"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Text",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "text": "$98",
+                        "tagName": "p",
+                        "root": {
+                          "fontWeight": "font-bold",
+                          "color": "text-(--primary)"
+                        },
+                        "mobile": {
+                          "fontSize": "text-sm"
+                        },
+                        "custom": {
+                          "displayName": "Price"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Button",
+                      "props": {
+                        "canDelete": true,
+                        "canEditName": true,
+                        "text": "View",
+                        "url": "#",
+                        "root": {
+                          "background": "bg-transparent",
+                          "color": "text-(--primary)"
+                        },
+                        "mobile": {
+                          "py": "py-0",
+                          "px": "px-0",
+                          "fontSize": "text-xs",
+                          "fontWeight": "font-semibold"
+                        },
+                        "custom": {
+                          "displayName": "Link"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

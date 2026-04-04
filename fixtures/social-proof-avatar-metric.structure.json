@@ -1,0 +1,335 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "type": "section",
+    "root": {
+      "background": "bg-(--muted)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "alignItems": "items-center",
+      "width": "w-full",
+      "py": "py-12",
+      "px": "px-4"
+    },
+    "desktop": {
+      "py": "py-16",
+      "px": "px-6"
+    },
+    "custom": {
+      "displayName": "Avatar metric band"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "alignItems": "items-center",
+          "gap": "gap-2",
+          "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
+          "mx": "mx-auto",
+          "mb": "mb-8",
+          "textAlign": "text-center"
+        },
+        "custom": {
+          "displayName": "Intro"
+        }
+      },
+      "children": [
+        {
+          "type": "Text",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "text": "REAL TEAMS, REAL SESSIONS",
+            "tagName": "p",
+            "root": {
+              "color": "text-(--muted-foreground)",
+              "fontSize": "text-xs",
+              "fontWeight": "font-bold",
+              "letterSpacing": "tracking-widest"
+            },
+            "custom": {
+              "displayName": "Eyebrow"
+            }
+          }
+        },
+        {
+          "type": "Text",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "text": "People are shipping with PageHub right now",
+            "tagName": "h2",
+            "root": {
+              "fontFamily": "var(--heading-font-family)",
+              "fontWeight": "font-bold",
+              "lineHeight": "leading-tight",
+              "color": "text-(--foreground)"
+            },
+            "mobile": {
+              "fontSize": "text-xl"
+            },
+            "desktop": {
+              "fontSize": "text-2xl"
+            },
+            "custom": {
+              "displayName": "Heading"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "alignItems": "items-center",
+          "gap": "gap-8",
+          "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
+          "mx": "mx-auto"
+        },
+        "desktop": {
+          "flexDirection": "flex-row",
+          "justifyContent": "justify-center",
+          "gap": "gap-10"
+        },
+        "custom": {
+          "displayName": "Proof row"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "className": ["-space-x-3"],
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-row",
+              "alignItems": "items-center",
+              "justifyContent": "justify-center"
+            },
+            "custom": {
+              "displayName": "Avatar stack"
+            }
+          },
+          "children": [
+            {
+              "type": "Image",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "content": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=96&h=96",
+                "alt": "Team member portrait one",
+                "className": ["ring-2", "ring-[var(--muted)]"],
+                "root": {
+                  "radius": "rounded-(--radius-full)"
+                },
+                "mobile": {
+                  "width": "w-11",
+                  "height": "h-11",
+                  "objectFit": "object-cover"
+                },
+                "custom": {
+                  "displayName": "Avatar 1"
+                }
+              }
+            },
+            {
+              "type": "Image",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "content": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=96&h=96",
+                "alt": "Team member portrait two",
+                "className": ["ring-2", "ring-[var(--muted)]"],
+                "root": {
+                  "radius": "rounded-(--radius-full)"
+                },
+                "mobile": {
+                  "width": "w-11",
+                  "height": "h-11",
+                  "objectFit": "object-cover"
+                },
+                "custom": {
+                  "displayName": "Avatar 2"
+                }
+              }
+            },
+            {
+              "type": "Image",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "content": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=96&h=96",
+                "alt": "Team member portrait three",
+                "className": ["ring-2", "ring-[var(--muted)]"],
+                "root": {
+                  "radius": "rounded-(--radius-full)"
+                },
+                "mobile": {
+                  "width": "w-11",
+                  "height": "h-11",
+                  "objectFit": "object-cover"
+                },
+                "custom": {
+                  "displayName": "Avatar 3"
+                }
+              }
+            },
+            {
+              "type": "Image",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "content": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=96&h=96",
+                "alt": "Team member portrait four",
+                "className": ["ring-2", "ring-[var(--muted)]"],
+                "root": {
+                  "radius": "rounded-(--radius-full)"
+                },
+                "mobile": {
+                  "width": "w-11",
+                  "height": "h-11",
+                  "objectFit": "object-cover"
+                },
+                "custom": {
+                  "displayName": "Avatar 4"
+                }
+              }
+            },
+            {
+              "type": "Image",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "content": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=96&h=96",
+                "alt": "Team member portrait five",
+                "className": ["ring-2", "ring-[var(--muted)]"],
+                "root": {
+                  "radius": "rounded-(--radius-full)"
+                },
+                "mobile": {
+                  "width": "w-11",
+                  "height": "h-11",
+                  "objectFit": "object-cover"
+                },
+                "custom": {
+                  "displayName": "Avatar 5"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "root": {
+              "background": "bg-(--border)"
+            },
+            "className": ["hidden", "md:block"],
+            "mobile": {
+              "width": "w-px",
+              "minHeight": "min-h-14"
+            },
+            "custom": {
+              "displayName": "Divider"
+            }
+          }
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "alignItems": "items-center",
+              "gap": "gap-1",
+              "textAlign": "text-center"
+            },
+            "desktop": {
+              "alignItems": "items-start",
+              "textAlign": "text-left"
+            },
+            "custom": {
+              "displayName": "Metric"
+            }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "text": "12.4k+",
+                "tagName": "p",
+                "root": {
+                  "fontWeight": "font-black",
+                  "fontFamily": "var(--heading-font-family)",
+                  "lineHeight": "leading-none",
+                  "color": "text-(--primary)"
+                },
+                "mobile": {
+                  "fontSize": "text-5xl"
+                },
+                "desktop": {
+                  "fontSize": "text-6xl"
+                },
+                "custom": {
+                  "displayName": "Value"
+                }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "text": "Active editors this week across PageHub workspaces",
+                "tagName": "p",
+                "root": {
+                  "color": "text-(--muted-foreground)",
+                  "lineHeight": "leading-snug",
+                  "fontWeight": "font-medium"
+                },
+                "mobile": {
+                  "fontSize": "text-sm",
+                  "maxWidth": "max-w-xs"
+                },
+                "desktop": {
+                  "fontSize": "text-base",
+                  "maxWidth": "max-w-sm"
+                },
+                "custom": {
+                  "displayName": "Caption"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

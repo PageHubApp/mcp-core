@@ -1,0 +1,131 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "type": "section",
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)",
+      "border": "border-t",
+      "borderColor": "border-(--border)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "alignItems": "items-center",
+      "textAlign": "text-center",
+      "py": "py-24",
+      "px": "px-4",
+      "width": "w-full"
+    },
+    "desktop": {
+      "py": "py-32",
+      "px": "px-8"
+    },
+    "custom": {
+      "displayName": "Contact callout"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "alignItems": "items-center",
+          "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
+          "mx": "mx-auto",
+          "gap": "gap-0"
+        },
+        "custom": {
+          "displayName": "Inner"
+        }
+      },
+      "children": [
+        {
+          "type": "Text",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "text": "03 / GET IN TOUCH",
+            "tagName": "p",
+            "root": {
+              "color": "text-(--accent)"
+            },
+            "mobile": {
+              "fontSize": "text-xs",
+              "letterSpacing": "tracking-[0.35em]",
+              "mb": "mb-8",
+              "fontWeight": "font-bold"
+            },
+            "custom": {
+              "displayName": "Eyebrow"
+            }
+          }
+        },
+        {
+          "type": "Text",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "text": "READY TO<br/>LAUNCH",
+            "tagName": "h2",
+            "root": {
+              "color": "text-(--foreground)",
+              "fontFamily": "var(--heading-font-family)"
+            },
+            "mobile": {
+              "fontSize": "text-4xl",
+              "fontWeight": "font-black",
+              "letterSpacing": "tracking-tighter",
+              "lineHeight": "leading-none",
+              "mb": "mb-12"
+            },
+            "desktop": {
+              "fontSize": "text-7xl"
+            },
+            "custom": {
+              "displayName": "Headline"
+            }
+          }
+        },
+        {
+          "type": "Button",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "text": "HELLO@COMPANY.COM",
+            "url": "mailto:hello@company.com",
+            "root": {
+              "background": "bg-transparent",
+              "color": "text-(--foreground)",
+              "border": "border",
+              "borderColor": "border-(--border)",
+              "radius": "rounded-full"
+            },
+            "mobile": {
+              "py": "py-4",
+              "px": "px-10",
+              "fontSize": "text-xs",
+              "fontWeight": "font-normal",
+              "letterSpacing": "tracking-[0.25em]"
+            },
+            "hover": {
+              "background": "bg-(--primary)",
+              "color": "text-(--primary-foreground)"
+            },
+            "custom": {
+              "displayName": "Email CTA"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
