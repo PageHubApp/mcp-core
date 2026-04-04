@@ -88,7 +88,7 @@
             "canDelete": true,
             "canEditName": true,
             "root": { "background": "bg-(--primary)", "color": "text-(--primary-foreground)", "radius": "rounded-(--card-radius)", "shadow": "shadow-lg" },
-            "mobile": { "display": "flex", "flexDirection": "flex-col", "justifyContent": "justify-between", "padding": "p-10", "minHeight": "min-h-[500px]", "position": "relative", "overflow": "overflow-hidden" },
+            "mobile": { "display": "flex", "flexDirection": "flex-col", "justifyContent": "justify-between", "padding": "p-12", "minHeight": "min-h-[500px]", "position": "relative", "overflow": "overflow-hidden" },
             "desktop": { "gridColStart": "col-start-1", "gridColEnd": "col-end-9" },
             "custom": { "displayName": "Feature Block 1" }
           },
@@ -105,7 +105,7 @@
             {
               "type": "Container",
               "props": {
-                "mobile": { "position": "relative", "zIndex": "z-10", "display": "flex", "flexDirection": "flex-col", "gap": "gap-4", "height": "h-full", "justifyContent": "justify-end" },
+                "mobile": { "position": "relative", "zIndex": "z-10", "display": "flex", "flexDirection": "flex-col", "gap": "gap-6", "height": "h-full", "justifyContent": "justify-end" },
                 "custom": { "displayName": "Content Layer" }
               },
               "children": [
@@ -115,7 +115,7 @@
                     "text": "The Complete System",
                     "tagName": "h3",
                     "root": { "fontWeight": "font-black", "fontFamily": "var(--heading-font-family)" },
-                    "mobile": { "fontSize": "text-3xl" },
+                    "mobile": { "fontSize": "text-4xl" },
                     "desktop": { "fontSize": "text-5xl" },
                     "custom": { "displayName": "Title" }
                   }
@@ -123,10 +123,10 @@
                 {
                   "type": "Text",
                   "props": {
-                    "text": "A high-performance commerce engine built for precision. Scale without the overhead.",
+                    "text": "A high-performance commerce engine built for precision. Scale without the overhead of complex integrations.",
                     "tagName": "p",
                     "root": { "bgOpacity": "opacity-90", "lineHeight": "leading-relaxed" },
-                    "mobile": { "fontSize": "text-lg", "maxWidth": "max-w-xl" },
+                    "mobile": { "fontSize": "text-xl", "maxWidth": "max-w-xl" },
                     "custom": { "displayName": "Description" }
                   }
                 },
@@ -136,7 +136,7 @@
                     "text": "Get Started Now",
                     "url": "#",
                     "root": { "background": "bg-(--primary-foreground)", "color": "text-(--primary)", "radius": "rounded-(--radius)" },
-                    "mobile": { "display": "flex", "alignItems": "items-center", "justifyContent": "justify-center", "py": "py-4", "px": "px-10", "fontSize": "text-base", "fontWeight": "font-bold", "mt": "mt-4", "width": "w-max" },
+                    "mobile": { "display": "flex", "alignItems": "items-center", "justifyContent": "justify-center", "py": "py-5", "px": "px-12", "fontSize": "text-base", "fontWeight": "font-bold", "mt": "mt-4", "width": "w-max" },
                     "custom": { "displayName": "CTA" }
                   }
                 }
@@ -159,8 +159,8 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": { "background": "bg-(--card)", "border": "border", "borderColor": "border-(--border)", "radius": "rounded-(--card-radius)" },
-                "mobile": { "display": "flex", "flexDirection": "flex-col", "justifyContent": "justify-between", "padding": "p-8", "flex": "flex-1", "minHeight": "min-h-[300px]", "position": "relative", "overflow": "overflow-hidden" },
+                "root": { "background": "bg-(--secondary)", "color": "text-(--secondary-foreground)", "radius": "rounded-(--card-radius)" },
+                "mobile": { "display": "flex", "flexDirection": "flex-col", "justifyContent": "justify-between", "padding": "p-12", "flex": "flex-1", "minHeight": "min-h-[300px]", "position": "relative", "overflow": "overflow-hidden" },
                 "custom": { "displayName": "Feature Block 2" }
               },
               "children": [
@@ -176,7 +176,7 @@
                 {
                   "type": "Container",
                   "props": {
-                    "mobile": { "position": "relative", "zIndex": "z-10", "display": "flex", "flexDirection": "flex-col", "gap": "gap-2" },
+                    "mobile": { "position": "relative", "zIndex": "z-10", "display": "flex", "flexDirection": "flex-col", "gap": "gap-4", "height": "h-full", "justifyContent": "justify-end" },
                     "custom": { "displayName": "Content Layer" }
                   },
                   "children": [
@@ -185,7 +185,7 @@
                       "props": {
                         "text": "Global Logistics",
                         "tagName": "h3",
-                        "root": { "fontWeight": "font-bold", "fontFamily": "var(--heading-font-family)", "color": "text-(--foreground)" },
+                        "root": { "fontWeight": "font-bold", "fontFamily": "var(--heading-font-family)" },
                         "mobile": { "fontSize": "text-2xl" },
                         "custom": { "displayName": "Title" }
                       }
@@ -195,7 +195,7 @@
                       "props": {
                         "text": "Shipping to 180+ countries with automated customs handling.",
                         "tagName": "p",
-                        "root": { "color": "text-(--muted-foreground)", "lineHeight": "leading-relaxed" },
+                        "root": { "bgOpacity": "opacity-80", "lineHeight": "leading-relaxed" },
                         "mobile": { "fontSize": "text-base" },
                         "custom": { "displayName": "Description" }
                       }
@@ -210,7 +210,7 @@
                 "canDelete": true,
                 "canEditName": true,
                 "root": { "background": "bg-(--muted)", "radius": "rounded-(--card-radius)" },
-                "mobile": { "display": "flex", "flexDirection": "flex-col", "justifyContent": "justify-between", "padding": "p-8", "flex": "flex-1", "minHeight": "min-h-[300px]", "position": "relative", "overflow": "overflow-hidden" },
+                "mobile": { "display": "flex", "flexDirection": "flex-col", "justifyContent": "justify-between", "padding": "p-12", "flex": "flex-1", "minHeight": "min-h-[300px]", "position": "relative", "overflow": "overflow-hidden" },
                 "custom": { "displayName": "Feature Block 3" }
               },
               "children": [
@@ -226,7 +226,7 @@
                 {
                   "type": "Container",
                   "props": {
-                    "mobile": { "position": "relative", "zIndex": "z-10", "display": "flex", "flexDirection": "flex-col", "gap": "gap-2" },
+                    "mobile": { "position": "relative", "zIndex": "z-10", "display": "flex", "flexDirection": "flex-col", "gap": "gap-4", "height": "h-full", "justifyContent": "justify-end" },
                     "custom": { "displayName": "Content Layer" }
                   },
                   "children": [
