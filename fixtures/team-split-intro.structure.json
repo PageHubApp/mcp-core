@@ -1,0 +1,274 @@
+{
+  "type": "Container",
+  "props": {
+    "type": "section",
+    "canDelete": true,
+    "canEditName": true,
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "width": "w-full",
+      "py": "py-16",
+      "px": "px-4"
+    },
+    "desktop": {
+      "py": "py-28",
+      "px": "px-6"
+    },
+    "custom": {
+      "displayName": "Team Split Intro"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "maxWidth": "max-w-7xl",
+          "mx": "mx-auto",
+          "width": "w-full",
+          "gap": "gap-16"
+        },
+        "desktop": {
+          "flexDirection": "flex-row",
+          "alignItems": "items-center",
+          "gap": "gap-12"
+        },
+        "custom": { "displayName": "Split Layout Wrapper" }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "width": "w-full",
+              "gap": "gap-6"
+            },
+            "desktop": {
+              "width": "w-5/12"
+            },
+            "custom": { "displayName": "Intro Content" }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "text": "JOIN OUR MISSION",
+                "tagName": "p",
+                "root": {
+                  "color": "text-(--primary)",
+                  "fontWeight": "font-bold"
+                },
+                "mobile": {
+                  "fontSize": "text-xs",
+                  "letterSpacing": "tracking-widest"
+                },
+                "custom": { "displayName": "Eyebrow" }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Backed by industry veterans",
+                "tagName": "h2",
+                "root": {
+                  "fontWeight": "font-bold",
+                  "fontFamily": "var(--heading-font-family)",
+                  "lineHeight": "leading-tight"
+                },
+                "mobile": { "fontSize": "text-3xl" },
+                "desktop": { "fontSize": "text-4xl" },
+                "custom": { "displayName": "Heading" }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Our leadership team brings together decades of experience scaling B2B platforms and managing complex design systems. We're actively looking for passionate people to join us.",
+                "tagName": "p",
+                "root": {
+                  "color": "text-(--muted-foreground)",
+                  "lineHeight": "leading-relaxed"
+                },
+                "mobile": { "fontSize": "text-lg" },
+                "custom": { "displayName": "Description" }
+              }
+            },
+            {
+              "type": "Button",
+              "props": {
+                "text": "View open roles",
+                "url": "#",
+                "root": {
+                  "background": "bg-(--primary)",
+                  "color": "text-(--primary-foreground)",
+                  "radius": "rounded-(--radius)"
+                },
+                "mobile": {
+                  "py": "py-3",
+                  "px": "px-8",
+                  "fontWeight": "font-medium",
+                  "width": "w-max",
+                  "mt": "mt-2"
+                },
+                "custom": { "displayName": "CTA Button" }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "mobile": {
+              "display": "grid",
+              "gridCols": "grid-cols-2",
+              "gap": "gap-x-4 gap-y-10",
+              "width": "w-full"
+            },
+            "desktop": {
+              "width": "w-7/12",
+              "gap": "gap-x-8 gap-y-12"
+            },
+            "custom": { "displayName": "Team Grid" }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "mobile": { "display": "flex", "flexDirection": "flex-col", "gap": "gap-4" }
+              },
+              "children": [
+                {
+                  "type": "Image",
+                  "props": {
+                    "content": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&h=400",
+                    "alt": "Member",
+                    "root": { "radius": "rounded-(--radius)" },
+                    "mobile": { "width": "w-full", "height": "h-auto", "objectFit": "object-cover", "aspectRatio": "aspect-square" }
+                  }
+                },
+                {
+                  "type": "Container",
+                  "props": { "mobile": { "display": "flex", "flexDirection": "flex-col", "gap": "gap-1" } },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "props": { "text": "Tom Walker", "tagName": "h3", "root": { "fontWeight": "font-bold", "color": "text-(--foreground)", "fontFamily": "var(--heading-font-family)" }, "mobile": { "fontSize": "text-xl" } }
+                    },
+                    {
+                      "type": "Text",
+                      "props": { "text": "Founder & CEO", "tagName": "span", "root": { "color": "text-(--primary)", "fontWeight": "font-medium" }, "mobile": { "fontSize": "text-sm" } }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "mobile": { "display": "flex", "flexDirection": "flex-col", "gap": "gap-4" },
+                "desktop": { "mt": "mt-8" }
+              },
+              "children": [
+                {
+                  "type": "Image",
+                  "props": {
+                    "content": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&h=400",
+                    "alt": "Member",
+                    "root": { "radius": "rounded-(--radius)" },
+                    "mobile": { "width": "w-full", "height": "h-auto", "objectFit": "object-cover", "aspectRatio": "aspect-square" }
+                  }
+                },
+                {
+                  "type": "Container",
+                  "props": { "mobile": { "display": "flex", "flexDirection": "flex-col", "gap": "gap-1" } },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "props": { "text": "Rachel Adams", "tagName": "h3", "root": { "fontWeight": "font-bold", "color": "text-(--foreground)", "fontFamily": "var(--heading-font-family)" }, "mobile": { "fontSize": "text-xl" } }
+                    },
+                    {
+                      "type": "Text",
+                      "props": { "text": "CTO", "tagName": "span", "root": { "color": "text-(--primary)", "fontWeight": "font-medium" }, "mobile": { "fontSize": "text-sm" } }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "mobile": { "display": "flex", "flexDirection": "flex-col", "gap": "gap-4" }
+              },
+              "children": [
+                {
+                  "type": "Image",
+                  "props": {
+                    "content": "https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&w=400&h=400",
+                    "alt": "Member",
+                    "root": { "radius": "rounded-(--radius)" },
+                    "mobile": { "width": "w-full", "height": "h-auto", "objectFit": "object-cover", "aspectRatio": "aspect-square" }
+                  }
+                },
+                {
+                  "type": "Container",
+                  "props": { "mobile": { "display": "flex", "flexDirection": "flex-col", "gap": "gap-1" } },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "props": { "text": "Nathan Doe", "tagName": "h3", "root": { "fontWeight": "font-bold", "color": "text-(--foreground)", "fontFamily": "var(--heading-font-family)" }, "mobile": { "fontSize": "text-xl" } }
+                    },
+                    {
+                      "type": "Text",
+                      "props": { "text": "Lead Marketing", "tagName": "span", "root": { "color": "text-(--primary)", "fontWeight": "font-medium" }, "mobile": { "fontSize": "text-sm" } }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "mobile": { "display": "flex", "flexDirection": "flex-col", "gap": "gap-4" },
+                "desktop": { "mt": "mt-8" }
+              },
+              "children": [
+                {
+                  "type": "Image",
+                  "props": {
+                    "content": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=400&h=400",
+                    "alt": "Member",
+                    "root": { "radius": "rounded-(--radius)" },
+                    "mobile": { "width": "w-full", "height": "h-auto", "objectFit": "object-cover", "aspectRatio": "aspect-square" }
+                  }
+                },
+                {
+                  "type": "Container",
+                  "props": { "mobile": { "display": "flex", "flexDirection": "flex-col", "gap": "gap-1" } },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "props": { "text": "Amanda Lee", "tagName": "h3", "root": { "fontWeight": "font-bold", "color": "text-(--foreground)", "fontFamily": "var(--heading-font-family)" }, "mobile": { "fontSize": "text-xl" } }
+                    },
+                    {
+                      "type": "Text",
+                      "props": { "text": "Head of Design", "tagName": "span", "root": { "color": "text-(--primary)", "fontWeight": "font-medium" }, "mobile": { "fontSize": "text-sm" } }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

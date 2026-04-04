@@ -1,0 +1,209 @@
+{
+  "type": "Container",
+  "props": {
+    "type": "section",
+    "canDelete": true,
+    "canEditName": true,
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "width": "w-full",
+      "py": "py-16",
+      "px": "px-6",
+      "gap": "gap-12"
+    },
+    "desktop": {
+      "py": "py-24",
+      "px": "px-8",
+      "gap": "gap-16"
+    },
+    "custom": {
+      "displayName": "FAQ card grid"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
+          "mx": "mx-auto",
+          "alignItems": "items-center",
+          "textAlign": "text-center",
+          "gap": "gap-4"
+        },
+        "desktop": {},
+        "custom": { "displayName": "Header" }
+      },
+      "children": [
+        {
+          "type": "Text",
+          "props": {
+            "text": "Common Questions",
+            "tagName": "p",
+            "root": {
+              "color": "text-(--primary)",
+              "fontSize": "text-sm",
+              "fontWeight": "font-bold",
+              "letterSpacing": "tracking-widest"
+            },
+            "custom": { "displayName": "Eyebrow" }
+          }
+        },
+        {
+          "type": "Text",
+          "props": {
+            "text": "Help at every step.",
+            "tagName": "h2",
+            "root": {
+              "fontWeight": "font-bold",
+              "fontFamily": "var(--heading-font-family)",
+              "lineHeight": "leading-tight"
+            },
+            "mobile": { "fontSize": "text-3xl" },
+            "desktop": { "fontSize": "text-5xl" },
+            "custom": { "displayName": "Heading" }
+          }
+        }
+      ]
+    },
+    {
+      "type": "Container",
+      "props": {
+        "mobile": {
+          "display": "grid",
+          "gridCols": "grid-cols-1",
+          "gap": "gap-6",
+          "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
+          "mx": "mx-auto"
+        },
+        "desktop": {
+          "gridCols": "grid-cols-3"
+        },
+        "custom": { "displayName": "Grid" }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "root": {
+              "background": "bg-(--card)",
+              "radius": "rounded-(--card-radius)",
+              "shadow": "shadow-sm"
+            },
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "p": "p-8",
+              "gap": "gap-4"
+            },
+            "custom": { "displayName": "FAQ Card" }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "text": "Is there a free trial?",
+                "tagName": "h3",
+                "root": { "fontWeight": "font-bold", "fontSize": "text-lg" },
+                "custom": { "displayName": "Question" }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Yes, every PageHub account starts with a 14-day Pro trial. No credit card required to explore our core features.",
+                "tagName": "p",
+                "root": { "color": "text-(--muted-foreground)", "fontSize": "text-sm", "lineHeight": "leading-relaxed" },
+                "custom": { "displayName": "Answer" }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "root": {
+              "background": "bg-(--card)",
+              "radius": "rounded-(--card-radius)",
+              "shadow": "shadow-sm"
+            },
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "p": "p-8",
+              "gap": "gap-4"
+            },
+            "custom": { "displayName": "FAQ Card" }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "text": "Can I cancel anytime?",
+                "tagName": "h3",
+                "root": { "fontWeight": "font-bold", "fontSize": "text-lg" },
+                "custom": { "displayName": "Question" }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Absolutely. PageHub subscriptions are monthly or annual. If you cancel, you'll retain access until the end of your billing cycle.",
+                "tagName": "p",
+                "root": { "color": "text-(--muted-foreground)", "fontSize": "text-sm", "lineHeight": "leading-relaxed" },
+                "custom": { "displayName": "Answer" }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "root": {
+              "background": "bg-(--card)",
+              "radius": "rounded-(--card-radius)",
+              "shadow": "shadow-sm"
+            },
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "p": "p-8",
+              "gap": "gap-4"
+            },
+            "custom": { "displayName": "FAQ Card" }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "text": "How do domains work?",
+                "tagName": "h3",
+                "root": { "fontWeight": "font-bold", "fontSize": "text-lg" },
+                "custom": { "displayName": "Question" }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Connect your own domain with a single CNAME record. SSL certificates are auto-provisioned and managed by us for free.",
+                "tagName": "p",
+                "root": { "color": "text-(--muted-foreground)", "fontSize": "text-sm", "lineHeight": "leading-relaxed" },
+                "custom": { "displayName": "Answer" }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

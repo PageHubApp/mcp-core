@@ -1,0 +1,338 @@
+{
+  "type": "Container",
+  "props": {
+    "type": "section",
+    "canDelete": true,
+    "canEditName": true,
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "justifyContent": "justify-center",
+      "alignItems": "items-center",
+      "width": "w-full",
+      "py": "py-24"
+    },
+    "custom": {
+      "displayName": "Hero Section"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "alignItems": "items-center",
+          "maxWidth": "max-w-4xl",
+          "mx": "mx-auto",
+          "px": "px-6",
+          "gap": "gap-8"
+        },
+        "custom": {
+          "displayName": "Content Wrapper"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "root": {
+              "background": "bg-(--muted)",
+              "color": "text-(--muted-foreground)",
+              "radius": "rounded-(--radius-full)"
+            },
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-row",
+              "alignItems": "items-center",
+              "py": "py-1",
+              "pr": "pr-4",
+              "pl": "pl-1",
+              "gap": "gap-3"
+            },
+            "custom": {
+              "displayName": "Announcement Badge"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "root": {
+                  "background": "bg-(--primary)",
+                  "color": "text-(--primary-foreground)",
+                  "radius": "rounded-(--radius-full)"
+                },
+                "mobile": {
+                  "py": "py-1",
+                  "px": "px-3"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "New",
+                    "tagName": "span",
+                    "mobile": {
+                      "fontSize": "text-xs",
+                      "fontWeight": "font-bold"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "PageHub v2 is live! Read the announcement",
+                "tagName": "span",
+                "mobile": {
+                  "fontSize": "text-sm",
+                  "fontWeight": "font-medium"
+                }
+              }
+            },
+            {
+              "type": "Button",
+              "props": {
+                "text": "",
+                "url": "#",
+                "icon": {
+                  "value": "ref-google:chevron_right",
+                  "position": "left",
+                  "size": "w-4 h-4"
+                },
+                "root": {
+                  "background": "bg-transparent",
+                  "color": "text-(--muted-foreground)"
+                },
+                "mobile": {
+                  "px": "px-0",
+                  "py": "py-0"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Text",
+          "props": {
+            "text": "Ship aesthetic sites at the speed of thought",
+            "tagName": "h1",
+            "mobile": {
+              "fontSize": "text-5xl",
+              "fontWeight": "font-bold",
+              "textAlign": "text-center",
+              "lineHeight": "leading-tight"
+            },
+            "desktop": {
+              "fontSize": "text-6xl"
+            },
+            "custom": {
+              "displayName": "Headline"
+            }
+          }
+        },
+        {
+          "type": "Text",
+          "props": {
+            "text": "PageHub connects modern design tokens with AI-driven site generation. Stop wrestling with layout and focus on building your brand.",
+            "tagName": "p",
+            "root": {
+              "color": "text-(--muted-foreground)"
+            },
+            "mobile": {
+              "fontSize": "text-lg",
+              "textAlign": "text-center",
+              "lineHeight": "leading-relaxed"
+            },
+            "desktop": {
+              "fontSize": "text-xl",
+              "maxWidth": "max-w-3xl",
+              "mx": "mx-auto"
+            },
+            "custom": {
+              "displayName": "Subheadline"
+            }
+          }
+        },
+        {
+          "type": "Container",
+          "props": {
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "gap": "gap-4",
+              "width": "w-full",
+              "justifyContent": "justify-center",
+              "alignItems": "items-center"
+            },
+            "desktop": {
+              "flexDirection": "flex-row"
+            },
+            "custom": {
+              "displayName": "Actions"
+            }
+          },
+          "children": [
+            {
+              "type": "Button",
+              "props": {
+                "text": "Get started free",
+                "url": "#",
+                "icon": {
+                  "value": "ref-google:arrow_forward",
+                  "position": "right",
+                  "size": "w-5 h-5",
+                  "gap": "gap-2"
+                },
+                "root": {
+                  "background": "bg-(--primary)",
+                  "color": "text-(--primary-foreground)",
+                  "radius": "rounded-(--radius)"
+                },
+                "mobile": {
+                  "py": "py-3",
+                  "px": "px-6",
+                  "width": "w-full"
+                },
+                "desktop": {
+                  "width": "w-auto"
+                },
+                "custom": { "displayName": "Primary Button" }
+              }
+            },
+            {
+              "type": "Button",
+              "props": {
+                "text": "Watch demo",
+                "url": "#",
+                "icon": {
+                  "value": "ref-google:play_arrow",
+                  "position": "left",
+                  "size": "w-5 h-5",
+                  "gap": "gap-2"
+                },
+                "root": {
+                  "background": "bg-transparent",
+                  "color": "text-(--foreground)",
+                  "border": "border",
+                  "borderColor": "border-(--muted)",
+                  "radius": "rounded-(--radius)"
+                },
+                "mobile": {
+                  "py": "py-3",
+                  "px": "px-6",
+                  "width": "w-full"
+                },
+                "desktop": {
+                  "width": "w-auto"
+                },
+                "custom": { "displayName": "Secondary Button" }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "alignItems": "items-center",
+              "gap": "gap-6",
+              "mt": "mt-12",
+              "width": "w-full"
+            },
+            "custom": {
+              "displayName": "Trusted by"
+            }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "text": "PROUDLY POWERING",
+                "tagName": "span",
+                "root": {
+                  "color": "text-(--muted-foreground)"
+                },
+                "mobile": {
+                  "fontSize": "text-sm",
+                  "fontWeight": "font-bold",
+                  "letterSpacing": "tracking-widest"
+                }
+              }
+            },
+            {
+              "type": "Container",
+              "props": {
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-row",
+                  "flexWrap": "flex-wrap",
+                  "justifyContent": "justify-center",
+                  "alignItems": "items-center",
+                  "gap": "gap-8"
+                },
+                "desktop": {
+                  "gap": "gap-12"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Acme Corp",
+                    "tagName": "span",
+                    "root": {
+                      "color": "text-(--muted-foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-2xl",
+                      "fontWeight": "font-bold"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Stark Industries",
+                    "tagName": "span",
+                    "root": {
+                      "color": "text-(--muted-foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-2xl",
+                      "fontWeight": "font-bold"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Wayne Ent.",
+                    "tagName": "span",
+                    "root": {
+                      "color": "text-(--muted-foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-2xl",
+                      "fontWeight": "font-bold"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1269,9 +1269,13 @@
           "type": "string",
           "description": "Filter by a specific tag (e.g. \"testimonial\", \"pricing\", \"avatar\")."
         },
+        "preset": {
+          "type": "string",
+          "description": "Filter by starter / bundle id (e.g. \"acme\", \"pagehub-library\")."
+        },
         "source": {
           "type": "string",
-          "description": "Filter by source template/site slug (e.g. \"acme\")."
+          "description": "Filter by legacy `source` field only. Prefer `preset` for new data."
         },
         "group": {
           "type": "string",
@@ -1397,9 +1401,13 @@
           },
           "description": "Search tags (e.g. [\"testimonial\", \"review\", \"stars\", \"avatar\"])."
         },
+        "preset": {
+          "type": "string",
+          "description": "Starter / bundle id this block belongs to (e.g. \"acme\", \"pagehub-library\"). Use for attribution when extracting from a template or preset."
+        },
         "source": {
           "type": "string",
-          "description": "Template/site slug this component was extracted from (e.g. \"acme\")."
+          "description": "Legacy field; prefer `preset`. Still accepted for older tooling."
         },
         "group": {
           "type": "string",
@@ -1467,9 +1475,13 @@
           },
           "description": "Replace tags array."
         },
+        "preset": {
+          "type": "string",
+          "description": "Update starter / bundle id (e.g. \"acme\", \"pagehub-library\")."
+        },
         "source": {
           "type": "string",
-          "description": "Update source template/site slug."
+          "description": "Update legacy `source` field; prefer `preset` for new values."
         },
         "group": {
           "type": "string",

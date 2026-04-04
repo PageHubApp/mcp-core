@@ -1,0 +1,517 @@
+{
+  "type": "Container",
+  "props": {
+    "type": "section",
+    "canDelete": true,
+    "canEditName": true,
+    "root": {
+      "background": "bg-(--muted)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "width": "w-full",
+      "py": "py-16",
+      "px": "px-6"
+    },
+    "desktop": {
+      "py": "py-24",
+      "px": "px-8"
+    },
+    "custom": {
+      "displayName": "Features bento highlight grid"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "gap": "gap-10",
+          "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
+          "mx": "mx-auto"
+        },
+        "custom": {
+          "displayName": "Section inner"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "gap": "gap-3",
+              "width": "w-full",
+              "maxWidth": "max-w-2xl"
+            },
+            "custom": {
+              "displayName": "Intro"
+            }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "text": "Layout system",
+                "tagName": "p",
+                "root": {
+                  "color": "text-(--primary)",
+                  "fontWeight": "font-bold",
+                  "letterSpacing": "tracking-widest"
+                },
+                "mobile": {
+                  "fontSize": "text-xs"
+                },
+                "className": ["uppercase"],
+                "custom": {
+                  "displayName": "Eyebrow"
+                }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Everything in one responsive surface",
+                "tagName": "h2",
+                "root": {
+                  "fontWeight": "font-bold",
+                  "fontFamily": "var(--heading-font-family)",
+                  "lineHeight": "leading-tight",
+                  "color": "text-(--foreground)"
+                },
+                "mobile": {
+                  "fontSize": "text-3xl"
+                },
+                "desktop": {
+                  "fontSize": "text-4xl"
+                },
+                "custom": {
+                  "displayName": "Heading"
+                }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Mix hero bands, library blocks, and bespoke sections without breaking the grid PageHub enforces across breakpoints.",
+                "tagName": "p",
+                "root": {
+                  "color": "text-(--muted-foreground)"
+                },
+                "mobile": {
+                  "fontSize": "text-base",
+                  "lineHeight": "leading-relaxed"
+                },
+                "custom": {
+                  "displayName": "Subhead"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "grid",
+              "gridCols": "grid-cols-1",
+              "gap": "gap-4",
+              "width": "w-full"
+            },
+            "className": ["lg:grid-cols-3", "lg:gap-4"],
+            "custom": {
+              "displayName": "Bento grid"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "color": "text-(--card-foreground)",
+                  "radius": "rounded-(--card-radius)",
+                  "border": "border",
+                  "borderColor": "border-(--muted)",
+                  "shadow": "shadow-sm"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-5",
+                  "p": "p-8",
+                  "width": "w-full"
+                },
+                "className": ["lg:col-span-2", "lg:row-span-2"],
+                "custom": {
+                  "displayName": "Hero cell"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Block library + canvas, paired",
+                    "tagName": "h3",
+                    "root": {
+                      "fontFamily": "var(--heading-font-family)",
+                      "fontWeight": "font-bold",
+                      "color": "text-(--card-foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-2xl",
+                      "lineHeight": "leading-snug"
+                    },
+                    "custom": {
+                      "displayName": "Title"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Drop a section from the public library, detach nodes when you need a one-off, and keep tokens aligned so the next import still matches your theme.",
+                    "tagName": "p",
+                    "root": {
+                      "color": "text-(--muted-foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm",
+                      "lineHeight": "leading-relaxed"
+                    },
+                    "custom": {
+                      "displayName": "Body"
+                    }
+                  }
+                },
+                {
+                  "type": "Image",
+                  "props": {
+                    "content": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&h=520&fit=crop&q=80",
+                    "alt": "Analytics dashboard charts on a screen",
+                    "type": "url",
+                    "root": {
+                      "radius": "rounded-(--radius)"
+                    },
+                    "mobile": {
+                      "width": "w-full",
+                      "height": "h-48",
+                      "objectFit": "object-cover"
+                    },
+                    "className": ["lg:h-56"],
+                    "custom": {
+                      "displayName": "Inset visual"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "color": "text-(--card-foreground)",
+                  "radius": "rounded-(--card-radius)",
+                  "border": "border",
+                  "borderColor": "border-(--muted)",
+                  "shadow": "shadow-sm"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-3",
+                  "p": "p-6",
+                  "width": "w-full"
+                },
+                "className": ["lg:col-span-1", "lg:row-span-1"],
+                "custom": {
+                  "displayName": "Cell tokens"
+                }
+              },
+              "children": [
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": " ",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent"
+                    },
+                    "mobile": {
+                      "px": "px-0",
+                      "py": "py-0"
+                    },
+                    "icon": {
+                      "value": "ref-google:palette",
+                      "only": true,
+                      "size": "w-7 h-7",
+                      "color": "text-(--primary)"
+                    },
+                    "custom": {
+                      "displayName": "Icon tokens"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Design tokens first",
+                    "tagName": "h4",
+                    "root": {
+                      "fontWeight": "font-semibold",
+                      "fontFamily": "var(--heading-font-family)",
+                      "color": "text-(--card-foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-lg"
+                    },
+                    "custom": {
+                      "displayName": "Title"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Palette slots drive every block; no one-off hex in library sections.",
+                    "tagName": "p",
+                    "root": {
+                      "color": "text-(--muted-foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm",
+                      "lineHeight": "leading-relaxed"
+                    },
+                    "custom": {
+                      "displayName": "Body"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "color": "text-(--card-foreground)",
+                  "radius": "rounded-(--card-radius)",
+                  "border": "border",
+                  "borderColor": "border-(--muted)",
+                  "shadow": "shadow-sm"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-3",
+                  "p": "p-6",
+                  "width": "w-full"
+                },
+                "className": ["lg:col-span-1", "lg:row-span-1"],
+                "custom": {
+                  "displayName": "Cell responsive"
+                }
+              },
+              "children": [
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": " ",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent"
+                    },
+                    "mobile": {
+                      "px": "px-0",
+                      "py": "py-0"
+                    },
+                    "icon": {
+                      "value": "ref-google:view_quilt",
+                      "only": true,
+                      "size": "w-7 h-7",
+                      "color": "text-(--primary)"
+                    },
+                    "custom": {
+                      "displayName": "Icon responsive"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Md vs lg on purpose",
+                    "tagName": "h4",
+                    "root": {
+                      "fontWeight": "font-semibold",
+                      "fontFamily": "var(--heading-font-family)",
+                      "color": "text-(--card-foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-lg"
+                    },
+                    "custom": {
+                      "displayName": "Title"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Library blocks respect mobile-first props and lg: escapes where tablets need one column.",
+                    "tagName": "p",
+                    "root": {
+                      "color": "text-(--muted-foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm",
+                      "lineHeight": "leading-relaxed"
+                    },
+                    "custom": {
+                      "displayName": "Body"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--card)",
+                  "color": "text-(--card-foreground)",
+                  "radius": "rounded-(--card-radius)",
+                  "border": "border",
+                  "borderColor": "border-(--muted)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-row",
+                  "flexWrap": "flex-wrap",
+                  "gap": "gap-6",
+                  "alignItems": "items-center",
+                  "justifyContent": "justify-between",
+                  "p": "p-6",
+                  "width": "w-full"
+                },
+                "className": ["lg:col-span-3", "lg:flex-row"],
+                "custom": {
+                  "displayName": "Foot strip"
+                }
+              },
+              "children": [
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "root": {},
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "row",
+                      "gap": "gap-3",
+                      "alignItems": "items-center",
+                      "width": "w-full"
+                    },
+                    "className": ["lg:w-auto"],
+                    "custom": {
+                      "displayName": "Mini stat"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Button",
+                      "props": {
+                        "text": " ",
+                        "url": "#",
+                        "root": {
+                          "background": "bg-transparent"
+                        },
+                        "mobile": {
+                          "px": "px-0",
+                          "py": "py-0"
+                        },
+                        "icon": {
+                          "value": "ref-google:check_circle",
+                          "only": true,
+                          "size": "w-5 h-5",
+                          "color": "text-(--primary)"
+                        },
+                        "custom": {
+                          "displayName": "Check"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Text",
+                      "props": {
+                        "text": "WCAG-minded defaults on shipped blocks",
+                        "tagName": "p",
+                        "root": {
+                          "color": "text-(--card-foreground)"
+                        },
+                        "mobile": {
+                          "fontSize": "text-sm",
+                          "fontWeight": "font-medium"
+                        },
+                        "custom": {
+                          "displayName": "Label"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "View library guidelines",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-(--primary)",
+                      "color": "text-(--primary-foreground)",
+                      "radius": "rounded-(--radius)"
+                    },
+                    "mobile": {
+                      "py": "py-3",
+                      "px": "px-5",
+                      "fontSize": "text-sm",
+                      "fontWeight": "font-semibold",
+                      "width": "w-full"
+                    },
+                    "desktop": {
+                      "width": "w-auto"
+                    },
+                    "custom": {
+                      "displayName": "CTA"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,225 @@
+{
+  "type": "Container",
+  "props": {
+    "type": "section",
+    "canDelete": true,
+    "canEditName": true,
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "width": "w-full",
+      "py": "py-16",
+      "px": "px-4"
+    },
+    "desktop": {
+      "py": "py-24",
+      "px": "px-6"
+    },
+    "custom": {
+      "displayName": "CTA Image Split"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "className": ["overflow-hidden"],
+        "root": {
+          "background": "bg-(--card)",
+          "color": "text-(--card-foreground)",
+          "radius": "rounded-(--card-radius)",
+          "border": "border",
+          "borderColor": "border-(--border)",
+          "shadow": "shadow-xl"
+        },
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col-reverse",
+          "width": "w-full",
+          "maxWidth": "max-w-7xl",
+          "mx": "mx-auto"
+        },
+        "desktop": {
+          "flexDirection": "flex-row"
+        },
+        "custom": {
+          "displayName": "CTA Card"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "justifyContent": "justify-center",
+              "gap": "gap-6",
+              "width": "w-full",
+              "p": "p-10"
+            },
+            "desktop": {
+              "width": "w-1/2",
+              "p": "p-16"
+            },
+            "custom": {
+              "displayName": "Text Content"
+            }
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "text": "BOOST YOUR AGENCY",
+                "tagName": "p",
+                "root": {
+                  "color": "text-(--primary)",
+                  "fontWeight": "font-bold"
+                },
+                "mobile": {
+                  "fontSize": "text-xs",
+                  "letterSpacing": "tracking-widest"
+                },
+                "custom": { "displayName": "Eyebrow" }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Ready to launch your next big idea?",
+                "tagName": "h2",
+                "root": {
+                  "fontWeight": "font-bold",
+                  "fontFamily": "var(--heading-font-family)",
+                  "lineHeight": "leading-tight"
+                },
+                "mobile": {
+                  "fontSize": "text-3xl"
+                },
+                "desktop": {
+                  "fontSize": "text-4xl"
+                },
+                "custom": { "displayName": "Heading" }
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "text": "Take your firm's pipeline to the next level with our comprehensive component library. Stop losing hours to repetitive layout tweaks and focus exclusively on client strategy and conversions.",
+                "tagName": "p",
+                "root": {
+                  "color": "text-(--muted-foreground)",
+                  "lineHeight": "leading-relaxed"
+                },
+                "mobile": {
+                  "fontSize": "text-base"
+                },
+                "desktop": {
+                  "fontSize": "text-lg"
+                },
+                "custom": { "displayName": "Description" }
+              }
+            },
+            {
+              "type": "ButtonList",
+              "props": {
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "gap": "gap-4",
+                  "mt": "mt-4"
+                },
+                "desktop": {
+                  "flexDirection": "flex-row"
+                },
+                "custom": { "displayName": "Actions" }
+              },
+              "children": [
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "Start 14-day free trial",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-(--primary)",
+                      "color": "text-(--primary-foreground)",
+                      "radius": "rounded-(--radius)"
+                    },
+                    "mobile": {
+                      "py": "py-3",
+                      "px": "px-6",
+                      "fontWeight": "font-medium",
+                      "textAlign": "text-center",
+                      "width": "w-full"
+                    },
+                    "desktop": { "width": "w-auto" },
+                    "custom": { "displayName": "Primary Button" }
+                  }
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "text": "View documentation",
+                    "url": "#",
+                    "root": {
+                      "background": "bg-transparent",
+                      "color": "text-(--foreground)",
+                      "border": "border",
+                      "borderColor": "border-(--border)",
+                      "radius": "rounded-(--radius)"
+                    },
+                    "mobile": {
+                      "py": "py-3",
+                      "px": "px-6",
+                      "fontWeight": "font-medium",
+                      "textAlign": "text-center",
+                      "width": "w-full"
+                    },
+                    "desktop": { "width": "w-auto" },
+                    "custom": { "displayName": "Secondary Button" }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "mobile": {
+              "width": "w-full"
+            },
+            "desktop": {
+              "width": "w-1/2"
+            },
+            "custom": { "displayName": "Image Wrapper" }
+          },
+          "children": [
+            {
+              "type": "Image",
+              "props": {
+                "content": "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&q=80&w=1200",
+                "alt": "Team working together on laptops",
+                "mobile": {
+                  "width": "w-full",
+                  "height": "h-64",
+                  "objectFit": "object-cover"
+                },
+                "desktop": {
+                  "height": "h-full"
+                },
+                "custom": { "displayName": "CTA Image" }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

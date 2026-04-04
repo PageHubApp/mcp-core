@@ -1,0 +1,431 @@
+{
+  "type": "Container",
+  "props": {
+    "type": "section",
+    "canDelete": true,
+    "canEditName": true,
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "width": "w-full",
+      "py": "py-16",
+      "px": "px-4",
+      "gap": "gap-16"
+    },
+    "desktop": {
+      "py": "py-24"
+    },
+    "custom": {
+      "displayName": "Hero Centered Video"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "alignItems": "items-center",
+          "maxWidth": "max-w-4xl",
+          "mx": "mx-auto",
+          "gap": "gap-8"
+        },
+        "custom": {
+          "displayName": "Content Wrapper"
+        }
+      },
+      "children": [
+        {
+          "type": "Text",
+          "props": {
+            "text": "The new standard for visual web creation",
+            "tagName": "h1",
+            "root": {
+              "fontWeight": "font-bold",
+              "fontFamily": "var(--heading-font-family)",
+              "lineHeight": "leading-tight",
+              "textAlign": "text-center"
+            },
+            "mobile": {
+              "fontSize": "text-5xl"
+            },
+            "desktop": {
+              "fontSize": "text-6xl"
+            },
+            "custom": {
+              "displayName": "Headline"
+            }
+          }
+        },
+        {
+          "type": "Text",
+          "props": {
+            "text": "Stop wrestling with complex layout structures. PageHub connects modern design tokens with AI-driven building blocks so you can assemble pixel-perfect sites in seconds.",
+            "tagName": "p",
+            "root": {
+              "color": "text-(--muted-foreground)",
+              "lineHeight": "leading-relaxed",
+              "textAlign": "text-center"
+            },
+            "mobile": {
+              "fontSize": "text-lg",
+              "maxWidth": "max-w-3xl"
+            },
+            "desktop": {
+              "fontSize": "text-xl"
+            },
+            "custom": {
+              "displayName": "Subheadline"
+            }
+          }
+        },
+        {
+          "type": "ButtonList",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "gap": "gap-4",
+              "justifyContent": "justify-center",
+              "alignItems": "items-center",
+              "width": "w-full"
+            },
+            "desktop": {
+              "flexDirection": "flex-row",
+              "width": "w-auto"
+            },
+            "custom": {
+              "displayName": "Actions"
+            }
+          },
+          "children": [
+            {
+              "type": "Button",
+              "props": {
+                "text": "Start building for free",
+                "url": "#",
+                "root": {
+                  "background": "bg-(--primary)",
+                  "color": "text-(--primary-foreground)",
+                  "radius": "rounded-(--radius)"
+                },
+                "mobile": {
+                  "py": "py-3",
+                  "px": "px-8",
+                  "width": "w-full",
+                  "fontSize": "text-sm",
+                  "fontWeight": "font-medium",
+                  "textAlign": "text-center"
+                },
+                "desktop": {
+                  "width": "w-auto"
+                },
+                "custom": {
+                  "displayName": "Primary CTA"
+                }
+              }
+            },
+            {
+              "type": "Button",
+              "props": {
+                "text": "View components",
+                "url": "#",
+                "icon": {
+                  "value": "ref-google:arrow_forward",
+                  "position": "right",
+                  "size": "w-4 h-4",
+                  "gap": "gap-2"
+                },
+                "root": {
+                  "background": "bg-transparent",
+                  "color": "text-(--foreground)",
+                  "border": "border",
+                  "borderColor": "border-(--muted)",
+                  "radius": "rounded-(--radius)"
+                },
+                "mobile": {
+                  "py": "py-3",
+                  "px": "px-8",
+                  "width": "w-full",
+                  "fontSize": "text-sm",
+                  "fontWeight": "font-medium",
+                  "textAlign": "text-center"
+                },
+                "desktop": {
+                  "width": "w-auto"
+                },
+                "custom": {
+                  "displayName": "Secondary CTA"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "alignItems": "items-center",
+              "gap": "gap-6",
+              "mt": "mt-4"
+            },
+            "desktop": {
+              "flexDirection": "flex-row",
+              "gap": "gap-8"
+            },
+            "custom": {
+              "displayName": "Social Proof Row"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "className": [
+                  "-space-x-3"
+                ],
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-row",
+                  "alignItems": "items-center"
+                },
+                "custom": {
+                  "displayName": "Avatars"
+                }
+              },
+              "children": [
+                {
+                  "type": "Image",
+                  "props": {
+                    "content": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&h=100",
+                    "className": [
+                      "ring-2",
+                      "ring-[var(--background)]"
+                    ],
+                    "root": {
+                      "radius": "rounded-(--radius-full)"
+                    },
+                    "mobile": {
+                      "width": "w-10",
+                      "height": "h-10",
+                      "objectFit": "object-cover"
+                    }
+                  }
+                },
+                {
+                  "type": "Image",
+                  "props": {
+                    "content": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=100&h=100",
+                    "className": [
+                      "ring-2",
+                      "ring-[var(--background)]"
+                    ],
+                    "root": {
+                      "radius": "rounded-(--radius-full)"
+                    },
+                    "mobile": {
+                      "width": "w-10",
+                      "height": "h-10",
+                      "objectFit": "object-cover"
+                    }
+                  }
+                },
+                {
+                  "type": "Image",
+                  "props": {
+                    "content": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&h=100",
+                    "className": [
+                      "ring-2",
+                      "ring-[var(--background)]"
+                    ],
+                    "root": {
+                      "radius": "rounded-(--radius-full)"
+                    },
+                    "mobile": {
+                      "width": "w-10",
+                      "height": "h-10",
+                      "objectFit": "object-cover"
+                    }
+                  }
+                },
+                {
+                  "type": "Image",
+                  "props": {
+                    "content": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&h=100",
+                    "className": [
+                      "ring-2",
+                      "ring-[var(--background)]"
+                    ],
+                    "root": {
+                      "radius": "rounded-(--radius-full)"
+                    },
+                    "mobile": {
+                      "width": "w-10",
+                      "height": "h-10",
+                      "objectFit": "object-cover"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "root": {
+                  "background": "bg-(--muted)"
+                },
+                "className": [
+                  "hidden",
+                  "md:block"
+                ],
+                "mobile": {
+                  "width": "w-px",
+                  "minHeight": "min-h-[2.5rem]"
+                }
+              }
+            },
+            {
+              "type": "Container",
+              "props": {
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "alignItems": "items-center"
+                },
+                "desktop": {
+                  "alignItems": "items-start"
+                },
+                "custom": {
+                  "displayName": "Rating"
+                }
+              },
+              "children": [
+                {
+                  "type": "Container",
+                  "props": {
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-row",
+                      "alignItems": "items-center",
+                      "gap": "gap-2"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Button",
+                      "props": {
+                        "text": "",
+                        "url": "#",
+                        "icon": {
+                          "value": "ref-google:star",
+                          "position": "left",
+                          "size": "w-6 h-6",
+                          "gap": "gap-0"
+                        },
+                        "root": {
+                          "color": "text-[#00b67a]",
+                          "background": "bg-transparent"
+                        },
+                        "className": [
+                          "pointer-events-none"
+                        ],
+                        "mobile": {
+                          "px": "px-0",
+                          "py": "py-0"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Text",
+                      "props": {
+                        "text": "Trustpilot",
+                        "tagName": "span",
+                        "root": {
+                          "fontWeight": "font-bold",
+                          "color": "text-(--foreground)"
+                        },
+                        "mobile": {
+                          "fontSize": "text-lg"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "text": "Rated Excellent Over 15.7k Reviews",
+                    "tagName": "span",
+                    "root": {
+                      "color": "text-(--muted-foreground)",
+                      "fontWeight": "font-medium"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm",
+                      "mt": "mt-1"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "mobile": {
+          "display": "flex",
+          "width": "w-full",
+          "maxWidth": "max-w-6xl",
+          "mx": "mx-auto"
+        },
+        "custom": {
+          "displayName": "Media Wrapper"
+        }
+      },
+      "children": [
+        {
+          "type": "Image",
+          "props": {
+            "content": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200",
+            "alt": "PageHub Dashboard Interface",
+            "root": {
+              "radius": "rounded-(--card-radius)",
+              "shadow": "shadow-2xl"
+            },
+            "mobile": {
+              "width": "w-full",
+              "height": "h-[20rem]",
+              "objectFit": "object-cover",
+              "objectPosition": "object-center"
+            },
+            "desktop": {
+              "height": "h-[40rem]"
+            },
+            "custom": {
+              "displayName": "Dashboard Preview Thumbnail"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
