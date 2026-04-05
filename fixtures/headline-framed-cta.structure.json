@@ -64,14 +64,13 @@
               }
             ],
             "iconFontSize": "",
-            "hover": {
-              "background": "bg-(--primary)",
-              "color": "text-(--primary-foreground)"
-            },
             "custom": {
               "displayName": "Button List"
             },
-            "className": "bg-(--card) rounded-(--radius-lg) border-(--primary) border-4 text-(--card-foreground) spring justify-center px-24 py-9 md:items-center md:px-20 md:py-9 md:text-2xl md:font-semibold md:leading-normal md:text-center md:flex-col md:justify-center"
+            "root": {
+              "animation": "spring"
+            },
+            "className": "bg-(--card) rounded-(--radius-lg) border-(--primary) border-4 text-(--card-foreground) justify-center px-24 py-9 md:items-center md:px-20 md:py-9 md:text-2xl md:font-semibold md:leading-normal md:text-center md:flex-col md:justify-center hover:bg-(--primary) hover:text-(--primary-foreground)"
           },
           "children": [
             {

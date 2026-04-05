@@ -75,16 +75,13 @@
                         "url": "/about"
                       }
                     ],
-                    "hover": {
-                      "color": "text-(--background)"
-                    },
                     "clickType": "toggle",
                     "text": "Home",
                     "url": "/",
                     "custom": {
                       "displayName": "Main Navigation"
                     },
-                    "className": "text-(--foreground) justify-end gap-8 hidden md:flex-row md:gap-6 md:justify-start md:flex"
+                    "className": "text-(--foreground) justify-end gap-8 hidden md:flex-row md:gap-6 md:justify-start md:flex hover:text-(--background)"
                   },
                   "children": [
                     {
@@ -94,13 +91,10 @@
                         "canEditName": true,
                         "text": "Home",
                         "url": "/",
-                        "hover": {
-                          "color": "text-(--background)"
-                        },
                         "custom": {
                           "displayName": "Home"
                         },
-                        "className": "text-(--foreground) flex flex-row items-center gap-2 md:flex-row md:items-center md:gap-2"
+                        "className": "text-(--foreground) flex flex-row items-center gap-2 md:flex-row md:items-center md:gap-2 hover:text-(--background)"
                       }
                     },
                     {
@@ -110,13 +104,10 @@
                         "canEditName": true,
                         "text": "About",
                         "url": "/about",
-                        "hover": {
-                          "color": "text-(--background)"
-                        },
                         "custom": {
                           "displayName": "About"
                         },
-                        "className": "text-(--foreground) flex flex-row items-center gap-2 md:flex-row md:items-center md:gap-2"
+                        "className": "text-(--foreground) flex flex-row items-center gap-2 md:flex-row md:items-center md:gap-2 hover:text-(--background)"
                       }
                     }
                   ]
@@ -133,15 +124,12 @@
                         "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 448 512\"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. --><path d=\"M32 288c-17.7 0-32 14.3-32 32s14.3 32 32 32l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 288zm0-128c-17.7 0-32 14.3-32 32s14.3 32 32 32l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 160z\"/></svg>"
                       }
                     ],
-                    "hover": {
-                      "color": "text-(--background)"
-                    },
                     "clickValue": "mobileNavigation",
                     "clickType": "click",
                     "custom": {
                       "displayName": "Button List"
                     },
-                    "className": "text-(--foreground) rounded-lg flex-col gap-6 px-3 py-6 w-auto flex cursor-pointer md:hidden"
+                    "className": "text-(--foreground) rounded-lg flex-col gap-6 px-3 py-6 w-auto flex cursor-pointer md:hidden hover:text-(--background)"
                   },
                   "children": [
                     {
@@ -159,14 +147,11 @@
                           "gap": "gap-2",
                           "only": true
                         },
-                        "hover": {
-                          "color": "text-(--background)"
-                        },
                         "aria-label": "Menu",
                         "custom": {
                           "displayName": "Button"
                         },
-                        "className": "flex flex-row items-center gap-2 md:flex-row md:items-center md:gap-2"
+                        "className": "flex flex-row items-center gap-2 md:flex-row md:items-center md:gap-2 hover:text-(--background)"
                       }
                     }
                   ]
@@ -227,11 +212,8 @@
                         "url": "/shop"
                       }
                     ],
-                    "className": "text-(--foreground) flex-col text-center gap-3 px-3 py-6 hidden md:flex-row md:items-center md:justify-end md:text-center md:gap-4 md:flex cursor-pointer",
+                    "className": "text-(--foreground) flex-col text-center gap-3 px-3 py-6 hidden md:flex-row md:items-center md:justify-end md:text-center md:gap-4 md:flex cursor-pointer hover:text-(--background)",
                     "iconGap": "gap-4",
-                    "hover": {
-                      "color": "text-(--background)"
-                    },
                     "iconSize": "",
                     "text": "Contact",
                     "url": "/contact",
@@ -253,13 +235,10 @@
                           "size": "w-6 h-6",
                           "gap": "gap-2"
                         },
-                        "hover": {
-                          "color": "text-(--background)"
-                        },
                         "custom": {
                           "displayName": "Contact"
                         },
-                        "className": "text-(--foreground) rounded-lg flex flex-row items-center gap-2 md:flex-row md:items-center md:gap-2"
+                        "className": "text-(--foreground) rounded-lg flex flex-row items-center gap-2 md:flex-row md:items-center md:gap-2 hover:text-(--background)"
                       }
                     },
                     {
@@ -275,13 +254,10 @@
                           "size": "w-6 h-6",
                           "gap": "gap-2"
                         },
-                        "hover": {
-                          "color": "text-(--background)"
-                        },
                         "custom": {
                           "displayName": "Products"
                         },
-                        "className": "text-(--foreground) rounded-lg flex flex-row items-center gap-2 md:flex-row md:items-center md:gap-2"
+                        "className": "text-(--foreground) rounded-lg flex flex-row items-center gap-2 md:flex-row md:items-center md:gap-2 hover:text-(--background)"
                       }
                     }
                   ]
@@ -336,9 +312,6 @@
                       }
                     ],
                     "iconFontSize": "",
-                    "hover": {
-                      "color": "text-(--background)"
-                    },
                     "iconPosition": "left",
                     "iconGap": "gap-10",
                     "iconSize": "w-20",
@@ -346,7 +319,10 @@
                     "custom": {
                       "displayName": "Button List"
                     },
-                    "className": "rounded-2xl border-(--foreground) border-4 text-(--foreground) spring hover:border-(--background) justify-center px-14 py-9 md:justify-items-stretch md:px-20 md:py-9 md:text-2xl md:font-semibold md:leading-normal"
+                    "root": {
+                      "animation": "spring"
+                    },
+                    "className": "rounded-2xl border-(--foreground) border-4 text-(--foreground) hover:border-(--background) justify-center px-14 py-9 md:justify-items-stretch md:px-20 md:py-9 md:text-2xl md:font-semibold md:leading-normal hover:text-(--background)"
                   },
                   "children": [
                     {
@@ -363,13 +339,10 @@
                           "size": "w-20",
                           "gap": "gap-10"
                         },
-                        "hover": {
-                          "color": "text-(--background)"
-                        },
                         "custom": {
                           "displayName": "View Products"
                         },
-                        "className": "flex flex-row items-center gap-2 md:flex-row md:items-center md:gap-2 md:text-2xl"
+                        "className": "flex flex-row items-center gap-2 md:flex-row md:items-center md:gap-2 md:text-2xl hover:text-(--background)"
                       }
                     }
                   ]

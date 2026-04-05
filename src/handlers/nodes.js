@@ -1,3 +1,5 @@
+const path = require('path');
+const { twMerge } = require(path.join(__dirname, '../../../../node_modules/tailwind-merge'));
 const { apiFetch } = require('../api-fetch');
 const {
   parseMaybeJson, applyNodePatches,
@@ -5,6 +7,13 @@ const {
   extractImageUrls, validateImageUrls, collectAllImageUrls,
 } = require('../helpers');
 const { getContext } = require('../context');
+
+function mergeNodeClassName(prev, ...parts) {
+  return twMerge(
+    typeof prev === 'string' ? prev : '',
+    ...parts.filter(p => typeof p === 'string' && p.trim())
+  );
+}
 
 const PROTECTED_IDS = ['ROOT', 'page_home'];
 
@@ -102,9 +111,8 @@ module.exports = {
     // Patch footer container background/color
     if (!flat.ftr_content) throw new Error('No ftr_content node found. Is this a PageHub site?');
     if (args.contentBackground || args.contentColor) {
-      flat.ftr_content.props.root = flat.ftr_content.props.root || {};
-      if (args.contentBackground) flat.ftr_content.props.root.background = args.contentBackground;
-      if (args.contentColor) flat.ftr_content.props.root.color = args.contentColor;
+      const p = flat.ftr_content.props;
+      p.className = mergeNodeClassName(p.className, args.contentBackground, args.contentColor);
     }
 
     // Patch copyright text node
@@ -112,8 +120,8 @@ module.exports = {
       if (args.copyrightHtml) flat.ftr_text.props.text = args.copyrightHtml;
       if (args.copyrightTagName) flat.ftr_text.props.tagName = args.copyrightTagName;
       if (args.copyrightRootColor) {
-        flat.ftr_text.props.root = flat.ftr_text.props.root || {};
-        flat.ftr_text.props.root.color = args.copyrightRootColor;
+        const tp = flat.ftr_text.props;
+        tp.className = mergeNodeClassName(tp.className, args.copyrightRootColor);
       }
     }
 
@@ -128,17 +136,18 @@ module.exports = {
     if (!flat.hdr_section) throw new Error('No hdr_section node found. Is this a PageHub site?');
     if (!flat.hdr_nav) throw new Error('No hdr_nav node found.');
 
-    // Patch header background/color
-    flat.hdr_section.props.root = flat.hdr_section.props.root || {};
-    if (args.headerBg) flat.hdr_section.props.root.background = args.headerBg;
-    if (args.headerColor) flat.hdr_section.props.root.color = args.headerColor;
+    // Patch header background/color (className only)
+    const hdr = flat.hdr_section.props;
+    hdr.className = mergeNodeClassName(hdr.className, args.headerBg, args.headerColor);
 
     // Patch logo
     if (flat.hdr_logo) {
       if (args.logoText) flat.hdr_logo.props.text = args.logoText;
       if (args.logoFont) {
-        flat.hdr_logo.props.root = flat.hdr_logo.props.root || {};
-        flat.hdr_logo.props.root.fontFamily = args.logoFont;
+        const raw = String(args.logoFont).trim().replace(/\s+/g, '_').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+        const cls = `font-['${raw}']`;
+        const prev = flat.hdr_logo.props.className;
+        flat.hdr_logo.props.className = mergeNodeClassName(prev, cls);
       }
     }
 
@@ -166,9 +175,7 @@ module.exports = {
         flat[desktopId] = {
           type: { resolvedName: 'Button' }, isCanvas: false,
           props: { canDelete: true, canEditName: true, text: link.text, url: link.url || '#',
-            root: { background: 'bg-transparent', color: linkColor },
-            mobile: { fontSize: 'text-sm', display: 'hidden', px: 'px-(--button-padding-x)', py: 'py-(--button-padding-y)' },
-            desktop: { display: 'block' },
+            className: mergeNodeClassName('', 'bg-transparent', linkColor, 'hidden md:block text-sm px-(--button-padding-x) py-(--button-padding-y)'),
             custom: { displayName: link.text } },
           displayName: 'Button', parent: 'hdr_nav', nodes: [], linkedNodes: {}
         };
@@ -179,9 +186,7 @@ module.exports = {
           flat[mobileId] = {
             type: { resolvedName: 'Button' }, isCanvas: false,
             props: { canDelete: true, canEditName: true, text: link.text, url: link.url || '#',
-              root: { background: 'bg-transparent', color: 'text-(--foreground)' },
-              mobile: { fontSize: 'text-lg', fontWeight: 'font-medium', px: 'px-4', py: 'py-3', width: 'w-full' },
-              desktop: {},
+              className: mergeNodeClassName('', 'bg-transparent', 'text-(--foreground)', 'w-full text-lg font-medium px-4 py-3'),
               custom: { displayName: link.text } },
             displayName: 'Button', parent: 'acme-mobile-items', nodes: [], linkedNodes: {}
           };
@@ -197,9 +202,7 @@ module.exports = {
       flat[phoneId] = {
         type: { resolvedName: 'Button' }, isCanvas: false,
         props: { canDelete: true, canEditName: true, text: args.phone.text, url: args.phone.url,
-          root: { background: 'bg-transparent', color: args.headerColor || 'text-(--foreground)' },
-          mobile: { fontSize: 'text-sm', px: 'px-(--button-padding-x)', py: 'py-(--button-padding-y)' },
-          desktop: {},
+          className: mergeNodeClassName('', 'bg-transparent', args.headerColor || 'text-(--foreground)', 'text-sm px-(--button-padding-x) py-(--button-padding-y)'),
           custom: { displayName: 'Phone' } },
         displayName: 'Button', parent: 'hdr_nav', nodes: [], linkedNodes: {}
       };

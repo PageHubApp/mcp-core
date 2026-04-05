@@ -64,12 +64,7 @@
               }
             ],
             "iconFontSize": "",
-            "className": "bg-transparent rounded-(--radius-lg) border-(--foreground) border-4 text-(--foreground) justify-center px-20 py-9 md:items-center md:px-20 md:py-9 md:text-2xl md:font-semibold md:leading-normal md:text-center md:flex-col md:justify-center border-dashed",
-            "hover": {
-              "borderColor": "border-(--accent)",
-              "color": "text-(--accent)",
-              "background": "bg-transparent"
-            },
+            "className": "bg-transparent rounded-(--radius-lg) border-(--foreground) border-4 text-(--foreground) justify-center px-20 py-9 md:items-center md:px-20 md:py-9 md:text-2xl md:font-semibold md:leading-normal md:text-center md:flex-col md:justify-center border-dashed hover:border-(--accent) hover:text-(--accent) hover:bg-transparent",
             "custom": {
               "displayName": "Button List"
             }
@@ -83,14 +78,10 @@
                 "text": "Contact sales",
                 "url": "/contact",
                 "type": "button",
-                "hover": {
-                  "background": "bg-transparent",
-                  "color": "text-(--accent)"
-                },
                 "custom": {
                   "displayName": "Contact sales"
                 },
-                "className": "bg-transparent text-(--foreground) flex flex-row items-center gap-2 md:flex-row md:items-center md:gap-2 md:text-2xl"
+                "className": "bg-transparent text-(--foreground) flex flex-row items-center gap-2 md:flex-row md:items-center md:gap-2 md:text-2xl hover:bg-transparent hover:text-(--accent)"
               }
             }
           ]

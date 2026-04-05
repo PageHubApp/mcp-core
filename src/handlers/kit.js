@@ -1,3 +1,5 @@
+const path = require('path');
+const { twMerge } = require(path.join(__dirname, '../../../../node_modules/tailwind-merge'));
 const { apiFetch } = require('../api-fetch');
 const { getContext } = require('../context');
 const { getActiveTarget, parseMaybeJson, saveTarget } = require('../helpers');
@@ -43,19 +45,17 @@ function unwrapBlockStructure(structure) {
   if (!structure || typeof structure !== 'object') return structure;
   if (structure.type === 'Container' && structure.props?.type === 'section') {
     const p = structure.props || {};
+    const shellClass = twMerge(
+      'flex flex-col w-full',
+      typeof p.className === 'string' ? p.className : '',
+    );
     return {
       type: 'Container',
       props: {
         canDelete: true,
         canEditName: true,
         root: { ...(p.root || {}) },
-        mobile: {
-          display: 'flex',
-          flexDirection: 'flex-col',
-          width: 'w-full',
-          ...(p.mobile || {}),
-        },
-        desktop: { ...(p.desktop || {}) },
+        className: shellClass,
         ...(p.custom ? { custom: p.custom } : {}),
       },
       children: structure.children || [],

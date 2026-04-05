@@ -57,14 +57,10 @@
             "canEditName": true,
             "text": "HELLO@COMPANY.COM",
             "url": "mailto:hello@company.com",
-            "hover": {
-              "background": "bg-(--primary)",
-              "color": "text-(--primary-foreground)"
-            },
             "custom": {
               "displayName": "Email CTA"
             },
-            "className": "bg-transparent text-(--foreground) border border-(--border) rounded-full py-4 px-10 text-xs font-normal tracking-[0.25em]"
+            "className": "bg-transparent text-(--foreground) border border-(--border) rounded-full py-4 px-10 text-xs font-normal tracking-[0.25em] hover:bg-(--primary) hover:text-(--primary-foreground)"
           }
         }
       ]
