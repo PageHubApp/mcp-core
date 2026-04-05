@@ -72,9 +72,8 @@ function sanitizeNodes(rawNodes, existingFlat, sectionContainerId) {
     if (!node.displayName) node.displayName = node.type.resolvedName;
     if (!node.custom) node.custom = {};
     if (!node.props) node.props = {};
-    if (!node.props.root) node.props.root = {};
-    if (!node.props.mobile) node.props.mobile = {};
-    if (!node.props.desktop) node.props.desktop = {};
+    // className is the canonical styling prop; ensure it exists (may be empty string)
+    if (node.props.className == null) node.props.className = '';
 
     // Strip class/className/style attributes from Text content — AI keeps adding them
     if (node.type.resolvedName === 'Text' && node.props.root?.text) {
@@ -537,6 +536,8 @@ module.exports = {
       description,
       nodesPatch,
       unsetProps,
+      unsetClasses,
+      // Legacy fields (backward compat)
       unsetMobile,
       unsetDesktop,
       unsetRoot,
@@ -558,7 +559,7 @@ module.exports = {
     applyNodePatches(
       flat,
       nodeId,
-      normalizeNodePatchArgs({ ...args, nodesPatch, unsetProps, unsetMobile, unsetDesktop, unsetRoot })
+      normalizeNodePatchArgs({ ...args, nodesPatch, unsetProps, unsetClasses, unsetMobile, unsetDesktop, unsetRoot })
     );
     const changedNodes = collectSubtree(flat, findSectionRoot(flat, nodeId));
 
@@ -606,7 +607,7 @@ module.exports = {
           ' Prefer patches as a native JSON array (not a string). If string: valid JSON only — escape quotes in text or use patch_site_node.';
       }
       throw new Error(
-        `patches must be a non-empty array of { nodeId, propsPatch?, mobilePatch?, ... }. ` +
+        `patches must be a non-empty array of { nodeId, classNamePatch?, propsPatch?, ... }. ` +
           `Always use an array even for one node, e.g. [{ "nodeId": "kit_text_1", "propsPatch": { ... } }]. (${received})${jsonHint}`
       );
     }

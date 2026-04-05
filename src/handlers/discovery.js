@@ -37,33 +37,33 @@ const STYLE_REFERENCE = `# PageHub Style Reference
 | --heading-font-family | headingFontFamily | (from Google Fonts) |
 | --body-font-family | bodyFontFamily | (from Google Fonts) |
 
-## Using Variables in Props
+## Using Variables in className
 
-ALWAYS use CSS variables via Tailwind arbitrary syntax — never hardcode hex or named colors:
+ALWAYS use CSS variables via Tailwind token syntax in className — never hardcode hex or named colors:
 
-  root.background: "bg-(--primary)"
-  root.color: "text-(--primary-foreground)"
-  root.borderColor: "border-(--card)"
-  root.radius: "rounded-(--radius)"
-  mobile.gap: "gap-(--container-gap)"
-  mobile.maxWidth: "max-w-(--content-width)"
+  "bg-(--primary) text-(--primary-foreground) border-(--card) rounded-(--radius) gap-(--container-gap) max-w-(--content-width)"
 
 Exception: bg-transparent, bg-white/10 (opacity modifiers) are OK.
 
-## Responsive Pattern (Mobile-First)
+## Responsive Pattern (Mobile-First className)
 
-props.mobile = base styles (no Tailwind prefix)
-props.desktop = md: prefixed styles (auto-applied)
+All styling in a single props.className string:
+- Unprefixed = base/mobile styles
+- md: prefix = desktop (768px+)
+- lg: prefix = large screens (1024px+)
 
-## Layout Prop Keys (in mobile/desktop objects)
+Example: "flex flex-col gap-4 py-16 bg-(--background) text-(--foreground) md:flex-row md:gap-8 md:py-24"
 
-display, flexDirection, gridCols, gap, alignItems, justifyContent,
-width, maxWidth, height, minHeight, py, px, mx, position, inset, zIndex, overflow, flex
+## Common className Utilities
 
-## Visual Prop Keys (in root object)
+Layout: flex, flex-col, flex-row, grid, grid-cols-*, gap-*, items-*, justify-*,
+  w-full, w-1/2, max-w-(--content-width), h-[400px], min-h-screen,
+  py-*, px-*, mx-auto, relative, absolute, z-*, overflow-hidden
 
-background, color, border, borderColor, radius, shadow,
-fontSize, fontWeight, fontFamily, textAlign, lineHeight, textDecoration
+Surface: bg-(--primary), text-(--foreground), border, border-(--card),
+  rounded-(--radius), shadow-sm, shadow-md
+
+Typography: text-4xl, font-bold, leading-relaxed, tracking-widest, uppercase
 
 ## Template Variables
 
@@ -86,7 +86,7 @@ fontSize, fontWeight, fontFamily, textAlign, lineHeight, textDecoration
 3. Text "text" values: NO block tags. Only inline: <strong>, <em>, <br/>, <span>, <a>, <ul>/<li>.
 4. Always match text color to background: bg-(--primary) → text-(--primary-foreground); bg-(--background) → text-(--foreground).
 5. Use descriptive node IDs: "sec_hero", "hero_title", etc.
-6. **Blocks / kit / library JSON:** Put layout in **mobile** / **desktop** (mobile = base). Put surface design (background, color, border, radius, shadow) in **root**. **Do not** use **props.root.style** on library blocks — use tokens; for rare viewport breakout use **props.className** (array of Tailwind class strings only). See repo **BLOCKS-AI-CONTEXT.md** ("Props layering").
+6. **All styling uses props.className** — a single Tailwind class string. Mobile-first: unprefixed = base/mobile, md: = desktop, lg: = 1024px+. Example: "flex flex-col gap-4 py-8 md:flex-row md:gap-8 bg-(--primary) text-(--primary-foreground)". Use **classNamePatch** in patch tools to merge classes via twMerge. Use **propsPatch** only for non-class props (text, src, href, style, animation). See **BLOCKS-AI-CONTEXT.md**.
 `;
 
 /* ── Design patterns (lazy-loaded) ── */

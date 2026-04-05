@@ -195,6 +195,8 @@ module.exports = {
     const {
       nodesPatch,
       unsetProps,
+      unsetClasses,
+      // Legacy fields (backward compat)
       unsetMobile,
       unsetDesktop,
       unsetRoot,
@@ -202,7 +204,7 @@ module.exports = {
     applyNodePatches(
       flat,
       nodeId,
-      normalizeNodePatchArgs({ ...args, nodesPatch, unsetProps, unsetMobile, unsetDesktop, unsetRoot })
+      normalizeNodePatchArgs({ ...args, nodesPatch, unsetProps, unsetClasses, unsetMobile, unsetDesktop, unsetRoot })
     );
     const newStructure = flatLibraryToHierarchical(flat, rootId);
 
@@ -226,7 +228,7 @@ module.exports = {
     const list = normalizeBulkPatchesFromArgs(args);
     if (!Array.isArray(list) || list.length === 0) {
       throw new Error(
-        'patches must be a non-empty array of { nodeId, propsPatch?, mobilePatch?, ... } (same shape as patch_site_bulk).'
+        'patches must be a non-empty array of { nodeId, classNamePatch?, propsPatch?, ... } (same shape as patch_site_bulk).'
       );
     }
 

@@ -1,3 +1,5 @@
+const { twMerge } = require('tailwind-merge');
+
 /** Try to JSON.parse a string, return as-is if it fails or isn't a string. */
 function parseMaybeJson(v) {
   if (v == null) return v;
@@ -7,13 +9,36 @@ function parseMaybeJson(v) {
   return v;
 }
 
+/**
+ * Remove specific Tailwind classes from a className string.
+ * Supports exact matches and prefix matches (e.g. "gap-" removes "gap-4", "md:gap-8").
+ */
+function removeClasses(className, toRemove) {
+  if (!className || !Array.isArray(toRemove) || toRemove.length === 0) return className;
+  const parts = String(className).split(/\s+/).filter(Boolean);
+  const filtered = parts.filter((cls) => {
+    // Strip responsive prefix for matching (e.g. "md:gap-4" → "gap-4")
+    const bare = cls.replace(/^(sm:|md:|lg:|xl:|2xl:)/, '');
+    for (const pattern of toRemove) {
+      if (pattern === cls || pattern === bare) return false;
+      // Prefix match: "gap-" removes "gap-4", "gap-8", etc.
+      if (pattern.endsWith('-') && (bare.startsWith(pattern) || cls.startsWith(pattern))) return false;
+    }
+    return true;
+  });
+  return filtered.join(' ');
+}
+
 /** Shallow-merge patch objects into a flat node map entry. */
 function applyNodePatches(flatMap, nodeId, patchArgs) {
   const {
-    propsPatch, mobilePatch, desktopPatch, rootPatch, nodesPatch,
-    unsetProps, unsetMobile, unsetDesktop, unsetRoot,
+    propsPatch, classNamePatch, nodesPatch,
+    unsetProps, unsetClasses,
+    // Legacy fields — still accepted for backward compat
+    mobilePatch, desktopPatch, rootPatch,
+    unsetMobile, unsetDesktop, unsetRoot,
   } = patchArgs;
-    if (!flatMap[nodeId]) {
+  if (!flatMap[nodeId]) {
     let hint = '';
     if (String(nodeId).startsWith('kit_')) {
       const similar = Object.keys(flatMap).filter((k) => k.startsWith('kit_')).slice(0, 12);
@@ -27,44 +52,81 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
     }
     throw new Error(`Node ${nodeId} not found.${hint}`);
   }
+  // className patch — merge Tailwind classes into props.className via twMerge
+  if (classNamePatch) {
+    const existing = flatMap[nodeId].props.className || '';
+    flatMap[nodeId].props.className = twMerge(existing, classNamePatch);
+  }
+  // Remove specific classes from props.className
+  if (Array.isArray(unsetClasses) && unsetClasses.length > 0) {
+    flatMap[nodeId].props.className = removeClasses(
+      flatMap[nodeId].props.className || '',
+      unsetClasses
+    );
+  }
+  // propsPatch — shallow merge non-class props (text, src, href, alt, style, animation, etc.)
   if (propsPatch) flatMap[nodeId].props = { ...flatMap[nodeId].props, ...propsPatch };
-  if (mobilePatch) {
-    flatMap[nodeId].props.mobile = { ...(flatMap[nodeId].props.mobile || {}), ...mobilePatch };
-  }
-  if (desktopPatch) {
-    flatMap[nodeId].props.desktop = { ...(flatMap[nodeId].props.desktop || {}), ...desktopPatch };
-  }
-  if (rootPatch) {
-    flatMap[nodeId].props.root = { ...(flatMap[nodeId].props.root || {}), ...rootPatch };
-  }
   if (nodesPatch) flatMap[nodeId].nodes = nodesPatch;
   if (Array.isArray(unsetProps)) {
     for (const k of unsetProps) delete flatMap[nodeId].props[k];
   }
+  // ── Legacy backward compat: convert old structured props to className ──
+  if (mobilePatch) {
+    // Old mobile props were base (unprefixed) Tailwind values
+    const classes = Object.values(mobilePatch).filter((v) => typeof v === 'string');
+    if (classes.length > 0) {
+      const existing = flatMap[nodeId].props.className || '';
+      flatMap[nodeId].props.className = twMerge(existing, classes.join(' '));
+    }
+  }
+  if (desktopPatch) {
+    // Old desktop props become md: prefixed
+    const classes = Object.values(desktopPatch)
+      .filter((v) => typeof v === 'string')
+      .map((v) => `md:${v}`);
+    if (classes.length > 0) {
+      const existing = flatMap[nodeId].props.className || '';
+      flatMap[nodeId].props.className = twMerge(existing, classes.join(' '));
+    }
+  }
+  if (rootPatch) {
+    // Old root props were visual Tailwind values (unprefixed)
+    const classes = Object.values(rootPatch).filter((v) => typeof v === 'string');
+    if (classes.length > 0) {
+      const existing = flatMap[nodeId].props.className || '';
+      flatMap[nodeId].props.className = twMerge(existing, classes.join(' '));
+    }
+  }
   if (Array.isArray(unsetMobile)) {
-    const m = flatMap[nodeId].props.mobile || {};
-    for (const k of unsetMobile) delete m[k];
-    flatMap[nodeId].props.mobile = m;
+    // Remove unprefixed classes by name hint
+    flatMap[nodeId].props.className = removeClasses(
+      flatMap[nodeId].props.className || '', unsetMobile
+    );
   }
   if (Array.isArray(unsetDesktop)) {
-    const d = flatMap[nodeId].props.desktop || {};
-    for (const k of unsetDesktop) delete d[k];
-    flatMap[nodeId].props.desktop = d;
+    // Remove md:-prefixed classes
+    const prefixed = unsetDesktop.map((k) => `md:${k}`);
+    flatMap[nodeId].props.className = removeClasses(
+      flatMap[nodeId].props.className || '', prefixed
+    );
   }
   if (Array.isArray(unsetRoot)) {
-    const r = flatMap[nodeId].props.root || {};
-    for (const k of unsetRoot) delete r[k];
-    flatMap[nodeId].props.root = r;
+    flatMap[nodeId].props.className = removeClasses(
+      flatMap[nodeId].props.className || '', unsetRoot
+    );
   }
 }
 
 const PATCH_BODY_KEYS = [
   'propsPatch',
+  'classNamePatch',
+  'nodesPatch',
+  'unsetProps',
+  'unsetClasses',
+  // Legacy fields (backward compat — auto-converted to className)
   'mobilePatch',
   'desktopPatch',
   'rootPatch',
-  'nodesPatch',
-  'unsetProps',
   'unsetMobile',
   'unsetDesktop',
   'unsetRoot',
@@ -118,11 +180,14 @@ function assertPatchBlockBulkItem(item, index) {
 function normalizeNodePatchArgs(raw) {
   return {
     propsPatch: parseMaybeJson(raw.propsPatch) ?? raw.propsPatch,
+    classNamePatch: typeof raw.classNamePatch === 'string' ? raw.classNamePatch : undefined,
+    nodesPatch: raw.nodesPatch,
+    unsetProps: raw.unsetProps,
+    unsetClasses: raw.unsetClasses,
+    // Legacy fields (backward compat)
     mobilePatch: parseMaybeJson(raw.mobilePatch) ?? raw.mobilePatch,
     desktopPatch: parseMaybeJson(raw.desktopPatch) ?? raw.desktopPatch,
     rootPatch: parseMaybeJson(raw.rootPatch) ?? raw.rootPatch,
-    nodesPatch: raw.nodesPatch,
-    unsetProps: raw.unsetProps,
     unsetMobile: raw.unsetMobile,
     unsetDesktop: raw.unsetDesktop,
     unsetRoot: raw.unsetRoot,

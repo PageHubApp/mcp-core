@@ -27,7 +27,7 @@
   },
   {
     "name": "get_style_reference",
-    "description": "Returns the complete styling reference — palette CSS variables, styleGuide tokens, layout prop keys, responsive patterns, and common Tailwind value examples. Use this to understand what values to put in root/mobile/desktop prop objects.",
+    "description": "Returns the complete styling reference — palette CSS variables, styleGuide tokens, responsive patterns, and common Tailwind class examples. Use this to understand what className values to use in classNamePatch.",
     "inputSchema": {
       "type": "object",
       "properties": {}
@@ -190,7 +190,7 @@
         },
         "propOverrides": {
           "type": "object",
-          "description": "Map of displayName → style patches. Each value can have { root, mobile, desktop } keys with Tailwind class objects.\n\nExample:\n  {\"Section\": {\"root\": {\"background\": \"bg-(--primary)\"}, \"mobile\": {\"py\": \"py-20\"}, \"desktop\": {\"py\": \"py-32\"}}}"
+          "description": "Map of displayName → style patches. Each value can have { className, props } keys.\n\nExample:\n  {\"Section\": {\"className\": \"bg-(--primary) py-20 md:py-32\"}, \"Card\": {\"className\": \"rounded-xl shadow-lg\"}}"
         },
         "pageId": {
           "type": "string",
@@ -208,7 +208,7 @@
   },
   {
     "name": "add_custom_block",
-    "description": "Merges a hand-crafted flat CraftJS node map into the active site and attaches blockRootId as a child of page_home (or parentNodeId). Use this when no pre-built block template fits your needs.\n\nUse get_component_schema to see all available component types and their props. Each node in the map must have: type.resolvedName, props (with root, mobile, desktop), parent, nodes[], and custom.displayName.\n\nThe blockRootId node should have type \"section\" and canDelete: true.",
+    "description": "Merges a hand-crafted flat CraftJS node map into the active site and attaches blockRootId as a child of page_home (or parentNodeId). Use this when no pre-built block template fits your needs.\n\nUse get_component_schema to see all available component types and their props. Each node in the map must have: type.resolvedName, props (with className for Tailwind classes), parent, nodes[], and custom.displayName.\n\nThe blockRootId node should have type \"section\" and canDelete: true.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -222,7 +222,7 @@
         },
         "nodes": {
           "type": "object",
-          "description": "Flat CraftJS node map: { nodeId: nodeDefinition, ... }. Each node definition must include:\n\n  {\n    \"type\": { \"resolvedName\": \"Container\" },  // Component type\n    \"isCanvas\": true,                          // true if it can have children\n    \"props\": {\n      \"canDelete\": true,\n      \"canEditName\": true,\n      \"type\": \"section\",                       // \"section\" for root, omit for children\n      \"root\": { \"background\": \"bg-(--primary)\" },\n      \"mobile\": { \"display\": \"flex\", \"flexDirection\": \"flex-col\", \"width\": \"w-full\", \"py\": \"py-12\", \"px\": \"px-6\" },\n      \"desktop\": { \"py\": \"py-20\", \"px\": \"px-16\" },\n      \"custom\": { \"displayName\": \"My Block\" }\n    },\n    \"parent\": \"page_home\",                     // parent node ID\n    \"nodes\": [\"child_id_1\", \"child_id_2\"],     // ordered child IDs\n    \"linkedNodes\": {}\n  }\n\nAvailable component types: Container, Text, Image, Button, ButtonList, ImageList, Form, FormElement, Divider, Spacer, Video, Audio, Embed.\nUse get_component_schema for full prop details."
+          "description": "Flat CraftJS node map: { nodeId: nodeDefinition, ... }. Each node definition must include:\n\n  {\n    \"type\": { \"resolvedName\": \"Container\" },  // Component type\n    \"isCanvas\": true,                          // true if it can have children\n    \"props\": {\n      \"canDelete\": true,\n      \"canEditName\": true,\n      \"type\": \"section\",                       // \"section\" for root, omit for children\n      \"className\": \"flex flex-col w-full py-12 px-6 md:py-20 md:px-16 bg-(--primary)\",\n      \"custom\": { \"displayName\": \"My Block\" }\n    },\n    \"parent\": \"page_home\",                     // parent node ID\n    \"nodes\": [\"child_id_1\", \"child_id_2\"],     // ordered child IDs\n    \"linkedNodes\": {}\n  }\n\nAll styling uses props.className — a single Tailwind class string. Mobile-first: unprefixed = base/mobile, md: = desktop, sm: = tablet.\n\nAvailable component types: Container, Text, Image, Button, ButtonList, ImageList, Form, FormElement, Divider, Spacer, Video, Audio, Embed.\nUse get_component_schema for full prop details."
         },
         "parentNodeId": {
           "type": "string",
@@ -351,7 +351,7 @@
   },
   {
     "name": "update_node",
-    "description": "Surgically patches a single node on the active site (GET → patch → PUT). Same as patch_site_node but with image URL validation.\n\nPatches are shallow-merged into the target object. Use unset* arrays to remove keys that merges cannot delete.\n\nCommon uses:\n  - Change text: propsPatch: { \"text\": \"New heading\" }\n  - Change colors: rootPatch: { \"background\": \"bg-(--accent)\", \"color\": \"text-(--accent-foreground)\" }\n  - Change mobile layout: mobilePatch: { \"flexDirection\": \"flex-col\", \"py\": \"py-8\" }\n  - Change desktop layout: desktopPatch: { \"gridCols\": \"grid-cols-3\" } (or propsPatch: { \"desktop\": { ... } })\n  - Reorder children: nodesPatch: [\"child2\", \"child1\", \"child3\"]\n  - Remove a prop: unsetMobile: [\"gap\"] removes gap from mobile styles; unsetDesktop for props.desktop",
+    "description": "Surgically patches a single node on the active site (GET → patch → PUT). Same as patch_site_node but with image URL validation.\n\nAll styling uses className — a single string of Tailwind classes on props.className. Mobile-first: unprefixed classes are base/mobile, md: prefix for desktop, sm: for tablet.\n\nCommon uses:\n  - Change text: propsPatch: { \"text\": \"New heading\" }\n  - Change colors: classNamePatch: \"bg-(--accent) text-(--accent-foreground)\"\n  - Change layout: classNamePatch: \"flex flex-col gap-4 py-8 md:flex-row md:gap-8\"\n  - Reorder children: nodesPatch: [\"child2\", \"child1\", \"child3\"]\n  - Remove classes: unsetClasses: [\"gap-\", \"py-\"] removes all gap-* and py-* classes",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -363,21 +363,13 @@
           "type": "string",
           "description": "Node ID to patch. Use pull_site to find IDs."
         },
+        "classNamePatch": {
+          "type": "string",
+          "description": "Tailwind classes to merge into props.className via twMerge. Mobile-first: unprefixed = base/mobile, md: = desktop, sm: = tablet. Examples: \"flex flex-col gap-4 md:flex-row md:gap-8\", \"bg-(--primary) text-(--primary-foreground) rounded-xl shadow-lg\". Conflicting classes are resolved by twMerge (last wins)."
+        },
         "propsPatch": {
           "type": "object",
-          "description": "Shallow merge into node.props. For desktop overrides: { \"desktop\": { \"gridCols\": \"grid-cols-2\" } }. For text content: { \"text\": \"Hello\" }."
-        },
-        "mobilePatch": {
-          "type": "object",
-          "description": "Shallow merge into node.props.mobile. Layout props: display, flexDirection, gridCols, gap, width, maxWidth, height, minHeight, py, px, p, my, mx, m, alignItems, justifyContent, overflow, position, inset, zIndex."
-        },
-        "desktopPatch": {
-          "type": "object",
-          "description": "Shallow merge into node.props.desktop (md: breakpoint overrides). Same shape as mobilePatch: gridCols, gap, flexDirection, etc."
-        },
-        "rootPatch": {
-          "type": "object",
-          "description": "Shallow merge into node.props.root. Visual props: background, color, border, borderColor, radius, shadow, bgOpacity, fontFamily, fontSize, fontWeight, lineHeight, textAlign, textDecoration. Prefer design tokens: bg-(--primary), text-(--foreground), border-(--muted). Keep fontFamily as var(--heading-font-family) when needed."
+          "description": "Shallow merge into node.props for NON-CLASS properties only: text, src, href, alt, tagName, content, type, icon, style, animation, company, header, etc. Do NOT put Tailwind classes here — use classNamePatch."
         },
         "nodesPatch": {
           "type": "array",
@@ -386,33 +378,19 @@
           },
           "description": "REPLACES node.nodes entirely. Use to reorder children. Get current order from pull_site first."
         },
+        "unsetClasses": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Tailwind classes or prefixes to remove from props.className. Exact match: [\"gap-4\"] removes \"gap-4\". Prefix match: [\"gap-\"] removes \"gap-4\", \"md:gap-8\", etc. Responsive variants are stripped for matching."
+        },
         "unsetProps": {
           "type": "array",
           "items": {
             "type": "string"
           },
           "description": "Top-level props keys to delete."
-        },
-        "unsetMobile": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "Keys to delete from props.mobile."
-        },
-        "unsetDesktop": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "Keys to delete from props.desktop."
-        },
-        "unsetRoot": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "Keys to delete from props.root."
         }
       },
       "required": [
@@ -442,7 +420,7 @@
   },
   {
     "name": "insert_node",
-    "description": "Inserts a new node into the active site as a child of an existing parent node. The node definition must include type.resolvedName, isCanvas, props (with root, mobile, desktop, custom.displayName), and an empty nodes array.\n\nUse this to add individual elements (Text, Image, Button, Container, ButtonList, etc.) into existing sections or containers.",
+    "description": "Inserts a new node into the active site as a child of an existing parent node. The node definition must include type.resolvedName, isCanvas, props (with className for Tailwind classes, custom.displayName), and an empty nodes array.\n\nUse this to add individual elements (Text, Image, Button, Container, ButtonList, etc.) into existing sections or containers.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -464,7 +442,7 @@
         },
         "node": {
           "type": "object",
-          "description": "Node definition. Must include:\n  type: { resolvedName: \"Text\" | \"Container\" | \"Image\" | \"Button\" | \"ButtonList\" | etc }\n  isCanvas: true (containers) or false (leaf elements)\n  props: { canDelete: true, canEditName: true, root: {}, mobile: {}, desktop: {}, text/content/etc, custom: { displayName: \"...\" } }\n\nparent and linkedNodes are set automatically — do not include them."
+          "description": "Node definition. Must include:\n  type: { resolvedName: \"Text\" | \"Container\" | \"Image\" | \"Button\" | \"ButtonList\" | etc }\n  isCanvas: true (containers) or false (leaf elements)\n  props: { canDelete: true, canEditName: true, className: \"flex flex-col gap-4 ...\", text/content/etc, custom: { displayName: \"...\" } }\n\nparent and linkedNodes are set automatically — do not include them."
         }
       },
       "required": [
@@ -1012,7 +990,7 @@
   },
   {
     "name": "patch_site_node",
-    "description": "Edit one node on a live site (GET, patch, PUT). For multiple nodes use patch_site_bulk (atomic, no races). Same patch fields as update_node (propsPatch, mobilePatch, desktopPatch, rootPatch, nodesPatch, unsetProps, unsetMobile, unsetDesktop, unsetRoot). Do not send \"children\" or ad-hoc node graphs — patch child Button/Text nodes by their kit_* nodeIds from apply_kit_block. Example: nodeId page_home, unsetMobile [\"py\"] removes page wrapper vertical padding.",
+    "description": "Edit one node on a live site (GET, patch, PUT). For multiple nodes use patch_site_bulk (atomic, no races). Uses classNamePatch for Tailwind classes, propsPatch for non-class props (text, src, href, etc.). Do not send \"children\" or ad-hoc node graphs — patch child Button/Text nodes by their kit_* nodeIds from apply_kit_block. Example: classNamePatch \"py-0\" to override page wrapper padding.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1024,18 +1002,13 @@
           "type": "string",
           "description": "Craft node id e.g. page_home, ROOT"
         },
+        "classNamePatch": {
+          "type": "string",
+          "description": "Tailwind classes to merge into props.className via twMerge. Mobile-first: unprefixed = base/mobile, md: = desktop, sm: = tablet. Examples: \"flex flex-col gap-4 md:flex-row md:gap-8 bg-(--primary) text-(--primary-foreground)\"."
+        },
         "propsPatch": {
-          "type": "object"
-        },
-        "mobilePatch": {
-          "type": "object"
-        },
-        "desktopPatch": {
           "type": "object",
-          "description": "Shallow merge into node.props.desktop"
-        },
-        "rootPatch": {
-          "type": "object"
+          "description": "Shallow merge into node.props for NON-CLASS properties: text, src, href, alt, tagName, content, type, icon, style, animation, company, header, etc."
         },
         "nodesPatch": {
           "type": "array",
@@ -1043,25 +1016,14 @@
             "type": "string"
           }
         },
+        "unsetClasses": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Classes or prefixes to remove from className. [\"gap-\"] removes gap-4, md:gap-8, etc."
+        },
         "unsetProps": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "unsetMobile": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "unsetDesktop": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "unsetRoot": {
           "type": "array",
           "items": {
             "type": "string"
@@ -1085,7 +1047,7 @@
   },
   {
     "name": "patch_site_bulk",
-    "description": "Same as patch_site_node but one GET and one PUT: apply many node patches atomically (no lost updates from parallel calls). patches MUST be a native JSON array in the tool args (not a stringified JSON string — avoids parse errors from quotes in text). Each item: { nodeId, propsPatch?, mobilePatch?, desktopPatch?, rootPatch?, nodesPatch?, unsetProps?, unsetMobile?, unsetDesktop?, unsetRoot? } — never \"children\"; patch Buttons by kit_* id.",
+    "description": "Same as patch_site_node but one GET and one PUT: apply many node patches atomically (no lost updates from parallel calls). patches MUST be a native JSON array in the tool args (not a stringified JSON string). Each item: { nodeId, classNamePatch?, propsPatch?, nodesPatch?, unsetClasses?, unsetProps? } — never \"children\"; patch Buttons by kit_* id.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1102,17 +1064,13 @@
                 "type": "string",
                 "description": "Craft node id e.g. page_home, ROOT"
               },
+              "classNamePatch": {
+                "type": "string",
+                "description": "Tailwind classes to merge into props.className. Mobile-first: unprefixed = base, md: = desktop."
+              },
               "propsPatch": {
-                "type": "object"
-              },
-              "mobilePatch": {
-                "type": "object"
-              },
-              "desktopPatch": {
-                "type": "object"
-              },
-              "rootPatch": {
-                "type": "object"
+                "type": "object",
+                "description": "Non-class props: text, src, href, alt, style, animation, etc."
               },
               "nodesPatch": {
                 "type": "array",
@@ -1120,25 +1078,14 @@
                   "type": "string"
                 }
               },
+              "unsetClasses": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Classes/prefixes to remove from className."
+              },
               "unsetProps": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "unsetMobile": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "unsetDesktop": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "unsetRoot": {
                 "type": "array",
                 "items": {
                   "type": "string"
@@ -1352,7 +1299,7 @@
         },
         "propOverrides": {
           "type": "string",
-          "description": "Optional JSON object: keys are custom.displayName, values are { root, mobile, desktop } partial prop patches."
+          "description": "Optional JSON object: keys are custom.displayName, values are { className, props } partial patches. className is a Tailwind class string."
         },
         "position": {
           "type": "number",
@@ -1511,7 +1458,7 @@
   },
   {
     "name": "patch_block",
-    "description": "Patch one node inside a library block's stored structure (GET, flatten, merge, PUT). Same patch fields as patch_site_node: propsPatch, mobilePatch, desktopPatch, rootPatch, nodesPatch, unset*. Node ids are lib_* from list_block_nodes for this slug — not kit_* (those only exist after apply_kit_block on a site). Does not create nodes; use update_block(structure: ...) for wholesale replacement.",
+    "description": "Patch one node inside a library block's stored structure (GET, flatten, merge, PUT). Uses classNamePatch for Tailwind classes, propsPatch for non-class props. Node ids are lib_* from list_block_nodes for this slug — not kit_* (those only exist after apply_kit_block on a site). Does not create nodes; use update_block(structure: ...) for wholesale replacement.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1523,18 +1470,13 @@
           "type": "string",
           "description": "Flat node id from list_block_nodes (lib_*)."
         },
+        "classNamePatch": {
+          "type": "string",
+          "description": "Tailwind classes to merge into props.className. Mobile-first: unprefixed = base, md: = desktop."
+        },
         "propsPatch": {
-          "type": "object"
-        },
-        "mobilePatch": {
-          "type": "object"
-        },
-        "desktopPatch": {
           "type": "object",
-          "description": "Shallow merge into node.props.desktop"
-        },
-        "rootPatch": {
-          "type": "object"
+          "description": "Non-class props: text, src, href, alt, style, animation, etc."
         },
         "nodesPatch": {
           "type": "array",
@@ -1542,25 +1484,14 @@
             "type": "string"
           }
         },
+        "unsetClasses": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Classes/prefixes to remove from className."
+        },
         "unsetProps": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "unsetMobile": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "unsetDesktop": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "unsetRoot": {
           "type": "array",
           "items": {
             "type": "string"
@@ -1575,7 +1506,7 @@
   },
   {
     "name": "patch_block_bulk",
-    "description": "Same as patch_block but one GET and one PUT: patch many lib_* nodes atomically. patches MUST be a native JSON array. Each item: { nodeId, propsPatch?, mobilePatch?, desktopPatch?, rootPatch?, nodesPatch?, unset*? }. Slug must match list_block_nodes.",
+    "description": "Same as patch_block but one GET and one PUT: patch many lib_* nodes atomically. patches MUST be a native JSON array. Each item: { nodeId, classNamePatch?, propsPatch?, nodesPatch?, unsetClasses?, unsetProps? }. Slug must match list_block_nodes.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1592,17 +1523,13 @@
                 "type": "string",
                 "description": "lib_* id from list_block_nodes"
               },
+              "classNamePatch": {
+                "type": "string",
+                "description": "Tailwind classes to merge into props.className."
+              },
               "propsPatch": {
-                "type": "object"
-              },
-              "mobilePatch": {
-                "type": "object"
-              },
-              "desktopPatch": {
-                "type": "object"
-              },
-              "rootPatch": {
-                "type": "object"
+                "type": "object",
+                "description": "Non-class props: text, src, href, alt, style, animation, etc."
               },
               "nodesPatch": {
                 "type": "array",
@@ -1610,25 +1537,14 @@
                   "type": "string"
                 }
               },
+              "unsetClasses": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Classes/prefixes to remove from className."
+              },
               "unsetProps": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "unsetMobile": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "unsetDesktop": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "unsetRoot": {
                 "type": "array",
                 "items": {
                   "type": "string"
@@ -1791,7 +1707,7 @@
   },
   {
     "name": "add_nodes",
-    "description": "Add new nodes to an existing site. Takes a flat map of new node definitions and merges them into the site. Much more efficient than save_site — you only send the NEW nodes, not the entire site. The handler fetches the current site, merges your nodes in, and saves.\n\nEach node needs: type.resolvedName, isCanvas, props (with root, mobile, desktop, custom.displayName), parent, nodes[], linkedNodes: {}.",
+    "description": "Add new nodes to an existing site. Takes a flat map of new node definitions and merges them into the site. Much more efficient than save_site — you only send the NEW nodes, not the entire site. The handler fetches the current site, merges your nodes in, and saves.\n\nEach node needs: type.resolvedName, isCanvas, props (with className for Tailwind classes, custom.displayName), parent, nodes[], linkedNodes: {}.",
     "inputSchema": {
       "type": "object",
       "properties": {

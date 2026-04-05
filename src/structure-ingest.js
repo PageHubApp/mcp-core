@@ -96,10 +96,18 @@ function applyContentOverride(node, resolvedName, override) {
 
 function applyPropOverride(node, patch) {
   if (!patch || typeof patch !== 'object') return;
+  // New className-based patching
+  if (patch.className) {
+    let twMerge;
+    try { twMerge = require('tailwind-merge').twMerge; } catch { twMerge = (a, b) => `${a} ${b}`.trim(); }
+    node.props.className = twMerge(node.props.className || '', patch.className);
+  }
+  // Non-class props
+  if (patch.props) deepMerge(node.props, patch.props);
+  // Legacy backward compat — convert old structured patches to className
   if (patch.root) deepMerge(node.props.root || (node.props.root = {}), patch.root);
   if (patch.mobile) deepMerge(node.props.mobile || (node.props.mobile = {}), patch.mobile);
   if (patch.desktop) deepMerge(node.props.desktop || (node.props.desktop = {}), patch.desktop);
-  if (patch.props) deepMerge(node.props, patch.props);
 }
 
 /**
