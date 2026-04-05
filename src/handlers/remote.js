@@ -1,10 +1,9 @@
-const path = require('path');
 const { apiFetch, normalizeBaseUrl } = require('../api-fetch');
 const { getContext } = require('../context');
 const {
   stripGoogleFontLinksFromHeader,
   finalizeRootThemeFonts,
-} = require(path.join(__dirname, '../../../../scripts/lib/theme-fonts.js'));
+} = require('../../../../scripts/lib/theme-fonts.js');
 const {
   parseMaybeJson,
   applyNodePatches,
