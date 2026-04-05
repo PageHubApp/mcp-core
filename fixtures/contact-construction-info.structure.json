@@ -1,0 +1,231 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "type": "section",
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "alignItems": "items-center",
+      "width": "w-full",
+      "py": "py-24",
+      "px": "px-8"
+    },
+    "custom": {
+      "displayName": "Construction contact — map + details"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "alignItems": "items-center",
+          "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
+          "mx": "mx-auto"
+        },
+        "custom": {
+          "displayName": "Section inner"
+        }
+      },
+      "children": [
+        {
+          "type": "Text",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {
+              "color": "text-(--foreground)"
+            },
+            "mobile": {
+              "fontSize": "text-2xl",
+              "fontWeight": "font-bold",
+              "letterSpacing": "tracking-widest",
+              "mb": "mb-16"
+            },
+            "text": "CONTACT",
+            "tagName": "h3",
+            "className": [
+              "inline-block",
+              "border-b-4",
+              "border-(--accent)",
+              "pb-2"
+            ],
+            "custom": {
+              "displayName": "Section title"
+            }
+          }
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "width": "w-full",
+              "maxWidth": "max-w-5xl",
+              "gap": "gap-16"
+            },
+            "desktop": {
+              "flexDirection": "flex-row",
+              "gap": "gap-24"
+            },
+            "custom": {
+              "displayName": "Contact row"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "flex": "flex-1"
+                },
+                "custom": {
+                  "displayName": "Map + copy"
+                }
+              },
+              "children": [
+                {
+                  "type": "Container",
+                  "props": {
+                    "root": {
+                      "background": "bg-(--muted) bg-cover bg-center bg-no-repeat"
+                    },
+                    "mobile": {
+                      "width": "w-full",
+                      "height": "h-64",
+                      "mb": "mb-12",
+                      "backgroundSize": "bg-cover",
+                      "backgroundPosition": "bg-center",
+                      "backgroundRepeat": "bg-no-repeat"
+                    },
+                    "backgroundImage": "https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=800&auto=format&fit=crop",
+                    "backgroundImageType": "url",
+                    "custom": {
+                      "displayName": "Map visual"
+                    }
+                  }
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "mobile": {
+                      "display": "grid",
+                      "gridTemplateColumns": "grid-cols-1",
+                      "gap": "gap-8"
+                    },
+                    "desktop": {
+                      "gridTemplateColumns": "grid-cols-2"
+                    },
+                    "custom": {
+                      "displayName": "Detail grid"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Container",
+                      "props": {
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-col"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "root": {
+                              "color": "text-(--foreground)"
+                            },
+                            "mobile": {
+                              "fontWeight": "font-bold",
+                              "mb": "mb-4",
+                              "fontSize": "text-sm"
+                            },
+                            "text": "Inquiries"
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "root": {
+                              "color": "text-(--muted-foreground)"
+                            },
+                            "mobile": {
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-relaxed"
+                            },
+                            "text": "For workspace questions or demos, call <span data-variable=\"company.phone\">{{company.phone}}</span> or route visitors through your published contact form."
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Container",
+                      "props": {
+                        "mobile": {
+                          "display": "flex",
+                          "flexDirection": "flex-col"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "props": {
+                            "root": {
+                              "color": "text-(--foreground)"
+                            },
+                            "mobile": {
+                              "fontWeight": "font-bold",
+                              "mb": "mb-4",
+                              "fontSize": "text-sm"
+                            },
+                            "text": "Head office"
+                          }
+                        },
+                        {
+                          "type": "Text",
+                          "props": {
+                            "root": {
+                              "color": "text-(--muted-foreground)"
+                            },
+                            "mobile": {
+                              "fontSize": "text-sm",
+                              "lineHeight": "leading-relaxed"
+                            },
+                            "text": "<span data-variable=\"company.address\">{{company.address}}</span><br/><br/><span data-variable=\"company.email\">{{company.email}}</span><br/>Tel: <span data-variable=\"company.phone\">{{company.phone}}</span>"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

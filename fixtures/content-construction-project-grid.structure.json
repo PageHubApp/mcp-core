@@ -1,0 +1,441 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "type": "section",
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "alignItems": "items-center",
+      "width": "w-full",
+      "py": "py-24",
+      "px": "px-8"
+    },
+    "custom": {
+      "displayName": "Construction projects grid"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "alignItems": "items-center",
+          "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
+          "mx": "mx-auto"
+        },
+        "custom": {
+          "displayName": "Section inner"
+        }
+      },
+      "children": [
+        {
+          "type": "Text",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {
+              "color": "text-(--foreground)"
+            },
+            "mobile": {
+              "fontSize": "text-2xl",
+              "fontWeight": "font-bold",
+              "letterSpacing": "tracking-widest",
+              "mb": "mb-16"
+            },
+            "text": "PROJECTS",
+            "tagName": "h3",
+            "className": [
+              "inline-block",
+              "border-b-4",
+              "border-(--accent)",
+              "pb-2"
+            ],
+            "custom": {
+              "displayName": "Section title"
+            }
+          }
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "grid",
+              "gridTemplateColumns": "grid-cols-1",
+              "gap": "gap-12",
+              "width": "w-full",
+              "maxWidth": "max-w-6xl"
+            },
+            "className": [
+              "md:grid",
+              "md:grid-cols-2"
+            ],
+            "custom": {
+              "displayName": "Project cards"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--background)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "width": "w-full",
+                  "overflow": "overflow-hidden"
+                },
+                "custom": {
+                  "displayName": "Project card"
+                }
+              },
+              "children": [
+                {
+                  "type": "Container",
+                  "props": {
+                    "root": {
+                      "background": "bg-(--muted)"
+                    },
+                    "className": [
+                      "aspect-square",
+                      "w-full"
+                    ],
+                    "backgroundImage": "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=800&auto=format&fit=crop",
+                    "backgroundImageType": "url",
+                    "mobile": {
+                      "backgroundSize": "bg-cover",
+                      "backgroundPosition": "bg-center",
+                      "backgroundRepeat": "bg-no-repeat"
+                    }
+                  }
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "root": {
+                      "background": "bg-(--background)"
+                    },
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-col",
+                      "py": "py-6",
+                      "px": "px-2"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "props": {
+                        "root": {
+                          "color": "text-(--foreground)"
+                        },
+                        "mobile": {
+                          "fontSize": "text-lg",
+                          "fontWeight": "font-bold",
+                          "letterSpacing": "tracking-wide",
+                          "mb": "mb-2"
+                        },
+                        "text": "SKYLINE TOWER",
+                        "tagName": "h4"
+                      }
+                    },
+                    {
+                      "type": "Text",
+                      "props": {
+                        "root": {
+                          "color": "text-(--muted-foreground)"
+                        },
+                        "mobile": {
+                          "fontSize": "text-sm",
+                          "fontStyle": "italic"
+                        },
+                        "text": "Commercial • {{year}}",
+                        "tagName": "p"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--background)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "width": "w-full",
+                  "overflow": "overflow-hidden"
+                },
+                "custom": {
+                  "displayName": "Project card"
+                }
+              },
+              "children": [
+                {
+                  "type": "Container",
+                  "props": {
+                    "root": {
+                      "background": "bg-(--muted)"
+                    },
+                    "className": [
+                      "aspect-square",
+                      "w-full"
+                    ],
+                    "backgroundImage": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=800&auto=format&fit=crop",
+                    "backgroundImageType": "url",
+                    "mobile": {
+                      "backgroundSize": "bg-cover",
+                      "backgroundPosition": "bg-center",
+                      "backgroundRepeat": "bg-no-repeat"
+                    }
+                  }
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "root": {
+                      "background": "bg-(--background)"
+                    },
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-col",
+                      "py": "py-6",
+                      "px": "px-2"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "props": {
+                        "root": {
+                          "color": "text-(--foreground)"
+                        },
+                        "mobile": {
+                          "fontSize": "text-lg",
+                          "fontWeight": "font-bold",
+                          "letterSpacing": "tracking-wide",
+                          "mb": "mb-2"
+                        },
+                        "text": "VERTEX BRIDGE",
+                        "tagName": "h4"
+                      }
+                    },
+                    {
+                      "type": "Text",
+                      "props": {
+                        "root": {
+                          "color": "text-(--muted-foreground)"
+                        },
+                        "mobile": {
+                          "fontSize": "text-sm",
+                          "fontStyle": "italic"
+                        },
+                        "text": "Infrastructure • {{year}}",
+                        "tagName": "p"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--background)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "width": "w-full",
+                  "overflow": "overflow-hidden"
+                },
+                "custom": {
+                  "displayName": "Project card"
+                }
+              },
+              "children": [
+                {
+                  "type": "Container",
+                  "props": {
+                    "root": {
+                      "background": "bg-(--muted)"
+                    },
+                    "className": [
+                      "aspect-square",
+                      "w-full"
+                    ],
+                    "backgroundImage": "https://images.unsplash.com/photo-1590486803833-1c5dc8ddd4c8?q=80&w=800&auto=format&fit=crop",
+                    "backgroundImageType": "url",
+                    "mobile": {
+                      "backgroundSize": "bg-cover",
+                      "backgroundPosition": "bg-center",
+                      "backgroundRepeat": "bg-no-repeat"
+                    }
+                  }
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "root": {
+                      "background": "bg-(--background)"
+                    },
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-col",
+                      "py": "py-6",
+                      "px": "px-2"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "props": {
+                        "root": {
+                          "color": "text-(--foreground)"
+                        },
+                        "mobile": {
+                          "fontSize": "text-lg",
+                          "fontWeight": "font-bold",
+                          "letterSpacing": "tracking-wide",
+                          "mb": "mb-2"
+                        },
+                        "text": "FOUNDATION NODE",
+                        "tagName": "h4"
+                      }
+                    },
+                    {
+                      "type": "Text",
+                      "props": {
+                        "root": {
+                          "color": "text-(--muted-foreground)"
+                        },
+                        "mobile": {
+                          "fontSize": "text-sm",
+                          "fontStyle": "italic"
+                        },
+                        "text": "Industrial • {{year}}",
+                        "tagName": "p"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--background)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "width": "w-full",
+                  "overflow": "overflow-hidden"
+                },
+                "custom": {
+                  "displayName": "Project card"
+                }
+              },
+              "children": [
+                {
+                  "type": "Container",
+                  "props": {
+                    "root": {
+                      "background": "bg-(--muted)"
+                    },
+                    "className": [
+                      "aspect-square",
+                      "w-full"
+                    ],
+                    "backgroundImage": "https://images.unsplash.com/photo-1531834685032-c34bf0d84c77?q=80&w=800&auto=format&fit=crop",
+                    "backgroundImageType": "url",
+                    "mobile": {
+                      "backgroundSize": "bg-cover",
+                      "backgroundPosition": "bg-center",
+                      "backgroundRepeat": "bg-no-repeat"
+                    }
+                  }
+                },
+                {
+                  "type": "Container",
+                  "props": {
+                    "root": {
+                      "background": "bg-(--background)"
+                    },
+                    "mobile": {
+                      "display": "flex",
+                      "flexDirection": "flex-col",
+                      "py": "py-6",
+                      "px": "px-2"
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "Text",
+                      "props": {
+                        "root": {
+                          "color": "text-(--foreground)"
+                        },
+                        "mobile": {
+                          "fontSize": "text-lg",
+                          "fontWeight": "font-bold",
+                          "letterSpacing": "tracking-wide",
+                          "mb": "mb-2"
+                        },
+                        "text": "APEX COMPLEX",
+                        "tagName": "h4"
+                      }
+                    },
+                    {
+                      "type": "Text",
+                      "props": {
+                        "root": {
+                          "color": "text-(--muted-foreground)"
+                        },
+                        "mobile": {
+                          "fontSize": "text-sm",
+                          "fontStyle": "italic"
+                        },
+                        "text": "Commercial • {{year}}",
+                        "tagName": "p"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

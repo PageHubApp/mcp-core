@@ -1,0 +1,232 @@
+{
+  "type": "Container",
+  "props": {
+    "type": "section",
+    "canDelete": true,
+    "canEditName": true,
+    "root": {
+      "background": "bg-(--muted)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "width": "w-full",
+      "py": "py-12",
+      "px": "px-6"
+    },
+    "desktop": {
+      "py": "py-16",
+      "px": "px-8"
+    },
+    "custom": {
+      "displayName": "CV bento — profile and photo row"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "gap": "gap-6",
+          "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
+          "mx": "mx-auto"
+        },
+        "custom": {
+          "displayName": "Section inner"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "grid",
+              "gridCols": "grid-cols-1",
+              "gap": "gap-4",
+              "width": "w-full"
+            },
+            "className": [
+              "md:grid-cols-2"
+            ],
+            "custom": {
+              "displayName": "Two-card row"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--background)",
+                  "radius": "rounded-3xl",
+                  "shadow": "shadow-sm",
+                  "color": "text-(--foreground)",
+                  "transition": "transition-transform hover:-translate-y-1 duration-300",
+                  "overflow": "overflow-hidden"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "width": "w-full",
+                  "position": "relative",
+                  "p": "p-10",
+                  "justifyContent": "justify-end",
+                  "minHeight": "min-h-80"
+                },
+                "desktop": {
+                  "minHeight": "min-h-96"
+                },
+                "className": [
+                  "overflow-hidden"
+                ],
+                "custom": {
+                  "displayName": "Intro card"
+                }
+              },
+              "children": [
+                {
+                  "type": "Container",
+                  "props": {
+                    "root": {
+                      "background": "bg-(--muted) bg-cover bg-center",
+                      "radius": "rounded-full"
+                    },
+                    "mobile": {
+                      "width": "w-24",
+                      "height": "h-24",
+                      "mb": "mb-8",
+                      "mt": "mt-auto",
+                      "backgroundSize": "bg-cover",
+                      "backgroundPosition": "bg-center",
+                      "backgroundRepeat": "bg-no-repeat"
+                    },
+                    "backgroundImage": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop",
+                    "backgroundImageType": "url"
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "root": {
+                      "color": "text-(--accent)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm",
+                      "fontWeight": "font-bold",
+                      "letterSpacing": "tracking-widest",
+                      "mb": "mb-2"
+                    },
+                    "text": "INTRO",
+                    "tagName": "p"
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "mobile": {
+                      "fontSize": "text-3xl",
+                      "fontWeight": "font-black",
+                      "lineHeight": "leading-tight",
+                      "letterSpacing": "tracking-tighter"
+                    },
+                    "desktop": {
+                      "fontSize": "text-4xl"
+                    },
+                    "text": "Your name here.<br/>Role line one &<br/>Role line two.",
+                    "tagName": "h1"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-cover bg-center",
+                  "radius": "rounded-3xl",
+                  "shadow": "shadow-sm",
+                  "color": "text-(--foreground)",
+                  "transition": "transition-transform hover:-translate-y-1 duration-300",
+                  "overflow": "overflow-hidden"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "width": "w-full",
+                  "position": "relative",
+                  "minHeight": "min-h-80",
+                  "justifyContent": "justify-end",
+                  "p": "p-6",
+                  "backgroundSize": "bg-cover",
+                  "backgroundPosition": "bg-center",
+                  "backgroundRepeat": "bg-no-repeat"
+                },
+                "desktop": {
+                  "minHeight": "min-h-96"
+                },
+                "className": [
+                  "overflow-hidden"
+                ],
+                "backgroundImage": "https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=800&auto=format&fit=crop",
+                "backgroundImageType": "url",
+                "custom": {
+                  "displayName": "Photo caption card"
+                }
+              },
+              "children": [
+                {
+                  "type": "Container",
+                  "props": {
+                    "root": {},
+                    "mobile": {
+                      "position": "absolute",
+                      "bottom": "bottom-0",
+                      "left": "left-0",
+                      "width": "w-full",
+                      "height": "h-1/2",
+                      "zIndex": "z-0"
+                    },
+                    "className": [
+                      "bg-gradient-to-t",
+                      "from-gray-900/80",
+                      "to-transparent"
+                    ]
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "root": {
+                      "color": "text-white"
+                    },
+                    "mobile": {
+                      "fontSize": "text-lg",
+                      "fontWeight": "font-bold",
+                      "position": "relative",
+                      "zIndex": "z-10",
+                      "lineHeight": "leading-tight"
+                    },
+                    "text": "Studio city<br/>and region",
+                    "tagName": "p"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

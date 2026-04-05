@@ -1,0 +1,212 @@
+{
+  "type": "Container",
+  "props": {
+    "type": "section",
+    "canDelete": true,
+    "canEditName": true,
+    "root": {
+      "background": "bg-(--muted)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "width": "w-full",
+      "py": "py-12",
+      "px": "px-6"
+    },
+    "desktop": {
+      "py": "py-16",
+      "px": "px-8"
+    },
+    "custom": {
+      "displayName": "CV bento — highlight and status row"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "gap": "gap-6",
+          "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
+          "mx": "mx-auto"
+        },
+        "custom": {
+          "displayName": "Section inner"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "grid",
+              "gridCols": "grid-cols-1",
+              "gap": "gap-4",
+              "width": "w-full"
+            },
+            "className": [
+              "md:grid-cols-2"
+            ],
+            "custom": {
+              "displayName": "Two-card row"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--background)",
+                  "radius": "rounded-3xl",
+                  "shadow": "shadow-sm",
+                  "color": "text-(--foreground)",
+                  "transition": "transition-transform hover:-translate-y-1 duration-300",
+                  "overflow": "overflow-hidden"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "width": "w-full",
+                  "position": "relative",
+                  "minHeight": "min-h-80",
+                  "p": "p-8",
+                  "justifyContent": "justify-center",
+                  "alignItems": "items-start"
+                },
+                "desktop": {
+                  "minHeight": "min-h-96"
+                },
+                "className": [
+                  "overflow-hidden"
+                ],
+                "custom": {
+                  "displayName": "Highlight card"
+                }
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "props": {
+                    "root": {
+                      "color": "text-(--muted-foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-xs",
+                      "fontWeight": "font-bold",
+                      "letterSpacing": "tracking-widest",
+                      "mb": "mb-4"
+                    },
+                    "text": "HIGHLIGHT",
+                    "tagName": "p"
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "mobile": {
+                      "fontSize": "text-2xl",
+                      "fontWeight": "font-black",
+                      "lineHeight": "leading-tight",
+                      "mb": "mb-2"
+                    },
+                    "text": "Lead line for your<br/>current role or studio.",
+                    "tagName": "h2"
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "root": {
+                      "color": "text-(--accent)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm",
+                      "fontWeight": "font-semibold"
+                    },
+                    "text": "2023 — Present",
+                    "tagName": "p"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--foreground)",
+                  "radius": "rounded-3xl",
+                  "shadow": "shadow-sm",
+                  "color": "text-(--background)",
+                  "transition": "transition-transform hover:-translate-y-1 duration-300",
+                  "overflow": "overflow-hidden"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "width": "w-full",
+                  "position": "relative",
+                  "minHeight": "min-h-80",
+                  "p": "p-8",
+                  "justifyContent": "justify-center",
+                  "alignItems": "items-start"
+                },
+                "desktop": {
+                  "minHeight": "min-h-96"
+                },
+                "className": [
+                  "overflow-hidden"
+                ],
+                "custom": {
+                  "displayName": "Status card"
+                }
+              },
+              "children": [
+                {
+                  "type": "Container",
+                  "props": {
+                    "root": {
+                      "background": "bg-(--accent)",
+                      "radius": "rounded-full"
+                    },
+                    "mobile": {
+                      "width": "w-4",
+                      "height": "h-4",
+                      "mb": "mb-4",
+                      "shrink": "shrink-0"
+                    }
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "mobile": {
+                      "fontSize": "text-xl",
+                      "fontWeight": "font-bold",
+                      "textAlign": "text-left",
+                      "lineHeight": "leading-snug"
+                    },
+                    "text": "Accepting new<br/>workspace builds.",
+                    "tagName": "p"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

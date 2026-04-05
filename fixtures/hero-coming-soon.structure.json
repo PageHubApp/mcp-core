@@ -1,0 +1,271 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "type": "section",
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "alignItems": "items-center",
+      "justifyContent": "justify-center",
+      "width": "w-full",
+      "minHeight": "min-h-screen",
+      "py": "py-12",
+      "px": "px-6"
+    },
+    "desktop": {
+      "py": "py-20",
+      "px": "px-16"
+    },
+    "custom": {
+      "displayName": "Coming soon hero"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "alignItems": "items-center",
+          "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
+          "mx": "mx-auto",
+          "gap": "gap-10"
+        },
+        "custom": {
+          "displayName": "Section inner"
+        }
+      },
+      "children": [
+        {
+          "type": "Text",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {
+              "color": "text-(--primary)",
+              "fontFamily": "var(--heading-font-family)",
+              "fontWeight": "font-semibold"
+            },
+            "mobile": {
+              "fontSize": "text-sm"
+            },
+            "text": "LAUNCHING {{year}}",
+            "className": [
+              "tracking-[0.25em]",
+              "uppercase"
+            ],
+            "custom": {
+              "displayName": "Eyebrow"
+            }
+          }
+        },
+        {
+          "type": "Text",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {
+              "color": "text-(--foreground)",
+              "fontFamily": "var(--heading-font-family)",
+              "fontWeight": "font-extrabold"
+            },
+            "mobile": {
+              "fontSize": "text-5xl",
+              "allWidths": "w-full"
+            },
+            "desktop": {
+              "fontSize": "text-8xl"
+            },
+            "text": "Something big is landing",
+            "className": [
+              "tracking-tight",
+              "text-center"
+            ],
+            "custom": {
+              "displayName": "Heading"
+            }
+          }
+        },
+        {
+          "type": "Text",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {
+              "color": "text-(--muted-foreground)",
+              "fontFamily": "var(--body-font-family)",
+              "lineHeight": "leading-relaxed"
+            },
+            "mobile": {
+              "fontSize": "text-lg",
+              "allWidths": "w-full"
+            },
+            "desktop": {
+              "fontSize": "text-xl",
+              "allWidths": "w-6/12"
+            },
+            "text": "We are polishing the next workspace drop. Leave an email if you want one ping when it opens — no promos, just the release.",
+            "className": [
+              "text-center"
+            ],
+            "custom": {
+              "displayName": "Subheading"
+            }
+          }
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "alignItems": "items-center",
+              "width": "w-full",
+              "gap": "gap-4"
+            },
+            "desktop": {
+              "allWidths": "w-full",
+              "maxWidth": "max-w-xl"
+            },
+            "custom": {
+              "displayName": "Form wrapper"
+            }
+          },
+          "children": [
+            {
+              "type": "Form",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "formName": "coming-soon-notify",
+                "formType": "subscribe",
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "width": "w-full",
+                  "gap": "gap-3"
+                },
+                "desktop": {
+                  "flexDirection": "flex-row",
+                  "gap": "gap-0",
+                  "alignItems": "items-stretch"
+                },
+                "custom": {
+                  "displayName": "Email signup"
+                }
+              },
+              "children": [
+                {
+                  "type": "FormElement",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "type": "email",
+                    "name": "email",
+                    "label": "",
+                    "placeholder": "you@workspace.com",
+                    "required": true,
+                    "autocomplete": "email",
+                    "root": {
+                      "border": "border",
+                      "borderWidth": "border-(--input-border-width)",
+                      "borderStyle": "border-solid",
+                      "borderColor": "border-(--input-border-color)",
+                      "radius": "rounded-l-(--input-border-radius)",
+                      "background": "bg-(--input-bg-color)",
+                      "color": "text-(--input-text-color)"
+                    },
+                    "mobile": {
+                      "p": "p-(--input-padding)",
+                      "width": "w-full"
+                    },
+                    "desktop": {
+                      "flex": "flex-1"
+                    },
+                    "custom": {
+                      "displayName": "Email input"
+                    }
+                  }
+                },
+                {
+                  "type": "Button",
+                  "props": {
+                    "canDelete": true,
+                    "canEditName": true,
+                    "type": "submit",
+                    "text": "Get notified",
+                    "icon": {
+                      "value": "ref-google:arrow_forward",
+                      "position": "right",
+                      "size": "w-5 h-5",
+                      "gap": "gap-2"
+                    },
+                    "root": {
+                      "background": "bg-(--primary)",
+                      "color": "text-(--primary-foreground)",
+                      "radius": "rounded-r-(--radius)",
+                      "fontWeight": "font-semibold"
+                    },
+                    "mobile": {
+                      "width": "w-full",
+                      "px": "px-(--button-padding-x)",
+                      "py": "py-3",
+                      "display": "flex",
+                      "alignItems": "items-center",
+                      "justifyContent": "justify-center"
+                    },
+                    "desktop": {
+                      "width": "w-auto",
+                      "shrink": "shrink-0"
+                    },
+                    "className": [
+                      "whitespace-nowrap"
+                    ],
+                    "custom": {
+                      "displayName": "Submit"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Text",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {
+              "color": "text-(--muted-foreground)",
+              "fontFamily": "var(--body-font-family)"
+            },
+            "mobile": {
+              "fontSize": "text-sm"
+            },
+            "text": "No spam. Unsubscribe from builder mail anytime.",
+            "className": [
+              "text-center"
+            ],
+            "custom": {
+              "displayName": "Privacy note"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

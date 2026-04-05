@@ -1,0 +1,301 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "type": "section",
+    "root": {
+      "background": "bg-(--background)",
+      "color": "text-(--foreground)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "alignItems": "items-center",
+      "width": "w-full",
+      "py": "py-24",
+      "px": "px-8"
+    },
+    "desktop": {
+      "px": "px-16"
+    },
+    "custom": {
+      "displayName": "Construction services — three cards"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "alignItems": "items-center",
+          "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
+          "mx": "mx-auto"
+        },
+        "custom": {
+          "displayName": "Section inner"
+        }
+      },
+      "children": [
+        {
+          "type": "Text",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {
+              "color": "text-(--foreground)"
+            },
+            "mobile": {
+              "fontSize": "text-2xl",
+              "fontWeight": "font-bold",
+              "letterSpacing": "tracking-widest",
+              "mb": "mb-16"
+            },
+            "text": "SERVICES",
+            "tagName": "h3",
+            "className": [
+              "inline-block",
+              "border-b-4",
+              "border-(--accent)",
+              "pb-2"
+            ],
+            "custom": {
+              "displayName": "Section title"
+            }
+          }
+        },
+        {
+          "type": "Container",
+          "props": {
+            "canDelete": true,
+            "canEditName": true,
+            "root": {},
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "gap": "gap-12",
+              "width": "w-full",
+              "maxWidth": "max-w-5xl"
+            },
+            "desktop": {
+              "flexDirection": "flex-row",
+              "gap": "gap-8"
+            },
+            "custom": {
+              "displayName": "Service columns"
+            }
+          },
+          "children": [
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--background)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "flex": "flex-1"
+                },
+                "custom": {
+                  "displayName": "Service 1"
+                }
+              },
+              "children": [
+                {
+                  "type": "Container",
+                  "props": {
+                    "root": {
+                      "background": "bg-(--muted) bg-cover bg-center"
+                    },
+                    "mobile": {
+                      "width": "w-full",
+                      "height": "h-48",
+                      "mb": "mb-6",
+                      "backgroundSize": "bg-cover",
+                      "backgroundPosition": "bg-center",
+                      "backgroundRepeat": "bg-no-repeat"
+                    },
+                    "backgroundImage": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=800&auto=format&fit=crop",
+                    "backgroundImageType": "url"
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "root": {
+                      "color": "text-(--foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-base",
+                      "fontWeight": "font-bold",
+                      "mb": "mb-4"
+                    },
+                    "text": "Preconstruction<br/>Planning",
+                    "tagName": "h4"
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "root": {
+                      "color": "text-(--muted-foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm",
+                      "lineHeight": "leading-relaxed"
+                    },
+                    "text": "Line up scopes, milestones, and library blocks before you pour content into the canvas — ideal for phased builds and multi-site brands.",
+                    "tagName": "p"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--background)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "flex": "flex-1"
+                },
+                "custom": {
+                  "displayName": "Service 2"
+                }
+              },
+              "children": [
+                {
+                  "type": "Container",
+                  "props": {
+                    "root": {
+                      "background": "bg-(--muted) bg-cover bg-center"
+                    },
+                    "mobile": {
+                      "width": "w-full",
+                      "height": "h-48",
+                      "mb": "mb-6",
+                      "backgroundSize": "bg-cover",
+                      "backgroundPosition": "bg-center",
+                      "backgroundRepeat": "bg-no-repeat"
+                    },
+                    "backgroundImage": "https://images.unsplash.com/photo-1513467535987-fd81bc7d62f8?q=80&w=800&auto=format&fit=crop",
+                    "backgroundImageType": "url"
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "root": {
+                      "color": "text-(--foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-base",
+                      "fontWeight": "font-bold",
+                      "mb": "mb-4"
+                    },
+                    "text": "Architectural<br/>Modelling",
+                    "tagName": "h4"
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "root": {
+                      "color": "text-(--muted-foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm",
+                      "lineHeight": "leading-relaxed"
+                    },
+                    "text": "Show structure, facades, or fit-outs with repeatable image + copy rows — swap in your own job-site photography.",
+                    "tagName": "p"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "props": {
+                "canDelete": true,
+                "canEditName": true,
+                "root": {
+                  "background": "bg-(--background)"
+                },
+                "mobile": {
+                  "display": "flex",
+                  "flexDirection": "flex-col",
+                  "flex": "flex-1"
+                },
+                "custom": {
+                  "displayName": "Service 3"
+                }
+              },
+              "children": [
+                {
+                  "type": "Container",
+                  "props": {
+                    "root": {
+                      "background": "bg-(--muted) bg-cover bg-center"
+                    },
+                    "mobile": {
+                      "width": "w-full",
+                      "height": "h-48",
+                      "mb": "mb-6",
+                      "backgroundSize": "bg-cover",
+                      "backgroundPosition": "bg-center",
+                      "backgroundRepeat": "bg-no-repeat"
+                    },
+                    "backgroundImage": "https://images.unsplash.com/photo-1590486803833-1c5dc8ddd4c8?q=80&w=800&auto=format&fit=crop",
+                    "backgroundImageType": "url"
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "root": {
+                      "color": "text-(--foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-base",
+                      "fontWeight": "font-bold",
+                      "mb": "mb-4"
+                    },
+                    "text": "Construction<br/>Management",
+                    "tagName": "h4"
+                  }
+                },
+                {
+                  "type": "Text",
+                  "props": {
+                    "root": {
+                      "color": "text-(--muted-foreground)"
+                    },
+                    "mobile": {
+                      "fontSize": "text-sm",
+                      "lineHeight": "leading-relaxed"
+                    },
+                    "text": "Keep crews, subs, and client updates aligned — use this column for PM narratives, safety wins, or delivery guarantees.",
+                    "tagName": "p"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

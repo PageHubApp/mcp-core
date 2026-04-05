@@ -1,0 +1,236 @@
+{
+  "type": "Container",
+  "props": {
+    "canDelete": true,
+    "canEditName": true,
+    "type": "section",
+    "root": {
+      "background": "bg-(--primary)",
+      "color": "text-(--primary-foreground)"
+    },
+    "mobile": {
+      "display": "flex",
+      "flexDirection": "flex-col",
+      "alignItems": "items-center",
+      "width": "w-full",
+      "py": "py-16",
+      "px": "px-8",
+      "gap": "gap-12"
+    },
+    "className": [
+      "md:px-16"
+    ],
+    "custom": {
+      "displayName": "Construction stats band"
+    }
+  },
+  "children": [
+    {
+      "type": "Container",
+      "props": {
+        "canDelete": true,
+        "canEditName": true,
+        "root": {},
+        "mobile": {
+          "display": "flex",
+          "flexDirection": "flex-col",
+          "alignItems": "items-center",
+          "width": "w-full",
+          "maxWidth": "max-w-(--content-width)",
+          "mx": "mx-auto",
+          "gap": "gap-12"
+        },
+        "className": [
+          "md:flex-row",
+          "md:justify-around",
+          "md:gap-8"
+        ],
+        "custom": {
+          "displayName": "Stats row"
+        }
+      },
+      "children": [
+        {
+          "type": "Container",
+          "props": {
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "alignItems": "items-center",
+              "textAlign": "text-center"
+            },
+            "className": [
+              "md:flex-1"
+            ]
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "root": {
+                  "color": "text-(--primary-foreground)"
+                },
+                "mobile": {
+                  "fontSize": "text-5xl",
+                  "fontWeight": "font-semibold"
+                },
+                "text": "1998",
+                "tagName": "h3"
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "root": {
+                  "color": "text-(--primary-foreground)/80"
+                },
+                "mobile": {
+                  "fontSize": "text-base",
+                  "fontWeight": "font-medium",
+                  "mt": "mt-2"
+                },
+                "text": "Year<br/>Established",
+                "tagName": "p"
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "alignItems": "items-center",
+              "textAlign": "text-center"
+            },
+            "className": [
+              "md:flex-1"
+            ]
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "root": {
+                  "color": "text-(--primary-foreground)"
+                },
+                "mobile": {
+                  "fontSize": "text-5xl",
+                  "fontWeight": "font-semibold"
+                },
+                "text": "206",
+                "tagName": "h3"
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "root": {
+                  "color": "text-(--primary-foreground)/80"
+                },
+                "mobile": {
+                  "fontSize": "text-base",
+                  "fontWeight": "font-medium",
+                  "mt": "mt-2"
+                },
+                "text": "Projects<br/>Completed",
+                "tagName": "p"
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "alignItems": "items-center",
+              "textAlign": "text-center"
+            },
+            "className": [
+              "md:flex-1"
+            ]
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "root": {
+                  "color": "text-(--primary-foreground)"
+                },
+                "mobile": {
+                  "fontSize": "text-5xl",
+                  "fontWeight": "font-semibold"
+                },
+                "text": "870",
+                "tagName": "h3"
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "root": {
+                  "color": "text-(--primary-foreground)/80"
+                },
+                "mobile": {
+                  "fontSize": "text-base",
+                  "fontWeight": "font-medium",
+                  "mt": "mt-2"
+                },
+                "text": "Contractors<br/>Appointed",
+                "tagName": "p"
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "props": {
+            "mobile": {
+              "display": "flex",
+              "flexDirection": "flex-col",
+              "alignItems": "items-center",
+              "textAlign": "text-center"
+            },
+            "className": [
+              "md:flex-1"
+            ]
+          },
+          "children": [
+            {
+              "type": "Text",
+              "props": {
+                "root": {
+                  "color": "text-(--primary-foreground)"
+                },
+                "mobile": {
+                  "fontSize": "text-5xl",
+                  "fontWeight": "font-semibold"
+                },
+                "text": "26",
+                "tagName": "h3"
+              }
+            },
+            {
+              "type": "Text",
+              "props": {
+                "root": {
+                  "color": "text-(--primary-foreground)/80"
+                },
+                "mobile": {
+                  "fontSize": "text-base",
+                  "fontWeight": "font-medium",
+                  "mt": "mt-2"
+                },
+                "text": "Awards<br/>Won",
+                "tagName": "p"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
