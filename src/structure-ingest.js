@@ -104,10 +104,6 @@ function applyPropOverride(node, patch) {
   }
   // Non-class props
   if (patch.props) deepMerge(node.props, patch.props);
-  // Legacy backward compat — convert old structured patches to className
-  if (patch.root) deepMerge(node.props.root || (node.props.root = {}), patch.root);
-  if (patch.mobile) deepMerge(node.props.mobile || (node.props.mobile = {}), patch.mobile);
-  if (patch.desktop) deepMerge(node.props.desktop || (node.props.desktop = {}), patch.desktop);
 }
 
 /**

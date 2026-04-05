@@ -196,15 +196,11 @@ module.exports = {
       nodesPatch,
       unsetProps,
       unsetClasses,
-      // Legacy fields (backward compat)
-      unsetMobile,
-      unsetDesktop,
-      unsetRoot,
     } = args;
     applyNodePatches(
       flat,
       nodeId,
-      normalizeNodePatchArgs({ ...args, nodesPatch, unsetProps, unsetClasses, unsetMobile, unsetDesktop, unsetRoot })
+      normalizeNodePatchArgs({ ...args, nodesPatch, unsetProps, unsetClasses })
     );
     const newStructure = flatLibraryToHierarchical(flat, rootId);
 

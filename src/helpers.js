@@ -34,9 +34,6 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
   const {
     propsPatch, classNamePatch, nodesPatch,
     unsetProps, unsetClasses,
-    // Legacy fields — still accepted for backward compat
-    mobilePatch, desktopPatch, rootPatch,
-    unsetMobile, unsetDesktop, unsetRoot,
   } = patchArgs;
   if (!flatMap[nodeId]) {
     let hint = '';
@@ -70,51 +67,6 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
   if (Array.isArray(unsetProps)) {
     for (const k of unsetProps) delete flatMap[nodeId].props[k];
   }
-  // ── Legacy backward compat: convert old structured props to className ──
-  if (mobilePatch) {
-    // Old mobile props were base (unprefixed) Tailwind values
-    const classes = Object.values(mobilePatch).filter((v) => typeof v === 'string');
-    if (classes.length > 0) {
-      const existing = flatMap[nodeId].props.className || '';
-      flatMap[nodeId].props.className = twMerge(existing, classes.join(' '));
-    }
-  }
-  if (desktopPatch) {
-    // Old desktop props become md: prefixed
-    const classes = Object.values(desktopPatch)
-      .filter((v) => typeof v === 'string')
-      .map((v) => `md:${v}`);
-    if (classes.length > 0) {
-      const existing = flatMap[nodeId].props.className || '';
-      flatMap[nodeId].props.className = twMerge(existing, classes.join(' '));
-    }
-  }
-  if (rootPatch) {
-    // Old root props were visual Tailwind values (unprefixed)
-    const classes = Object.values(rootPatch).filter((v) => typeof v === 'string');
-    if (classes.length > 0) {
-      const existing = flatMap[nodeId].props.className || '';
-      flatMap[nodeId].props.className = twMerge(existing, classes.join(' '));
-    }
-  }
-  if (Array.isArray(unsetMobile)) {
-    // Remove unprefixed classes by name hint
-    flatMap[nodeId].props.className = removeClasses(
-      flatMap[nodeId].props.className || '', unsetMobile
-    );
-  }
-  if (Array.isArray(unsetDesktop)) {
-    // Remove md:-prefixed classes
-    const prefixed = unsetDesktop.map((k) => `md:${k}`);
-    flatMap[nodeId].props.className = removeClasses(
-      flatMap[nodeId].props.className || '', prefixed
-    );
-  }
-  if (Array.isArray(unsetRoot)) {
-    flatMap[nodeId].props.className = removeClasses(
-      flatMap[nodeId].props.className || '', unsetRoot
-    );
-  }
 }
 
 const PATCH_BODY_KEYS = [
@@ -123,13 +75,6 @@ const PATCH_BODY_KEYS = [
   'nodesPatch',
   'unsetProps',
   'unsetClasses',
-  // Legacy fields (backward compat — auto-converted to className)
-  'mobilePatch',
-  'desktopPatch',
-  'rootPatch',
-  'unsetMobile',
-  'unsetDesktop',
-  'unsetRoot',
 ];
 
 /** Allowed top-level keys for patch_site_node. */
@@ -184,13 +129,6 @@ function normalizeNodePatchArgs(raw) {
     nodesPatch: raw.nodesPatch,
     unsetProps: raw.unsetProps,
     unsetClasses: raw.unsetClasses,
-    // Legacy fields (backward compat)
-    mobilePatch: parseMaybeJson(raw.mobilePatch) ?? raw.mobilePatch,
-    desktopPatch: parseMaybeJson(raw.desktopPatch) ?? raw.desktopPatch,
-    rootPatch: parseMaybeJson(raw.rootPatch) ?? raw.rootPatch,
-    unsetMobile: raw.unsetMobile,
-    unsetDesktop: raw.unsetDesktop,
-    unsetRoot: raw.unsetRoot,
   };
 }
 

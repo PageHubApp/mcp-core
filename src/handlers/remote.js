@@ -537,10 +537,6 @@ module.exports = {
       nodesPatch,
       unsetProps,
       unsetClasses,
-      // Legacy fields (backward compat)
-      unsetMobile,
-      unsetDesktop,
-      unsetRoot,
     } = args;
     const ctx = getContext();
     let sourceContent;
@@ -559,7 +555,7 @@ module.exports = {
     applyNodePatches(
       flat,
       nodeId,
-      normalizeNodePatchArgs({ ...args, nodesPatch, unsetProps, unsetClasses, unsetMobile, unsetDesktop, unsetRoot })
+      normalizeNodePatchArgs({ ...args, nodesPatch, unsetProps, unsetClasses })
     );
     const changedNodes = collectSubtree(flat, findSectionRoot(flat, nodeId));
 
