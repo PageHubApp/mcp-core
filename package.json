@@ -10,7 +10,9 @@
   "engines": {
     "node": ">=18"
   },
-  "dependencies": {},
+  "dependencies": {
+    "tailwind-merge": "^3.5.0"
+  },
   "keywords": [
     "pagehub",
     "mcp",

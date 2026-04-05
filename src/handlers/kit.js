@@ -1,5 +1,4 @@
-const path = require('path');
-const { twMerge } = require(path.join(__dirname, '../../../../node_modules/tailwind-merge'));
+const { twMerge } = require('tailwind-merge');
 const { apiFetch } = require('../api-fetch');
 const { getContext } = require('../context');
 const { getActiveTarget, parseMaybeJson, saveTarget } = require('../helpers');
