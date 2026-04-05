@@ -48,13 +48,10 @@
               "props": {
                 "text": "Still deciding? Here is the fine print, plain language.",
                 "tagName": "h2",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
                 "custom": {
                   "displayName": "Heading"
                 },
-                "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl"
+                "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl font-(--heading-font-family)"
               }
             },
             {
@@ -108,13 +105,10 @@
                   "props": {
                     "text": "Can we trial Enterprise controls?",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Question"
                     },
-                    "className": "font-semibold text-base text-(--card-foreground)"
+                    "className": "font-semibold text-base text-(--card-foreground) font-(--heading-font-family)"
                   }
                 },
                 {
@@ -146,13 +140,10 @@
                   "props": {
                     "text": "Do you sign a DPA?",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Question"
                     },
-                    "className": "font-semibold text-base text-(--card-foreground)"
+                    "className": "font-semibold text-base text-(--card-foreground) font-(--heading-font-family)"
                   }
                 },
                 {
@@ -184,13 +175,10 @@
                   "props": {
                     "text": "What happens if we exceed usage?",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Question"
                     },
-                    "className": "font-semibold text-base text-(--card-foreground)"
+                    "className": "font-semibold text-base text-(--card-foreground) font-(--heading-font-family)"
                   }
                 },
                 {
@@ -222,13 +210,10 @@
                   "props": {
                     "text": "Are refunds prorated?",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Question"
                     },
-                    "className": "font-semibold text-base text-(--card-foreground)"
+                    "className": "font-semibold text-base text-(--card-foreground) font-(--heading-font-family)"
                   }
                 },
                 {

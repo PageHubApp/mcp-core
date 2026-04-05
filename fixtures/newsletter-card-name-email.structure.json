@@ -37,13 +37,10 @@
               "props": {
                 "text": "The PageHub changelog, in your inbox",
                 "tagName": "h2",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
                 "custom": {
                   "displayName": "Heading"
                 },
-                "className": "font-bold text-(--card-foreground) leading-tight text-2xl md:text-3xl"
+                "className": "font-bold text-(--card-foreground) leading-tight text-2xl md:text-3xl font-(--heading-font-family)"
               }
             },
             {

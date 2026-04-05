@@ -59,13 +59,10 @@
                   "props": {
                     "text": "Draft with live layout feedback",
                     "tagName": "h2",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Heading"
                     },
-                    "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl"
+                    "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl font-(--heading-font-family)"
                   }
                 },
                 {
@@ -144,13 +141,10 @@
                   "props": {
                     "text": "Reviewers see the same page your visitors will",
                     "tagName": "h2",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Heading"
                     },
-                    "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl"
+                    "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl font-(--heading-font-family)"
                   }
                 },
                 {

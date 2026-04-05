@@ -48,13 +48,10 @@
               "props": {
                 "text": "Answers before you open a ticket.",
                 "tagName": "h2",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
                 "custom": {
                   "displayName": "Heading"
                 },
-                "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl"
+                "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl font-(--heading-font-family)"
               }
             },
             {
@@ -108,13 +105,10 @@
                       "props": {
                         "text": "Do you offer annual pricing?",
                         "tagName": "h3",
-                        "root": {
-                          "style": "font-family: var(--heading-font-family);"
-                        },
                         "custom": {
                           "displayName": "Question"
                         },
-                        "className": "font-semibold text-base text-(--foreground)"
+                        "className": "font-semibold text-base text-(--foreground) font-(--heading-font-family)"
                       }
                     },
                     {
@@ -146,13 +140,10 @@
                       "props": {
                         "text": "Where is data hosted?",
                         "tagName": "h3",
-                        "root": {
-                          "style": "font-family: var(--heading-font-family);"
-                        },
                         "custom": {
                           "displayName": "Question"
                         },
-                        "className": "font-semibold text-base text-(--foreground)"
+                        "className": "font-semibold text-base text-(--foreground) font-(--heading-font-family)"
                       }
                     },
                     {
@@ -184,13 +175,10 @@
                       "props": {
                         "text": "Can we import from our old stack?",
                         "tagName": "h3",
-                        "root": {
-                          "style": "font-family: var(--heading-font-family);"
-                        },
                         "custom": {
                           "displayName": "Question"
                         },
-                        "className": "font-semibold text-base text-(--foreground)"
+                        "className": "font-semibold text-base text-(--foreground) font-(--heading-font-family)"
                       }
                     },
                     {
@@ -235,13 +223,10 @@
                       "props": {
                         "text": "What SSO options exist?",
                         "tagName": "h3",
-                        "root": {
-                          "style": "font-family: var(--heading-font-family);"
-                        },
                         "custom": {
                           "displayName": "Question"
                         },
-                        "className": "font-semibold text-base text-(--foreground)"
+                        "className": "font-semibold text-base text-(--foreground) font-(--heading-font-family)"
                       }
                     },
                     {
@@ -273,13 +258,10 @@
                       "props": {
                         "text": "Is there a public status page?",
                         "tagName": "h3",
-                        "root": {
-                          "style": "font-family: var(--heading-font-family);"
-                        },
                         "custom": {
                           "displayName": "Question"
                         },
-                        "className": "font-semibold text-base text-(--foreground)"
+                        "className": "font-semibold text-base text-(--foreground) font-(--heading-font-family)"
                       }
                     },
                     {
@@ -311,13 +293,10 @@
                       "props": {
                         "text": "How fast is support?",
                         "tagName": "h3",
-                        "root": {
-                          "style": "font-family: var(--heading-font-family);"
-                        },
                         "custom": {
                           "displayName": "Question"
                         },
-                        "className": "font-semibold text-base text-(--foreground)"
+                        "className": "font-semibold text-base text-(--foreground) font-(--heading-font-family)"
                       }
                     },
                     {

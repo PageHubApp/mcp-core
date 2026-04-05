@@ -24,13 +24,10 @@
           "props": {
             "text": "The minds behind the magic",
             "tagName": "h2",
-            "root": {
-              "style": "font-family: var(--heading-font-family);"
-            },
             "custom": {
               "displayName": "Heading"
             },
-            "className": "font-bold leading-tight text-3xl md:text-4xl"
+            "className": "font-bold leading-tight text-3xl md:text-4xl font-(--heading-font-family)"
           }
         },
         {
@@ -95,10 +92,7 @@
                       "props": {
                         "text": "Marcus Chen",
                         "tagName": "h3",
-                        "root": {
-                          "style": "font-family: var(--heading-font-family);"
-                        },
-                        "className": "font-bold text-(--card-foreground) text-2xl"
+                        "className": "font-bold text-(--card-foreground) text-2xl font-(--heading-font-family)"
                       }
                     },
                     {
@@ -191,10 +185,7 @@
                       "props": {
                         "text": "Sarah Jenkins",
                         "tagName": "h3",
-                        "root": {
-                          "style": "font-family: var(--heading-font-family);"
-                        },
-                        "className": "font-bold text-(--card-foreground) text-2xl"
+                        "className": "font-bold text-(--card-foreground) text-2xl font-(--heading-font-family)"
                       }
                     },
                     {

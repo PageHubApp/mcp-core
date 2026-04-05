@@ -48,13 +48,10 @@
               "props": {
                 "text": "Plans that scale with your roadmap.",
                 "tagName": "h2",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
                 "custom": {
                   "displayName": "Heading"
                 },
-                "className": "text-(--foreground) font-bold leading-tight text-3xl md:text-4xl"
+                "className": "text-(--foreground) font-bold leading-tight text-3xl md:text-4xl font-(--heading-font-family)"
               }
             },
             {
@@ -97,13 +94,10 @@
                   "props": {
                     "text": "Launch",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Plan name"
                     },
-                    "className": "font-bold text-lg"
+                    "className": "font-bold text-lg font-(--heading-font-family)"
                   }
                 },
                 {
@@ -133,13 +127,10 @@
                       "props": {
                         "text": "$39",
                         "tagName": "span",
-                        "root": {
-                          "style": "font-family: var(--heading-font-family);"
-                        },
                         "custom": {
                           "displayName": "Amount"
                         },
-                        "className": "font-bold leading-none text-4xl md:text-5xl"
+                        "className": "font-bold leading-none text-4xl md:text-5xl font-(--heading-font-family)"
                       }
                     },
                     {
@@ -372,13 +363,10 @@
                   "props": {
                     "text": "Growth",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Plan name"
                     },
-                    "className": "font-bold text-lg"
+                    "className": "font-bold text-lg font-(--heading-font-family)"
                   }
                 },
                 {
@@ -408,13 +396,10 @@
                       "props": {
                         "text": "$129",
                         "tagName": "span",
-                        "root": {
-                          "style": "font-family: var(--heading-font-family);"
-                        },
                         "custom": {
                           "displayName": "Amount"
                         },
-                        "className": "font-bold leading-none text-4xl md:text-5xl"
+                        "className": "font-bold leading-none text-4xl md:text-5xl font-(--heading-font-family)"
                       }
                     },
                     {
@@ -647,13 +632,10 @@
                   "props": {
                     "text": "Scale",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Plan name"
                     },
-                    "className": "font-bold text-lg"
+                    "className": "font-bold text-lg font-(--heading-font-family)"
                   }
                 },
                 {
@@ -683,13 +665,10 @@
                       "props": {
                         "text": "$499",
                         "tagName": "span",
-                        "root": {
-                          "style": "font-family: var(--heading-font-family);"
-                        },
                         "custom": {
                           "displayName": "Amount"
                         },
-                        "className": "font-bold leading-none text-4xl md:text-5xl"
+                        "className": "font-bold leading-none text-4xl md:text-5xl font-(--heading-font-family)"
                       }
                     },
                     {

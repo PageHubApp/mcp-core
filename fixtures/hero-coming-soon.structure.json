@@ -26,11 +26,8 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {
-              "style": "font-family: var(--heading-font-family);"
-            },
             "text": "LAUNCHING {{year}}",
-            "className": "text-(--primary) font-semibold text-sm tracking-[0.25em] uppercase",
+            "className": "text-(--primary) font-semibold text-sm tracking-[0.25em] uppercase font-(--heading-font-family)",
             "custom": {
               "displayName": "Eyebrow"
             }
@@ -41,11 +38,8 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {
-              "style": "font-family: var(--heading-font-family);"
-            },
             "text": "Something big is landing",
-            "className": "text-(--foreground) font-extrabold text-5xl w-full md:text-8xl tracking-tight text-center",
+            "className": "text-(--foreground) font-extrabold text-5xl w-full md:text-8xl tracking-tight text-center font-(--heading-font-family)",
             "custom": {
               "displayName": "Heading"
             }
@@ -56,11 +50,8 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {
-              "style": "font-family: var(--body-font-family);"
-            },
             "text": "We are polishing the next workspace drop. Leave an email if you want one ping when it opens — no promos, just the release.",
-            "className": "text-(--muted-foreground) leading-relaxed text-lg w-full md:text-xl md:w-6/12 text-center",
+            "className": "text-(--muted-foreground) leading-relaxed text-lg w-full md:text-xl md:w-6/12 text-center font-(--body-font-family)",
             "custom": {
               "displayName": "Subheading"
             }
@@ -135,11 +126,8 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {
-              "style": "font-family: var(--body-font-family);"
-            },
             "text": "No spam. Unsubscribe from builder mail anytime.",
-            "className": "text-(--muted-foreground) text-sm text-center",
+            "className": "text-(--muted-foreground) text-sm text-center font-(--body-font-family)",
             "custom": {
               "displayName": "Privacy note"
             }

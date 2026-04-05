@@ -26,13 +26,10 @@
           "props": {
             "text": "100M+",
             "tagName": "p",
-            "root": {
-              "style": "font-family: var(--heading-font-family);"
-            },
             "custom": {
               "displayName": "Large Value"
             },
-            "className": "font-black leading-none text-(--primary) text-7xl md:text-9xl"
+            "className": "font-black leading-none text-(--primary) text-7xl md:text-9xl font-(--heading-font-family)"
           }
         },
         {
@@ -40,13 +37,10 @@
           "props": {
             "text": "Monthly visits across businesses powered by PageHub",
             "tagName": "h2",
-            "root": {
-              "style": "font-family: var(--heading-font-family);"
-            },
             "custom": {
               "displayName": "Headline"
             },
-            "className": "font-bold leading-tight text-2xl max-w-xl md:text-4xl"
+            "className": "font-bold leading-tight text-2xl max-w-xl md:text-4xl font-(--heading-font-family)"
           }
         },
         {

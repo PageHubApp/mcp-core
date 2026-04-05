@@ -48,13 +48,10 @@
               "props": {
                 "text": "Prefer email or a quick call?",
                 "tagName": "h2",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
                 "custom": {
                   "displayName": "Heading"
                 },
-                "className": "font-bold text-(--foreground) text-2xl leading-tight md:text-3xl"
+                "className": "font-bold text-(--foreground) text-2xl leading-tight md:text-3xl font-(--heading-font-family)"
               }
             },
             {

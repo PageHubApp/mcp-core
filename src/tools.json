@@ -161,7 +161,7 @@
         },
         "fonts": {
           "type": "object",
-          "description": "Google Fonts configuration. Two formats supported:\n\n  Option A — full URL: { \"url\": \"https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600&display=swap\" }\n\n  Option B — family list: { \"families\": [\"Playfair Display:wght@400;700\", \"Inter:wght@400;500;600\"] }\n\nThe families are injected as a <link> tag in the page <head>."
+          "description": "Optional hint when `styleGuide` omits families: same shapes (\"url\" or \"families\") — parsed into `headingFontFamily` / `bodyFontFamily` only. Put `font-(--body-font-family)` / `font-['Name']` on ROOT `className` yourself; `extractGoogleFontsUrl` loads Google CSS from those utilities. No `<link>` font tags in `ROOT.props.header`."
         },
         "jsonLd": {
           "type": "object",

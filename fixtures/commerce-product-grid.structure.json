@@ -37,13 +37,10 @@
           "props": {
             "text": "The Essence of Performance",
             "tagName": "h2",
-            "root": {
-              "style": "font-family: var(--heading-font-family);"
-            },
             "custom": {
               "displayName": "Headline"
             },
-            "className": "font-black leading-tight text-3xl md:text-5xl"
+            "className": "font-black leading-tight text-3xl md:text-5xl font-(--heading-font-family)"
           }
         },
         {
@@ -106,13 +103,10 @@
                   "props": {
                     "text": "Elite Training Shoe",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Product Title"
                     },
-                    "className": "font-bold text-lg"
+                    "className": "font-bold text-lg font-(--heading-font-family)"
                   }
                 },
                 {
@@ -182,13 +176,10 @@
                   "props": {
                     "text": "Performance Tee",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Product Title"
                     },
-                    "className": "font-bold text-lg"
+                    "className": "font-bold text-lg font-(--heading-font-family)"
                   }
                 },
                 {
@@ -258,13 +249,10 @@
                   "props": {
                     "text": "Recover Tech Crew",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Product Title"
                     },
-                    "className": "font-bold text-lg"
+                    "className": "font-bold text-lg font-(--heading-font-family)"
                   }
                 },
                 {

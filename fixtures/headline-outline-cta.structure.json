@@ -29,13 +29,10 @@
             "canEditName": true,
             "text": "Put structure where your instincts already live",
             "tagName": "h2",
-            "root": {
-              "style": "font-family: var(--heading-font-family);"
-            },
             "custom": {
               "displayName": "Heading"
             },
-            "className": "h3 font-bold leading-tight text-(--foreground) text-3xl text-center md:text-center md:text-5xl"
+            "className": "h3 font-bold leading-tight text-(--foreground) text-3xl text-center md:text-center md:text-5xl font-(--heading-font-family)"
           }
         },
         {

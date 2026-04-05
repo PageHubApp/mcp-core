@@ -36,13 +36,10 @@
               "props": {
                 "text": "Scale workspace",
                 "tagName": "h3",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
                 "custom": {
                   "displayName": "Plan name"
                 },
-                "className": "font-bold leading-tight text-(--card-foreground) text-xl md:text-xl"
+                "className": "font-bold leading-tight text-(--card-foreground) text-xl md:text-xl font-(--heading-font-family)"
               }
             },
             {
@@ -74,13 +71,10 @@
               "props": {
                 "text": "$589",
                 "tagName": "p",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
                 "custom": {
                   "displayName": "Amount"
                 },
-                "className": "font-bold leading-none text-(--card-foreground) text-3xl md:text-4xl"
+                "className": "font-bold leading-none text-(--card-foreground) text-3xl md:text-4xl font-(--heading-font-family)"
               }
             },
             {

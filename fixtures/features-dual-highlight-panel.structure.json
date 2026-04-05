@@ -37,13 +37,10 @@
               "props": {
                 "text": "Balanced tooling for serious site teams",
                 "tagName": "h2",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
                 "custom": {
                   "displayName": "Heading"
                 },
-                "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl"
+                "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl font-(--heading-font-family)"
               }
             },
             {
@@ -116,13 +113,10 @@
                   "props": {
                     "text": "Speed without fragile shortcuts",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Title"
                     },
-                    "className": "font-semibold text-(--foreground) text-xl leading-snug"
+                    "className": "font-semibold text-(--foreground) text-xl leading-snug font-(--heading-font-family)"
                   }
                 },
                 {
@@ -184,13 +178,10 @@
                   "props": {
                     "text": "Governance that does not feel like paperwork",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Title"
                     },
-                    "className": "font-semibold text-(--foreground) text-xl leading-snug"
+                    "className": "font-semibold text-(--foreground) text-xl leading-snug font-(--heading-font-family)"
                   }
                 },
                 {

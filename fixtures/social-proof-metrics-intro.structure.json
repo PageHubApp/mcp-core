@@ -37,13 +37,10 @@
               "props": {
                 "text": "Numbers our customers actually read",
                 "tagName": "h2",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
                 "custom": {
                   "displayName": "Heading"
                 },
-                "className": "font-bold leading-tight text-3xl md:text-4xl"
+                "className": "font-bold leading-tight text-3xl md:text-4xl font-(--heading-font-family)"
               }
             },
             {
@@ -86,13 +83,10 @@
                   "props": {
                     "text": "99.99%",
                     "tagName": "p",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Value"
                     },
-                    "className": "font-bold leading-tight text-2xl md:text-3xl"
+                    "className": "font-bold leading-tight text-2xl md:text-3xl font-(--heading-font-family)"
                   }
                 },
                 {
@@ -124,13 +118,10 @@
                   "props": {
                     "text": "<120ms",
                     "tagName": "p",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Value"
                     },
-                    "className": "font-bold leading-tight text-2xl md:text-3xl"
+                    "className": "font-bold leading-tight text-2xl md:text-3xl font-(--heading-font-family)"
                   }
                 },
                 {
@@ -162,13 +153,10 @@
                   "props": {
                     "text": "4.2M+",
                     "tagName": "p",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Value"
                     },
-                    "className": "font-bold leading-tight text-2xl md:text-3xl"
+                    "className": "font-bold leading-tight text-2xl md:text-3xl font-(--heading-font-family)"
                   }
                 },
                 {
@@ -200,13 +188,10 @@
                   "props": {
                     "text": "38",
                     "tagName": "p",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Value"
                     },
-                    "className": "font-bold leading-tight text-2xl md:text-3xl"
+                    "className": "font-bold leading-tight text-2xl md:text-3xl font-(--heading-font-family)"
                   }
                 },
                 {

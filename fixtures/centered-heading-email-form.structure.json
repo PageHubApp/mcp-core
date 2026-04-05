@@ -40,13 +40,10 @@
                 "canEditName": true,
                 "text": "Get the changelog, not the spam",
                 "tagName": "h2",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
                 "custom": {
                   "displayName": "Heading"
                 },
-                "className": "h4 font-bold leading-tight text-(--foreground) text-2xl text-center md:text-4xl md:text-center"
+                "className": "h4 font-bold leading-tight text-(--foreground) text-2xl text-center md:text-4xl md:text-center font-(--heading-font-family)"
               }
             },
             {

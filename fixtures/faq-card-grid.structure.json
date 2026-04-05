@@ -35,13 +35,10 @@
           "props": {
             "text": "Help at every step.",
             "tagName": "h2",
-            "root": {
-              "style": "font-family: var(--heading-font-family);"
-            },
             "custom": {
               "displayName": "Heading"
             },
-            "className": "font-bold leading-tight text-3xl md:text-5xl"
+            "className": "font-bold leading-tight text-3xl md:text-5xl font-(--heading-font-family)"
           }
         }
       ]

@@ -26,13 +26,10 @@
           "props": {
             "text": "The new standard for visual web creation",
             "tagName": "h1",
-            "root": {
-              "style": "font-family: var(--heading-font-family);"
-            },
             "custom": {
               "displayName": "Headline"
             },
-            "className": "font-bold leading-tight text-center text-5xl md:text-6xl"
+            "className": "font-bold leading-tight text-center text-5xl md:text-6xl font-(--heading-font-family)"
           }
         },
         {

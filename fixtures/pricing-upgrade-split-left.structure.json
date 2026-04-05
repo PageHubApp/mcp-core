@@ -14,13 +14,10 @@
       "props": {
         "text": "Why teams graduate past the starter tier",
         "tagName": "h2",
-        "root": {
-          "style": "font-family: var(--heading-font-family);"
-        },
         "custom": {
           "displayName": "Section heading"
         },
-        "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl"
+        "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl font-(--heading-font-family)"
       }
     },
     {
@@ -96,13 +93,10 @@
                   "props": {
                     "text": "Category velocity",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Row title"
                     },
-                    "className": "font-semibold text-base text-(--foreground) leading-snug"
+                    "className": "font-semibold text-base text-(--foreground) leading-snug font-(--heading-font-family)"
                   }
                 },
                 {
@@ -171,13 +165,10 @@
                   "props": {
                     "text": "Competitor forensics",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Row title"
                     },
-                    "className": "font-semibold text-base text-(--foreground) leading-snug"
+                    "className": "font-semibold text-base text-(--foreground) leading-snug font-(--heading-font-family)"
                   }
                 },
                 {
@@ -246,13 +237,10 @@
                   "props": {
                     "text": "Product signals",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Row title"
                     },
-                    "className": "font-semibold text-base text-(--foreground) leading-snug"
+                    "className": "font-semibold text-base text-(--foreground) leading-snug font-(--heading-font-family)"
                   }
                 },
                 {
@@ -321,13 +309,10 @@
                   "props": {
                     "text": "Audience resolution",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Row title"
                     },
-                    "className": "font-semibold text-base text-(--foreground) leading-snug"
+                    "className": "font-semibold text-base text-(--foreground) leading-snug font-(--heading-font-family)"
                   }
                 },
                 {

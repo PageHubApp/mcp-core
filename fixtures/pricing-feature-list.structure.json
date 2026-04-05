@@ -25,13 +25,10 @@
           "props": {
             "text": "Pricing that keeps up with <strong class=\"text-(--primary)\">ambitious</strong> teams.",
             "tagName": "h3",
-            "root": {
-              "style": "font-family: var(--heading-font-family);"
-            },
             "custom": {
               "displayName": "Headline"
             },
-            "className": "font-bold leading-tight text-(--card-foreground) text-2xl md:text-3xl"
+            "className": "font-bold leading-tight text-(--card-foreground) text-2xl md:text-3xl font-(--heading-font-family)"
           }
         },
         {
@@ -796,13 +793,10 @@
           "props": {
             "text": "$118",
             "tagName": "p",
-            "root": {
-              "style": "font-family: var(--heading-font-family);"
-            },
             "custom": {
               "displayName": "Price"
             },
-            "className": "font-bold leading-none text-(--foreground) text-4xl md:text-5xl"
+            "className": "font-bold leading-none text-(--foreground) text-4xl md:text-5xl font-(--heading-font-family)"
           }
         },
         {

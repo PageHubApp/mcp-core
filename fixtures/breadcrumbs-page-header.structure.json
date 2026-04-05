@@ -37,13 +37,10 @@
           "props": {
             "text": "Download center",
             "tagName": "h1",
-            "root": {
-              "style": "font-family: var(--heading-font-family);"
-            },
             "custom": {
               "displayName": "Page title"
             },
-            "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl"
+            "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl font-(--heading-font-family)"
           }
         },
         {

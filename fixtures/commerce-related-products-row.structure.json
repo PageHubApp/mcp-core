@@ -63,13 +63,10 @@
                     "canEditName": true,
                     "text": "Pair it with these picks",
                     "tagName": "h2",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Heading"
                     },
-                    "className": "font-bold leading-tight text-(--foreground) text-2xl md:text-3xl"
+                    "className": "font-bold leading-tight text-(--foreground) text-2xl md:text-3xl font-(--heading-font-family)"
                   }
                 },
                 {
@@ -155,13 +152,10 @@
                         "canEditName": true,
                         "text": "Studio steel watch",
                         "tagName": "h3",
-                        "root": {
-                          "style": "font-family: var(--heading-font-family);"
-                        },
                         "custom": {
                           "displayName": "Title"
                         },
-                        "className": "font-semibold text-(--card-foreground) text-sm leading-snug"
+                        "className": "font-semibold text-(--card-foreground) text-sm leading-snug font-(--heading-font-family)"
                       }
                     },
                     {
@@ -236,13 +230,10 @@
                         "canEditName": true,
                         "text": "Noise-calm headphones",
                         "tagName": "h3",
-                        "root": {
-                          "style": "font-family: var(--heading-font-family);"
-                        },
                         "custom": {
                           "displayName": "Title"
                         },
-                        "className": "font-semibold text-(--card-foreground) text-sm leading-snug"
+                        "className": "font-semibold text-(--card-foreground) text-sm leading-snug font-(--heading-font-family)"
                       }
                     },
                     {
@@ -317,13 +308,10 @@
                         "canEditName": true,
                         "text": "Field compact camera",
                         "tagName": "h3",
-                        "root": {
-                          "style": "font-family: var(--heading-font-family);"
-                        },
                         "custom": {
                           "displayName": "Title"
                         },
-                        "className": "font-semibold text-(--card-foreground) text-sm leading-snug"
+                        "className": "font-semibold text-(--card-foreground) text-sm leading-snug font-(--heading-font-family)"
                       }
                     },
                     {
@@ -398,13 +386,10 @@
                         "canEditName": true,
                         "text": "Polarized carry shades",
                         "tagName": "h3",
-                        "root": {
-                          "style": "font-family: var(--heading-font-family);"
-                        },
                         "custom": {
                           "displayName": "Title"
                         },
-                        "className": "font-semibold text-(--card-foreground) text-sm leading-snug"
+                        "className": "font-semibold text-(--card-foreground) text-sm leading-snug font-(--heading-font-family)"
                       }
                     },
                     {

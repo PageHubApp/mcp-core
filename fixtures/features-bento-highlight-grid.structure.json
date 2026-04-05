@@ -48,13 +48,10 @@
               "props": {
                 "text": "Everything in one responsive surface",
                 "tagName": "h2",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
                 "custom": {
                   "displayName": "Heading"
                 },
-                "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl"
+                "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl font-(--heading-font-family)"
               }
             },
             {
@@ -97,13 +94,10 @@
                   "props": {
                     "text": "Block library + canvas, paired",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Title"
                     },
-                    "className": "font-bold text-(--card-foreground) text-2xl leading-snug"
+                    "className": "font-bold text-(--card-foreground) text-2xl leading-snug font-(--heading-font-family)"
                   }
                 },
                 {
@@ -164,13 +158,10 @@
                   "props": {
                     "text": "Design tokens first",
                     "tagName": "h4",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Title"
                     },
-                    "className": "font-semibold text-(--card-foreground) text-lg"
+                    "className": "font-semibold text-(--card-foreground) text-lg font-(--heading-font-family)"
                   }
                 },
                 {
@@ -219,13 +210,10 @@
                   "props": {
                     "text": "Md vs lg on purpose",
                     "tagName": "h4",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Title"
                     },
-                    "className": "font-semibold text-(--card-foreground) text-lg"
+                    "className": "font-semibold text-(--card-foreground) text-lg font-(--heading-font-family)"
                   }
                 },
                 {

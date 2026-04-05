@@ -37,13 +37,10 @@
           "props": {
             "text": "Acme Inc",
             "tagName": "p",
-            "root": {
-              "style": "font-family: var(--heading-font-family);"
-            },
             "custom": {
               "displayName": "Brand"
             },
-            "className": "font-bold text-(--foreground) leading-tight text-2xl md:text-3xl"
+            "className": "font-bold text-(--foreground) leading-tight text-2xl md:text-3xl font-(--heading-font-family)"
           }
         },
         {

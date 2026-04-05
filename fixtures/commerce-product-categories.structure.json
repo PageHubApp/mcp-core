@@ -37,13 +37,10 @@
               "props": {
                 "text": "Collections worth opening first",
                 "tagName": "h2",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
                 "custom": {
                   "displayName": "Heading"
                 },
-                "className": "font-bold leading-tight text-(--foreground) text-2xl md:text-3xl"
+                "className": "font-bold leading-tight text-(--foreground) text-2xl md:text-3xl font-(--heading-font-family)"
               }
             },
             {

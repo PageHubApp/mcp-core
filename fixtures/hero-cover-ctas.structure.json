@@ -42,13 +42,10 @@
                   "props": {
                     "text": "The Global Summit for AI Web Generation",
                     "tagName": "h1",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Headline"
                     },
-                    "className": "font-bold leading-tight text-4xl md:text-5xl"
+                    "className": "font-bold leading-tight text-4xl md:text-5xl font-(--heading-font-family)"
                   }
                 },
                 {

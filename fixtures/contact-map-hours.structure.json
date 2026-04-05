@@ -48,13 +48,10 @@
               "props": {
                 "text": "Stop by the studio",
                 "tagName": "h2",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
                 "custom": {
                   "displayName": "Heading"
                 },
-                "className": "font-bold text-(--foreground) text-3xl leading-tight md:text-4xl"
+                "className": "font-bold text-(--foreground) text-3xl leading-tight md:text-4xl font-(--heading-font-family)"
               }
             },
             {
@@ -108,13 +105,10 @@
                       "props": {
                         "text": "Address",
                         "tagName": "h3",
-                        "root": {
-                          "style": "font-family: var(--heading-font-family);"
-                        },
                         "custom": {
                           "displayName": "Address label"
                         },
-                        "className": "font-semibold text-(--foreground) text-sm"
+                        "className": "font-semibold text-(--foreground) text-sm font-(--heading-font-family)"
                       }
                     },
                     {
@@ -157,13 +151,10 @@
                       "props": {
                         "text": "Hours",
                         "tagName": "h3",
-                        "root": {
-                          "style": "font-family: var(--heading-font-family);"
-                        },
                         "custom": {
                           "displayName": "Hours label"
                         },
-                        "className": "font-semibold text-(--foreground) text-sm"
+                        "className": "font-semibold text-(--foreground) text-sm font-(--heading-font-family)"
                       }
                     },
                     {

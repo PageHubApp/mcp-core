@@ -41,13 +41,10 @@
             "canEditName": true,
             "text": "Trust signals shoppers look for before they buy",
             "tagName": "h2",
-            "root": {
-              "style": "font-family: var(--heading-font-family);"
-            },
             "custom": {
               "displayName": "Heading"
             },
-            "className": "font-bold leading-tight text-(--foreground) text-2xl text-center max-w-xl md:text-3xl"
+            "className": "font-bold leading-tight text-(--foreground) text-2xl text-center max-w-xl md:text-3xl font-(--heading-font-family)"
           }
         },
         {

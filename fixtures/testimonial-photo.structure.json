@@ -62,10 +62,7 @@
                   "props": {
                     "text": "“The best investment we made last year wasn’t a tool—it was how fast our team could align on what customers actually see. Support has been outstanding.”",
                     "tagName": "blockquote",
-                    "root": {
-                      "style": "font-family: var(--body-font-family);"
-                    },
-                    "className": "font-medium text-(--foreground) leading-relaxed text-lg w-full lg:text-xl",
+                    "className": "font-medium text-(--foreground) leading-relaxed text-lg w-full lg:text-xl font-(--body-font-family)",
                     "custom": {
                       "displayName": "Quote"
                     }

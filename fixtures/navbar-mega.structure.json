@@ -37,13 +37,10 @@
               "props": {
                 "text": "PageHub",
                 "tagName": "p",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
                 "custom": {
                   "displayName": "Logo"
                 },
-                "className": "font-bold text-(--foreground) text-lg md:text-xl"
+                "className": "font-bold text-(--foreground) text-lg md:text-xl font-(--heading-font-family)"
               }
             },
             {

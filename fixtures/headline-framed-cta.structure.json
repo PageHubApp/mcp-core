@@ -29,13 +29,10 @@
             "canEditName": true,
             "text": "Keep every section on the same rails",
             "tagName": "h2",
-            "root": {
-              "style": "font-family: var(--heading-font-family);"
-            },
             "custom": {
               "displayName": "Heading"
             },
-            "className": "h2 text-(--foreground) font-bold leading-tight text-4xl text-center md:text-center md:text-6xl"
+            "className": "h2 text-(--foreground) font-bold leading-tight text-4xl text-center md:text-center md:text-6xl font-(--heading-font-family)"
           }
         },
         {

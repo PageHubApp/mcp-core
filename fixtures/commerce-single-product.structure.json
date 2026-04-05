@@ -72,13 +72,10 @@
               "props": {
                 "text": "The Signature Performance Hoodie",
                 "tagName": "h1",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
                 "custom": {
                   "displayName": "Product Name"
                 },
-                "className": "font-black leading-tight text-3xl md:text-5xl"
+                "className": "font-black leading-tight text-3xl md:text-5xl font-(--heading-font-family)"
               }
             },
             {

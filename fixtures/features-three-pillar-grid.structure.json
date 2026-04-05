@@ -37,13 +37,10 @@
               "props": {
                 "text": "Built for teams shipping on PageHub",
                 "tagName": "h2",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
                 "custom": {
                   "displayName": "Heading"
                 },
-                "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl"
+                "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl font-(--heading-font-family)"
               }
             },
             {
@@ -103,13 +100,10 @@
                   "props": {
                     "text": "Sites and drafts stay yours",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Title"
                     },
-                    "className": "font-semibold text-(--foreground) text-xl leading-snug"
+                    "className": "font-semibold text-(--foreground) text-xl leading-snug font-(--heading-font-family)"
                   }
                 },
                 {
@@ -175,13 +169,10 @@
                   "props": {
                     "text": "Plans that match how you ship",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Title"
                     },
-                    "className": "font-semibold text-(--foreground) text-xl leading-snug"
+                    "className": "font-semibold text-(--foreground) text-xl leading-snug font-(--heading-font-family)"
                   }
                 },
                 {
@@ -247,13 +238,10 @@
                   "props": {
                     "text": "A block library that stays maintained",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Title"
                     },
-                    "className": "font-semibold text-(--foreground) text-xl leading-snug"
+                    "className": "font-semibold text-(--foreground) text-xl leading-snug font-(--heading-font-family)"
                   }
                 },
                 {

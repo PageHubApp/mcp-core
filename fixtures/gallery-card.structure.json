@@ -71,13 +71,10 @@
                   "props": {
                     "text": "Abstract Landscapes",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Title"
                     },
-                    "className": "text-white text-lg font-bold"
+                    "className": "text-white text-lg font-bold font-(--heading-font-family)"
                   }
                 }
               ]

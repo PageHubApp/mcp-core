@@ -37,13 +37,10 @@
           "props": {
             "text": "Ship notes without the noise",
             "tagName": "h2",
-            "root": {
-              "style": "font-family: var(--heading-font-family);"
-            },
             "custom": {
               "displayName": "Heading"
             },
-            "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl"
+            "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl font-(--heading-font-family)"
           }
         },
         {

@@ -41,13 +41,10 @@
             "canEditName": true,
             "text": "People are shipping with PageHub right now",
             "tagName": "h2",
-            "root": {
-              "style": "font-family: var(--heading-font-family);"
-            },
             "custom": {
               "displayName": "Heading"
             },
-            "className": "font-bold leading-tight text-(--foreground) text-xl md:text-2xl"
+            "className": "font-bold leading-tight text-(--foreground) text-xl md:text-2xl font-(--heading-font-family)"
           }
         }
       ]
@@ -168,13 +165,10 @@
                 "canEditName": true,
                 "text": "12.4k+",
                 "tagName": "p",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
                 "custom": {
                   "displayName": "Value"
                 },
-                "className": "font-black leading-none text-(--primary) text-5xl md:text-6xl"
+                "className": "font-black leading-none text-(--primary) text-5xl md:text-6xl font-(--heading-font-family)"
               }
             },
             {

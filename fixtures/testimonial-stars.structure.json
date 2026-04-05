@@ -140,10 +140,7 @@
               "props": {
                 "text": "We rolled PageHub out to three squads in a week. Handoffs are quieter, launches feel calmer, and nobody is hunting for the latest screenshot anymore.",
                 "tagName": "p",
-                "root": {
-                  "style": "font-family: var(--body-font-family);"
-                },
-                "className": "font-medium text-(--foreground) leading-relaxed text-base w-full lg:text-lg",
+                "className": "font-medium text-(--foreground) leading-relaxed text-base w-full lg:text-lg font-(--body-font-family)",
                 "custom": {
                   "displayName": "Quote"
                 }

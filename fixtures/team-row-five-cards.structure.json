@@ -37,15 +37,12 @@
               "props": {
                 "text": "Our people make the work feel effortless.",
                 "tagName": "h2",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
                 "canDelete": true,
                 "canEditName": true,
                 "custom": {
                   "displayName": "Heading"
                 },
-                "className": "text-(--foreground) font-bold leading-tight text-3xl md:text-4xl"
+                "className": "text-(--foreground) font-bold leading-tight text-3xl md:text-4xl font-(--heading-font-family)"
               }
             },
             {
@@ -133,15 +130,12 @@
                       "props": {
                         "text": "Aria Chen",
                         "tagName": "h3",
-                        "root": {
-                          "style": "font-family: var(--heading-font-family);"
-                        },
                         "canDelete": true,
                         "canEditName": true,
                         "custom": {
                           "displayName": "Name"
                         },
-                        "className": "font-bold text-lg tracking-tight md:text-xl"
+                        "className": "font-bold text-lg tracking-tight md:text-xl font-(--heading-font-family)"
                       }
                     },
                     {
@@ -300,15 +294,12 @@
                       "props": {
                         "text": "Theo Park",
                         "tagName": "h3",
-                        "root": {
-                          "style": "font-family: var(--heading-font-family);"
-                        },
                         "canDelete": true,
                         "canEditName": true,
                         "custom": {
                           "displayName": "Name"
                         },
-                        "className": "font-bold text-lg tracking-tight md:text-xl"
+                        "className": "font-bold text-lg tracking-tight md:text-xl font-(--heading-font-family)"
                       }
                     },
                     {
@@ -467,15 +458,12 @@
                       "props": {
                         "text": "Jordan Wells",
                         "tagName": "h3",
-                        "root": {
-                          "style": "font-family: var(--heading-font-family);"
-                        },
                         "canDelete": true,
                         "canEditName": true,
                         "custom": {
                           "displayName": "Name"
                         },
-                        "className": "font-bold text-lg tracking-tight md:text-xl"
+                        "className": "font-bold text-lg tracking-tight md:text-xl font-(--heading-font-family)"
                       }
                     },
                     {
@@ -634,15 +622,12 @@
                       "props": {
                         "text": "Priya Nair",
                         "tagName": "h3",
-                        "root": {
-                          "style": "font-family: var(--heading-font-family);"
-                        },
                         "canDelete": true,
                         "canEditName": true,
                         "custom": {
                           "displayName": "Name"
                         },
-                        "className": "font-bold text-lg tracking-tight md:text-xl"
+                        "className": "font-bold text-lg tracking-tight md:text-xl font-(--heading-font-family)"
                       }
                     },
                     {
@@ -801,15 +786,12 @@
                       "props": {
                         "text": "Sam Rivera",
                         "tagName": "h3",
-                        "root": {
-                          "style": "font-family: var(--heading-font-family);"
-                        },
                         "canDelete": true,
                         "canEditName": true,
                         "custom": {
                           "displayName": "Name"
                         },
-                        "className": "font-bold text-lg tracking-tight md:text-xl"
+                        "className": "font-bold text-lg tracking-tight md:text-xl font-(--heading-font-family)"
                       }
                     },
                     {

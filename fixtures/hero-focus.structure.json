@@ -85,10 +85,7 @@
                 "canEditName": true,
                 "text": "BUILD<br/>THE<br/>SITE",
                 "tagName": "h1",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
-                "className": "text-(--foreground) font-black leading-[0.9] tracking-tighter text-6xl w-full mb-2 md:text-8xl uppercase lg:text-9xl max-w-[11ch]",
+                "className": "text-(--foreground) font-black leading-[0.9] tracking-tighter text-6xl w-full mb-2 md:text-8xl uppercase lg:text-9xl max-w-[11ch] font-(--heading-font-family)",
                 "custom": {
                   "displayName": "Headline"
                 }

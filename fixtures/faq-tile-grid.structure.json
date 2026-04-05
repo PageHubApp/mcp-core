@@ -26,13 +26,10 @@
           "props": {
             "text": "Common questions",
             "tagName": "h2",
-            "root": {
-              "style": "font-family: var(--heading-font-family);"
-            },
             "custom": {
               "displayName": "Heading"
             },
-            "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl"
+            "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl font-(--heading-font-family)"
           }
         },
         {
@@ -75,13 +72,10 @@
               "props": {
                 "text": "Is there a free tier?",
                 "tagName": "h3",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
                 "custom": {
                   "displayName": "Question"
                 },
-                "className": "font-semibold text-base text-(--card-foreground)"
+                "className": "font-semibold text-base text-(--card-foreground) font-(--heading-font-family)"
               }
             },
             {
@@ -113,13 +107,10 @@
               "props": {
                 "text": "How do API limits work?",
                 "tagName": "h3",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
                 "custom": {
                   "displayName": "Question"
                 },
-                "className": "font-semibold text-base text-(--card-foreground)"
+                "className": "font-semibold text-base text-(--card-foreground) font-(--heading-font-family)"
               }
             },
             {
@@ -151,13 +142,10 @@
               "props": {
                 "text": "Can I self-host?",
                 "tagName": "h3",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
                 "custom": {
                   "displayName": "Question"
                 },
-                "className": "font-semibold text-base text-(--card-foreground)"
+                "className": "font-semibold text-base text-(--card-foreground) font-(--heading-font-family)"
               }
             },
             {
@@ -189,13 +177,10 @@
               "props": {
                 "text": "What about SLAs?",
                 "tagName": "h3",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
                 "custom": {
                   "displayName": "Question"
                 },
-                "className": "font-semibold text-base text-(--card-foreground)"
+                "className": "font-semibold text-base text-(--card-foreground) font-(--heading-font-family)"
               }
             },
             {

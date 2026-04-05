@@ -37,10 +37,7 @@
               "props": {
                 "text": "Stories from real teams",
                 "tagName": "h2",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
-                "className": "font-bold leading-tight text-(--foreground) text-3xl w-full lg:text-4xl",
+                "className": "font-bold leading-tight text-(--foreground) text-3xl w-full lg:text-4xl font-(--heading-font-family)",
                 "custom": {
                   "displayName": "Heading"
                 }
@@ -86,10 +83,7 @@
                   "props": {
                     "text": "We shipped the whole flow without filing a ticket",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
-                    "className": "font-bold leading-snug text-(--foreground) text-lg w-full lg:text-xl",
+                    "className": "font-bold leading-snug text-(--foreground) text-lg w-full lg:text-xl font-(--heading-font-family)",
                     "custom": {
                       "displayName": "Card title"
                     }
@@ -186,10 +180,7 @@
                   "props": {
                     "text": "Marketing and product finally share one canvas",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
-                    "className": "font-bold leading-snug text-(--foreground) text-lg w-full lg:text-xl",
+                    "className": "font-bold leading-snug text-(--foreground) text-lg w-full lg:text-xl font-(--heading-font-family)",
                     "custom": {
                       "displayName": "Card title"
                     }

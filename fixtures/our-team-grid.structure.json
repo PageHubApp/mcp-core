@@ -37,13 +37,10 @@
               "props": {
                 "text": "Our Team",
                 "tagName": "h2",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
                 "custom": {
                   "displayName": "Heading"
                 },
-                "className": "text-(--foreground) font-bold leading-tight text-3xl md:text-4xl"
+                "className": "text-(--foreground) font-bold leading-tight text-3xl md:text-4xl font-(--heading-font-family)"
               }
             },
             {
@@ -136,13 +133,10 @@
                           "props": {
                             "text": "Bonnie Green",
                             "tagName": "h3",
-                            "root": {
-                              "style": "font-family: var(--heading-font-family);"
-                            },
                             "custom": {
                               "displayName": "Name"
                             },
-                            "className": "font-bold text-lg tracking-tight md:text-xl"
+                            "className": "font-bold text-lg tracking-tight md:text-xl font-(--heading-font-family)"
                           }
                         },
                         {
@@ -316,13 +310,10 @@
                           "props": {
                             "text": "Jese Leos",
                             "tagName": "h3",
-                            "root": {
-                              "style": "font-family: var(--heading-font-family);"
-                            },
                             "custom": {
                               "displayName": "Name"
                             },
-                            "className": "font-bold text-lg tracking-tight md:text-xl"
+                            "className": "font-bold text-lg tracking-tight md:text-xl font-(--heading-font-family)"
                           }
                         },
                         {
@@ -496,13 +487,10 @@
                           "props": {
                             "text": "Michael Gough",
                             "tagName": "h3",
-                            "root": {
-                              "style": "font-family: var(--heading-font-family);"
-                            },
                             "custom": {
                               "displayName": "Name"
                             },
-                            "className": "font-bold text-lg tracking-tight md:text-xl"
+                            "className": "font-bold text-lg tracking-tight md:text-xl font-(--heading-font-family)"
                           }
                         },
                         {
@@ -676,13 +664,10 @@
                           "props": {
                             "text": "Lana Byrd",
                             "tagName": "h3",
-                            "root": {
-                              "style": "font-family: var(--heading-font-family);"
-                            },
                             "custom": {
                               "displayName": "Name"
                             },
-                            "className": "font-bold text-lg tracking-tight md:text-xl"
+                            "className": "font-bold text-lg tracking-tight md:text-xl font-(--heading-font-family)"
                           }
                         },
                         {

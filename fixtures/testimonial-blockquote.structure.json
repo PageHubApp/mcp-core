@@ -51,10 +51,7 @@
               "props": {
                 "text": "“PageHub let our team ship polished landing pages without waiting on engineering. What used to take two sprints now ships in a single afternoon.”",
                 "tagName": "blockquote",
-                "root": {
-                  "style": "font-family: var(--body-font-family);"
-                },
-                "className": "font-medium text-(--foreground) leading-relaxed text-xl w-full lg:text-2xl",
+                "className": "font-medium text-(--foreground) leading-relaxed text-xl w-full lg:text-2xl font-(--body-font-family)",
                 "custom": {
                   "displayName": "Quote"
                 }

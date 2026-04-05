@@ -35,13 +35,10 @@
           "props": {
             "text": "Meet the team",
             "tagName": "h2",
-            "root": {
-              "style": "font-family: var(--heading-font-family);"
-            },
             "custom": {
               "displayName": "Heading"
             },
-            "className": "font-bold leading-tight text-3xl md:text-4xl"
+            "className": "font-bold leading-tight text-3xl md:text-4xl font-(--heading-font-family)"
           }
         },
         {
@@ -94,10 +91,7 @@
                   "props": {
                     "text": "David Lee",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
-                    "className": "font-bold text-(--foreground) text-lg"
+                    "className": "font-bold text-(--foreground) text-lg font-(--heading-font-family)"
                   }
                 },
                 {
@@ -137,10 +131,7 @@
                   "props": {
                     "text": "Aisha Patel",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
-                    "className": "font-bold text-(--foreground) text-lg"
+                    "className": "font-bold text-(--foreground) text-lg font-(--heading-font-family)"
                   }
                 },
                 {
@@ -180,10 +171,7 @@
                   "props": {
                     "text": "Carlos Gomez",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
-                    "className": "font-bold text-(--foreground) text-lg"
+                    "className": "font-bold text-(--foreground) text-lg font-(--heading-font-family)"
                   }
                 },
                 {
@@ -223,10 +211,7 @@
                   "props": {
                     "text": "Elena Rostova",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
-                    "className": "font-bold text-(--foreground) text-lg"
+                    "className": "font-bold text-(--foreground) text-lg font-(--heading-font-family)"
                   }
                 },
                 {

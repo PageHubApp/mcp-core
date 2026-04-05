@@ -37,13 +37,10 @@
           "props": {
             "text": "Master Your Workflow",
             "tagName": "h2",
-            "root": {
-              "style": "font-family: var(--heading-font-family);"
-            },
             "custom": {
               "displayName": "Headline"
             },
-            "className": "font-black leading-tight text-3xl md:text-5xl"
+            "className": "font-black leading-tight text-3xl md:text-5xl font-(--heading-font-family)"
           }
         }
       ]
@@ -95,13 +92,10 @@
                   "props": {
                     "text": "The Complete System",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Title"
                     },
-                    "className": "font-black text-4xl md:text-5xl"
+                    "className": "font-black text-4xl md:text-5xl font-(--heading-font-family)"
                   }
                 },
                 {
@@ -177,13 +171,10 @@
                       "props": {
                         "text": "Global Logistics",
                         "tagName": "h3",
-                        "root": {
-                          "style": "font-family: var(--heading-font-family);"
-                        },
                         "custom": {
                           "displayName": "Title"
                         },
-                        "className": "font-bold text-2xl"
+                        "className": "font-bold text-2xl font-(--heading-font-family)"
                       }
                     },
                     {
@@ -237,13 +228,10 @@
                       "props": {
                         "text": "Unified Analytics",
                         "tagName": "h3",
-                        "root": {
-                          "style": "font-family: var(--heading-font-family);"
-                        },
                         "custom": {
                           "displayName": "Title"
                         },
-                        "className": "font-bold text-(--foreground) text-2xl"
+                        "className": "font-bold text-(--foreground) text-2xl font-(--heading-font-family)"
                       }
                     },
                     {

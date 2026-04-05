@@ -41,13 +41,10 @@
             "canEditName": true,
             "text": "READY TO<br/>LAUNCH",
             "tagName": "h2",
-            "root": {
-              "style": "font-family: var(--heading-font-family);"
-            },
             "custom": {
               "displayName": "Headline"
             },
-            "className": "text-(--foreground) text-4xl font-black tracking-tighter leading-none mb-12 md:text-7xl"
+            "className": "text-(--foreground) text-4xl font-black tracking-tighter leading-none mb-12 md:text-7xl font-(--heading-font-family)"
           }
         },
         {

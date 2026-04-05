@@ -1,5 +1,10 @@
+const path = require('path');
 const { apiFetch, normalizeBaseUrl } = require('../api-fetch');
 const { getContext } = require('../context');
+const {
+  stripGoogleFontLinksFromHeader,
+  finalizeRootThemeFonts,
+} = require(path.join(__dirname, '../../../../scripts/lib/theme-fonts.js'));
 const {
   parseMaybeJson,
   applyNodePatches,
@@ -719,25 +724,17 @@ module.exports = {
       }
     }
 
-    // Build header with Google Fonts + JSON-LD
-    const pre =
-      '<link rel="preconnect" href="https://fonts.googleapis.com">' +
-      '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>';
-    let fontBlock = '';
-    if (resolvedFonts?.url) {
-      fontBlock = `<link href="${resolvedFonts.url}" rel="stylesheet">`;
-    } else if (resolvedFonts?.families?.length) {
-      const q = resolvedFonts.families.map(f => `family=${f.replace(/ /g, '+')}`).join('&');
-      fontBlock = `<link href="https://fonts.googleapis.com/css2?${q}&display=swap" rel="stylesheet">`;
-    }
+    finalizeRootThemeFonts(rootProps, resolvedFonts);
+
+    const headerClean = stripGoogleFontLinksFromHeader(rootProps.header || '');
     let ld = '';
     const resolvedJsonLd = parseMaybeJson(jsonLd);
     if (resolvedJsonLd) {
       ld = `<script type="application/ld+json">${JSON.stringify(resolvedJsonLd)}</script>`;
     }
-    if (fontBlock || ld) {
-      rootProps.header = pre + fontBlock + ld;
-    }
+    const nextHeader = [headerClean, ld].filter(Boolean).join('');
+    if (nextHeader) rootProps.header = nextHeader;
+    else delete rootProps.header;
 
     const changedNodes = { ROOT: flat.ROOT };
     const presetMsg = preset ? ` (preset: ${preset})` : '';

@@ -37,13 +37,10 @@
               "props": {
                 "text": "2.4M+",
                 "tagName": "p",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
                 "custom": {
                   "displayName": "Value"
                 },
-                "className": "font-bold leading-none text-4xl md:text-5xl"
+                "className": "font-bold leading-none text-4xl md:text-5xl font-(--heading-font-family)"
               }
             },
             {
@@ -75,13 +72,10 @@
               "props": {
                 "text": "890K+",
                 "tagName": "p",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
                 "custom": {
                   "displayName": "Value"
                 },
-                "className": "font-bold leading-none text-4xl md:text-5xl"
+                "className": "font-bold leading-none text-4xl md:text-5xl font-(--heading-font-family)"
               }
             },
             {
@@ -113,13 +107,10 @@
               "props": {
                 "text": "14K+",
                 "tagName": "p",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
                 "custom": {
                   "displayName": "Value"
                 },
-                "className": "font-bold leading-none text-4xl md:text-5xl"
+                "className": "font-bold leading-none text-4xl md:text-5xl font-(--heading-font-family)"
               }
             },
             {

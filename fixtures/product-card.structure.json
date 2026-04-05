@@ -115,13 +115,10 @@
                     "canEditName": true,
                     "text": "Arc tide chronograph",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Product name"
                     },
-                    "className": "font-bold leading-snug text-(--card-foreground) text-lg md:text-xl"
+                    "className": "font-bold leading-snug text-(--card-foreground) text-lg md:text-xl font-(--heading-font-family)"
                   }
                 },
                 {
@@ -279,13 +276,10 @@
                     "canEditName": true,
                     "text": "Pulse studio cans",
                     "tagName": "h3",
-                    "root": {
-                      "style": "font-family: var(--heading-font-family);"
-                    },
                     "custom": {
                       "displayName": "Product name"
                     },
-                    "className": "font-bold leading-snug text-(--card-foreground) text-lg md:text-xl"
+                    "className": "font-bold leading-snug text-(--card-foreground) text-lg md:text-xl font-(--heading-font-family)"
                   }
                 },
                 {

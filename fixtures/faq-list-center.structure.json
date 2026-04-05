@@ -24,13 +24,10 @@
           "props": {
             "text": "Have queries?",
             "tagName": "h2",
-            "root": {
-              "style": "font-family: var(--heading-font-family);"
-            },
             "custom": {
               "displayName": "Heading"
             },
-            "className": "font-bold leading-tight text-2xl md:text-4xl"
+            "className": "font-bold leading-tight text-2xl md:text-4xl font-(--heading-font-family)"
           }
         }
       ]

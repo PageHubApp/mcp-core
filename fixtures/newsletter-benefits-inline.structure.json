@@ -37,13 +37,10 @@
               "props": {
                 "text": "Why teams subscribe",
                 "tagName": "h2",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
                 "custom": {
                   "displayName": "Heading"
                 },
-                "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl"
+                "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl font-(--heading-font-family)"
               }
             },
             {
@@ -211,13 +208,10 @@
               "props": {
                 "text": "Get the next send",
                 "tagName": "h3",
-                "root": {
-                  "style": "font-family: var(--heading-font-family);"
-                },
                 "custom": {
                   "displayName": "Card title"
                 },
-                "className": "font-semibold text-(--card-foreground) text-lg"
+                "className": "font-semibold text-(--card-foreground) text-lg font-(--heading-font-family)"
               }
             },
             {
