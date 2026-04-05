@@ -4,26 +4,10 @@
     "type": "section",
     "canDelete": true,
     "canEditName": true,
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "width": "w-full",
-      "py": "py-16",
-      "px": "px-6",
-      "gap": "gap-10"
-    },
-    "desktop": {
-      "py": "py-24",
-      "px": "px-8",
-      "gap": "gap-14"
-    },
     "custom": {
       "displayName": "Team row section"
-    }
+    },
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-16 px-6 gap-10 md:py-24 md:px-8 md:gap-14"
   },
   "children": [
     {
@@ -31,20 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "width": "w-full",
-          "maxWidth": "max-w-(--content-width)",
-          "mx": "mx-auto",
-          "gap": "gap-10"
-        },
-        "desktop": {
-          "gap": "gap-12"
-        },
         "custom": {
           "displayName": "Team row content"
-        }
+        },
+        "className": "flex flex-col w-full max-w-(--content-width) mx-auto gap-10 md:gap-12"
       },
       "children": [
         {
@@ -52,21 +26,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "alignItems": "items-start",
-              "textAlign": "text-left",
-              "width": "w-full",
-              "gap": "gap-4"
-            },
-            "desktop": {
-              "gap": "gap-5",
-              "maxWidth": "max-w-3xl"
-            },
             "custom": {
               "displayName": "Section intro"
-            }
+            },
+            "className": "flex flex-col items-start text-left w-full gap-4 md:gap-5 md:max-w-3xl"
           },
           "children": [
             {
@@ -75,22 +38,14 @@
                 "text": "Our people make the work feel effortless.",
                 "tagName": "h2",
                 "root": {
-                  "color": "text-(--foreground)"
-                },
-                "mobile": {
-                  "fontWeight": "font-bold",
-                  "fontFamily": "var(--heading-font-family)",
-                  "lineHeight": "leading-tight",
-                  "fontSize": "text-3xl"
-                },
-                "desktop": {
-                  "fontSize": "text-4xl"
+                  "style": "font-family: var(--heading-font-family);"
                 },
                 "canDelete": true,
                 "canEditName": true,
                 "custom": {
                   "displayName": "Heading"
-                }
+                },
+                "className": "text-(--foreground) font-bold leading-tight text-3xl md:text-4xl"
               }
             },
             {
@@ -98,18 +53,12 @@
               "props": {
                 "text": "Design, engineering, and customer success share one roadmap—fewer handoffs, clearer tradeoffs, and a group that shows up when something urgent lands on your calendar.",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--muted-foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-base",
-                  "lineHeight": "leading-relaxed"
-                },
                 "canDelete": true,
                 "canEditName": true,
                 "custom": {
                   "displayName": "Intro"
-                }
+                },
+                "className": "text-(--muted-foreground) text-base leading-relaxed"
               }
             },
             {
@@ -117,22 +66,6 @@
               "props": {
                 "text": "See everyone on the roster",
                 "url": "#",
-                "root": {
-                  "background": "bg-(--primary)",
-                  "color": "text-(--primary-foreground)",
-                  "radius": "rounded-(--radius)"
-                },
-                "mobile": {
-                  "display": "inline-flex",
-                  "alignItems": "items-center",
-                  "gap": "gap-2",
-                  "py": "py-3",
-                  "px": "px-5",
-                  "fontSize": "text-sm",
-                  "fontWeight": "font-medium",
-                  "mt": "mt-1"
-                },
-                "desktop": {},
                 "icon": {
                   "value": "ref-google:arrow_forward",
                   "position": "right",
@@ -142,7 +75,8 @@
                 "canEditName": true,
                 "custom": {
                   "displayName": "Roster CTA"
-                }
+                },
+                "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) inline-flex items-center gap-2 py-3 px-5 text-sm font-medium mt-1"
               }
             }
           ]
@@ -152,19 +86,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "mobile": {
-              "display": "grid",
-              "gridCols": "grid-cols-1",
-              "width": "w-full",
-              "gap": "gap-6"
-            },
-            "desktop": {
-              "gridCols": "grid-cols-5",
-              "gap": "gap-5"
-            },
             "custom": {
               "displayName": "Team card grid"
-            }
+            },
+            "className": "grid grid-cols-1 w-full gap-6 md:grid-cols-5 md:gap-5"
           },
           "children": [
             {
@@ -172,25 +97,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--card)",
-                  "color": "text-(--card-foreground)",
-                  "border": "border",
-                  "borderColor": "border-(--border)",
-                  "radius": "rounded-(--radius)",
-                  "shadow": "shadow-sm"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "width": "w-full",
-                  "height": "h-full",
-                  "overflow": "overflow-hidden"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Team member — Aria Chen"
-                }
+                },
+                "className": "bg-(--card) text-(--card-foreground) border border-(--border) rounded-(--radius) shadow-sm flex flex-col w-full h-full overflow-hidden"
               },
               "children": [
                 {
@@ -199,21 +109,12 @@
                     "content": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop&q=80",
                     "type": "url",
                     "alt": "Portrait of Aria Chen",
-                    "root": {},
-                    "mobile": {
-                      "width": "w-full",
-                      "height": "h-56",
-                      "objectFit": "object-cover",
-                      "borderRadius": "rounded-(--radius)"
-                    },
-                    "desktop": {
-                      "height": "h-52"
-                    },
                     "canDelete": true,
                     "canEditName": true,
                     "custom": {
                       "displayName": "Portrait"
-                    }
+                    },
+                    "className": "w-full h-56 object-cover rounded-(--radius) md:h-52"
                   }
                 },
                 {
@@ -221,17 +122,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "gap": "gap-2",
-                      "p": "p-4",
-                      "flexBase": "flex-1"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Bio stack"
-                    }
+                    },
+                    "className": "flex flex-col gap-2 p-4 flex-1"
                   },
                   "children": [
                     {
@@ -239,21 +133,15 @@
                       "props": {
                         "text": "Aria Chen",
                         "tagName": "h3",
-                        "root": {},
-                        "mobile": {
-                          "fontWeight": "font-bold",
-                          "fontSize": "text-lg",
-                          "fontFamily": "var(--heading-font-family)",
-                          "letterSpacing": "tracking-tight"
-                        },
-                        "desktop": {
-                          "fontSize": "text-xl"
+                        "root": {
+                          "style": "font-family: var(--heading-font-family);"
                         },
                         "canDelete": true,
                         "canEditName": true,
                         "custom": {
                           "displayName": "Name"
-                        }
+                        },
+                        "className": "font-bold text-lg tracking-tight md:text-xl"
                       }
                     },
                     {
@@ -261,18 +149,12 @@
                       "props": {
                         "text": "VP, Product & Delivery",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--muted-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "fontWeight": "font-medium"
-                        },
                         "canDelete": true,
                         "canEditName": true,
                         "custom": {
                           "displayName": "Role"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) text-sm font-medium"
                       }
                     },
                     {
@@ -280,20 +162,12 @@
                       "props": {
                         "text": "Keeps releases predictable without slowing discovery—she turns customer tension into a roadmap teams actually ship.",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--muted-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-relaxed",
-                          "fontWeight": "font-normal",
-                          "mt": "mt-2"
-                        },
                         "canDelete": true,
                         "canEditName": true,
                         "custom": {
                           "displayName": "Bio"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) text-sm leading-relaxed font-normal mt-2"
                       }
                     }
                   ]
@@ -303,19 +177,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-row",
-                      "gap": "gap-1",
-                      "wrap": "flex-wrap",
-                      "px": "px-4",
-                      "pb": "pb-4"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Social links"
-                    }
+                    },
+                    "className": "flex flex-row gap-1 flex-wrap px-4 pb-4"
                   },
                   "children": [
                     {
@@ -323,16 +188,6 @@
                       "props": {
                         "text": "Community profile",
                         "url": "#",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--muted-foreground)",
-                          "radius": "rounded-(--radius)"
-                        },
-                        "mobile": {
-                          "py": "py-2",
-                          "px": "px-2"
-                        },
-                        "desktop": {},
                         "icon": {
                           "value": "ref-google:groups",
                           "only": true,
@@ -342,7 +197,8 @@
                         "canEditName": true,
                         "custom": {
                           "displayName": "Community"
-                        }
+                        },
+                        "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
                       }
                     },
                     {
@@ -350,16 +206,6 @@
                       "props": {
                         "text": "Share link",
                         "url": "#",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--muted-foreground)",
-                          "radius": "rounded-(--radius)"
-                        },
-                        "mobile": {
-                          "py": "py-2",
-                          "px": "px-2"
-                        },
-                        "desktop": {},
                         "icon": {
                           "value": "ref-google:share",
                           "only": true,
@@ -369,7 +215,8 @@
                         "canEditName": true,
                         "custom": {
                           "displayName": "Share"
-                        }
+                        },
+                        "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
                       }
                     },
                     {
@@ -377,16 +224,6 @@
                       "props": {
                         "text": "Code repository",
                         "url": "#",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--muted-foreground)",
-                          "radius": "rounded-(--radius)"
-                        },
-                        "mobile": {
-                          "py": "py-2",
-                          "px": "px-2"
-                        },
-                        "desktop": {},
                         "icon": {
                           "value": "ref-google:code",
                           "only": true,
@@ -396,7 +233,8 @@
                         "canEditName": true,
                         "custom": {
                           "displayName": "Code"
-                        }
+                        },
+                        "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
                       }
                     },
                     {
@@ -404,16 +242,6 @@
                       "props": {
                         "text": "Website",
                         "url": "#",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--muted-foreground)",
-                          "radius": "rounded-(--radius)"
-                        },
-                        "mobile": {
-                          "py": "py-2",
-                          "px": "px-2"
-                        },
-                        "desktop": {},
                         "icon": {
                           "value": "ref-google:public",
                           "only": true,
@@ -423,7 +251,8 @@
                         "canEditName": true,
                         "custom": {
                           "displayName": "Website"
-                        }
+                        },
+                        "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
                       }
                     }
                   ]
@@ -435,25 +264,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--card)",
-                  "color": "text-(--card-foreground)",
-                  "border": "border",
-                  "borderColor": "border-(--border)",
-                  "radius": "rounded-(--radius)",
-                  "shadow": "shadow-sm"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "width": "w-full",
-                  "height": "h-full",
-                  "overflow": "overflow-hidden"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Team member — Theo Park"
-                }
+                },
+                "className": "bg-(--card) text-(--card-foreground) border border-(--border) rounded-(--radius) shadow-sm flex flex-col w-full h-full overflow-hidden"
               },
               "children": [
                 {
@@ -462,21 +276,12 @@
                     "content": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&q=80",
                     "type": "url",
                     "alt": "Portrait of Theo Park",
-                    "root": {},
-                    "mobile": {
-                      "width": "w-full",
-                      "height": "h-56",
-                      "objectFit": "object-cover",
-                      "borderRadius": "rounded-(--radius)"
-                    },
-                    "desktop": {
-                      "height": "h-52"
-                    },
                     "canDelete": true,
                     "canEditName": true,
                     "custom": {
                       "displayName": "Portrait"
-                    }
+                    },
+                    "className": "w-full h-56 object-cover rounded-(--radius) md:h-52"
                   }
                 },
                 {
@@ -484,17 +289,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "gap": "gap-2",
-                      "p": "p-4",
-                      "flexBase": "flex-1"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Bio stack"
-                    }
+                    },
+                    "className": "flex flex-col gap-2 p-4 flex-1"
                   },
                   "children": [
                     {
@@ -502,21 +300,15 @@
                       "props": {
                         "text": "Theo Park",
                         "tagName": "h3",
-                        "root": {},
-                        "mobile": {
-                          "fontWeight": "font-bold",
-                          "fontSize": "text-lg",
-                          "fontFamily": "var(--heading-font-family)",
-                          "letterSpacing": "tracking-tight"
-                        },
-                        "desktop": {
-                          "fontSize": "text-xl"
+                        "root": {
+                          "style": "font-family: var(--heading-font-family);"
                         },
                         "canDelete": true,
                         "canEditName": true,
                         "custom": {
                           "displayName": "Name"
-                        }
+                        },
+                        "className": "font-bold text-lg tracking-tight md:text-xl"
                       }
                     },
                     {
@@ -524,18 +316,12 @@
                       "props": {
                         "text": "Staff Platform Engineer",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--muted-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "fontWeight": "font-medium"
-                        },
                         "canDelete": true,
                         "canEditName": true,
                         "custom": {
                           "displayName": "Role"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) text-sm font-medium"
                       }
                     },
                     {
@@ -543,20 +329,12 @@
                       "props": {
                         "text": "Owns the glue between services and the guardrails that keep deploys boring in the best way.",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--muted-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-relaxed",
-                          "fontWeight": "font-normal",
-                          "mt": "mt-2"
-                        },
                         "canDelete": true,
                         "canEditName": true,
                         "custom": {
                           "displayName": "Bio"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) text-sm leading-relaxed font-normal mt-2"
                       }
                     }
                   ]
@@ -566,19 +344,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-row",
-                      "gap": "gap-1",
-                      "wrap": "flex-wrap",
-                      "px": "px-4",
-                      "pb": "pb-4"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Social links"
-                    }
+                    },
+                    "className": "flex flex-row gap-1 flex-wrap px-4 pb-4"
                   },
                   "children": [
                     {
@@ -586,16 +355,6 @@
                       "props": {
                         "text": "Community profile",
                         "url": "#",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--muted-foreground)",
-                          "radius": "rounded-(--radius)"
-                        },
-                        "mobile": {
-                          "py": "py-2",
-                          "px": "px-2"
-                        },
-                        "desktop": {},
                         "icon": {
                           "value": "ref-google:groups",
                           "only": true,
@@ -605,7 +364,8 @@
                         "canEditName": true,
                         "custom": {
                           "displayName": "Community"
-                        }
+                        },
+                        "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
                       }
                     },
                     {
@@ -613,16 +373,6 @@
                       "props": {
                         "text": "Share link",
                         "url": "#",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--muted-foreground)",
-                          "radius": "rounded-(--radius)"
-                        },
-                        "mobile": {
-                          "py": "py-2",
-                          "px": "px-2"
-                        },
-                        "desktop": {},
                         "icon": {
                           "value": "ref-google:share",
                           "only": true,
@@ -632,7 +382,8 @@
                         "canEditName": true,
                         "custom": {
                           "displayName": "Share"
-                        }
+                        },
+                        "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
                       }
                     },
                     {
@@ -640,16 +391,6 @@
                       "props": {
                         "text": "Code repository",
                         "url": "#",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--muted-foreground)",
-                          "radius": "rounded-(--radius)"
-                        },
-                        "mobile": {
-                          "py": "py-2",
-                          "px": "px-2"
-                        },
-                        "desktop": {},
                         "icon": {
                           "value": "ref-google:code",
                           "only": true,
@@ -659,7 +400,8 @@
                         "canEditName": true,
                         "custom": {
                           "displayName": "Code"
-                        }
+                        },
+                        "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
                       }
                     },
                     {
@@ -667,16 +409,6 @@
                       "props": {
                         "text": "Website",
                         "url": "#",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--muted-foreground)",
-                          "radius": "rounded-(--radius)"
-                        },
-                        "mobile": {
-                          "py": "py-2",
-                          "px": "px-2"
-                        },
-                        "desktop": {},
                         "icon": {
                           "value": "ref-google:public",
                           "only": true,
@@ -686,7 +418,8 @@
                         "canEditName": true,
                         "custom": {
                           "displayName": "Website"
-                        }
+                        },
+                        "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
                       }
                     }
                   ]
@@ -698,25 +431,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--card)",
-                  "color": "text-(--card-foreground)",
-                  "border": "border",
-                  "borderColor": "border-(--border)",
-                  "radius": "rounded-(--radius)",
-                  "shadow": "shadow-sm"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "width": "w-full",
-                  "height": "h-full",
-                  "overflow": "overflow-hidden"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Team member — Jordan Wells"
-                }
+                },
+                "className": "bg-(--card) text-(--card-foreground) border border-(--border) rounded-(--radius) shadow-sm flex flex-col w-full h-full overflow-hidden"
               },
               "children": [
                 {
@@ -725,21 +443,12 @@
                     "content": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&q=80",
                     "type": "url",
                     "alt": "Portrait of Jordan Wells",
-                    "root": {},
-                    "mobile": {
-                      "width": "w-full",
-                      "height": "h-56",
-                      "objectFit": "object-cover",
-                      "borderRadius": "rounded-(--radius)"
-                    },
-                    "desktop": {
-                      "height": "h-52"
-                    },
                     "canDelete": true,
                     "canEditName": true,
                     "custom": {
                       "displayName": "Portrait"
-                    }
+                    },
+                    "className": "w-full h-56 object-cover rounded-(--radius) md:h-52"
                   }
                 },
                 {
@@ -747,17 +456,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "gap": "gap-2",
-                      "p": "p-4",
-                      "flexBase": "flex-1"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Bio stack"
-                    }
+                    },
+                    "className": "flex flex-col gap-2 p-4 flex-1"
                   },
                   "children": [
                     {
@@ -765,21 +467,15 @@
                       "props": {
                         "text": "Jordan Wells",
                         "tagName": "h3",
-                        "root": {},
-                        "mobile": {
-                          "fontWeight": "font-bold",
-                          "fontSize": "text-lg",
-                          "fontFamily": "var(--heading-font-family)",
-                          "letterSpacing": "tracking-tight"
-                        },
-                        "desktop": {
-                          "fontSize": "text-xl"
+                        "root": {
+                          "style": "font-family: var(--heading-font-family);"
                         },
                         "canDelete": true,
                         "canEditName": true,
                         "custom": {
                           "displayName": "Name"
-                        }
+                        },
+                        "className": "font-bold text-lg tracking-tight md:text-xl"
                       }
                     },
                     {
@@ -787,18 +483,12 @@
                       "props": {
                         "text": "Brand & Product Design Lead",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--muted-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "fontWeight": "font-medium"
-                        },
                         "canDelete": true,
                         "canEditName": true,
                         "custom": {
                           "displayName": "Role"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) text-sm font-medium"
                       }
                     },
                     {
@@ -806,20 +496,12 @@
                       "props": {
                         "text": "Turns fuzzy direction into durable systems—type, color, and layout that stay coherent as pages multiply.",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--muted-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-relaxed",
-                          "fontWeight": "font-normal",
-                          "mt": "mt-2"
-                        },
                         "canDelete": true,
                         "canEditName": true,
                         "custom": {
                           "displayName": "Bio"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) text-sm leading-relaxed font-normal mt-2"
                       }
                     }
                   ]
@@ -829,19 +511,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-row",
-                      "gap": "gap-1",
-                      "wrap": "flex-wrap",
-                      "px": "px-4",
-                      "pb": "pb-4"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Social links"
-                    }
+                    },
+                    "className": "flex flex-row gap-1 flex-wrap px-4 pb-4"
                   },
                   "children": [
                     {
@@ -849,16 +522,6 @@
                       "props": {
                         "text": "Community profile",
                         "url": "#",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--muted-foreground)",
-                          "radius": "rounded-(--radius)"
-                        },
-                        "mobile": {
-                          "py": "py-2",
-                          "px": "px-2"
-                        },
-                        "desktop": {},
                         "icon": {
                           "value": "ref-google:groups",
                           "only": true,
@@ -868,7 +531,8 @@
                         "canEditName": true,
                         "custom": {
                           "displayName": "Community"
-                        }
+                        },
+                        "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
                       }
                     },
                     {
@@ -876,16 +540,6 @@
                       "props": {
                         "text": "Share link",
                         "url": "#",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--muted-foreground)",
-                          "radius": "rounded-(--radius)"
-                        },
-                        "mobile": {
-                          "py": "py-2",
-                          "px": "px-2"
-                        },
-                        "desktop": {},
                         "icon": {
                           "value": "ref-google:share",
                           "only": true,
@@ -895,7 +549,8 @@
                         "canEditName": true,
                         "custom": {
                           "displayName": "Share"
-                        }
+                        },
+                        "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
                       }
                     },
                     {
@@ -903,16 +558,6 @@
                       "props": {
                         "text": "Code repository",
                         "url": "#",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--muted-foreground)",
-                          "radius": "rounded-(--radius)"
-                        },
-                        "mobile": {
-                          "py": "py-2",
-                          "px": "px-2"
-                        },
-                        "desktop": {},
                         "icon": {
                           "value": "ref-google:code",
                           "only": true,
@@ -922,7 +567,8 @@
                         "canEditName": true,
                         "custom": {
                           "displayName": "Code"
-                        }
+                        },
+                        "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
                       }
                     },
                     {
@@ -930,16 +576,6 @@
                       "props": {
                         "text": "Website",
                         "url": "#",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--muted-foreground)",
-                          "radius": "rounded-(--radius)"
-                        },
-                        "mobile": {
-                          "py": "py-2",
-                          "px": "px-2"
-                        },
-                        "desktop": {},
                         "icon": {
                           "value": "ref-google:public",
                           "only": true,
@@ -949,7 +585,8 @@
                         "canEditName": true,
                         "custom": {
                           "displayName": "Website"
-                        }
+                        },
+                        "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
                       }
                     }
                   ]
@@ -961,25 +598,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--card)",
-                  "color": "text-(--card-foreground)",
-                  "border": "border",
-                  "borderColor": "border-(--border)",
-                  "radius": "rounded-(--radius)",
-                  "shadow": "shadow-sm"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "width": "w-full",
-                  "height": "h-full",
-                  "overflow": "overflow-hidden"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Team member — Priya Nair"
-                }
+                },
+                "className": "bg-(--card) text-(--card-foreground) border border-(--border) rounded-(--radius) shadow-sm flex flex-col w-full h-full overflow-hidden"
               },
               "children": [
                 {
@@ -988,21 +610,12 @@
                     "content": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop&q=80",
                     "type": "url",
                     "alt": "Portrait of Priya Nair",
-                    "root": {},
-                    "mobile": {
-                      "width": "w-full",
-                      "height": "h-56",
-                      "objectFit": "object-cover",
-                      "borderRadius": "rounded-(--radius)"
-                    },
-                    "desktop": {
-                      "height": "h-52"
-                    },
                     "canDelete": true,
                     "canEditName": true,
                     "custom": {
                       "displayName": "Portrait"
-                    }
+                    },
+                    "className": "w-full h-56 object-cover rounded-(--radius) md:h-52"
                   }
                 },
                 {
@@ -1010,17 +623,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "gap": "gap-2",
-                      "p": "p-4",
-                      "flexBase": "flex-1"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Bio stack"
-                    }
+                    },
+                    "className": "flex flex-col gap-2 p-4 flex-1"
                   },
                   "children": [
                     {
@@ -1028,21 +634,15 @@
                       "props": {
                         "text": "Priya Nair",
                         "tagName": "h3",
-                        "root": {},
-                        "mobile": {
-                          "fontWeight": "font-bold",
-                          "fontSize": "text-lg",
-                          "fontFamily": "var(--heading-font-family)",
-                          "letterSpacing": "tracking-tight"
-                        },
-                        "desktop": {
-                          "fontSize": "text-xl"
+                        "root": {
+                          "style": "font-family: var(--heading-font-family);"
                         },
                         "canDelete": true,
                         "canEditName": true,
                         "custom": {
                           "displayName": "Name"
-                        }
+                        },
+                        "className": "font-bold text-lg tracking-tight md:text-xl"
                       }
                     },
                     {
@@ -1050,18 +650,12 @@
                       "props": {
                         "text": "Head of Customer Success",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--muted-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "fontWeight": "font-medium"
-                        },
                         "canDelete": true,
                         "canEditName": true,
                         "custom": {
                           "displayName": "Role"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) text-sm font-medium"
                       }
                     },
                     {
@@ -1069,20 +663,12 @@
                       "props": {
                         "text": "Runs the conversations after launch—training, rollout, and follow-ups that turn pilots into steady relationships.",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--muted-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-relaxed",
-                          "fontWeight": "font-normal",
-                          "mt": "mt-2"
-                        },
                         "canDelete": true,
                         "canEditName": true,
                         "custom": {
                           "displayName": "Bio"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) text-sm leading-relaxed font-normal mt-2"
                       }
                     }
                   ]
@@ -1092,19 +678,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-row",
-                      "gap": "gap-1",
-                      "wrap": "flex-wrap",
-                      "px": "px-4",
-                      "pb": "pb-4"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Social links"
-                    }
+                    },
+                    "className": "flex flex-row gap-1 flex-wrap px-4 pb-4"
                   },
                   "children": [
                     {
@@ -1112,16 +689,6 @@
                       "props": {
                         "text": "Community profile",
                         "url": "#",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--muted-foreground)",
-                          "radius": "rounded-(--radius)"
-                        },
-                        "mobile": {
-                          "py": "py-2",
-                          "px": "px-2"
-                        },
-                        "desktop": {},
                         "icon": {
                           "value": "ref-google:groups",
                           "only": true,
@@ -1131,7 +698,8 @@
                         "canEditName": true,
                         "custom": {
                           "displayName": "Community"
-                        }
+                        },
+                        "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
                       }
                     },
                     {
@@ -1139,16 +707,6 @@
                       "props": {
                         "text": "Share link",
                         "url": "#",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--muted-foreground)",
-                          "radius": "rounded-(--radius)"
-                        },
-                        "mobile": {
-                          "py": "py-2",
-                          "px": "px-2"
-                        },
-                        "desktop": {},
                         "icon": {
                           "value": "ref-google:share",
                           "only": true,
@@ -1158,7 +716,8 @@
                         "canEditName": true,
                         "custom": {
                           "displayName": "Share"
-                        }
+                        },
+                        "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
                       }
                     },
                     {
@@ -1166,16 +725,6 @@
                       "props": {
                         "text": "Code repository",
                         "url": "#",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--muted-foreground)",
-                          "radius": "rounded-(--radius)"
-                        },
-                        "mobile": {
-                          "py": "py-2",
-                          "px": "px-2"
-                        },
-                        "desktop": {},
                         "icon": {
                           "value": "ref-google:code",
                           "only": true,
@@ -1185,7 +734,8 @@
                         "canEditName": true,
                         "custom": {
                           "displayName": "Code"
-                        }
+                        },
+                        "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
                       }
                     },
                     {
@@ -1193,16 +743,6 @@
                       "props": {
                         "text": "Website",
                         "url": "#",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--muted-foreground)",
-                          "radius": "rounded-(--radius)"
-                        },
-                        "mobile": {
-                          "py": "py-2",
-                          "px": "px-2"
-                        },
-                        "desktop": {},
                         "icon": {
                           "value": "ref-google:public",
                           "only": true,
@@ -1212,7 +752,8 @@
                         "canEditName": true,
                         "custom": {
                           "displayName": "Website"
-                        }
+                        },
+                        "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
                       }
                     }
                   ]
@@ -1224,25 +765,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--card)",
-                  "color": "text-(--card-foreground)",
-                  "border": "border",
-                  "borderColor": "border-(--border)",
-                  "radius": "rounded-(--radius)",
-                  "shadow": "shadow-sm"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "width": "w-full",
-                  "height": "h-full",
-                  "overflow": "overflow-hidden"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Team member — Sam Rivera"
-                }
+                },
+                "className": "bg-(--card) text-(--card-foreground) border border-(--border) rounded-(--radius) shadow-sm flex flex-col w-full h-full overflow-hidden"
               },
               "children": [
                 {
@@ -1251,21 +777,12 @@
                     "content": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=480&fit=crop&crop=faces&q=80",
                     "type": "url",
                     "alt": "Portrait of Sam Rivera",
-                    "root": {},
-                    "mobile": {
-                      "width": "w-full",
-                      "height": "h-56",
-                      "objectFit": "object-cover",
-                      "borderRadius": "rounded-(--radius)"
-                    },
-                    "desktop": {
-                      "height": "h-52"
-                    },
                     "canDelete": true,
                     "canEditName": true,
                     "custom": {
                       "displayName": "Portrait"
-                    }
+                    },
+                    "className": "w-full h-56 object-cover rounded-(--radius) md:h-52"
                   }
                 },
                 {
@@ -1273,17 +790,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "gap": "gap-2",
-                      "p": "p-4",
-                      "flexBase": "flex-1"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Bio stack"
-                    }
+                    },
+                    "className": "flex flex-col gap-2 p-4 flex-1"
                   },
                   "children": [
                     {
@@ -1291,21 +801,15 @@
                       "props": {
                         "text": "Sam Rivera",
                         "tagName": "h3",
-                        "root": {},
-                        "mobile": {
-                          "fontWeight": "font-bold",
-                          "fontSize": "text-lg",
-                          "fontFamily": "var(--heading-font-family)",
-                          "letterSpacing": "tracking-tight"
-                        },
-                        "desktop": {
-                          "fontSize": "text-xl"
+                        "root": {
+                          "style": "font-family: var(--heading-font-family);"
                         },
                         "canDelete": true,
                         "canEditName": true,
                         "custom": {
                           "displayName": "Name"
-                        }
+                        },
+                        "className": "font-bold text-lg tracking-tight md:text-xl"
                       }
                     },
                     {
@@ -1313,18 +817,12 @@
                       "props": {
                         "text": "Senior Frontend Engineer",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--muted-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "fontWeight": "font-medium"
-                        },
                         "canDelete": true,
                         "canEditName": true,
                         "custom": {
                           "displayName": "Role"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) text-sm font-medium"
                       }
                     },
                     {
@@ -1332,20 +830,12 @@
                       "props": {
                         "text": "Careful with accessibility and performance budgets so interfaces feel fast on real devices, not just polished demos.",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--muted-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-relaxed",
-                          "fontWeight": "font-normal",
-                          "mt": "mt-2"
-                        },
                         "canDelete": true,
                         "canEditName": true,
                         "custom": {
                           "displayName": "Bio"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) text-sm leading-relaxed font-normal mt-2"
                       }
                     }
                   ]
@@ -1355,19 +845,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-row",
-                      "gap": "gap-1",
-                      "wrap": "flex-wrap",
-                      "px": "px-4",
-                      "pb": "pb-4"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Social links"
-                    }
+                    },
+                    "className": "flex flex-row gap-1 flex-wrap px-4 pb-4"
                   },
                   "children": [
                     {
@@ -1375,16 +856,6 @@
                       "props": {
                         "text": "Community profile",
                         "url": "#",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--muted-foreground)",
-                          "radius": "rounded-(--radius)"
-                        },
-                        "mobile": {
-                          "py": "py-2",
-                          "px": "px-2"
-                        },
-                        "desktop": {},
                         "icon": {
                           "value": "ref-google:groups",
                           "only": true,
@@ -1394,7 +865,8 @@
                         "canEditName": true,
                         "custom": {
                           "displayName": "Community"
-                        }
+                        },
+                        "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
                       }
                     },
                     {
@@ -1402,16 +874,6 @@
                       "props": {
                         "text": "Share link",
                         "url": "#",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--muted-foreground)",
-                          "radius": "rounded-(--radius)"
-                        },
-                        "mobile": {
-                          "py": "py-2",
-                          "px": "px-2"
-                        },
-                        "desktop": {},
                         "icon": {
                           "value": "ref-google:share",
                           "only": true,
@@ -1421,7 +883,8 @@
                         "canEditName": true,
                         "custom": {
                           "displayName": "Share"
-                        }
+                        },
+                        "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
                       }
                     },
                     {
@@ -1429,16 +892,6 @@
                       "props": {
                         "text": "Code repository",
                         "url": "#",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--muted-foreground)",
-                          "radius": "rounded-(--radius)"
-                        },
-                        "mobile": {
-                          "py": "py-2",
-                          "px": "px-2"
-                        },
-                        "desktop": {},
                         "icon": {
                           "value": "ref-google:code",
                           "only": true,
@@ -1448,7 +901,8 @@
                         "canEditName": true,
                         "custom": {
                           "displayName": "Code"
-                        }
+                        },
+                        "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
                       }
                     },
                     {
@@ -1456,16 +910,6 @@
                       "props": {
                         "text": "Website",
                         "url": "#",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--muted-foreground)",
-                          "radius": "rounded-(--radius)"
-                        },
-                        "mobile": {
-                          "py": "py-2",
-                          "px": "px-2"
-                        },
-                        "desktop": {},
                         "icon": {
                           "value": "ref-google:public",
                           "only": true,
@@ -1475,7 +919,8 @@
                         "canEditName": true,
                         "custom": {
                           "displayName": "Website"
-                        }
+                        },
+                        "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
                       }
                     }
                   ]

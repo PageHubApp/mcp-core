@@ -4,13 +4,10 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
+    "custom": {
+      "displayName": "Commerce Bento Showcase"
     },
-    "mobile": { "display": "flex", "flexDirection": "flex-col", "width": "w-full", "py": "py-16", "px": "px-6" },
-    "desktop": { "py": "py-24", "px": "px-8" },
-    "custom": { "displayName": "Commerce Bento Showcase" }
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-16 px-6 md:py-24 md:px-8"
   },
   "children": [
     {
@@ -18,9 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "mobile": { "display": "flex", "flexDirection": "flex-col", "alignItems": "items-center", "gap": "gap-4", "width": "w-full", "textAlign": "text-center", "mb": "mb-16" },
-        "desktop": { "textAlign": "text-center", "alignItems": "items-center", "maxWidth": "max-w-2xl", "mx": "mx-auto" },
-        "custom": { "displayName": "Bento Header" }
+        "custom": {
+          "displayName": "Bento Header"
+        },
+        "className": "flex flex-col items-center gap-4 w-full text-center mb-16 md:text-center md:items-center md:max-w-2xl md:mx-auto"
       },
       "children": [
         {
@@ -28,9 +26,10 @@
           "props": {
             "text": "OUR OFFERINGS",
             "tagName": "p",
-            "root": { "color": "text-(--accent)", "fontWeight": "font-bold", "letterSpacing": "tracking-widest" },
-            "mobile": { "fontSize": "text-xs" },
-            "custom": { "displayName": "Eyebrow" }
+            "custom": {
+              "displayName": "Eyebrow"
+            },
+            "className": "text-(--accent) font-bold tracking-widest text-xs"
           }
         },
         {
@@ -38,10 +37,13 @@
           "props": {
             "text": "Master Your Workflow",
             "tagName": "h2",
-            "root": { "fontWeight": "font-black", "fontFamily": "var(--heading-font-family)", "lineHeight": "leading-tight" },
-            "mobile": { "fontSize": "text-3xl" },
-            "desktop": { "fontSize": "text-5xl" },
-            "custom": { "displayName": "Headline" }
+            "root": {
+              "style": "font-family: var(--heading-font-family);"
+            },
+            "custom": {
+              "displayName": "Headline"
+            },
+            "className": "font-black leading-tight text-3xl md:text-5xl"
           }
         }
       ]
@@ -51,9 +53,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "mobile": { "display": "grid", "gridCols": "grid-cols-1", "gap": "gap-8", "width": "w-full", "maxWidth": "max-w-7xl", "mx": "mx-auto" },
-        "desktop": { "gridCols": "grid-cols-12", "height": "h-[700px]", "gap": "gap-6" },
-        "custom": { "displayName": "Bento Grid" }
+        "custom": {
+          "displayName": "Bento Grid"
+        },
+        "className": "grid grid-cols-1 gap-8 w-full max-w-7xl mx-auto md:grid-cols-12 md:h-[700px] md:gap-6"
       },
       "children": [
         {
@@ -61,10 +64,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": { "background": "bg-(--primary)", "color": "text-(--primary-foreground)", "radius": "rounded-(--card-radius)", "shadow": "shadow-lg" },
-            "mobile": { "display": "flex", "flexDirection": "flex-col", "justifyContent": "justify-between", "minHeight": "min-h-[500px]", "position": "relative", "overflow": "overflow-hidden" },
-            "desktop": { "gridColStart": "col-start-1", "gridColEnd": "col-end-9" },
-            "custom": { "displayName": "Feature Block 1" }
+            "custom": {
+              "displayName": "Feature Block 1"
+            },
+            "className": "bg-(--primary) text-(--primary-foreground) rounded-(--card-radius) shadow-lg flex flex-col justify-between min-h-[500px] relative overflow-hidden md:col-start-1 md:col-end-9"
           },
           "children": [
             {
@@ -72,15 +75,19 @@
               "props": {
                 "content": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200",
                 "alt": "Bento 1",
-                "mobile": { "position": "absolute", "inset": "inset-0", "width": "w-full", "height": "h-full", "objectFit": "object-cover", "opacity": "opacity-20" },
-                "custom": { "displayName": "Background Image" }
+                "custom": {
+                  "displayName": "Background Image"
+                },
+                "className": "absolute inset-0 w-full h-full object-cover opacity-20"
               }
             },
             {
               "type": "Container",
               "props": {
-                "mobile": { "position": "relative", "zIndex": "z-10", "display": "flex", "flexDirection": "flex-col", "gap": "gap-6", "height": "h-full", "justifyContent": "justify-end", "px": "px-12", "pb": "pb-12" },
-                "custom": { "displayName": "Content Layer" }
+                "custom": {
+                  "displayName": "Content Layer"
+                },
+                "className": "relative z-10 flex flex-col gap-6 h-full justify-end px-12 pb-12"
               },
               "children": [
                 {
@@ -88,10 +95,13 @@
                   "props": {
                     "text": "The Complete System",
                     "tagName": "h3",
-                    "root": { "fontWeight": "font-black", "fontFamily": "var(--heading-font-family)" },
-                    "mobile": { "fontSize": "text-4xl" },
-                    "desktop": { "fontSize": "text-5xl" },
-                    "custom": { "displayName": "Title" }
+                    "root": {
+                      "style": "font-family: var(--heading-font-family);"
+                    },
+                    "custom": {
+                      "displayName": "Title"
+                    },
+                    "className": "font-black text-4xl md:text-5xl"
                   }
                 },
                 {
@@ -99,9 +109,10 @@
                   "props": {
                     "text": "A high-performance commerce engine built for precision. Scale without the overhead of complex integrations.",
                     "tagName": "p",
-                    "root": { "bgOpacity": "opacity-90", "lineHeight": "leading-relaxed" },
-                    "mobile": { "fontSize": "text-xl", "maxWidth": "max-w-xl" },
-                    "custom": { "displayName": "Description" }
+                    "custom": {
+                      "displayName": "Description"
+                    },
+                    "className": "opacity-90 leading-relaxed text-xl max-w-xl"
                   }
                 },
                 {
@@ -109,9 +120,10 @@
                   "props": {
                     "text": "Get Started Now",
                     "url": "#",
-                    "root": { "background": "bg-(--primary-foreground)", "color": "text-(--primary)", "radius": "rounded-(--radius)" },
-                    "mobile": { "display": "flex", "alignItems": "items-center", "justifyContent": "justify-center", "py": "py-5", "px": "px-12", "fontSize": "text-base", "fontWeight": "font-bold", "mt": "mt-4", "width": "w-max" },
-                    "custom": { "displayName": "CTA" }
+                    "custom": {
+                      "displayName": "CTA"
+                    },
+                    "className": "bg-(--primary-foreground) text-(--primary) rounded-(--radius) flex items-center justify-center py-5 px-12 text-base font-bold mt-4 w-max"
                   }
                 }
               ]
@@ -123,9 +135,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "mobile": { "display": "flex", "flexDirection": "flex-col", "gap": "gap-6" },
-            "desktop": { "gridColStart": "col-start-9", "gridColEnd": "col-end-13" },
-            "custom": { "displayName": "Stack Container" }
+            "custom": {
+              "displayName": "Stack Container"
+            },
+            "className": "flex flex-col gap-6 md:col-start-9 md:col-end-13"
           },
           "children": [
             {
@@ -133,9 +146,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": { "background": "bg-(--secondary)", "color": "text-(--secondary-foreground)", "radius": "rounded-(--card-radius)" },
-                "mobile": { "display": "flex", "flexDirection": "flex-col", "justifyContent": "justify-between", "flex": "flex-1", "minHeight": "min-h-[310px]", "position": "relative", "overflow": "overflow-hidden" },
-                "custom": { "displayName": "Feature Block 2" }
+                "custom": {
+                  "displayName": "Feature Block 2"
+                },
+                "className": "bg-(--secondary) text-(--secondary-foreground) rounded-(--card-radius) flex flex-col justify-between flex-1 min-h-[310px] relative overflow-hidden"
               },
               "children": [
                 {
@@ -143,15 +157,19 @@
                   "props": {
                     "content": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800",
                     "alt": "Bento 2",
-                    "mobile": { "position": "absolute", "inset": "inset-0", "width": "w-full", "height": "h-full", "objectFit": "object-cover", "opacity": "opacity-10" },
-                    "custom": { "displayName": "Overlay Image" }
+                    "custom": {
+                      "displayName": "Overlay Image"
+                    },
+                    "className": "absolute inset-0 w-full h-full object-cover opacity-10"
                   }
                 },
                 {
                   "type": "Container",
                   "props": {
-                    "mobile": { "position": "relative", "zIndex": "z-10", "display": "flex", "flexDirection": "flex-col", "gap": "gap-4", "height": "h-full", "justifyContent": "justify-end", "px": "px-10", "pb": "pb-10" },
-                    "custom": { "displayName": "Content Layer" }
+                    "custom": {
+                      "displayName": "Content Layer"
+                    },
+                    "className": "relative z-10 flex flex-col gap-4 h-full justify-end px-10 pb-10"
                   },
                   "children": [
                     {
@@ -159,9 +177,13 @@
                       "props": {
                         "text": "Global Logistics",
                         "tagName": "h3",
-                        "root": { "fontWeight": "font-bold", "fontFamily": "var(--heading-font-family)" },
-                        "mobile": { "fontSize": "text-2xl" },
-                        "custom": { "displayName": "Title" }
+                        "root": {
+                          "style": "font-family: var(--heading-font-family);"
+                        },
+                        "custom": {
+                          "displayName": "Title"
+                        },
+                        "className": "font-bold text-2xl"
                       }
                     },
                     {
@@ -169,9 +191,10 @@
                       "props": {
                         "text": "Shipping to 180+ countries with automated customs handling.",
                         "tagName": "p",
-                        "root": { "bgOpacity": "opacity-80", "lineHeight": "leading-relaxed" },
-                        "mobile": { "fontSize": "text-base" },
-                        "custom": { "displayName": "Description" }
+                        "custom": {
+                          "displayName": "Description"
+                        },
+                        "className": "opacity-80 leading-relaxed text-base"
                       }
                     }
                   ]
@@ -183,9 +206,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": { "background": "bg-(--muted)", "radius": "rounded-(--card-radius)" },
-                "mobile": { "display": "flex", "flexDirection": "flex-col", "justifyContent": "justify-between", "flex": "flex-1", "minHeight": "min-h-[310px]", "position": "relative", "overflow": "overflow-hidden" },
-                "custom": { "displayName": "Feature Block 3" }
+                "custom": {
+                  "displayName": "Feature Block 3"
+                },
+                "className": "bg-(--muted) rounded-(--card-radius) flex flex-col justify-between flex-1 min-h-[310px] relative overflow-hidden"
               },
               "children": [
                 {
@@ -193,15 +217,19 @@
                   "props": {
                     "content": "https://images.unsplash.com/photo-1542744159-2c810ae2f01f?auto=format&fit=crop&q=80&w=800",
                     "alt": "Bento 3",
-                    "mobile": { "position": "absolute", "inset": "inset-0", "width": "w-full", "height": "h-full", "objectFit": "object-cover", "opacity": "opacity-10" },
-                    "custom": { "displayName": "Overlay Image" }
+                    "custom": {
+                      "displayName": "Overlay Image"
+                    },
+                    "className": "absolute inset-0 w-full h-full object-cover opacity-10"
                   }
                 },
                 {
                   "type": "Container",
                   "props": {
-                    "mobile": { "position": "relative", "zIndex": "z-10", "display": "flex", "flexDirection": "flex-col", "gap": "gap-4", "height": "h-full", "justifyContent": "justify-end", "px": "px-10", "pb": "pb-10" },
-                    "custom": { "displayName": "Content Layer" }
+                    "custom": {
+                      "displayName": "Content Layer"
+                    },
+                    "className": "relative z-10 flex flex-col gap-4 h-full justify-end px-10 pb-10"
                   },
                   "children": [
                     {
@@ -209,9 +237,13 @@
                       "props": {
                         "text": "Unified Analytics",
                         "tagName": "h3",
-                        "root": { "fontWeight": "font-bold", "fontFamily": "var(--heading-font-family)", "color": "text-(--foreground)" },
-                        "mobile": { "fontSize": "text-2xl" },
-                        "custom": { "displayName": "Title" }
+                        "root": {
+                          "style": "font-family: var(--heading-font-family);"
+                        },
+                        "custom": {
+                          "displayName": "Title"
+                        },
+                        "className": "font-bold text-(--foreground) text-2xl"
                       }
                     },
                     {
@@ -219,9 +251,10 @@
                       "props": {
                         "text": "Track conversion and global performance in one dashboard.",
                         "tagName": "p",
-                        "root": { "color": "text-(--muted-foreground)", "lineHeight": "leading-relaxed" },
-                        "mobile": { "fontSize": "text-base" },
-                        "custom": { "displayName": "Description" }
+                        "custom": {
+                          "displayName": "Description"
+                        },
+                        "className": "text-(--muted-foreground) leading-relaxed text-base"
                       }
                     }
                   ]

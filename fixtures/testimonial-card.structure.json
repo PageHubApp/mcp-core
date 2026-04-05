@@ -4,18 +4,10 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
-    "root": { "background": "bg-(--background)", "color": "text-(--foreground)" },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "alignItems": "items-center",
-      "width": "w-full",
-      "py": "py-12",
-      "px": "px-4"
-    },
-    "className": ["lg:py-20", "lg:px-6"],
-    "desktop": {},
-    "custom": { "displayName": "Testimonial cards section" }
+    "className": "bg-(--background) text-(--foreground) flex flex-col items-center w-full py-12 px-4 lg:py-20 lg:px-6",
+    "custom": {
+      "displayName": "Testimonial cards section"
+    }
   },
   "children": [
     {
@@ -23,18 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "alignItems": "items-center",
-          "gap": "gap-10",
-          "width": "w-full",
-          "maxWidth": "max-w-7xl",
-          "mx": "mx-auto"
+        "custom": {
+          "displayName": "Section content"
         },
-        "desktop": {},
-        "custom": { "displayName": "Section content" }
+        "className": "flex flex-col items-center gap-10 w-full max-w-7xl mx-auto"
       },
       "children": [
         {
@@ -42,19 +26,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "alignItems": "items-center",
-              "gap": "gap-4",
-              "textAlign": "text-center",
-              "width": "w-full",
-              "maxWidth": "max-w-2xl",
-              "mx": "mx-auto"
+            "custom": {
+              "displayName": "Section header"
             },
-            "desktop": {},
-            "custom": { "displayName": "Section header" }
+            "className": "flex flex-col items-center gap-4 text-center w-full max-w-2xl mx-auto"
           },
           "children": [
             {
@@ -63,15 +38,12 @@
                 "text": "Stories from real teams",
                 "tagName": "h2",
                 "root": {
-                  "fontWeight": "font-bold",
-                  "fontFamily": "var(--heading-font-family)",
-                  "lineHeight": "leading-tight",
-                  "color": "text-(--foreground)"
+                  "style": "font-family: var(--heading-font-family);"
                 },
-                "mobile": { "fontSize": "text-3xl", "width": "w-full" },
-                "className": ["lg:text-4xl"],
-                "desktop": {},
-                "custom": { "displayName": "Heading" }
+                "className": "font-bold leading-tight text-(--foreground) text-3xl w-full lg:text-4xl",
+                "custom": {
+                  "displayName": "Heading"
+                }
               }
             },
             {
@@ -79,11 +51,10 @@
               "props": {
                 "text": "Short blurbs from people who needed momentum more than another blank document.",
                 "tagName": "p",
-                "root": { "color": "text-(--muted-foreground)", "lineHeight": "leading-relaxed" },
-                "mobile": { "fontSize": "text-base", "width": "w-full" },
-                "className": ["lg:text-lg"],
-                "desktop": {},
-                "custom": { "displayName": "Subtitle" }
+                "className": "text-(--muted-foreground) leading-relaxed text-base w-full lg:text-lg",
+                "custom": {
+                  "displayName": "Subtitle"
+                }
               }
             }
           ]
@@ -93,11 +64,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": { "display": "grid", "gridCols": "grid-cols-1", "gap": "gap-8", "width": "w-full" },
-            "className": ["lg:grid-cols-2", "lg:gap-10"],
-            "desktop": {},
-            "custom": { "displayName": "Cards grid" }
+            "className": "grid grid-cols-1 gap-8 w-full lg:grid-cols-2 lg:gap-10",
+            "custom": {
+              "displayName": "Cards grid"
+            }
           },
           "children": [
             {
@@ -105,23 +75,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--card)",
-                  "radius": "rounded-(--card-radius)",
-                  "shadow": "shadow-md"
-                },
-                "className": ["border-l-4", "border-l-(--primary)"],
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "gap": "gap-5",
-                  "width": "w-full",
-                  "p": "p-8",
-                  "alignItems": "items-start",
-                  "textAlign": "text-left"
-                },
-                "desktop": {},
-                "custom": { "displayName": "Testimonial card" }
+                "className": "bg-(--card) rounded-(--card-radius) shadow-md flex flex-col gap-5 w-full p-8 items-start text-left border-l-4 border-l-(--primary)",
+                "custom": {
+                  "displayName": "Testimonial card"
+                }
               },
               "children": [
                 {
@@ -130,15 +87,12 @@
                     "text": "We shipped the whole flow without filing a ticket",
                     "tagName": "h3",
                     "root": {
-                      "fontWeight": "font-bold",
-                      "fontFamily": "var(--heading-font-family)",
-                      "lineHeight": "leading-snug",
-                      "color": "text-(--foreground)"
+                      "style": "font-family: var(--heading-font-family);"
                     },
-                    "mobile": { "fontSize": "text-lg", "width": "w-full" },
-                    "className": ["lg:text-xl"],
-                    "desktop": {},
-                    "custom": { "displayName": "Card title" }
+                    "className": "font-bold leading-snug text-(--foreground) text-lg w-full lg:text-xl",
+                    "custom": {
+                      "displayName": "Card title"
+                    }
                   }
                 },
                 {
@@ -146,11 +100,10 @@
                   "props": {
                     "text": "PageHub turned a Friday proof-of-concept into our default launch path. Designers own the page, engineering stays focused on the product.",
                     "tagName": "p",
-                    "root": { "color": "text-(--card-foreground)", "lineHeight": "leading-relaxed" },
-                    "mobile": { "fontSize": "text-sm", "width": "w-full" },
-                    "className": ["lg:text-base"],
-                    "desktop": {},
-                    "custom": { "displayName": "Quote" }
+                    "className": "text-(--card-foreground) leading-relaxed text-sm w-full lg:text-base",
+                    "custom": {
+                      "displayName": "Quote"
+                    }
                   }
                 },
                 {
@@ -158,17 +111,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-row",
-                      "alignItems": "items-center",
-                      "gap": "gap-3",
-                      "width": "w-full",
-                      "mt": "mt-1"
+                    "custom": {
+                      "displayName": "Attribution"
                     },
-                    "desktop": {},
-                    "custom": { "displayName": "Attribution" }
+                    "className": "flex flex-row items-center gap-3 w-full mt-1"
                   },
                   "children": [
                     {
@@ -179,17 +125,10 @@
                         "type": "url",
                         "content": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=128&h=128&fit=crop&q=80",
                         "alt": "Portrait of Alicia Nguyen",
-                        "root": { "radius": "rounded-(--radius-full)" },
-                        "mobile": {
-                          "width": "w-10",
-                          "height": "h-10",
-                          "flexShrink": "shrink-0",
-                          "objectFit": "object-cover",
-                          "objectPosition": "object-center",
-                          "overflow": "overflow-hidden"
+                        "custom": {
+                          "displayName": "Avatar"
                         },
-                        "desktop": {},
-                        "custom": { "displayName": "Avatar" }
+                        "className": "rounded-(--radius-full) w-10 h-10 shrink-0 object-cover object-center overflow-hidden"
                       }
                     },
                     {
@@ -197,10 +136,10 @@
                       "props": {
                         "canDelete": true,
                         "canEditName": true,
-                        "root": {},
-                        "mobile": { "display": "flex", "flexDirection": "flex-col", "gap": "gap-0.5", "alignItems": "items-start" },
-                        "desktop": {},
-                        "custom": { "displayName": "Name and role" }
+                        "custom": {
+                          "displayName": "Name and role"
+                        },
+                        "className": "flex flex-col gap-0.5 items-start"
                       },
                       "children": [
                         {
@@ -208,10 +147,10 @@
                           "props": {
                             "text": "Alicia Nguyen",
                             "tagName": "p",
-                            "root": { "fontWeight": "font-semibold", "fontSize": "text-sm", "color": "text-(--foreground)" },
-                            "mobile": {},
-                            "desktop": {},
-                            "custom": { "displayName": "Name" }
+                            "custom": {
+                              "displayName": "Name"
+                            },
+                            "className": "font-semibold text-sm text-(--foreground)"
                           }
                         },
                         {
@@ -219,10 +158,10 @@
                           "props": {
                             "text": "Design Lead, Harbor Stack",
                             "tagName": "p",
-                            "root": { "fontSize": "text-xs", "color": "text-(--muted-foreground)" },
-                            "mobile": {},
-                            "desktop": {},
-                            "custom": { "displayName": "Role" }
+                            "custom": {
+                              "displayName": "Role"
+                            },
+                            "className": "text-xs text-(--muted-foreground)"
                           }
                         }
                       ]
@@ -236,23 +175,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--card)",
-                  "radius": "rounded-(--card-radius)",
-                  "shadow": "shadow-md"
-                },
-                "className": ["border-l-4", "border-l-(--primary)"],
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "gap": "gap-5",
-                  "width": "w-full",
-                  "p": "p-8",
-                  "alignItems": "items-start",
-                  "textAlign": "text-left"
-                },
-                "desktop": {},
-                "custom": { "displayName": "Testimonial card" }
+                "className": "bg-(--card) rounded-(--card-radius) shadow-md flex flex-col gap-5 w-full p-8 items-start text-left border-l-4 border-l-(--primary)",
+                "custom": {
+                  "displayName": "Testimonial card"
+                }
               },
               "children": [
                 {
@@ -261,15 +187,12 @@
                     "text": "Marketing and product finally share one canvas",
                     "tagName": "h3",
                     "root": {
-                      "fontWeight": "font-bold",
-                      "fontFamily": "var(--heading-font-family)",
-                      "lineHeight": "leading-snug",
-                      "color": "text-(--foreground)"
+                      "style": "font-family: var(--heading-font-family);"
                     },
-                    "mobile": { "fontSize": "text-lg", "width": "w-full" },
-                    "className": ["lg:text-xl"],
-                    "desktop": {},
-                    "custom": { "displayName": "Card title" }
+                    "className": "font-bold leading-snug text-(--foreground) text-lg w-full lg:text-xl",
+                    "custom": {
+                      "displayName": "Card title"
+                    }
                   }
                 },
                 {
@@ -277,11 +200,10 @@
                   "props": {
                     "text": "Revisions that used to ping-pong in comments now resolve in a single preview link. Stakeholders see exactly what ships.",
                     "tagName": "p",
-                    "root": { "color": "text-(--card-foreground)", "lineHeight": "leading-relaxed" },
-                    "mobile": { "fontSize": "text-sm", "width": "w-full" },
-                    "className": ["lg:text-base"],
-                    "desktop": {},
-                    "custom": { "displayName": "Quote" }
+                    "className": "text-(--card-foreground) leading-relaxed text-sm w-full lg:text-base",
+                    "custom": {
+                      "displayName": "Quote"
+                    }
                   }
                 },
                 {
@@ -289,17 +211,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-row",
-                      "alignItems": "items-center",
-                      "gap": "gap-3",
-                      "width": "w-full",
-                      "mt": "mt-1"
+                    "custom": {
+                      "displayName": "Attribution"
                     },
-                    "desktop": {},
-                    "custom": { "displayName": "Attribution" }
+                    "className": "flex flex-row items-center gap-3 w-full mt-1"
                   },
                   "children": [
                     {
@@ -310,17 +225,10 @@
                         "type": "url",
                         "content": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=128&h=128&fit=crop&q=80",
                         "alt": "Portrait of Marcus Bell",
-                        "root": { "radius": "rounded-(--radius-full)" },
-                        "mobile": {
-                          "width": "w-10",
-                          "height": "h-10",
-                          "flexShrink": "shrink-0",
-                          "objectFit": "object-cover",
-                          "objectPosition": "object-center",
-                          "overflow": "overflow-hidden"
+                        "custom": {
+                          "displayName": "Avatar"
                         },
-                        "desktop": {},
-                        "custom": { "displayName": "Avatar" }
+                        "className": "rounded-(--radius-full) w-10 h-10 shrink-0 object-cover object-center overflow-hidden"
                       }
                     },
                     {
@@ -328,10 +236,10 @@
                       "props": {
                         "canDelete": true,
                         "canEditName": true,
-                        "root": {},
-                        "mobile": { "display": "flex", "flexDirection": "flex-col", "gap": "gap-0.5", "alignItems": "items-start" },
-                        "desktop": {},
-                        "custom": { "displayName": "Name and role" }
+                        "custom": {
+                          "displayName": "Name and role"
+                        },
+                        "className": "flex flex-col gap-0.5 items-start"
                       },
                       "children": [
                         {
@@ -339,10 +247,10 @@
                           "props": {
                             "text": "Marcus Bell",
                             "tagName": "p",
-                            "root": { "fontWeight": "font-semibold", "fontSize": "text-sm", "color": "text-(--foreground)" },
-                            "mobile": {},
-                            "desktop": {},
-                            "custom": { "displayName": "Name" }
+                            "custom": {
+                              "displayName": "Name"
+                            },
+                            "className": "font-semibold text-sm text-(--foreground)"
                           }
                         },
                         {
@@ -350,10 +258,10 @@
                           "props": {
                             "text": "Head of Product, Relay North",
                             "tagName": "p",
-                            "root": { "fontSize": "text-xs", "color": "text-(--muted-foreground)" },
-                            "mobile": {},
-                            "desktop": {},
-                            "custom": { "displayName": "Role" }
+                            "custom": {
+                              "displayName": "Role"
+                            },
+                            "className": "text-xs text-(--muted-foreground)"
                           }
                         }
                       ]

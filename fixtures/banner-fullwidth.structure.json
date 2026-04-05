@@ -3,26 +3,7 @@
   "props": {
     "canDelete": true,
     "canEditName": true,
-    "className": [
-      "w-[100vw]",
-      "max-w-[100vw]",
-      "ml-[calc(50%-50vw)]",
-      "box-border"
-    ],
-    "root": {
-      "background": "bg-(--accent)",
-      "color": "text-(--accent-foreground)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-row",
-      "gap": "gap-3",
-      "alignItems": "items-center",
-      "justifyContent": "justify-center",
-      "py": "py-3",
-      "px": "px-6"
-    },
-    "desktop": {},
+    "className": "bg-(--accent) text-(--accent-foreground) flex flex-row gap-3 items-center justify-center py-3 px-6 w-[100vw] max-w-[100vw] ml-[calc(50%-50vw)] box-border",
     "custom": {
       "displayName": "Banner"
     }
@@ -33,15 +14,10 @@
       "props": {
         "text": "We just launched our new feature!",
         "tagName": "p",
-        "root": {
-          "fontSize": "text-sm",
-          "fontWeight": "font-medium"
-        },
-        "mobile": {},
-        "desktop": {},
         "custom": {
           "displayName": "Text"
-        }
+        },
+        "className": "text-sm font-medium"
       }
     },
     {
@@ -49,20 +25,10 @@
       "props": {
         "text": "Learn more",
         "url": "#",
-        "root": {
-          "background": "bg-transparent",
-          "color": "text-(--accent-foreground)",
-          "fontSize": "text-sm",
-          "fontWeight": "font-bold"
-        },
-        "mobile": {
-          "px": "px-0",
-          "py": "py-0"
-        },
-        "desktop": {},
         "custom": {
           "displayName": "Link"
-        }
+        },
+        "className": "bg-transparent text-(--accent-foreground) text-sm font-bold px-0 py-0"
       }
     }
   ]

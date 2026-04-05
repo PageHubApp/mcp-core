@@ -4,29 +4,10 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "position": "relative",
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "width": "w-full",
-      "minHeight": "min-h-screen",
-      "pt": "pt-20",
-      "pb": "pb-12",
-      "px": "px-4",
-      "overflow": "overflow-hidden"
-    },
-    "desktop": {
-      "pt": "pt-24",
-      "pb": "pb-20",
-      "px": "px-10"
-    },
     "custom": {
       "displayName": "Hero focus"
-    }
+    },
+    "className": "bg-(--background) text-(--foreground) relative flex flex-col w-full min-h-screen pt-20 pb-12 px-4 overflow-hidden md:pt-24 md:pb-20 md:px-10"
   },
   "children": [
     {
@@ -34,19 +15,7 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {
-          "background": "bg-(--accent)/10",
-          "radius": "rounded-full"
-        },
-        "className": ["blur-[120px]"],
-        "mobile": {
-          "position": "absolute",
-          "top": "top-[-15%]",
-          "left": "left-[-20%]",
-          "width": "w-[28rem]",
-          "height": "h-[28rem]",
-          "zIndex": "z-0"
-        },
+        "className": "bg-(--accent)/10 rounded-full absolute top-[-15%] left-[-20%] w-[28rem] h-[28rem] z-0 blur-[120px]",
         "custom": {
           "displayName": "Glow soft"
         }
@@ -57,19 +26,7 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {
-          "background": "bg-(--primary)/10",
-          "radius": "rounded-full"
-        },
-        "className": ["blur-[80px]"],
-        "mobile": {
-          "position": "absolute",
-          "bottom": "bottom-[10%]",
-          "right": "right-[-15%]",
-          "width": "w-72",
-          "height": "h-72",
-          "zIndex": "z-0"
-        },
+        "className": "bg-(--primary)/10 rounded-full absolute bottom-[10%] right-[-15%] w-72 h-72 z-0 blur-[80px]",
         "custom": {
           "displayName": "Glow accent"
         }
@@ -80,29 +37,7 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "width": "w-full",
-          "zIndex": "z-10",
-          "position": "relative",
-          "maxWidth": "max-w-(--content-width)",
-          "mx": "mx-auto",
-          "gap": "gap-12"
-        },
-        "desktop": {
-          "maxWidth": "max-w-none",
-          "width": "w-full",
-          "flexDirection": "flex-row",
-          "alignItems": "items-stretch",
-          "justifyContent": "justify-between",
-          "gap": "gap-10",
-          "minHeight": "min-h-[85vh]",
-          "mx": "mx-auto",
-          "px": "px-2"
-        },
-        "className": ["lg:gap-16", "xl:gap-24"],
+        "className": "flex flex-col w-full z-10 relative max-w-(--content-width) mx-auto gap-12 md:max-w-none md:w-full md:flex-row md:items-stretch md:justify-between md:gap-10 md:min-h-[85vh] md:mx-auto md:px-2 lg:gap-16 xl:gap-24",
         "custom": {
           "displayName": "Hero inner"
         }
@@ -113,21 +48,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "width": "w-full",
-              "justifyContent": "justify-center",
-              "gap": "gap-6"
-            },
-            "desktop": {
-              "width": "w-1/2",
-              "justifyContent": "justify-center",
-              "py": "py-8",
-              "pr": "pr-6"
-            },
-            "className": ["xl:pr-10"],
+            "className": "flex flex-col w-full justify-center gap-6 md:w-1/2 md:justify-center md:py-8 md:pr-6 xl:pr-10",
             "custom": {
               "displayName": "Copy column"
             }
@@ -140,18 +61,10 @@
                 "canEditName": true,
                 "text": "PAGEHUB STUDIO",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--accent)"
-                },
-                "mobile": {
-                  "fontSize": "text-xs",
-                  "letterSpacing": "tracking-[0.4em]",
-                  "fontWeight": "font-bold",
-                  "mb": "mb-1"
-                },
                 "custom": {
                   "displayName": "Eyebrow"
-                }
+                },
+                "className": "text-(--accent) text-xs tracking-[0.4em] font-bold mb-1"
               }
             },
             {
@@ -159,17 +72,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "border": "border-t",
-                  "borderColor": "border-(--accent)"
-                },
-                "mobile": {
-                  "width": "w-12",
-                  "mb": "mb-3"
-                },
                 "custom": {
                   "displayName": "Rule"
-                }
+                },
+                "className": "border-t border-(--accent) w-12 mb-3"
               }
             },
             {
@@ -180,25 +86,9 @@
                 "text": "BUILD<br/>THE<br/>SITE",
                 "tagName": "h1",
                 "root": {
-                  "color": "text-(--foreground)",
-                  "fontFamily": "var(--heading-font-family)",
-                  "fontWeight": "font-black",
-                  "lineHeight": "leading-[0.9]",
-                  "letterSpacing": "tracking-tighter"
+                  "style": "font-family: var(--heading-font-family);"
                 },
-                "mobile": {
-                  "fontSize": "text-6xl",
-                  "width": "w-full",
-                  "mb": "mb-2"
-                },
-                "desktop": {
-                  "fontSize": "text-8xl"
-                },
-                "className": [
-                  "uppercase",
-                  "lg:text-9xl",
-                  "max-w-[11ch]"
-                ],
+                "className": "text-(--foreground) font-black leading-[0.9] tracking-tighter text-6xl w-full mb-2 md:text-8xl uppercase lg:text-9xl max-w-[11ch]",
                 "custom": {
                   "displayName": "Headline"
                 }
@@ -211,22 +101,10 @@
                 "canEditName": true,
                 "text": "Block library, tokens, and static routes so the page reads like a designed object, not a stretched template.",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--muted-foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-base",
-                  "lineHeight": "leading-relaxed",
-                  "mt": "mt-4",
-                  "maxWidth": "max-w-md"
-                },
-                "desktop": {
-                  "fontSize": "text-lg",
-                  "maxWidth": "max-w-lg"
-                },
                 "custom": {
                   "displayName": "Dek"
-                }
+                },
+                "className": "text-(--muted-foreground) text-base leading-relaxed mt-4 max-w-md md:text-lg md:max-w-lg"
               }
             },
             {
@@ -236,23 +114,10 @@
                 "canEditName": true,
                 "text": "Scroll to explore blocks",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--foreground)",
-                  "borderColor": "border-(--border)"
-                },
-                "mobile": {
-                  "fontSize": "text-xs",
-                  "letterSpacing": "tracking-[0.25em]",
-                  "fontWeight": "font-semibold",
-                  "mt": "mt-8",
-                  "pt": "pt-4",
-                  "border": "border-t",
-                  "width": "w-full",
-                  "maxWidth": "max-w-xs"
-                },
                 "custom": {
                   "displayName": "Scroll hint"
-                }
+                },
+                "className": "text-(--foreground) border-(--border) text-xs tracking-[0.25em] font-semibold mt-8 pt-4 border-t w-full max-w-xs"
               }
             }
           ]
@@ -262,26 +127,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {
-              "radius": "rounded-(--card-radius)",
-              "border": "border",
-              "borderColor": "border-(--border)"
-            },
-            "className": ["shadow-2xl", "ring-1", "ring-(--border)/60", "lg:min-h-[88vh]"],
-            "mobile": {
-              "display": "flex",
-              "width": "w-full",
-              "minHeight": "min-h-[52vh]",
-              "backgroundSize": "bg-cover",
-              "backgroundPosition": "bg-center",
-              "backgroundRepeat": "bg-no-repeat",
-              "overflow": "overflow-hidden"
-            },
-            "desktop": {
-              "width": "w-1/2",
-              "minHeight": "min-h-[88vh]",
-              "alignSelf": "stretch"
-            },
+            "className": "rounded-(--card-radius) border border-(--border) flex w-full min-h-[52vh] bg-cover bg-center bg-no-repeat overflow-hidden md:w-1/2 md:min-h-[88vh] md:stretch shadow-2xl ring-1 ring-(--border)/60 lg:min-h-[88vh]",
             "backgroundImage": "https://images.unsplash.com/photo-1493130952181-47e36589f64d?q=80&w=1200&auto=format&fit=crop",
             "backgroundImageType": "url",
             "custom": {

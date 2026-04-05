@@ -4,24 +4,10 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "width": "w-full",
-      "py": "py-12",
-      "px": "px-4"
-    },
-    "desktop": {
-      "py": "py-16",
-      "px": "px-6"
-    },
     "custom": {
       "displayName": "Related products section"
-    }
+    },
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-12 px-4 md:py-16 md:px-6"
   },
   "children": [
     {
@@ -29,18 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "gap": "gap-8",
-          "width": "w-full",
-          "maxWidth": "max-w-(--content-width)",
-          "mx": "mx-auto"
-        },
         "custom": {
           "displayName": "Inner"
-        }
+        },
+        "className": "flex flex-col gap-8 w-full max-w-(--content-width) mx-auto"
       },
       "children": [
         {
@@ -48,22 +26,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "gap": "gap-2",
-              "width": "w-full"
-            },
-            "desktop": {
-              "flexDirection": "flex-row",
-              "alignItems": "items-end",
-              "justifyContent": "justify-between",
-              "gap": "gap-8"
-            },
             "custom": {
               "displayName": "Header row"
-            }
+            },
+            "className": "flex flex-col gap-2 w-full md:flex-row md:items-end md:justify-between md:gap-8"
           },
           "children": [
             {
@@ -71,19 +37,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "gap": "gap-2",
-                  "width": "w-full"
-                },
-                "desktop": {
-                  "maxWidth": "max-w-2xl"
-                },
                 "custom": {
                   "displayName": "Titles"
-                }
+                },
+                "className": "flex flex-col gap-2 w-full md:max-w-2xl"
               },
               "children": [
                 {
@@ -93,15 +50,10 @@
                     "canEditName": true,
                     "text": "YOU MAY ALSO LIKE",
                     "tagName": "p",
-                    "root": {
-                      "color": "text-(--muted-foreground)",
-                      "fontSize": "text-xs",
-                      "fontWeight": "font-bold",
-                      "letterSpacing": "tracking-widest"
-                    },
                     "custom": {
                       "displayName": "Eyebrow"
-                    }
+                    },
+                    "className": "text-(--muted-foreground) text-xs font-bold tracking-widest"
                   }
                 },
                 {
@@ -112,20 +64,12 @@
                     "text": "Pair it with these picks",
                     "tagName": "h2",
                     "root": {
-                      "fontFamily": "var(--heading-font-family)",
-                      "fontWeight": "font-bold",
-                      "lineHeight": "leading-tight",
-                      "color": "text-(--foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-2xl"
-                    },
-                    "desktop": {
-                      "fontSize": "text-3xl"
+                      "style": "font-family: var(--heading-font-family);"
                     },
                     "custom": {
                       "displayName": "Heading"
-                    }
+                    },
+                    "className": "font-bold leading-tight text-(--foreground) text-2xl md:text-3xl"
                   }
                 },
                 {
@@ -135,20 +79,10 @@
                     "canEditName": true,
                     "text": "Shoppers who viewed this bundle often add these PageHub sample SKUs before checkout.",
                     "tagName": "p",
-                    "root": {
-                      "color": "text-(--muted-foreground)",
-                      "lineHeight": "leading-relaxed"
-                    },
-                    "mobile": {
-                      "fontSize": "text-sm",
-                      "mt": "mt-1"
-                    },
-                    "desktop": {
-                      "fontSize": "text-base"
-                    },
                     "custom": {
                       "displayName": "Subhead"
-                    }
+                    },
+                    "className": "text-(--muted-foreground) leading-relaxed text-sm mt-1 md:text-base"
                   }
                 }
               ]
@@ -160,29 +94,10 @@
                 "canEditName": true,
                 "text": "View all",
                 "url": "#",
-                "root": {
-                  "background": "bg-transparent",
-                  "color": "text-(--primary)",
-                  "border": "border",
-                  "borderColor": "border-(--border)",
-                  "radius": "rounded-(--radius)"
-                },
-                "mobile": {
-                  "display": "inline-flex",
-                  "alignSelf": "self-start",
-                  "py": "py-2",
-                  "px": "px-4",
-                  "fontSize": "text-sm",
-                  "fontWeight": "font-medium",
-                  "mt": "mt-2"
-                },
-                "desktop": {
-                  "mt": "mt-0",
-                  "shrink": "shrink-0"
-                },
                 "custom": {
                   "displayName": "View all"
-                }
+                },
+                "className": "bg-transparent text-(--primary) border border-(--border) rounded-(--radius) inline-flex self-start py-2 px-4 text-sm font-medium mt-2 md:mt-0 md:shrink-0"
               }
             }
           ]
@@ -192,20 +107,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "grid",
-              "gridCols": "grid-cols-2",
-              "gap": "gap-4",
-              "width": "w-full"
-            },
-            "desktop": {
-              "gridCols": "grid-cols-4",
-              "gap": "gap-6"
-            },
             "custom": {
               "displayName": "Product row"
-            }
+            },
+            "className": "grid grid-cols-2 gap-4 w-full md:grid-cols-4 md:gap-6"
           },
           "children": [
             {
@@ -213,22 +118,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--card)",
-                  "color": "text-(--card-foreground)",
-                  "border": "border",
-                  "borderColor": "border-(--border)",
-                  "radius": "rounded-(--card-radius)"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "width": "w-full",
-                  "overflow": "overflow-hidden"
-                },
                 "custom": {
                   "displayName": "Card 1"
-                }
+                },
+                "className": "bg-(--card) text-(--card-foreground) border border-(--border) rounded-(--card-radius) flex flex-col w-full overflow-hidden"
               },
               "children": [
                 {
@@ -238,14 +131,10 @@
                     "canEditName": true,
                     "content": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop",
                     "alt": "Minimal watch product sample",
-                    "mobile": {
-                      "width": "w-full",
-                      "aspectRatio": "aspect-square",
-                      "objectFit": "object-cover"
-                    },
                     "custom": {
                       "displayName": "Image"
-                    }
+                    },
+                    "className": "w-full aspect-square object-cover"
                   }
                 },
                 {
@@ -253,16 +142,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "gap": "gap-2",
-                      "p": "p-4"
-                    },
                     "custom": {
                       "displayName": "Body"
-                    }
+                    },
+                    "className": "flex flex-col gap-2 p-4"
                   },
                   "children": [
                     {
@@ -273,17 +156,12 @@
                         "text": "Studio steel watch",
                         "tagName": "h3",
                         "root": {
-                          "fontWeight": "font-semibold",
-                          "fontFamily": "var(--heading-font-family)",
-                          "color": "text-(--card-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-snug"
+                          "style": "font-family: var(--heading-font-family);"
                         },
                         "custom": {
                           "displayName": "Title"
-                        }
+                        },
+                        "className": "font-semibold text-(--card-foreground) text-sm leading-snug"
                       }
                     },
                     {
@@ -293,16 +171,10 @@
                         "canEditName": true,
                         "text": "$189",
                         "tagName": "p",
-                        "root": {
-                          "fontWeight": "font-bold",
-                          "color": "text-(--primary)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm"
-                        },
                         "custom": {
                           "displayName": "Price"
-                        }
+                        },
+                        "className": "font-bold text-(--primary) text-sm"
                       }
                     },
                     {
@@ -312,19 +184,10 @@
                         "canEditName": true,
                         "text": "View",
                         "url": "#",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--primary)"
-                        },
-                        "mobile": {
-                          "py": "py-0",
-                          "px": "px-0",
-                          "fontSize": "text-xs",
-                          "fontWeight": "font-semibold"
-                        },
                         "custom": {
                           "displayName": "Link"
-                        }
+                        },
+                        "className": "bg-transparent text-(--primary) py-0 px-0 text-xs font-semibold"
                       }
                     }
                   ]
@@ -336,22 +199,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--card)",
-                  "color": "text-(--card-foreground)",
-                  "border": "border",
-                  "borderColor": "border-(--border)",
-                  "radius": "rounded-(--card-radius)"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "width": "w-full",
-                  "overflow": "overflow-hidden"
-                },
                 "custom": {
                   "displayName": "Card 2"
-                }
+                },
+                "className": "bg-(--card) text-(--card-foreground) border border-(--border) rounded-(--card-radius) flex flex-col w-full overflow-hidden"
               },
               "children": [
                 {
@@ -361,14 +212,10 @@
                     "canEditName": true,
                     "content": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop",
                     "alt": "Headphones product sample",
-                    "mobile": {
-                      "width": "w-full",
-                      "aspectRatio": "aspect-square",
-                      "objectFit": "object-cover"
-                    },
                     "custom": {
                       "displayName": "Image"
-                    }
+                    },
+                    "className": "w-full aspect-square object-cover"
                   }
                 },
                 {
@@ -376,16 +223,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "gap": "gap-2",
-                      "p": "p-4"
-                    },
                     "custom": {
                       "displayName": "Body"
-                    }
+                    },
+                    "className": "flex flex-col gap-2 p-4"
                   },
                   "children": [
                     {
@@ -396,17 +237,12 @@
                         "text": "Noise-calm headphones",
                         "tagName": "h3",
                         "root": {
-                          "fontWeight": "font-semibold",
-                          "fontFamily": "var(--heading-font-family)",
-                          "color": "text-(--card-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-snug"
+                          "style": "font-family: var(--heading-font-family);"
                         },
                         "custom": {
                           "displayName": "Title"
-                        }
+                        },
+                        "className": "font-semibold text-(--card-foreground) text-sm leading-snug"
                       }
                     },
                     {
@@ -416,16 +252,10 @@
                         "canEditName": true,
                         "text": "$249",
                         "tagName": "p",
-                        "root": {
-                          "fontWeight": "font-bold",
-                          "color": "text-(--primary)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm"
-                        },
                         "custom": {
                           "displayName": "Price"
-                        }
+                        },
+                        "className": "font-bold text-(--primary) text-sm"
                       }
                     },
                     {
@@ -435,19 +265,10 @@
                         "canEditName": true,
                         "text": "View",
                         "url": "#",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--primary)"
-                        },
-                        "mobile": {
-                          "py": "py-0",
-                          "px": "px-0",
-                          "fontSize": "text-xs",
-                          "fontWeight": "font-semibold"
-                        },
                         "custom": {
                           "displayName": "Link"
-                        }
+                        },
+                        "className": "bg-transparent text-(--primary) py-0 px-0 text-xs font-semibold"
                       }
                     }
                   ]
@@ -459,22 +280,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--card)",
-                  "color": "text-(--card-foreground)",
-                  "border": "border",
-                  "borderColor": "border-(--border)",
-                  "radius": "rounded-(--card-radius)"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "width": "w-full",
-                  "overflow": "overflow-hidden"
-                },
                 "custom": {
                   "displayName": "Card 3"
-                }
+                },
+                "className": "bg-(--card) text-(--card-foreground) border border-(--border) rounded-(--card-radius) flex flex-col w-full overflow-hidden"
               },
               "children": [
                 {
@@ -484,14 +293,10 @@
                     "canEditName": true,
                     "content": "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400&h=400&fit=crop",
                     "alt": "Camera product sample",
-                    "mobile": {
-                      "width": "w-full",
-                      "aspectRatio": "aspect-square",
-                      "objectFit": "object-cover"
-                    },
                     "custom": {
                       "displayName": "Image"
-                    }
+                    },
+                    "className": "w-full aspect-square object-cover"
                   }
                 },
                 {
@@ -499,16 +304,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "gap": "gap-2",
-                      "p": "p-4"
-                    },
                     "custom": {
                       "displayName": "Body"
-                    }
+                    },
+                    "className": "flex flex-col gap-2 p-4"
                   },
                   "children": [
                     {
@@ -519,17 +318,12 @@
                         "text": "Field compact camera",
                         "tagName": "h3",
                         "root": {
-                          "fontWeight": "font-semibold",
-                          "fontFamily": "var(--heading-font-family)",
-                          "color": "text-(--card-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-snug"
+                          "style": "font-family: var(--heading-font-family);"
                         },
                         "custom": {
                           "displayName": "Title"
-                        }
+                        },
+                        "className": "font-semibold text-(--card-foreground) text-sm leading-snug"
                       }
                     },
                     {
@@ -539,16 +333,10 @@
                         "canEditName": true,
                         "text": "$429",
                         "tagName": "p",
-                        "root": {
-                          "fontWeight": "font-bold",
-                          "color": "text-(--primary)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm"
-                        },
                         "custom": {
                           "displayName": "Price"
-                        }
+                        },
+                        "className": "font-bold text-(--primary) text-sm"
                       }
                     },
                     {
@@ -558,19 +346,10 @@
                         "canEditName": true,
                         "text": "View",
                         "url": "#",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--primary)"
-                        },
-                        "mobile": {
-                          "py": "py-0",
-                          "px": "px-0",
-                          "fontSize": "text-xs",
-                          "fontWeight": "font-semibold"
-                        },
                         "custom": {
                           "displayName": "Link"
-                        }
+                        },
+                        "className": "bg-transparent text-(--primary) py-0 px-0 text-xs font-semibold"
                       }
                     }
                   ]
@@ -582,22 +361,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--card)",
-                  "color": "text-(--card-foreground)",
-                  "border": "border",
-                  "borderColor": "border-(--border)",
-                  "radius": "rounded-(--card-radius)"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "width": "w-full",
-                  "overflow": "overflow-hidden"
-                },
                 "custom": {
                   "displayName": "Card 4"
-                }
+                },
+                "className": "bg-(--card) text-(--card-foreground) border border-(--border) rounded-(--card-radius) flex flex-col w-full overflow-hidden"
               },
               "children": [
                 {
@@ -607,14 +374,10 @@
                     "canEditName": true,
                     "content": "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=400&fit=crop",
                     "alt": "Sunglasses product sample",
-                    "mobile": {
-                      "width": "w-full",
-                      "aspectRatio": "aspect-square",
-                      "objectFit": "object-cover"
-                    },
                     "custom": {
                       "displayName": "Image"
-                    }
+                    },
+                    "className": "w-full aspect-square object-cover"
                   }
                 },
                 {
@@ -622,16 +385,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "gap": "gap-2",
-                      "p": "p-4"
-                    },
                     "custom": {
                       "displayName": "Body"
-                    }
+                    },
+                    "className": "flex flex-col gap-2 p-4"
                   },
                   "children": [
                     {
@@ -642,17 +399,12 @@
                         "text": "Polarized carry shades",
                         "tagName": "h3",
                         "root": {
-                          "fontWeight": "font-semibold",
-                          "fontFamily": "var(--heading-font-family)",
-                          "color": "text-(--card-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-snug"
+                          "style": "font-family: var(--heading-font-family);"
                         },
                         "custom": {
                           "displayName": "Title"
-                        }
+                        },
+                        "className": "font-semibold text-(--card-foreground) text-sm leading-snug"
                       }
                     },
                     {
@@ -662,16 +414,10 @@
                         "canEditName": true,
                         "text": "$98",
                         "tagName": "p",
-                        "root": {
-                          "fontWeight": "font-bold",
-                          "color": "text-(--primary)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm"
-                        },
                         "custom": {
                           "displayName": "Price"
-                        }
+                        },
+                        "className": "font-bold text-(--primary) text-sm"
                       }
                     },
                     {
@@ -681,19 +427,10 @@
                         "canEditName": true,
                         "text": "View",
                         "url": "#",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--primary)"
-                        },
-                        "mobile": {
-                          "py": "py-0",
-                          "px": "px-0",
-                          "fontSize": "text-xs",
-                          "fontWeight": "font-semibold"
-                        },
                         "custom": {
                           "displayName": "Link"
-                        }
+                        },
+                        "className": "bg-transparent text-(--primary) py-0 px-0 text-xs font-semibold"
                       }
                     }
                   ]

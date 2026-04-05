@@ -4,22 +4,10 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "width": "w-full",
-      "py": "py-20",
-      "px": "px-6"
-    },
-    "desktop": {
-      "py": "py-28",
-      "px": "px-8"
-    },
     "custom": {
       "displayName": "Social Proof Stat Trio"
-    }
+    },
+    "className": "bg-(--background) text-(--foreground) w-full py-20 px-6 md:py-28 md:px-8"
   },
   "children": [
     {
@@ -27,23 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "gap": "gap-14",
-          "width": "w-full",
-          "maxWidth": "max-w-5xl",
-          "mx": "mx-auto",
-          "alignItems": "items-center"
-        },
-        "desktop": {
-          "flexDirection": "flex-row",
-          "gap": "gap-0",
-          "justifyContent": "justify-between"
-        },
         "custom": {
           "displayName": "Stats Row"
-        }
+        },
+        "className": "flex flex-col gap-14 w-full max-w-5xl mx-auto items-center md:flex-row md:gap-0 md:justify-between"
       },
       "children": [
         {
@@ -51,20 +26,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "gap": "gap-2",
-              "alignItems": "items-center",
-              "textAlign": "text-center",
-              "width": "w-full"
-            },
-            "desktop": {
-              "width": "w-1/3"
-            },
             "custom": {
               "displayName": "Stat 1"
-            }
+            },
+            "className": "flex flex-col gap-2 items-center text-center w-full md:w-1/3"
           },
           "children": [
             {
@@ -73,19 +38,12 @@
                 "text": "2.4M+",
                 "tagName": "p",
                 "root": {
-                  "fontWeight": "font-bold",
-                  "fontFamily": "var(--heading-font-family)",
-                  "lineHeight": "leading-none"
-                },
-                "mobile": {
-                  "fontSize": "text-4xl"
-                },
-                "desktop": {
-                  "fontSize": "text-5xl"
+                  "style": "font-family: var(--heading-font-family);"
                 },
                 "custom": {
                   "displayName": "Value"
-                }
+                },
+                "className": "font-bold leading-none text-4xl md:text-5xl"
               }
             },
             {
@@ -93,14 +51,10 @@
               "props": {
                 "text": "pages live",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--muted-foreground)",
-                  "fontSize": "text-sm",
-                  "fontWeight": "font-normal"
-                },
                 "custom": {
                   "displayName": "Label"
-                }
+                },
+                "className": "text-(--muted-foreground) text-sm font-normal"
               }
             }
           ]
@@ -110,20 +64,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "gap": "gap-2",
-              "alignItems": "items-center",
-              "textAlign": "text-center",
-              "width": "w-full"
-            },
-            "desktop": {
-              "width": "w-1/3"
-            },
             "custom": {
               "displayName": "Stat 2"
-            }
+            },
+            "className": "flex flex-col gap-2 items-center text-center w-full md:w-1/3"
           },
           "children": [
             {
@@ -132,19 +76,12 @@
                 "text": "890K+",
                 "tagName": "p",
                 "root": {
-                  "fontWeight": "font-bold",
-                  "fontFamily": "var(--heading-font-family)",
-                  "lineHeight": "leading-none"
-                },
-                "mobile": {
-                  "fontSize": "text-4xl"
-                },
-                "desktop": {
-                  "fontSize": "text-5xl"
+                  "style": "font-family: var(--heading-font-family);"
                 },
                 "custom": {
                   "displayName": "Value"
-                }
+                },
+                "className": "font-bold leading-none text-4xl md:text-5xl"
               }
             },
             {
@@ -152,14 +89,10 @@
               "props": {
                 "text": "publishes per week",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--muted-foreground)",
-                  "fontSize": "text-sm",
-                  "fontWeight": "font-normal"
-                },
                 "custom": {
                   "displayName": "Label"
-                }
+                },
+                "className": "text-(--muted-foreground) text-sm font-normal"
               }
             }
           ]
@@ -169,20 +102,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "gap": "gap-2",
-              "alignItems": "items-center",
-              "textAlign": "text-center",
-              "width": "w-full"
-            },
-            "desktop": {
-              "width": "w-1/3"
-            },
             "custom": {
               "displayName": "Stat 3"
-            }
+            },
+            "className": "flex flex-col gap-2 items-center text-center w-full md:w-1/3"
           },
           "children": [
             {
@@ -191,19 +114,12 @@
                 "text": "14K+",
                 "tagName": "p",
                 "root": {
-                  "fontWeight": "font-bold",
-                  "fontFamily": "var(--heading-font-family)",
-                  "lineHeight": "leading-none"
-                },
-                "mobile": {
-                  "fontSize": "text-4xl"
-                },
-                "desktop": {
-                  "fontSize": "text-5xl"
+                  "style": "font-family: var(--heading-font-family);"
                 },
                 "custom": {
                   "displayName": "Value"
-                }
+                },
+                "className": "font-bold leading-none text-4xl md:text-5xl"
               }
             },
             {
@@ -211,14 +127,10 @@
               "props": {
                 "text": "teams shipping",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--muted-foreground)",
-                  "fontSize": "text-sm",
-                  "fontWeight": "font-normal"
-                },
                 "custom": {
                   "displayName": "Label"
-                }
+                },
+                "className": "text-(--muted-foreground) text-sm font-normal"
               }
             }
           ]

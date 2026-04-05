@@ -4,41 +4,19 @@
     "type": "section",
     "canDelete": true,
     "canEditName": true,
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "width": "w-full",
-      "py": "py-16",
-      "px": "px-4",
-      "gap": "gap-12"
-    },
-    "desktop": {
-      "py": "py-24",
-      "px": "px-6",
-      "gap": "gap-16"
-    },
     "custom": {
       "displayName": "Team Minimal Grid"
-    }
+    },
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-16 px-4 gap-12 md:py-24 md:px-6 md:gap-16"
   },
   "children": [
     {
       "type": "Container",
       "props": {
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "alignItems": "items-center",
-          "textAlign": "text-center",
-          "maxWidth": "max-w-3xl",
-          "mx": "mx-auto",
-          "gap": "gap-4"
+        "custom": {
+          "displayName": "Header"
         },
-        "custom": { "displayName": "Header" }
+        "className": "flex flex-col items-center text-center max-w-3xl mx-auto gap-4"
       },
       "children": [
         {
@@ -46,15 +24,10 @@
           "props": {
             "text": "OUR PEOPLE",
             "tagName": "p",
-            "root": {
-              "color": "text-(--primary)",
-              "fontWeight": "font-bold"
+            "custom": {
+              "displayName": "Eyebrow"
             },
-            "mobile": {
-              "fontSize": "text-xs",
-              "letterSpacing": "tracking-widest"
-            },
-            "custom": { "displayName": "Eyebrow" }
+            "className": "text-(--primary) font-bold text-xs tracking-widest"
           }
         },
         {
@@ -63,13 +36,12 @@
             "text": "Meet the team",
             "tagName": "h2",
             "root": {
-              "fontWeight": "font-bold",
-              "fontFamily": "var(--heading-font-family)",
-              "lineHeight": "leading-tight"
+              "style": "font-family: var(--heading-font-family);"
             },
-            "mobile": { "fontSize": "text-3xl" },
-            "desktop": { "fontSize": "text-4xl" },
-            "custom": { "displayName": "Heading" }
+            "custom": {
+              "displayName": "Heading"
+            },
+            "className": "font-bold leading-tight text-3xl md:text-4xl"
           }
         },
         {
@@ -77,13 +49,10 @@
           "props": {
             "text": "We are a tight-knit team of creators, engineers, and designers on a mission to simplify the modern web.",
             "tagName": "p",
-            "root": {
-              "color": "text-(--muted-foreground)",
-              "lineHeight": "leading-relaxed"
+            "custom": {
+              "displayName": "Subheading"
             },
-            "mobile": { "fontSize": "text-base" },
-            "desktop": { "fontSize": "text-lg" },
-            "custom": { "displayName": "Subheading" }
+            "className": "text-(--muted-foreground) leading-relaxed text-base md:text-lg"
           }
         }
       ]
@@ -91,25 +60,19 @@
     {
       "type": "Container",
       "props": {
-        "mobile": {
-          "display": "grid",
-          "gridCols": "grid-cols-2",
-          "gap": "gap-y-12 gap-x-6",
-          "maxWidth": "max-w-6xl",
-          "mx": "mx-auto",
-          "width": "w-full"
+        "custom": {
+          "displayName": "Team Grid"
         },
-        "desktop": {
-          "gridCols": "grid-cols-4",
-          "gap": "gap-12"
-        },
-        "custom": { "displayName": "Team Grid" }
+        "className": "grid grid-cols-2 max-w-6xl mx-auto w-full md:grid-cols-4 md:gap-12",
+        "root": {
+          "style": "gap: gap-y-12 gap-x-6;"
+        }
       },
       "children": [
         {
           "type": "Container",
           "props": {
-            "mobile": { "display": "flex", "flexDirection": "flex-col", "alignItems": "items-center", "gap": "gap-4" }
+            "className": "flex flex-col items-center gap-4"
           },
           "children": [
             {
@@ -117,21 +80,33 @@
               "props": {
                 "content": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&h=300",
                 "alt": "Member",
-                "root": { "radius": "rounded-(--radius-full)", "shadow": "shadow-md" },
-                "mobile": { "width": "w-32", "height": "h-32", "objectFit": "object-cover" }
+                "className": "rounded-(--radius-full) shadow-md w-32 h-32 object-cover"
               }
             },
             {
               "type": "Container",
-              "props": { "mobile": { "display": "flex", "flexDirection": "flex-col", "alignItems": "items-center", "gap": "gap-1" } },
+              "props": {
+                "className": "flex flex-col items-center gap-1"
+              },
               "children": [
                 {
                   "type": "Text",
-                  "props": { "text": "David Lee", "tagName": "h3", "root": { "fontWeight": "font-bold", "color": "text-(--foreground)", "fontFamily": "var(--heading-font-family)" }, "mobile": { "fontSize": "text-lg" } }
+                  "props": {
+                    "text": "David Lee",
+                    "tagName": "h3",
+                    "root": {
+                      "style": "font-family: var(--heading-font-family);"
+                    },
+                    "className": "font-bold text-(--foreground) text-lg"
+                  }
                 },
                 {
                   "type": "Text",
-                  "props": { "text": "Co-founder & CEO", "tagName": "span", "root": { "color": "text-(--muted-foreground)", "fontWeight": "font-medium" }, "mobile": { "fontSize": "text-sm" } }
+                  "props": {
+                    "text": "Co-founder & CEO",
+                    "tagName": "span",
+                    "className": "text-(--muted-foreground) font-medium text-sm"
+                  }
                 }
               ]
             }
@@ -140,7 +115,7 @@
         {
           "type": "Container",
           "props": {
-            "mobile": { "display": "flex", "flexDirection": "flex-col", "alignItems": "items-center", "gap": "gap-4" }
+            "className": "flex flex-col items-center gap-4"
           },
           "children": [
             {
@@ -148,21 +123,33 @@
               "props": {
                 "content": "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=300&h=300",
                 "alt": "Member",
-                "root": { "radius": "rounded-(--radius-full)", "shadow": "shadow-md" },
-                "mobile": { "width": "w-32", "height": "h-32", "objectFit": "object-cover" }
+                "className": "rounded-(--radius-full) shadow-md w-32 h-32 object-cover"
               }
             },
             {
               "type": "Container",
-              "props": { "mobile": { "display": "flex", "flexDirection": "flex-col", "alignItems": "items-center", "gap": "gap-1" } },
+              "props": {
+                "className": "flex flex-col items-center gap-1"
+              },
               "children": [
                 {
                   "type": "Text",
-                  "props": { "text": "Aisha Patel", "tagName": "h3", "root": { "fontWeight": "font-bold", "color": "text-(--foreground)", "fontFamily": "var(--heading-font-family)" }, "mobile": { "fontSize": "text-lg" } }
+                  "props": {
+                    "text": "Aisha Patel",
+                    "tagName": "h3",
+                    "root": {
+                      "style": "font-family: var(--heading-font-family);"
+                    },
+                    "className": "font-bold text-(--foreground) text-lg"
+                  }
                 },
                 {
                   "type": "Text",
-                  "props": { "text": "Lead Designer", "tagName": "span", "root": { "color": "text-(--muted-foreground)", "fontWeight": "font-medium" }, "mobile": { "fontSize": "text-sm" } }
+                  "props": {
+                    "text": "Lead Designer",
+                    "tagName": "span",
+                    "className": "text-(--muted-foreground) font-medium text-sm"
+                  }
                 }
               ]
             }
@@ -171,7 +158,7 @@
         {
           "type": "Container",
           "props": {
-            "mobile": { "display": "flex", "flexDirection": "flex-col", "alignItems": "items-center", "gap": "gap-4" }
+            "className": "flex flex-col items-center gap-4"
           },
           "children": [
             {
@@ -179,21 +166,33 @@
               "props": {
                 "content": "https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?auto=format&fit=crop&w=300&h=300",
                 "alt": "Member",
-                "root": { "radius": "rounded-(--radius-full)", "shadow": "shadow-md" },
-                "mobile": { "width": "w-32", "height": "h-32", "objectFit": "object-cover" }
+                "className": "rounded-(--radius-full) shadow-md w-32 h-32 object-cover"
               }
             },
             {
               "type": "Container",
-              "props": { "mobile": { "display": "flex", "flexDirection": "flex-col", "alignItems": "items-center", "gap": "gap-1" } },
+              "props": {
+                "className": "flex flex-col items-center gap-1"
+              },
               "children": [
                 {
                   "type": "Text",
-                  "props": { "text": "Carlos Gomez", "tagName": "h3", "root": { "fontWeight": "font-bold", "color": "text-(--foreground)", "fontFamily": "var(--heading-font-family)" }, "mobile": { "fontSize": "text-lg" } }
+                  "props": {
+                    "text": "Carlos Gomez",
+                    "tagName": "h3",
+                    "root": {
+                      "style": "font-family: var(--heading-font-family);"
+                    },
+                    "className": "font-bold text-(--foreground) text-lg"
+                  }
                 },
                 {
                   "type": "Text",
-                  "props": { "text": "Product Manager", "tagName": "span", "root": { "color": "text-(--muted-foreground)", "fontWeight": "font-medium" }, "mobile": { "fontSize": "text-sm" } }
+                  "props": {
+                    "text": "Product Manager",
+                    "tagName": "span",
+                    "className": "text-(--muted-foreground) font-medium text-sm"
+                  }
                 }
               ]
             }
@@ -202,7 +201,7 @@
         {
           "type": "Container",
           "props": {
-            "mobile": { "display": "flex", "flexDirection": "flex-col", "alignItems": "items-center", "gap": "gap-4" }
+            "className": "flex flex-col items-center gap-4"
           },
           "children": [
             {
@@ -210,21 +209,33 @@
               "props": {
                 "content": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&h=300",
                 "alt": "Member",
-                "root": { "radius": "rounded-(--radius-full)", "shadow": "shadow-md" },
-                "mobile": { "width": "w-32", "height": "h-32", "objectFit": "object-cover" }
+                "className": "rounded-(--radius-full) shadow-md w-32 h-32 object-cover"
               }
             },
             {
               "type": "Container",
-              "props": { "mobile": { "display": "flex", "flexDirection": "flex-col", "alignItems": "items-center", "gap": "gap-1" } },
+              "props": {
+                "className": "flex flex-col items-center gap-1"
+              },
               "children": [
                 {
                   "type": "Text",
-                  "props": { "text": "Elena Rostova", "tagName": "h3", "root": { "fontWeight": "font-bold", "color": "text-(--foreground)", "fontFamily": "var(--heading-font-family)" }, "mobile": { "fontSize": "text-lg" } }
+                  "props": {
+                    "text": "Elena Rostova",
+                    "tagName": "h3",
+                    "root": {
+                      "style": "font-family: var(--heading-font-family);"
+                    },
+                    "className": "font-bold text-(--foreground) text-lg"
+                  }
                 },
                 {
                   "type": "Text",
-                  "props": { "text": "Senior Engineer", "tagName": "span", "root": { "color": "text-(--muted-foreground)", "fontWeight": "font-medium" }, "mobile": { "fontSize": "text-sm" } }
+                  "props": {
+                    "text": "Senior Engineer",
+                    "tagName": "span",
+                    "className": "text-(--muted-foreground) font-medium text-sm"
+                  }
                 }
               ]
             }

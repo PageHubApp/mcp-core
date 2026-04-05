@@ -4,18 +4,10 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
-    "root": {
-      "background": "bg-(--secondary)",
-      "color": "text-(--secondary-foreground)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "width": "w-full"
-    },
     "custom": {
       "displayName": "Construction about — split copy + image"
-    }
+    },
+    "className": "bg-(--secondary) text-(--secondary-foreground) flex flex-col w-full"
   },
   "children": [
     {
@@ -23,17 +15,7 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "width": "w-full"
-        },
-        "className": [
-          "md:flex-row",
-          "md:items-stretch",
-          "w-full"
-        ],
+        "className": "flex flex-col w-full md:flex-row md:items-stretch",
         "custom": {
           "displayName": "Split row"
         }
@@ -44,21 +26,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {
-              "color": "text-(--secondary-foreground)"
-            },
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "width": "w-full",
-              "py": "py-24",
-              "px": "px-8"
-            },
-            "className": [
-              "md:w-1/2",
-              "md:px-24",
-              "md:justify-center"
-            ],
+            "className": "text-(--secondary-foreground) flex flex-col w-full py-24 px-8 md:w-1/2 md:px-24 md:justify-center",
             "custom": {
               "displayName": "Copy column"
             }
@@ -69,16 +37,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "width": "w-full",
-                  "maxWidth": "max-w-(--content-width)"
-                },
                 "custom": {
                   "displayName": "Copy inner rail"
-                }
+                },
+                "className": "flex flex-col w-full max-w-(--content-width)"
               },
               "children": [
                 {
@@ -86,17 +48,12 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "mobile": {
-                      "fontSize": "text-2xl",
-                      "fontWeight": "font-bold",
-                      "letterSpacing": "tracking-widest",
-                      "mb": "mb-8"
-                    },
                     "text": "ABOUT",
                     "tagName": "h3",
                     "custom": {
                       "displayName": "Eyebrow title"
-                    }
+                    },
+                    "className": "text-2xl font-bold tracking-widest mb-8"
                   }
                 },
                 {
@@ -104,13 +61,7 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "mobile": {
-                      "fontSize": "text-sm",
-                      "lineHeight": "leading-loose"
-                    },
-                    "className": [
-                      "opacity-90"
-                    ],
+                    "className": "text-sm leading-loose opacity-90",
                     "text": "PageHub sections stay token-driven so your trade brand, equipment yard, or regional office can share one library. Drop this block for a credibility band, then wire real copy and photography from the canvas.",
                     "tagName": "p",
                     "custom": {
@@ -127,18 +78,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "width": "w-full",
-              "minHeight": "min-h-[400px]",
-              "backgroundSize": "bg-cover",
-              "backgroundPosition": "bg-center",
-              "backgroundRepeat": "bg-no-repeat"
-            },
-            "className": [
-              "md:w-1/2",
-              "md:h-auto"
-            ],
+            "className": "w-full min-h-[400px] bg-cover bg-center bg-no-repeat md:w-1/2 md:h-auto",
             "backgroundImage": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1200&auto=format&fit=crop",
             "backgroundImageType": "url",
             "custom": {

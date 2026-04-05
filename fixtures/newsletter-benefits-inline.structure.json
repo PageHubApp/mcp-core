@@ -4,22 +4,10 @@
     "type": "section",
     "canDelete": true,
     "canEditName": true,
-    "root": {
-      "background": "bg-(--muted)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "width": "w-full",
-      "py": "py-16",
-      "px": "px-6"
-    },
-    "desktop": {
-      "py": "py-24",
-      "px": "px-8"
-    },
     "custom": {
       "displayName": "Newsletter benefits inline section"
-    }
+    },
+    "className": "bg-(--muted) text-(--foreground) w-full py-16 px-6 md:py-24 md:px-8"
   },
   "children": [
     {
@@ -27,16 +15,7 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "gap": "gap-12",
-          "width": "w-full",
-          "maxWidth": "max-w-(--content-width)",
-          "mx": "mx-auto"
-        },
-        "className": ["lg:flex-row", "lg:gap-16", "lg:items-start"],
+        "className": "flex flex-col gap-12 w-full max-w-(--content-width) mx-auto lg:flex-row lg:gap-16 lg:items-start",
         "custom": {
           "displayName": "Section inner"
         }
@@ -47,14 +26,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "gap": "gap-6",
-              "width": "w-full"
-            },
-            "className": ["lg:w-1/2", "lg:shrink-0"],
+            "className": "flex flex-col gap-6 w-full lg:w-1/2 lg:shrink-0",
             "custom": {
               "displayName": "Benefits column"
             }
@@ -66,20 +38,12 @@
                 "text": "Why teams subscribe",
                 "tagName": "h2",
                 "root": {
-                  "fontFamily": "var(--heading-font-family)",
-                  "fontWeight": "font-bold",
-                  "lineHeight": "leading-tight",
-                  "color": "text-(--foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-3xl"
-                },
-                "desktop": {
-                  "fontSize": "text-4xl"
+                  "style": "font-family: var(--heading-font-family);"
                 },
                 "custom": {
                   "displayName": "Heading"
-                }
+                },
+                "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl"
               }
             },
             {
@@ -87,16 +51,10 @@
               "props": {
                 "text": "PageHub sends mail only when there is something concrete to share — not rehashed ads.",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--muted-foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-base",
-                  "lineHeight": "leading-relaxed"
-                },
                 "custom": {
                   "displayName": "Subhead"
-                }
+                },
+                "className": "text-(--muted-foreground) text-base leading-relaxed"
               }
             },
             {
@@ -104,16 +62,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "gap": "gap-4",
-                  "width": "w-full"
-                },
                 "custom": {
                   "displayName": "Benefit list"
-                }
+                },
+                "className": "flex flex-col gap-4 w-full"
               },
               "children": [
                 {
@@ -121,17 +73,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "row",
-                      "gap": "gap-3",
-                      "alignItems": "items-start",
-                      "width": "w-full"
-                    },
                     "custom": {
                       "displayName": "Benefit row releases"
-                    }
+                    },
+                    "className": "flex row gap-3 items-start w-full"
                   },
                   "children": [
                     {
@@ -139,13 +84,6 @@
                       "props": {
                         "type": "button",
                         "text": " ",
-                        "root": {
-                          "background": "bg-transparent"
-                        },
-                        "mobile": {
-                          "px": "px-0",
-                          "py": "py-0"
-                        },
                         "icon": {
                           "value": "ref-google:check_circle",
                           "only": true,
@@ -154,7 +92,8 @@
                         },
                         "custom": {
                           "displayName": "Icon"
-                        }
+                        },
+                        "className": "bg-transparent px-0 py-0"
                       }
                     },
                     {
@@ -162,17 +101,10 @@
                       "props": {
                         "text": "Ship-ready release notes when builder behavior changes.",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--foreground)",
-                          "fontWeight": "font-medium"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-relaxed"
-                        },
                         "custom": {
                           "displayName": "Line"
-                        }
+                        },
+                        "className": "text-(--foreground) font-medium text-sm leading-relaxed"
                       }
                     }
                   ]
@@ -182,17 +114,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "row",
-                      "gap": "gap-3",
-                      "alignItems": "items-start",
-                      "width": "w-full"
-                    },
                     "custom": {
                       "displayName": "Benefit row templates"
-                    }
+                    },
+                    "className": "flex row gap-3 items-start w-full"
                   },
                   "children": [
                     {
@@ -200,13 +125,6 @@
                       "props": {
                         "type": "button",
                         "text": " ",
-                        "root": {
-                          "background": "bg-transparent"
-                        },
-                        "mobile": {
-                          "px": "px-0",
-                          "py": "py-0"
-                        },
                         "icon": {
                           "value": "ref-google:check_circle",
                           "only": true,
@@ -215,7 +133,8 @@
                         },
                         "custom": {
                           "displayName": "Icon"
-                        }
+                        },
+                        "className": "bg-transparent px-0 py-0"
                       }
                     },
                     {
@@ -223,17 +142,10 @@
                       "props": {
                         "text": "New library blocks and templates before they hit the marketing site.",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--foreground)",
-                          "fontWeight": "font-medium"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-relaxed"
-                        },
                         "custom": {
                           "displayName": "Line"
-                        }
+                        },
+                        "className": "text-(--foreground) font-medium text-sm leading-relaxed"
                       }
                     }
                   ]
@@ -243,17 +155,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "row",
-                      "gap": "gap-3",
-                      "alignItems": "items-start",
-                      "width": "w-full"
-                    },
                     "custom": {
                       "displayName": "Benefit row office"
-                    }
+                    },
+                    "className": "flex row gap-3 items-start w-full"
                   },
                   "children": [
                     {
@@ -261,13 +166,6 @@
                       "props": {
                         "type": "button",
                         "text": " ",
-                        "root": {
-                          "background": "bg-transparent"
-                        },
-                        "mobile": {
-                          "px": "px-0",
-                          "py": "py-0"
-                        },
                         "icon": {
                           "value": "ref-google:check_circle",
                           "only": true,
@@ -276,7 +174,8 @@
                         },
                         "custom": {
                           "displayName": "Icon"
-                        }
+                        },
+                        "className": "bg-transparent px-0 py-0"
                       }
                     },
                     {
@@ -284,17 +183,10 @@
                       "props": {
                         "text": "Office hours invites when we run structured feedback weeks.",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--foreground)",
-                          "fontWeight": "font-medium"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-relaxed"
-                        },
                         "custom": {
                           "displayName": "Line"
-                        }
+                        },
+                        "className": "text-(--foreground) font-medium text-sm leading-relaxed"
                       }
                     }
                   ]
@@ -308,22 +200,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {
-              "background": "bg-(--card)",
-              "color": "text-(--card-foreground)",
-              "radius": "rounded-(--card-radius)",
-              "border": "border",
-              "borderColor": "border-(--border)",
-              "shadow": "shadow-sm"
-            },
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "gap": "gap-4",
-              "p": "p-6",
-              "width": "w-full"
-            },
-            "className": ["lg:w-1/2", "lg:shrink-0"],
+            "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) border border-(--border) shadow-sm flex flex-col gap-4 p-6 w-full lg:w-1/2 lg:shrink-0",
             "custom": {
               "displayName": "Form card"
             }
@@ -335,16 +212,12 @@
                 "text": "Get the next send",
                 "tagName": "h3",
                 "root": {
-                  "fontFamily": "var(--heading-font-family)",
-                  "fontWeight": "font-semibold",
-                  "color": "text-(--card-foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-lg"
+                  "style": "font-family: var(--heading-font-family);"
                 },
                 "custom": {
                   "displayName": "Card title"
-                }
+                },
+                "className": "font-semibold text-(--card-foreground) text-lg"
               }
             },
             {
@@ -354,18 +227,10 @@
                 "canEditName": true,
                 "formName": "newsletter-benefits-inline",
                 "formType": "subscribe",
-                "root": {
-                  "width": "w-full"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "gap": "gap-3",
-                  "width": "w-full"
-                },
                 "custom": {
                   "displayName": "Subscribe form"
-                }
+                },
+                "className": "w-full flex flex-col gap-3"
               },
               "children": [
                 {
@@ -378,29 +243,14 @@
                     "required": true,
                     "autocomplete": "email",
                     "root": {
-                      "border": "border",
-                      "borderWidth": "border-(--input-border-width)",
-                      "borderStyle": "border-solid",
-                      "borderColor": "border-(--input-border-color)",
-                      "radius": "rounded-(--input-border-radius)",
-                      "background": "bg-(--input-bg-color)",
-                      "color": "text-(--input-text-color)",
-                      "placeholderColor": "placeholder:text-(--input-placeholder-color)",
-                      "focus": {
-                        "ring": "focus:ring-(--input-focus-ring)",
-                        "ringColor": "focus:ring-(--input-focus-ring-color)",
-                        "outline": "focus:outline-none"
-                      }
-                    },
-                    "mobile": {
-                      "p": "p-(--input-padding)",
-                      "width": "w-full"
+                      "style": "placeholder-color: placeholder:text-(--input-placeholder-color);"
                     },
                     "canDelete": true,
                     "canEditName": true,
                     "custom": {
                       "displayName": "Email"
-                    }
+                    },
+                    "className": "border border-(--input-border-width) border-solid border-(--input-border-color) rounded-(--input-border-radius) bg-(--input-bg-color) text-(--input-text-color) p-(--input-padding) w-full"
                   }
                 },
                 {
@@ -408,22 +258,10 @@
                   "props": {
                     "text": "Subscribe",
                     "type": "submit",
-                    "root": {
-                      "background": "bg-(--primary)",
-                      "color": "text-(--primary-foreground)",
-                      "radius": "rounded-(--radius)"
-                    },
-                    "mobile": {
-                      "width": "w-full",
-                      "py": "py-3",
-                      "px": "px-6",
-                      "fontWeight": "font-semibold",
-                      "fontSize": "text-sm",
-                      "textAlign": "text-center"
-                    },
                     "custom": {
                       "displayName": "Submit"
-                    }
+                    },
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) w-full py-3 px-6 font-semibold text-sm text-center"
                   }
                 }
               ]
@@ -433,16 +271,10 @@
               "props": {
                 "text": "No paid list swaps. Unsubscribe link in every email.",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--muted-foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-xs",
-                  "lineHeight": "leading-relaxed"
-                },
                 "custom": {
                   "displayName": "Privacy"
-                }
+                },
+                "className": "text-(--muted-foreground) text-xs leading-relaxed"
               }
             }
           ]

@@ -4,18 +4,10 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
-    "root": { "background": "bg-(--background)", "color": "text-(--foreground)" },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "alignItems": "items-center",
-      "width": "w-full",
-      "py": "py-12",
-      "px": "px-4"
-    },
-    "className": ["lg:py-16", "lg:px-6"],
-    "desktop": {},
-    "custom": { "displayName": "Testimonial stars section" }
+    "className": "bg-(--background) text-(--foreground) flex flex-col items-center w-full py-12 px-4 lg:py-16 lg:px-6",
+    "custom": {
+      "displayName": "Testimonial stars section"
+    }
   },
   "children": [
     {
@@ -23,17 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "alignItems": "items-center",
-          "width": "w-full",
-          "maxWidth": "max-w-xl",
-          "mx": "mx-auto"
+        "custom": {
+          "displayName": "Center column"
         },
-        "desktop": {},
-        "custom": { "displayName": "Center column" }
+        "className": "flex flex-col items-center w-full max-w-xl mx-auto"
       },
       "children": [
         {
@@ -41,25 +26,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {
-              "background": "bg-(--card)",
-              "radius": "rounded-(--card-radius)",
-              "border": "border",
-              "borderColor": "border-(--border)",
-              "shadow": "shadow-md"
-            },
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "alignItems": "items-center",
-              "textAlign": "text-center",
-              "gap": "gap-6",
-              "width": "w-full",
-              "p": "p-8"
-            },
-            "className": ["lg:p-10"],
-            "desktop": {},
-            "custom": { "displayName": "Review card" }
+            "className": "bg-(--card) rounded-(--card-radius) border border-(--border) shadow-md flex flex-col items-center text-center gap-6 w-full p-8 lg:p-10",
+            "custom": {
+              "displayName": "Review card"
+            }
           },
           "children": [
             {
@@ -67,18 +37,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-row",
-                  "flexWrap": "flex-wrap",
-                  "justifyContent": "justify-center",
-                  "alignItems": "items-center",
-                  "gap": "gap-0.5",
-                  "width": "w-full"
+                "custom": {
+                  "displayName": "Star rating"
                 },
-                "desktop": {},
-                "custom": { "displayName": "Star rating" }
+                "className": "flex flex-row flex-wrap justify-center items-center gap-0.5 w-full"
               },
               "children": [
                 {
@@ -88,15 +50,15 @@
                     "canEditName": true,
                     "text": "5 star rating, star 1 of 5",
                     "url": "#",
-                    "root": {
-                      "background": "bg-transparent",
-                      "color": "text-(--accent)",
-                      "radius": "rounded-(--radius)"
+                    "icon": {
+                      "value": "ref-google:star",
+                      "only": true,
+                      "size": "w-7 h-7"
                     },
-                    "mobile": { "py": "py-0", "px": "px-0.5", "minWidth": "min-w-0" },
-                    "desktop": {},
-                    "icon": { "value": "ref-google:star", "only": true, "size": "w-7 h-7" },
-                    "custom": { "displayName": "Star 1" }
+                    "custom": {
+                      "displayName": "Star 1"
+                    },
+                    "className": "bg-transparent text-(--accent) rounded-(--radius) py-0 px-0.5 min-w-0"
                   }
                 },
                 {
@@ -106,15 +68,15 @@
                     "canEditName": true,
                     "text": "5 star rating, star 2 of 5",
                     "url": "#",
-                    "root": {
-                      "background": "bg-transparent",
-                      "color": "text-(--accent)",
-                      "radius": "rounded-(--radius)"
+                    "icon": {
+                      "value": "ref-google:star",
+                      "only": true,
+                      "size": "w-7 h-7"
                     },
-                    "mobile": { "py": "py-0", "px": "px-0.5", "minWidth": "min-w-0" },
-                    "desktop": {},
-                    "icon": { "value": "ref-google:star", "only": true, "size": "w-7 h-7" },
-                    "custom": { "displayName": "Star 2" }
+                    "custom": {
+                      "displayName": "Star 2"
+                    },
+                    "className": "bg-transparent text-(--accent) rounded-(--radius) py-0 px-0.5 min-w-0"
                   }
                 },
                 {
@@ -124,15 +86,15 @@
                     "canEditName": true,
                     "text": "5 star rating, star 3 of 5",
                     "url": "#",
-                    "root": {
-                      "background": "bg-transparent",
-                      "color": "text-(--accent)",
-                      "radius": "rounded-(--radius)"
+                    "icon": {
+                      "value": "ref-google:star",
+                      "only": true,
+                      "size": "w-7 h-7"
                     },
-                    "mobile": { "py": "py-0", "px": "px-0.5", "minWidth": "min-w-0" },
-                    "desktop": {},
-                    "icon": { "value": "ref-google:star", "only": true, "size": "w-7 h-7" },
-                    "custom": { "displayName": "Star 3" }
+                    "custom": {
+                      "displayName": "Star 3"
+                    },
+                    "className": "bg-transparent text-(--accent) rounded-(--radius) py-0 px-0.5 min-w-0"
                   }
                 },
                 {
@@ -142,15 +104,15 @@
                     "canEditName": true,
                     "text": "5 star rating, star 4 of 5",
                     "url": "#",
-                    "root": {
-                      "background": "bg-transparent",
-                      "color": "text-(--accent)",
-                      "radius": "rounded-(--radius)"
+                    "icon": {
+                      "value": "ref-google:star",
+                      "only": true,
+                      "size": "w-7 h-7"
                     },
-                    "mobile": { "py": "py-0", "px": "px-0.5", "minWidth": "min-w-0" },
-                    "desktop": {},
-                    "icon": { "value": "ref-google:star", "only": true, "size": "w-7 h-7" },
-                    "custom": { "displayName": "Star 4" }
+                    "custom": {
+                      "displayName": "Star 4"
+                    },
+                    "className": "bg-transparent text-(--accent) rounded-(--radius) py-0 px-0.5 min-w-0"
                   }
                 },
                 {
@@ -160,15 +122,15 @@
                     "canEditName": true,
                     "text": "5 star rating, star 5 of 5",
                     "url": "#",
-                    "root": {
-                      "background": "bg-transparent",
-                      "color": "text-(--accent)",
-                      "radius": "rounded-(--radius)"
+                    "icon": {
+                      "value": "ref-google:star",
+                      "only": true,
+                      "size": "w-7 h-7"
                     },
-                    "mobile": { "py": "py-0", "px": "px-0.5", "minWidth": "min-w-0" },
-                    "desktop": {},
-                    "icon": { "value": "ref-google:star", "only": true, "size": "w-7 h-7" },
-                    "custom": { "displayName": "Star 5" }
+                    "custom": {
+                      "displayName": "Star 5"
+                    },
+                    "className": "bg-transparent text-(--accent) rounded-(--radius) py-0 px-0.5 min-w-0"
                   }
                 }
               ]
@@ -179,15 +141,12 @@
                 "text": "We rolled PageHub out to three squads in a week. Handoffs are quieter, launches feel calmer, and nobody is hunting for the latest screenshot anymore.",
                 "tagName": "p",
                 "root": {
-                  "fontWeight": "font-medium",
-                  "color": "text-(--foreground)",
-                  "lineHeight": "leading-relaxed",
-                  "fontFamily": "var(--body-font-family)"
+                  "style": "font-family: var(--body-font-family);"
                 },
-                "mobile": { "fontSize": "text-base", "width": "w-full" },
-                "className": ["lg:text-lg"],
-                "desktop": {},
-                "custom": { "displayName": "Quote" }
+                "className": "font-medium text-(--foreground) leading-relaxed text-base w-full lg:text-lg",
+                "custom": {
+                  "displayName": "Quote"
+                }
               }
             },
             {
@@ -195,10 +154,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": { "background": "bg-(--muted)", "radius": "rounded-(--radius)" },
-                "mobile": { "width": "w-full", "height": "h-px", "maxWidth": "max-w-xs" },
-                "desktop": {},
-                "custom": { "displayName": "Divider" }
+                "custom": {
+                  "displayName": "Divider"
+                },
+                "className": "bg-(--muted) rounded-(--radius) w-full h-px max-w-xs"
               },
               "children": []
             },
@@ -207,16 +166,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "gap": "gap-1",
-                  "alignItems": "items-center",
-                  "width": "w-full"
+                "custom": {
+                  "displayName": "Attribution"
                 },
-                "desktop": {},
-                "custom": { "displayName": "Attribution" }
+                "className": "flex flex-col gap-1 items-center w-full"
               },
               "children": [
                 {
@@ -224,14 +177,10 @@
                   "props": {
                     "text": "Priya Shah",
                     "tagName": "p",
-                    "root": {
-                      "fontWeight": "font-semibold",
-                      "fontSize": "text-sm",
-                      "color": "text-(--foreground)"
+                    "custom": {
+                      "displayName": "Name"
                     },
-                    "mobile": {},
-                    "desktop": {},
-                    "custom": { "displayName": "Name" }
+                    "className": "font-semibold text-sm text-(--foreground)"
                   }
                 },
                 {
@@ -239,10 +188,10 @@
                   "props": {
                     "text": "Director of Ops, Fieldline Analytics",
                     "tagName": "p",
-                    "root": { "fontSize": "text-xs", "color": "text-(--muted-foreground)" },
-                    "mobile": {},
-                    "desktop": {},
-                    "custom": { "displayName": "Role" }
+                    "custom": {
+                      "displayName": "Role"
+                    },
+                    "className": "text-xs text-(--muted-foreground)"
                   }
                 }
               ]

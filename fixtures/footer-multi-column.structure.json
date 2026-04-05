@@ -4,21 +4,10 @@
     "type": "section",
     "canDelete": true,
     "canEditName": true,
-    "root": {
-      "background": "bg-(--muted)",
-      "color": "text-(--foreground)",
-      "border": "border-t",
-      "borderColor": "border-(--border)"
-    },
-    "mobile": {
-      "display": "block",
-      "width": "w-full",
-      "maxWidth": "max-w-none"
-    },
-    "desktop": {},
     "custom": {
       "displayName": "Footer section"
-    }
+    },
+    "className": "bg-(--muted) text-(--foreground) border-t border-(--border) block w-full max-w-none"
   },
   "children": [
     {
@@ -26,24 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "gap": "gap-12",
-          "width": "w-full",
-          "maxWidth": "max-w-(--content-width)",
-          "mx": "mx-auto",
-          "px": "px-6",
-          "py": "py-12"
-        },
-        "desktop": {
-          "gap": "gap-16",
-          "py": "py-16"
-        },
         "custom": {
           "displayName": "Footer inner"
-        }
+        },
+        "className": "flex flex-col gap-12 w-full max-w-(--content-width) mx-auto px-6 py-12 md:gap-16 md:py-16"
       },
       "children": [
         {
@@ -51,20 +26,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "grid",
-              "gridCols": "grid-cols-1",
-              "gap": "gap-10",
-              "width": "w-full"
-            },
-            "desktop": {
-              "gridCols": "grid-cols-4",
-              "gap": "gap-12"
-            },
             "custom": {
               "displayName": "Link grid"
-            }
+            },
+            "className": "grid grid-cols-1 gap-10 w-full md:grid-cols-4 md:gap-12"
           },
           "children": [
             {
@@ -72,17 +37,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "gap": "gap-4",
-                  "width": "w-full"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Brand column"
-                }
+                },
+                "className": "flex flex-col gap-4 w-full"
               },
               "children": [
                 {
@@ -91,20 +49,12 @@
                     "text": "Acme Inc",
                     "tagName": "p",
                     "root": {
-                      "fontWeight": "font-bold",
-                      "fontFamily": "var(--heading-font-family)",
-                      "color": "text-(--foreground)",
-                      "lineHeight": "leading-tight"
-                    },
-                    "mobile": {
-                      "fontSize": "text-xl"
-                    },
-                    "desktop": {
-                      "fontSize": "text-2xl"
+                      "style": "font-family: var(--heading-font-family);"
                     },
                     "custom": {
                       "displayName": "Brand"
-                    }
+                    },
+                    "className": "font-bold text-(--foreground) leading-tight text-xl md:text-2xl"
                   }
                 },
                 {
@@ -112,19 +62,10 @@
                   "props": {
                     "text": "Design-led product studio shipping marketing sites, dashboards, and design systems.",
                     "tagName": "p",
-                    "root": {
-                      "color": "text-(--muted-foreground)",
-                      "lineHeight": "leading-relaxed"
-                    },
-                    "mobile": {
-                      "fontSize": "text-sm"
-                    },
-                    "desktop": {
-                      "fontSize": "text-base"
-                    },
                     "custom": {
                       "displayName": "About blurb"
-                    }
+                    },
+                    "className": "text-(--muted-foreground) leading-relaxed text-sm md:text-base"
                   }
                 }
               ]
@@ -134,17 +75,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "gap": "gap-3",
-                  "width": "w-full"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Product column"
-                }
+                },
+                "className": "flex flex-col gap-3 w-full"
               },
               "children": [
                 {
@@ -152,17 +86,7 @@
                   "props": {
                     "text": "Product",
                     "tagName": "p",
-                    "root": {
-                      "color": "text-(--foreground)",
-                      "fontWeight": "font-bold",
-                      "letterSpacing": "tracking-widest"
-                    },
-                    "mobile": {
-                      "fontSize": "text-xs",
-                      "mb": "mb-2"
-                    },
-                    "desktop": {},
-                    "className": ["uppercase"],
+                    "className": "text-(--foreground) font-bold tracking-widest text-xs mb-2 uppercase",
                     "custom": {
                       "displayName": "Heading"
                     }
@@ -173,21 +97,10 @@
                   "props": {
                     "text": "Features",
                     "url": "#",
-                    "root": {
-                      "background": "bg-transparent",
-                      "color": "text-(--muted-foreground)",
-                      "border": "border-0"
-                    },
-                    "mobile": {
-                      "fontSize": "text-sm",
-                      "px": "px-0",
-                      "py": "py-0",
-                      "justifyContent": "justify-start"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Features"
-                    }
+                    },
+                    "className": "bg-transparent text-(--muted-foreground) border-0 text-sm px-0 py-0 justify-start"
                   }
                 },
                 {
@@ -195,21 +108,10 @@
                   "props": {
                     "text": "Pricing",
                     "url": "#",
-                    "root": {
-                      "background": "bg-transparent",
-                      "color": "text-(--muted-foreground)",
-                      "border": "border-0"
-                    },
-                    "mobile": {
-                      "fontSize": "text-sm",
-                      "px": "px-0",
-                      "py": "py-0",
-                      "justifyContent": "justify-start"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Pricing"
-                    }
+                    },
+                    "className": "bg-transparent text-(--muted-foreground) border-0 text-sm px-0 py-0 justify-start"
                   }
                 },
                 {
@@ -217,21 +119,10 @@
                   "props": {
                     "text": "Templates",
                     "url": "#",
-                    "root": {
-                      "background": "bg-transparent",
-                      "color": "text-(--muted-foreground)",
-                      "border": "border-0"
-                    },
-                    "mobile": {
-                      "fontSize": "text-sm",
-                      "px": "px-0",
-                      "py": "py-0",
-                      "justifyContent": "justify-start"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Templates"
-                    }
+                    },
+                    "className": "bg-transparent text-(--muted-foreground) border-0 text-sm px-0 py-0 justify-start"
                   }
                 }
               ]
@@ -241,17 +132,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "gap": "gap-3",
-                  "width": "w-full"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Company column"
-                }
+                },
+                "className": "flex flex-col gap-3 w-full"
               },
               "children": [
                 {
@@ -259,17 +143,7 @@
                   "props": {
                     "text": "Company",
                     "tagName": "p",
-                    "root": {
-                      "color": "text-(--foreground)",
-                      "fontWeight": "font-bold",
-                      "letterSpacing": "tracking-widest"
-                    },
-                    "mobile": {
-                      "fontSize": "text-xs",
-                      "mb": "mb-2"
-                    },
-                    "desktop": {},
-                    "className": ["uppercase"],
+                    "className": "text-(--foreground) font-bold tracking-widest text-xs mb-2 uppercase",
                     "custom": {
                       "displayName": "Heading"
                     }
@@ -280,21 +154,10 @@
                   "props": {
                     "text": "About",
                     "url": "#",
-                    "root": {
-                      "background": "bg-transparent",
-                      "color": "text-(--muted-foreground)",
-                      "border": "border-0"
-                    },
-                    "mobile": {
-                      "fontSize": "text-sm",
-                      "px": "px-0",
-                      "py": "py-0",
-                      "justifyContent": "justify-start"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "About"
-                    }
+                    },
+                    "className": "bg-transparent text-(--muted-foreground) border-0 text-sm px-0 py-0 justify-start"
                   }
                 },
                 {
@@ -302,21 +165,10 @@
                   "props": {
                     "text": "Blog",
                     "url": "#",
-                    "root": {
-                      "background": "bg-transparent",
-                      "color": "text-(--muted-foreground)",
-                      "border": "border-0"
-                    },
-                    "mobile": {
-                      "fontSize": "text-sm",
-                      "px": "px-0",
-                      "py": "py-0",
-                      "justifyContent": "justify-start"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Blog"
-                    }
+                    },
+                    "className": "bg-transparent text-(--muted-foreground) border-0 text-sm px-0 py-0 justify-start"
                   }
                 },
                 {
@@ -324,21 +176,10 @@
                   "props": {
                     "text": "Careers",
                     "url": "#",
-                    "root": {
-                      "background": "bg-transparent",
-                      "color": "text-(--muted-foreground)",
-                      "border": "border-0"
-                    },
-                    "mobile": {
-                      "fontSize": "text-sm",
-                      "px": "px-0",
-                      "py": "py-0",
-                      "justifyContent": "justify-start"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Careers"
-                    }
+                    },
+                    "className": "bg-transparent text-(--muted-foreground) border-0 text-sm px-0 py-0 justify-start"
                   }
                 }
               ]
@@ -348,17 +189,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "gap": "gap-3",
-                  "width": "w-full"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Legal column"
-                }
+                },
+                "className": "flex flex-col gap-3 w-full"
               },
               "children": [
                 {
@@ -366,17 +200,7 @@
                   "props": {
                     "text": "Legal",
                     "tagName": "p",
-                    "root": {
-                      "color": "text-(--foreground)",
-                      "fontWeight": "font-bold",
-                      "letterSpacing": "tracking-widest"
-                    },
-                    "mobile": {
-                      "fontSize": "text-xs",
-                      "mb": "mb-2"
-                    },
-                    "desktop": {},
-                    "className": ["uppercase"],
+                    "className": "text-(--foreground) font-bold tracking-widest text-xs mb-2 uppercase",
                     "custom": {
                       "displayName": "Heading"
                     }
@@ -387,21 +211,10 @@
                   "props": {
                     "text": "Privacy Policy",
                     "url": "#",
-                    "root": {
-                      "background": "bg-transparent",
-                      "color": "text-(--muted-foreground)",
-                      "border": "border-0"
-                    },
-                    "mobile": {
-                      "fontSize": "text-sm",
-                      "px": "px-0",
-                      "py": "py-0",
-                      "justifyContent": "justify-start"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Privacy"
-                    }
+                    },
+                    "className": "bg-transparent text-(--muted-foreground) border-0 text-sm px-0 py-0 justify-start"
                   }
                 },
                 {
@@ -409,21 +222,10 @@
                   "props": {
                     "text": "Terms of use",
                     "url": "#",
-                    "root": {
-                      "background": "bg-transparent",
-                      "color": "text-(--muted-foreground)",
-                      "border": "border-0"
-                    },
-                    "mobile": {
-                      "fontSize": "text-sm",
-                      "px": "px-0",
-                      "py": "py-0",
-                      "justifyContent": "justify-start"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Terms"
-                    }
+                    },
+                    "className": "bg-transparent text-(--muted-foreground) border-0 text-sm px-0 py-0 justify-start"
                   }
                 }
               ]
@@ -435,45 +237,21 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {
-              "border": "border-t",
-              "borderColor": "border-(--border)"
-            },
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "alignItems": "center",
-              "textAlign": "text-center",
-              "gap": "gap-6",
-              "width": "w-full",
-              "pt": "pt-8"
-            },
-            "desktop": {
-              "flexDirection": "flex-row",
-              "justifyContent": "justify-between",
-              "alignItems": "items-center",
-              "textAlign": "text-left"
-            },
             "custom": {
               "displayName": "Bottom bar"
-            }
+            },
+            "className": "border-t border-(--border) flex flex-col center text-center gap-6 w-full pt-8 md:flex-row md:justify-between md:items-center md:text-left"
           },
           "children": [
             {
               "type": "Text",
               "props": {
-                "text": "\u00a9 2026 Acme Inc. All rights reserved.",
+                "text": "© 2026 Acme Inc. All rights reserved.",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--muted-foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-xs"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Copyright"
-                }
+                },
+                "className": "text-(--muted-foreground) text-xs"
               }
             },
             {
@@ -481,20 +259,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-row",
-                  "justifyContent": "justify-center",
-                  "alignItems": "items-center",
-                  "gap": "gap-2"
-                },
-                "desktop": {
-                  "justifyContent": "justify-end"
-                },
                 "custom": {
                   "displayName": "Social icons"
-                }
+                },
+                "className": "flex flex-row justify-center items-center gap-2 md:justify-end"
               },
               "children": [
                 {
@@ -502,19 +270,6 @@
                   "props": {
                     "text": "GitHub profile",
                     "url": "#",
-                    "root": {
-                      "background": "bg-(--card)",
-                      "color": "text-(--foreground)",
-                      "border": "border",
-                      "borderColor": "border-(--border)",
-                      "radius": "rounded-(--radius-lg)"
-                    },
-                    "mobile": {
-                      "display": "inline-flex",
-                      "px": "px-3",
-                      "py": "py-3"
-                    },
-                    "desktop": {},
                     "icon": {
                       "value": "ref-google:code",
                       "only": true,
@@ -522,7 +277,8 @@
                     },
                     "custom": {
                       "displayName": "GitHub"
-                    }
+                    },
+                    "className": "bg-(--card) text-(--foreground) border border-(--border) rounded-(--radius-lg) inline-flex px-3 py-3"
                   }
                 },
                 {
@@ -530,19 +286,6 @@
                   "props": {
                     "text": "Official site",
                     "url": "#",
-                    "root": {
-                      "background": "bg-(--card)",
-                      "color": "text-(--foreground)",
-                      "border": "border",
-                      "borderColor": "border-(--border)",
-                      "radius": "rounded-(--radius-lg)"
-                    },
-                    "mobile": {
-                      "display": "inline-flex",
-                      "px": "px-3",
-                      "py": "py-3"
-                    },
-                    "desktop": {},
                     "icon": {
                       "value": "ref-google:public",
                       "only": true,
@@ -550,7 +293,8 @@
                     },
                     "custom": {
                       "displayName": "Website"
-                    }
+                    },
+                    "className": "bg-(--card) text-(--foreground) border border-(--border) rounded-(--radius-lg) inline-flex px-3 py-3"
                   }
                 },
                 {
@@ -558,19 +302,6 @@
                   "props": {
                     "text": "Share",
                     "url": "#",
-                    "root": {
-                      "background": "bg-(--card)",
-                      "color": "text-(--foreground)",
-                      "border": "border",
-                      "borderColor": "border-(--border)",
-                      "radius": "rounded-(--radius-lg)"
-                    },
-                    "mobile": {
-                      "display": "inline-flex",
-                      "px": "px-3",
-                      "py": "py-3"
-                    },
-                    "desktop": {},
                     "icon": {
                       "value": "ref-google:share",
                       "only": true,
@@ -578,7 +309,8 @@
                     },
                     "custom": {
                       "displayName": "Share"
-                    }
+                    },
+                    "className": "bg-(--card) text-(--foreground) border border-(--border) rounded-(--radius-lg) inline-flex px-3 py-3"
                   }
                 }
               ]

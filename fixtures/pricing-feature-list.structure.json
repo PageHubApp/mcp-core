@@ -3,27 +3,10 @@
   "props": {
     "canDelete": true,
     "canEditName": true,
-    "root": {
-      "background": "bg-(--card)",
-      "color": "text-(--card-foreground)",
-      "radius": "rounded-(--card-radius)",
-      "border": "border",
-      "borderColor": "border-(--muted)",
-      "shadow": "shadow-sm"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "width": "w-full",
-      "overflow": "overflow-hidden"
-    },
-    "desktop": {
-      "flexDirection": "flex-row",
-      "alignItems": "items-stretch"
-    },
     "custom": {
       "displayName": "Pricing split card"
-    }
+    },
+    "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) border border-(--muted) shadow-sm flex flex-col w-full overflow-hidden md:flex-row md:items-stretch"
   },
   "children": [
     {
@@ -31,23 +14,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "gap": "gap-6",
-          "width": "w-full",
-          "p": "p-8",
-          "minWidth": "min-w-0"
-        },
-        "desktop": {
-          "flex": "flex-1",
-          "p": "p-10",
-          "gap": "gap-8"
-        },
         "custom": {
           "displayName": "Features column"
-        }
+        },
+        "className": "flex flex-col gap-6 w-full p-8 min-w-0 md:flex-1 md:p-10 md:gap-8"
       },
       "children": [
         {
@@ -56,20 +26,12 @@
             "text": "Pricing that keeps up with <strong class=\"text-(--primary)\">ambitious</strong> teams.",
             "tagName": "h3",
             "root": {
-              "fontWeight": "font-bold",
-              "fontFamily": "var(--heading-font-family)",
-              "lineHeight": "leading-tight",
-              "color": "text-(--card-foreground)"
-            },
-            "mobile": {
-              "fontSize": "text-2xl"
-            },
-            "desktop": {
-              "fontSize": "text-3xl"
+              "style": "font-family: var(--heading-font-family);"
             },
             "custom": {
               "displayName": "Headline"
-            }
+            },
+            "className": "font-bold leading-tight text-(--card-foreground) text-2xl md:text-3xl"
           }
         },
         {
@@ -77,19 +39,10 @@
           "props": {
             "text": "Built for steady traffic, shared workspaces, and agreements that need headroom — not a one-size SKU.",
             "tagName": "p",
-            "root": {
-              "color": "text-(--muted-foreground)"
-            },
-            "mobile": {
-              "fontSize": "text-sm",
-              "lineHeight": "leading-relaxed"
-            },
-            "desktop": {
-              "fontSize": "text-base"
-            },
             "custom": {
               "displayName": "Subcopy"
-            }
+            },
+            "className": "text-(--muted-foreground) text-sm leading-relaxed md:text-base"
           }
         },
         {
@@ -97,17 +50,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "grid",
-              "gridCols": "grid-cols-1",
-              "gap": "gap-3",
-              "width": "w-full"
-            },
-            "desktop": {
-              "gridCols": "grid-cols-3"
-            },
-            "className": ["md:gap-x-10", "md:gap-y-4"],
+            "className": "grid grid-cols-1 gap-3 w-full md:grid-cols-3 md:gap-x-10 md:gap-y-4",
             "custom": {
               "displayName": "Feature grid"
             }
@@ -118,18 +61,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-row",
-                  "gap": "gap-3",
-                  "alignItems": "items-center",
-                  "width": "w-full"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Feature"
-                }
+                },
+                "className": "flex flex-row gap-3 items-center w-full"
               },
               "children": [
                 {
@@ -137,20 +72,7 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {
-                      "background": "bg-(--primary)",
-                      "color": "text-(--primary-foreground)",
-                      "radius": "rounded-full"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "width": "w-5",
-                      "height": "h-5",
-                      "alignItems": "items-center",
-                      "justifyContent": "justify-center"
-                    },
-                    "desktop": {},
-                    "className": ["shrink-0"],
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-full flex w-5 h-5 items-center justify-center shrink-0",
                     "custom": {
                       "displayName": "Check"
                     }
@@ -159,18 +81,12 @@
                     {
                       "type": "Text",
                       "props": {
-                        "text": "\u2713",
+                        "text": "✓",
                         "tagName": "span",
-                        "root": {
-                          "fontSize": "text-xs",
-                          "fontWeight": "font-bold",
-                          "lineHeight": "leading-none"
-                        },
-                        "mobile": {},
-                        "desktop": {},
                         "custom": {
                           "displayName": "Mark"
-                        }
+                        },
+                        "className": "text-xs font-bold leading-none"
                       }
                     }
                   ]
@@ -180,21 +96,10 @@
                   "props": {
                     "text": "A/B experiment lanes",
                     "tagName": "p",
-                    "root": {
-                      "fontSize": "text-sm",
-                      "lineHeight": "leading-tight"
-                    },
-                    "mobile": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
-                    "desktop": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
                     "custom": {
                       "displayName": "Label"
-                    }
+                    },
+                    "className": "text-sm leading-tight flex-1 min-w-0 md:flex-1 md:min-w-0"
                   }
                 }
               ]
@@ -204,18 +109,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-row",
-                  "gap": "gap-3",
-                  "alignItems": "items-center",
-                  "width": "w-full"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Feature"
-                }
+                },
+                "className": "flex flex-row gap-3 items-center w-full"
               },
               "children": [
                 {
@@ -223,20 +120,7 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {
-                      "background": "bg-(--primary)",
-                      "color": "text-(--primary-foreground)",
-                      "radius": "rounded-full"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "width": "w-5",
-                      "height": "h-5",
-                      "alignItems": "items-center",
-                      "justifyContent": "justify-center"
-                    },
-                    "desktop": {},
-                    "className": ["shrink-0"],
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-full flex w-5 h-5 items-center justify-center shrink-0",
                     "custom": {
                       "displayName": "Check"
                     }
@@ -245,18 +129,12 @@
                     {
                       "type": "Text",
                       "props": {
-                        "text": "\u2713",
+                        "text": "✓",
                         "tagName": "span",
-                        "root": {
-                          "fontSize": "text-xs",
-                          "fontWeight": "font-bold",
-                          "lineHeight": "leading-none"
-                        },
-                        "mobile": {},
-                        "desktop": {},
                         "custom": {
                           "displayName": "Mark"
-                        }
+                        },
+                        "className": "text-xs font-bold leading-none"
                       }
                     }
                   ]
@@ -266,21 +144,10 @@
                   "props": {
                     "text": "CRM audience hooks",
                     "tagName": "p",
-                    "root": {
-                      "fontSize": "text-sm",
-                      "lineHeight": "leading-tight"
-                    },
-                    "mobile": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
-                    "desktop": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
                     "custom": {
                       "displayName": "Label"
-                    }
+                    },
+                    "className": "text-sm leading-tight flex-1 min-w-0 md:flex-1 md:min-w-0"
                   }
                 }
               ]
@@ -290,18 +157,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-row",
-                  "gap": "gap-3",
-                  "alignItems": "items-center",
-                  "width": "w-full"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Feature"
-                }
+                },
+                "className": "flex flex-row gap-3 items-center w-full"
               },
               "children": [
                 {
@@ -309,20 +168,7 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {
-                      "background": "bg-(--primary)",
-                      "color": "text-(--primary-foreground)",
-                      "radius": "rounded-full"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "width": "w-5",
-                      "height": "h-5",
-                      "alignItems": "items-center",
-                      "justifyContent": "justify-center"
-                    },
-                    "desktop": {},
-                    "className": ["shrink-0"],
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-full flex w-5 h-5 items-center justify-center shrink-0",
                     "custom": {
                       "displayName": "Check"
                     }
@@ -331,18 +177,12 @@
                     {
                       "type": "Text",
                       "props": {
-                        "text": "\u2713",
+                        "text": "✓",
                         "tagName": "span",
-                        "root": {
-                          "fontSize": "text-xs",
-                          "fontWeight": "font-bold",
-                          "lineHeight": "leading-none"
-                        },
-                        "mobile": {},
-                        "desktop": {},
                         "custom": {
                           "displayName": "Mark"
-                        }
+                        },
+                        "className": "text-xs font-bold leading-none"
                       }
                     }
                   ]
@@ -352,21 +192,10 @@
                   "props": {
                     "text": "Webhooks & automation",
                     "tagName": "p",
-                    "root": {
-                      "fontSize": "text-sm",
-                      "lineHeight": "leading-tight"
-                    },
-                    "mobile": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
-                    "desktop": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
                     "custom": {
                       "displayName": "Label"
-                    }
+                    },
+                    "className": "text-sm leading-tight flex-1 min-w-0 md:flex-1 md:min-w-0"
                   }
                 }
               ]
@@ -376,18 +205,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-row",
-                  "gap": "gap-3",
-                  "alignItems": "items-center",
-                  "width": "w-full"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Feature"
-                }
+                },
+                "className": "flex flex-row gap-3 items-center w-full"
               },
               "children": [
                 {
@@ -395,20 +216,7 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {
-                      "background": "bg-(--primary)",
-                      "color": "text-(--primary-foreground)",
-                      "radius": "rounded-full"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "width": "w-5",
-                      "height": "h-5",
-                      "alignItems": "items-center",
-                      "justifyContent": "justify-center"
-                    },
-                    "desktop": {},
-                    "className": ["shrink-0"],
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-full flex w-5 h-5 items-center justify-center shrink-0",
                     "custom": {
                       "displayName": "Check"
                     }
@@ -417,18 +225,12 @@
                     {
                       "type": "Text",
                       "props": {
-                        "text": "\u2713",
+                        "text": "✓",
                         "tagName": "span",
-                        "root": {
-                          "fontSize": "text-xs",
-                          "fontWeight": "font-bold",
-                          "lineHeight": "leading-none"
-                        },
-                        "mobile": {},
-                        "desktop": {},
                         "custom": {
                           "displayName": "Mark"
-                        }
+                        },
+                        "className": "text-xs font-bold leading-none"
                       }
                     }
                   ]
@@ -438,21 +240,10 @@
                   "props": {
                     "text": "Live queue routing",
                     "tagName": "p",
-                    "root": {
-                      "fontSize": "text-sm",
-                      "lineHeight": "leading-tight"
-                    },
-                    "mobile": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
-                    "desktop": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
                     "custom": {
                       "displayName": "Label"
-                    }
+                    },
+                    "className": "text-sm leading-tight flex-1 min-w-0 md:flex-1 md:min-w-0"
                   }
                 }
               ]
@@ -462,18 +253,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-row",
-                  "gap": "gap-3",
-                  "alignItems": "items-center",
-                  "width": "w-full"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Feature"
-                }
+                },
+                "className": "flex flex-row gap-3 items-center w-full"
               },
               "children": [
                 {
@@ -481,20 +264,7 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {
-                      "background": "bg-(--primary)",
-                      "color": "text-(--primary-foreground)",
-                      "radius": "rounded-full"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "width": "w-5",
-                      "height": "h-5",
-                      "alignItems": "items-center",
-                      "justifyContent": "justify-center"
-                    },
-                    "desktop": {},
-                    "className": ["shrink-0"],
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-full flex w-5 h-5 items-center justify-center shrink-0",
                     "custom": {
                       "displayName": "Check"
                     }
@@ -503,18 +273,12 @@
                     {
                       "type": "Text",
                       "props": {
-                        "text": "\u2713",
+                        "text": "✓",
                         "tagName": "span",
-                        "root": {
-                          "fontSize": "text-xs",
-                          "fontWeight": "font-bold",
-                          "lineHeight": "leading-none"
-                        },
-                        "mobile": {},
-                        "desktop": {},
                         "custom": {
                           "displayName": "Mark"
-                        }
+                        },
+                        "className": "text-xs font-bold leading-none"
                       }
                     }
                   ]
@@ -524,21 +288,10 @@
                   "props": {
                     "text": "Reusable layout kits",
                     "tagName": "p",
-                    "root": {
-                      "fontSize": "text-sm",
-                      "lineHeight": "leading-tight"
-                    },
-                    "mobile": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
-                    "desktop": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
                     "custom": {
                       "displayName": "Label"
-                    }
+                    },
+                    "className": "text-sm leading-tight flex-1 min-w-0 md:flex-1 md:min-w-0"
                   }
                 }
               ]
@@ -548,18 +301,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-row",
-                  "gap": "gap-3",
-                  "alignItems": "items-center",
-                  "width": "w-full"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Feature"
-                }
+                },
+                "className": "flex flex-row gap-3 items-center w-full"
               },
               "children": [
                 {
@@ -567,20 +312,7 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {
-                      "background": "bg-(--primary)",
-                      "color": "text-(--primary-foreground)",
-                      "radius": "rounded-full"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "width": "w-5",
-                      "height": "h-5",
-                      "alignItems": "items-center",
-                      "justifyContent": "justify-center"
-                    },
-                    "desktop": {},
-                    "className": ["shrink-0"],
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-full flex w-5 h-5 items-center justify-center shrink-0",
                     "custom": {
                       "displayName": "Check"
                     }
@@ -589,18 +321,12 @@
                     {
                       "type": "Text",
                       "props": {
-                        "text": "\u2713",
+                        "text": "✓",
                         "tagName": "span",
-                        "root": {
-                          "fontSize": "text-xs",
-                          "fontWeight": "font-bold",
-                          "lineHeight": "leading-none"
-                        },
-                        "mobile": {},
-                        "desktop": {},
                         "custom": {
                           "displayName": "Mark"
-                        }
+                        },
+                        "className": "text-xs font-bold leading-none"
                       }
                     }
                   ]
@@ -610,21 +336,10 @@
                   "props": {
                     "text": "Multivariate tests",
                     "tagName": "p",
-                    "root": {
-                      "fontSize": "text-sm",
-                      "lineHeight": "leading-tight"
-                    },
-                    "mobile": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
-                    "desktop": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
                     "custom": {
                       "displayName": "Label"
-                    }
+                    },
+                    "className": "text-sm leading-tight flex-1 min-w-0 md:flex-1 md:min-w-0"
                   }
                 }
               ]
@@ -634,18 +349,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-row",
-                  "gap": "gap-3",
-                  "alignItems": "items-center",
-                  "width": "w-full"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Feature"
-                }
+                },
+                "className": "flex flex-row gap-3 items-center w-full"
               },
               "children": [
                 {
@@ -653,20 +360,7 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {
-                      "background": "bg-(--primary)",
-                      "color": "text-(--primary-foreground)",
-                      "radius": "rounded-full"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "width": "w-5",
-                      "height": "h-5",
-                      "alignItems": "items-center",
-                      "justifyContent": "justify-center"
-                    },
-                    "desktop": {},
-                    "className": ["shrink-0"],
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-full flex w-5 h-5 items-center justify-center shrink-0",
                     "custom": {
                       "displayName": "Check"
                     }
@@ -675,18 +369,12 @@
                     {
                       "type": "Text",
                       "props": {
-                        "text": "\u2713",
+                        "text": "✓",
                         "tagName": "span",
-                        "root": {
-                          "fontSize": "text-xs",
-                          "fontWeight": "font-bold",
-                          "lineHeight": "leading-none"
-                        },
-                        "mobile": {},
-                        "desktop": {},
                         "custom": {
                           "displayName": "Mark"
-                        }
+                        },
+                        "className": "text-xs font-bold leading-none"
                       }
                     }
                   ]
@@ -696,21 +384,10 @@
                   "props": {
                     "text": "Brand-safe handoffs",
                     "tagName": "p",
-                    "root": {
-                      "fontSize": "text-sm",
-                      "lineHeight": "leading-tight"
-                    },
-                    "mobile": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
-                    "desktop": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
                     "custom": {
                       "displayName": "Label"
-                    }
+                    },
+                    "className": "text-sm leading-tight flex-1 min-w-0 md:flex-1 md:min-w-0"
                   }
                 }
               ]
@@ -720,18 +397,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-row",
-                  "gap": "gap-3",
-                  "alignItems": "items-center",
-                  "width": "w-full"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Feature"
-                }
+                },
+                "className": "flex flex-row gap-3 items-center w-full"
               },
               "children": [
                 {
@@ -739,20 +408,7 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {
-                      "background": "bg-(--primary)",
-                      "color": "text-(--primary-foreground)",
-                      "radius": "rounded-full"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "width": "w-5",
-                      "height": "h-5",
-                      "alignItems": "items-center",
-                      "justifyContent": "justify-center"
-                    },
-                    "desktop": {},
-                    "className": ["shrink-0"],
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-full flex w-5 h-5 items-center justify-center shrink-0",
                     "custom": {
                       "displayName": "Check"
                     }
@@ -761,18 +417,12 @@
                     {
                       "type": "Text",
                       "props": {
-                        "text": "\u2713",
+                        "text": "✓",
                         "tagName": "span",
-                        "root": {
-                          "fontSize": "text-xs",
-                          "fontWeight": "font-bold",
-                          "lineHeight": "leading-none"
-                        },
-                        "mobile": {},
-                        "desktop": {},
                         "custom": {
                           "displayName": "Mark"
-                        }
+                        },
+                        "className": "text-xs font-bold leading-none"
                       }
                     }
                   ]
@@ -782,21 +432,10 @@
                   "props": {
                     "text": "Funnel reporting",
                     "tagName": "p",
-                    "root": {
-                      "fontSize": "text-sm",
-                      "lineHeight": "leading-tight"
-                    },
-                    "mobile": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
-                    "desktop": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
                     "custom": {
                       "displayName": "Label"
-                    }
+                    },
+                    "className": "text-sm leading-tight flex-1 min-w-0 md:flex-1 md:min-w-0"
                   }
                 }
               ]
@@ -806,18 +445,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-row",
-                  "gap": "gap-3",
-                  "alignItems": "items-center",
-                  "width": "w-full"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Feature"
-                }
+                },
+                "className": "flex flex-row gap-3 items-center w-full"
               },
               "children": [
                 {
@@ -825,20 +456,7 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {
-                      "background": "bg-(--primary)",
-                      "color": "text-(--primary-foreground)",
-                      "radius": "rounded-full"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "width": "w-5",
-                      "height": "h-5",
-                      "alignItems": "items-center",
-                      "justifyContent": "justify-center"
-                    },
-                    "desktop": {},
-                    "className": ["shrink-0"],
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-full flex w-5 h-5 items-center justify-center shrink-0",
                     "custom": {
                       "displayName": "Check"
                     }
@@ -847,18 +465,12 @@
                     {
                       "type": "Text",
                       "props": {
-                        "text": "\u2713",
+                        "text": "✓",
                         "tagName": "span",
-                        "root": {
-                          "fontSize": "text-xs",
-                          "fontWeight": "font-bold",
-                          "lineHeight": "leading-none"
-                        },
-                        "mobile": {},
-                        "desktop": {},
                         "custom": {
                           "displayName": "Mark"
-                        }
+                        },
+                        "className": "text-xs font-bold leading-none"
                       }
                     }
                   ]
@@ -868,21 +480,10 @@
                   "props": {
                     "text": "Asset version history",
                     "tagName": "p",
-                    "root": {
-                      "fontSize": "text-sm",
-                      "lineHeight": "leading-tight"
-                    },
-                    "mobile": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
-                    "desktop": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
                     "custom": {
                       "displayName": "Label"
-                    }
+                    },
+                    "className": "text-sm leading-tight flex-1 min-w-0 md:flex-1 md:min-w-0"
                   }
                 }
               ]
@@ -892,18 +493,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-row",
-                  "gap": "gap-3",
-                  "alignItems": "items-center",
-                  "width": "w-full"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Feature"
-                }
+                },
+                "className": "flex flex-row gap-3 items-center w-full"
               },
               "children": [
                 {
@@ -911,20 +504,7 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {
-                      "background": "bg-(--primary)",
-                      "color": "text-(--primary-foreground)",
-                      "radius": "rounded-full"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "width": "w-5",
-                      "height": "h-5",
-                      "alignItems": "items-center",
-                      "justifyContent": "justify-center"
-                    },
-                    "desktop": {},
-                    "className": ["shrink-0"],
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-full flex w-5 h-5 items-center justify-center shrink-0",
                     "custom": {
                       "displayName": "Check"
                     }
@@ -933,18 +513,12 @@
                     {
                       "type": "Text",
                       "props": {
-                        "text": "\u2713",
+                        "text": "✓",
                         "tagName": "span",
-                        "root": {
-                          "fontSize": "text-xs",
-                          "fontWeight": "font-bold",
-                          "lineHeight": "leading-none"
-                        },
-                        "mobile": {},
-                        "desktop": {},
                         "custom": {
                           "displayName": "Mark"
-                        }
+                        },
+                        "className": "text-xs font-bold leading-none"
                       }
                     }
                   ]
@@ -954,21 +528,10 @@
                   "props": {
                     "text": "Localized delivery",
                     "tagName": "p",
-                    "root": {
-                      "fontSize": "text-sm",
-                      "lineHeight": "leading-tight"
-                    },
-                    "mobile": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
-                    "desktop": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
                     "custom": {
                       "displayName": "Label"
-                    }
+                    },
+                    "className": "text-sm leading-tight flex-1 min-w-0 md:flex-1 md:min-w-0"
                   }
                 }
               ]
@@ -978,18 +541,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-row",
-                  "gap": "gap-3",
-                  "alignItems": "items-center",
-                  "width": "w-full"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Feature"
-                }
+                },
+                "className": "flex flex-row gap-3 items-center w-full"
               },
               "children": [
                 {
@@ -997,20 +552,7 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {
-                      "background": "bg-(--primary)",
-                      "color": "text-(--primary-foreground)",
-                      "radius": "rounded-full"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "width": "w-5",
-                      "height": "h-5",
-                      "alignItems": "items-center",
-                      "justifyContent": "justify-center"
-                    },
-                    "desktop": {},
-                    "className": ["shrink-0"],
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-full flex w-5 h-5 items-center justify-center shrink-0",
                     "custom": {
                       "displayName": "Check"
                     }
@@ -1019,18 +561,12 @@
                     {
                       "type": "Text",
                       "props": {
-                        "text": "\u2713",
+                        "text": "✓",
                         "tagName": "span",
-                        "root": {
-                          "fontSize": "text-xs",
-                          "fontWeight": "font-bold",
-                          "lineHeight": "leading-none"
-                        },
-                        "mobile": {},
-                        "desktop": {},
                         "custom": {
                           "displayName": "Mark"
-                        }
+                        },
+                        "className": "text-xs font-bold leading-none"
                       }
                     }
                   ]
@@ -1040,21 +576,10 @@
                   "props": {
                     "text": "Visual page builder",
                     "tagName": "p",
-                    "root": {
-                      "fontSize": "text-sm",
-                      "lineHeight": "leading-tight"
-                    },
-                    "mobile": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
-                    "desktop": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
                     "custom": {
                       "displayName": "Label"
-                    }
+                    },
+                    "className": "text-sm leading-tight flex-1 min-w-0 md:flex-1 md:min-w-0"
                   }
                 }
               ]
@@ -1064,18 +589,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-row",
-                  "gap": "gap-3",
-                  "alignItems": "items-center",
-                  "width": "w-full"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Feature"
-                }
+                },
+                "className": "flex flex-row gap-3 items-center w-full"
               },
               "children": [
                 {
@@ -1083,20 +600,7 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {
-                      "background": "bg-(--primary)",
-                      "color": "text-(--primary-foreground)",
-                      "radius": "rounded-full"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "width": "w-5",
-                      "height": "h-5",
-                      "alignItems": "items-center",
-                      "justifyContent": "justify-center"
-                    },
-                    "desktop": {},
-                    "className": ["shrink-0"],
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-full flex w-5 h-5 items-center justify-center shrink-0",
                     "custom": {
                       "displayName": "Check"
                     }
@@ -1105,18 +609,12 @@
                     {
                       "type": "Text",
                       "props": {
-                        "text": "\u2713",
+                        "text": "✓",
                         "tagName": "span",
-                        "root": {
-                          "fontSize": "text-xs",
-                          "fontWeight": "font-bold",
-                          "lineHeight": "leading-none"
-                        },
-                        "mobile": {},
-                        "desktop": {},
                         "custom": {
                           "displayName": "Mark"
-                        }
+                        },
+                        "className": "text-xs font-bold leading-none"
                       }
                     }
                   ]
@@ -1126,21 +624,10 @@
                   "props": {
                     "text": "Saved templates",
                     "tagName": "p",
-                    "root": {
-                      "fontSize": "text-sm",
-                      "lineHeight": "leading-tight"
-                    },
-                    "mobile": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
-                    "desktop": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
                     "custom": {
                       "displayName": "Label"
-                    }
+                    },
+                    "className": "text-sm leading-tight flex-1 min-w-0 md:flex-1 md:min-w-0"
                   }
                 }
               ]
@@ -1150,18 +637,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-row",
-                  "gap": "gap-3",
-                  "alignItems": "items-center",
-                  "width": "w-full"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Feature"
-                }
+                },
+                "className": "flex flex-row gap-3 items-center w-full"
               },
               "children": [
                 {
@@ -1169,20 +648,7 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {
-                      "background": "bg-(--primary)",
-                      "color": "text-(--primary-foreground)",
-                      "radius": "rounded-full"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "width": "w-5",
-                      "height": "h-5",
-                      "alignItems": "items-center",
-                      "justifyContent": "justify-center"
-                    },
-                    "desktop": {},
-                    "className": ["shrink-0"],
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-full flex w-5 h-5 items-center justify-center shrink-0",
                     "custom": {
                       "displayName": "Check"
                     }
@@ -1191,18 +657,12 @@
                     {
                       "type": "Text",
                       "props": {
-                        "text": "\u2713",
+                        "text": "✓",
                         "tagName": "span",
-                        "root": {
-                          "fontSize": "text-xs",
-                          "fontWeight": "font-bold",
-                          "lineHeight": "leading-none"
-                        },
-                        "mobile": {},
-                        "desktop": {},
                         "custom": {
                           "displayName": "Mark"
-                        }
+                        },
+                        "className": "text-xs font-bold leading-none"
                       }
                     }
                   ]
@@ -1212,21 +672,10 @@
                   "props": {
                     "text": "Token-gated drops",
                     "tagName": "p",
-                    "root": {
-                      "fontSize": "text-sm",
-                      "lineHeight": "leading-tight"
-                    },
-                    "mobile": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
-                    "desktop": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
                     "custom": {
                       "displayName": "Label"
-                    }
+                    },
+                    "className": "text-sm leading-tight flex-1 min-w-0 md:flex-1 md:min-w-0"
                   }
                 }
               ]
@@ -1236,18 +685,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-row",
-                  "gap": "gap-3",
-                  "alignItems": "items-center",
-                  "width": "w-full"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Feature"
-                }
+                },
+                "className": "flex flex-row gap-3 items-center w-full"
               },
               "children": [
                 {
@@ -1255,20 +696,7 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {
-                      "background": "bg-(--primary)",
-                      "color": "text-(--primary-foreground)",
-                      "radius": "rounded-full"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "width": "w-5",
-                      "height": "h-5",
-                      "alignItems": "items-center",
-                      "justifyContent": "justify-center"
-                    },
-                    "desktop": {},
-                    "className": ["shrink-0"],
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-full flex w-5 h-5 items-center justify-center shrink-0",
                     "custom": {
                       "displayName": "Check"
                     }
@@ -1277,18 +705,12 @@
                     {
                       "type": "Text",
                       "props": {
-                        "text": "\u2713",
+                        "text": "✓",
                         "tagName": "span",
-                        "root": {
-                          "fontSize": "text-xs",
-                          "fontWeight": "font-bold",
-                          "lineHeight": "leading-none"
-                        },
-                        "mobile": {},
-                        "desktop": {},
                         "custom": {
                           "displayName": "Mark"
-                        }
+                        },
+                        "className": "text-xs font-bold leading-none"
                       }
                     }
                   ]
@@ -1298,21 +720,10 @@
                   "props": {
                     "text": "SSO directory sync",
                     "tagName": "p",
-                    "root": {
-                      "fontSize": "text-sm",
-                      "lineHeight": "leading-tight"
-                    },
-                    "mobile": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
-                    "desktop": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
                     "custom": {
                       "displayName": "Label"
-                    }
+                    },
+                    "className": "text-sm leading-tight flex-1 min-w-0 md:flex-1 md:min-w-0"
                   }
                 }
               ]
@@ -1322,18 +733,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-row",
-                  "gap": "gap-3",
-                  "alignItems": "items-center",
-                  "width": "w-full"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Feature"
-                }
+                },
+                "className": "flex flex-row gap-3 items-center w-full"
               },
               "children": [
                 {
@@ -1341,20 +744,7 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {
-                      "background": "bg-(--primary)",
-                      "color": "text-(--primary-foreground)",
-                      "radius": "rounded-full"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "width": "w-5",
-                      "height": "h-5",
-                      "alignItems": "items-center",
-                      "justifyContent": "justify-center"
-                    },
-                    "desktop": {},
-                    "className": ["shrink-0"],
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-full flex w-5 h-5 items-center justify-center shrink-0",
                     "custom": {
                       "displayName": "Check"
                     }
@@ -1363,18 +753,12 @@
                     {
                       "type": "Text",
                       "props": {
-                        "text": "\u2713",
+                        "text": "✓",
                         "tagName": "span",
-                        "root": {
-                          "fontSize": "text-xs",
-                          "fontWeight": "font-bold",
-                          "lineHeight": "leading-none"
-                        },
-                        "mobile": {},
-                        "desktop": {},
                         "custom": {
                           "displayName": "Mark"
-                        }
+                        },
+                        "className": "text-xs font-bold leading-none"
                       }
                     }
                   ]
@@ -1384,21 +768,10 @@
                   "props": {
                     "text": "Role-based approvals",
                     "tagName": "p",
-                    "root": {
-                      "fontSize": "text-sm",
-                      "lineHeight": "leading-tight"
-                    },
-                    "mobile": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
-                    "desktop": {
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
                     "custom": {
                       "displayName": "Label"
-                    }
+                    },
+                    "className": "text-sm leading-tight flex-1 min-w-0 md:flex-1 md:min-w-0"
                   }
                 }
               ]
@@ -1412,25 +785,7 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {
-          "background": "bg-(--muted)",
-          "color": "text-(--foreground)"
-        },
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "alignItems": "items-center",
-          "textAlign": "text-center",
-          "width": "w-full",
-          "p": "p-8",
-          "gap": "gap-4"
-        },
-        "desktop": {
-          "width": "w-1/3",
-          "justifyContent": "justify-center",
-          "p": "p-10"
-        },
-        "className": ["lg:border-l", "lg:border-(--border)"],
+        "className": "bg-(--muted) text-(--foreground) flex flex-col items-center text-center w-full p-8 gap-4 md:w-1/3 md:justify-center md:p-10 lg:border-l lg:border-(--border)",
         "custom": {
           "displayName": "Buy panel"
         }
@@ -1442,20 +797,12 @@
             "text": "$118",
             "tagName": "p",
             "root": {
-              "fontWeight": "font-bold",
-              "fontFamily": "var(--heading-font-family)",
-              "lineHeight": "leading-none",
-              "color": "text-(--foreground)"
-            },
-            "mobile": {
-              "fontSize": "text-4xl"
-            },
-            "desktop": {
-              "fontSize": "text-5xl"
+              "style": "font-family: var(--heading-font-family);"
             },
             "custom": {
               "displayName": "Price"
-            }
+            },
+            "className": "font-bold leading-none text-(--foreground) text-4xl md:text-5xl"
           }
         },
         {
@@ -1463,17 +810,10 @@
           "props": {
             "text": "per month",
             "tagName": "p",
-            "root": {
-              "color": "text-(--muted-foreground)",
-              "fontWeight": "font-medium"
-            },
-            "mobile": {
-              "fontSize": "text-sm"
-            },
-            "desktop": {},
             "custom": {
               "displayName": "Cadence"
-            }
+            },
+            "className": "text-(--muted-foreground) font-medium text-sm"
           }
         },
         {
@@ -1481,47 +821,22 @@
           "props": {
             "text": "Buy now",
             "url": "#",
-            "root": {
-              "background": "bg-(--primary)",
-              "color": "text-(--primary-foreground)",
-              "radius": "rounded-(--radius)"
-            },
-            "mobile": {
-              "width": "w-full",
-              "maxWidth": "max-w-xs",
-              "py": "py-3",
-              "px": "px-6",
-              "textAlign": "text-center",
-              "fontSize": "text-sm",
-              "fontWeight": "font-medium"
-            },
-            "desktop": {
-              "width": "w-full",
-              "maxWidth": "max-w-xs"
-            },
             "custom": {
               "displayName": "Primary CTA"
-            }
+            },
+            "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) w-full max-w-xs py-3 px-6 text-center text-sm font-medium md:w-full md:max-w-xs"
           }
         },
         {
           "type": "Text",
           "props": {
-            "text": "Compare <span class=\"text-(--primary)\">org-wide</span> plans \u2192",
+            "text": "Compare <span class=\"text-(--primary)\">org-wide</span> plans →",
             "tagName": "p",
             "url": "/pricing",
-            "root": {
-              "fontSize": "text-sm",
-              "fontWeight": "font-medium",
-              "color": "text-(--muted-foreground)"
-            },
-            "mobile": {
-              "mt": "mt-1"
-            },
-            "desktop": {},
             "custom": {
               "displayName": "Secondary link"
-            }
+            },
+            "className": "text-sm font-medium text-(--muted-foreground) mt-1"
           }
         }
       ]

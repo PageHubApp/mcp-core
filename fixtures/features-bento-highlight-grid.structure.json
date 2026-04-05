@@ -4,22 +4,10 @@
     "type": "section",
     "canDelete": true,
     "canEditName": true,
-    "root": {
-      "background": "bg-(--muted)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "width": "w-full",
-      "py": "py-16",
-      "px": "px-6"
-    },
-    "desktop": {
-      "py": "py-24",
-      "px": "px-8"
-    },
     "custom": {
       "displayName": "Features bento highlight grid"
-    }
+    },
+    "className": "bg-(--muted) text-(--foreground) w-full py-16 px-6 md:py-24 md:px-8"
   },
   "children": [
     {
@@ -27,18 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "gap": "gap-10",
-          "width": "w-full",
-          "maxWidth": "max-w-(--content-width)",
-          "mx": "mx-auto"
-        },
         "custom": {
           "displayName": "Section inner"
-        }
+        },
+        "className": "flex flex-col gap-10 w-full max-w-(--content-width) mx-auto"
       },
       "children": [
         {
@@ -46,17 +26,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "gap": "gap-3",
-              "width": "w-full",
-              "maxWidth": "max-w-2xl"
-            },
             "custom": {
               "displayName": "Intro"
-            }
+            },
+            "className": "flex flex-col gap-3 w-full max-w-2xl"
           },
           "children": [
             {
@@ -64,15 +37,7 @@
               "props": {
                 "text": "Layout system",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--primary)",
-                  "fontWeight": "font-bold",
-                  "letterSpacing": "tracking-widest"
-                },
-                "mobile": {
-                  "fontSize": "text-xs"
-                },
-                "className": ["uppercase"],
+                "className": "text-(--primary) font-bold tracking-widest text-xs uppercase",
                 "custom": {
                   "displayName": "Eyebrow"
                 }
@@ -84,20 +49,12 @@
                 "text": "Everything in one responsive surface",
                 "tagName": "h2",
                 "root": {
-                  "fontWeight": "font-bold",
-                  "fontFamily": "var(--heading-font-family)",
-                  "lineHeight": "leading-tight",
-                  "color": "text-(--foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-3xl"
-                },
-                "desktop": {
-                  "fontSize": "text-4xl"
+                  "style": "font-family: var(--heading-font-family);"
                 },
                 "custom": {
                   "displayName": "Heading"
-                }
+                },
+                "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl"
               }
             },
             {
@@ -105,16 +62,10 @@
               "props": {
                 "text": "Mix hero bands, library blocks, and bespoke sections without breaking the grid PageHub enforces across breakpoints.",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--muted-foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-base",
-                  "lineHeight": "leading-relaxed"
-                },
                 "custom": {
                   "displayName": "Subhead"
-                }
+                },
+                "className": "text-(--muted-foreground) text-base leading-relaxed"
               }
             }
           ]
@@ -124,14 +75,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "grid",
-              "gridCols": "grid-cols-1",
-              "gap": "gap-4",
-              "width": "w-full"
-            },
-            "className": ["lg:grid-cols-3", "lg:gap-4"],
+            "className": "grid grid-cols-1 gap-4 w-full lg:grid-cols-3 lg:gap-4",
             "custom": {
               "displayName": "Bento grid"
             }
@@ -142,22 +86,7 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--card)",
-                  "color": "text-(--card-foreground)",
-                  "radius": "rounded-(--card-radius)",
-                  "border": "border",
-                  "borderColor": "border-(--muted)",
-                  "shadow": "shadow-sm"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "gap": "gap-5",
-                  "p": "p-8",
-                  "width": "w-full"
-                },
-                "className": ["lg:col-span-2", "lg:row-span-2"],
+                "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) border border-(--muted) shadow-sm flex flex-col gap-5 p-8 w-full lg:col-span-2 lg:row-span-2",
                 "custom": {
                   "displayName": "Hero cell"
                 }
@@ -169,17 +98,12 @@
                     "text": "Block library + canvas, paired",
                     "tagName": "h3",
                     "root": {
-                      "fontFamily": "var(--heading-font-family)",
-                      "fontWeight": "font-bold",
-                      "color": "text-(--card-foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-2xl",
-                      "lineHeight": "leading-snug"
+                      "style": "font-family: var(--heading-font-family);"
                     },
                     "custom": {
                       "displayName": "Title"
-                    }
+                    },
+                    "className": "font-bold text-(--card-foreground) text-2xl leading-snug"
                   }
                 },
                 {
@@ -187,16 +111,10 @@
                   "props": {
                     "text": "Drop a section from the public library, detach nodes when you need a one-off, and keep tokens aligned so the next import still matches your theme.",
                     "tagName": "p",
-                    "root": {
-                      "color": "text-(--muted-foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-sm",
-                      "lineHeight": "leading-relaxed"
-                    },
                     "custom": {
                       "displayName": "Body"
-                    }
+                    },
+                    "className": "text-(--muted-foreground) text-sm leading-relaxed"
                   }
                 },
                 {
@@ -205,15 +123,7 @@
                     "content": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&h=520&fit=crop&q=80",
                     "alt": "Analytics dashboard charts on a screen",
                     "type": "url",
-                    "root": {
-                      "radius": "rounded-(--radius)"
-                    },
-                    "mobile": {
-                      "width": "w-full",
-                      "height": "h-48",
-                      "objectFit": "object-cover"
-                    },
-                    "className": ["lg:h-56"],
+                    "className": "rounded-(--radius) w-full h-48 object-cover lg:h-56",
                     "custom": {
                       "displayName": "Inset visual"
                     }
@@ -226,22 +136,7 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--card)",
-                  "color": "text-(--card-foreground)",
-                  "radius": "rounded-(--card-radius)",
-                  "border": "border",
-                  "borderColor": "border-(--muted)",
-                  "shadow": "shadow-sm"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "gap": "gap-3",
-                  "p": "p-6",
-                  "width": "w-full"
-                },
-                "className": ["lg:col-span-1", "lg:row-span-1"],
+                "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) border border-(--muted) shadow-sm flex flex-col gap-3 p-6 w-full lg:col-span-1 lg:row-span-1",
                 "custom": {
                   "displayName": "Cell tokens"
                 }
@@ -252,13 +147,6 @@
                   "props": {
                     "text": " ",
                     "url": "#",
-                    "root": {
-                      "background": "bg-transparent"
-                    },
-                    "mobile": {
-                      "px": "px-0",
-                      "py": "py-0"
-                    },
                     "icon": {
                       "value": "ref-google:palette",
                       "only": true,
@@ -267,7 +155,8 @@
                     },
                     "custom": {
                       "displayName": "Icon tokens"
-                    }
+                    },
+                    "className": "bg-transparent px-0 py-0"
                   }
                 },
                 {
@@ -276,16 +165,12 @@
                     "text": "Design tokens first",
                     "tagName": "h4",
                     "root": {
-                      "fontWeight": "font-semibold",
-                      "fontFamily": "var(--heading-font-family)",
-                      "color": "text-(--card-foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-lg"
+                      "style": "font-family: var(--heading-font-family);"
                     },
                     "custom": {
                       "displayName": "Title"
-                    }
+                    },
+                    "className": "font-semibold text-(--card-foreground) text-lg"
                   }
                 },
                 {
@@ -293,16 +178,10 @@
                   "props": {
                     "text": "Palette slots drive every block; no one-off hex in library sections.",
                     "tagName": "p",
-                    "root": {
-                      "color": "text-(--muted-foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-sm",
-                      "lineHeight": "leading-relaxed"
-                    },
                     "custom": {
                       "displayName": "Body"
-                    }
+                    },
+                    "className": "text-(--muted-foreground) text-sm leading-relaxed"
                   }
                 }
               ]
@@ -312,22 +191,7 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--card)",
-                  "color": "text-(--card-foreground)",
-                  "radius": "rounded-(--card-radius)",
-                  "border": "border",
-                  "borderColor": "border-(--muted)",
-                  "shadow": "shadow-sm"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "gap": "gap-3",
-                  "p": "p-6",
-                  "width": "w-full"
-                },
-                "className": ["lg:col-span-1", "lg:row-span-1"],
+                "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) border border-(--muted) shadow-sm flex flex-col gap-3 p-6 w-full lg:col-span-1 lg:row-span-1",
                 "custom": {
                   "displayName": "Cell responsive"
                 }
@@ -338,13 +202,6 @@
                   "props": {
                     "text": " ",
                     "url": "#",
-                    "root": {
-                      "background": "bg-transparent"
-                    },
-                    "mobile": {
-                      "px": "px-0",
-                      "py": "py-0"
-                    },
                     "icon": {
                       "value": "ref-google:view_quilt",
                       "only": true,
@@ -353,7 +210,8 @@
                     },
                     "custom": {
                       "displayName": "Icon responsive"
-                    }
+                    },
+                    "className": "bg-transparent px-0 py-0"
                   }
                 },
                 {
@@ -362,16 +220,12 @@
                     "text": "Md vs lg on purpose",
                     "tagName": "h4",
                     "root": {
-                      "fontWeight": "font-semibold",
-                      "fontFamily": "var(--heading-font-family)",
-                      "color": "text-(--card-foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-lg"
+                      "style": "font-family: var(--heading-font-family);"
                     },
                     "custom": {
                       "displayName": "Title"
-                    }
+                    },
+                    "className": "font-semibold text-(--card-foreground) text-lg"
                   }
                 },
                 {
@@ -379,16 +233,10 @@
                   "props": {
                     "text": "Library blocks respect mobile-first props and lg: escapes where tablets need one column.",
                     "tagName": "p",
-                    "root": {
-                      "color": "text-(--muted-foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-sm",
-                      "lineHeight": "leading-relaxed"
-                    },
                     "custom": {
                       "displayName": "Body"
-                    }
+                    },
+                    "className": "text-(--muted-foreground) text-sm leading-relaxed"
                   }
                 }
               ]
@@ -398,24 +246,7 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--card)",
-                  "color": "text-(--card-foreground)",
-                  "radius": "rounded-(--card-radius)",
-                  "border": "border",
-                  "borderColor": "border-(--muted)"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-row",
-                  "flexWrap": "flex-wrap",
-                  "gap": "gap-6",
-                  "alignItems": "items-center",
-                  "justifyContent": "justify-between",
-                  "p": "p-6",
-                  "width": "w-full"
-                },
-                "className": ["lg:col-span-3", "lg:flex-row"],
+                "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) border border-(--muted) flex flex-row flex-wrap gap-6 items-center justify-between p-6 w-full lg:col-span-3 lg:flex-row",
                 "custom": {
                   "displayName": "Foot strip"
                 }
@@ -426,15 +257,7 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "row",
-                      "gap": "gap-3",
-                      "alignItems": "items-center",
-                      "width": "w-full"
-                    },
-                    "className": ["lg:w-auto"],
+                    "className": "flex row gap-3 items-center w-full lg:w-auto",
                     "custom": {
                       "displayName": "Mini stat"
                     }
@@ -445,13 +268,6 @@
                       "props": {
                         "text": " ",
                         "url": "#",
-                        "root": {
-                          "background": "bg-transparent"
-                        },
-                        "mobile": {
-                          "px": "px-0",
-                          "py": "py-0"
-                        },
                         "icon": {
                           "value": "ref-google:check_circle",
                           "only": true,
@@ -460,7 +276,8 @@
                         },
                         "custom": {
                           "displayName": "Check"
-                        }
+                        },
+                        "className": "bg-transparent px-0 py-0"
                       }
                     },
                     {
@@ -468,16 +285,10 @@
                       "props": {
                         "text": "WCAG-minded defaults on shipped blocks",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--card-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "fontWeight": "font-medium"
-                        },
                         "custom": {
                           "displayName": "Label"
-                        }
+                        },
+                        "className": "text-(--card-foreground) text-sm font-medium"
                       }
                     }
                   ]
@@ -487,24 +298,10 @@
                   "props": {
                     "text": "View library guidelines",
                     "url": "#",
-                    "root": {
-                      "background": "bg-(--primary)",
-                      "color": "text-(--primary-foreground)",
-                      "radius": "rounded-(--radius)"
-                    },
-                    "mobile": {
-                      "py": "py-3",
-                      "px": "px-5",
-                      "fontSize": "text-sm",
-                      "fontWeight": "font-semibold",
-                      "width": "w-full"
-                    },
-                    "desktop": {
-                      "width": "w-auto"
-                    },
                     "custom": {
                       "displayName": "CTA"
-                    }
+                    },
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) py-3 px-5 text-sm font-semibold w-full md:w-auto"
                   }
                 }
               ]

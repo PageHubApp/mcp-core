@@ -4,24 +4,10 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
-    "root": {
-      "background": "bg-(--background)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "width": "w-full",
-      "maxWidth": "max-w-none",
-      "py": "py-12",
-      "px": "px-4"
-    },
-    "desktop": {
-      "py": "py-16",
-      "px": "px-6"
-    },
     "custom": {
       "displayName": "Newsletter band section"
-    }
+    },
+    "className": "bg-(--background) flex flex-col w-full max-w-none py-12 px-4 md:py-16 md:px-6"
   },
   "children": [
     {
@@ -29,30 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {
-          "background": "bg-(--foreground)",
-          "color": "text-(--background)",
-          "radius": "rounded-(--card-radius)"
-        },
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "gap": "gap-8",
-          "p": "p-8",
-          "width": "w-full",
-          "maxWidth": "max-w-(--content-width)",
-          "mx": "mx-auto"
-        },
-        "desktop": {
-          "flexDirection": "flex-row",
-          "alignItems": "items-center",
-          "justifyContent": "justify-between",
-          "gap": "gap-12",
-          "p": "p-10"
-        },
         "custom": {
           "displayName": "Newsletter band"
-        }
+        },
+        "className": "bg-(--foreground) text-(--background) rounded-(--card-radius) flex flex-col gap-8 p-8 w-full max-w-(--content-width) mx-auto md:flex-row md:items-center md:justify-between md:gap-12 md:p-10"
       },
       "children": [
         {
@@ -60,26 +26,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {
-              "width": "w-full"
-            },
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "gap": "gap-3",
-              "width": "w-full",
-              "textAlign": "text-center",
-              "alignItems": "items-center"
-            },
-            "desktop": {
-              "flex": "flex-1",
-              "textAlign": "text-left",
-              "alignItems": "items-start",
-              "maxWidth": "max-w-lg"
-            },
             "custom": {
               "displayName": "Copy"
-            }
+            },
+            "className": "w-full flex flex-col gap-3 text-center items-center md:flex-1 md:text-left md:items-start md:max-w-lg"
           },
           "children": [
             {
@@ -88,20 +38,12 @@
                 "text": "Briefings, not blasts",
                 "tagName": "h2",
                 "root": {
-                  "fontFamily": "var(--heading-font-family)",
-                  "fontWeight": "font-bold"
-                },
-                "mobile": {
-                  "fontSize": "text-2xl",
-                  "width": "w-full",
-                  "lineHeight": "leading-tight"
-                },
-                "desktop": {
-                  "fontSize": "text-3xl"
+                  "style": "font-family: var(--heading-font-family);"
                 },
                 "custom": {
                   "displayName": "Heading"
-                }
+                },
+                "className": "font-bold text-2xl w-full leading-tight md:text-3xl"
               }
             },
             {
@@ -109,22 +51,10 @@
               "props": {
                 "text": "One note when we have something worth sending—release digests, early access, and no inbox clutter.",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--background)"
-                },
-                "mobile": {
-                  "fontSize": "text-sm",
-                  "lineHeight": "leading-relaxed",
-                  "width": "w-full",
-                  "opacity": "opacity-80"
-                },
-                "desktop": {
-                  "fontSize": "text-base",
-                  "opacity": "opacity-80"
-                },
                 "custom": {
                   "displayName": "Subhead"
-                }
+                },
+                "className": "text-(--background) text-sm leading-relaxed w-full opacity-80 md:text-base md:opacity-80"
               }
             }
           ]
@@ -134,21 +64,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {
-              "width": "w-full"
-            },
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "width": "w-full"
-            },
-            "desktop": {
-              "flex": "flex-1",
-              "maxWidth": "max-w-md"
-            },
             "custom": {
               "displayName": "Form column"
-            }
+            },
+            "className": "w-full flex flex-col md:flex-1 md:max-w-md"
           },
           "children": [
             {
@@ -158,18 +77,10 @@
                 "canEditName": true,
                 "formName": "newsletter-band",
                 "formType": "subscribe",
-                "root": {
-                  "width": "w-full"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "gap": "gap-4",
-                  "width": "w-full"
-                },
                 "custom": {
                   "displayName": "Subscribe form"
-                }
+                },
+                "className": "w-full flex flex-col gap-4"
               },
               "children": [
                 {
@@ -177,22 +88,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {
-                      "background": "bg-(--input-bg-color)",
-                      "border": "border",
-                      "borderColor": "border-(--input-border-color)",
-                      "radius": "rounded-(--radius)"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-row",
-                      "alignItems": "items-stretch",
-                      "width": "w-full",
-                      "overflow": "overflow-hidden"
-                    },
                     "custom": {
                       "displayName": "Email + button row"
-                    }
+                    },
+                    "className": "bg-(--input-bg-color) border border-(--input-border-color) rounded-(--radius) flex flex-row items-stretch w-full overflow-hidden"
                   },
                   "children": [
                     {
@@ -205,23 +104,10 @@
                           "only": true,
                           "size": "w-5 h-5"
                         },
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--muted-foreground)"
-                        },
-                        "mobile": {
-                          "display": "flex",
-                          "alignItems": "items-center",
-                          "justifyContent": "justify-center",
-                          "px": "px-3",
-                          "py": "py-0",
-                          "width": "w-auto",
-                          "minWidth": "min-w-0",
-                          "shrink": "shrink-0"
-                        },
                         "custom": {
                           "displayName": "Mail icon"
-                        }
+                        },
+                        "className": "bg-transparent text-(--muted-foreground) flex items-center justify-center px-3 py-0 w-auto min-w-0 shrink-0"
                       }
                     },
                     {
@@ -234,27 +120,12 @@
                         "required": true,
                         "autocomplete": "email",
                         "root": {
-                          "border": "border-0",
-                          "borderWidth": "border-0",
-                          "radius": "rounded-none",
-                          "background": "bg-transparent",
-                          "color": "text-(--input-text-color)",
-                          "placeholderColor": "placeholder:text-(--input-placeholder-color)",
-                          "focus": {
-                            "ring": "focus:ring-0",
-                            "outline": "focus:outline-none"
-                          }
-                        },
-                        "mobile": {
-                          "p": "py-3",
-                          "px": "px-0",
-                          "width": "w-full",
-                          "flex": "flex-1",
-                          "minWidth": "min-w-0"
+                          "style": "placeholder-color: placeholder:text-(--input-placeholder-color);"
                         },
                         "custom": {
                           "displayName": "Email"
-                        }
+                        },
+                        "className": "border-0 rounded-none bg-transparent text-(--input-text-color) py-3 px-0 w-full flex-1 min-w-0"
                       }
                     },
                     {
@@ -262,27 +133,10 @@
                       "props": {
                         "type": "submit",
                         "text": "Sign me up",
-                        "root": {
-                          "background": "bg-(--primary)",
-                          "color": "text-(--primary-foreground)",
-                          "radius": "rounded-none"
-                        },
-                        "mobile": {
-                          "shrink": "shrink-0",
-                          "px": "px-5",
-                          "py": "py-3",
-                          "fontWeight": "font-semibold",
-                          "fontSize": "text-sm",
-                          "textAlign": "text-center",
-                          "display": "flex",
-                          "justifyContent": "justify-center",
-                          "alignItems": "items-center",
-                          "border": "border-l",
-                          "borderColor": "border-(--input-border-color)"
-                        },
                         "custom": {
                           "displayName": "Sign me up"
-                        }
+                        },
+                        "className": "bg-(--primary) text-(--primary-foreground) rounded-none shrink-0 px-5 py-3 font-semibold text-sm text-center flex justify-center items-center border-l border-(--input-border-color)"
                       }
                     }
                   ]
@@ -292,24 +146,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {
-                      "width": "w-full"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "row",
-                      "flexWrap": "flex-wrap",
-                      "alignItems": "items-baseline",
-                      "gap": "gap-x-1",
-                      "width": "w-full",
-                      "justifyContent": "justify-center"
-                    },
-                    "desktop": {
-                      "justifyContent": "justify-start"
-                    },
                     "custom": {
                       "displayName": "Privacy note"
-                    }
+                    },
+                    "className": "w-full flex row flex-wrap items-baseline gap-x-1 justify-center md:justify-start"
                   },
                   "children": [
                     {
@@ -317,20 +157,10 @@
                       "props": {
                         "text": "This list stays in-house.",
                         "tagName": "span",
-                        "root": {
-                          "color": "text-(--background)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-relaxed",
-                          "opacity": "opacity-75"
-                        },
-                        "desktop": {
-                          "opacity": "opacity-75"
-                        },
                         "custom": {
                           "displayName": "Privacy lead"
-                        }
+                        },
+                        "className": "text-(--background) text-sm leading-relaxed opacity-75 md:opacity-75"
                       }
                     },
                     {
@@ -338,24 +168,10 @@
                       "props": {
                         "text": "Data & privacy",
                         "url": "/privacy",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--primary)"
-                        },
-                        "mobile": {
-                          "p": "p-0",
-                          "py": "py-0",
-                          "px": "px-0",
-                          "width": "w-auto",
-                          "minWidth": "min-w-0",
-                          "fontSize": "text-sm",
-                          "fontWeight": "font-semibold",
-                          "display": "inline-flex",
-                          "textDecoration": "underline"
-                        },
                         "custom": {
                           "displayName": "Privacy link"
-                        }
+                        },
+                        "className": "bg-transparent text-(--primary) p-0 py-0 px-0 w-auto min-w-0 text-sm font-semibold inline-flex underline"
                       }
                     }
                   ]

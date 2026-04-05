@@ -4,21 +4,10 @@
     "type": "section",
     "canDelete": true,
     "canEditName": true,
-    "root": {
-      "background": "bg-(--muted)",
-      "color": "text-(--foreground)",
-      "border": "border-b",
-      "borderColor": "border-(--border)"
-    },
-    "mobile": {
-      "display": "block",
-      "width": "w-full",
-      "maxWidth": "max-w-none"
-    },
-    "desktop": {},
     "custom": {
       "displayName": "Page header section"
-    }
+    },
+    "className": "bg-(--muted) text-(--foreground) border-b border-(--border) block w-full max-w-none"
   },
   "children": [
     {
@@ -26,24 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "gap": "gap-6",
-          "width": "w-full",
-          "maxWidth": "max-w-(--content-width)",
-          "mx": "mx-auto",
-          "px": "px-6",
-          "py": "py-8"
-        },
-        "desktop": {
-          "gap": "gap-8",
-          "py": "py-10"
-        },
         "custom": {
           "displayName": "Page header inner"
-        }
+        },
+        "className": "flex flex-col gap-6 w-full max-w-(--content-width) mx-auto px-6 py-8 md:gap-8 md:py-10"
       },
       "children": [
         {
@@ -51,16 +26,7 @@
           "props": {
             "text": "Knowledge base",
             "tagName": "p",
-            "root": {
-              "color": "text-(--primary)",
-              "fontWeight": "font-bold",
-              "letterSpacing": "tracking-widest"
-            },
-            "mobile": {
-              "fontSize": "text-xs"
-            },
-            "desktop": {},
-            "className": ["uppercase"],
+            "className": "text-(--primary) font-bold tracking-widest text-xs uppercase",
             "custom": {
               "displayName": "Eyebrow"
             }
@@ -72,20 +38,12 @@
             "text": "Download center",
             "tagName": "h1",
             "root": {
-              "fontWeight": "font-bold",
-              "fontFamily": "var(--heading-font-family)",
-              "lineHeight": "leading-tight",
-              "color": "text-(--foreground)"
-            },
-            "mobile": {
-              "fontSize": "text-3xl"
-            },
-            "desktop": {
-              "fontSize": "text-4xl"
+              "style": "font-family: var(--heading-font-family);"
             },
             "custom": {
               "displayName": "Page title"
-            }
+            },
+            "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl"
           }
         },
         {
@@ -93,20 +51,10 @@
           "props": {
             "text": "Installers, release notes, and checksums for every supported channel.",
             "tagName": "p",
-            "root": {
-              "color": "text-(--muted-foreground)",
-              "lineHeight": "leading-relaxed"
-            },
-            "mobile": {
-              "fontSize": "text-sm"
-            },
-            "desktop": {
-              "fontSize": "text-base",
-              "maxWidth": "max-w-2xl"
-            },
             "custom": {
               "displayName": "Intro"
-            }
+            },
+            "className": "text-(--muted-foreground) leading-relaxed text-sm md:text-base md:max-w-2xl"
           }
         },
         {
@@ -114,20 +62,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {
-              "border": "border-b",
-              "borderColor": "border-(--border)"
-            },
-            "mobile": {
-              "width": "w-full",
-              "pb": "pb-5"
-            },
-            "desktop": {
-              "pb": "pb-6"
-            },
             "custom": {
               "displayName": "Divider"
-            }
+            },
+            "className": "border-b border-(--border) w-full pb-5 md:pb-6"
           },
           "children": [
             {
@@ -135,21 +73,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-row",
-                  "flexWrap": "flex-wrap",
-                  "alignItems": "items-center",
-                  "gap": "gap-2",
-                  "width": "w-full"
-                },
-                "desktop": {
-                  "gap": "gap-2.5"
-                },
                 "custom": {
                   "displayName": "Breadcrumb trail"
-                }
+                },
+                "className": "flex flex-row flex-wrap items-center gap-2 w-full md:gap-2.5"
               },
               "children": [
                 {
@@ -157,21 +84,10 @@
                   "props": {
                     "text": "Home",
                     "url": "/",
-                    "root": {
-                      "background": "bg-transparent",
-                      "color": "text-(--primary)",
-                      "border": "border-0"
-                    },
-                    "mobile": {
-                      "fontSize": "text-sm",
-                      "fontWeight": "font-medium",
-                      "px": "px-0",
-                      "py": "py-0"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Home"
-                    }
+                    },
+                    "className": "bg-transparent text-(--primary) border-0 text-sm font-medium px-0 py-0"
                   }
                 },
                 {
@@ -179,16 +95,10 @@
                   "props": {
                     "text": "/",
                     "tagName": "span",
-                    "root": {
-                      "color": "text-(--muted-foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-sm"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Separator"
-                    }
+                    },
+                    "className": "text-(--muted-foreground) text-sm"
                   }
                 },
                 {
@@ -196,21 +106,10 @@
                   "props": {
                     "text": "Resources",
                     "url": "/resources",
-                    "root": {
-                      "background": "bg-transparent",
-                      "color": "text-(--primary)",
-                      "border": "border-0"
-                    },
-                    "mobile": {
-                      "fontSize": "text-sm",
-                      "fontWeight": "font-medium",
-                      "px": "px-0",
-                      "py": "py-0"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Resources"
-                    }
+                    },
+                    "className": "bg-transparent text-(--primary) border-0 text-sm font-medium px-0 py-0"
                   }
                 },
                 {
@@ -218,16 +117,10 @@
                   "props": {
                     "text": "/",
                     "tagName": "span",
-                    "root": {
-                      "color": "text-(--muted-foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-sm"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Separator"
-                    }
+                    },
+                    "className": "text-(--muted-foreground) text-sm"
                   }
                 },
                 {
@@ -235,17 +128,10 @@
                   "props": {
                     "text": "Downloads",
                     "tagName": "span",
-                    "root": {
-                      "color": "text-(--foreground)",
-                      "fontWeight": "font-semibold"
-                    },
-                    "mobile": {
-                      "fontSize": "text-sm"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Current page"
-                    }
+                    },
+                    "className": "text-(--foreground) font-semibold text-sm"
                   }
                 }
               ]

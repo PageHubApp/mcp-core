@@ -4,24 +4,10 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "width": "w-full",
-      "py": "py-16",
-      "px": "px-6"
-    },
-    "desktop": {
-      "py": "py-24",
-      "px": "px-10"
-    },
     "custom": {
       "displayName": "Contact Section"
-    }
+    },
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-16 px-6 md:py-24 md:px-10"
   },
   "children": [
     {
@@ -29,23 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {
-          "maxWidth": "max-w-lg",
-          "width": "w-full"
-        },
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "alignItems": "items-start",
-          "gap": "gap-8",
-          "mx": "mx-auto"
-        },
-        "desktop": {
-          "mx": "mx-auto"
-        },
         "custom": {
           "displayName": "Content"
-        }
+        },
+        "className": "max-w-lg w-full flex flex-col items-start gap-8 mx-auto md:mx-auto"
       },
       "children": [
         {
@@ -53,23 +26,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {
-              "width": "w-full"
-            },
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "alignItems": "items-center",
-              "gap": "gap-3",
-              "width": "w-full",
-              "textAlign": "text-center"
-            },
-            "desktop": {
-              "gap": "gap-4"
-            },
             "custom": {
               "displayName": "Contact header"
-            }
+            },
+            "className": "w-full flex flex-col items-center gap-3 text-center md:gap-4"
           },
           "children": [
             {
@@ -77,19 +37,14 @@
               "props": {
                 "text": "Contact Us",
                 "tagName": "h2",
-                "mobile": {
-                  "fontSize": "text-3xl",
-                  "fontWeight": "font-bold",
-                  "fontFamily": "var(--heading-font-family)",
-                  "lineHeight": "leading-tight"
-                },
-                "desktop": {
-                  "fontSize": "text-4xl"
-                },
                 "canDelete": true,
                 "canEditName": true,
                 "custom": {
                   "displayName": "Title"
+                },
+                "className": "text-3xl font-bold leading-tight md:text-4xl",
+                "root": {
+                  "style": "font-family: var(--heading-font-family);"
                 }
               }
             },
@@ -98,20 +53,12 @@
               "props": {
                 "text": "Have a question or feedback? Need details about our plans? Let us know and we will get back to you as soon as we can.",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--muted-foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-base",
-                  "lineHeight": "leading-relaxed",
-                  "maxWidth": "max-w-2xl"
-                },
-                "desktop": {},
                 "canDelete": true,
                 "canEditName": true,
                 "custom": {
                   "displayName": "Description"
-                }
+                },
+                "className": "text-(--muted-foreground) text-base leading-relaxed max-w-2xl"
               }
             }
           ]
@@ -123,19 +70,10 @@
             "canEditName": true,
             "formName": "contact",
             "formType": "contact",
-            "root": {
-              "width": "w-full"
-            },
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "gap": "gap-5",
-              "width": "w-full"
-            },
-            "desktop": {},
             "custom": {
               "displayName": "Contact Form"
-            }
+            },
+            "className": "w-full flex flex-col gap-5"
           },
           "children": [
             {
@@ -148,30 +86,14 @@
                 "required": true,
                 "autocomplete": "name",
                 "root": {
-                  "border": "border",
-                  "borderWidth": "border-(--input-border-width)",
-                  "borderStyle": "border-solid",
-                  "borderColor": "border-(--input-border-color)",
-                  "radius": "rounded-(--input-border-radius)",
-                  "background": "bg-(--input-bg-color)",
-                  "color": "text-(--input-text-color)",
-                  "placeholderColor": "placeholder:text-(--input-placeholder-color)",
-                  "focus": {
-                    "ring": "focus:ring-(--input-focus-ring)",
-                    "ringColor": "focus:ring-(--input-focus-ring-color)",
-                    "outline": "focus:outline-none"
-                  }
+                  "style": "placeholder-color: placeholder:text-(--input-placeholder-color);"
                 },
-                "mobile": {
-                  "p": "p-(--input-padding)",
-                  "width": "w-full"
-                },
-                "desktop": {},
                 "canDelete": true,
                 "canEditName": true,
                 "custom": {
                   "displayName": "Name"
-                }
+                },
+                "className": "border border-(--input-border-width) border-solid border-(--input-border-color) rounded-(--input-border-radius) bg-(--input-bg-color) text-(--input-text-color) p-(--input-padding) w-full"
               }
             },
             {
@@ -184,30 +106,14 @@
                 "required": true,
                 "autocomplete": "email",
                 "root": {
-                  "border": "border",
-                  "borderWidth": "border-(--input-border-width)",
-                  "borderStyle": "border-solid",
-                  "borderColor": "border-(--input-border-color)",
-                  "radius": "rounded-(--input-border-radius)",
-                  "background": "bg-(--input-bg-color)",
-                  "color": "text-(--input-text-color)",
-                  "placeholderColor": "placeholder:text-(--input-placeholder-color)",
-                  "focus": {
-                    "ring": "focus:ring-(--input-focus-ring)",
-                    "ringColor": "focus:ring-(--input-focus-ring-color)",
-                    "outline": "focus:outline-none"
-                  }
+                  "style": "placeholder-color: placeholder:text-(--input-placeholder-color);"
                 },
-                "mobile": {
-                  "p": "p-(--input-padding)",
-                  "width": "w-full"
-                },
-                "desktop": {},
                 "canDelete": true,
                 "canEditName": true,
                 "custom": {
                   "displayName": "Email"
-                }
+                },
+                "className": "border border-(--input-border-width) border-solid border-(--input-border-color) rounded-(--input-border-radius) bg-(--input-bg-color) text-(--input-text-color) p-(--input-padding) w-full"
               }
             },
             {
@@ -220,31 +126,14 @@
                 "required": true,
                 "rows": 6,
                 "root": {
-                  "border": "border",
-                  "borderWidth": "border-(--input-border-width)",
-                  "borderStyle": "border-solid",
-                  "borderColor": "border-(--input-border-color)",
-                  "radius": "rounded-(--input-border-radius)",
-                  "background": "bg-(--input-bg-color)",
-                  "color": "text-(--input-text-color)",
-                  "placeholderColor": "placeholder:text-(--input-placeholder-color)",
-                  "focus": {
-                    "ring": "focus:ring-(--input-focus-ring)",
-                    "ringColor": "focus:ring-(--input-focus-ring-color)",
-                    "outline": "focus:outline-none"
-                  }
+                  "style": "placeholder-color: placeholder:text-(--input-placeholder-color);"
                 },
-                "mobile": {
-                  "p": "p-(--input-padding)",
-                  "width": "w-full",
-                  "minHeight": "min-h-[140px]"
-                },
-                "desktop": {},
                 "canDelete": true,
                 "canEditName": true,
                 "custom": {
                   "displayName": "Message"
-                }
+                },
+                "className": "border border-(--input-border-width) border-solid border-(--input-border-color) rounded-(--input-border-radius) bg-(--input-bg-color) text-(--input-text-color) p-(--input-padding) w-full min-h-[140px]"
               }
             },
             {
@@ -252,22 +141,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "color": "text-(--muted-foreground)",
-                  "width": "w-full"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-row",
-                  "flexWrap": "flex-wrap",
-                  "alignItems": "items-start",
-                  "gap": "gap-2",
-                  "width": "w-full"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Disclaimer"
-                }
+                },
+                "className": "text-(--muted-foreground) w-full flex flex-row flex-wrap items-start gap-2"
               },
               "children": [
                 {
@@ -280,26 +157,12 @@
                       "only": true,
                       "size": "w-4 h-4"
                     },
-                    "root": {
-                      "background": "bg-transparent",
-                      "color": "text-(--muted-foreground)"
-                    },
-                    "mobile": {
-                      "p": "p-0",
-                      "py": "py-0",
-                      "px": "px-0",
-                      "width": "w-auto",
-                      "minWidth": "min-w-0",
-                      "shrink": "shrink-0",
-                      "display": "flex",
-                      "mt": "mt-0.5"
-                    },
-                    "desktop": {},
                     "canDelete": true,
                     "canEditName": true,
                     "custom": {
                       "displayName": "Info Icon"
-                    }
+                    },
+                    "className": "bg-transparent text-(--muted-foreground) p-0 py-0 px-0 w-auto min-w-0 shrink-0 flex mt-0.5"
                   }
                 },
                 {
@@ -307,20 +170,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "row",
-                      "flexWrap": "flex-wrap",
-                      "alignItems": "items-baseline",
-                      "gap": "gap-x-1",
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Disclaimer copy"
-                    }
+                    },
+                    "className": "flex row flex-wrap items-baseline gap-x-1 flex-1 min-w-0"
                   },
                   "children": [
                     {
@@ -328,16 +181,12 @@
                       "props": {
                         "text": "All the fields are required. By sending the form you agree to the",
                         "tagName": "span",
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-relaxed"
-                        },
-                        "desktop": {},
                         "canDelete": true,
                         "canEditName": true,
                         "custom": {
                           "displayName": "Disclaimer lead"
-                        }
+                        },
+                        "className": "text-sm leading-relaxed"
                       }
                     },
                     {
@@ -345,27 +194,12 @@
                       "props": {
                         "text": "Terms & Conditions",
                         "url": "/terms",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--foreground)",
-                          "textDecoration": "underline"
-                        },
-                        "mobile": {
-                          "p": "p-0",
-                          "py": "py-0",
-                          "px": "px-0",
-                          "width": "w-auto",
-                          "minWidth": "min-w-0",
-                          "fontSize": "text-sm",
-                          "fontWeight": "font-medium",
-                          "display": "inline-flex"
-                        },
-                        "desktop": {},
                         "canDelete": true,
                         "canEditName": true,
                         "custom": {
                           "displayName": "Terms link"
-                        }
+                        },
+                        "className": "bg-transparent text-(--foreground) underline p-0 py-0 px-0 w-auto min-w-0 text-sm font-medium inline-flex"
                       }
                     },
                     {
@@ -373,18 +207,12 @@
                       "props": {
                         "text": "and",
                         "tagName": "span",
-                        "root": {
-                          "color": "text-(--muted-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm"
-                        },
-                        "desktop": {},
                         "canDelete": true,
                         "canEditName": true,
                         "custom": {
                           "displayName": "Disclaimer and"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) text-sm"
                       }
                     },
                     {
@@ -392,27 +220,12 @@
                       "props": {
                         "text": "Privacy Policy",
                         "url": "/privacy",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--foreground)",
-                          "textDecoration": "underline"
-                        },
-                        "mobile": {
-                          "p": "p-0",
-                          "py": "py-0",
-                          "px": "px-0",
-                          "width": "w-auto",
-                          "minWidth": "min-w-0",
-                          "fontSize": "text-sm",
-                          "fontWeight": "font-medium",
-                          "display": "inline-flex"
-                        },
-                        "desktop": {},
                         "canDelete": true,
                         "canEditName": true,
                         "custom": {
                           "displayName": "Privacy link"
-                        }
+                        },
+                        "className": "bg-transparent text-(--foreground) underline p-0 py-0 px-0 w-auto min-w-0 text-sm font-medium inline-flex"
                       }
                     },
                     {
@@ -420,18 +233,12 @@
                       "props": {
                         "text": ".",
                         "tagName": "span",
-                        "root": {
-                          "color": "text-(--muted-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm"
-                        },
-                        "desktop": {},
                         "canDelete": true,
                         "canEditName": true,
                         "custom": {
                           "displayName": "Disclaimer end"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) text-sm"
                       }
                     }
                   ]
@@ -449,31 +256,12 @@
                   "size": "w-5 h-5",
                   "gap": "gap-2"
                 },
-                "root": {
-                  "background": "bg-(--background)",
-                  "color": "text-(--foreground)",
-                  "border": "border-2",
-                  "borderColor": "border-(--foreground)",
-                  "radius": "rounded-(--radius)"
-                },
-                "mobile": {
-                  "width": "w-full",
-                  "py": "py-3.5",
-                  "px": "px-6",
-                  "fontWeight": "font-bold",
-                  "fontSize": "text-sm",
-                  "letterSpacing": "tracking-wide",
-                  "textAlign": "text-center",
-                  "display": "flex",
-                  "justifyContent": "justify-center",
-                  "alignItems": "items-center"
-                },
-                "desktop": {},
                 "canDelete": true,
                 "canEditName": true,
                 "custom": {
                   "displayName": "Submit"
-                }
+                },
+                "className": "bg-(--background) text-(--foreground) border-2 border-(--foreground) rounded-(--radius) w-full py-3.5 px-6 font-bold text-sm tracking-wide text-center flex justify-center items-center"
               }
             }
           ]

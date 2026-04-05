@@ -4,25 +4,10 @@
     "type": "section",
     "canDelete": true,
     "canEditName": true,
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "width": "w-full",
-      "maxWidth": "max-w-none",
-      "py": "py-16",
-      "px": "px-6"
-    },
-    "desktop": {
-      "py": "py-20",
-      "px": "px-8"
-    },
     "custom": {
       "displayName": "Newsletter capture section"
-    }
+    },
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full max-w-none py-16 px-6 md:py-20 md:px-8"
   },
   "children": [
     {
@@ -30,19 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "gap": "gap-6",
-          "width": "w-full",
-          "maxWidth": "max-w-xl",
-          "mx": "mx-auto",
-          "alignItems": "items-stretch"
-        },
         "custom": {
           "displayName": "Capture inner"
-        }
+        },
+        "className": "flex flex-col gap-6 w-full max-w-xl mx-auto items-stretch"
       },
       "children": [
         {
@@ -50,15 +26,7 @@
           "props": {
             "text": "Product mail",
             "tagName": "p",
-            "root": {
-              "color": "text-(--primary)",
-              "fontWeight": "font-bold",
-              "letterSpacing": "tracking-widest"
-            },
-            "mobile": {
-              "fontSize": "text-xs"
-            },
-            "className": ["uppercase"],
+            "className": "text-(--primary) font-bold tracking-widest text-xs uppercase",
             "custom": {
               "displayName": "Eyebrow"
             }
@@ -70,20 +38,12 @@
             "text": "Ship notes without the noise",
             "tagName": "h2",
             "root": {
-              "fontFamily": "var(--heading-font-family)",
-              "fontWeight": "font-bold",
-              "lineHeight": "leading-tight",
-              "color": "text-(--foreground)"
-            },
-            "mobile": {
-              "fontSize": "text-3xl"
-            },
-            "desktop": {
-              "fontSize": "text-4xl"
+              "style": "font-family: var(--heading-font-family);"
             },
             "custom": {
               "displayName": "Heading"
-            }
+            },
+            "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl"
           }
         },
         {
@@ -91,16 +51,10 @@
           "props": {
             "text": "PageHub only emails when releases, templates, or builder behavior change — never recycled ads or partner spam.",
             "tagName": "p",
-            "root": {
-              "color": "text-(--muted-foreground)"
-            },
-            "mobile": {
-              "fontSize": "text-base",
-              "lineHeight": "leading-relaxed"
-            },
             "custom": {
               "displayName": "Subhead"
-            }
+            },
+            "className": "text-(--muted-foreground) text-base leading-relaxed"
           }
         },
         {
@@ -110,18 +64,10 @@
             "canEditName": true,
             "formName": "newsletter",
             "formType": "subscribe",
-            "root": {
-              "width": "w-full"
-            },
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "gap": "gap-4",
-              "width": "w-full"
-            },
             "custom": {
               "displayName": "Newsletter form"
-            }
+            },
+            "className": "w-full flex flex-col gap-4"
           },
           "children": [
             {
@@ -129,20 +75,7 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--input-bg-color)",
-                  "border": "border",
-                  "borderColor": "border-(--input-border-color)",
-                  "radius": "rounded-(--radius)"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "alignItems": "items-stretch",
-                  "width": "w-full",
-                  "overflow": "overflow-hidden"
-                },
-                "className": ["lg:flex-row"],
+                "className": "bg-(--input-bg-color) border border-(--input-border-color) rounded-(--radius) flex flex-col items-stretch w-full overflow-hidden lg:flex-row",
                 "custom": {
                   "displayName": "Email field group"
                 }
@@ -159,22 +92,7 @@
                       "size": "w-5 h-5",
                       "color": "text-(--muted-foreground)"
                     },
-                    "root": {
-                      "background": "bg-transparent"
-                    },
-                    "mobile": {
-                      "py": "py-0",
-                      "px": "px-0"
-                    },
-                    "className": [
-                      "hidden",
-                      "lg:inline-flex",
-                      "lg:items-center",
-                      "lg:justify-center",
-                      "lg:shrink-0",
-                      "lg:px-3",
-                      "lg:self-stretch"
-                    ],
+                    "className": "bg-transparent py-0 px-0 hidden lg:inline-flex lg:items-center lg:justify-center lg:shrink-0 lg:px-3 lg:self-stretch",
                     "custom": {
                       "displayName": "Mail icon"
                     }
@@ -190,29 +108,14 @@
                     "required": true,
                     "autocomplete": "email",
                     "root": {
-                      "border": "border-0",
-                      "borderWidth": "border-0",
-                      "radius": "rounded-none",
-                      "background": "bg-transparent",
-                      "color": "text-(--input-text-color)",
-                      "placeholderColor": "placeholder:text-(--input-placeholder-color)",
-                      "focus": {
-                        "ring": "focus:ring-0",
-                        "outline": "focus:outline-none"
-                      }
-                    },
-                    "mobile": {
-                      "p": "py-3",
-                      "px": "px-4",
-                      "width": "w-full",
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
+                      "style": "placeholder-color: placeholder:text-(--input-placeholder-color);"
                     },
                     "canDelete": true,
                     "canEditName": true,
                     "custom": {
                       "displayName": "Email"
-                    }
+                    },
+                    "className": "border-0 rounded-none bg-transparent text-(--input-text-color) py-3 px-4 w-full flex-1 min-w-0"
                   }
                 },
                 {
@@ -220,25 +123,7 @@
                   "props": {
                     "type": "submit",
                     "text": "Subscribe",
-                    "root": {
-                      "background": "bg-(--primary)",
-                      "color": "text-(--primary-foreground)",
-                      "radius": "rounded-none"
-                    },
-                    "mobile": {
-                      "width": "w-full",
-                      "py": "py-3",
-                      "px": "px-6",
-                      "fontWeight": "font-semibold",
-                      "fontSize": "text-sm",
-                      "textAlign": "text-center",
-                      "display": "flex",
-                      "justifyContent": "justify-center",
-                      "alignItems": "items-center",
-                      "border": "border-t",
-                      "borderColor": "border-(--input-border-color)"
-                    },
-                    "className": ["lg:border-t-0", "lg:border-l", "lg:border-(--input-border-color)", "lg:w-auto", "lg:shrink-0"],
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-none w-full py-3 px-6 font-semibold text-sm text-center flex justify-center items-center border-t border-(--input-border-color) lg:border-t-0 lg:border-l lg:border-(--input-border-color) lg:w-auto lg:shrink-0",
                     "custom": {
                       "displayName": "Submit"
                     }
@@ -251,18 +136,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "row",
-                  "flexWrap": "flex-wrap",
-                  "alignItems": "items-center",
-                  "gap": "gap-x-2",
-                  "width": "w-full"
-                },
                 "custom": {
                   "displayName": "Privacy line"
-                }
+                },
+                "className": "flex row flex-wrap items-center gap-x-2 w-full"
               },
               "children": [
                 {
@@ -270,16 +147,10 @@
                   "props": {
                     "text": "Unsubscribe anytime.",
                     "tagName": "span",
-                    "root": {
-                      "color": "text-(--muted-foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-xs",
-                      "lineHeight": "leading-relaxed"
-                    },
                     "custom": {
                       "displayName": "Privacy prefix"
-                    }
+                    },
+                    "className": "text-(--muted-foreground) text-xs leading-relaxed"
                   }
                 },
                 {
@@ -287,19 +158,10 @@
                   "props": {
                     "text": "Privacy policy",
                     "url": "#",
-                    "root": {
-                      "background": "bg-transparent",
-                      "color": "text-(--primary)"
-                    },
-                    "mobile": {
-                      "px": "px-0",
-                      "py": "py-0",
-                      "fontSize": "text-xs",
-                      "fontWeight": "font-medium"
-                    },
                     "custom": {
                       "displayName": "Privacy link"
-                    }
+                    },
+                    "className": "bg-transparent text-(--primary) px-0 py-0 text-xs font-medium"
                   }
                 }
               ]

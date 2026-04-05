@@ -4,22 +4,10 @@
     "type": "section",
     "canDelete": true,
     "canEditName": true,
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "width": "w-full",
-      "py": "py-16",
-      "px": "px-6"
-    },
-    "desktop": {
-      "py": "py-24",
-      "px": "px-8"
-    },
     "custom": {
       "displayName": "Features checklist band"
-    }
+    },
+    "className": "bg-(--background) text-(--foreground) w-full py-16 px-6 md:py-24 md:px-8"
   },
   "children": [
     {
@@ -27,16 +15,7 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "gap": "gap-12",
-          "width": "w-full",
-          "maxWidth": "max-w-(--content-width)",
-          "mx": "mx-auto"
-        },
-        "className": ["lg:flex-row", "lg:gap-16", "lg:items-start"],
+        "className": "flex flex-col gap-12 w-full max-w-(--content-width) mx-auto lg:flex-row lg:gap-16 lg:items-start",
         "custom": {
           "displayName": "Section inner"
         }
@@ -47,14 +26,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "gap": "gap-4",
-              "width": "w-full"
-            },
-            "className": ["lg:w-2/5", "lg:shrink-0"],
+            "className": "flex flex-col gap-4 w-full lg:w-2/5 lg:shrink-0",
             "custom": {
               "displayName": "Intro column"
             }
@@ -66,20 +38,12 @@
                 "text": "What you standardize with PageHub",
                 "tagName": "h2",
                 "root": {
-                  "fontWeight": "font-bold",
-                  "fontFamily": "var(--heading-font-family)",
-                  "lineHeight": "leading-tight",
-                  "color": "text-(--foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-3xl"
-                },
-                "desktop": {
-                  "fontSize": "text-4xl"
+                  "style": "font-family: var(--heading-font-family);"
                 },
                 "custom": {
                   "displayName": "Heading"
-                }
+                },
+                "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl"
               }
             },
             {
@@ -87,16 +51,10 @@
               "props": {
                 "text": "The same checklist applies whether you run one marketing site or a portfolio of brands — fewer handoffs, fewer regressions.",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--muted-foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-base",
-                  "lineHeight": "leading-relaxed"
-                },
                 "custom": {
                   "displayName": "Subhead"
-                }
+                },
+                "className": "text-(--muted-foreground) text-base leading-relaxed"
               }
             }
           ]
@@ -106,14 +64,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "gap": "gap-6",
-              "width": "w-full"
-            },
-            "className": ["lg:flex-1"],
+            "className": "flex flex-col gap-6 w-full lg:flex-1",
             "custom": {
               "displayName": "Checklist"
             }
@@ -124,21 +75,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "border": "border-b",
-                  "borderColor": "border-(--muted)"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "row",
-                  "gap": "gap-4",
-                  "alignItems": "items-start",
-                  "pb": "pb-6",
-                  "width": "w-full"
-                },
                 "custom": {
                   "displayName": "Row workspaces"
-                }
+                },
+                "className": "border-b border-(--muted) flex row gap-4 items-start pb-6 w-full"
               },
               "children": [
                 {
@@ -146,13 +86,6 @@
                   "props": {
                     "text": " ",
                     "url": "#",
-                    "root": {
-                      "background": "bg-transparent"
-                    },
-                    "mobile": {
-                      "px": "px-0",
-                      "py": "py-0"
-                    },
                     "icon": {
                       "value": "ref-google:check_circle",
                       "only": true,
@@ -161,7 +94,8 @@
                     },
                     "custom": {
                       "displayName": "Icon"
-                    }
+                    },
+                    "className": "bg-transparent px-0 py-0"
                   }
                 },
                 {
@@ -169,16 +103,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "gap": "gap-1",
-                      "width": "w-full"
-                    },
                     "custom": {
                       "displayName": "Copy"
-                    }
+                    },
+                    "className": "flex flex-col gap-1 w-full"
                   },
                   "children": [
                     {
@@ -186,16 +114,10 @@
                       "props": {
                         "text": "Workspaces per brand or program",
                         "tagName": "p",
-                        "root": {
-                          "fontWeight": "font-semibold",
-                          "color": "text-(--foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-base"
-                        },
                         "custom": {
                           "displayName": "Title"
-                        }
+                        },
+                        "className": "font-semibold text-(--foreground) text-base"
                       }
                     },
                     {
@@ -203,16 +125,10 @@
                       "props": {
                         "text": "Keep content, permissions, and billing boundaries obvious as you add sites.",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--muted-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-relaxed"
-                        },
                         "custom": {
                           "displayName": "Detail"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) text-sm leading-relaxed"
                       }
                     }
                   ]
@@ -224,21 +140,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "border": "border-b",
-                  "borderColor": "border-(--muted)"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "row",
-                  "gap": "gap-4",
-                  "alignItems": "items-start",
-                  "pb": "pb-6",
-                  "width": "w-full"
-                },
                 "custom": {
                   "displayName": "Row library"
-                }
+                },
+                "className": "border-b border-(--muted) flex row gap-4 items-start pb-6 w-full"
               },
               "children": [
                 {
@@ -246,13 +151,6 @@
                   "props": {
                     "text": " ",
                     "url": "#",
-                    "root": {
-                      "background": "bg-transparent"
-                    },
-                    "mobile": {
-                      "px": "px-0",
-                      "py": "py-0"
-                    },
                     "icon": {
                       "value": "ref-google:check_circle",
                       "only": true,
@@ -261,7 +159,8 @@
                     },
                     "custom": {
                       "displayName": "Icon"
-                    }
+                    },
+                    "className": "bg-transparent px-0 py-0"
                   }
                 },
                 {
@@ -269,16 +168,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "gap": "gap-1",
-                      "width": "w-full"
-                    },
                     "custom": {
                       "displayName": "Copy"
-                    }
+                    },
+                    "className": "flex flex-col gap-1 w-full"
                   },
                   "children": [
                     {
@@ -286,16 +179,10 @@
                       "props": {
                         "text": "Shared block library with versioned patterns",
                         "tagName": "p",
-                        "root": {
-                          "fontWeight": "font-semibold",
-                          "color": "text-(--foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-base"
-                        },
                         "custom": {
                           "displayName": "Title"
-                        }
+                        },
+                        "className": "font-semibold text-(--foreground) text-base"
                       }
                     },
                     {
@@ -303,16 +190,10 @@
                       "props": {
                         "text": "Import a section once, fork when needed, and push improvements back when the team agrees.",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--muted-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-relaxed"
-                        },
                         "custom": {
                           "displayName": "Detail"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) text-sm leading-relaxed"
                       }
                     }
                   ]
@@ -324,21 +205,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "border": "border-b",
-                  "borderColor": "border-(--muted)"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "row",
-                  "gap": "gap-4",
-                  "alignItems": "items-start",
-                  "pb": "pb-6",
-                  "width": "w-full"
-                },
                 "custom": {
                   "displayName": "Row publish"
-                }
+                },
+                "className": "border-b border-(--muted) flex row gap-4 items-start pb-6 w-full"
               },
               "children": [
                 {
@@ -346,13 +216,6 @@
                   "props": {
                     "text": " ",
                     "url": "#",
-                    "root": {
-                      "background": "bg-transparent"
-                    },
-                    "mobile": {
-                      "px": "px-0",
-                      "py": "py-0"
-                    },
                     "icon": {
                       "value": "ref-google:check_circle",
                       "only": true,
@@ -361,7 +224,8 @@
                     },
                     "custom": {
                       "displayName": "Icon"
-                    }
+                    },
+                    "className": "bg-transparent px-0 py-0"
                   }
                 },
                 {
@@ -369,16 +233,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "gap": "gap-1",
-                      "width": "w-full"
-                    },
                     "custom": {
                       "displayName": "Copy"
-                    }
+                    },
+                    "className": "flex flex-col gap-1 w-full"
                   },
                   "children": [
                     {
@@ -386,16 +244,10 @@
                       "props": {
                         "text": "Publish paths that match your compliance story",
                         "tagName": "p",
-                        "root": {
-                          "fontWeight": "font-semibold",
-                          "color": "text-(--foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-base"
-                        },
                         "custom": {
                           "displayName": "Title"
-                        }
+                        },
+                        "className": "font-semibold text-(--foreground) text-base"
                       }
                     },
                     {
@@ -403,16 +255,10 @@
                       "props": {
                         "text": "Preview links, staged sections, and production cutovers stay inside PageHub audit trails.",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--muted-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-relaxed"
-                        },
                         "custom": {
                           "displayName": "Detail"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) text-sm leading-relaxed"
                       }
                     }
                   ]
@@ -424,21 +270,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "border": "border-b",
-                  "borderColor": "border-(--muted)"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "row",
-                  "gap": "gap-4",
-                  "alignItems": "items-start",
-                  "pb": "pb-6",
-                  "width": "w-full"
-                },
                 "custom": {
                   "displayName": "Row integrations"
-                }
+                },
+                "className": "border-b border-(--muted) flex row gap-4 items-start pb-6 w-full"
               },
               "children": [
                 {
@@ -446,13 +281,6 @@
                   "props": {
                     "text": " ",
                     "url": "#",
-                    "root": {
-                      "background": "bg-transparent"
-                    },
-                    "mobile": {
-                      "px": "px-0",
-                      "py": "py-0"
-                    },
                     "icon": {
                       "value": "ref-google:check_circle",
                       "only": true,
@@ -461,7 +289,8 @@
                     },
                     "custom": {
                       "displayName": "Icon"
-                    }
+                    },
+                    "className": "bg-transparent px-0 py-0"
                   }
                 },
                 {
@@ -469,16 +298,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "gap": "gap-1",
-                      "width": "w-full"
-                    },
                     "custom": {
                       "displayName": "Copy"
-                    }
+                    },
+                    "className": "flex flex-col gap-1 w-full"
                   },
                   "children": [
                     {
@@ -486,16 +309,10 @@
                       "props": {
                         "text": "Integrations that respect the canvas",
                         "tagName": "p",
-                        "root": {
-                          "fontWeight": "font-semibold",
-                          "color": "text-(--foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-base"
-                        },
                         "custom": {
                           "displayName": "Title"
-                        }
+                        },
+                        "className": "font-semibold text-(--foreground) text-base"
                       }
                     },
                     {
@@ -503,16 +320,10 @@
                       "props": {
                         "text": "Analytics, forms, and scripts land in structured slots instead of ad-hoc embed soup.",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--muted-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-relaxed"
-                        },
                         "custom": {
                           "displayName": "Detail"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) text-sm leading-relaxed"
                       }
                     }
                   ]
@@ -524,17 +335,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "row",
-                  "gap": "gap-4",
-                  "alignItems": "items-start",
-                  "width": "w-full"
-                },
                 "custom": {
                   "displayName": "Row support"
-                }
+                },
+                "className": "flex row gap-4 items-start w-full"
               },
               "children": [
                 {
@@ -542,13 +346,6 @@
                   "props": {
                     "text": " ",
                     "url": "#",
-                    "root": {
-                      "background": "bg-transparent"
-                    },
-                    "mobile": {
-                      "px": "px-0",
-                      "py": "py-0"
-                    },
                     "icon": {
                       "value": "ref-google:check_circle",
                       "only": true,
@@ -557,7 +354,8 @@
                     },
                     "custom": {
                       "displayName": "Icon"
-                    }
+                    },
+                    "className": "bg-transparent px-0 py-0"
                   }
                 },
                 {
@@ -565,16 +363,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "gap": "gap-1",
-                      "width": "w-full"
-                    },
                     "custom": {
                       "displayName": "Copy"
-                    }
+                    },
+                    "className": "flex flex-col gap-1 w-full"
                   },
                   "children": [
                     {
@@ -582,16 +374,10 @@
                       "props": {
                         "text": "Support tied to builder semantics",
                         "tagName": "p",
-                        "root": {
-                          "fontWeight": "font-semibold",
-                          "color": "text-(--foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-base"
-                        },
                         "custom": {
                           "displayName": "Title"
-                        }
+                        },
+                        "className": "font-semibold text-(--foreground) text-base"
                       }
                     },
                     {
@@ -599,16 +385,10 @@
                       "props": {
                         "text": "File a ticket with the page and block context your team already uses in the editor.",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--muted-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-relaxed"
-                        },
                         "custom": {
                           "displayName": "Detail"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) text-sm leading-relaxed"
                       }
                     }
                   ]

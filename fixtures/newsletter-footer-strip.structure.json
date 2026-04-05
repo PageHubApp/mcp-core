@@ -4,23 +4,7 @@
     "type": "section",
     "canDelete": true,
     "canEditName": true,
-    "root": {
-      "background": "bg-(--muted)",
-      "color": "text-(--foreground)"
-    },
-    "className": ["border-y", "border-(--border)"],
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "width": "w-full",
-      "maxWidth": "max-w-none",
-      "py": "py-4",
-      "px": "px-4"
-    },
-    "desktop": {
-      "py": "py-5",
-      "px": "px-6"
-    },
+    "className": "bg-(--muted) text-(--foreground) flex flex-col w-full max-w-none py-4 px-4 md:py-5 md:px-6 border-y border-(--border)",
     "custom": {
       "displayName": "Newsletter footer strip section"
     }
@@ -31,25 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "gap": "gap-4",
-          "width": "w-full",
-          "maxWidth": "max-w-(--content-width)",
-          "mx": "mx-auto",
-          "alignItems": "items-stretch"
-        },
-        "desktop": {
-          "flexDirection": "flex-row",
-          "alignItems": "items-center",
-          "justifyContent": "justify-between",
-          "gap": "gap-8"
-        },
         "custom": {
           "displayName": "Strip inner"
-        }
+        },
+        "className": "flex flex-col gap-4 w-full max-w-(--content-width) mx-auto items-stretch md:flex-row md:items-center md:justify-between md:gap-8"
       },
       "children": [
         {
@@ -57,21 +26,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "gap": "gap-1",
-              "width": "w-full",
-              "minWidth": "min-w-0"
-            },
-            "desktop": {
-              "flex": "flex-none",
-              "maxWidth": "max-w-sm"
-            },
             "custom": {
               "displayName": "Copy column"
-            }
+            },
+            "className": "flex flex-col gap-1 w-full min-w-0 md:flex-none md:max-w-sm"
           },
           "children": [
             {
@@ -79,19 +37,10 @@
               "props": {
                 "text": "Product updates in your inbox",
                 "tagName": "p",
-                "root": {
-                  "fontWeight": "font-semibold",
-                  "color": "text-(--foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-sm"
-                },
-                "desktop": {
-                  "fontSize": "text-base"
-                },
                 "custom": {
                   "displayName": "Strip headline"
-                }
+                },
+                "className": "font-semibold text-(--foreground) text-sm md:text-base"
               }
             },
             {
@@ -99,19 +48,10 @@
               "props": {
                 "text": "One email a month. Unsubscribe anytime; we never sell addresses.",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--muted-foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-xs",
-                  "lineHeight": "leading-relaxed"
-                },
-                "desktop": {
-                  "fontSize": "text-sm"
-                },
                 "custom": {
                   "displayName": "Strip subline"
-                }
+                },
+                "className": "text-(--muted-foreground) text-xs leading-relaxed md:text-sm"
               }
             }
           ]
@@ -123,21 +63,10 @@
             "canEditName": true,
             "formName": "newsletter-footer-strip",
             "formType": "subscribe",
-            "root": {},
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "width": "w-full",
-              "minWidth": "min-w-0"
-            },
-            "desktop": {
-              "flex": "flex-1",
-              "maxWidth": "max-w-md",
-              "minWidth": "min-w-0"
-            },
             "custom": {
               "displayName": "Inline subscribe form"
-            }
+            },
+            "className": "flex flex-col w-full min-w-0 md:flex-1 md:max-w-md md:min-w-0"
           },
           "children": [
             {
@@ -145,23 +74,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--background)",
-                  "border": "border",
-                  "borderColor": "border-(--border)",
-                  "radius": "rounded-(--radius)"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-row",
-                  "alignItems": "items-stretch",
-                  "width": "w-full",
-                  "overflow": "overflow-hidden"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Email + submit shell"
-                }
+                },
+                "className": "bg-(--background) border border-(--border) rounded-(--radius) flex flex-row items-stretch w-full overflow-hidden"
               },
               "children": [
                 {
@@ -174,30 +90,14 @@
                     "required": true,
                     "autocomplete": "email",
                     "root": {
-                      "border": "border-0",
-                      "radius": "rounded-none",
-                      "background": "bg-transparent",
-                      "color": "text-(--input-text-color)",
-                      "placeholderColor": "placeholder:text-(--input-placeholder-color)",
-                      "focus": {
-                        "ring": "focus:ring-0",
-                        "outline": "focus:outline-none"
-                      }
+                      "style": "placeholder-color: placeholder:text-(--input-placeholder-color);"
                     },
-                    "mobile": {
-                      "p": "px-3",
-                      "py": "py-2.5",
-                      "width": "w-full",
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0",
-                      "fontSize": "text-sm"
-                    },
-                    "desktop": {},
                     "canDelete": true,
                     "canEditName": true,
                     "custom": {
                       "displayName": "Email"
-                    }
+                    },
+                    "className": "border-0 rounded-none bg-transparent text-(--input-text-color) px-3 py-2.5 w-full flex-1 min-w-0 text-sm"
                   }
                 },
                 {
@@ -205,28 +105,10 @@
                   "props": {
                     "text": "Subscribe",
                     "type": "submit",
-                    "root": {
-                      "background": "bg-(--primary)",
-                      "color": "text-(--primary-foreground)",
-                      "radius": "rounded-none",
-                      "border": "border-0"
-                    },
-                    "mobile": {
-                      "display": "inline-flex",
-                      "alignItems": "items-center",
-                      "justifyContent": "justify-center",
-                      "shrink": "shrink-0",
-                      "px": "px-4",
-                      "py": "py-2.5",
-                      "fontSize": "text-sm",
-                      "fontWeight": "font-semibold",
-                      "border": "border-l",
-                      "borderColor": "border-(--border)"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Submit"
-                    }
+                    },
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-none border-0 inline-flex items-center justify-center shrink-0 px-4 py-2.5 text-sm font-semibold border-l border-(--border)"
                   }
                 }
               ]

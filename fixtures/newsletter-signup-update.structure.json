@@ -4,23 +4,10 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "width": "w-full",
-      "py": "py-16",
-      "px": "px-6"
-    },
-    "desktop": {
-      "py": "py-24"
-    },
     "custom": {
       "displayName": "Newsletter Section"
-    }
+    },
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-16 px-6 md:py-24"
   },
   "children": [
     {
@@ -28,20 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {
-          "maxWidth": "max-w-2xl",
-          "width": "w-full"
-        },
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "alignItems": "items-center",
-          "gap": "gap-8",
-          "mx": "mx-auto"
-        },
         "custom": {
           "displayName": "Content"
-        }
+        },
+        "className": "max-w-2xl w-full flex flex-col items-center gap-8 mx-auto"
       },
       "children": [
         {
@@ -49,19 +26,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {
-              "textAlign": "text-center",
-              "width": "w-full"
-            },
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "gap": "gap-4",
-              "width": "w-full"
-            },
             "custom": {
               "displayName": "Intro"
-            }
+            },
+            "className": "text-center w-full flex flex-col gap-4"
           },
           "children": [
             {
@@ -70,20 +38,12 @@
                 "text": "Field notes in your inbox",
                 "tagName": "h2",
                 "root": {
-                  "fontFamily": "var(--heading-font-family)",
-                  "fontWeight": "font-bold"
-                },
-                "mobile": {
-                  "fontSize": "text-2xl",
-                  "width": "w-full",
-                  "lineHeight": "leading-tight"
-                },
-                "desktop": {
-                  "fontSize": "text-3xl"
+                  "style": "font-family: var(--heading-font-family);"
                 },
                 "custom": {
                   "displayName": "Heading"
-                }
+                },
+                "className": "font-bold text-2xl w-full leading-tight md:text-3xl"
               }
             },
             {
@@ -91,22 +51,10 @@
               "props": {
                 "text": "Occasional emails when we publish something useful, ship a meaningful change, or open early access. Unsubscribe anytime; we never sell addresses.",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--muted-foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-base",
-                  "lineHeight": "leading-relaxed",
-                  "width": "w-full",
-                  "maxWidth": "max-w-xl",
-                  "mx": "mx-auto"
-                },
-                "desktop": {
-                  "fontSize": "text-lg"
-                },
                 "custom": {
                   "displayName": "Subhead"
-                }
+                },
+                "className": "text-(--muted-foreground) text-base leading-relaxed w-full max-w-xl mx-auto md:text-lg"
               }
             }
           ]
@@ -118,18 +66,10 @@
             "canEditName": true,
             "formName": "newsletter",
             "formType": "subscribe",
-            "root": {
-              "width": "w-full"
-            },
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "gap": "gap-4",
-              "width": "w-full"
-            },
             "custom": {
               "displayName": "Subscribe form"
-            }
+            },
+            "className": "w-full flex flex-col gap-4"
           },
           "children": [
             {
@@ -137,22 +77,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--input-bg-color)",
-                  "border": "border",
-                  "borderColor": "border-(--input-border-color)",
-                  "radius": "rounded-(--radius)"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-row",
-                  "alignItems": "items-stretch",
-                  "width": "w-full",
-                  "overflow": "overflow-hidden"
-                },
                 "custom": {
                   "displayName": "Email + button row"
-                }
+                },
+                "className": "bg-(--input-bg-color) border border-(--input-border-color) rounded-(--radius) flex flex-row items-stretch w-full overflow-hidden"
               },
               "children": [
                 {
@@ -165,23 +93,10 @@
                       "only": true,
                       "size": "w-5 h-5"
                     },
-                    "root": {
-                      "background": "bg-transparent",
-                      "color": "text-(--muted-foreground)"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "alignItems": "items-center",
-                      "justifyContent": "justify-center",
-                      "px": "px-3",
-                      "py": "py-0",
-                      "width": "w-auto",
-                      "minWidth": "min-w-0",
-                      "shrink": "shrink-0"
-                    },
                     "custom": {
                       "displayName": "Mail icon"
-                    }
+                    },
+                    "className": "bg-transparent text-(--muted-foreground) flex items-center justify-center px-3 py-0 w-auto min-w-0 shrink-0"
                   }
                 },
                 {
@@ -194,27 +109,12 @@
                     "required": true,
                     "autocomplete": "email",
                     "root": {
-                      "border": "border-0",
-                      "borderWidth": "border-0",
-                      "radius": "rounded-none",
-                      "background": "bg-transparent",
-                      "color": "text-(--input-text-color)",
-                      "placeholderColor": "placeholder:text-(--input-placeholder-color)",
-                      "focus": {
-                        "ring": "focus:ring-0",
-                        "outline": "focus:outline-none"
-                      }
-                    },
-                    "mobile": {
-                      "p": "py-3",
-                      "px": "px-0",
-                      "width": "w-full",
-                      "flex": "flex-1",
-                      "minWidth": "min-w-0"
+                      "style": "placeholder-color: placeholder:text-(--input-placeholder-color);"
                     },
                     "custom": {
                       "displayName": "Email"
-                    }
+                    },
+                    "className": "border-0 rounded-none bg-transparent text-(--input-text-color) py-3 px-0 w-full flex-1 min-w-0"
                   }
                 },
                 {
@@ -222,27 +122,10 @@
                   "props": {
                     "type": "submit",
                     "text": "Get the emails",
-                    "root": {
-                      "background": "bg-(--primary)",
-                      "color": "text-(--primary-foreground)",
-                      "radius": "rounded-none"
-                    },
-                    "mobile": {
-                      "shrink": "shrink-0",
-                      "px": "px-6",
-                      "py": "py-3",
-                      "fontWeight": "font-semibold",
-                      "fontSize": "text-sm",
-                      "textAlign": "text-center",
-                      "display": "flex",
-                      "justifyContent": "justify-center",
-                      "alignItems": "items-center",
-                      "border": "border-l",
-                      "borderColor": "border-(--input-border-color)"
-                    },
                     "custom": {
                       "displayName": "Get the emails"
-                    }
+                    },
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-none shrink-0 px-6 py-3 font-semibold text-sm text-center flex justify-center items-center border-l border-(--input-border-color)"
                   }
                 }
               ]
@@ -252,20 +135,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "width": "w-full"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "row",
-                  "flexWrap": "flex-wrap",
-                  "alignItems": "items-baseline",
-                  "gap": "gap-x-1",
-                  "width": "w-full"
-                },
                 "custom": {
                   "displayName": "Privacy note"
-                }
+                },
+                "className": "w-full flex row flex-wrap items-baseline gap-x-1"
               },
               "children": [
                 {
@@ -273,16 +146,10 @@
                   "props": {
                     "text": "Your address stays on this list only.",
                     "tagName": "span",
-                    "root": {
-                      "color": "text-(--muted-foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-sm",
-                      "lineHeight": "leading-relaxed"
-                    },
                     "custom": {
                       "displayName": "Privacy lead"
-                    }
+                    },
+                    "className": "text-(--muted-foreground) text-sm leading-relaxed"
                   }
                 },
                 {
@@ -290,23 +157,10 @@
                   "props": {
                     "text": "Full privacy statement",
                     "url": "/privacy",
-                    "root": {
-                      "background": "bg-transparent",
-                      "color": "text-(--primary)"
-                    },
-                    "mobile": {
-                      "p": "p-0",
-                      "py": "py-0",
-                      "px": "px-0",
-                      "width": "w-auto",
-                      "minWidth": "min-w-0",
-                      "fontSize": "text-sm",
-                      "fontWeight": "font-semibold",
-                      "display": "inline-flex"
-                    },
                     "custom": {
                       "displayName": "Privacy link"
-                    }
+                    },
+                    "className": "bg-transparent text-(--primary) p-0 py-0 px-0 w-auto min-w-0 text-sm font-semibold inline-flex"
                   }
                 }
               ]

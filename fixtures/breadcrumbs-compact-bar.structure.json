@@ -4,21 +4,10 @@
     "type": "section",
     "canDelete": true,
     "canEditName": true,
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)",
-      "border": "border-b",
-      "borderColor": "border-(--border)"
-    },
-    "mobile": {
-      "display": "block",
-      "width": "w-full",
-      "maxWidth": "max-w-none"
-    },
-    "desktop": {},
     "custom": {
       "displayName": "Breadcrumb bar section"
-    }
+    },
+    "className": "bg-(--background) text-(--foreground) border-b border-(--border) block w-full max-w-none"
   },
   "children": [
     {
@@ -26,28 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "gap": "gap-4",
-          "width": "w-full",
-          "maxWidth": "max-w-(--content-width)",
-          "mx": "mx-auto",
-          "px": "px-6",
-          "py": "py-4"
-        },
-        "desktop": {
-          "flexDirection": "flex-row",
-          "flexWrap": "flex-wrap",
-          "justifyContent": "justify-between",
-          "alignItems": "items-center",
-          "gap": "gap-4",
-          "py": "py-3"
-        },
         "custom": {
           "displayName": "Bar inner"
-        }
+        },
+        "className": "flex flex-col gap-4 w-full max-w-(--content-width) mx-auto px-6 py-4 md:flex-row md:flex-wrap md:justify-between md:items-center md:gap-4 md:py-3"
       },
       "children": [
         {
@@ -55,23 +26,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-row",
-              "flexWrap": "flex-wrap",
-              "alignItems": "items-center",
-              "gap": "gap-1.5",
-              "width": "w-full",
-              "minWidth": "min-w-0"
-            },
-            "desktop": {
-              "flex": "flex-1",
-              "minWidth": "min-w-0"
-            },
             "custom": {
               "displayName": "Trail"
-            }
+            },
+            "className": "flex flex-row flex-wrap items-center gap-1.5 w-full min-w-0 md:flex-1 md:min-w-0"
           },
           "children": [
             {
@@ -79,21 +37,10 @@
               "props": {
                 "text": "Home",
                 "url": "/",
-                "root": {
-                  "background": "bg-transparent",
-                  "color": "text-(--primary)",
-                  "border": "border-0"
-                },
-                "mobile": {
-                  "fontSize": "text-xs",
-                  "fontWeight": "font-medium",
-                  "px": "px-0",
-                  "py": "py-0"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Home"
-                }
+                },
+                "className": "bg-transparent text-(--primary) border-0 text-xs font-medium px-0 py-0"
               }
             },
             {
@@ -101,16 +48,10 @@
               "props": {
                 "text": "/",
                 "tagName": "span",
-                "root": {
-                  "color": "text-(--muted-foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-xs"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Sep"
-                }
+                },
+                "className": "text-(--muted-foreground) text-xs"
               }
             },
             {
@@ -118,21 +59,10 @@
               "props": {
                 "text": "Settings",
                 "url": "/settings",
-                "root": {
-                  "background": "bg-transparent",
-                  "color": "text-(--primary)",
-                  "border": "border-0"
-                },
-                "mobile": {
-                  "fontSize": "text-xs",
-                  "fontWeight": "font-medium",
-                  "px": "px-0",
-                  "py": "py-0"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Settings"
-                }
+                },
+                "className": "bg-transparent text-(--primary) border-0 text-xs font-medium px-0 py-0"
               }
             },
             {
@@ -140,16 +70,10 @@
               "props": {
                 "text": "/",
                 "tagName": "span",
-                "root": {
-                  "color": "text-(--muted-foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-xs"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Sep"
-                }
+                },
+                "className": "text-(--muted-foreground) text-xs"
               }
             },
             {
@@ -157,17 +81,10 @@
               "props": {
                 "text": "Billing",
                 "tagName": "span",
-                "root": {
-                  "color": "text-(--foreground)",
-                  "fontWeight": "font-semibold"
-                },
-                "mobile": {
-                  "fontSize": "text-xs"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Current"
-                }
+                },
+                "className": "text-(--foreground) font-semibold text-xs"
               }
             }
           ]
@@ -177,27 +94,6 @@
           "props": {
             "text": "Help center",
             "url": "#",
-            "root": {
-              "background": "bg-(--card)",
-              "color": "text-(--foreground)",
-              "border": "border",
-              "borderColor": "border-(--border)",
-              "radius": "rounded-(--radius)"
-            },
-            "mobile": {
-              "display": "inline-flex",
-              "alignSelf": "flex-start",
-              "alignItems": "items-center",
-              "gap": "gap-2",
-              "py": "py-2",
-              "px": "px-4",
-              "fontSize": "text-xs",
-              "fontWeight": "font-medium"
-            },
-            "desktop": {
-              "alignSelf": "auto",
-              "flex": "flex-none"
-            },
             "icon": {
               "value": "ref-google:open_in_new",
               "position": "right",
@@ -205,7 +101,8 @@
             },
             "custom": {
               "displayName": "Secondary action"
-            }
+            },
+            "className": "bg-(--card) text-(--foreground) border border-(--border) rounded-(--radius) inline-flex flex-start items-center gap-2 py-2 px-4 text-xs font-medium md:auto md:flex-none"
           }
         }
       ]

@@ -4,39 +4,16 @@
     "type": "section",
     "canDelete": true,
     "canEditName": true,
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "width": "w-full",
-      "py": "py-12",
-      "px": "px-4"
-    },
-    "desktop": {
-      "py": "py-24",
-      "px": "px-6"
-    },
     "custom": {
       "displayName": "Hero Cover CTAs"
-    }
+    },
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-12 px-4 md:py-24 md:px-6"
   },
   "children": [
     {
       "type": "Container",
       "props": {
-        "className": ["lg:flex-row", "lg:gap-16", "lg:items-center"],
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "alignItems": "items-stretch",
-          "gap": "gap-12",
-          "width": "w-full",
-          "maxWidth": "max-w-7xl",
-          "mx": "mx-auto"
-        },
+        "className": "flex flex-col items-stretch gap-12 w-full max-w-7xl mx-auto lg:flex-row lg:gap-16 lg:items-center",
         "custom": {
           "displayName": "Inner Container"
         }
@@ -45,13 +22,7 @@
         {
           "type": "Container",
           "props": {
-            "className": ["lg:w-1/2"],
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "gap": "gap-8",
-              "width": "w-full"
-            },
+            "className": "flex flex-col gap-8 w-full lg:w-1/2",
             "custom": {
               "displayName": "Left Content"
             }
@@ -60,15 +31,10 @@
             {
               "type": "Container",
               "props": {
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "gap": "gap-4",
-                  "width": "w-full"
-                },
                 "custom": {
                   "displayName": "Headline Stack"
-                }
+                },
+                "className": "flex flex-col gap-4 w-full"
               },
               "children": [
                 {
@@ -77,19 +43,12 @@
                     "text": "The Global Summit for AI Web Generation",
                     "tagName": "h1",
                     "root": {
-                      "fontWeight": "font-bold",
-                      "fontFamily": "var(--heading-font-family)",
-                      "lineHeight": "leading-tight"
-                    },
-                    "mobile": {
-                      "fontSize": "text-4xl"
-                    },
-                    "desktop": {
-                      "fontSize": "text-5xl"
+                      "style": "font-family: var(--heading-font-family);"
                     },
                     "custom": {
                       "displayName": "Headline"
-                    }
+                    },
+                    "className": "font-bold leading-tight text-4xl md:text-5xl"
                   }
                 },
                 {
@@ -97,19 +56,10 @@
                   "props": {
                     "text": "Join thousands of developers, designers, and founders at PageHub Conf 2026 to see the future of autonomous site building and generative design.",
                     "tagName": "p",
-                    "root": {
-                      "color": "text-(--muted-foreground)",
-                      "lineHeight": "leading-relaxed"
-                    },
-                    "mobile": {
-                      "fontSize": "text-lg"
-                    },
-                    "desktop": {
-                      "fontSize": "text-xl"
-                    },
                     "custom": {
                       "displayName": "Subheadline"
-                    }
+                    },
+                    "className": "text-(--muted-foreground) leading-relaxed text-lg md:text-xl"
                   }
                 }
               ]
@@ -117,37 +67,19 @@
             {
               "type": "Container",
               "props": {
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "gap": "gap-8",
-                  "width": "w-full"
-                },
-                "desktop": {
-                  "flexDirection": "flex-row",
-                  "gap": "gap-8"
-                },
                 "custom": {
                   "displayName": "Features Grid"
-                }
+                },
+                "className": "flex flex-col gap-8 w-full md:flex-row md:gap-8"
               },
               "children": [
                 {
                   "type": "Container",
                   "props": {
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "gap": "gap-3",
-                      "width": "w-full",
-                      "alignItems": "items-start"
-                    },
-                    "desktop": {
-                      "width": "w-1/2"
-                    },
                     "custom": {
                       "displayName": "Grid Item Left"
-                    }
+                    },
+                    "className": "flex flex-col gap-3 w-full items-start md:w-1/2"
                   },
                   "children": [
                     {
@@ -161,16 +93,10 @@
                           "size": "w-6 h-6",
                           "gap": "gap-0"
                         },
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--muted-foreground)"
-                        },
-                        "className": ["pointer-events-none"],
-                        "mobile": {
-                          "px": "px-0",
-                          "py": "py-0"
-                        },
-                        "custom": { "displayName": "Icon" }
+                        "className": "bg-transparent text-(--muted-foreground) px-0 py-0 pointer-events-none",
+                        "custom": {
+                          "displayName": "Icon"
+                        }
                       }
                     },
                     {
@@ -178,17 +104,10 @@
                       "props": {
                         "text": "October 14-16, 2026",
                         "tagName": "h3",
-                        "root": {
-                          "fontWeight": "font-bold",
-                          "color": "text-(--foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-xl",
-                          "mt": "mt-1"
-                        },
                         "custom": {
                           "displayName": "Title"
-                        }
+                        },
+                        "className": "font-bold text-(--foreground) text-xl mt-1"
                       }
                     },
                     {
@@ -196,17 +115,10 @@
                       "props": {
                         "text": "Join us in San Francisco to understand what's next for the global tech and design ecosystem.",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--muted-foreground)",
-                          "lineHeight": "leading-relaxed"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "mb": "mb-2"
-                        },
                         "custom": {
                           "displayName": "Description"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) leading-relaxed text-sm mb-2"
                       }
                     },
                     {
@@ -220,18 +132,10 @@
                           "size": "w-4 h-4",
                           "gap": "gap-2"
                         },
-                        "root": {
-                          "background": "bg-(--primary)",
-                          "color": "text-(--primary-foreground)",
-                          "radius": "rounded-(--radius)"
+                        "custom": {
+                          "displayName": "Primary CTA"
                         },
-                        "mobile": {
-                          "py": "py-2",
-                          "px": "px-5",
-                          "fontSize": "text-sm",
-                          "fontWeight": "font-medium"
-                        },
-                        "custom": { "displayName": "Primary CTA" }
+                        "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) py-2 px-5 text-sm font-medium"
                       }
                     }
                   ]
@@ -239,19 +143,10 @@
                 {
                   "type": "Container",
                   "props": {
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "gap": "gap-3",
-                      "width": "w-full",
-                      "alignItems": "items-start"
-                    },
-                    "desktop": {
-                      "width": "w-1/2"
-                    },
                     "custom": {
                       "displayName": "Grid Item Right"
-                    }
+                    },
+                    "className": "flex flex-col gap-3 w-full items-start md:w-1/2"
                   },
                   "children": [
                     {
@@ -265,16 +160,10 @@
                           "size": "w-6 h-6",
                           "gap": "gap-0"
                         },
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--muted-foreground)"
-                        },
-                        "className": ["pointer-events-none"],
-                        "mobile": {
-                          "px": "px-0",
-                          "py": "py-0"
-                        },
-                        "custom": { "displayName": "Icon" }
+                        "className": "bg-transparent text-(--muted-foreground) px-0 py-0 pointer-events-none",
+                        "custom": {
+                          "displayName": "Icon"
+                        }
                       }
                     },
                     {
@@ -282,17 +171,10 @@
                       "props": {
                         "text": "25+ Industry Leaders",
                         "tagName": "h3",
-                        "root": {
-                          "fontWeight": "font-bold",
-                          "color": "text-(--foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-xl",
-                          "mt": "mt-1"
-                        },
                         "custom": {
                           "displayName": "Title"
-                        }
+                        },
+                        "className": "font-bold text-(--foreground) text-xl mt-1"
                       }
                     },
                     {
@@ -300,17 +182,10 @@
                       "props": {
                         "text": "Hear from keynote speakers leading the charge in generative UI and LLM-driven tooling.",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--muted-foreground)",
-                          "lineHeight": "leading-relaxed"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "mb": "mb-2"
-                        },
                         "custom": {
                           "displayName": "Description"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) leading-relaxed text-sm mb-2"
                       }
                     },
                     {
@@ -324,20 +199,10 @@
                           "size": "w-4 h-4",
                           "gap": "gap-2"
                         },
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--foreground)",
-                          "border": "border",
-                          "borderColor": "border-(--muted)",
-                          "radius": "rounded-(--radius)"
+                        "custom": {
+                          "displayName": "Secondary CTA"
                         },
-                        "mobile": {
-                          "py": "py-2",
-                          "px": "px-5",
-                          "fontSize": "text-sm",
-                          "fontWeight": "font-medium"
-                        },
-                        "custom": { "displayName": "Secondary CTA" }
+                        "className": "bg-transparent text-(--foreground) border border-(--muted) rounded-(--radius) py-2 px-5 text-sm font-medium"
                       }
                     }
                   ]
@@ -351,19 +216,9 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "className": ["lg:w-1/2", "lg:h-[600px]"],
+            "className": "rounded-(--card-radius) w-full h-96 object-cover object-center overflow-hidden lg:w-1/2 lg:h-[600px]",
             "content": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=1000&h=1200",
             "alt": "Conference speaker on stage",
-            "root": {
-              "radius": "rounded-(--card-radius)"
-            },
-            "mobile": {
-              "width": "w-full",
-              "height": "h-96",
-              "objectFit": "object-cover",
-              "objectPosition": "object-center",
-              "overflow": "overflow-hidden"
-            },
             "custom": {
               "displayName": "Cover Image"
             }

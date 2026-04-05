@@ -4,22 +4,7 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
-    "root": {
-      "background": "bg-(--primary)",
-      "color": "text-(--primary-foreground)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "alignItems": "items-center",
-      "width": "w-full",
-      "py": "py-16",
-      "px": "px-8",
-      "gap": "gap-12"
-    },
-    "className": [
-      "md:px-16"
-    ],
+    "className": "bg-(--primary) text-(--primary-foreground) flex flex-col items-center w-full py-16 px-8 gap-12 md:px-16",
     "custom": {
       "displayName": "Construction stats band"
     }
@@ -30,21 +15,7 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "alignItems": "items-center",
-          "width": "w-full",
-          "maxWidth": "max-w-(--content-width)",
-          "mx": "mx-auto",
-          "gap": "gap-12"
-        },
-        "className": [
-          "md:flex-row",
-          "md:justify-around",
-          "md:gap-8"
-        ],
+        "className": "flex flex-col items-center w-full max-w-(--content-width) mx-auto gap-12 md:flex-row md:justify-around md:gap-8",
         "custom": {
           "displayName": "Stats row"
         }
@@ -53,44 +24,23 @@
         {
           "type": "Container",
           "props": {
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "alignItems": "items-center",
-              "textAlign": "text-center"
-            },
-            "className": [
-              "md:flex-1"
-            ]
+            "className": "flex flex-col items-center text-center md:flex-1"
           },
           "children": [
             {
               "type": "Text",
               "props": {
-                "root": {
-                  "color": "text-(--primary-foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-5xl",
-                  "fontWeight": "font-semibold"
-                },
                 "text": "1998",
-                "tagName": "h3"
+                "tagName": "h3",
+                "className": "text-(--primary-foreground) text-5xl font-semibold"
               }
             },
             {
               "type": "Text",
               "props": {
-                "root": {
-                  "color": "text-(--primary-foreground)/80"
-                },
-                "mobile": {
-                  "fontSize": "text-base",
-                  "fontWeight": "font-medium",
-                  "mt": "mt-2"
-                },
                 "text": "Year<br/>Established",
-                "tagName": "p"
+                "tagName": "p",
+                "className": "text-(--primary-foreground)/80 text-base font-medium mt-2"
               }
             }
           ]
@@ -98,44 +48,23 @@
         {
           "type": "Container",
           "props": {
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "alignItems": "items-center",
-              "textAlign": "text-center"
-            },
-            "className": [
-              "md:flex-1"
-            ]
+            "className": "flex flex-col items-center text-center md:flex-1"
           },
           "children": [
             {
               "type": "Text",
               "props": {
-                "root": {
-                  "color": "text-(--primary-foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-5xl",
-                  "fontWeight": "font-semibold"
-                },
                 "text": "206",
-                "tagName": "h3"
+                "tagName": "h3",
+                "className": "text-(--primary-foreground) text-5xl font-semibold"
               }
             },
             {
               "type": "Text",
               "props": {
-                "root": {
-                  "color": "text-(--primary-foreground)/80"
-                },
-                "mobile": {
-                  "fontSize": "text-base",
-                  "fontWeight": "font-medium",
-                  "mt": "mt-2"
-                },
                 "text": "Projects<br/>Completed",
-                "tagName": "p"
+                "tagName": "p",
+                "className": "text-(--primary-foreground)/80 text-base font-medium mt-2"
               }
             }
           ]
@@ -143,44 +72,23 @@
         {
           "type": "Container",
           "props": {
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "alignItems": "items-center",
-              "textAlign": "text-center"
-            },
-            "className": [
-              "md:flex-1"
-            ]
+            "className": "flex flex-col items-center text-center md:flex-1"
           },
           "children": [
             {
               "type": "Text",
               "props": {
-                "root": {
-                  "color": "text-(--primary-foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-5xl",
-                  "fontWeight": "font-semibold"
-                },
                 "text": "870",
-                "tagName": "h3"
+                "tagName": "h3",
+                "className": "text-(--primary-foreground) text-5xl font-semibold"
               }
             },
             {
               "type": "Text",
               "props": {
-                "root": {
-                  "color": "text-(--primary-foreground)/80"
-                },
-                "mobile": {
-                  "fontSize": "text-base",
-                  "fontWeight": "font-medium",
-                  "mt": "mt-2"
-                },
                 "text": "Contractors<br/>Appointed",
-                "tagName": "p"
+                "tagName": "p",
+                "className": "text-(--primary-foreground)/80 text-base font-medium mt-2"
               }
             }
           ]
@@ -188,44 +96,23 @@
         {
           "type": "Container",
           "props": {
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "alignItems": "items-center",
-              "textAlign": "text-center"
-            },
-            "className": [
-              "md:flex-1"
-            ]
+            "className": "flex flex-col items-center text-center md:flex-1"
           },
           "children": [
             {
               "type": "Text",
               "props": {
-                "root": {
-                  "color": "text-(--primary-foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-5xl",
-                  "fontWeight": "font-semibold"
-                },
                 "text": "26",
-                "tagName": "h3"
+                "tagName": "h3",
+                "className": "text-(--primary-foreground) text-5xl font-semibold"
               }
             },
             {
               "type": "Text",
               "props": {
-                "root": {
-                  "color": "text-(--primary-foreground)/80"
-                },
-                "mobile": {
-                  "fontSize": "text-base",
-                  "fontWeight": "font-medium",
-                  "mt": "mt-2"
-                },
                 "text": "Awards<br/>Won",
-                "tagName": "p"
+                "tagName": "p",
+                "className": "text-(--primary-foreground)/80 text-base font-medium mt-2"
               }
             }
           ]

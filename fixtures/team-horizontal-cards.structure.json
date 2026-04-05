@@ -4,41 +4,19 @@
     "type": "section",
     "canDelete": true,
     "canEditName": true,
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "width": "w-full",
-      "py": "py-16",
-      "px": "px-4",
-      "gap": "gap-12"
-    },
-    "desktop": {
-      "py": "py-24",
-      "px": "px-6",
-      "gap": "gap-16"
-    },
     "custom": {
       "displayName": "Team Horizontal Cards"
-    }
+    },
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-16 px-4 gap-12 md:py-24 md:px-6 md:gap-16"
   },
   "children": [
     {
       "type": "Container",
       "props": {
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "alignItems": "items-center",
-          "textAlign": "text-center",
-          "maxWidth": "max-w-3xl",
-          "mx": "mx-auto",
-          "gap": "gap-4"
+        "custom": {
+          "displayName": "Header"
         },
-        "custom": { "displayName": "Header" }
+        "className": "flex flex-col items-center text-center max-w-3xl mx-auto gap-4"
       },
       "children": [
         {
@@ -47,13 +25,12 @@
             "text": "The minds behind the magic",
             "tagName": "h2",
             "root": {
-              "fontWeight": "font-bold",
-              "fontFamily": "var(--heading-font-family)",
-              "lineHeight": "leading-tight"
+              "style": "font-family: var(--heading-font-family);"
             },
-            "mobile": { "fontSize": "text-3xl" },
-            "desktop": { "fontSize": "text-4xl" },
-            "custom": { "displayName": "Heading" }
+            "custom": {
+              "displayName": "Heading"
+            },
+            "className": "font-bold leading-tight text-3xl md:text-4xl"
           }
         },
         {
@@ -61,13 +38,10 @@
           "props": {
             "text": "Meet the leadership team dedicated to transforming your workflow. We combine deep industry experience with an unwavering commitment to design tokens.",
             "tagName": "p",
-            "root": {
-              "color": "text-(--muted-foreground)",
-              "lineHeight": "leading-relaxed"
+            "custom": {
+              "displayName": "Subheading"
             },
-            "mobile": { "fontSize": "text-base" },
-            "desktop": { "fontSize": "text-lg" },
-            "custom": { "displayName": "Subheading" }
+            "className": "text-(--muted-foreground) leading-relaxed text-base md:text-lg"
           }
         }
       ]
@@ -75,39 +49,19 @@
     {
       "type": "Container",
       "props": {
-        "mobile": {
-          "display": "grid",
-          "gridCols": "grid-cols-1",
-          "gap": "gap-8",
-          "maxWidth": "max-w-6xl",
-          "mx": "mx-auto",
-          "width": "w-full"
+        "custom": {
+          "displayName": "Team Grid"
         },
-        "desktop": {
-          "gridCols": "grid-cols-2"
-        },
-        "custom": { "displayName": "Team Grid" }
+        "className": "grid grid-cols-1 gap-8 max-w-6xl mx-auto w-full md:grid-cols-2"
       },
       "children": [
         {
           "type": "Container",
           "props": {
-            "root": {
-              "background": "bg-(--card)",
-              "border": "border",
-              "borderColor": "border-(--border)",
-              "radius": "rounded-(--card-radius)",
-              "shadow": "shadow-sm"
-            },
-            "className": ["overflow-hidden"],
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col"
-            },
-            "desktop": {
-              "flexDirection": "flex-row"
-            },
-            "custom": { "displayName": "Team Card" }
+            "className": "bg-(--card) border border-(--border) rounded-(--card-radius) shadow-sm flex flex-col md:flex-row overflow-hidden",
+            "custom": {
+              "displayName": "Team Card"
+            }
           },
           "children": [
             {
@@ -115,38 +69,25 @@
               "props": {
                 "content": "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=400&h=400",
                 "alt": "Team Member",
-                "mobile": {
-                  "width": "w-full",
-                  "height": "h-64",
-                  "objectFit": "object-cover"
+                "custom": {
+                  "displayName": "Profile Image"
                 },
-                "desktop": {
-                  "width": "w-2/5",
-                  "height": "h-full"
-                },
-                "custom": { "displayName": "Profile Image" }
+                "className": "w-full h-64 object-cover md:w-2/5 md:h-full"
               }
             },
             {
               "type": "Container",
               "props": {
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "p": "p-8",
-                  "gap": "gap-4",
-                  "width": "w-full"
+                "custom": {
+                  "displayName": "Details"
                 },
-                "desktop": {
-                  "width": "w-3/5"
-                },
-                "custom": { "displayName": "Details" }
+                "className": "flex flex-col p-8 gap-4 w-full md:w-3/5"
               },
               "children": [
                 {
                   "type": "Container",
                   "props": {
-                    "mobile": { "display": "flex", "flexDirection": "flex-col", "gap": "gap-1" }
+                    "className": "flex flex-col gap-1"
                   },
                   "children": [
                     {
@@ -155,11 +96,9 @@
                         "text": "Marcus Chen",
                         "tagName": "h3",
                         "root": {
-                          "fontWeight": "font-bold",
-                          "color": "text-(--card-foreground)",
-                          "fontFamily": "var(--heading-font-family)"
+                          "style": "font-family: var(--heading-font-family);"
                         },
-                        "mobile": { "fontSize": "text-2xl" }
+                        "className": "font-bold text-(--card-foreground) text-2xl"
                       }
                     },
                     {
@@ -167,8 +106,7 @@
                       "props": {
                         "text": "Chief Executive Officer",
                         "tagName": "span",
-                        "root": { "color": "text-(--primary)", "fontWeight": "font-medium" },
-                        "mobile": { "fontSize": "text-sm" }
+                        "className": "text-(--primary) font-medium text-sm"
                       }
                     }
                   ]
@@ -178,14 +116,13 @@
                   "props": {
                     "text": "Marcus leads PageHub's strategic vision. Previously, he led product teams at massive enterprise architecture firms.",
                     "tagName": "p",
-                    "root": { "color": "text-(--muted-foreground)", "lineHeight": "leading-relaxed" },
-                    "mobile": { "fontSize": "text-sm" }
+                    "className": "text-(--muted-foreground) leading-relaxed text-sm"
                   }
                 },
                 {
                   "type": "Container",
                   "props": {
-                    "mobile": { "display": "flex", "flexDirection": "flex-row", "gap": "gap-3", "mt": "mt-2" }
+                    "className": "flex flex-row gap-3 mt-2"
                   },
                   "children": [
                     {
@@ -193,10 +130,19 @@
                       "props": {
                         "text": "",
                         "url": "#",
-                        "icon": { "value": "ref-google:account_circle", "position": "left", "size": "w-5 h-5", "gap": "gap-0" },
-                        "root": { "background": "bg-transparent", "color": "text-(--muted-foreground) hover:text-(--foreground)" },
-                        "mobile": { "px": "px-0", "py": "py-0" },
-                        "custom": { "displayName": "Social Link" }
+                        "icon": {
+                          "value": "ref-google:account_circle",
+                          "position": "left",
+                          "size": "w-5 h-5",
+                          "gap": "gap-0"
+                        },
+                        "root": {
+                          "style": "color: text-(--muted-foreground) hover:text-(--foreground);"
+                        },
+                        "custom": {
+                          "displayName": "Social Link"
+                        },
+                        "className": "bg-transparent px-0 py-0"
                       }
                     }
                   ]
@@ -208,22 +154,10 @@
         {
           "type": "Container",
           "props": {
-            "root": {
-              "background": "bg-(--card)",
-              "border": "border",
-              "borderColor": "border-(--border)",
-              "radius": "rounded-(--card-radius)",
-              "shadow": "shadow-sm"
-            },
-            "className": ["overflow-hidden"],
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col"
-            },
-            "desktop": {
-              "flexDirection": "flex-row"
-            },
-            "custom": { "displayName": "Team Card" }
+            "className": "bg-(--card) border border-(--border) rounded-(--card-radius) shadow-sm flex flex-col md:flex-row overflow-hidden",
+            "custom": {
+              "displayName": "Team Card"
+            }
           },
           "children": [
             {
@@ -231,38 +165,25 @@
               "props": {
                 "content": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&h=400",
                 "alt": "Team Member",
-                "mobile": {
-                  "width": "w-full",
-                  "height": "h-64",
-                  "objectFit": "object-cover"
+                "custom": {
+                  "displayName": "Profile Image"
                 },
-                "desktop": {
-                  "width": "w-2/5",
-                  "height": "h-full"
-                },
-                "custom": { "displayName": "Profile Image" }
+                "className": "w-full h-64 object-cover md:w-2/5 md:h-full"
               }
             },
             {
               "type": "Container",
               "props": {
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "p": "p-8",
-                  "gap": "gap-4",
-                  "width": "w-full"
+                "custom": {
+                  "displayName": "Details"
                 },
-                "desktop": {
-                  "width": "w-3/5"
-                },
-                "custom": { "displayName": "Details" }
+                "className": "flex flex-col p-8 gap-4 w-full md:w-3/5"
               },
               "children": [
                 {
                   "type": "Container",
                   "props": {
-                    "mobile": { "display": "flex", "flexDirection": "flex-col", "gap": "gap-1" }
+                    "className": "flex flex-col gap-1"
                   },
                   "children": [
                     {
@@ -271,11 +192,9 @@
                         "text": "Sarah Jenkins",
                         "tagName": "h3",
                         "root": {
-                          "fontWeight": "font-bold",
-                          "color": "text-(--card-foreground)",
-                          "fontFamily": "var(--heading-font-family)"
+                          "style": "font-family: var(--heading-font-family);"
                         },
-                        "mobile": { "fontSize": "text-2xl" }
+                        "className": "font-bold text-(--card-foreground) text-2xl"
                       }
                     },
                     {
@@ -283,8 +202,7 @@
                       "props": {
                         "text": "Head of Engineering",
                         "tagName": "span",
-                        "root": { "color": "text-(--primary)", "fontWeight": "font-medium" },
-                        "mobile": { "fontSize": "text-sm" }
+                        "className": "text-(--primary) font-medium text-sm"
                       }
                     }
                   ]
@@ -294,14 +212,13 @@
                   "props": {
                     "text": "Sarah architected the core layout engine. Her background in systems design ensures our framework is robust and blazing fast.",
                     "tagName": "p",
-                    "root": { "color": "text-(--muted-foreground)", "lineHeight": "leading-relaxed" },
-                    "mobile": { "fontSize": "text-sm" }
+                    "className": "text-(--muted-foreground) leading-relaxed text-sm"
                   }
                 },
                 {
                   "type": "Container",
                   "props": {
-                    "mobile": { "display": "flex", "flexDirection": "flex-row", "gap": "gap-3", "mt": "mt-2" }
+                    "className": "flex flex-row gap-3 mt-2"
                   },
                   "children": [
                     {
@@ -309,10 +226,19 @@
                       "props": {
                         "text": "",
                         "url": "#",
-                        "icon": { "value": "ref-google:account_circle", "position": "left", "size": "w-5 h-5", "gap": "gap-0" },
-                        "root": { "background": "bg-transparent", "color": "text-(--muted-foreground) hover:text-(--foreground)" },
-                        "mobile": { "px": "px-0", "py": "py-0" },
-                        "custom": { "displayName": "Social Link" }
+                        "icon": {
+                          "value": "ref-google:account_circle",
+                          "position": "left",
+                          "size": "w-5 h-5",
+                          "gap": "gap-0"
+                        },
+                        "root": {
+                          "style": "color: text-(--muted-foreground) hover:text-(--foreground);"
+                        },
+                        "custom": {
+                          "displayName": "Social Link"
+                        },
+                        "className": "bg-transparent px-0 py-0"
                       }
                     }
                   ]

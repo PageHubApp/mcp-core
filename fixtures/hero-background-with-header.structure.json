@@ -4,20 +4,10 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "alignItems": "items-center",
-      "justifyContent": "justify-center",
-      "width": "w-full"
-    },
     "custom": {
       "displayName": "Hero Background Section"
     },
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
-    }
+    "className": "bg-(--background) text-(--foreground) flex flex-col items-center justify-center w-full"
   },
   "children": [
     {
@@ -25,38 +15,13 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {
-          "background": "bg-(--accent)",
-          "color": "text-(--accent-foreground)"
-        },
-        "mobile": {
-          "py": "",
-          "px": "px-3",
-          "mx": "mx-auto",
-          "display": "flex",
-          "justifyContent": "",
-          "flexDirection": "flex-col",
-          "width": "w-full",
-          "gap": "gap-28",
-          "height": "h-auto",
-          "backgroundSize": "bg-cover",
-          "backgroundPosition": "bg-center"
-        },
-        "desktop": {
-          "height": "h-screen",
-          "backgroundSize": "bg-cover",
-          "backgroundPosition": "bg-center",
-          "alignItems": "items-center",
-          "justifyContent": "justify-start",
-          "justifyItems": "",
-          "backgroundAttachment": "bg-fixed"
-        },
         "backgroundImage": "https://imagedelivery.net/8PYt12v3QMuDRiYrOftNUQ/906b3a60-6d23-467a-db7a-b115deb80100/public",
         "backgroundImageType": "img",
         "hidden": false,
         "custom": {
           "displayName": "Hero Background"
-        }
+        },
+        "className": "bg-(--accent) text-(--accent-foreground) px-3 mx-auto flex flex-col w-full gap-28 h-auto bg-cover bg-center md:h-screen md:bg-cover md:bg-center md:items-center md:justify-start md:bg-fixed"
       },
       "children": [
         {
@@ -64,31 +29,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {
-              "background": ""
-            },
-            "mobile": {
-              "py": "",
-              "px": "",
-              "mx": "mx-auto",
-              "display": "flex",
-              "justifyContent": "justify-center",
-              "flexDirection": "flex-col",
-              "width": "w-full",
-              "gap": "gap-3",
-              "height": "h-auto",
-              "maxWidth": "max-w-(--content-width)"
-            },
-            "desktop": {
-              "flexDirection": "flex-row",
-              "alignSelf": "",
-              "justifyContent": "",
-              "justifySelf": "",
-              "my": "my-3"
-            },
             "custom": {
               "displayName": "Header"
-            }
+            },
+            "className": "mx-auto flex justify-center flex-col w-full gap-3 h-auto max-w-(--content-width) md:flex-row md:my-3"
           },
           "children": [
             {
@@ -96,27 +40,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "mobile": {
-                  "py": "py-3",
-                  "px": "px-3",
-                  "mx": "mx-auto",
-                  "display": "flex",
-                  "justifyContent": "justify-between",
-                  "flexDirection": "flex-row",
-                  "width": "w-full",
-                  "gap": "gap-3",
-                  "height": "h-auto"
-                },
-                "desktop": {
-                  "flexDirection": "flex-row",
-                  "alignItems": "items-center",
-                  "justifyContent": "justify-start",
-                  "order": "",
-                  "gap": "gap-9"
-                },
                 "custom": {
                   "displayName": "Left"
-                }
+                },
+                "className": "py-3 px-3 mx-auto flex justify-between flex-row w-full gap-3 h-auto md:flex-row md:items-center md:justify-start md:gap-9"
               },
               "children": [
                 {
@@ -126,16 +53,11 @@
                     "canEditName": true,
                     "type": "svg",
                     "content": "<?xml version=\"1.0\" encoding=\"utf-8\"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->\n<svg width=\"100%\" height=\"100%\" viewBox=\"0 0 512 512\" xmlns=\"http://www.w3.org/2000/svg\">\n  <path fill=\"var(--ci-primary-color, #000000)\" d=\"M425.39,200.035A184.3,184.3,0,0,0,290.812,91.289L317.568,48.48,290.432,31.52,255.127,88.008A184.046,184.046,0,0,0,86.61,200.035a71.978,71.978,0,0,0,0,143.93,184.071,184.071,0,0,0,338.78,0,71.978,71.978,0,0,0,0-143.93Zm27.152,99.975a39.77,39.77,0,0,1-27.76,11.961l-20.725.394-8.113,19.074a152.066,152.066,0,0,1-279.887,0l-8.114-19.074-20.725-.394a39.978,39.978,0,0,1,0-79.942l20.725-.394,8.114-19.074a152.067,152.067,0,0,1,279.887,0l8.113,19.074,20.725.394a39.974,39.974,0,0,1,27.76,67.981Z\" class=\"ci-primary\"/>\n  <rect width=\"40\" height=\"40\" x=\"168\" y=\"232\" fill=\"var(--ci-primary-color, #000000)\" class=\"ci-primary\"/>\n  <rect width=\"40\" height=\"40\" x=\"304\" y=\"232\" fill=\"var(--ci-primary-color, #000000)\" class=\"ci-primary\"/>\n  <path fill=\"var(--ci-primary-color, #000000)\" d=\"M256,384a80,80,0,0,0,80-80H176A80,80,0,0,0,256,384Z\" class=\"ci-primary\"/>\n</svg>",
-                    "desktop": {
-                      "width": "w-14"
-                    },
-                    "mobile": {
-                      "width": "w-2/12"
-                    },
                     "alt": "Audio studio logo — smiling robot face icon",
                     "custom": {
                       "displayName": "Logo"
-                    }
+                    },
+                    "className": "w-2/12 md:w-14"
                   }
                 },
                 {
@@ -153,30 +75,16 @@
                         "url": "/about"
                       }
                     ],
-                    "desktop": {
-                      "flexDirection": "flex-row",
-                      "gap": "gap-6",
-                      "justifyContent": "justify-start",
-                      "display": "flex"
-                    },
-                    "root": {
-                      "background": "",
-                      "color": "text-(--foreground)"
-                    },
                     "hover": {
                       "color": "text-(--background)"
-                    },
-                    "mobile": {
-                      "justifyContent": "justify-end",
-                      "gap": "gap-8",
-                      "display": "hidden"
                     },
                     "clickType": "toggle",
                     "text": "Home",
                     "url": "/",
                     "custom": {
                       "displayName": "Main Navigation"
-                    }
+                    },
+                    "className": "text-(--foreground) justify-end gap-8 hidden md:flex-row md:gap-6 md:justify-start md:flex"
                   },
                   "children": [
                     {
@@ -186,27 +94,13 @@
                         "canEditName": true,
                         "text": "Home",
                         "url": "/",
-                        "root": {
-                          "background": "",
-                          "color": "text-(--foreground)"
-                        },
-                        "mobile": {
-                          "display": "flex",
-                          "flexDirection": "flex-row",
-                          "alignItems": "items-center",
-                          "gap": "gap-2"
-                        },
-                        "desktop": {
-                          "flexDirection": "flex-row",
-                          "alignItems": "items-center",
-                          "gap": "gap-2"
-                        },
                         "hover": {
                           "color": "text-(--background)"
                         },
                         "custom": {
                           "displayName": "Home"
-                        }
+                        },
+                        "className": "text-(--foreground) flex flex-row items-center gap-2 md:flex-row md:items-center md:gap-2"
                       }
                     },
                     {
@@ -216,27 +110,13 @@
                         "canEditName": true,
                         "text": "About",
                         "url": "/about",
-                        "root": {
-                          "background": "",
-                          "color": "text-(--foreground)"
-                        },
-                        "mobile": {
-                          "display": "flex",
-                          "flexDirection": "flex-row",
-                          "alignItems": "items-center",
-                          "gap": "gap-2"
-                        },
-                        "desktop": {
-                          "flexDirection": "flex-row",
-                          "alignItems": "items-center",
-                          "gap": "gap-2"
-                        },
                         "hover": {
                           "color": "text-(--background)"
                         },
                         "custom": {
                           "displayName": "About"
-                        }
+                        },
+                        "className": "text-(--foreground) flex flex-row items-center gap-2 md:flex-row md:items-center md:gap-2"
                       }
                     }
                   ]
@@ -253,30 +133,6 @@
                         "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 448 512\"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. --><path d=\"M32 288c-17.7 0-32 14.3-32 32s14.3 32 32 32l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 288zm0-128c-17.7 0-32 14.3-32 32s14.3 32 32 32l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 160z\"/></svg>"
                       }
                     ],
-                    "root": {
-                      "background": "",
-                      "color": "text-(--foreground)",
-                      "radius": "rounded-lg"
-                    },
-                    "mobile": {
-                      "flexDirection": "flex-col",
-                      "alignItems": "",
-                      "gap": "gap-6",
-                      "px": "px-3",
-                      "py": "py-6",
-                      "width": "w-auto",
-                      "display": "flex",
-                      "cursor": "cursor-pointer",
-                      "alignSelf": "",
-                      "justifySelf": ""
-                    },
-                    "desktop": {
-                      "justifyContent": "",
-                      "justifyItems": "",
-                      "justifySelf": "",
-                      "alignSelf": "",
-                      "display": "hidden"
-                    },
                     "hover": {
                       "color": "text-(--background)"
                     },
@@ -284,7 +140,8 @@
                     "clickType": "click",
                     "custom": {
                       "displayName": "Button List"
-                    }
+                    },
+                    "className": "text-(--foreground) rounded-lg flex-col gap-6 px-3 py-6 w-auto flex cursor-pointer md:hidden"
                   },
                   "children": [
                     {
@@ -295,20 +152,6 @@
                         "text": "Menu",
                         "url": "",
                         "type": "button",
-                        "root": {
-                          "background": ""
-                        },
-                        "mobile": {
-                          "display": "flex",
-                          "flexDirection": "flex-row",
-                          "alignItems": "items-center",
-                          "gap": "gap-2"
-                        },
-                        "desktop": {
-                          "flexDirection": "flex-row",
-                          "alignItems": "items-center",
-                          "gap": "gap-2"
-                        },
                         "icon": {
                           "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 448 512\"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. --><path d=\"M32 288c-17.7 0-32 14.3-32 32s14.3 32 32 32l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 288zm0-128c-17.7 0-32 14.3-32 32s14.3 32 32 32l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 160z\"/></svg>",
                           "position": "left",
@@ -322,7 +165,8 @@
                         "aria-label": "Menu",
                         "custom": {
                           "displayName": "Button"
-                        }
+                        },
+                        "className": "flex flex-row items-center gap-2 md:flex-row md:items-center md:gap-2"
                       }
                     }
                   ]
@@ -334,24 +178,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "mobile": {
-                  "py": "",
-                  "px": "",
-                  "mx": "mx-auto",
-                  "display": "flex",
-                  "justifyContent": "justify-center",
-                  "flexDirection": "flex-col",
-                  "width": "w-full",
-                  "gap": "gap-3",
-                  "height": "h-auto",
-                  "order": "order-last"
-                },
-                "desktop": {
-                  "alignItems": "items-center"
-                },
                 "custom": {
                   "displayName": "Center"
-                }
+                },
+                "className": "mx-auto flex justify-center flex-col w-full gap-3 h-auto order-last md:items-center"
               },
               "children": [
                 {
@@ -360,21 +190,10 @@
                     "canDelete": true,
                     "canEditName": true,
                     "text": "PageHub",
-                    "desktop": {
-                      "fontSize": "text-5xl",
-                      "fontWeight": "font-normal"
-                    },
-                    "root": {
-                      "preset": "h3",
-                      "tagName": "h2"
-                    },
-                    "mobile": {
-                      "fontSize": "text-3xl",
-                      "textAlign": "text-center"
-                    },
                     "custom": {
                       "displayName": "Company Name"
-                    }
+                    },
+                    "className": "h3 h2 text-3xl text-center md:text-5xl md:font-normal"
                   }
                 }
               ]
@@ -384,27 +203,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "mobile": {
-                  "py": "py-3",
-                  "px": "px-3",
-                  "mx": "mx-auto",
-                  "display": "hidden",
-                  "justifyContent": "justify-center",
-                  "flexDirection": "flex-col",
-                  "width": "w-full",
-                  "gap": "gap-3",
-                  "height": "h-auto",
-                  "order": ""
-                },
-                "desktop": {
-                  "flexDirection": "flex-row",
-                  "justifyContent": "justify-end",
-                  "order": "order-last",
-                  "display": "flex"
-                },
                 "custom": {
                   "displayName": "Right"
-                }
+                },
+                "className": "py-3 px-3 mx-auto hidden justify-center flex-col w-full gap-3 h-auto md:flex-row md:justify-end md:order-last md:flex"
               },
               "children": [
                 {
@@ -425,33 +227,7 @@
                         "url": "/shop"
                       }
                     ],
-                    "className": [
-                      "cursor-pointer"
-                    ],
-                    "root": {
-                      "background": "",
-                      "color": "text-(--foreground)",
-                      "borderColor": "",
-                      "border": ""
-                    },
-                    "mobile": {
-                      "flexDirection": "flex-col",
-                      "alignItems": "text-center",
-                      "gap": "gap-3",
-                      "px": "px-3",
-                      "py": "py-6",
-                      "width": "",
-                      "display": "hidden"
-                    },
-                    "desktop": {
-                      "flexDirection": "flex-row",
-                      "alignItems": "items-center",
-                      "justifyContent": "justify-end",
-                      "width": "",
-                      "textAlign": "text-center",
-                      "gap": "gap-4",
-                      "display": "flex"
-                    },
+                    "className": "text-(--foreground) flex-col text-center gap-3 px-3 py-6 hidden md:flex-row md:items-center md:justify-end md:text-center md:gap-4 md:flex cursor-pointer",
                     "iconGap": "gap-4",
                     "hover": {
                       "color": "text-(--background)"
@@ -477,30 +253,13 @@
                           "size": "w-6 h-6",
                           "gap": "gap-2"
                         },
-                        "root": {
-                          "background": "",
-                          "color": "text-(--foreground)",
-                          "radius": "rounded-lg",
-                          "borderColor": "",
-                          "border": ""
-                        },
-                        "mobile": {
-                          "display": "flex",
-                          "flexDirection": "flex-row",
-                          "alignItems": "items-center",
-                          "gap": "gap-2"
-                        },
-                        "desktop": {
-                          "flexDirection": "flex-row",
-                          "alignItems": "items-center",
-                          "gap": "gap-2"
-                        },
                         "hover": {
                           "color": "text-(--background)"
                         },
                         "custom": {
                           "displayName": "Contact"
-                        }
+                        },
+                        "className": "text-(--foreground) rounded-lg flex flex-row items-center gap-2 md:flex-row md:items-center md:gap-2"
                       }
                     },
                     {
@@ -516,30 +275,13 @@
                           "size": "w-6 h-6",
                           "gap": "gap-2"
                         },
-                        "root": {
-                          "background": "",
-                          "color": "text-(--foreground)",
-                          "radius": "rounded-lg",
-                          "borderColor": "",
-                          "border": ""
-                        },
-                        "mobile": {
-                          "display": "flex",
-                          "flexDirection": "flex-row",
-                          "alignItems": "items-center",
-                          "gap": "gap-2"
-                        },
-                        "desktop": {
-                          "flexDirection": "flex-row",
-                          "alignItems": "items-center",
-                          "gap": "gap-2"
-                        },
                         "hover": {
                           "color": "text-(--background)"
                         },
                         "custom": {
                           "displayName": "Products"
-                        }
+                        },
+                        "className": "text-(--foreground) rounded-lg flex flex-row items-center gap-2 md:flex-row md:items-center md:gap-2"
                       }
                     }
                   ]
@@ -553,30 +295,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {
-              "preset": "size-full"
-            },
-            "mobile": {
-              "py": "py-3",
-              "px": "px-3",
-              "display": "flex",
-              "justifyContent": "justify-center",
-              "flexDirection": "flex-col",
-              "width": "w-full",
-              "gap": "gap-7",
-              "height": "h-auto",
-              "maxWidth": "max-w-(--content-width)",
-              "my": "my-9",
-              "mx": "mx-auto"
-            },
-            "desktop": {
-              "height": "h-full",
-              "justifyContent": "justify-center",
-              "mx": "mx-auto"
-            },
             "custom": {
               "displayName": "Hero Position"
-            }
+            },
+            "className": "size-full py-3 px-3 flex justify-center flex-col w-full gap-7 h-auto max-w-(--content-width) my-9 mx-auto md:h-full md:justify-center md:mx-auto"
           },
           "children": [
             {
@@ -584,30 +306,7 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "color": ""
-                },
-                "mobile": {
-                  "py": "",
-                  "px": "",
-                  "mx": "mx-auto",
-                  "display": "flex",
-                  "justifyContent": "justify-center",
-                  "flexDirection": "flex-col",
-                  "width": "w-full",
-                  "gap": "gap-3",
-                  "height": "h-auto"
-                },
-                "desktop": {
-                  "width": "w-7/12",
-                  "gap": "gap-14",
-                  "alignSelf": "",
-                  "justifyContent": "justify-end",
-                  "alignItems": "",
-                  "justifySelf": "",
-                  "justifyItems": ""
-                },
-                "className": [],
+                "className": "mx-auto flex justify-center flex-col w-full gap-3 h-auto md:w-7/12 md:gap-14 md:justify-end",
                 "hidden": false,
                 "custom": {
                   "displayName": "Hero Contents"
@@ -619,20 +318,9 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "mobile": {
-                      "textAlign": "text-center",
-                      "fontSize": "text-5xl"
-                    },
                     "text": "Ship on-brand sites from one workspace: library blocks, live layout, and static previews your reviewers actually see.",
-                    "desktop": {
-                      "fontSize": "text-7xl"
-                    },
-                    "root": {
-                      "shadow": "drop-shadow-2xl",
-                      "preset": "h1",
-                      "tagName": "h1"
-                    },
-                    "tagName": "h1"
+                    "tagName": "h1",
+                    "className": "drop-shadow-2xl h1 text-center text-5xl md:text-7xl"
                   }
                 },
                 {
@@ -647,35 +335,7 @@
                         "url": "/products"
                       }
                     ],
-                    "desktop": {
-                      "width": "",
-                      "alignItems": "justify-items-stretch",
-                      "px": "px-20",
-                      "py": "py-9",
-                      "fontSize": "text-2xl",
-                      "fontWeight": "font-semibold",
-                      "lineHeight": "leading-normal",
-                      "textAlign": "",
-                      "flexDirection": "",
-                      "justifyContent": ""
-                    },
                     "iconFontSize": "",
-                    "root": {
-                      "background": "",
-                      "radius": "rounded-2xl",
-                      "borderColor": "border-(--foreground)",
-                      "border": "border-4",
-                      "color": "text-(--foreground)",
-                      "hover": {
-                        "borderColor": "border-(--background)"
-                      },
-                      "animation": "spring"
-                    },
-                    "mobile": {
-                      "justifyContent": "justify-center",
-                      "px": "px-14",
-                      "py": "py-9"
-                    },
                     "hover": {
                       "color": "text-(--background)"
                     },
@@ -685,7 +345,8 @@
                     "url": "/products",
                     "custom": {
                       "displayName": "Button List"
-                    }
+                    },
+                    "className": "rounded-2xl border-(--foreground) border-4 text-(--foreground) spring hover:border-(--background) justify-center px-14 py-9 md:justify-items-stretch md:px-20 md:py-9 md:text-2xl md:font-semibold md:leading-normal"
                   },
                   "children": [
                     {
@@ -696,21 +357,6 @@
                         "text": "View Products",
                         "url": "/products",
                         "type": "button",
-                        "root": {
-                          "background": ""
-                        },
-                        "mobile": {
-                          "display": "flex",
-                          "flexDirection": "flex-row",
-                          "alignItems": "items-center",
-                          "gap": "gap-2"
-                        },
-                        "desktop": {
-                          "flexDirection": "flex-row",
-                          "alignItems": "items-center",
-                          "gap": "gap-2",
-                          "fontSize": "text-2xl"
-                        },
                         "icon": {
                           "value": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. --><path d=\"M256 80C141.1 80 48 173.1 48 288V392c0 13.3-10.7 24-24 24s-24-10.7-24-24V288C0 146.6 114.6 32 256 32s256 114.6 256 256V392c0 13.3-10.7 24-24 24s-24-10.7-24-24V288c0-114.9-93.1-208-208-208zM80 352c0-35.3 28.7-64 64-64h16c17.7 0 32 14.3 32 32V448c0 17.7-14.3 32-32 32H144c-35.3 0-64-28.7-64-64V352zm288-64c35.3 0 64 28.7 64 64v64c0 35.3-28.7 64-64 64H352c-17.7 0-32-14.3-32-32V320c0-17.7 14.3-32 32-32h16z\"/></svg>",
                           "position": "left",
@@ -722,7 +368,8 @@
                         },
                         "custom": {
                           "displayName": "View Products"
-                        }
+                        },
+                        "className": "flex flex-row items-center gap-2 md:flex-row md:items-center md:gap-2 md:text-2xl"
                       }
                     }
                   ]

@@ -4,26 +4,10 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "alignItems": "items-center",
-      "justifyContent": "justify-center",
-      "width": "w-full",
-      "py": "py-12",
-      "px": "px-4"
-    },
-    "desktop": {
-      "py": "py-16",
-      "px": "px-6"
-    },
     "custom": {
       "displayName": "Heading and email form"
-    }
+    },
+    "className": "bg-(--background) text-(--foreground) flex flex-col items-center justify-center w-full py-12 px-4 md:py-16 md:px-6"
   },
   "children": [
     {
@@ -31,25 +15,11 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "py": "py-3",
-          "px": "px-3",
-          "mx": "mx-auto",
-          "display": "flex",
-          "justifyContent": "justify-center",
-          "flexDirection": "flex-col",
-          "width": "w-full",
-          "gap": "gap-6",
-          "maxWidth": "max-w-(--content-width)"
-        },
-        "desktop": {
-          "maxWidth": "max-w-3xl"
-        },
         "hidden": false,
         "custom": {
           "displayName": "Inner"
-        }
+        },
+        "className": "py-3 px-3 mx-auto flex justify-center flex-col w-full gap-6 max-w-(--content-width) md:max-w-3xl"
       },
       "children": [
         {
@@ -57,23 +27,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "flex",
-              "justifyContent": "justify-center",
-              "flexDirection": "flex-col",
-              "width": "w-full",
-              "gap": "gap-4",
-              "alignItems": "items-stretch"
-            },
-            "desktop": {
-              "alignItems": "items-center",
-              "gap": "gap-6",
-              "px": "px-4"
-            },
             "custom": {
               "displayName": "Copy and form"
-            }
+            },
+            "className": "flex justify-center flex-col w-full gap-4 items-stretch md:items-center md:gap-6 md:px-4"
           },
           "children": [
             {
@@ -84,23 +41,12 @@
                 "text": "Get the changelog, not the spam",
                 "tagName": "h2",
                 "root": {
-                  "preset": "h4",
-                  "fontFamily": "var(--heading-font-family)",
-                  "fontWeight": "font-bold",
-                  "lineHeight": "leading-tight",
-                  "color": "text-(--foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-2xl",
-                  "textAlign": "text-center"
-                },
-                "desktop": {
-                  "fontSize": "text-4xl",
-                  "textAlign": "text-center"
+                  "style": "font-family: var(--heading-font-family);"
                 },
                 "custom": {
                   "displayName": "Heading"
-                }
+                },
+                "className": "h4 font-bold leading-tight text-(--foreground) text-2xl text-center md:text-4xl md:text-center"
               }
             },
             {
@@ -110,22 +56,10 @@
                 "canEditName": true,
                 "text": "Drop your work email for release notes, template drops, and builder tips. PageHub does not sell the list.",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--muted-foreground)",
-                  "lineHeight": "leading-relaxed"
-                },
-                "mobile": {
-                  "fontSize": "text-base",
-                  "textAlign": "text-center"
-                },
-                "desktop": {
-                  "fontSize": "text-xl",
-                  "textAlign": "text-center",
-                  "lineHeight": "leading-snug"
-                },
                 "custom": {
                   "displayName": "Body"
-                }
+                },
+                "className": "text-(--muted-foreground) leading-relaxed text-base text-center md:text-xl md:text-center md:leading-snug"
               }
             },
             {
@@ -135,25 +69,10 @@
                 "canEditName": true,
                 "formName": "centered-heading-capture",
                 "formType": "subscribe",
-                "root": {
-                  "width": "w-full"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "width": "w-full",
-                  "minWidth": "min-w-0",
-                  "mt": "mt-2"
-                },
-                "desktop": {
-                  "maxWidth": "max-w-md",
-                  "minWidth": "min-w-0",
-                  "mx": "mx-auto",
-                  "width": "w-full"
-                },
                 "custom": {
                   "displayName": "Subscribe form"
-                }
+                },
+                "className": "w-full flex flex-col min-w-0 mt-2 md:max-w-md md:min-w-0 md:mx-auto md:w-full"
               },
               "children": [
                 {
@@ -161,23 +80,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {
-                      "background": "bg-(--background)",
-                      "border": "border",
-                      "borderColor": "border-(--border)",
-                      "radius": "rounded-(--radius)"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-row",
-                      "alignItems": "items-stretch",
-                      "width": "w-full",
-                      "overflow": "overflow-hidden"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Email row"
-                    }
+                    },
+                    "className": "bg-(--background) border border-(--border) rounded-(--radius) flex flex-row items-stretch w-full overflow-hidden"
                   },
                   "children": [
                     {
@@ -190,30 +96,14 @@
                         "required": true,
                         "autocomplete": "email",
                         "root": {
-                          "border": "border-0",
-                          "radius": "rounded-none",
-                          "background": "bg-transparent",
-                          "color": "text-(--input-text-color)",
-                          "placeholderColor": "placeholder:text-(--input-placeholder-color)",
-                          "focus": {
-                            "ring": "focus:ring-0",
-                            "outline": "focus:outline-none"
-                          }
+                          "style": "placeholder-color: placeholder:text-(--input-placeholder-color);"
                         },
-                        "mobile": {
-                          "p": "px-3",
-                          "py": "py-2.5",
-                          "width": "w-full",
-                          "flex": "flex-1",
-                          "minWidth": "min-w-0",
-                          "fontSize": "text-sm"
-                        },
-                        "desktop": {},
                         "canDelete": true,
                         "canEditName": true,
                         "custom": {
                           "displayName": "Email"
-                        }
+                        },
+                        "className": "border-0 rounded-none bg-transparent text-(--input-text-color) px-3 py-2.5 w-full flex-1 min-w-0 text-sm"
                       }
                     },
                     {
@@ -221,28 +111,10 @@
                       "props": {
                         "text": "Subscribe",
                         "type": "submit",
-                        "root": {
-                          "background": "bg-(--primary)",
-                          "color": "text-(--primary-foreground)",
-                          "radius": "rounded-none",
-                          "border": "border-0"
-                        },
-                        "mobile": {
-                          "display": "inline-flex",
-                          "alignItems": "items-center",
-                          "justifyContent": "justify-center",
-                          "shrink": "shrink-0",
-                          "px": "px-4",
-                          "py": "py-2.5",
-                          "fontSize": "text-sm",
-                          "fontWeight": "font-semibold",
-                          "border": "border-l",
-                          "borderColor": "border-(--border)"
-                        },
-                        "desktop": {},
                         "custom": {
                           "displayName": "Submit"
-                        }
+                        },
+                        "className": "bg-(--primary) text-(--primary-foreground) rounded-none border-0 inline-flex items-center justify-center shrink-0 px-4 py-2.5 text-sm font-semibold border-l border-(--border)"
                       }
                     }
                   ]

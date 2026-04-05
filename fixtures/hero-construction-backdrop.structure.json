@@ -4,21 +4,10 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
-    "root": {
-      "background": "bg-(--foreground)",
-      "color": "text-(--background)"
-    },
-    "mobile": {
-      "position": "relative",
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "width": "w-full",
-      "minHeight": "min-h-[70vh]",
-      "justifyContent": "flex-start"
-    },
     "custom": {
       "displayName": "Construction hero — backdrop + overlay"
-    }
+    },
+    "className": "bg-(--foreground) text-(--background) relative flex flex-col w-full min-h-[70vh] flex-start"
   },
   "children": [
     {
@@ -27,38 +16,17 @@
         "canDelete": true,
         "canEditName": true,
         "root": {
-          "background": "bg-cover bg-center"
-        },
-        "mobile": {
-          "position": "absolute",
-          "top": "top-0",
-          "right": "right-0",
-          "bottom": "bottom-0",
-          "left": "left-0",
-          "width": "w-full",
-          "backgroundSize": "bg-cover",
-          "backgroundPosition": "bg-center",
-          "backgroundRepeat": "bg-no-repeat"
+          "style": "background: bg-cover bg-center;"
         },
         "backgroundImage": "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1600&auto=format&fit=crop",
-        "backgroundImageType": "url"
+        "backgroundImageType": "url",
+        "className": "absolute top-0 right-0 bottom-0 left-0 w-full bg-cover bg-center bg-no-repeat"
       },
       "children": [
         {
           "type": "Container",
           "props": {
-            "root": {},
-            "mobile": {
-              "position": "absolute",
-              "top": "top-0",
-              "right": "right-0",
-              "bottom": "bottom-0",
-              "left": "left-0",
-              "width": "w-full"
-            },
-            "className": [
-              "bg-gray-900/40"
-            ]
+            "className": "absolute top-0 right-0 bottom-0 left-0 w-full bg-gray-900/40"
           }
         }
       ]
@@ -68,23 +36,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "position": "relative",
-          "zIndex": "z-10",
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "alignItems": "items-center",
-          "textAlign": "text-center",
-          "px": "px-8",
-          "mt": "mt-24",
-          "width": "w-full",
-          "maxWidth": "max-w-(--content-width)",
-          "mx": "mx-auto"
-        },
         "custom": {
           "displayName": "Hero copy"
-        }
+        },
+        "className": "relative z-10 flex flex-col items-center text-center px-8 mt-24 w-full max-w-(--content-width) mx-auto"
       },
       "children": [
         {
@@ -92,23 +47,12 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {
-              "color": "text-white"
-            },
-            "mobile": {
-              "fontSize": "text-4xl",
-              "fontWeight": "font-semibold",
-              "lineHeight": "leading-tight",
-              "letterSpacing": "tracking-wider"
-            },
-            "desktop": {
-              "fontSize": "text-5xl"
-            },
             "text": "STRUCTURE FOR<br/>HEAVY INDUSTRY<br/>AND FIELD TEAMS",
             "tagName": "h2",
             "custom": {
               "displayName": "Heading"
-            }
+            },
+            "className": "text-white text-4xl font-semibold leading-tight tracking-wider md:text-5xl"
           }
         }
       ]

@@ -4,24 +4,10 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "width": "w-full",
-      "py": "py-16",
-      "px": "px-6"
-    },
-    "desktop": {
-      "py": "py-24",
-      "px": "px-8"
-    },
     "custom": {
       "displayName": "Single Product Checkout"
-    }
+    },
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-16 px-6 md:py-24 md:px-8"
   },
   "children": [
     {
@@ -29,21 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "alignItems": "items-center",
-          "gap": "gap-12",
-          "width": "w-full",
-          "maxWidth": "max-w-6xl",
-          "mx": "mx-auto"
+        "custom": {
+          "displayName": "Inner"
         },
-        "desktop": {
-          "flexDirection": "flex-row",
-          "alignItems": "items-center",
-          "gap": "gap-16"
-        },
-        "custom": { "displayName": "Inner" }
+        "className": "flex flex-col items-center gap-12 w-full max-w-6xl mx-auto md:flex-row md:items-center md:gap-16"
       },
       "children": [
         {
@@ -51,19 +26,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "width": "w-full",
-              "maxWidth": "max-w-md",
-              "radius": "rounded-(--card-radius)",
-              "overflow": "overflow-hidden",
-              "border": "border",
-              "borderColor": "border-(--border)",
-              "background": "bg-(--card)"
+            "custom": {
+              "displayName": "Product Image Card"
             },
-            "desktop": { "flex": "flex-1" },
-            "custom": { "displayName": "Product Image Card" }
+            "className": "flex flex-col w-full max-w-md rounded-(--card-radius) overflow-hidden border border-(--border) bg-(--card) md:flex-1"
           },
           "children": [
             {
@@ -71,8 +37,10 @@
               "props": {
                 "content": "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=1000&h=1000&fit=crop",
                 "alt": "Premium apparel showcase",
-                "mobile": { "width": "w-full", "height": "h-auto", "objectFit": "object-cover", "aspectRatio": "aspect-square" },
-                "custom": { "displayName": "Product Image" }
+                "custom": {
+                  "displayName": "Product Image"
+                },
+                "className": "w-full h-auto object-cover aspect-square"
               }
             }
           ]
@@ -82,14 +50,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "gap": "gap-6",
-              "width": "w-full"
+            "custom": {
+              "displayName": "Product Info"
             },
-            "desktop": { "flex": "flex-1" },
-            "custom": { "displayName": "Product Info" }
+            "className": "flex flex-col gap-6 w-full md:flex-1"
           },
           "children": [
             {
@@ -97,9 +61,10 @@
               "props": {
                 "text": "LIMITED EDITION RELEASE",
                 "tagName": "p",
-                "root": { "color": "text-(--accent)", "fontWeight": "font-bold", "letterSpacing": "tracking-widest" },
-                "mobile": { "fontSize": "text-xs" },
-                "custom": { "displayName": "Eyebrow" }
+                "custom": {
+                  "displayName": "Eyebrow"
+                },
+                "className": "text-(--accent) font-bold tracking-widest text-xs"
               }
             },
             {
@@ -107,10 +72,13 @@
               "props": {
                 "text": "The Signature Performance Hoodie",
                 "tagName": "h1",
-                "root": { "fontWeight": "font-black", "fontFamily": "var(--heading-font-family)", "lineHeight": "leading-tight" },
-                "mobile": { "fontSize": "text-3xl" },
-                "desktop": { "fontSize": "text-5xl" },
-                "custom": { "displayName": "Product Name" }
+                "root": {
+                  "style": "font-family: var(--heading-font-family);"
+                },
+                "custom": {
+                  "displayName": "Product Name"
+                },
+                "className": "font-black leading-tight text-3xl md:text-5xl"
               }
             },
             {
@@ -118,9 +86,10 @@
               "props": {
                 "text": "$89.00 USD",
                 "tagName": "p",
-                "root": { "fontWeight": "font-bold", "color": "text-(--primary)" },
-                "mobile": { "fontSize": "text-2xl" },
-                "custom": { "displayName": "Price" }
+                "custom": {
+                  "displayName": "Price"
+                },
+                "className": "font-bold text-(--primary) text-2xl"
               }
             },
             {
@@ -128,9 +97,10 @@
               "props": {
                 "text": "Crafted from sustainable bamboo fibers with a tailored athletic fit. Moisture-wicking, antimicrobial, and built to last five times longer than standard cotton alternatives.",
                 "tagName": "p",
-                "root": { "color": "text-(--muted-foreground)", "lineHeight": "leading-relaxed" },
-                "mobile": { "fontSize": "text-base" },
-                "custom": { "displayName": "Description" }
+                "custom": {
+                  "displayName": "Description"
+                },
+                "className": "text-(--muted-foreground) leading-relaxed text-base"
               }
             },
             {
@@ -138,11 +108,15 @@
               "props": {
                 "text": "Buy Now with Stripe",
                 "url": "#",
-                "root": { "background": "bg-(--primary)", "color": "text-(--primary-foreground)", "radius": "rounded-(--radius)" },
-                "mobile": { "display": "flex", "alignItems": "items-center", "justifyContent": "justify-center", "gap": "gap-2", "py": "py-4", "px": "px-8", "fontSize": "text-lg", "fontWeight": "font-bold", "width": "w-full" },
-                "desktop": { "width": "w-max" },
-                "icon": { "value": "ref-google:shopping_cart", "size": "w-5 h-5", "position": "left" },
-                "custom": { "displayName": "Buy Button" }
+                "icon": {
+                  "value": "ref-google:shopping_cart",
+                  "size": "w-5 h-5",
+                  "position": "left"
+                },
+                "custom": {
+                  "displayName": "Buy Button"
+                },
+                "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) flex items-center justify-center gap-2 py-4 px-8 text-lg font-bold w-full md:w-max"
               }
             },
             {
@@ -150,8 +124,10 @@
               "props": {
                 "text": "Secure checkout powered by Stripe. Shipping worldwide from our London warehouse.",
                 "tagName": "p",
-                "root": { "color": "text-(--muted-foreground)", "fontSize": "text-xs" },
-                "custom": { "displayName": "Trust Note" }
+                "custom": {
+                  "displayName": "Trust Note"
+                },
+                "className": "text-(--muted-foreground) text-xs"
               }
             }
           ]

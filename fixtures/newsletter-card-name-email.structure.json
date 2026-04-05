@@ -4,22 +4,10 @@
     "type": "section",
     "canDelete": true,
     "canEditName": true,
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "width": "w-full",
-      "py": "py-16",
-      "px": "px-6"
-    },
-    "desktop": {
-      "py": "py-20",
-      "px": "px-8"
-    },
     "custom": {
       "displayName": "Newsletter card name email section"
-    }
+    },
+    "className": "bg-(--background) text-(--foreground) w-full py-16 px-6 md:py-20 md:px-8"
   },
   "children": [
     {
@@ -27,15 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "flex",
-          "width": "w-full",
-          "justifyContent": "justify-center"
-        },
         "custom": {
           "displayName": "Section inner"
-        }
+        },
+        "className": "flex w-full justify-center"
       },
       "children": [
         {
@@ -43,28 +26,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {
-              "background": "bg-(--card)",
-              "color": "text-(--card-foreground)",
-              "radius": "rounded-(--card-radius)",
-              "border": "border",
-              "borderColor": "border-(--muted)",
-              "shadow": "shadow-sm"
-            },
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "gap": "gap-6",
-              "p": "p-8",
-              "width": "w-full",
-              "maxWidth": "max-w-md",
-              "mx": "mx-auto",
-              "textAlign": "text-center",
-              "alignItems": "items-center"
-            },
             "custom": {
               "displayName": "Subscribe card"
-            }
+            },
+            "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) border border-(--muted) shadow-sm flex flex-col gap-6 p-8 w-full max-w-md mx-auto text-center items-center"
           },
           "children": [
             {
@@ -73,20 +38,12 @@
                 "text": "The PageHub changelog, in your inbox",
                 "tagName": "h2",
                 "root": {
-                  "fontFamily": "var(--heading-font-family)",
-                  "fontWeight": "font-bold",
-                  "color": "text-(--card-foreground)",
-                  "lineHeight": "leading-tight"
-                },
-                "mobile": {
-                  "fontSize": "text-2xl"
-                },
-                "desktop": {
-                  "fontSize": "text-3xl"
+                  "style": "font-family: var(--heading-font-family);"
                 },
                 "custom": {
                   "displayName": "Heading"
-                }
+                },
+                "className": "font-bold text-(--card-foreground) leading-tight text-2xl md:text-3xl"
               }
             },
             {
@@ -94,16 +51,10 @@
               "props": {
                 "text": "Release notes, builder tips, and early access when we open new programs — usually under twice a month.",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--muted-foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-sm",
-                  "lineHeight": "leading-relaxed"
-                },
                 "custom": {
                   "displayName": "Subhead"
-                }
+                },
+                "className": "text-(--muted-foreground) text-sm leading-relaxed"
               }
             },
             {
@@ -113,20 +64,10 @@
                 "canEditName": true,
                 "formName": "newsletter-card-name-email",
                 "formType": "subscribe",
-                "root": {
-                  "width": "w-full"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "gap": "gap-4",
-                  "width": "w-full",
-                  "textAlign": "text-left",
-                  "alignItems": "items-stretch"
-                },
                 "custom": {
                   "displayName": "Subscribe form"
-                }
+                },
+                "className": "w-full flex flex-col gap-4 text-left items-stretch"
               },
               "children": [
                 {
@@ -139,29 +80,14 @@
                     "required": false,
                     "autocomplete": "name",
                     "root": {
-                      "border": "border",
-                      "borderWidth": "border-(--input-border-width)",
-                      "borderStyle": "border-solid",
-                      "borderColor": "border-(--input-border-color)",
-                      "radius": "rounded-(--input-border-radius)",
-                      "background": "bg-(--input-bg-color)",
-                      "color": "text-(--input-text-color)",
-                      "placeholderColor": "placeholder:text-(--input-placeholder-color)",
-                      "focus": {
-                        "ring": "focus:ring-(--input-focus-ring)",
-                        "ringColor": "focus:ring-(--input-focus-ring-color)",
-                        "outline": "focus:outline-none"
-                      }
-                    },
-                    "mobile": {
-                      "p": "p-(--input-padding)",
-                      "width": "w-full"
+                      "style": "placeholder-color: placeholder:text-(--input-placeholder-color);"
                     },
                     "canDelete": true,
                     "canEditName": true,
                     "custom": {
                       "displayName": "Name"
-                    }
+                    },
+                    "className": "border border-(--input-border-width) border-solid border-(--input-border-color) rounded-(--input-border-radius) bg-(--input-bg-color) text-(--input-text-color) p-(--input-padding) w-full"
                   }
                 },
                 {
@@ -174,29 +100,14 @@
                     "required": true,
                     "autocomplete": "email",
                     "root": {
-                      "border": "border",
-                      "borderWidth": "border-(--input-border-width)",
-                      "borderStyle": "border-solid",
-                      "borderColor": "border-(--input-border-color)",
-                      "radius": "rounded-(--input-border-radius)",
-                      "background": "bg-(--input-bg-color)",
-                      "color": "text-(--input-text-color)",
-                      "placeholderColor": "placeholder:text-(--input-placeholder-color)",
-                      "focus": {
-                        "ring": "focus:ring-(--input-focus-ring)",
-                        "ringColor": "focus:ring-(--input-focus-ring-color)",
-                        "outline": "focus:outline-none"
-                      }
-                    },
-                    "mobile": {
-                      "p": "p-(--input-padding)",
-                      "width": "w-full"
+                      "style": "placeholder-color: placeholder:text-(--input-placeholder-color);"
                     },
                     "canDelete": true,
                     "canEditName": true,
                     "custom": {
                       "displayName": "Email"
-                    }
+                    },
+                    "className": "border border-(--input-border-width) border-solid border-(--input-border-color) rounded-(--input-border-radius) bg-(--input-bg-color) text-(--input-text-color) p-(--input-padding) w-full"
                   }
                 },
                 {
@@ -204,22 +115,10 @@
                   "props": {
                     "text": "Join the list",
                     "type": "submit",
-                    "root": {
-                      "background": "bg-(--primary)",
-                      "color": "text-(--primary-foreground)",
-                      "radius": "rounded-(--radius)"
-                    },
-                    "mobile": {
-                      "width": "w-full",
-                      "py": "py-3",
-                      "px": "px-6",
-                      "fontWeight": "font-semibold",
-                      "fontSize": "text-sm",
-                      "textAlign": "text-center"
-                    },
                     "custom": {
                       "displayName": "Submit"
-                    }
+                    },
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) w-full py-3 px-6 font-semibold text-sm text-center"
                   }
                 }
               ]
@@ -229,16 +128,10 @@
               "props": {
                 "text": "We process signups inside PageHub; unsubscribe from any message and we honor it immediately.",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--muted-foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-xs",
-                  "lineHeight": "leading-relaxed"
-                },
                 "custom": {
                   "displayName": "Privacy"
-                }
+                },
+                "className": "text-(--muted-foreground) text-xs leading-relaxed"
               }
             }
           ]

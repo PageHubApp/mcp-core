@@ -4,18 +4,10 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
-    "root": { "background": "bg-(--background)", "color": "text-(--foreground)" },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "alignItems": "items-center",
-      "width": "w-full",
-      "py": "py-12",
-      "px": "px-4"
-    },
-    "className": ["lg:py-16", "lg:px-6"],
-    "desktop": {},
-    "custom": { "displayName": "Testimonial photo section" }
+    "className": "bg-(--background) text-(--foreground) flex flex-col items-center w-full py-12 px-4 lg:py-16 lg:px-6",
+    "custom": {
+      "displayName": "Testimonial photo section"
+    }
   },
   "children": [
     {
@@ -23,16 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "width": "w-full",
-          "maxWidth": "max-w-5xl",
-          "mx": "mx-auto"
+        "custom": {
+          "displayName": "Band"
         },
-        "desktop": {},
-        "custom": { "displayName": "Band" }
+        "className": "flex flex-col w-full max-w-5xl mx-auto"
       },
       "children": [
         {
@@ -40,23 +26,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {
-              "background": "bg-(--card)",
-              "radius": "rounded-(--card-radius)",
-              "border": "border",
-              "borderColor": "border-(--border)",
-              "shadow": "shadow-lg"
-            },
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "width": "w-full",
-              "alignItems": "items-stretch",
-              "overflow": "overflow-hidden"
-            },
-            "className": ["lg:flex-row"],
-            "desktop": {},
-            "custom": { "displayName": "Split card" }
+            "className": "bg-(--card) rounded-(--card-radius) border border-(--border) shadow-lg flex flex-col w-full items-stretch overflow-hidden lg:flex-row",
+            "custom": {
+              "displayName": "Split card"
+            }
           },
           "children": [
             {
@@ -67,16 +40,10 @@
                 "type": "url",
                 "content": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=960&h=1200&fit=crop&q=80",
                 "alt": "Professional headshot of the customer giving this testimonial",
-                "root": {},
-                "mobile": {
-                  "width": "w-full",
-                  "height": "h-72",
-                  "objectFit": "object-cover",
-                  "objectPosition": "object-center"
-                },
-                "className": ["lg:h-auto", "lg:min-h-[22rem]", "lg:w-2/5", "lg:max-w-none", "lg:shrink-0"],
-                "desktop": {},
-                "custom": { "displayName": "Portrait" }
+                "className": "w-full h-72 object-cover object-center lg:h-auto lg:min-h-[22rem] lg:w-2/5 lg:max-w-none lg:shrink-0",
+                "custom": {
+                  "displayName": "Portrait"
+                }
               }
             },
             {
@@ -84,36 +51,24 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "gap": "gap-6",
-                  "justifyContent": "justify-center",
-                  "width": "w-full",
-                  "p": "p-8",
-                  "textAlign": "text-left"
-                },
-                "className": ["lg:flex-1", "lg:p-10", "lg:pl-12"],
-                "desktop": {},
-                "custom": { "displayName": "Quote column" }
+                "className": "flex flex-col gap-6 justify-center w-full p-8 text-left lg:flex-1 lg:p-10 lg:pl-12",
+                "custom": {
+                  "displayName": "Quote column"
+                }
               },
               "children": [
                 {
                   "type": "Text",
                   "props": {
-                    "text": "\u201CThe best investment we made last year wasn\u2019t a tool\u2014it was how fast our team could align on what customers actually see. Support has been outstanding.\u201D",
+                    "text": "“The best investment we made last year wasn’t a tool—it was how fast our team could align on what customers actually see. Support has been outstanding.”",
                     "tagName": "blockquote",
                     "root": {
-                      "fontWeight": "font-medium",
-                      "color": "text-(--foreground)",
-                      "lineHeight": "leading-relaxed",
-                      "fontFamily": "var(--body-font-family)"
+                      "style": "font-family: var(--body-font-family);"
                     },
-                    "mobile": { "fontSize": "text-lg", "width": "w-full" },
-                    "className": ["lg:text-xl"],
-                    "desktop": {},
-                    "custom": { "displayName": "Quote" }
+                    "className": "font-medium text-(--foreground) leading-relaxed text-lg w-full lg:text-xl",
+                    "custom": {
+                      "displayName": "Quote"
+                    }
                   }
                 },
                 {
@@ -121,10 +76,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": { "background": "bg-(--primary)", "radius": "rounded-full" },
-                    "mobile": { "width": "w-10", "height": "h-1" },
-                    "desktop": {},
-                    "custom": { "displayName": "Accent rule" }
+                    "custom": {
+                      "displayName": "Accent rule"
+                    },
+                    "className": "bg-(--primary) rounded-full w-10 h-1"
                   },
                   "children": []
                 },
@@ -133,10 +88,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
-                    "mobile": { "display": "flex", "flexDirection": "flex-col", "gap": "gap-1" },
-                    "desktop": {},
-                    "custom": { "displayName": "Attribution" }
+                    "custom": {
+                      "displayName": "Attribution"
+                    },
+                    "className": "flex flex-col gap-1"
                   },
                   "children": [
                     {
@@ -144,14 +99,10 @@
                       "props": {
                         "text": "Emily Rodriguez",
                         "tagName": "p",
-                        "root": {
-                          "fontWeight": "font-semibold",
-                          "fontSize": "text-sm",
-                          "color": "text-(--foreground)"
+                        "custom": {
+                          "displayName": "Name"
                         },
-                        "mobile": {},
-                        "desktop": {},
-                        "custom": { "displayName": "Name" }
+                        "className": "font-semibold text-sm text-(--foreground)"
                       }
                     },
                     {
@@ -159,10 +110,10 @@
                       "props": {
                         "text": "Founder, Bright Studio",
                         "tagName": "p",
-                        "root": { "fontSize": "text-xs", "color": "text-(--muted-foreground)" },
-                        "mobile": {},
-                        "desktop": {},
-                        "custom": { "displayName": "Role" }
+                        "custom": {
+                          "displayName": "Role"
+                        },
+                        "className": "text-xs text-(--muted-foreground)"
                       }
                     }
                   ]

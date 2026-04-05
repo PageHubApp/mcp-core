@@ -4,27 +4,10 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "alignItems": "items-center",
-      "justifyContent": "justify-center",
-      "width": "w-full",
-      "minHeight": "min-h-screen",
-      "py": "py-12",
-      "px": "px-6"
-    },
-    "desktop": {
-      "py": "py-20",
-      "px": "px-16"
-    },
     "custom": {
       "displayName": "Coming soon hero"
-    }
+    },
+    "className": "bg-(--background) text-(--foreground) flex flex-col items-center justify-center w-full min-h-screen py-12 px-6 md:py-20 md:px-16"
   },
   "children": [
     {
@@ -32,19 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "alignItems": "items-center",
-          "width": "w-full",
-          "maxWidth": "max-w-(--content-width)",
-          "mx": "mx-auto",
-          "gap": "gap-10"
-        },
         "custom": {
           "displayName": "Section inner"
-        }
+        },
+        "className": "flex flex-col items-center w-full max-w-(--content-width) mx-auto gap-10"
       },
       "children": [
         {
@@ -53,18 +27,10 @@
             "canDelete": true,
             "canEditName": true,
             "root": {
-              "color": "text-(--primary)",
-              "fontFamily": "var(--heading-font-family)",
-              "fontWeight": "font-semibold"
-            },
-            "mobile": {
-              "fontSize": "text-sm"
+              "style": "font-family: var(--heading-font-family);"
             },
             "text": "LAUNCHING {{year}}",
-            "className": [
-              "tracking-[0.25em]",
-              "uppercase"
-            ],
+            "className": "text-(--primary) font-semibold text-sm tracking-[0.25em] uppercase",
             "custom": {
               "displayName": "Eyebrow"
             }
@@ -76,22 +42,10 @@
             "canDelete": true,
             "canEditName": true,
             "root": {
-              "color": "text-(--foreground)",
-              "fontFamily": "var(--heading-font-family)",
-              "fontWeight": "font-extrabold"
-            },
-            "mobile": {
-              "fontSize": "text-5xl",
-              "allWidths": "w-full"
-            },
-            "desktop": {
-              "fontSize": "text-8xl"
+              "style": "font-family: var(--heading-font-family);"
             },
             "text": "Something big is landing",
-            "className": [
-              "tracking-tight",
-              "text-center"
-            ],
+            "className": "text-(--foreground) font-extrabold text-5xl w-full md:text-8xl tracking-tight text-center",
             "custom": {
               "displayName": "Heading"
             }
@@ -103,22 +57,10 @@
             "canDelete": true,
             "canEditName": true,
             "root": {
-              "color": "text-(--muted-foreground)",
-              "fontFamily": "var(--body-font-family)",
-              "lineHeight": "leading-relaxed"
-            },
-            "mobile": {
-              "fontSize": "text-lg",
-              "allWidths": "w-full"
-            },
-            "desktop": {
-              "fontSize": "text-xl",
-              "allWidths": "w-6/12"
+              "style": "font-family: var(--body-font-family);"
             },
             "text": "We are polishing the next workspace drop. Leave an email if you want one ping when it opens — no promos, just the release.",
-            "className": [
-              "text-center"
-            ],
+            "className": "text-(--muted-foreground) leading-relaxed text-lg w-full md:text-xl md:w-6/12 text-center",
             "custom": {
               "displayName": "Subheading"
             }
@@ -129,21 +71,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "alignItems": "items-center",
-              "width": "w-full",
-              "gap": "gap-4"
-            },
-            "desktop": {
-              "allWidths": "w-full",
-              "maxWidth": "max-w-xl"
-            },
             "custom": {
               "displayName": "Form wrapper"
-            }
+            },
+            "className": "flex flex-col items-center w-full gap-4 md:w-full md:max-w-xl"
           },
           "children": [
             {
@@ -153,20 +84,10 @@
                 "canEditName": true,
                 "formName": "coming-soon-notify",
                 "formType": "subscribe",
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "width": "w-full",
-                  "gap": "gap-3"
-                },
-                "desktop": {
-                  "flexDirection": "flex-row",
-                  "gap": "gap-0",
-                  "alignItems": "items-stretch"
-                },
                 "custom": {
                   "displayName": "Email signup"
-                }
+                },
+                "className": "flex flex-col w-full gap-3 md:flex-row md:gap-0 md:items-stretch"
               },
               "children": [
                 {
@@ -180,25 +101,10 @@
                     "placeholder": "you@workspace.com",
                     "required": true,
                     "autocomplete": "email",
-                    "root": {
-                      "border": "border",
-                      "borderWidth": "border-(--input-border-width)",
-                      "borderStyle": "border-solid",
-                      "borderColor": "border-(--input-border-color)",
-                      "radius": "rounded-l-(--input-border-radius)",
-                      "background": "bg-(--input-bg-color)",
-                      "color": "text-(--input-text-color)"
-                    },
-                    "mobile": {
-                      "p": "p-(--input-padding)",
-                      "width": "w-full"
-                    },
-                    "desktop": {
-                      "flex": "flex-1"
-                    },
                     "custom": {
                       "displayName": "Email input"
-                    }
+                    },
+                    "className": "border border-(--input-border-width) border-solid border-(--input-border-color) rounded-l-(--input-border-radius) bg-(--input-bg-color) text-(--input-text-color) p-(--input-padding) w-full md:flex-1"
                   }
                 },
                 {
@@ -214,27 +120,7 @@
                       "size": "w-5 h-5",
                       "gap": "gap-2"
                     },
-                    "root": {
-                      "background": "bg-(--primary)",
-                      "color": "text-(--primary-foreground)",
-                      "radius": "rounded-r-(--radius)",
-                      "fontWeight": "font-semibold"
-                    },
-                    "mobile": {
-                      "width": "w-full",
-                      "px": "px-(--button-padding-x)",
-                      "py": "py-3",
-                      "display": "flex",
-                      "alignItems": "items-center",
-                      "justifyContent": "justify-center"
-                    },
-                    "desktop": {
-                      "width": "w-auto",
-                      "shrink": "shrink-0"
-                    },
-                    "className": [
-                      "whitespace-nowrap"
-                    ],
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-r-(--radius) font-semibold w-full px-(--button-padding-x) py-3 flex items-center justify-center md:w-auto md:shrink-0 whitespace-nowrap",
                     "custom": {
                       "displayName": "Submit"
                     }
@@ -250,16 +136,10 @@
             "canDelete": true,
             "canEditName": true,
             "root": {
-              "color": "text-(--muted-foreground)",
-              "fontFamily": "var(--body-font-family)"
-            },
-            "mobile": {
-              "fontSize": "text-sm"
+              "style": "font-family: var(--body-font-family);"
             },
             "text": "No spam. Unsubscribe from builder mail anytime.",
-            "className": [
-              "text-center"
-            ],
+            "className": "text-(--muted-foreground) text-sm text-center",
             "custom": {
               "displayName": "Privacy note"
             }

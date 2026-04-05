@@ -4,22 +4,10 @@
     "type": "section",
     "canDelete": true,
     "canEditName": true,
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "width": "w-full",
-      "py": "py-16",
-      "px": "px-6"
-    },
-    "desktop": {
-      "py": "py-24",
-      "px": "px-8"
-    },
     "custom": {
       "displayName": "Features three pillar grid"
-    }
+    },
+    "className": "bg-(--background) text-(--foreground) w-full py-16 px-6 md:py-24 md:px-8"
   },
   "children": [
     {
@@ -27,19 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "gap": "gap-12",
-          "width": "w-full",
-          "maxWidth": "max-w-(--content-width)",
-          "mx": "mx-auto",
-          "alignItems": "items-center"
-        },
         "custom": {
           "displayName": "Section inner"
-        }
+        },
+        "className": "flex flex-col gap-12 w-full max-w-(--content-width) mx-auto items-center"
       },
       "children": [
         {
@@ -47,20 +26,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "alignItems": "items-center",
-              "textAlign": "text-center",
-              "width": "w-full",
-              "maxWidth": "max-w-2xl",
-              "mx": "mx-auto",
-              "gap": "gap-4"
-            },
             "custom": {
               "displayName": "Section header"
-            }
+            },
+            "className": "flex flex-col items-center text-center w-full max-w-2xl mx-auto gap-4"
           },
           "children": [
             {
@@ -69,20 +38,12 @@
                 "text": "Built for teams shipping on PageHub",
                 "tagName": "h2",
                 "root": {
-                  "fontWeight": "font-bold",
-                  "fontFamily": "var(--heading-font-family)",
-                  "lineHeight": "leading-tight",
-                  "color": "text-(--foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-3xl"
-                },
-                "desktop": {
-                  "fontSize": "text-4xl"
+                  "style": "font-family: var(--heading-font-family);"
                 },
                 "custom": {
                   "displayName": "Heading"
-                }
+                },
+                "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl"
               }
             },
             {
@@ -90,19 +51,10 @@
               "props": {
                 "text": "PageHub keeps workspaces, plans, and publish workflows straightforward: your sites stay isolated, expectations are readable, and the block library improves with the product.",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--muted-foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-base",
-                  "lineHeight": "leading-relaxed"
-                },
-                "desktop": {
-                  "fontSize": "text-lg"
-                },
                 "custom": {
                   "displayName": "Subhead"
-                }
+                },
+                "className": "text-(--muted-foreground) text-base leading-relaxed md:text-lg"
               }
             }
           ]
@@ -112,14 +64,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "grid",
-              "gridCols": "grid-cols-1",
-              "gap": "gap-10",
-              "width": "w-full"
-            },
-            "className": ["lg:grid-cols-3", "lg:gap-x-12", "lg:gap-y-10"],
+            "className": "grid grid-cols-1 gap-10 w-full lg:grid-cols-3 lg:gap-x-12 lg:gap-y-10",
             "custom": {
               "displayName": "Pillars grid"
             }
@@ -130,18 +75,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "alignItems": "items-center",
-                  "textAlign": "text-center",
-                  "gap": "gap-4",
-                  "width": "w-full"
-                },
                 "custom": {
                   "displayName": "Pillar isolation"
-                }
+                },
+                "className": "flex flex-col items-center text-center gap-4 w-full"
               },
               "children": [
                 {
@@ -149,13 +86,6 @@
                   "props": {
                     "text": " ",
                     "url": "#",
-                    "root": {
-                      "background": "bg-transparent"
-                    },
-                    "mobile": {
-                      "px": "px-0",
-                      "py": "py-0"
-                    },
                     "icon": {
                       "value": "ref-google:fingerprint",
                       "only": true,
@@ -164,7 +94,8 @@
                     },
                     "custom": {
                       "displayName": "Icon isolation"
-                    }
+                    },
+                    "className": "bg-transparent px-0 py-0"
                   }
                 },
                 {
@@ -173,17 +104,12 @@
                     "text": "Sites and drafts stay yours",
                     "tagName": "h3",
                     "root": {
-                      "fontFamily": "var(--heading-font-family)",
-                      "fontWeight": "font-semibold",
-                      "color": "text-(--foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-xl",
-                      "lineHeight": "leading-snug"
+                      "style": "font-family: var(--heading-font-family);"
                     },
                     "custom": {
                       "displayName": "Title"
-                    }
+                    },
+                    "className": "font-semibold text-(--foreground) text-xl leading-snug"
                   }
                 },
                 {
@@ -191,16 +117,10 @@
                   "props": {
                     "text": "Each PageHub workspace keeps layouts and media partitioned so collaborators can iterate without cross-wiring customer projects.",
                     "tagName": "p",
-                    "root": {
-                      "color": "text-(--muted-foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-sm",
-                      "lineHeight": "leading-relaxed"
-                    },
                     "custom": {
                       "displayName": "Body"
-                    }
+                    },
+                    "className": "text-(--muted-foreground) text-sm leading-relaxed"
                   }
                 },
                 {
@@ -208,16 +128,6 @@
                   "props": {
                     "text": "How PageHub isolates workspaces",
                     "url": "#",
-                    "root": {
-                      "background": "bg-transparent",
-                      "color": "text-(--primary)"
-                    },
-                    "mobile": {
-                      "px": "px-0",
-                      "py": "py-0",
-                      "fontSize": "text-sm",
-                      "fontWeight": "font-medium"
-                    },
                     "icon": {
                       "value": "ref-google:arrow_forward",
                       "position": "right",
@@ -226,7 +136,8 @@
                     },
                     "custom": {
                       "displayName": "Link posture"
-                    }
+                    },
+                    "className": "bg-transparent text-(--primary) px-0 py-0 text-sm font-medium"
                   }
                 }
               ]
@@ -236,18 +147,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "alignItems": "items-center",
-                  "textAlign": "text-center",
-                  "gap": "gap-4",
-                  "width": "w-full"
-                },
                 "custom": {
                   "displayName": "Pillar clarity"
-                }
+                },
+                "className": "flex flex-col items-center text-center gap-4 w-full"
               },
               "children": [
                 {
@@ -255,13 +158,6 @@
                   "props": {
                     "text": " ",
                     "url": "#",
-                    "root": {
-                      "background": "bg-transparent"
-                    },
-                    "mobile": {
-                      "px": "px-0",
-                      "py": "py-0"
-                    },
                     "icon": {
                       "value": "ref-google:assignment_turned_in",
                       "only": true,
@@ -270,7 +166,8 @@
                     },
                     "custom": {
                       "displayName": "Icon clarity"
-                    }
+                    },
+                    "className": "bg-transparent px-0 py-0"
                   }
                 },
                 {
@@ -279,17 +176,12 @@
                     "text": "Plans that match how you ship",
                     "tagName": "h3",
                     "root": {
-                      "fontFamily": "var(--heading-font-family)",
-                      "fontWeight": "font-semibold",
-                      "color": "text-(--foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-xl",
-                      "lineHeight": "leading-snug"
+                      "style": "font-family: var(--heading-font-family);"
                     },
                     "custom": {
                       "displayName": "Title"
-                    }
+                    },
+                    "className": "font-semibold text-(--foreground) text-xl leading-snug"
                   }
                 },
                 {
@@ -297,16 +189,10 @@
                   "props": {
                     "text": "Subscriptions, limits, and support paths are spelled out so finance and IT know what PageHub covers before rollout day.",
                     "tagName": "p",
-                    "root": {
-                      "color": "text-(--muted-foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-sm",
-                      "lineHeight": "leading-relaxed"
-                    },
                     "custom": {
                       "displayName": "Body"
-                    }
+                    },
+                    "className": "text-(--muted-foreground) text-sm leading-relaxed"
                   }
                 },
                 {
@@ -314,16 +200,6 @@
                   "props": {
                     "text": "Compare plans and reliability",
                     "url": "#",
-                    "root": {
-                      "background": "bg-transparent",
-                      "color": "text-(--primary)"
-                    },
-                    "mobile": {
-                      "px": "px-0",
-                      "py": "py-0",
-                      "fontSize": "text-sm",
-                      "fontWeight": "font-medium"
-                    },
                     "icon": {
                       "value": "ref-google:arrow_forward",
                       "position": "right",
@@ -332,7 +208,8 @@
                     },
                     "custom": {
                       "displayName": "Link coverage"
-                    }
+                    },
+                    "className": "bg-transparent text-(--primary) px-0 py-0 text-sm font-medium"
                   }
                 }
               ]
@@ -342,18 +219,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "alignItems": "items-center",
-                  "textAlign": "text-center",
-                  "gap": "gap-4",
-                  "width": "w-full"
-                },
                 "custom": {
                   "displayName": "Pillar practice"
-                }
+                },
+                "className": "flex flex-col items-center text-center gap-4 w-full"
               },
               "children": [
                 {
@@ -361,13 +230,6 @@
                   "props": {
                     "text": " ",
                     "url": "#",
-                    "root": {
-                      "background": "bg-transparent"
-                    },
-                    "mobile": {
-                      "px": "px-0",
-                      "py": "py-0"
-                    },
                     "icon": {
                       "value": "ref-google:verified_user",
                       "only": true,
@@ -376,7 +238,8 @@
                     },
                     "custom": {
                       "displayName": "Icon practice"
-                    }
+                    },
+                    "className": "bg-transparent px-0 py-0"
                   }
                 },
                 {
@@ -385,17 +248,12 @@
                     "text": "A block library that stays maintained",
                     "tagName": "h3",
                     "root": {
-                      "fontFamily": "var(--heading-font-family)",
-                      "fontWeight": "font-semibold",
-                      "color": "text-(--foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-xl",
-                      "lineHeight": "leading-snug"
+                      "style": "font-family: var(--heading-font-family);"
                     },
                     "custom": {
                       "displayName": "Title"
-                    }
+                    },
+                    "className": "font-semibold text-(--foreground) text-xl leading-snug"
                   }
                 },
                 {
@@ -403,16 +261,10 @@
                   "props": {
                     "text": "Section patterns and library blocks follow shared tokens and accessibility habits, so every drop-in improves when PageHub ships updates.",
                     "tagName": "p",
-                    "root": {
-                      "color": "text-(--muted-foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-sm",
-                      "lineHeight": "leading-relaxed"
-                    },
                     "custom": {
                       "displayName": "Body"
-                    }
+                    },
+                    "className": "text-(--muted-foreground) text-sm leading-relaxed"
                   }
                 },
                 {
@@ -420,16 +272,6 @@
                   "props": {
                     "text": "Browse the public block library",
                     "url": "#",
-                    "root": {
-                      "background": "bg-transparent",
-                      "color": "text-(--primary)"
-                    },
-                    "mobile": {
-                      "px": "px-0",
-                      "py": "py-0",
-                      "fontSize": "text-sm",
-                      "fontWeight": "font-medium"
-                    },
                     "icon": {
                       "value": "ref-google:arrow_forward",
                       "position": "right",
@@ -438,7 +280,8 @@
                     },
                     "custom": {
                       "displayName": "Link playbook"
-                    }
+                    },
+                    "className": "bg-transparent text-(--primary) px-0 py-0 text-sm font-medium"
                   }
                 }
               ]

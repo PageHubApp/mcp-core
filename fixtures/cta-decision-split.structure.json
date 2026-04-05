@@ -4,55 +4,28 @@
     "type": "section",
     "canDelete": true,
     "canEditName": true,
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "width": "w-full",
-      "py": "py-16",
-      "px": "px-4"
-    },
-    "desktop": {
-      "py": "py-28",
-      "px": "px-6"
-    },
     "custom": {
       "displayName": "CTA Decision Split"
-    }
+    },
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-16 px-4 md:py-28 md:px-6"
   },
   "children": [
     {
       "type": "Container",
       "props": {
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "alignItems": "items-center",
-          "maxWidth": "max-w-6xl",
-          "mx": "mx-auto",
-          "gap": "gap-12"
+        "custom": {
+          "displayName": "Content Container"
         },
-        "desktop": {
-          "gap": "gap-16"
-        },
-        "custom": { "displayName": "Content Container" }
+        "className": "flex flex-col items-center max-w-6xl mx-auto gap-12 md:gap-16"
       },
       "children": [
         {
           "type": "Container",
           "props": {
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "alignItems": "items-center",
-              "textAlign": "text-center",
-              "maxWidth": "max-w-2xl",
-              "gap": "gap-4"
+            "custom": {
+              "displayName": "Header Stack"
             },
-            "custom": { "displayName": "Header Stack" }
+            "className": "flex flex-col items-center text-center max-w-2xl gap-4"
           },
           "children": [
             {
@@ -61,17 +34,12 @@
                 "text": "Pick the path that works for you",
                 "tagName": "h2",
                 "root": {
-                  "fontWeight": "font-bold",
-                  "fontFamily": "var(--heading-font-family)",
-                  "lineHeight": "leading-tight"
+                  "style": "font-family: var(--heading-font-family);"
                 },
-                "mobile": {
-                  "fontSize": "text-3xl"
+                "custom": {
+                  "displayName": "Heading"
                 },
-                "desktop": {
-                  "fontSize": "text-4xl"
-                },
-                "custom": { "displayName": "Heading" }
+                "className": "font-bold leading-tight text-3xl md:text-4xl"
               }
             },
             {
@@ -79,14 +47,10 @@
               "props": {
                 "text": "Whether you are a solo developer launching your first project or an established agency serving enterprise clients, we have the precise toolset you need.",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--muted-foreground)",
-                  "lineHeight": "leading-relaxed"
+                "custom": {
+                  "displayName": "Subheading"
                 },
-                "mobile": {
-                  "fontSize": "text-lg"
-                },
-                "custom": { "displayName": "Subheading" }
+                "className": "text-(--muted-foreground) leading-relaxed text-lg"
               }
             }
           ]
@@ -94,59 +58,28 @@
         {
           "type": "Container",
           "props": {
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "gap": "gap-8",
-              "width": "w-full"
+            "custom": {
+              "displayName": "Cards Grid"
             },
-            "desktop": {
-              "flexDirection": "flex-row",
-              "gap": "gap-8"
-            },
-            "custom": { "displayName": "Cards Grid" }
+            "className": "flex flex-col gap-8 w-full md:flex-row md:gap-8"
           },
           "children": [
             {
               "type": "Container",
               "props": {
-                "root": {
-                  "background": "bg-(--card)",
-                  "color": "text-(--card-foreground)",
-                  "border": "border",
-                  "borderColor": "border-(--border)",
-                  "radius": "rounded-(--card-radius)",
-                  "shadow": "shadow-sm"
+                "custom": {
+                  "displayName": "Agency Card"
                 },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "gap": "gap-6",
-                  "p": "p-8",
-                  "width": "w-full"
-                },
-                "desktop": {
-                  "width": "w-1/2",
-                  "p": "p-12"
-                },
-                "custom": { "displayName": "Agency Card" }
+                "className": "bg-(--card) text-(--card-foreground) border border-(--border) rounded-(--card-radius) shadow-sm flex flex-col gap-6 p-8 w-full md:w-1/2 md:p-12"
               },
               "children": [
                 {
                   "type": "Container",
                   "props": {
-                    "root": {
-                      "background": "bg-(--muted)",
-                      "radius": "rounded-(--radius)"
+                    "custom": {
+                      "displayName": "Icon Shell"
                     },
-                    "mobile": {
-                      "display": "flex",
-                      "alignItems": "items-center",
-                      "justifyContent": "justify-center",
-                      "width": "w-14",
-                      "height": "h-14"
-                    },
-                    "custom": { "displayName": "Icon Shell" }
+                    "className": "bg-(--muted) rounded-(--radius) flex items-center justify-center w-14 h-14"
                   },
                   "children": [
                     {
@@ -160,15 +93,7 @@
                           "size": "w-7 h-7",
                           "gap": "gap-0"
                         },
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--foreground)"
-                        },
-                        "className": ["pointer-events-none"],
-                        "mobile": {
-                          "px": "px-0",
-                          "py": "py-0"
-                        }
+                        "className": "bg-transparent text-(--foreground) px-0 py-0 pointer-events-none"
                       }
                     }
                   ]
@@ -179,13 +104,12 @@
                     "text": "For Web Agencies",
                     "tagName": "h3",
                     "root": {
-                      "fontWeight": "font-bold",
-                      "fontFamily": "var(--heading-font-family)"
+                      "style": "font-family: var(--heading-font-family);"
                     },
-                    "mobile": {
-                      "fontSize": "text-2xl"
+                    "custom": {
+                      "displayName": "Card Title"
                     },
-                    "custom": { "displayName": "Card Title" }
+                    "className": "font-bold text-2xl"
                   }
                 },
                 {
@@ -193,14 +117,10 @@
                   "props": {
                     "text": "Scale your client delivery automatically. Unlock white-label interfaces, priority routing, and unlimited staging environments for your entire team.",
                     "tagName": "p",
-                    "root": {
-                      "color": "text-(--muted-foreground)",
-                      "lineHeight": "leading-relaxed"
+                    "custom": {
+                      "displayName": "Card Body"
                     },
-                    "mobile": {
-                      "fontSize": "text-base"
-                    },
-                    "custom": { "displayName": "Card Body" }
+                    "className": "text-(--muted-foreground) leading-relaxed text-base"
                   }
                 },
                 {
@@ -214,19 +134,10 @@
                       "size": "w-4 h-4",
                       "gap": "gap-2"
                     },
-                    "root": {
-                      "background": "bg-(--primary)",
-                      "color": "text-(--primary-foreground)",
-                      "radius": "rounded-(--radius)"
+                    "custom": {
+                      "displayName": "Agency CTA"
                     },
-                    "mobile": {
-                      "py": "py-3",
-                      "px": "px-6",
-                      "fontWeight": "font-medium",
-                      "mt": "mt-2"
-                    },
-                    "desktop": { "width": "w-max" },
-                    "custom": { "displayName": "Agency CTA" }
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) py-3 px-6 font-medium mt-2 md:w-max"
                   }
                 }
               ]
@@ -234,42 +145,19 @@
             {
               "type": "Container",
               "props": {
-                "root": {
-                  "background": "bg-transparent",
-                  "color": "text-(--foreground)",
-                  "border": "border",
-                  "borderColor": "border-(--border)",
-                  "radius": "rounded-(--card-radius)"
+                "custom": {
+                  "displayName": "Developer Card"
                 },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "gap": "gap-6",
-                  "p": "p-8",
-                  "width": "w-full"
-                },
-                "desktop": {
-                  "width": "w-1/2",
-                  "p": "p-12"
-                },
-                "custom": { "displayName": "Developer Card" }
+                "className": "bg-transparent text-(--foreground) border border-(--border) rounded-(--card-radius) flex flex-col gap-6 p-8 w-full md:w-1/2 md:p-12"
               },
               "children": [
                 {
                   "type": "Container",
                   "props": {
-                    "root": {
-                      "background": "bg-(--muted)",
-                      "radius": "rounded-(--radius)"
+                    "custom": {
+                      "displayName": "Icon Shell"
                     },
-                    "mobile": {
-                      "display": "flex",
-                      "alignItems": "items-center",
-                      "justifyContent": "justify-center",
-                      "width": "w-14",
-                      "height": "h-14"
-                    },
-                    "custom": { "displayName": "Icon Shell" }
+                    "className": "bg-(--muted) rounded-(--radius) flex items-center justify-center w-14 h-14"
                   },
                   "children": [
                     {
@@ -283,15 +171,7 @@
                           "size": "w-7 h-7",
                           "gap": "gap-0"
                         },
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--foreground)"
-                        },
-                        "className": ["pointer-events-none"],
-                        "mobile": {
-                          "px": "px-0",
-                          "py": "py-0"
-                        }
+                        "className": "bg-transparent text-(--foreground) px-0 py-0 pointer-events-none"
                       }
                     }
                   ]
@@ -302,13 +182,12 @@
                     "text": "For Independent Developers",
                     "tagName": "h3",
                     "root": {
-                      "fontWeight": "font-bold",
-                      "fontFamily": "var(--heading-font-family)"
+                      "style": "font-family: var(--heading-font-family);"
                     },
-                    "mobile": {
-                      "fontSize": "text-2xl"
+                    "custom": {
+                      "displayName": "Card Title"
                     },
-                    "custom": { "displayName": "Card Title" }
+                    "className": "font-bold text-2xl"
                   }
                 },
                 {
@@ -316,14 +195,10 @@
                   "props": {
                     "text": "Ship your next indie project faster. Access the core component library, automated build tools, and flexible deployment integrations right out of the box.",
                     "tagName": "p",
-                    "root": {
-                      "color": "text-(--muted-foreground)",
-                      "lineHeight": "leading-relaxed"
+                    "custom": {
+                      "displayName": "Card Body"
                     },
-                    "mobile": {
-                      "fontSize": "text-base"
-                    },
-                    "custom": { "displayName": "Card Body" }
+                    "className": "text-(--muted-foreground) leading-relaxed text-base"
                   }
                 },
                 {
@@ -337,21 +212,10 @@
                       "size": "w-4 h-4",
                       "gap": "gap-2"
                     },
-                    "root": {
-                      "background": "bg-transparent",
-                      "color": "text-(--foreground)",
-                      "border": "border",
-                      "borderColor": "border-(--border)",
-                      "radius": "rounded-(--radius)"
+                    "custom": {
+                      "displayName": "Dev CTA"
                     },
-                    "mobile": {
-                      "py": "py-3",
-                      "px": "px-6",
-                      "fontWeight": "font-medium",
-                      "mt": "mt-2"
-                    },
-                    "desktop": { "width": "w-max" },
-                    "custom": { "displayName": "Dev CTA" }
+                    "className": "bg-transparent text-(--foreground) border border-(--border) rounded-(--radius) py-3 px-6 font-medium mt-2 md:w-max"
                   }
                 }
               ]

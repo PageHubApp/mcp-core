@@ -4,25 +4,10 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
-    "root": {
-      "background": "bg-(--muted)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "alignItems": "items-center",
-      "width": "w-full",
-      "py": "py-12",
-      "px": "px-4"
-    },
-    "desktop": {
-      "py": "py-16",
-      "px": "px-6"
-    },
     "custom": {
       "displayName": "Avatar metric band"
-    }
+    },
+    "className": "bg-(--muted) text-(--foreground) flex flex-col items-center w-full py-12 px-4 md:py-16 md:px-6"
   },
   "children": [
     {
@@ -30,21 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "alignItems": "items-center",
-          "gap": "gap-2",
-          "width": "w-full",
-          "maxWidth": "max-w-(--content-width)",
-          "mx": "mx-auto",
-          "mb": "mb-8",
-          "textAlign": "text-center"
-        },
         "custom": {
           "displayName": "Intro"
-        }
+        },
+        "className": "flex flex-col items-center gap-2 w-full max-w-(--content-width) mx-auto mb-8 text-center"
       },
       "children": [
         {
@@ -54,15 +28,10 @@
             "canEditName": true,
             "text": "REAL TEAMS, REAL SESSIONS",
             "tagName": "p",
-            "root": {
-              "color": "text-(--muted-foreground)",
-              "fontSize": "text-xs",
-              "fontWeight": "font-bold",
-              "letterSpacing": "tracking-widest"
-            },
             "custom": {
               "displayName": "Eyebrow"
-            }
+            },
+            "className": "text-(--muted-foreground) text-xs font-bold tracking-widest"
           }
         },
         {
@@ -73,20 +42,12 @@
             "text": "People are shipping with PageHub right now",
             "tagName": "h2",
             "root": {
-              "fontFamily": "var(--heading-font-family)",
-              "fontWeight": "font-bold",
-              "lineHeight": "leading-tight",
-              "color": "text-(--foreground)"
-            },
-            "mobile": {
-              "fontSize": "text-xl"
-            },
-            "desktop": {
-              "fontSize": "text-2xl"
+              "style": "font-family: var(--heading-font-family);"
             },
             "custom": {
               "displayName": "Heading"
-            }
+            },
+            "className": "font-bold leading-tight text-(--foreground) text-xl md:text-2xl"
           }
         }
       ]
@@ -96,24 +57,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "alignItems": "items-center",
-          "gap": "gap-8",
-          "width": "w-full",
-          "maxWidth": "max-w-(--content-width)",
-          "mx": "mx-auto"
-        },
-        "desktop": {
-          "flexDirection": "flex-row",
-          "justifyContent": "justify-center",
-          "gap": "gap-10"
-        },
         "custom": {
           "displayName": "Proof row"
-        }
+        },
+        "className": "flex flex-col items-center gap-8 w-full max-w-(--content-width) mx-auto md:flex-row md:justify-center md:gap-10"
       },
       "children": [
         {
@@ -121,13 +68,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "className": ["-space-x-3"],
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-row",
-              "alignItems": "items-center",
-              "justifyContent": "justify-center"
-            },
+            "className": "flex flex-row items-center justify-center -space-x-3",
             "custom": {
               "displayName": "Avatar stack"
             }
@@ -140,15 +81,7 @@
                 "canEditName": true,
                 "content": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=96&h=96",
                 "alt": "Team member portrait one",
-                "className": ["ring-2", "ring-[var(--muted)]"],
-                "root": {
-                  "radius": "rounded-(--radius-full)"
-                },
-                "mobile": {
-                  "width": "w-11",
-                  "height": "h-11",
-                  "objectFit": "object-cover"
-                },
+                "className": "rounded-(--radius-full) w-11 h-11 object-cover ring-2 ring-[var(--muted)]",
                 "custom": {
                   "displayName": "Avatar 1"
                 }
@@ -161,15 +94,7 @@
                 "canEditName": true,
                 "content": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=96&h=96",
                 "alt": "Team member portrait two",
-                "className": ["ring-2", "ring-[var(--muted)]"],
-                "root": {
-                  "radius": "rounded-(--radius-full)"
-                },
-                "mobile": {
-                  "width": "w-11",
-                  "height": "h-11",
-                  "objectFit": "object-cover"
-                },
+                "className": "rounded-(--radius-full) w-11 h-11 object-cover ring-2 ring-[var(--muted)]",
                 "custom": {
                   "displayName": "Avatar 2"
                 }
@@ -182,15 +107,7 @@
                 "canEditName": true,
                 "content": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=96&h=96",
                 "alt": "Team member portrait three",
-                "className": ["ring-2", "ring-[var(--muted)]"],
-                "root": {
-                  "radius": "rounded-(--radius-full)"
-                },
-                "mobile": {
-                  "width": "w-11",
-                  "height": "h-11",
-                  "objectFit": "object-cover"
-                },
+                "className": "rounded-(--radius-full) w-11 h-11 object-cover ring-2 ring-[var(--muted)]",
                 "custom": {
                   "displayName": "Avatar 3"
                 }
@@ -203,15 +120,7 @@
                 "canEditName": true,
                 "content": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=96&h=96",
                 "alt": "Team member portrait four",
-                "className": ["ring-2", "ring-[var(--muted)]"],
-                "root": {
-                  "radius": "rounded-(--radius-full)"
-                },
-                "mobile": {
-                  "width": "w-11",
-                  "height": "h-11",
-                  "objectFit": "object-cover"
-                },
+                "className": "rounded-(--radius-full) w-11 h-11 object-cover ring-2 ring-[var(--muted)]",
                 "custom": {
                   "displayName": "Avatar 4"
                 }
@@ -224,15 +133,7 @@
                 "canEditName": true,
                 "content": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=96&h=96",
                 "alt": "Team member portrait five",
-                "className": ["ring-2", "ring-[var(--muted)]"],
-                "root": {
-                  "radius": "rounded-(--radius-full)"
-                },
-                "mobile": {
-                  "width": "w-11",
-                  "height": "h-11",
-                  "objectFit": "object-cover"
-                },
+                "className": "rounded-(--radius-full) w-11 h-11 object-cover ring-2 ring-[var(--muted)]",
                 "custom": {
                   "displayName": "Avatar 5"
                 }
@@ -243,14 +144,7 @@
         {
           "type": "Container",
           "props": {
-            "root": {
-              "background": "bg-(--border)"
-            },
-            "className": ["hidden", "md:block"],
-            "mobile": {
-              "width": "w-px",
-              "minHeight": "min-h-14"
-            },
+            "className": "bg-(--border) w-px min-h-14 hidden md:block",
             "custom": {
               "displayName": "Divider"
             }
@@ -261,21 +155,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "alignItems": "items-center",
-              "gap": "gap-1",
-              "textAlign": "text-center"
-            },
-            "desktop": {
-              "alignItems": "items-start",
-              "textAlign": "text-left"
-            },
             "custom": {
               "displayName": "Metric"
-            }
+            },
+            "className": "flex flex-col items-center gap-1 text-center md:items-start md:text-left"
           },
           "children": [
             {
@@ -286,20 +169,12 @@
                 "text": "12.4k+",
                 "tagName": "p",
                 "root": {
-                  "fontWeight": "font-black",
-                  "fontFamily": "var(--heading-font-family)",
-                  "lineHeight": "leading-none",
-                  "color": "text-(--primary)"
-                },
-                "mobile": {
-                  "fontSize": "text-5xl"
-                },
-                "desktop": {
-                  "fontSize": "text-6xl"
+                  "style": "font-family: var(--heading-font-family);"
                 },
                 "custom": {
                   "displayName": "Value"
-                }
+                },
+                "className": "font-black leading-none text-(--primary) text-5xl md:text-6xl"
               }
             },
             {
@@ -309,22 +184,10 @@
                 "canEditName": true,
                 "text": "Active editors this week across PageHub workspaces",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--muted-foreground)",
-                  "lineHeight": "leading-snug",
-                  "fontWeight": "font-medium"
-                },
-                "mobile": {
-                  "fontSize": "text-sm",
-                  "maxWidth": "max-w-xs"
-                },
-                "desktop": {
-                  "fontSize": "text-base",
-                  "maxWidth": "max-w-sm"
-                },
                 "custom": {
                   "displayName": "Caption"
-                }
+                },
+                "className": "text-(--muted-foreground) leading-snug font-medium text-sm max-w-xs md:text-base md:max-w-sm"
               }
             }
           ]

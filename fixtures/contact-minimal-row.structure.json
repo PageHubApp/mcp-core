@@ -4,25 +4,10 @@
     "type": "section",
     "canDelete": true,
     "canEditName": true,
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "width": "w-full",
-      "maxWidth": "max-w-none",
-      "py": "py-12",
-      "px": "px-4"
-    },
-    "desktop": {
-      "py": "py-16",
-      "px": "px-6"
-    },
     "custom": {
       "displayName": "Contact minimal section"
-    }
+    },
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full max-w-none py-12 px-4 md:py-16 md:px-6"
   },
   "children": [
     {
@@ -30,23 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "gap": "gap-8",
-          "width": "w-full",
-          "maxWidth": "max-w-2xl",
-          "mx": "mx-auto",
-          "alignItems": "items-center",
-          "textAlign": "text-center"
-        },
-        "desktop": {
-          "gap": "gap-10"
-        },
         "custom": {
           "displayName": "Contact minimal inner"
-        }
+        },
+        "className": "flex flex-col gap-8 w-full max-w-2xl mx-auto items-center text-center md:gap-10"
       },
       "children": [
         {
@@ -54,18 +26,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "gap": "gap-3",
-              "width": "w-full",
-              "alignItems": "items-center"
-            },
-            "desktop": {},
             "custom": {
               "displayName": "Intro stack"
-            }
+            },
+            "className": "flex flex-col gap-3 w-full items-center"
           },
           "children": [
             {
@@ -73,16 +37,7 @@
               "props": {
                 "text": "Contact",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--primary)",
-                  "fontWeight": "font-bold",
-                  "letterSpacing": "tracking-widest"
-                },
-                "mobile": {
-                  "fontSize": "text-xs"
-                },
-                "desktop": {},
-                "className": ["uppercase"],
+                "className": "text-(--primary) font-bold tracking-widest text-xs uppercase",
                 "custom": {
                   "displayName": "Eyebrow"
                 }
@@ -94,41 +49,23 @@
                 "text": "Prefer email or a quick call?",
                 "tagName": "h2",
                 "root": {
-                  "fontFamily": "var(--heading-font-family)",
-                  "fontWeight": "font-bold",
-                  "color": "text-(--foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-2xl",
-                  "lineHeight": "leading-tight"
-                },
-                "desktop": {
-                  "fontSize": "text-3xl"
+                  "style": "font-family: var(--heading-font-family);"
                 },
                 "custom": {
                   "displayName": "Heading"
-                }
+                },
+                "className": "font-bold text-(--foreground) text-2xl leading-tight md:text-3xl"
               }
             },
             {
               "type": "Text",
               "props": {
-                "text": "We do not route support through this page\u2014pick a channel below and a human will reply within one business day.",
+                "text": "We do not route support through this page—pick a channel below and a human will reply within one business day.",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--muted-foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-sm",
-                  "lineHeight": "leading-relaxed",
-                  "maxWidth": "max-w-lg"
-                },
-                "desktop": {
-                  "fontSize": "text-base"
-                },
                 "custom": {
                   "displayName": "Supporting line"
-                }
+                },
+                "className": "text-(--muted-foreground) text-sm leading-relaxed max-w-lg md:text-base"
               }
             }
           ]
@@ -138,22 +75,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-row",
-              "flexWrap": "flex-wrap",
-              "alignItems": "items-center",
-              "justifyContent": "justify-center",
-              "gap": "gap-3",
-              "width": "w-full"
-            },
-            "desktop": {
-              "gap": "gap-4"
-            },
             "custom": {
               "displayName": "Primary channels"
-            }
+            },
+            "className": "flex flex-row flex-wrap items-center justify-center gap-3 w-full md:gap-4"
           },
           "children": [
             {
@@ -161,21 +86,6 @@
               "props": {
                 "text": "hello@company.com",
                 "url": "mailto:hello@company.com",
-                "root": {
-                  "background": "bg-(--primary)",
-                  "color": "text-(--primary-foreground)",
-                  "radius": "rounded-(--radius)"
-                },
-                "mobile": {
-                  "display": "inline-flex",
-                  "alignItems": "items-center",
-                  "gap": "gap-2",
-                  "px": "px-5",
-                  "py": "py-2.5",
-                  "fontSize": "text-sm",
-                  "fontWeight": "font-medium"
-                },
-                "desktop": {},
                 "icon": {
                   "value": "ref-google:mail",
                   "position": "left",
@@ -183,7 +93,8 @@
                 },
                 "custom": {
                   "displayName": "Email CTA"
-                }
+                },
+                "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium"
               }
             },
             {
@@ -191,23 +102,6 @@
               "props": {
                 "text": "+1 (555) 010-2278",
                 "url": "tel:+15550102278",
-                "root": {
-                  "background": "bg-(--secondary)",
-                  "color": "text-(--secondary-foreground)",
-                  "border": "border",
-                  "borderColor": "border-(--border)",
-                  "radius": "rounded-(--radius)"
-                },
-                "mobile": {
-                  "display": "inline-flex",
-                  "alignItems": "items-center",
-                  "gap": "gap-2",
-                  "px": "px-5",
-                  "py": "py-2.5",
-                  "fontSize": "text-sm",
-                  "fontWeight": "font-medium"
-                },
-                "desktop": {},
                 "icon": {
                   "value": "ref-google:call",
                   "position": "left",
@@ -215,7 +109,8 @@
                 },
                 "custom": {
                   "displayName": "Phone CTA"
-                }
+                },
+                "className": "bg-(--secondary) text-(--secondary-foreground) border border-(--border) rounded-(--radius) inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium"
               }
             }
           ]
@@ -225,20 +120,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {
-              "border": "border-t",
-              "borderColor": "border-(--border)"
-            },
-            "mobile": {
-              "width": "w-full",
-              "maxWidth": "max-w-xs"
-            },
-            "desktop": {
-              "maxWidth": "max-w-sm"
-            },
             "custom": {
               "displayName": "Divider"
-            }
+            },
+            "className": "border-t border-(--border) w-full max-w-xs md:max-w-sm"
           }
         },
         {
@@ -246,16 +131,7 @@
           "props": {
             "text": "Elsewhere",
             "tagName": "p",
-            "root": {
-              "color": "text-(--muted-foreground)",
-              "fontWeight": "font-semibold"
-            },
-            "mobile": {
-              "fontSize": "text-xs",
-              "letterSpacing": "tracking-wide"
-            },
-            "desktop": {},
-            "className": ["uppercase"],
+            "className": "text-(--muted-foreground) font-semibold text-xs tracking-wide uppercase",
             "custom": {
               "displayName": "Social label"
             }
@@ -266,22 +142,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-row",
-              "flexWrap": "flex-wrap",
-              "justifyContent": "justify-center",
-              "alignItems": "items-center",
-              "gap": "gap-2",
-              "width": "w-full"
-            },
-            "desktop": {
-              "gap": "gap-3"
-            },
             "custom": {
               "displayName": "Social icon row"
-            }
+            },
+            "className": "flex flex-row flex-wrap justify-center items-center gap-2 w-full md:gap-3"
           },
           "children": [
             {
@@ -289,19 +153,6 @@
               "props": {
                 "text": "GitHub",
                 "url": "#",
-                "root": {
-                  "background": "bg-(--card)",
-                  "color": "text-(--foreground)",
-                  "border": "border",
-                  "borderColor": "border-(--border)",
-                  "radius": "rounded-(--radius-lg)"
-                },
-                "mobile": {
-                  "display": "inline-flex",
-                  "px": "px-3",
-                  "py": "py-3"
-                },
-                "desktop": {},
                 "icon": {
                   "value": "ref-google:code",
                   "only": true,
@@ -309,7 +160,8 @@
                 },
                 "custom": {
                   "displayName": "GitHub"
-                }
+                },
+                "className": "bg-(--card) text-(--foreground) border border-(--border) rounded-(--radius-lg) inline-flex px-3 py-3"
               }
             },
             {
@@ -317,19 +169,6 @@
               "props": {
                 "text": "Company site",
                 "url": "#",
-                "root": {
-                  "background": "bg-(--card)",
-                  "color": "text-(--foreground)",
-                  "border": "border",
-                  "borderColor": "border-(--border)",
-                  "radius": "rounded-(--radius-lg)"
-                },
-                "mobile": {
-                  "display": "inline-flex",
-                  "px": "px-3",
-                  "py": "py-3"
-                },
-                "desktop": {},
                 "icon": {
                   "value": "ref-google:public",
                   "only": true,
@@ -337,7 +176,8 @@
                 },
                 "custom": {
                   "displayName": "Website"
-                }
+                },
+                "className": "bg-(--card) text-(--foreground) border border-(--border) rounded-(--radius-lg) inline-flex px-3 py-3"
               }
             },
             {
@@ -345,19 +185,6 @@
               "props": {
                 "text": "Changelog feed",
                 "url": "#",
-                "root": {
-                  "background": "bg-(--card)",
-                  "color": "text-(--foreground)",
-                  "border": "border",
-                  "borderColor": "border-(--border)",
-                  "radius": "rounded-(--radius-lg)"
-                },
-                "mobile": {
-                  "display": "inline-flex",
-                  "px": "px-3",
-                  "py": "py-3"
-                },
-                "desktop": {},
                 "icon": {
                   "value": "ref-google:rss_feed",
                   "only": true,
@@ -365,7 +192,8 @@
                 },
                 "custom": {
                   "displayName": "RSS"
-                }
+                },
+                "className": "bg-(--card) text-(--foreground) border border-(--border) rounded-(--radius-lg) inline-flex px-3 py-3"
               }
             }
           ]

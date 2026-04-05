@@ -4,25 +4,10 @@
     "type": "section",
     "canDelete": true,
     "canEditName": true,
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "width": "w-full",
-      "maxWidth": "max-w-none",
-      "py": "py-12",
-      "px": "px-4"
-    },
-    "desktop": {
-      "py": "py-16",
-      "px": "px-6"
-    },
     "custom": {
       "displayName": "Contact map section"
-    }
+    },
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full max-w-none py-12 px-4 md:py-16 md:px-6"
   },
   "children": [
     {
@@ -30,21 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "gap": "gap-10",
-          "width": "w-full",
-          "maxWidth": "max-w-(--content-width)",
-          "mx": "mx-auto"
-        },
-        "desktop": {
-          "gap": "gap-12"
-        },
         "custom": {
           "displayName": "Contact map inner"
-        }
+        },
+        "className": "flex flex-col gap-10 w-full max-w-(--content-width) mx-auto md:gap-12"
       },
       "children": [
         {
@@ -52,18 +26,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "gap": "gap-4",
-              "width": "w-full",
-              "maxWidth": "max-w-2xl"
-            },
-            "desktop": {},
             "custom": {
               "displayName": "Section intro"
-            }
+            },
+            "className": "flex flex-col gap-4 w-full max-w-2xl"
           },
           "children": [
             {
@@ -71,16 +37,7 @@
               "props": {
                 "text": "Visit",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--primary)",
-                  "fontWeight": "font-bold",
-                  "letterSpacing": "tracking-widest"
-                },
-                "mobile": {
-                  "fontSize": "text-xs"
-                },
-                "desktop": {},
-                "className": ["uppercase"],
+                "className": "text-(--primary) font-bold tracking-widest text-xs uppercase",
                 "custom": {
                   "displayName": "Eyebrow"
                 }
@@ -92,20 +49,12 @@
                 "text": "Stop by the studio",
                 "tagName": "h2",
                 "root": {
-                  "fontFamily": "var(--heading-font-family)",
-                  "fontWeight": "font-bold",
-                  "color": "text-(--foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-3xl",
-                  "lineHeight": "leading-tight"
-                },
-                "desktop": {
-                  "fontSize": "text-4xl"
+                  "style": "font-family: var(--heading-font-family);"
                 },
                 "custom": {
                   "displayName": "Heading"
-                }
+                },
+                "className": "font-bold text-(--foreground) text-3xl leading-tight md:text-4xl"
               }
             },
             {
@@ -113,19 +62,10 @@
               "props": {
                 "text": "We host walk-in hours a few afternoons each week and keep the rest by appointment so the team can stay heads-down building.",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--muted-foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-base",
-                  "lineHeight": "leading-relaxed"
-                },
-                "desktop": {
-                  "fontSize": "text-lg"
-                },
                 "custom": {
                   "displayName": "Intro"
-                }
+                },
+                "className": "text-(--muted-foreground) text-base leading-relaxed md:text-lg"
               }
             }
           ]
@@ -135,21 +75,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "grid",
-              "gridCols": "grid-cols-1",
-              "gap": "gap-10",
-              "width": "w-full",
-              "alignItems": "items-start"
-            },
-            "desktop": {
-              "gridCols": "grid-cols-2",
-              "gap": "gap-12"
-            },
             "custom": {
               "displayName": "Map + details grid"
-            }
+            },
+            "className": "grid grid-cols-1 gap-10 w-full items-start md:grid-cols-2 md:gap-12"
           },
           "children": [
             {
@@ -157,21 +86,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "gap": "gap-8",
-                  "width": "w-full",
-                  "order": "order-2"
-                },
-                "desktop": {
-                  "order": "order-1",
-                  "gap": "gap-8"
-                },
                 "custom": {
                   "displayName": "Details column"
-                }
+                },
+                "className": "flex flex-col gap-8 w-full order-2 md:order-1 md:gap-8"
               },
               "children": [
                 {
@@ -179,17 +97,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "gap": "gap-3",
-                      "width": "w-full"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Address block"
-                    }
+                    },
+                    "className": "flex flex-col gap-3 w-full"
                   },
                   "children": [
                     {
@@ -198,17 +109,12 @@
                         "text": "Address",
                         "tagName": "h3",
                         "root": {
-                          "fontFamily": "var(--heading-font-family)",
-                          "fontWeight": "font-semibold",
-                          "color": "text-(--foreground)"
+                          "style": "font-family: var(--heading-font-family);"
                         },
-                        "mobile": {
-                          "fontSize": "text-sm"
-                        },
-                        "desktop": {},
                         "custom": {
                           "displayName": "Address label"
-                        }
+                        },
+                        "className": "font-semibold text-(--foreground) text-sm"
                       }
                     },
                     {
@@ -216,17 +122,10 @@
                       "props": {
                         "text": "180 Walker Street, Floor 4",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-base",
-                          "lineHeight": "leading-relaxed"
-                        },
-                        "desktop": {},
                         "custom": {
                           "displayName": "Street line"
-                        }
+                        },
+                        "className": "text-(--foreground) text-base leading-relaxed"
                       }
                     },
                     {
@@ -234,17 +133,10 @@
                       "props": {
                         "text": "New York, NY 10013",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--muted-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-base",
-                          "lineHeight": "leading-relaxed"
-                        },
-                        "desktop": {},
                         "custom": {
                           "displayName": "City line"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) text-base leading-relaxed"
                       }
                     }
                   ]
@@ -254,17 +146,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "gap": "gap-2",
-                      "width": "w-full"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Hours block"
-                    }
+                    },
+                    "className": "flex flex-col gap-2 w-full"
                   },
                   "children": [
                     {
@@ -273,71 +158,45 @@
                         "text": "Hours",
                         "tagName": "h3",
                         "root": {
-                          "fontFamily": "var(--heading-font-family)",
-                          "fontWeight": "font-semibold",
-                          "color": "text-(--foreground)"
+                          "style": "font-family: var(--heading-font-family);"
                         },
-                        "mobile": {
-                          "fontSize": "text-sm"
-                        },
-                        "desktop": {},
                         "custom": {
                           "displayName": "Hours label"
-                        }
+                        },
+                        "className": "font-semibold text-(--foreground) text-sm"
                       }
                     },
                     {
                       "type": "Text",
                       "props": {
-                        "text": "Monday \u2013 Friday \u00b7 9:00a \u2013 6:00p ET",
+                        "text": "Monday – Friday · 9:00a – 6:00p ET",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-relaxed"
-                        },
-                        "desktop": {},
                         "custom": {
                           "displayName": "Hours weekday"
-                        }
+                        },
+                        "className": "text-(--foreground) text-sm leading-relaxed"
                       }
                     },
                     {
                       "type": "Text",
                       "props": {
-                        "text": "Saturday \u00b7 10:00a \u2013 4:00p ET",
+                        "text": "Saturday · 10:00a – 4:00p ET",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--muted-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-relaxed"
-                        },
-                        "desktop": {},
                         "custom": {
                           "displayName": "Hours saturday"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) text-sm leading-relaxed"
                       }
                     },
                     {
                       "type": "Text",
                       "props": {
-                        "text": "Sunday \u00b7 Closed",
+                        "text": "Sunday · Closed",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--muted-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-relaxed"
-                        },
-                        "desktop": {},
                         "custom": {
                           "displayName": "Hours sunday"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) text-sm leading-relaxed"
                       }
                     }
                   ]
@@ -347,18 +206,10 @@
                   "props": {
                     "text": "Street parking is tight; Spring St station is a short walk.",
                     "tagName": "p",
-                    "root": {
-                      "color": "text-(--muted-foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-sm",
-                      "lineHeight": "leading-relaxed",
-                      "fontStyle": "italic"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Transit note"
-                    }
+                    },
+                    "className": "text-(--muted-foreground) text-sm leading-relaxed italic"
                   }
                 },
                 {
@@ -366,18 +217,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {
-                      "border": "border-t",
-                      "borderColor": "border-(--border)"
-                    },
-                    "mobile": {
-                      "width": "w-full",
-                      "my": "my-2"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Divider"
-                    }
+                    },
+                    "className": "border-t border-(--border) w-full my-2"
                   }
                 },
                 {
@@ -385,21 +228,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "gap": "gap-3",
-                      "width": "w-full"
-                    },
-                    "desktop": {
-                      "flexDirection": "flex-row",
-                      "flexWrap": "flex-wrap",
-                      "gap": "gap-3"
-                    },
                     "custom": {
                       "displayName": "Action row"
-                    }
+                    },
+                    "className": "flex flex-col gap-3 w-full md:flex-row md:flex-wrap md:gap-3"
                   },
                   "children": [
                     {
@@ -407,23 +239,6 @@
                       "props": {
                         "text": "Email the desk",
                         "url": "mailto:hello@company.com",
-                        "root": {
-                          "background": "bg-(--primary)",
-                          "color": "text-(--primary-foreground)",
-                          "radius": "rounded-(--radius)"
-                        },
-                        "mobile": {
-                          "display": "inline-flex",
-                          "width": "w-full",
-                          "justifyContent": "justify-center",
-                          "py": "py-2.5",
-                          "px": "px-5",
-                          "fontSize": "text-sm",
-                          "fontWeight": "font-medium"
-                        },
-                        "desktop": {
-                          "width": "w-auto"
-                        },
                         "icon": {
                           "value": "ref-google:mail",
                           "position": "left",
@@ -431,7 +246,8 @@
                         },
                         "custom": {
                           "displayName": "Email CTA"
-                        }
+                        },
+                        "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) inline-flex w-full justify-center py-2.5 px-5 text-sm font-medium md:w-auto"
                       }
                     },
                     {
@@ -439,25 +255,6 @@
                       "props": {
                         "text": "Call",
                         "url": "tel:+12125550199",
-                        "root": {
-                          "background": "bg-(--secondary)",
-                          "color": "text-(--secondary-foreground)",
-                          "border": "border",
-                          "borderColor": "border-(--border)",
-                          "radius": "rounded-(--radius)"
-                        },
-                        "mobile": {
-                          "display": "inline-flex",
-                          "width": "w-full",
-                          "justifyContent": "justify-center",
-                          "py": "py-2.5",
-                          "px": "px-5",
-                          "fontSize": "text-sm",
-                          "fontWeight": "font-medium"
-                        },
-                        "desktop": {
-                          "width": "w-auto"
-                        },
                         "icon": {
                           "value": "ref-google:call",
                           "position": "left",
@@ -465,7 +262,8 @@
                         },
                         "custom": {
                           "displayName": "Phone CTA"
-                        }
+                        },
+                        "className": "bg-(--secondary) text-(--secondary-foreground) border border-(--border) rounded-(--radius) inline-flex w-full justify-center py-2.5 px-5 text-sm font-medium md:w-auto"
                       }
                     },
                     {
@@ -473,23 +271,6 @@
                       "props": {
                         "text": "Directions",
                         "url": "https://www.google.com/maps/search/?api=1&query=40.7219,-73.9994",
-                        "root": {
-                          "background": "bg-transparent",
-                          "color": "text-(--primary)",
-                          "border": "border-0"
-                        },
-                        "mobile": {
-                          "display": "inline-flex",
-                          "width": "w-full",
-                          "justifyContent": "justify-center",
-                          "py": "py-2.5",
-                          "px": "px-2",
-                          "fontSize": "text-sm",
-                          "fontWeight": "font-semibold"
-                        },
-                        "desktop": {
-                          "width": "w-auto"
-                        },
                         "icon": {
                           "value": "ref-google:map",
                           "position": "left",
@@ -497,7 +278,8 @@
                         },
                         "custom": {
                           "displayName": "Directions link"
-                        }
+                        },
+                        "className": "bg-transparent text-(--primary) border-0 inline-flex w-full justify-center py-2.5 px-2 text-sm font-semibold md:w-auto"
                       }
                     }
                   ]
@@ -509,20 +291,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "width": "w-full",
-                  "minWidth": "min-w-0",
-                  "order": "order-1"
-                },
-                "desktop": {
-                  "order": "order-2"
-                },
                 "custom": {
                   "displayName": "Map column"
-                }
+                },
+                "className": "flex flex-col w-full min-w-0 order-1 md:order-2"
               },
               "children": [
                 {
@@ -536,25 +308,10 @@
                     "type": "interactive",
                     "tileStyle": "cartodb-positron",
                     "title": "Interactive map: studio and nearby subway",
-                    "root": {
-                      "border": "border",
-                      "borderColor": "border-(--border)",
-                      "radius": "rounded-(--card-radius)",
-                      "shadow": "shadow-sm"
-                    },
-                    "mobile": {
-                      "width": "w-full",
-                      "height": "h-64",
-                      "minHeight": "min-h-64",
-                      "overflow": "overflow-hidden"
-                    },
-                    "desktop": {
-                      "height": "h-80",
-                      "minHeight": "min-h-80"
-                    },
                     "custom": {
                       "displayName": "Location map"
-                    }
+                    },
+                    "className": "border border-(--border) rounded-(--card-radius) shadow-sm w-full h-64 min-h-64 overflow-hidden md:h-80 md:min-h-80"
                   },
                   "children": [
                     {

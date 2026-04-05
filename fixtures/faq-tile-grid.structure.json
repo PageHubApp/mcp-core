@@ -4,26 +4,10 @@
     "type": "section",
     "canDelete": true,
     "canEditName": true,
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "width": "w-full",
-      "py": "py-16",
-      "px": "px-6",
-      "gap": "gap-10"
-    },
-    "desktop": {
-      "py": "py-24",
-      "px": "px-8",
-      "gap": "gap-12"
-    },
     "custom": {
       "displayName": "FAQ tile grid section"
-    }
+    },
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-16 px-6 gap-10 md:py-24 md:px-8 md:gap-12"
   },
   "children": [
     {
@@ -31,21 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "alignItems": "items-center",
-          "textAlign": "text-center",
-          "width": "w-full",
-          "maxWidth": "max-w-2xl",
-          "mx": "mx-auto",
-          "gap": "gap-3"
-        },
-        "desktop": {},
         "custom": {
           "displayName": "Section header"
-        }
+        },
+        "className": "flex flex-col items-center text-center w-full max-w-2xl mx-auto gap-3"
       },
       "children": [
         {
@@ -54,20 +27,12 @@
             "text": "Common questions",
             "tagName": "h2",
             "root": {
-              "fontWeight": "font-bold",
-              "fontFamily": "var(--heading-font-family)",
-              "lineHeight": "leading-tight",
-              "color": "text-(--foreground)"
-            },
-            "mobile": {
-              "fontSize": "text-3xl"
-            },
-            "desktop": {
-              "fontSize": "text-4xl"
+              "style": "font-family: var(--heading-font-family);"
             },
             "custom": {
               "displayName": "Heading"
-            }
+            },
+            "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl"
           }
         },
         {
@@ -75,19 +40,10 @@
           "props": {
             "text": "Short answers in a scannable grid — pair with your docs link in the nav when readers need depth.",
             "tagName": "p",
-            "root": {
-              "color": "text-(--muted-foreground)"
-            },
-            "mobile": {
-              "fontSize": "text-base",
-              "lineHeight": "leading-relaxed"
-            },
-            "desktop": {
-              "fontSize": "text-lg"
-            },
             "custom": {
               "displayName": "Subhead"
-            }
+            },
+            "className": "text-(--muted-foreground) text-base leading-relaxed md:text-lg"
           }
         }
       ]
@@ -97,22 +53,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "grid",
-          "gridCols": "grid-cols-1",
-          "gap": "gap-4",
-          "width": "w-full",
-          "maxWidth": "max-w-(--content-width)",
-          "mx": "mx-auto"
-        },
-        "desktop": {
-          "gridCols": "grid-cols-2",
-          "gap": "gap-5"
-        },
         "custom": {
           "displayName": "Tile grid"
-        }
+        },
+        "className": "grid grid-cols-1 gap-4 w-full max-w-(--content-width) mx-auto md:grid-cols-2 md:gap-5"
       },
       "children": [
         {
@@ -120,24 +64,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {
-              "background": "bg-(--card)",
-              "radius": "rounded-(--card-radius)",
-              "border": "border",
-              "borderColor": "border-(--muted)"
-            },
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "gap": "gap-2",
-              "p": "p-6",
-              "width": "w-full",
-              "height": "h-full"
-            },
-            "desktop": {},
             "custom": {
               "displayName": "FAQ tile"
-            }
+            },
+            "className": "bg-(--card) rounded-(--card-radius) border border-(--muted) flex flex-col gap-2 p-6 w-full h-full"
           },
           "children": [
             {
@@ -146,16 +76,12 @@
                 "text": "Is there a free tier?",
                 "tagName": "h3",
                 "root": {
-                  "fontWeight": "font-semibold",
-                  "fontFamily": "var(--heading-font-family)",
-                  "fontSize": "text-base",
-                  "color": "text-(--card-foreground)"
+                  "style": "font-family: var(--heading-font-family);"
                 },
-                "mobile": {},
-                "desktop": {},
                 "custom": {
                   "displayName": "Question"
-                }
+                },
+                "className": "font-semibold text-base text-(--card-foreground)"
               }
             },
             {
@@ -163,16 +89,10 @@
               "props": {
                 "text": "Yes — one site, shared SSL, and community support. Upgrade when you need collaborators or custom domains.",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--muted-foreground)",
-                  "fontSize": "text-sm",
-                  "lineHeight": "leading-relaxed"
-                },
-                "mobile": {},
-                "desktop": {},
                 "custom": {
                   "displayName": "Answer"
-                }
+                },
+                "className": "text-(--muted-foreground) text-sm leading-relaxed"
               }
             }
           ]
@@ -182,24 +102,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {
-              "background": "bg-(--card)",
-              "radius": "rounded-(--card-radius)",
-              "border": "border",
-              "borderColor": "border-(--muted)"
-            },
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "gap": "gap-2",
-              "p": "p-6",
-              "width": "w-full",
-              "height": "h-full"
-            },
-            "desktop": {},
             "custom": {
               "displayName": "FAQ tile"
-            }
+            },
+            "className": "bg-(--card) rounded-(--card-radius) border border-(--muted) flex flex-col gap-2 p-6 w-full h-full"
           },
           "children": [
             {
@@ -208,16 +114,12 @@
                 "text": "How do API limits work?",
                 "tagName": "h3",
                 "root": {
-                  "fontWeight": "font-semibold",
-                  "fontFamily": "var(--heading-font-family)",
-                  "fontSize": "text-base",
-                  "color": "text-(--card-foreground)"
+                  "style": "font-family: var(--heading-font-family);"
                 },
-                "mobile": {},
-                "desktop": {},
                 "custom": {
                   "displayName": "Question"
-                }
+                },
+                "className": "font-semibold text-base text-(--card-foreground)"
               }
             },
             {
@@ -225,16 +127,10 @@
               "props": {
                 "text": "Soft caps with burst allowance; headers expose remaining quota. Enterprise negotiates committed throughput.",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--muted-foreground)",
-                  "fontSize": "text-sm",
-                  "lineHeight": "leading-relaxed"
-                },
-                "mobile": {},
-                "desktop": {},
                 "custom": {
                   "displayName": "Answer"
-                }
+                },
+                "className": "text-(--muted-foreground) text-sm leading-relaxed"
               }
             }
           ]
@@ -244,24 +140,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {
-              "background": "bg-(--card)",
-              "radius": "rounded-(--card-radius)",
-              "border": "border",
-              "borderColor": "border-(--muted)"
-            },
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "gap": "gap-2",
-              "p": "p-6",
-              "width": "w-full",
-              "height": "h-full"
-            },
-            "desktop": {},
             "custom": {
               "displayName": "FAQ tile"
-            }
+            },
+            "className": "bg-(--card) rounded-(--card-radius) border border-(--muted) flex flex-col gap-2 p-6 w-full h-full"
           },
           "children": [
             {
@@ -270,16 +152,12 @@
                 "text": "Can I self-host?",
                 "tagName": "h3",
                 "root": {
-                  "fontWeight": "font-semibold",
-                  "fontFamily": "var(--heading-font-family)",
-                  "fontSize": "text-base",
-                  "color": "text-(--card-foreground)"
+                  "style": "font-family: var(--heading-font-family);"
                 },
-                "mobile": {},
-                "desktop": {},
                 "custom": {
                   "displayName": "Question"
-                }
+                },
+                "className": "font-semibold text-base text-(--card-foreground)"
               }
             },
             {
@@ -287,16 +165,10 @@
               "props": {
                 "text": "Managed cloud is default; private VPC and single-tenant are available on a statement of work.",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--muted-foreground)",
-                  "fontSize": "text-sm",
-                  "lineHeight": "leading-relaxed"
-                },
-                "mobile": {},
-                "desktop": {},
                 "custom": {
                   "displayName": "Answer"
-                }
+                },
+                "className": "text-(--muted-foreground) text-sm leading-relaxed"
               }
             }
           ]
@@ -306,24 +178,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {
-              "background": "bg-(--card)",
-              "radius": "rounded-(--card-radius)",
-              "border": "border",
-              "borderColor": "border-(--muted)"
-            },
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "gap": "gap-2",
-              "p": "p-6",
-              "width": "w-full",
-              "height": "h-full"
-            },
-            "desktop": {},
             "custom": {
               "displayName": "FAQ tile"
-            }
+            },
+            "className": "bg-(--card) rounded-(--card-radius) border border-(--muted) flex flex-col gap-2 p-6 w-full h-full"
           },
           "children": [
             {
@@ -332,16 +190,12 @@
                 "text": "What about SLAs?",
                 "tagName": "h3",
                 "root": {
-                  "fontWeight": "font-semibold",
-                  "fontFamily": "var(--heading-font-family)",
-                  "fontSize": "text-base",
-                  "color": "text-(--card-foreground)"
+                  "style": "font-family: var(--heading-font-family);"
                 },
-                "mobile": {},
-                "desktop": {},
                 "custom": {
                   "displayName": "Question"
-                }
+                },
+                "className": "font-semibold text-base text-(--card-foreground)"
               }
             },
             {
@@ -349,16 +203,10 @@
               "props": {
                 "text": "99.9% monthly uptime on Business and up, with service credits if we miss it.",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--muted-foreground)",
-                  "fontSize": "text-sm",
-                  "lineHeight": "leading-relaxed"
-                },
-                "mobile": {},
-                "desktop": {},
                 "custom": {
                   "displayName": "Answer"
-                }
+                },
+                "className": "text-(--muted-foreground) text-sm leading-relaxed"
               }
             }
           ]

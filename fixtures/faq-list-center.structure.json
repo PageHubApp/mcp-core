@@ -4,42 +4,19 @@
     "type": "section",
     "canDelete": true,
     "canEditName": true,
-    "root": {
-      "background": "bg-(--muted)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "width": "w-full",
-      "py": "py-16",
-      "px": "px-6",
-      "gap": "gap-10"
-    },
-    "desktop": {
-      "py": "py-24",
-      "px": "px-8",
-      "gap": "gap-14"
-    },
     "custom": {
       "displayName": "FAQ list center"
-    }
+    },
+    "className": "bg-(--muted) text-(--foreground) flex flex-col w-full py-16 px-6 gap-10 md:py-24 md:px-8 md:gap-14"
   },
   "children": [
     {
       "type": "Container",
       "props": {
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "width": "w-full",
-          "maxWidth": "max-w-2xl",
-          "mx": "mx-auto",
-          "alignItems": "items-center",
-          "textAlign": "text-center",
-          "gap": "gap-4"
+        "custom": {
+          "displayName": "Header"
         },
-        "custom": { "displayName": "Header" }
+        "className": "flex flex-col w-full max-w-2xl mx-auto items-center text-center gap-4"
       },
       "children": [
         {
@@ -48,13 +25,12 @@
             "text": "Have queries?",
             "tagName": "h2",
             "root": {
-              "fontWeight": "font-bold",
-              "fontFamily": "var(--heading-font-family)",
-              "lineHeight": "leading-tight"
+              "style": "font-family: var(--heading-font-family);"
             },
-            "mobile": { "fontSize": "text-2xl" },
-            "desktop": { "fontSize": "text-4xl" },
-            "custom": { "displayName": "Heading" }
+            "custom": {
+              "displayName": "Heading"
+            },
+            "className": "font-bold leading-tight text-2xl md:text-4xl"
           }
         }
       ]
@@ -62,22 +38,19 @@
     {
       "type": "Container",
       "props": {
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "width": "w-full",
-          "maxWidth": "max-w-2xl",
-          "mx": "mx-auto"
+        "custom": {
+          "displayName": "Questions List"
         },
-        "custom": { "displayName": "Questions List" }
+        "className": "flex flex-col w-full max-w-2xl mx-auto"
       },
       "children": [
         {
           "type": "Container",
           "props": {
-            "root": { "border": "border-b", "borderColor": "border-(--border)" },
-            "mobile": { "py": "py-6", "display": "flex", "flexDirection": "flex-col", "gap": "gap-2" },
-            "custom": { "displayName": "FAQ Row" }
+            "custom": {
+              "displayName": "FAQ Row"
+            },
+            "className": "border-b border-(--border) py-6 flex flex-col gap-2"
           },
           "children": [
             {
@@ -85,8 +58,10 @@
               "props": {
                 "text": "How secure is my data?",
                 "tagName": "h3",
-                "root": { "fontWeight": "font-bold", "fontSize": "text-base" },
-                "custom": { "displayName": "Question" }
+                "custom": {
+                  "displayName": "Question"
+                },
+                "className": "font-bold text-base"
               }
             },
             {
@@ -94,8 +69,10 @@
               "props": {
                 "text": "Every site on PageHub is protected by enterprise-grade encryption and automated security patches.",
                 "tagName": "p",
-                "root": { "color": "text-(--muted-foreground)", "fontSize": "text-sm", "lineHeight": "leading-relaxed" },
-                "custom": { "displayName": "Answer" }
+                "custom": {
+                  "displayName": "Answer"
+                },
+                "className": "text-(--muted-foreground) text-sm leading-relaxed"
               }
             }
           ]
@@ -103,9 +80,10 @@
         {
           "type": "Container",
           "props": {
-            "root": { "border": "border-b", "borderColor": "border-(--border)" },
-            "mobile": { "py": "py-6", "display": "flex", "flexDirection": "flex-col", "gap": "gap-2" },
-            "custom": { "displayName": "FAQ Row" }
+            "custom": {
+              "displayName": "FAQ Row"
+            },
+            "className": "border-b border-(--border) py-6 flex flex-col gap-2"
           },
           "children": [
             {
@@ -113,8 +91,10 @@
               "props": {
                 "text": "What support is included?",
                 "tagName": "h3",
-                "root": { "fontWeight": "font-bold", "fontSize": "text-base" },
-                "custom": { "displayName": "Question" }
+                "custom": {
+                  "displayName": "Question"
+                },
+                "className": "font-bold text-base"
               }
             },
             {
@@ -122,8 +102,10 @@
               "props": {
                 "text": "All accounts include email support. Pro and Agency plans get access to priority chat and scheduled calls.",
                 "tagName": "p",
-                "root": { "color": "text-(--muted-foreground)", "fontSize": "text-sm", "lineHeight": "leading-relaxed" },
-                "custom": { "displayName": "Answer" }
+                "custom": {
+                  "displayName": "Answer"
+                },
+                "className": "text-(--muted-foreground) text-sm leading-relaxed"
               }
             }
           ]
@@ -131,8 +113,10 @@
         {
           "type": "Container",
           "props": {
-            "mobile": { "py": "py-6", "display": "flex", "flexDirection": "flex-col", "gap": "gap-2" },
-            "custom": { "displayName": "FAQ Row" }
+            "custom": {
+              "displayName": "FAQ Row"
+            },
+            "className": "py-6 flex flex-col gap-2"
           },
           "children": [
             {
@@ -140,8 +124,10 @@
               "props": {
                 "text": "Which payment methods?",
                 "tagName": "h3",
-                "root": { "fontWeight": "font-bold", "fontSize": "text-base" },
-                "custom": { "displayName": "Question" }
+                "custom": {
+                  "displayName": "Question"
+                },
+                "className": "font-bold text-base"
               }
             },
             {
@@ -149,8 +135,10 @@
               "props": {
                 "text": "We accept all major credit cards and PayPal. Enterprise users can also pay via bank transfer/wire.",
                 "tagName": "p",
-                "root": { "color": "text-(--muted-foreground)", "fontSize": "text-sm", "lineHeight": "leading-relaxed" },
-                "custom": { "displayName": "Answer" }
+                "custom": {
+                  "displayName": "Answer"
+                },
+                "className": "text-(--muted-foreground) text-sm leading-relaxed"
               }
             }
           ]
@@ -160,16 +148,10 @@
     {
       "type": "Container",
       "props": {
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "width": "w-full",
-          "maxWidth": "max-w-2xl",
-          "mx": "mx-auto",
-          "alignItems": "items-center",
-          "pt": "pt-8"
+        "custom": {
+          "displayName": "Footer"
         },
-        "custom": { "displayName": "Footer" }
+        "className": "flex flex-col w-full max-w-2xl mx-auto items-center pt-8"
       },
       "children": [
         {
@@ -177,9 +159,10 @@
           "props": {
             "text": "More in Help Center",
             "url": "/help",
-            "root": { "background": "bg-(--primary)", "color": "text-(--primary-foreground)", "radius": "rounded-(--radius)" },
-            "mobile": { "px": "px-6", "py": "py-2" },
-            "custom": { "displayName": "Help Button" }
+            "custom": {
+              "displayName": "Help Button"
+            },
+            "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) px-6 py-2"
           }
         }
       ]

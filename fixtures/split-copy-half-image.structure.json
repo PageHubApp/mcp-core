@@ -4,26 +4,10 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "alignItems": "items-center",
-      "justifyContent": "justify-center",
-      "width": "w-full",
-      "py": "py-12",
-      "px": "px-4"
-    },
-    "desktop": {
-      "py": "py-16",
-      "px": "px-6"
-    },
     "custom": {
       "displayName": "Split copy and photo"
-    }
+    },
+    "className": "bg-(--background) text-(--foreground) flex flex-col items-center justify-center w-full py-12 px-4 md:py-16 md:px-6"
   },
   "children": [
     {
@@ -31,28 +15,11 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "py": "py-3",
-          "px": "px-3",
-          "mx": "mx-auto",
-          "display": "flex",
-          "justifyContent": "justify-center",
-          "flexDirection": "flex-col",
-          "width": "w-full",
-          "gap": "gap-8",
-          "height": "h-auto",
-          "maxWidth": "max-w-(--content-width)"
-        },
-        "desktop": {
-          "flexDirection": "flex-row",
-          "alignItems": "items-center",
-          "gap": "gap-12"
-        },
         "hidden": false,
         "custom": {
           "displayName": "Split row"
-        }
+        },
+        "className": "py-3 px-3 mx-auto flex justify-center flex-col w-full gap-8 h-auto max-w-(--content-width) md:flex-row md:items-center md:gap-12"
       },
       "children": [
         {
@@ -60,24 +27,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "flex",
-              "justifyContent": "justify-center",
-              "flexDirection": "flex-col",
-              "width": "w-full",
-              "gap": "gap-4",
-              "height": "h-auto"
-            },
-            "desktop": {
-              "alignItems": "items-start",
-              "gap": "gap-6",
-              "width": "w-1/2",
-              "px": "px-4"
-            },
             "custom": {
               "displayName": "Copy column"
-            }
+            },
+            "className": "flex justify-center flex-col w-full gap-4 h-auto md:items-start md:gap-6 md:w-1/2 md:px-4"
           },
           "children": [
             {
@@ -88,23 +41,12 @@
                 "text": "Layouts that stay legible under pressure",
                 "tagName": "h2",
                 "root": {
-                  "preset": "h4",
-                  "fontFamily": "var(--heading-font-family)",
-                  "fontWeight": "font-bold",
-                  "lineHeight": "leading-tight",
-                  "color": "text-(--foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-2xl",
-                  "textAlign": "text-center"
-                },
-                "desktop": {
-                  "fontSize": "text-4xl",
-                  "textAlign": "text-left"
+                  "style": "font-family: var(--heading-font-family);"
                 },
                 "custom": {
                   "displayName": "Heading"
-                }
+                },
+                "className": "h4 font-bold leading-tight text-(--foreground) text-2xl text-center md:text-4xl md:text-left"
               }
             },
             {
@@ -114,22 +56,10 @@
                 "canEditName": true,
                 "text": "PageHub keeps typography, spacing, and section shells consistent so marketing and product can iterate without breaking the grid.",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--muted-foreground)",
-                  "lineHeight": "leading-relaxed"
-                },
-                "mobile": {
-                  "fontSize": "text-base",
-                  "textAlign": "text-center"
-                },
-                "desktop": {
-                  "fontSize": "text-xl",
-                  "textAlign": "text-left",
-                  "lineHeight": "leading-snug"
-                },
                 "custom": {
                   "displayName": "Body"
-                }
+                },
+                "className": "text-(--muted-foreground) leading-relaxed text-base text-center md:text-xl md:text-left md:leading-snug"
               }
             }
           ]
@@ -139,35 +69,12 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {
-              "radius": "rounded-(--card-radius)"
-            },
-            "mobile": {
-              "py": "py-3",
-              "px": "px-3",
-              "mx": "mx-auto",
-              "display": "flex",
-              "justifyContent": "justify-center",
-              "flexDirection": "flex-col",
-              "width": "w-full",
-              "gap": "gap-3",
-              "minHeight": "min-h-72",
-              "backgroundSize": "bg-cover",
-              "backgroundPosition": "bg-center",
-              "overflow": "overflow-hidden"
-            },
-            "desktop": {
-              "backgroundSize": "bg-cover",
-              "backgroundPosition": "bg-bottom",
-              "minHeight": "min-h-96",
-              "height": "",
-              "width": "w-1/2"
-            },
             "backgroundImageType": "img",
             "backgroundImage": "https://imagedelivery.net/8PYt12v3QMuDRiYrOftNUQ/de5f5647-5125-4662-488c-04981ac98500/public",
             "custom": {
               "displayName": "Photo column"
-            }
+            },
+            "className": "rounded-(--card-radius) py-3 px-3 mx-auto flex justify-center flex-col w-full gap-3 min-h-72 bg-cover bg-center overflow-hidden md:bg-cover md:bg-bottom md:min-h-96 md:w-1/2"
           }
         }
       ]

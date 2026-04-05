@@ -4,26 +4,10 @@
     "type": "section",
     "canDelete": true,
     "canEditName": true,
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "width": "w-full",
-      "py": "py-16",
-      "px": "px-6",
-      "gap": "gap-12"
-    },
-    "desktop": {
-      "py": "py-24",
-      "px": "px-8",
-      "gap": "gap-14"
-    },
     "custom": {
       "displayName": "Pricing section"
-    }
+    },
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-16 px-6 gap-12 md:py-24 md:px-8 md:gap-14"
   },
   "children": [
     {
@@ -31,21 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "width": "w-full",
-          "maxWidth": "max-w-(--content-width)",
-          "mx": "mx-auto",
-          "gap": "gap-10"
-        },
-        "desktop": {
-          "gap": "gap-12"
-        },
         "custom": {
           "displayName": "Pricing content"
-        }
+        },
+        "className": "flex flex-col w-full max-w-(--content-width) mx-auto gap-10 md:gap-12"
       },
       "children": [
         {
@@ -53,21 +26,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "alignItems": "items-center",
-              "textAlign": "text-center",
-              "width": "w-full",
-              "maxWidth": "max-w-2xl",
-              "mx": "mx-auto",
-              "gap": "gap-3"
-            },
-            "desktop": {},
             "custom": {
               "displayName": "Section header"
-            }
+            },
+            "className": "flex flex-col items-center text-center w-full max-w-2xl mx-auto gap-3"
           },
           "children": [
             {
@@ -75,17 +37,10 @@
               "props": {
                 "text": "PRICING",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--primary)",
-                  "fontSize": "text-xs",
-                  "fontWeight": "font-bold",
-                  "letterSpacing": "tracking-widest"
-                },
-                "mobile": {},
-                "desktop": {},
                 "custom": {
                   "displayName": "Eyebrow"
-                }
+                },
+                "className": "text-(--primary) text-xs font-bold tracking-widest"
               }
             },
             {
@@ -94,20 +49,12 @@
                 "text": "Plans that scale with your roadmap.",
                 "tagName": "h2",
                 "root": {
-                  "color": "text-(--foreground)",
-                  "fontWeight": "font-bold",
-                  "fontFamily": "var(--heading-font-family)",
-                  "lineHeight": "leading-tight"
-                },
-                "mobile": {
-                  "fontSize": "text-3xl"
-                },
-                "desktop": {
-                  "fontSize": "text-4xl"
+                  "style": "font-family: var(--heading-font-family);"
                 },
                 "custom": {
                   "displayName": "Heading"
-                }
+                },
+                "className": "text-(--foreground) font-bold leading-tight text-3xl md:text-4xl"
               }
             },
             {
@@ -115,19 +62,10 @@
               "props": {
                 "text": "Choose a tier, ship with confidence, and move up when your team needs more guardrails — core workflows stay predictable.",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--muted-foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-base",
-                  "lineHeight": "leading-relaxed"
-                },
-                "desktop": {
-                  "fontSize": "text-lg"
-                },
                 "custom": {
                   "displayName": "Intro"
-                }
+                },
+                "className": "text-(--muted-foreground) text-base leading-relaxed md:text-lg"
               }
             }
           ]
@@ -137,21 +75,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "grid",
-              "gridCols": "grid-cols-1",
-              "gap": "gap-8",
-              "width": "w-full",
-              "alignItems": "items-stretch"
-            },
-            "desktop": {
-              "gridCols": "grid-cols-3",
-              "gap": "gap-8"
-            },
             "custom": {
               "displayName": "Plan grid"
-            }
+            },
+            "className": "grid grid-cols-1 gap-8 w-full items-stretch md:grid-cols-3 md:gap-8"
           },
           "children": [
             {
@@ -159,27 +86,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--card)",
-                  "color": "text-(--card-foreground)",
-                  "radius": "rounded-(--card-radius)",
-                  "shadow": "shadow-sm",
-                  "border": "border",
-                  "borderColor": "border-(--muted)"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "alignItems": "items-center",
-                  "textAlign": "text-center",
-                  "width": "w-full",
-                  "p": "p-8",
-                  "gap": "gap-6"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Launch plan"
-                }
+                },
+                "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) shadow-sm border border-(--muted) flex flex-col items-center text-center w-full p-8 gap-6"
               },
               "children": [
                 {
@@ -188,16 +98,12 @@
                     "text": "Launch",
                     "tagName": "h3",
                     "root": {
-                      "fontWeight": "font-bold",
-                      "fontFamily": "var(--heading-font-family)"
+                      "style": "font-family: var(--heading-font-family);"
                     },
-                    "mobile": {
-                      "fontSize": "text-lg"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Plan name"
-                    }
+                    },
+                    "className": "font-bold text-lg"
                   }
                 },
                 {
@@ -205,17 +111,10 @@
                   "props": {
                     "text": "Best when you are proving product-market fit with a small crew and a tight scope.",
                     "tagName": "p",
-                    "root": {
-                      "color": "text-(--muted-foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-sm",
-                      "lineHeight": "leading-relaxed"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Pitch"
-                    }
+                    },
+                    "className": "text-(--muted-foreground) text-sm leading-relaxed"
                   }
                 },
                 {
@@ -223,19 +122,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-row",
-                      "alignItems": "items-baseline",
-                      "justifyContent": "justify-center",
-                      "gap": "gap-1",
-                      "width": "w-full"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Price row"
-                    }
+                    },
+                    "className": "flex flex-row items-baseline justify-center gap-1 w-full"
                   },
                   "children": [
                     {
@@ -244,19 +134,12 @@
                         "text": "$39",
                         "tagName": "span",
                         "root": {
-                          "fontWeight": "font-bold",
-                          "fontFamily": "var(--heading-font-family)",
-                          "lineHeight": "leading-none"
-                        },
-                        "mobile": {
-                          "fontSize": "text-4xl"
-                        },
-                        "desktop": {
-                          "fontSize": "text-5xl"
+                          "style": "font-family: var(--heading-font-family);"
                         },
                         "custom": {
                           "displayName": "Amount"
-                        }
+                        },
+                        "className": "font-bold leading-none text-4xl md:text-5xl"
                       }
                     },
                     {
@@ -264,17 +147,10 @@
                       "props": {
                         "text": "/month",
                         "tagName": "span",
-                        "root": {
-                          "color": "text-(--muted-foreground)",
-                          "fontWeight": "font-medium"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm"
-                        },
-                        "desktop": {},
                         "custom": {
                           "displayName": "Term"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) font-medium text-sm"
                       }
                     }
                   ]
@@ -284,24 +160,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {
-                      "border": "border-t",
-                      "borderColor": "border-(--muted)"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "gap": "gap-3",
-                      "pt": "pt-6",
-                      "width": "w-full",
-                      "maxWidth": "max-w-xs",
-                      "mx": "mx-auto",
-                      "textAlign": "text-left"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Features"
-                    }
+                    },
+                    "className": "border-t border-(--muted) flex flex-col gap-3 pt-6 w-full max-w-xs mx-auto text-left"
                   },
                   "children": [
                     {
@@ -309,38 +171,21 @@
                       "props": {
                         "canDelete": true,
                         "canEditName": true,
-                        "root": {},
-                        "mobile": {
-                          "display": "flex",
-                          "flexDirection": "flex-row",
-                          "gap": "gap-3",
-                          "alignItems": "items-start",
-                          "width": "w-full"
-                        },
-                        "desktop": {},
                         "custom": {
                           "displayName": "Feature"
-                        }
+                        },
+                        "className": "flex flex-row gap-3 items-start w-full"
                       },
                       "children": [
                         {
                           "type": "Text",
                           "props": {
-                            "text": "\u2713",
+                            "text": "✓",
                             "tagName": "span",
-                            "root": {
-                              "color": "text-(--primary)",
-                              "fontWeight": "font-bold",
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-none"
-                            },
-                            "mobile": {
-                              "mt": "mt-1"
-                            },
-                            "desktop": {},
                             "custom": {
                               "displayName": "Check"
-                            }
+                            },
+                            "className": "text-(--primary) font-bold text-sm leading-none mt-1"
                           }
                         },
                         {
@@ -348,15 +193,10 @@
                           "props": {
                             "text": "Up to <strong>3</strong> live projects",
                             "tagName": "p",
-                            "root": {
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-snug"
-                            },
-                            "mobile": {},
-                            "desktop": {},
                             "custom": {
                               "displayName": "Line"
-                            }
+                            },
+                            "className": "text-sm leading-snug"
                           }
                         }
                       ]
@@ -366,38 +206,21 @@
                       "props": {
                         "canDelete": true,
                         "canEditName": true,
-                        "root": {},
-                        "mobile": {
-                          "display": "flex",
-                          "flexDirection": "flex-row",
-                          "gap": "gap-3",
-                          "alignItems": "items-start",
-                          "width": "w-full"
-                        },
-                        "desktop": {},
                         "custom": {
                           "displayName": "Feature"
-                        }
+                        },
+                        "className": "flex flex-row gap-3 items-start w-full"
                       },
                       "children": [
                         {
                           "type": "Text",
                           "props": {
-                            "text": "\u2713",
+                            "text": "✓",
                             "tagName": "span",
-                            "root": {
-                              "color": "text-(--primary)",
-                              "fontWeight": "font-bold",
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-none"
-                            },
-                            "mobile": {
-                              "mt": "mt-1"
-                            },
-                            "desktop": {},
                             "custom": {
                               "displayName": "Check"
-                            }
+                            },
+                            "className": "text-(--primary) font-bold text-sm leading-none mt-1"
                           }
                         },
                         {
@@ -405,15 +228,10 @@
                           "props": {
                             "text": "<strong>10 GB</strong> media storage",
                             "tagName": "p",
-                            "root": {
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-snug"
-                            },
-                            "mobile": {},
-                            "desktop": {},
                             "custom": {
                               "displayName": "Line"
-                            }
+                            },
+                            "className": "text-sm leading-snug"
                           }
                         }
                       ]
@@ -423,38 +241,21 @@
                       "props": {
                         "canDelete": true,
                         "canEditName": true,
-                        "root": {},
-                        "mobile": {
-                          "display": "flex",
-                          "flexDirection": "flex-row",
-                          "gap": "gap-3",
-                          "alignItems": "items-start",
-                          "width": "w-full"
-                        },
-                        "desktop": {},
                         "custom": {
                           "displayName": "Feature"
-                        }
+                        },
+                        "className": "flex flex-row gap-3 items-start w-full"
                       },
                       "children": [
                         {
                           "type": "Text",
                           "props": {
-                            "text": "\u2713",
+                            "text": "✓",
                             "tagName": "span",
-                            "root": {
-                              "color": "text-(--primary)",
-                              "fontWeight": "font-bold",
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-none"
-                            },
-                            "mobile": {
-                              "mt": "mt-1"
-                            },
-                            "desktop": {},
                             "custom": {
                               "displayName": "Check"
-                            }
+                            },
+                            "className": "text-(--primary) font-bold text-sm leading-none mt-1"
                           }
                         },
                         {
@@ -462,15 +263,10 @@
                           "props": {
                             "text": "Email help within <strong>48 hours</strong>",
                             "tagName": "p",
-                            "root": {
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-snug"
-                            },
-                            "mobile": {},
-                            "desktop": {},
                             "custom": {
                               "displayName": "Line"
-                            }
+                            },
+                            "className": "text-sm leading-snug"
                           }
                         }
                       ]
@@ -480,38 +276,21 @@
                       "props": {
                         "canDelete": true,
                         "canEditName": true,
-                        "root": {},
-                        "mobile": {
-                          "display": "flex",
-                          "flexDirection": "flex-row",
-                          "gap": "gap-3",
-                          "alignItems": "items-start",
-                          "width": "w-full"
-                        },
-                        "desktop": {},
                         "custom": {
                           "displayName": "Feature"
-                        }
+                        },
+                        "className": "flex flex-row gap-3 items-start w-full"
                       },
                       "children": [
                         {
                           "type": "Text",
                           "props": {
-                            "text": "\u2713",
+                            "text": "✓",
                             "tagName": "span",
-                            "root": {
-                              "color": "text-(--primary)",
-                              "fontWeight": "font-bold",
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-none"
-                            },
-                            "mobile": {
-                              "mt": "mt-1"
-                            },
-                            "desktop": {},
                             "custom": {
                               "displayName": "Check"
-                            }
+                            },
+                            "className": "text-(--primary) font-bold text-sm leading-none mt-1"
                           }
                         },
                         {
@@ -519,15 +298,10 @@
                           "props": {
                             "text": "Core analytics snapshot",
                             "tagName": "p",
-                            "root": {
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-snug"
-                            },
-                            "mobile": {},
-                            "desktop": {},
                             "custom": {
                               "displayName": "Line"
-                            }
+                            },
+                            "className": "text-sm leading-snug"
                           }
                         }
                       ]
@@ -537,38 +311,21 @@
                       "props": {
                         "canDelete": true,
                         "canEditName": true,
-                        "root": {},
-                        "mobile": {
-                          "display": "flex",
-                          "flexDirection": "flex-row",
-                          "gap": "gap-3",
-                          "alignItems": "items-start",
-                          "width": "w-full"
-                        },
-                        "desktop": {},
                         "custom": {
                           "displayName": "Feature"
-                        }
+                        },
+                        "className": "flex flex-row gap-3 items-start w-full"
                       },
                       "children": [
                         {
                           "type": "Text",
                           "props": {
-                            "text": "\u2713",
+                            "text": "✓",
                             "tagName": "span",
-                            "root": {
-                              "color": "text-(--primary)",
-                              "fontWeight": "font-bold",
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-none"
-                            },
-                            "mobile": {
-                              "mt": "mt-1"
-                            },
-                            "desktop": {},
                             "custom": {
                               "displayName": "Check"
-                            }
+                            },
+                            "className": "text-(--primary) font-bold text-sm leading-none mt-1"
                           }
                         },
                         {
@@ -576,15 +333,10 @@
                           "props": {
                             "text": "Cancel <strong>anytime</strong>",
                             "tagName": "p",
-                            "root": {
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-snug"
-                            },
-                            "mobile": {},
-                            "desktop": {},
                             "custom": {
                               "displayName": "Line"
-                            }
+                            },
+                            "className": "text-sm leading-snug"
                           }
                         }
                       ]
@@ -596,24 +348,10 @@
                   "props": {
                     "text": "Start with Launch",
                     "url": "#",
-                    "root": {
-                      "background": "bg-(--primary)",
-                      "color": "text-(--primary-foreground)",
-                      "radius": "rounded-(--radius)"
-                    },
-                    "mobile": {
-                      "width": "w-full",
-                      "py": "py-3",
-                      "px": "px-6",
-                      "textAlign": "text-center",
-                      "fontSize": "text-sm",
-                      "fontWeight": "font-medium",
-                      "mt": "mt-2"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "CTA"
-                    }
+                    },
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) w-full py-3 px-6 text-center text-sm font-medium mt-2"
                   }
                 }
               ]
@@ -623,27 +361,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--card)",
-                  "color": "text-(--card-foreground)",
-                  "radius": "rounded-(--card-radius)",
-                  "shadow": "shadow-lg",
-                  "border": "border-2",
-                  "borderColor": "border-(--primary)"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "alignItems": "items-center",
-                  "textAlign": "text-center",
-                  "width": "w-full",
-                  "p": "p-8",
-                  "gap": "gap-6"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Growth plan"
-                }
+                },
+                "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) shadow-lg border-2 border-(--primary) flex flex-col items-center text-center w-full p-8 gap-6"
               },
               "children": [
                 {
@@ -652,16 +373,12 @@
                     "text": "Growth",
                     "tagName": "h3",
                     "root": {
-                      "fontWeight": "font-bold",
-                      "fontFamily": "var(--heading-font-family)"
+                      "style": "font-family: var(--heading-font-family);"
                     },
-                    "mobile": {
-                      "fontSize": "text-lg"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Plan name"
-                    }
+                    },
+                    "className": "font-bold text-lg"
                   }
                 },
                 {
@@ -669,17 +386,10 @@
                   "props": {
                     "text": "The sweet spot for product teams sharing libraries, reviews, and release cadence.",
                     "tagName": "p",
-                    "root": {
-                      "color": "text-(--muted-foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-sm",
-                      "lineHeight": "leading-relaxed"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Pitch"
-                    }
+                    },
+                    "className": "text-(--muted-foreground) text-sm leading-relaxed"
                   }
                 },
                 {
@@ -687,19 +397,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-row",
-                      "alignItems": "items-baseline",
-                      "justifyContent": "justify-center",
-                      "gap": "gap-1",
-                      "width": "w-full"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Price row"
-                    }
+                    },
+                    "className": "flex flex-row items-baseline justify-center gap-1 w-full"
                   },
                   "children": [
                     {
@@ -708,19 +409,12 @@
                         "text": "$129",
                         "tagName": "span",
                         "root": {
-                          "fontWeight": "font-bold",
-                          "fontFamily": "var(--heading-font-family)",
-                          "lineHeight": "leading-none"
-                        },
-                        "mobile": {
-                          "fontSize": "text-4xl"
-                        },
-                        "desktop": {
-                          "fontSize": "text-5xl"
+                          "style": "font-family: var(--heading-font-family);"
                         },
                         "custom": {
                           "displayName": "Amount"
-                        }
+                        },
+                        "className": "font-bold leading-none text-4xl md:text-5xl"
                       }
                     },
                     {
@@ -728,17 +422,10 @@
                       "props": {
                         "text": "/month",
                         "tagName": "span",
-                        "root": {
-                          "color": "text-(--muted-foreground)",
-                          "fontWeight": "font-medium"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm"
-                        },
-                        "desktop": {},
                         "custom": {
                           "displayName": "Term"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) font-medium text-sm"
                       }
                     }
                   ]
@@ -748,24 +435,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {
-                      "border": "border-t",
-                      "borderColor": "border-(--muted)"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "gap": "gap-3",
-                      "pt": "pt-6",
-                      "width": "w-full",
-                      "maxWidth": "max-w-xs",
-                      "mx": "mx-auto",
-                      "textAlign": "text-left"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Features"
-                    }
+                    },
+                    "className": "border-t border-(--muted) flex flex-col gap-3 pt-6 w-full max-w-xs mx-auto text-left"
                   },
                   "children": [
                     {
@@ -773,38 +446,21 @@
                       "props": {
                         "canDelete": true,
                         "canEditName": true,
-                        "root": {},
-                        "mobile": {
-                          "display": "flex",
-                          "flexDirection": "flex-row",
-                          "gap": "gap-3",
-                          "alignItems": "items-start",
-                          "width": "w-full"
-                        },
-                        "desktop": {},
                         "custom": {
                           "displayName": "Feature"
-                        }
+                        },
+                        "className": "flex flex-row gap-3 items-start w-full"
                       },
                       "children": [
                         {
                           "type": "Text",
                           "props": {
-                            "text": "\u2713",
+                            "text": "✓",
                             "tagName": "span",
-                            "root": {
-                              "color": "text-(--primary)",
-                              "fontWeight": "font-bold",
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-none"
-                            },
-                            "mobile": {
-                              "mt": "mt-1"
-                            },
-                            "desktop": {},
                             "custom": {
                               "displayName": "Check"
-                            }
+                            },
+                            "className": "text-(--primary) font-bold text-sm leading-none mt-1"
                           }
                         },
                         {
@@ -812,15 +468,10 @@
                           "props": {
                             "text": "<strong>Unlimited</strong> projects",
                             "tagName": "p",
-                            "root": {
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-snug"
-                            },
-                            "mobile": {},
-                            "desktop": {},
                             "custom": {
                               "displayName": "Line"
-                            }
+                            },
+                            "className": "text-sm leading-snug"
                           }
                         }
                       ]
@@ -830,38 +481,21 @@
                       "props": {
                         "canDelete": true,
                         "canEditName": true,
-                        "root": {},
-                        "mobile": {
-                          "display": "flex",
-                          "flexDirection": "flex-row",
-                          "gap": "gap-3",
-                          "alignItems": "items-start",
-                          "width": "w-full"
-                        },
-                        "desktop": {},
                         "custom": {
                           "displayName": "Feature"
-                        }
+                        },
+                        "className": "flex flex-row gap-3 items-start w-full"
                       },
                       "children": [
                         {
                           "type": "Text",
                           "props": {
-                            "text": "\u2713",
+                            "text": "✓",
                             "tagName": "span",
-                            "root": {
-                              "color": "text-(--primary)",
-                              "fontWeight": "font-bold",
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-none"
-                            },
-                            "mobile": {
-                              "mt": "mt-1"
-                            },
-                            "desktop": {},
                             "custom": {
                               "displayName": "Check"
-                            }
+                            },
+                            "className": "text-(--primary) font-bold text-sm leading-none mt-1"
                           }
                         },
                         {
@@ -869,15 +503,10 @@
                           "props": {
                             "text": "<strong>250 GB</strong> storage + CDN",
                             "tagName": "p",
-                            "root": {
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-snug"
-                            },
-                            "mobile": {},
-                            "desktop": {},
                             "custom": {
                               "displayName": "Line"
-                            }
+                            },
+                            "className": "text-sm leading-snug"
                           }
                         }
                       ]
@@ -887,38 +516,21 @@
                       "props": {
                         "canDelete": true,
                         "canEditName": true,
-                        "root": {},
-                        "mobile": {
-                          "display": "flex",
-                          "flexDirection": "flex-row",
-                          "gap": "gap-3",
-                          "alignItems": "items-start",
-                          "width": "w-full"
-                        },
-                        "desktop": {},
                         "custom": {
                           "displayName": "Feature"
-                        }
+                        },
+                        "className": "flex flex-row gap-3 items-start w-full"
                       },
                       "children": [
                         {
                           "type": "Text",
                           "props": {
-                            "text": "\u2713",
+                            "text": "✓",
                             "tagName": "span",
-                            "root": {
-                              "color": "text-(--primary)",
-                              "fontWeight": "font-bold",
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-none"
-                            },
-                            "mobile": {
-                              "mt": "mt-1"
-                            },
-                            "desktop": {},
                             "custom": {
                               "displayName": "Check"
-                            }
+                            },
+                            "className": "text-(--primary) font-bold text-sm leading-none mt-1"
                           }
                         },
                         {
@@ -926,15 +538,10 @@
                           "props": {
                             "text": "Shared <strong>component libraries</strong>",
                             "tagName": "p",
-                            "root": {
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-snug"
-                            },
-                            "mobile": {},
-                            "desktop": {},
                             "custom": {
                               "displayName": "Line"
-                            }
+                            },
+                            "className": "text-sm leading-snug"
                           }
                         }
                       ]
@@ -944,38 +551,21 @@
                       "props": {
                         "canDelete": true,
                         "canEditName": true,
-                        "root": {},
-                        "mobile": {
-                          "display": "flex",
-                          "flexDirection": "flex-row",
-                          "gap": "gap-3",
-                          "alignItems": "items-start",
-                          "width": "w-full"
-                        },
-                        "desktop": {},
                         "custom": {
                           "displayName": "Feature"
-                        }
+                        },
+                        "className": "flex flex-row gap-3 items-start w-full"
                       },
                       "children": [
                         {
                           "type": "Text",
                           "props": {
-                            "text": "\u2713",
+                            "text": "✓",
                             "tagName": "span",
-                            "root": {
-                              "color": "text-(--primary)",
-                              "fontWeight": "font-bold",
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-none"
-                            },
-                            "mobile": {
-                              "mt": "mt-1"
-                            },
-                            "desktop": {},
                             "custom": {
                               "displayName": "Check"
-                            }
+                            },
+                            "className": "text-(--primary) font-bold text-sm leading-none mt-1"
                           }
                         },
                         {
@@ -983,15 +573,10 @@
                           "props": {
                             "text": "Priority chat inside <strong>24 hours</strong>",
                             "tagName": "p",
-                            "root": {
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-snug"
-                            },
-                            "mobile": {},
-                            "desktop": {},
                             "custom": {
                               "displayName": "Line"
-                            }
+                            },
+                            "className": "text-sm leading-snug"
                           }
                         }
                       ]
@@ -1001,38 +586,21 @@
                       "props": {
                         "canDelete": true,
                         "canEditName": true,
-                        "root": {},
-                        "mobile": {
-                          "display": "flex",
-                          "flexDirection": "flex-row",
-                          "gap": "gap-3",
-                          "alignItems": "items-start",
-                          "width": "w-full"
-                        },
-                        "desktop": {},
                         "custom": {
                           "displayName": "Feature"
-                        }
+                        },
+                        "className": "flex flex-row gap-3 items-start w-full"
                       },
                       "children": [
                         {
                           "type": "Text",
                           "props": {
-                            "text": "\u2713",
+                            "text": "✓",
                             "tagName": "span",
-                            "root": {
-                              "color": "text-(--primary)",
-                              "fontWeight": "font-bold",
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-none"
-                            },
-                            "mobile": {
-                              "mt": "mt-1"
-                            },
-                            "desktop": {},
                             "custom": {
                               "displayName": "Check"
-                            }
+                            },
+                            "className": "text-(--primary) font-bold text-sm leading-none mt-1"
                           }
                         },
                         {
@@ -1040,15 +608,10 @@
                           "props": {
                             "text": "<strong>Quarterly</strong> roadmap reviews",
                             "tagName": "p",
-                            "root": {
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-snug"
-                            },
-                            "mobile": {},
-                            "desktop": {},
                             "custom": {
                               "displayName": "Line"
-                            }
+                            },
+                            "className": "text-sm leading-snug"
                           }
                         }
                       ]
@@ -1060,24 +623,10 @@
                   "props": {
                     "text": "Choose Growth",
                     "url": "#",
-                    "root": {
-                      "background": "bg-(--primary)",
-                      "color": "text-(--primary-foreground)",
-                      "radius": "rounded-(--radius)"
-                    },
-                    "mobile": {
-                      "width": "w-full",
-                      "py": "py-3",
-                      "px": "px-6",
-                      "textAlign": "text-center",
-                      "fontSize": "text-sm",
-                      "fontWeight": "font-medium",
-                      "mt": "mt-2"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "CTA"
-                    }
+                    },
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) w-full py-3 px-6 text-center text-sm font-medium mt-2"
                   }
                 }
               ]
@@ -1087,27 +636,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--card)",
-                  "color": "text-(--card-foreground)",
-                  "radius": "rounded-(--card-radius)",
-                  "shadow": "shadow-sm",
-                  "border": "border",
-                  "borderColor": "border-(--muted)"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "alignItems": "items-center",
-                  "textAlign": "text-center",
-                  "width": "w-full",
-                  "p": "p-8",
-                  "gap": "gap-6"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Scale plan"
-                }
+                },
+                "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) shadow-sm border border-(--muted) flex flex-col items-center text-center w-full p-8 gap-6"
               },
               "children": [
                 {
@@ -1116,16 +648,12 @@
                     "text": "Scale",
                     "tagName": "h3",
                     "root": {
-                      "fontWeight": "font-bold",
-                      "fontFamily": "var(--heading-font-family)"
+                      "style": "font-family: var(--heading-font-family);"
                     },
-                    "mobile": {
-                      "fontSize": "text-lg"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Plan name"
-                    }
+                    },
+                    "className": "font-bold text-lg"
                   }
                 },
                 {
@@ -1133,17 +661,10 @@
                   "props": {
                     "text": "For orgs that need enterprise controls, tighter SLAs, and a human on speed-dial.",
                     "tagName": "p",
-                    "root": {
-                      "color": "text-(--muted-foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-sm",
-                      "lineHeight": "leading-relaxed"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Pitch"
-                    }
+                    },
+                    "className": "text-(--muted-foreground) text-sm leading-relaxed"
                   }
                 },
                 {
@@ -1151,19 +672,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {},
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-row",
-                      "alignItems": "items-baseline",
-                      "justifyContent": "justify-center",
-                      "gap": "gap-1",
-                      "width": "w-full"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Price row"
-                    }
+                    },
+                    "className": "flex flex-row items-baseline justify-center gap-1 w-full"
                   },
                   "children": [
                     {
@@ -1172,19 +684,12 @@
                         "text": "$499",
                         "tagName": "span",
                         "root": {
-                          "fontWeight": "font-bold",
-                          "fontFamily": "var(--heading-font-family)",
-                          "lineHeight": "leading-none"
-                        },
-                        "mobile": {
-                          "fontSize": "text-4xl"
-                        },
-                        "desktop": {
-                          "fontSize": "text-5xl"
+                          "style": "font-family: var(--heading-font-family);"
                         },
                         "custom": {
                           "displayName": "Amount"
-                        }
+                        },
+                        "className": "font-bold leading-none text-4xl md:text-5xl"
                       }
                     },
                     {
@@ -1192,17 +697,10 @@
                       "props": {
                         "text": "/month",
                         "tagName": "span",
-                        "root": {
-                          "color": "text-(--muted-foreground)",
-                          "fontWeight": "font-medium"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm"
-                        },
-                        "desktop": {},
                         "custom": {
                           "displayName": "Term"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) font-medium text-sm"
                       }
                     }
                   ]
@@ -1212,24 +710,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {
-                      "border": "border-t",
-                      "borderColor": "border-(--muted)"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "gap": "gap-3",
-                      "pt": "pt-6",
-                      "width": "w-full",
-                      "maxWidth": "max-w-xs",
-                      "mx": "mx-auto",
-                      "textAlign": "text-left"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Features"
-                    }
+                    },
+                    "className": "border-t border-(--muted) flex flex-col gap-3 pt-6 w-full max-w-xs mx-auto text-left"
                   },
                   "children": [
                     {
@@ -1237,38 +721,21 @@
                       "props": {
                         "canDelete": true,
                         "canEditName": true,
-                        "root": {},
-                        "mobile": {
-                          "display": "flex",
-                          "flexDirection": "flex-row",
-                          "gap": "gap-3",
-                          "alignItems": "items-start",
-                          "width": "w-full"
-                        },
-                        "desktop": {},
                         "custom": {
                           "displayName": "Feature"
-                        }
+                        },
+                        "className": "flex flex-row gap-3 items-start w-full"
                       },
                       "children": [
                         {
                           "type": "Text",
                           "props": {
-                            "text": "\u2713",
+                            "text": "✓",
                             "tagName": "span",
-                            "root": {
-                              "color": "text-(--primary)",
-                              "fontWeight": "font-bold",
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-none"
-                            },
-                            "mobile": {
-                              "mt": "mt-1"
-                            },
-                            "desktop": {},
                             "custom": {
                               "displayName": "Check"
-                            }
+                            },
+                            "className": "text-(--primary) font-bold text-sm leading-none mt-1"
                           }
                         },
                         {
@@ -1276,15 +743,10 @@
                           "props": {
                             "text": "<strong>Dedicated</strong> success partner",
                             "tagName": "p",
-                            "root": {
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-snug"
-                            },
-                            "mobile": {},
-                            "desktop": {},
                             "custom": {
                               "displayName": "Line"
-                            }
+                            },
+                            "className": "text-sm leading-snug"
                           }
                         }
                       ]
@@ -1294,38 +756,21 @@
                       "props": {
                         "canDelete": true,
                         "canEditName": true,
-                        "root": {},
-                        "mobile": {
-                          "display": "flex",
-                          "flexDirection": "flex-row",
-                          "gap": "gap-3",
-                          "alignItems": "items-start",
-                          "width": "w-full"
-                        },
-                        "desktop": {},
                         "custom": {
                           "displayName": "Feature"
-                        }
+                        },
+                        "className": "flex flex-row gap-3 items-start w-full"
                       },
                       "children": [
                         {
                           "type": "Text",
                           "props": {
-                            "text": "\u2713",
+                            "text": "✓",
                             "tagName": "span",
-                            "root": {
-                              "color": "text-(--primary)",
-                              "fontWeight": "font-bold",
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-none"
-                            },
-                            "mobile": {
-                              "mt": "mt-1"
-                            },
-                            "desktop": {},
                             "custom": {
                               "displayName": "Check"
-                            }
+                            },
+                            "className": "text-(--primary) font-bold text-sm leading-none mt-1"
                           }
                         },
                         {
@@ -1333,15 +778,10 @@
                           "props": {
                             "text": "<strong>SSO</strong> plus advanced roles",
                             "tagName": "p",
-                            "root": {
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-snug"
-                            },
-                            "mobile": {},
-                            "desktop": {},
                             "custom": {
                               "displayName": "Line"
-                            }
+                            },
+                            "className": "text-sm leading-snug"
                           }
                         }
                       ]
@@ -1351,38 +791,21 @@
                       "props": {
                         "canDelete": true,
                         "canEditName": true,
-                        "root": {},
-                        "mobile": {
-                          "display": "flex",
-                          "flexDirection": "flex-row",
-                          "gap": "gap-3",
-                          "alignItems": "items-start",
-                          "width": "w-full"
-                        },
-                        "desktop": {},
                         "custom": {
                           "displayName": "Feature"
-                        }
+                        },
+                        "className": "flex flex-row gap-3 items-start w-full"
                       },
                       "children": [
                         {
                           "type": "Text",
                           "props": {
-                            "text": "\u2713",
+                            "text": "✓",
                             "tagName": "span",
-                            "root": {
-                              "color": "text-(--primary)",
-                              "fontWeight": "font-bold",
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-none"
-                            },
-                            "mobile": {
-                              "mt": "mt-1"
-                            },
-                            "desktop": {},
                             "custom": {
                               "displayName": "Check"
-                            }
+                            },
+                            "className": "text-(--primary) font-bold text-sm leading-none mt-1"
                           }
                         },
                         {
@@ -1390,15 +813,10 @@
                           "props": {
                             "text": "<strong>99.9%</strong> uptime SLA",
                             "tagName": "p",
-                            "root": {
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-snug"
-                            },
-                            "mobile": {},
-                            "desktop": {},
                             "custom": {
                               "displayName": "Line"
-                            }
+                            },
+                            "className": "text-sm leading-snug"
                           }
                         }
                       ]
@@ -1408,38 +826,21 @@
                       "props": {
                         "canDelete": true,
                         "canEditName": true,
-                        "root": {},
-                        "mobile": {
-                          "display": "flex",
-                          "flexDirection": "flex-row",
-                          "gap": "gap-3",
-                          "alignItems": "items-start",
-                          "width": "w-full"
-                        },
-                        "desktop": {},
                         "custom": {
                           "displayName": "Feature"
-                        }
+                        },
+                        "className": "flex flex-row gap-3 items-start w-full"
                       },
                       "children": [
                         {
                           "type": "Text",
                           "props": {
-                            "text": "\u2713",
+                            "text": "✓",
                             "tagName": "span",
-                            "root": {
-                              "color": "text-(--primary)",
-                              "fontWeight": "font-bold",
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-none"
-                            },
-                            "mobile": {
-                              "mt": "mt-1"
-                            },
-                            "desktop": {},
                             "custom": {
                               "displayName": "Check"
-                            }
+                            },
+                            "className": "text-(--primary) font-bold text-sm leading-none mt-1"
                           }
                         },
                         {
@@ -1447,15 +848,10 @@
                           "props": {
                             "text": "<strong>Private</strong> Slack channel",
                             "tagName": "p",
-                            "root": {
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-snug"
-                            },
-                            "mobile": {},
-                            "desktop": {},
                             "custom": {
                               "displayName": "Line"
-                            }
+                            },
+                            "className": "text-sm leading-snug"
                           }
                         }
                       ]
@@ -1465,38 +861,21 @@
                       "props": {
                         "canDelete": true,
                         "canEditName": true,
-                        "root": {},
-                        "mobile": {
-                          "display": "flex",
-                          "flexDirection": "flex-row",
-                          "gap": "gap-3",
-                          "alignItems": "items-start",
-                          "width": "w-full"
-                        },
-                        "desktop": {},
                         "custom": {
                           "displayName": "Feature"
-                        }
+                        },
+                        "className": "flex flex-row gap-3 items-start w-full"
                       },
                       "children": [
                         {
                           "type": "Text",
                           "props": {
-                            "text": "\u2713",
+                            "text": "✓",
                             "tagName": "span",
-                            "root": {
-                              "color": "text-(--primary)",
-                              "fontWeight": "font-bold",
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-none"
-                            },
-                            "mobile": {
-                              "mt": "mt-1"
-                            },
-                            "desktop": {},
                             "custom": {
                               "displayName": "Check"
-                            }
+                            },
+                            "className": "text-(--primary) font-bold text-sm leading-none mt-1"
                           }
                         },
                         {
@@ -1504,15 +883,10 @@
                           "props": {
                             "text": "<strong>Custom</strong> billing and terms",
                             "tagName": "p",
-                            "root": {
-                              "fontSize": "text-sm",
-                              "lineHeight": "leading-snug"
-                            },
-                            "mobile": {},
-                            "desktop": {},
                             "custom": {
                               "displayName": "Line"
-                            }
+                            },
+                            "className": "text-sm leading-snug"
                           }
                         }
                       ]
@@ -1524,24 +898,10 @@
                   "props": {
                     "text": "Talk with sales",
                     "url": "#",
-                    "root": {
-                      "background": "bg-(--primary)",
-                      "color": "text-(--primary-foreground)",
-                      "radius": "rounded-(--radius)"
-                    },
-                    "mobile": {
-                      "width": "w-full",
-                      "py": "py-3",
-                      "px": "px-6",
-                      "textAlign": "text-center",
-                      "fontSize": "text-sm",
-                      "fontWeight": "font-medium",
-                      "mt": "mt-2"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "CTA"
-                    }
+                    },
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) w-full py-3 px-6 text-center text-sm font-medium mt-2"
                   }
                 }
               ]

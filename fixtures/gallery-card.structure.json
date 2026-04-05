@@ -4,25 +4,10 @@
     "type": "section",
     "canDelete": true,
     "canEditName": true,
-    "root": {
-      "background": "bg-(--muted)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "width": "w-full",
-      "maxWidth": "max-w-none",
-      "py": "py-10",
-      "px": "px-4"
-    },
-    "desktop": {
-      "py": "py-12",
-      "px": "px-6"
-    },
     "custom": {
       "displayName": "Gallery card section"
-    }
+    },
+    "className": "bg-(--muted) text-(--foreground) flex flex-col w-full max-w-none py-10 px-4 md:py-12 md:px-6"
   },
   "children": [
     {
@@ -30,18 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "width": "w-full",
-          "maxWidth": "max-w-xl",
-          "mx": "mx-auto"
-        },
-        "desktop": {},
         "custom": {
           "displayName": "Gallery card inner"
-        }
+        },
+        "className": "flex flex-col w-full max-w-xl mx-auto"
       },
       "children": [
         {
@@ -49,23 +26,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {
-              "radius": "rounded-(--card-radius)"
-            },
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "width": "w-full",
-              "position": "relative",
-              "minHeight": "min-h-[240px]",
-              "overflow": "overflow-hidden"
-            },
-            "desktop": {
-              "minHeight": "min-h-[300px]"
-            },
             "custom": {
               "displayName": "Gallery Card"
-            }
+            },
+            "className": "rounded-(--card-radius) flex flex-col w-full relative min-h-[240px] overflow-hidden md:min-h-[300px]"
           },
           "children": [
             {
@@ -74,19 +38,10 @@
                 "content": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&h=400&fit=crop",
                 "type": "url",
                 "alt": "Gallery image",
-                "root": {},
-                "mobile": {
-                  "width": "w-full",
-                  "height": "h-full",
-                  "objectFit": "object-cover",
-                  "position": "absolute",
-                  "top": "top-0",
-                  "left": "left-0"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "Image"
-                }
+                },
+                "className": "w-full h-full object-cover absolute top-0 left-0"
               }
             },
             {
@@ -94,22 +49,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "justifyContent": "justify-end",
-                  "p": "p-6",
-                  "position": "relative",
-                  "zIndex": "z-10",
-                  "minHeight": "min-h-[240px]"
-                },
-                "desktop": {
-                  "minHeight": "min-h-[300px]"
-                },
                 "custom": {
                   "displayName": "Overlay"
-                }
+                },
+                "className": "flex flex-col justify-end p-6 relative z-10 min-h-[240px] md:min-h-[300px]"
               },
               "children": [
                 {
@@ -117,19 +60,10 @@
                   "props": {
                     "text": "PHOTOGRAPHY",
                     "tagName": "p",
-                    "root": {
-                      "color": "text-white"
-                    },
-                    "mobile": {
-                      "fontSize": "text-xs",
-                      "fontWeight": "font-bold",
-                      "letterSpacing": "tracking-widest",
-                      "mb": "mb-1"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Category"
-                    }
+                    },
+                    "className": "text-white text-xs font-bold tracking-widest mb-1"
                   }
                 },
                 {
@@ -138,17 +72,12 @@
                     "text": "Abstract Landscapes",
                     "tagName": "h3",
                     "root": {
-                      "color": "text-white",
-                      "fontFamily": "var(--heading-font-family)"
+                      "style": "font-family: var(--heading-font-family);"
                     },
-                    "mobile": {
-                      "fontSize": "text-lg",
-                      "fontWeight": "font-bold"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "Title"
-                    }
+                    },
+                    "className": "text-white text-lg font-bold"
                   }
                 }
               ]

@@ -4,26 +4,10 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "alignItems": "items-center",
-      "justifyContent": "justify-center",
-      "width": "w-full",
-      "py": "py-12",
-      "px": "px-4"
-    },
-    "desktop": {
-      "py": "py-16",
-      "px": "px-6"
-    },
     "custom": {
       "displayName": "Outline CTA section"
-    }
+    },
+    "className": "bg-(--background) text-(--foreground) flex flex-col items-center justify-center w-full py-12 px-4 md:py-16 md:px-6"
   },
   "children": [
     {
@@ -31,28 +15,11 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "py": "py-3",
-          "px": "px-3",
-          "mx": "mx-auto",
-          "display": "flex",
-          "justifyContent": "justify-center",
-          "flexDirection": "flex-col",
-          "alignItems": "items-center",
-          "width": "w-full",
-          "gap": "gap-9",
-          "height": "h-auto",
-          "maxWidth": "max-w-(--content-width)"
-        },
-        "desktop": {
-          "width": "w-full",
-          "gap": "gap-12"
-        },
         "hidden": false,
         "custom": {
           "displayName": "Stack"
-        }
+        },
+        "className": "py-3 px-3 mx-auto flex justify-center flex-col items-center w-full gap-9 h-auto max-w-(--content-width) md:w-full md:gap-12"
       },
       "children": [
         {
@@ -63,23 +30,12 @@
             "text": "Put structure where your instincts already live",
             "tagName": "h2",
             "root": {
-              "preset": "h3",
-              "fontFamily": "var(--heading-font-family)",
-              "fontWeight": "font-bold",
-              "lineHeight": "leading-tight",
-              "color": "text-(--foreground)"
-            },
-            "mobile": {
-              "fontSize": "text-3xl",
-              "textAlign": "text-center"
-            },
-            "desktop": {
-              "textAlign": "text-center",
-              "fontSize": "text-5xl"
+              "style": "font-family: var(--heading-font-family);"
             },
             "custom": {
               "displayName": "Heading"
-            }
+            },
+            "className": "h3 font-bold leading-tight text-(--foreground) text-3xl text-center md:text-center md:text-5xl"
           }
         },
         {
@@ -89,23 +45,10 @@
             "canEditName": true,
             "text": "PageHub turns reusable blocks and presets into the default path, so experiments stay fast without forked layouts.",
             "tagName": "p",
-            "root": {
-              "color": "text-(--muted-foreground)",
-              "lineHeight": "leading-relaxed"
-            },
-            "mobile": {
-              "fontSize": "text-lg",
-              "textAlign": "text-center",
-              "maxWidth": "max-w-3xl"
-            },
-            "desktop": {
-              "textAlign": "text-center",
-              "fontSize": "text-2xl",
-              "lineHeight": "leading-snug"
-            },
             "custom": {
               "displayName": "Subcopy"
-            }
+            },
+            "className": "text-(--muted-foreground) leading-relaxed text-lg text-center max-w-3xl md:text-center md:text-2xl md:leading-snug"
           }
         },
         {
@@ -120,32 +63,8 @@
                 "url": "/contact"
               }
             ],
-            "desktop": {
-              "width": "",
-              "alignItems": "items-center",
-              "px": "px-20",
-              "py": "py-9",
-              "fontSize": "text-2xl",
-              "fontWeight": "font-semibold",
-              "lineHeight": "leading-normal",
-              "textAlign": "text-center",
-              "flexDirection": "flex-col",
-              "justifyContent": "justify-center"
-            },
             "iconFontSize": "",
-            "className": ["border-dashed"],
-            "root": {
-              "background": "bg-transparent",
-              "radius": "rounded-(--radius-lg)",
-              "borderColor": "border-(--foreground)",
-              "border": "border-4",
-              "color": "text-(--foreground)"
-            },
-            "mobile": {
-              "justifyContent": "justify-center",
-              "px": "px-20",
-              "py": "py-9"
-            },
+            "className": "bg-transparent rounded-(--radius-lg) border-(--foreground) border-4 text-(--foreground) justify-center px-20 py-9 md:items-center md:px-20 md:py-9 md:text-2xl md:font-semibold md:leading-normal md:text-center md:flex-col md:justify-center border-dashed",
             "hover": {
               "borderColor": "border-(--accent)",
               "color": "text-(--accent)",
@@ -164,29 +83,14 @@
                 "text": "Contact sales",
                 "url": "/contact",
                 "type": "button",
-                "root": {
-                  "background": "bg-transparent",
-                  "color": "text-(--foreground)"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-row",
-                  "alignItems": "items-center",
-                  "gap": "gap-2"
-                },
-                "desktop": {
-                  "flexDirection": "flex-row",
-                  "alignItems": "items-center",
-                  "gap": "gap-2",
-                  "fontSize": "text-2xl"
-                },
                 "hover": {
                   "background": "bg-transparent",
                   "color": "text-(--accent)"
                 },
                 "custom": {
                   "displayName": "Contact sales"
-                }
+                },
+                "className": "bg-transparent text-(--foreground) flex flex-row items-center gap-2 md:flex-row md:items-center md:gap-2 md:text-2xl"
               }
             }
           ]

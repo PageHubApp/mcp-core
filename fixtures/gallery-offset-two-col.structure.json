@@ -4,23 +4,10 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "width": "w-full",
-      "py": "py-16",
-      "px": "px-4"
-    },
-    "desktop": {
-      "px": "px-8"
-    },
     "custom": {
       "displayName": "Offset gallery"
-    }
+    },
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-16 px-4 md:px-8"
   },
   "children": [
     {
@@ -28,22 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "grid",
-          "gridCols": "grid-cols-1",
-          "gap": "gap-12",
-          "width": "w-full",
-          "maxWidth": "max-w-(--content-width)",
-          "mx": "mx-auto"
-        },
-        "desktop": {
-          "gridCols": "grid-cols-2",
-          "gap": "gap-16"
-        },
         "custom": {
           "displayName": "Grid"
-        }
+        },
+        "className": "grid grid-cols-1 gap-12 w-full max-w-(--content-width) mx-auto md:grid-cols-2 md:gap-16"
       },
       "children": [
         {
@@ -51,13 +26,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "width": "w-full"
-            },
-            "className": ["lg:mt-0"],
+            "className": "flex flex-col w-full lg:mt-0",
             "custom": {
               "displayName": "Column A"
             }
@@ -68,24 +37,12 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--foreground)/5",
-                  "radius": "rounded-(--card-radius)"
-                },
-                "mobile": {
-                  "width": "w-full",
-                  "minHeight": "min-h-[50vh]",
-                  "mb": "mb-6",
-                  "backgroundSize": "bg-cover",
-                  "backgroundPosition": "bg-center",
-                  "backgroundRepeat": "bg-no-repeat",
-                  "overflow": "overflow-hidden"
-                },
                 "backgroundImage": "https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?q=80&w=800&auto=format&fit=crop",
                 "backgroundImageType": "url",
                 "custom": {
                   "displayName": "Panel A"
-                }
+                },
+                "className": "bg-(--foreground)/5 rounded-(--card-radius) w-full min-h-[50vh] mb-6 bg-cover bg-center bg-no-repeat overflow-hidden"
               }
             },
             {
@@ -93,16 +50,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-row",
-                  "justifyContent": "justify-between",
-                  "alignItems": "items-center"
-                },
                 "custom": {
                   "displayName": "Caption A"
-                }
+                },
+                "className": "flex flex-row justify-between items-center"
               },
               "children": [
                 {
@@ -112,16 +63,10 @@
                     "canEditName": true,
                     "text": "SERIES / NORTH",
                     "tagName": "h3",
-                    "root": {
-                      "color": "text-(--foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-base",
-                      "letterSpacing": "tracking-widest"
-                    },
                     "custom": {
                       "displayName": "Title"
-                    }
+                    },
+                    "className": "text-(--foreground) text-base tracking-widest"
                   }
                 },
                 {
@@ -131,16 +76,10 @@
                     "canEditName": true,
                     "text": "2024",
                     "tagName": "p",
-                    "root": {
-                      "color": "text-(--muted-foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-xs",
-                      "letterSpacing": "tracking-wider"
-                    },
                     "custom": {
                       "displayName": "Year"
-                    }
+                    },
+                    "className": "text-(--muted-foreground) text-xs tracking-wider"
                   }
                 }
               ]
@@ -152,13 +91,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "width": "w-full"
-            },
-            "className": ["lg:mt-32"],
+            "className": "flex flex-col w-full lg:mt-32",
             "custom": {
               "displayName": "Column B"
             }
@@ -169,24 +102,12 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--foreground)/5",
-                  "radius": "rounded-(--card-radius)"
-                },
-                "mobile": {
-                  "width": "w-full",
-                  "minHeight": "min-h-[50vh]",
-                  "mb": "mb-6",
-                  "backgroundSize": "bg-cover",
-                  "backgroundPosition": "bg-center",
-                  "backgroundRepeat": "bg-no-repeat",
-                  "overflow": "overflow-hidden"
-                },
                 "backgroundImage": "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=800&auto=format&fit=crop",
                 "backgroundImageType": "url",
                 "custom": {
                   "displayName": "Panel B"
-                }
+                },
+                "className": "bg-(--foreground)/5 rounded-(--card-radius) w-full min-h-[50vh] mb-6 bg-cover bg-center bg-no-repeat overflow-hidden"
               }
             },
             {
@@ -194,16 +115,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-row",
-                  "justifyContent": "justify-between",
-                  "alignItems": "items-center"
-                },
                 "custom": {
                   "displayName": "Caption B"
-                }
+                },
+                "className": "flex flex-row justify-between items-center"
               },
               "children": [
                 {
@@ -213,16 +128,10 @@
                     "canEditName": true,
                     "text": "SERIES / COAST",
                     "tagName": "h3",
-                    "root": {
-                      "color": "text-(--foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-base",
-                      "letterSpacing": "tracking-widest"
-                    },
                     "custom": {
                       "displayName": "Title"
-                    }
+                    },
+                    "className": "text-(--foreground) text-base tracking-widest"
                   }
                 },
                 {
@@ -232,16 +141,10 @@
                     "canEditName": true,
                     "text": "2025",
                     "tagName": "p",
-                    "root": {
-                      "color": "text-(--muted-foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-xs",
-                      "letterSpacing": "tracking-wider"
-                    },
                     "custom": {
                       "displayName": "Year"
-                    }
+                    },
+                    "className": "text-(--muted-foreground) text-xs tracking-wider"
                   }
                 }
               ]
@@ -253,13 +156,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "width": "w-full"
-            },
-            "className": ["lg:mt-0"],
+            "className": "flex flex-col w-full lg:mt-0",
             "custom": {
               "displayName": "Column C"
             }
@@ -270,24 +167,12 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--foreground)/5",
-                  "radius": "rounded-(--card-radius)"
-                },
-                "mobile": {
-                  "width": "w-full",
-                  "minHeight": "min-h-[50vh]",
-                  "mb": "mb-6",
-                  "backgroundSize": "bg-cover",
-                  "backgroundPosition": "bg-center",
-                  "backgroundRepeat": "bg-no-repeat",
-                  "overflow": "overflow-hidden"
-                },
                 "backgroundImage": "https://images.unsplash.com/photo-1531834685032-c34bf0d84c77?q=80&w=800&auto=format&fit=crop",
                 "backgroundImageType": "url",
                 "custom": {
                   "displayName": "Panel C"
-                }
+                },
+                "className": "bg-(--foreground)/5 rounded-(--card-radius) w-full min-h-[50vh] mb-6 bg-cover bg-center bg-no-repeat overflow-hidden"
               }
             },
             {
@@ -295,16 +180,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-row",
-                  "justifyContent": "justify-between",
-                  "alignItems": "items-center"
-                },
                 "custom": {
                   "displayName": "Caption C"
-                }
+                },
+                "className": "flex flex-row justify-between items-center"
               },
               "children": [
                 {
@@ -314,16 +193,10 @@
                     "canEditName": true,
                     "text": "SERIES / STUDIO",
                     "tagName": "h3",
-                    "root": {
-                      "color": "text-(--foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-base",
-                      "letterSpacing": "tracking-widest"
-                    },
                     "custom": {
                       "displayName": "Title"
-                    }
+                    },
+                    "className": "text-(--foreground) text-base tracking-widest"
                   }
                 },
                 {
@@ -333,16 +206,10 @@
                     "canEditName": true,
                     "text": "2025",
                     "tagName": "p",
-                    "root": {
-                      "color": "text-(--muted-foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-xs",
-                      "letterSpacing": "tracking-wider"
-                    },
                     "custom": {
                       "displayName": "Year"
-                    }
+                    },
+                    "className": "text-(--muted-foreground) text-xs tracking-wider"
                   }
                 }
               ]
@@ -354,13 +221,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "width": "w-full"
-            },
-            "className": ["lg:mt-32"],
+            "className": "flex flex-col w-full lg:mt-32",
             "custom": {
               "displayName": "Column D"
             }
@@ -371,24 +232,12 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--foreground)/5",
-                  "radius": "rounded-(--card-radius)"
-                },
-                "mobile": {
-                  "width": "w-full",
-                  "minHeight": "min-h-[50vh]",
-                  "mb": "mb-6",
-                  "backgroundSize": "bg-cover",
-                  "backgroundPosition": "bg-center",
-                  "backgroundRepeat": "bg-no-repeat",
-                  "overflow": "overflow-hidden"
-                },
                 "backgroundImage": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=800&auto=format&fit=crop",
                 "backgroundImageType": "url",
                 "custom": {
                   "displayName": "Panel D"
-                }
+                },
+                "className": "bg-(--foreground)/5 rounded-(--card-radius) w-full min-h-[50vh] mb-6 bg-cover bg-center bg-no-repeat overflow-hidden"
               }
             },
             {
@@ -396,16 +245,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-row",
-                  "justifyContent": "justify-between",
-                  "alignItems": "items-center"
-                },
                 "custom": {
                   "displayName": "Caption D"
-                }
+                },
+                "className": "flex flex-row justify-between items-center"
               },
               "children": [
                 {
@@ -415,16 +258,10 @@
                     "canEditName": true,
                     "text": "SERIES / FIELD",
                     "tagName": "h3",
-                    "root": {
-                      "color": "text-(--foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-base",
-                      "letterSpacing": "tracking-widest"
-                    },
                     "custom": {
                       "displayName": "Title"
-                    }
+                    },
+                    "className": "text-(--foreground) text-base tracking-widest"
                   }
                 },
                 {
@@ -434,16 +271,10 @@
                     "canEditName": true,
                     "text": "2026",
                     "tagName": "p",
-                    "root": {
-                      "color": "text-(--muted-foreground)"
-                    },
-                    "mobile": {
-                      "fontSize": "text-xs",
-                      "letterSpacing": "tracking-wider"
-                    },
                     "custom": {
                       "displayName": "Year"
-                    }
+                    },
+                    "className": "text-(--muted-foreground) text-xs tracking-wider"
                   }
                 }
               ]

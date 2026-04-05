@@ -4,26 +4,10 @@
     "type": "section",
     "canDelete": true,
     "canEditName": true,
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "width": "w-full",
-      "py": "py-16",
-      "px": "px-6",
-      "gap": "gap-12"
-    },
-    "desktop": {
-      "py": "py-24",
-      "px": "px-8",
-      "gap": "gap-14"
-    },
     "custom": {
       "displayName": "FAQ dual column section"
-    }
+    },
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-16 px-6 gap-12 md:py-24 md:px-8 md:gap-14"
   },
   "children": [
     {
@@ -31,21 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "width": "w-full",
-          "maxWidth": "max-w-(--content-width)",
-          "mx": "mx-auto",
-          "gap": "gap-10"
-        },
-        "desktop": {
-          "gap": "gap-12"
-        },
         "custom": {
           "displayName": "FAQ section inner"
-        }
+        },
+        "className": "flex flex-col w-full max-w-(--content-width) mx-auto gap-10 md:gap-12"
       },
       "children": [
         {
@@ -53,18 +26,10 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "flex",
-              "flexDirection": "flex-col",
-              "gap": "gap-3",
-              "width": "w-full",
-              "maxWidth": "max-w-2xl"
-            },
-            "desktop": {},
             "custom": {
               "displayName": "FAQ section header"
-            }
+            },
+            "className": "flex flex-col gap-3 w-full max-w-2xl"
           },
           "children": [
             {
@@ -72,17 +37,10 @@
               "props": {
                 "text": "FAQ",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--primary)",
-                  "fontSize": "text-xs",
-                  "fontWeight": "font-bold",
-                  "letterSpacing": "tracking-widest"
-                },
-                "mobile": {},
-                "desktop": {},
                 "custom": {
                   "displayName": "Eyebrow"
-                }
+                },
+                "className": "text-(--primary) text-xs font-bold tracking-widest"
               }
             },
             {
@@ -91,20 +49,12 @@
                 "text": "Answers before you open a ticket.",
                 "tagName": "h2",
                 "root": {
-                  "fontWeight": "font-bold",
-                  "fontFamily": "var(--heading-font-family)",
-                  "lineHeight": "leading-tight",
-                  "color": "text-(--foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-3xl"
-                },
-                "desktop": {
-                  "fontSize": "text-4xl"
+                  "style": "font-family: var(--heading-font-family);"
                 },
                 "custom": {
                   "displayName": "Heading"
-                }
+                },
+                "className": "font-bold leading-tight text-(--foreground) text-3xl md:text-4xl"
               }
             },
             {
@@ -112,19 +62,10 @@
               "props": {
                 "text": "Straightforward notes on setup, security, and how we handle changes — split into two columns on large screens so scanning stays easy.",
                 "tagName": "p",
-                "root": {
-                  "color": "text-(--muted-foreground)"
-                },
-                "mobile": {
-                  "fontSize": "text-base",
-                  "lineHeight": "leading-relaxed"
-                },
-                "desktop": {
-                  "fontSize": "text-lg"
-                },
                 "custom": {
                   "displayName": "Intro"
-                }
+                },
+                "className": "text-(--muted-foreground) text-base leading-relaxed md:text-lg"
               }
             }
           ]
@@ -134,17 +75,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "grid",
-              "gridCols": "grid-cols-1",
-              "gap": "gap-10",
-              "width": "w-full"
-            },
-            "desktop": {
-              "gridCols": "grid-cols-2"
-            },
-            "className": ["md:gap-x-16"],
+            "className": "grid grid-cols-1 gap-10 w-full md:grid-cols-2 md:gap-x-16",
             "custom": {
               "displayName": "FAQ columns"
             }
@@ -155,17 +86,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "width": "w-full",
-                  "gap": "gap-0"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "FAQ column A"
-                }
+                },
+                "className": "flex flex-col w-full gap-0"
               },
               "children": [
                 {
@@ -173,21 +97,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {
-                      "border": "border-b",
-                      "borderColor": "border-(--muted)"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "gap": "gap-2",
-                      "py": "py-6",
-                      "width": "w-full"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "FAQ row"
-                    }
+                    },
+                    "className": "border-b border-(--muted) flex flex-col gap-2 py-6 w-full"
                   },
                   "children": [
                     {
@@ -196,16 +109,12 @@
                         "text": "Do you offer annual pricing?",
                         "tagName": "h3",
                         "root": {
-                          "fontWeight": "font-semibold",
-                          "fontFamily": "var(--heading-font-family)",
-                          "fontSize": "text-base",
-                          "color": "text-(--foreground)"
+                          "style": "font-family: var(--heading-font-family);"
                         },
-                        "mobile": {},
-                        "desktop": {},
                         "custom": {
                           "displayName": "Question"
-                        }
+                        },
+                        "className": "font-semibold text-base text-(--foreground)"
                       }
                     },
                     {
@@ -213,16 +122,10 @@
                       "props": {
                         "text": "Yes. Annual plans include two months complimentary and lock your rate for the contract window.",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--muted-foreground)",
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-relaxed"
-                        },
-                        "mobile": {},
-                        "desktop": {},
                         "custom": {
                           "displayName": "Answer"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) text-sm leading-relaxed"
                       }
                     }
                   ]
@@ -232,21 +135,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {
-                      "border": "border-b",
-                      "borderColor": "border-(--muted)"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "gap": "gap-2",
-                      "py": "py-6",
-                      "width": "w-full"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "FAQ row"
-                    }
+                    },
+                    "className": "border-b border-(--muted) flex flex-col gap-2 py-6 w-full"
                   },
                   "children": [
                     {
@@ -255,16 +147,12 @@
                         "text": "Where is data hosted?",
                         "tagName": "h3",
                         "root": {
-                          "fontWeight": "font-semibold",
-                          "fontFamily": "var(--heading-font-family)",
-                          "fontSize": "text-base",
-                          "color": "text-(--foreground)"
+                          "style": "font-family: var(--heading-font-family);"
                         },
-                        "mobile": {},
-                        "desktop": {},
                         "custom": {
                           "displayName": "Question"
-                        }
+                        },
+                        "className": "font-semibold text-base text-(--foreground)"
                       }
                     },
                     {
@@ -272,16 +160,10 @@
                       "props": {
                         "text": "Primary regions are US and EU with optional residency add-ons for regulated teams.",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--muted-foreground)",
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-relaxed"
-                        },
-                        "mobile": {},
-                        "desktop": {},
                         "custom": {
                           "displayName": "Answer"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) text-sm leading-relaxed"
                       }
                     }
                   ]
@@ -291,21 +173,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {
-                      "border": "border-b",
-                      "borderColor": "border-(--muted)"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "gap": "gap-2",
-                      "py": "py-6",
-                      "width": "w-full"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "FAQ row"
-                    }
+                    },
+                    "className": "border-b border-(--muted) flex flex-col gap-2 py-6 w-full"
                   },
                   "children": [
                     {
@@ -314,16 +185,12 @@
                         "text": "Can we import from our old stack?",
                         "tagName": "h3",
                         "root": {
-                          "fontWeight": "font-semibold",
-                          "fontFamily": "var(--heading-font-family)",
-                          "fontSize": "text-base",
-                          "color": "text-(--foreground)"
+                          "style": "font-family: var(--heading-font-family);"
                         },
-                        "mobile": {},
-                        "desktop": {},
                         "custom": {
                           "displayName": "Question"
-                        }
+                        },
+                        "className": "font-semibold text-base text-(--foreground)"
                       }
                     },
                     {
@@ -331,16 +198,10 @@
                       "props": {
                         "text": "CSV and API imports ship standard; concierge migration is available on Scale.",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--muted-foreground)",
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-relaxed"
-                        },
-                        "mobile": {},
-                        "desktop": {},
                         "custom": {
                           "displayName": "Answer"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) text-sm leading-relaxed"
                       }
                     }
                   ]
@@ -352,17 +213,10 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {},
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "width": "w-full",
-                  "gap": "gap-0"
-                },
-                "desktop": {},
                 "custom": {
                   "displayName": "FAQ column B"
-                }
+                },
+                "className": "flex flex-col w-full gap-0"
               },
               "children": [
                 {
@@ -370,21 +224,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {
-                      "border": "border-b",
-                      "borderColor": "border-(--muted)"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "gap": "gap-2",
-                      "py": "py-6",
-                      "width": "w-full"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "FAQ row"
-                    }
+                    },
+                    "className": "border-b border-(--muted) flex flex-col gap-2 py-6 w-full"
                   },
                   "children": [
                     {
@@ -393,16 +236,12 @@
                         "text": "What SSO options exist?",
                         "tagName": "h3",
                         "root": {
-                          "fontWeight": "font-semibold",
-                          "fontFamily": "var(--heading-font-family)",
-                          "fontSize": "text-base",
-                          "color": "text-(--foreground)"
+                          "style": "font-family: var(--heading-font-family);"
                         },
-                        "mobile": {},
-                        "desktop": {},
                         "custom": {
                           "displayName": "Question"
-                        }
+                        },
+                        "className": "font-semibold text-base text-(--foreground)"
                       }
                     },
                     {
@@ -410,16 +249,10 @@
                       "props": {
                         "text": "SAML and OIDC with SCIM on Enterprise; Google and Microsoft on Growth.",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--muted-foreground)",
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-relaxed"
-                        },
-                        "mobile": {},
-                        "desktop": {},
                         "custom": {
                           "displayName": "Answer"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) text-sm leading-relaxed"
                       }
                     }
                   ]
@@ -429,21 +262,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {
-                      "border": "border-b",
-                      "borderColor": "border-(--muted)"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "gap": "gap-2",
-                      "py": "py-6",
-                      "width": "w-full"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "FAQ row"
-                    }
+                    },
+                    "className": "border-b border-(--muted) flex flex-col gap-2 py-6 w-full"
                   },
                   "children": [
                     {
@@ -452,16 +274,12 @@
                         "text": "Is there a public status page?",
                         "tagName": "h3",
                         "root": {
-                          "fontWeight": "font-semibold",
-                          "fontFamily": "var(--heading-font-family)",
-                          "fontSize": "text-base",
-                          "color": "text-(--foreground)"
+                          "style": "font-family: var(--heading-font-family);"
                         },
-                        "mobile": {},
-                        "desktop": {},
                         "custom": {
                           "displayName": "Question"
-                        }
+                        },
+                        "className": "font-semibold text-base text-(--foreground)"
                       }
                     },
                     {
@@ -469,16 +287,10 @@
                       "props": {
                         "text": "Yes — subscribe for incidents, maintenance, and historical uptime without logging in.",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--muted-foreground)",
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-relaxed"
-                        },
-                        "mobile": {},
-                        "desktop": {},
                         "custom": {
                           "displayName": "Answer"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) text-sm leading-relaxed"
                       }
                     }
                   ]
@@ -488,21 +300,10 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "root": {
-                      "border": "border-b",
-                      "borderColor": "border-(--muted)"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "gap": "gap-2",
-                      "py": "py-6",
-                      "width": "w-full"
-                    },
-                    "desktop": {},
                     "custom": {
                       "displayName": "FAQ row"
-                    }
+                    },
+                    "className": "border-b border-(--muted) flex flex-col gap-2 py-6 w-full"
                   },
                   "children": [
                     {
@@ -511,16 +312,12 @@
                         "text": "How fast is support?",
                         "tagName": "h3",
                         "root": {
-                          "fontWeight": "font-semibold",
-                          "fontFamily": "var(--heading-font-family)",
-                          "fontSize": "text-base",
-                          "color": "text-(--foreground)"
+                          "style": "font-family: var(--heading-font-family);"
                         },
-                        "mobile": {},
-                        "desktop": {},
                         "custom": {
                           "displayName": "Question"
-                        }
+                        },
+                        "className": "font-semibold text-base text-(--foreground)"
                       }
                     },
                     {
@@ -528,16 +325,10 @@
                       "props": {
                         "text": "Growth gets same-day chat; Enterprise includes named coverage and a private channel.",
                         "tagName": "p",
-                        "root": {
-                          "color": "text-(--muted-foreground)",
-                          "fontSize": "text-sm",
-                          "lineHeight": "leading-relaxed"
-                        },
-                        "mobile": {},
-                        "desktop": {},
                         "custom": {
                           "displayName": "Answer"
-                        }
+                        },
+                        "className": "text-(--muted-foreground) text-sm leading-relaxed"
                       }
                     }
                   ]

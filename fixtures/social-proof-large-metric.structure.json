@@ -4,26 +4,10 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "alignItems": "items-center",
-      "textAlign": "text-center",
-      "width": "w-full",
-      "py": "py-16",
-      "px": "px-6"
-    },
-    "desktop": {
-      "py": "py-24",
-      "px": "px-8"
-    },
     "custom": {
       "displayName": "Social Proof Large Metric"
-    }
+    },
+    "className": "bg-(--background) text-(--foreground) flex flex-col items-center text-center w-full py-16 px-6 md:py-24 md:px-8"
   },
   "children": [
     {
@@ -31,16 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "alignItems": "items-center",
-          "gap": "gap-6",
-          "width": "w-full",
-          "maxWidth": "max-w-4xl",
-          "mx": "mx-auto"
+        "custom": {
+          "displayName": "Inner"
         },
-        "custom": { "displayName": "Inner" }
+        "className": "flex flex-col items-center gap-6 w-full max-w-4xl mx-auto"
       },
       "children": [
         {
@@ -49,14 +27,12 @@
             "text": "100M+",
             "tagName": "p",
             "root": {
-              "fontWeight": "font-black",
-              "fontFamily": "var(--heading-font-family)",
-              "lineHeight": "leading-none",
-              "color": "text-(--primary)"
+              "style": "font-family: var(--heading-font-family);"
             },
-            "mobile": { "fontSize": "text-7xl" },
-            "desktop": { "fontSize": "text-9xl" },
-            "custom": { "displayName": "Large Value" }
+            "custom": {
+              "displayName": "Large Value"
+            },
+            "className": "font-black leading-none text-(--primary) text-7xl md:text-9xl"
           }
         },
         {
@@ -65,13 +41,12 @@
             "text": "Monthly visits across businesses powered by PageHub",
             "tagName": "h2",
             "root": {
-              "fontWeight": "font-bold",
-              "fontFamily": "var(--heading-font-family)",
-              "lineHeight": "leading-tight"
+              "style": "font-family: var(--heading-font-family);"
             },
-            "mobile": { "fontSize": "text-2xl", "maxWidth": "max-w-xl" },
-            "desktop": { "fontSize": "text-4xl" },
-            "custom": { "displayName": "Headline" }
+            "custom": {
+              "displayName": "Headline"
+            },
+            "className": "font-bold leading-tight text-2xl max-w-xl md:text-4xl"
           }
         },
         {
@@ -79,12 +54,10 @@
           "props": {
             "text": "PageHub provides the infrastructure for high-traffic sites to thrive, from startup landing pages to enterprise marketing portals. Our edge network ensures your visitors always have a fast, reliable experience.",
             "tagName": "p",
-            "root": {
-              "color": "text-(--muted-foreground)",
-              "lineHeight": "leading-relaxed"
+            "custom": {
+              "displayName": "Subhead"
             },
-            "mobile": { "fontSize": "text-lg" },
-            "custom": { "displayName": "Subhead" }
+            "className": "text-(--muted-foreground) leading-relaxed text-lg"
           }
         },
         {
@@ -92,19 +65,10 @@
           "props": {
             "text": "See case studies",
             "url": "#",
-            "root": {
-              "background": "bg-(--primary)",
-              "color": "text-(--primary-foreground)",
-              "radius": "rounded-(--radius)"
+            "custom": {
+              "displayName": "CTA Button"
             },
-            "mobile": {
-              "py": "py-3",
-              "px": "px-8",
-              "fontSize": "text-sm",
-              "fontWeight": "font-medium",
-              "mt": "mt-4"
-            },
-            "custom": { "displayName": "CTA Button" }
+            "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) py-3 px-8 text-sm font-medium mt-4"
           }
         }
       ]

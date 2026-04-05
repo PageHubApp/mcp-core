@@ -4,21 +4,10 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
-    "root": {
-      "background": "bg-(--background)",
-      "color": "text-(--foreground)"
-    },
-    "mobile": {
-      "display": "flex",
-      "flexDirection": "flex-col",
-      "alignItems": "items-center",
-      "width": "w-full",
-      "py": "py-24",
-      "px": "px-8"
-    },
     "custom": {
       "displayName": "Construction projects grid"
-    }
+    },
+    "className": "bg-(--background) text-(--foreground) flex flex-col items-center w-full py-24 px-8"
   },
   "children": [
     {
@@ -26,18 +15,10 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "root": {},
-        "mobile": {
-          "display": "flex",
-          "flexDirection": "flex-col",
-          "alignItems": "items-center",
-          "width": "w-full",
-          "maxWidth": "max-w-(--content-width)",
-          "mx": "mx-auto"
-        },
         "custom": {
           "displayName": "Section inner"
-        }
+        },
+        "className": "flex flex-col items-center w-full max-w-(--content-width) mx-auto"
       },
       "children": [
         {
@@ -45,23 +26,9 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {
-              "color": "text-(--foreground)"
-            },
-            "mobile": {
-              "fontSize": "text-2xl",
-              "fontWeight": "font-bold",
-              "letterSpacing": "tracking-widest",
-              "mb": "mb-16"
-            },
             "text": "PROJECTS",
             "tagName": "h3",
-            "className": [
-              "inline-block",
-              "border-b-4",
-              "border-(--accent)",
-              "pb-2"
-            ],
+            "className": "text-(--foreground) text-2xl font-bold tracking-widest mb-16 inline-block border-b-4 border-(--accent) pb-2",
             "custom": {
               "displayName": "Section title"
             }
@@ -72,18 +39,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "root": {},
-            "mobile": {
-              "display": "grid",
-              "gridTemplateColumns": "grid-cols-1",
-              "gap": "gap-12",
-              "width": "w-full",
-              "maxWidth": "max-w-6xl"
-            },
-            "className": [
-              "md:grid",
-              "md:grid-cols-2"
-            ],
+            "className": "grid grid-cols-1 gap-12 w-full max-w-6xl md:grid md:grid-cols-2",
             "custom": {
               "displayName": "Project cards"
             }
@@ -94,81 +50,40 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--background)"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "width": "w-full",
-                  "overflow": "overflow-hidden"
-                },
                 "custom": {
                   "displayName": "Project card"
-                }
+                },
+                "className": "bg-(--background) flex flex-col w-full overflow-hidden"
               },
               "children": [
                 {
                   "type": "Container",
                   "props": {
-                    "root": {
-                      "background": "bg-(--muted)"
-                    },
-                    "className": [
-                      "aspect-square",
-                      "w-full"
-                    ],
+                    "className": "bg-(--muted) bg-cover bg-center bg-no-repeat aspect-square w-full",
                     "backgroundImage": "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=800&auto=format&fit=crop",
-                    "backgroundImageType": "url",
-                    "mobile": {
-                      "backgroundSize": "bg-cover",
-                      "backgroundPosition": "bg-center",
-                      "backgroundRepeat": "bg-no-repeat"
-                    }
+                    "backgroundImageType": "url"
                   }
                 },
                 {
                   "type": "Container",
                   "props": {
-                    "root": {
-                      "background": "bg-(--background)"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "py": "py-6",
-                      "px": "px-2"
-                    }
+                    "className": "bg-(--background) flex flex-col py-6 px-2"
                   },
                   "children": [
                     {
                       "type": "Text",
                       "props": {
-                        "root": {
-                          "color": "text-(--foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-lg",
-                          "fontWeight": "font-bold",
-                          "letterSpacing": "tracking-wide",
-                          "mb": "mb-2"
-                        },
                         "text": "SKYLINE TOWER",
-                        "tagName": "h4"
+                        "tagName": "h4",
+                        "className": "text-(--foreground) text-lg font-bold tracking-wide mb-2"
                       }
                     },
                     {
                       "type": "Text",
                       "props": {
-                        "root": {
-                          "color": "text-(--muted-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "fontStyle": "italic"
-                        },
                         "text": "Commercial • {{year}}",
-                        "tagName": "p"
+                        "tagName": "p",
+                        "className": "text-(--muted-foreground) text-sm italic"
                       }
                     }
                   ]
@@ -180,81 +95,40 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--background)"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "width": "w-full",
-                  "overflow": "overflow-hidden"
-                },
                 "custom": {
                   "displayName": "Project card"
-                }
+                },
+                "className": "bg-(--background) flex flex-col w-full overflow-hidden"
               },
               "children": [
                 {
                   "type": "Container",
                   "props": {
-                    "root": {
-                      "background": "bg-(--muted)"
-                    },
-                    "className": [
-                      "aspect-square",
-                      "w-full"
-                    ],
+                    "className": "bg-(--muted) bg-cover bg-center bg-no-repeat aspect-square w-full",
                     "backgroundImage": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=800&auto=format&fit=crop",
-                    "backgroundImageType": "url",
-                    "mobile": {
-                      "backgroundSize": "bg-cover",
-                      "backgroundPosition": "bg-center",
-                      "backgroundRepeat": "bg-no-repeat"
-                    }
+                    "backgroundImageType": "url"
                   }
                 },
                 {
                   "type": "Container",
                   "props": {
-                    "root": {
-                      "background": "bg-(--background)"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "py": "py-6",
-                      "px": "px-2"
-                    }
+                    "className": "bg-(--background) flex flex-col py-6 px-2"
                   },
                   "children": [
                     {
                       "type": "Text",
                       "props": {
-                        "root": {
-                          "color": "text-(--foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-lg",
-                          "fontWeight": "font-bold",
-                          "letterSpacing": "tracking-wide",
-                          "mb": "mb-2"
-                        },
                         "text": "VERTEX BRIDGE",
-                        "tagName": "h4"
+                        "tagName": "h4",
+                        "className": "text-(--foreground) text-lg font-bold tracking-wide mb-2"
                       }
                     },
                     {
                       "type": "Text",
                       "props": {
-                        "root": {
-                          "color": "text-(--muted-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "fontStyle": "italic"
-                        },
                         "text": "Infrastructure • {{year}}",
-                        "tagName": "p"
+                        "tagName": "p",
+                        "className": "text-(--muted-foreground) text-sm italic"
                       }
                     }
                   ]
@@ -266,81 +140,40 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--background)"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "width": "w-full",
-                  "overflow": "overflow-hidden"
-                },
                 "custom": {
                   "displayName": "Project card"
-                }
+                },
+                "className": "bg-(--background) flex flex-col w-full overflow-hidden"
               },
               "children": [
                 {
                   "type": "Container",
                   "props": {
-                    "root": {
-                      "background": "bg-(--muted)"
-                    },
-                    "className": [
-                      "aspect-square",
-                      "w-full"
-                    ],
+                    "className": "bg-(--muted) bg-cover bg-center bg-no-repeat aspect-square w-full",
                     "backgroundImage": "https://images.unsplash.com/photo-1590486803833-1c5dc8ddd4c8?q=80&w=800&auto=format&fit=crop",
-                    "backgroundImageType": "url",
-                    "mobile": {
-                      "backgroundSize": "bg-cover",
-                      "backgroundPosition": "bg-center",
-                      "backgroundRepeat": "bg-no-repeat"
-                    }
+                    "backgroundImageType": "url"
                   }
                 },
                 {
                   "type": "Container",
                   "props": {
-                    "root": {
-                      "background": "bg-(--background)"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "py": "py-6",
-                      "px": "px-2"
-                    }
+                    "className": "bg-(--background) flex flex-col py-6 px-2"
                   },
                   "children": [
                     {
                       "type": "Text",
                       "props": {
-                        "root": {
-                          "color": "text-(--foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-lg",
-                          "fontWeight": "font-bold",
-                          "letterSpacing": "tracking-wide",
-                          "mb": "mb-2"
-                        },
                         "text": "FOUNDATION NODE",
-                        "tagName": "h4"
+                        "tagName": "h4",
+                        "className": "text-(--foreground) text-lg font-bold tracking-wide mb-2"
                       }
                     },
                     {
                       "type": "Text",
                       "props": {
-                        "root": {
-                          "color": "text-(--muted-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "fontStyle": "italic"
-                        },
                         "text": "Industrial • {{year}}",
-                        "tagName": "p"
+                        "tagName": "p",
+                        "className": "text-(--muted-foreground) text-sm italic"
                       }
                     }
                   ]
@@ -352,81 +185,40 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "root": {
-                  "background": "bg-(--background)"
-                },
-                "mobile": {
-                  "display": "flex",
-                  "flexDirection": "flex-col",
-                  "width": "w-full",
-                  "overflow": "overflow-hidden"
-                },
                 "custom": {
                   "displayName": "Project card"
-                }
+                },
+                "className": "bg-(--background) flex flex-col w-full overflow-hidden"
               },
               "children": [
                 {
                   "type": "Container",
                   "props": {
-                    "root": {
-                      "background": "bg-(--muted)"
-                    },
-                    "className": [
-                      "aspect-square",
-                      "w-full"
-                    ],
+                    "className": "bg-(--muted) bg-cover bg-center bg-no-repeat aspect-square w-full",
                     "backgroundImage": "https://images.unsplash.com/photo-1531834685032-c34bf0d84c77?q=80&w=800&auto=format&fit=crop",
-                    "backgroundImageType": "url",
-                    "mobile": {
-                      "backgroundSize": "bg-cover",
-                      "backgroundPosition": "bg-center",
-                      "backgroundRepeat": "bg-no-repeat"
-                    }
+                    "backgroundImageType": "url"
                   }
                 },
                 {
                   "type": "Container",
                   "props": {
-                    "root": {
-                      "background": "bg-(--background)"
-                    },
-                    "mobile": {
-                      "display": "flex",
-                      "flexDirection": "flex-col",
-                      "py": "py-6",
-                      "px": "px-2"
-                    }
+                    "className": "bg-(--background) flex flex-col py-6 px-2"
                   },
                   "children": [
                     {
                       "type": "Text",
                       "props": {
-                        "root": {
-                          "color": "text-(--foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-lg",
-                          "fontWeight": "font-bold",
-                          "letterSpacing": "tracking-wide",
-                          "mb": "mb-2"
-                        },
                         "text": "APEX COMPLEX",
-                        "tagName": "h4"
+                        "tagName": "h4",
+                        "className": "text-(--foreground) text-lg font-bold tracking-wide mb-2"
                       }
                     },
                     {
                       "type": "Text",
                       "props": {
-                        "root": {
-                          "color": "text-(--muted-foreground)"
-                        },
-                        "mobile": {
-                          "fontSize": "text-sm",
-                          "fontStyle": "italic"
-                        },
                         "text": "Commercial • {{year}}",
-                        "tagName": "p"
+                        "tagName": "p",
+                        "className": "text-(--muted-foreground) text-sm italic"
                       }
                     }
                   ]
