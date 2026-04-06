@@ -11,6 +11,7 @@ const {
   flatLibraryToHierarchical,
   formatBlockNodeManifest,
 } = require('../structure-ingest');
+const { quickA11yAudit } = require('../a11y-check');
 
 module.exports = {
   async search_blocks(args) {
@@ -145,10 +146,12 @@ module.exports = {
       body: { name, slug, description, visual, category, subcategory, tags, preset, source, group, structure, isPublic, isCategoryPreview },
     });
 
+    const audit = quickA11yAudit(structure);
+    const auditText = audit ? `\n\n---\n${audit.summary}` : '';
     return {
       content: [{
         type: 'text',
-        text: `Block saved: **${data.component.name}** (\`${data.component.slug}\`)\nPublic: ${data.component.isPublic}\nCategory: ${data.component.category}`,
+        text: `Block saved: **${data.component.name}** (\`${data.component.slug}\`)\nPublic: ${data.component.isPublic}\nCategory: ${data.component.category}${auditText}`,
       }],
     };
   },
@@ -175,10 +178,12 @@ module.exports = {
     });
 
     const c = data.component;
+    const audit = args.structure ? quickA11yAudit(args.structure) : null;
+    const auditText = audit ? `\n\n---\n${audit.summary}` : '';
     return {
       content: [{
         type: 'text',
-        text: `Block updated: **${c.name}** (\`${c.slug}\`)\nCategory: ${c.category}\nPublic: ${c.isPublic}`,
+        text: `Block updated: **${c.name}** (\`${c.slug}\`)\nCategory: ${c.category}\nPublic: ${c.isPublic}${auditText}`,
       }],
     };
   },

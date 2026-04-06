@@ -17,6 +17,7 @@ const {
   assertFillModePatchAllowed,
   assertFillModeBulkPatchesAllowed,
 } = require('../helpers');
+const { quickA11yAudit } = require('../a11y-check');
 
 /** Collect a node and all its descendants from a flat map */
 function collectSubtree(flat, nodeId) {
@@ -223,10 +224,12 @@ module.exports = {
       method: 'POST',
       body: { slug, title, description, image, category, tags, content, hidden, isPublic },
     });
+    const audit = quickA11yAudit(content);
+    const auditText = audit ? `\n\n---\n${audit.summary}` : '';
     return {
       content: [{
         type: 'text',
-        text: `Template saved: **${data.title}** (\`${data.slug}\`)`,
+        text: `Template saved: **${data.title}** (\`${data.slug}\`)${auditText}`,
       }],
     };
   },
@@ -249,8 +252,10 @@ module.exports = {
       ...(isPublic !== undefined && { isPublic }),
     };
     const data = await apiFetch('/api/v1/templates', { method: 'POST', body });
+    const audit = quickA11yAudit(siteData.content);
+    const auditText = audit ? `\n\n---\n${audit.summary}` : '';
     return {
-      content: [{ type: 'text', text: `Site published as template: **${data.title}** (\`${data.slug}\`)\nPreview: ${data.image || 'no image set'}` }],
+      content: [{ type: 'text', text: `Site published as template: **${data.title}** (\`${data.slug}\`)\nPreview: ${data.image || 'no image set'}${auditText}` }],
     };
   },
 
@@ -268,10 +273,12 @@ module.exports = {
       method: 'PUT',
       body,
     });
+    const audit = args.content ? quickA11yAudit(args.content) : null;
+    const auditText = audit ? `\n\n---\n${audit.summary}` : '';
     return {
       content: [{
         type: 'text',
-        text: `Template updated: **${data.title}** (\`${data.slug}\`)`,
+        text: `Template updated: **${data.title}** (\`${data.slug}\`)${auditText}`,
       }],
     };
   },
@@ -364,23 +371,28 @@ module.exports = {
         } catch {}
       }
       const label = targetType === 'template' ? `Template "${targetId || 'new'}"` : `Site ${targetId || 'new'}`;
+      const audit = quickA11yAudit(content);
+      const auditText = audit ? `\n\n---\n${audit.summary}` : '';
       return {
-        content: [{ type: 'text', text: `${label} saved successfully (${Object.keys(content).length} nodes).` }],
+        content: [{ type: 'text', text: `${label} saved successfully (${Object.keys(content).length} nodes).${auditText}` }],
         pendingContent: content,
         changedNodes: changed,
       };
     }
+
+    const audit = quickA11yAudit(content);
+    const auditText = audit ? `\n\n---\n${audit.summary}` : '';
 
     if (targetId) {
       const result = await saveTarget(targetId, targetType, content, {
         name: args.name, title: args.title, description: args.description,
       });
       if (targetType === 'template') {
-        return { content: [{ type: 'text', text: `Template "${result.id}" updated.` }] };
+        return { content: [{ type: 'text', text: `Template "${result.id}" updated.${auditText}` }] };
       }
       const base = normalizeBaseUrl(ctx.apiBaseUrl) || 'https://pagehub.dev';
       return {
-        content: [{ type: 'text', text: `Site ${result.id} updated. View: ${base}/build/${result.id}` }],
+        content: [{ type: 'text', text: `Site ${result.id} updated. View: ${base}/build/${result.id}${auditText}` }],
       };
     }
     // Create new — sites only (templates use save_template for creation)
@@ -390,7 +402,7 @@ module.exports = {
     });
     ctx.activeSite = { id: data.id, name: data.name, draftId: data.draftId };
     return {
-      content: [{ type: 'text', text: `New site created: ${data.id}\nEditor: ${data.url}\nPreview: ${data.staticUrl}` }],
+      content: [{ type: 'text', text: `New site created: ${data.id}\nEditor: ${data.url}\nPreview: ${data.staticUrl}${auditText}` }],
     };
   },
 

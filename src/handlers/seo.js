@@ -1,44 +1,8 @@
 const { apiFetch } = require('../api-fetch');
 const { getActiveTarget } = require('../helpers');
+const { collectNodes, resolveRootId, GENERIC_LINK_TEXT, PLACEHOLDER_ALT } = require('../a11y-check');
 
-const GENERIC_LINK_TEXT = /^(click here|read more|learn more|here|link|more|submit|button|download)$/i;
-const PLACEHOLDER_ALT = /^(image|photo|picture|img|untitled|placeholder|alt text|screenshot)$/i;
 const TEMPLATE_VAR = /\{\{.+?\}\}/;
-
-function collectNodes(nodes, pageId) {
-  const texts = [];
-  const headings = [];
-  const images = [];
-  const buttons = [];
-
-  const visited = new Set();
-  const walk = (id) => {
-    if (visited.has(id)) return;
-    visited.add(id);
-    const node = nodes[id];
-    if (!node) return;
-    const type = node.type?.resolvedName;
-    if (type === 'Text') {
-      const text = node.props?.text || '';
-      const tagName = node.props?.tagName || 'p';
-      texts.push({ id, text, tagName });
-      if (/^h[1-6]$/.test(tagName)) {
-        headings.push({ id, text, level: parseInt(tagName[1]) });
-      }
-    } else if (type === 'Image') {
-      images.push({ id, alt: node.props?.alt || '', src: node.props?.content || node.props?.src || '' });
-    } else if (type === 'Button') {
-      buttons.push({ id, text: node.props?.text || '', url: node.props?.url || '' });
-    }
-    for (const childId of node.nodes || []) walk(childId);
-    // Also walk linkedNodes (used by Nav, multi-page templates)
-    if (node.linkedNodes) {
-      for (const linkedId of Object.values(node.linkedNodes)) walk(linkedId);
-    }
-  };
-  walk(pageId);
-  return { texts, headings, images, buttons };
-}
 
 function runChecks(siteData, nodes, pageId) {
   const results = [];
@@ -245,19 +209,8 @@ module.exports = {
       return { content: [{ type: 'text', text: `Accessibility audit unavailable: ${err.message}. Try again after the build completes.` }] };
     }
 
-    // Find page root
-    let pageId = args.pageId || null;
-    if (!pageId) {
-      if (nodes['page_home']) {
-        pageId = 'page_home';
-      } else {
-        for (const [id, node] of Object.entries(nodes)) {
-          if (node?.props?.isHomePage && node?.props?.type === 'page') { pageId = id; break; }
-        }
-        if (!pageId) pageId = nodes.ROOT?.nodes?.[0] || 'ROOT';
-      }
-    }
-    if (!nodes[pageId]) return { content: [{ type: 'text', text: `Page "${pageId}" not found.` }] };
+    const pageId = resolveRootId(nodes, args.pageId);
+    if (!pageId || !nodes[pageId]) return { content: [{ type: 'text', text: `Page "${args.pageId || 'home'}" not found.` }] };
 
     const { texts, headings, images, buttons } = collectNodes(nodes, pageId);
     const results = [];
