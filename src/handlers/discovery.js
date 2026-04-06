@@ -79,6 +79,20 @@ Typography: text-4xl, font-bold, leading-relaxed, tracking-widest, uppercase
 | {{company.website}} | https://www.acme.com |
 | {{year}} | (current year, dynamic) |
 
+## Component Modifiers (CSS Class Toggles)
+
+Modifiers are named CSS classes toggled on components. Add to className + track in props.root.activeModifiers.
+
+| Component | Available Modifiers |
+|-----------|-------------------|
+| Button | btn-outline, btn-ghost, btn-sm, btn-lg, btn-pill, btn-wide, btn-square |
+| Container | pad-sm, pad-md, pad-lg, w-half, w-third, w-two-thirds, h-screen, h-half-screen, centered, overflow-hidden |
+| Text | text-xs, text-sm, text-lg, text-2xl, text-4xl, font-bold, font-light, text-center, text-right, uppercase |
+| Image | img-rounded, img-circle, img-cover, img-contain, aspect-square, aspect-video, aspect-4-3 |
+
+To apply: classNamePatch "btn-outline btn-lg", propsPatch { root: { activeModifiers: ["btn-outline", "btn-lg"] } }
+To remove: unsetClasses ["btn-outline"], update root.activeModifiers accordingly.
+
 ## Key Rules
 
 1. Page containers (type: "page") must NOT have gap, py, px, p, my, mx — spacing goes on sections.

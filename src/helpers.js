@@ -62,7 +62,16 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
     );
   }
   // propsPatch — shallow merge non-class props (text, src, href, alt, style, animation, etc.)
-  if (propsPatch) flatMap[nodeId].props = { ...flatMap[nodeId].props, ...propsPatch };
+  // Deep-merge `root` to preserve existing keys (animation, pattern, activeModifiers, etc.)
+  if (propsPatch) {
+    if (propsPatch.root && typeof propsPatch.root === 'object') {
+      flatMap[nodeId].props.root = { ...(flatMap[nodeId].props.root || {}), ...propsPatch.root };
+      const { root: _, ...rest } = propsPatch;
+      flatMap[nodeId].props = { ...flatMap[nodeId].props, ...rest };
+    } else {
+      flatMap[nodeId].props = { ...flatMap[nodeId].props, ...propsPatch };
+    }
+  }
   if (nodesPatch) flatMap[nodeId].nodes = nodesPatch;
   if (Array.isArray(unsetProps)) {
     for (const k of unsetProps) delete flatMap[nodeId].props[k];

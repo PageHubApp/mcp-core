@@ -138,7 +138,7 @@
                 "custom": {
                   "displayName": "Mobile menu overlay"
                 },
-                "className": "bg-black/50 hidden fixed h-screen w-screen top-0 left-0 z-50 md:hidden"
+                "className": "bg-black/50 hidden fixed inset-0 z-50 h-dvh w-full min-w-0 overflow-x-hidden md:hidden"
               },
               "children": [
                 {
