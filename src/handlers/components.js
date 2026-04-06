@@ -62,10 +62,9 @@ module.exports = {
 
     const lines = components.map(c => {
       const catLabel = c.subcategory ? `${c.category}/${c.subcategory}` : c.category;
-      let line = `• **${c.name}** (\`${c.slug}\`) — ${catLabel} · ${c.uses} uses · ${c.likes} likes`;
-      const presetLabel = c.preset || c.source;
-      if (presetLabel || c.group) line += `\n  Preset: ${presetLabel || '—'} · Group: ${c.group || '—'}`;
-      line += `\n  ${c.description || c.visual || ''}\n  Tags: ${(c.tags || []).join(', ')}`;
+      let line = `• \`${c.slug}\` — ${c.name} (${catLabel})`;
+      line += `\n  ${c.description || c.visual || ''}`;
+      if ((c.tags || []).length) line += `\n  Tags: ${c.tags.join(', ')}`;
       return line;
     });
 
@@ -82,10 +81,16 @@ module.exports = {
     const head = broadened
       ? `# Blocks (${totalCount} total, page ${pageNum}/${pageCount})\n\n*(Search widened: dropped text query \`q\` because it returned no hits — prefer category/tag alone next time.)*\n\n${paginationNote}`
       : `# Blocks (${totalCount} total, page ${pageNum}/${pageCount})\n\n${paginationNote}`;
+    // Recommend the most-used block to help the model pick
+    const topBlock = [...components].sort((a, b) => (b.uses || 0) - (a.uses || 0))[0];
+    const recommendation = topBlock
+      ? `\nRecommended: \`${topBlock.slug}\` (most used).`
+      : '';
+
     return {
       content: [{
         type: 'text',
-        text: `${head}${lines.join('\n\n')}\n\n**Selection:** Read name, description, and tags; shortlist 2–4 finalists that match the user request, then pick one slug **exactly** as shown in backticks. If the header is **page 1 of 1** and the number of bullets matches total N, this response is the **full** result set for that query. If **Y > 1**, more pages exist — call \`search_blocks\` with \`page: 2\` (etc.) before claiming you listed every block.\n\nUse \`get_block(slug)\` for full structure (heavy); prefer comparing metadata above first.`,
+        text: `${head}${lines.join('\n\n')}\n\nPass a \`slug\` to apply_kit_block. Do NOT modify or invent slugs.${recommendation}`,
       }],
     };
   },

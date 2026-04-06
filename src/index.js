@@ -34,7 +34,13 @@ const handlers = {
 const HTTP_TOOL_NAMES = new Set(Object.keys(handlers));
 
 // Tools excluded from the agent endpoint (auth handled per-request)
-const AGENT_EXCLUDED = new Set(['register', 'save_as_section_template', 'save_component', 'update_component', 'delete_component', 'save_template', 'update_template', 'delete_template']);
+const AGENT_EXCLUDED = new Set([
+  'register',
+  // Block library admin tools
+  'save_block', 'update_block', 'patch_block', 'patch_block_bulk', 'delete_block',
+  // Template admin tools
+  'save_template', 'update_template', 'delete_template', 'publish_site_as_template',
+]);
 
 /**
  * Get tool schemas for the agent endpoint.

@@ -192,7 +192,7 @@ module.exports = {
     return {
       content: [{
         type: 'text',
-        text: `# Available Block Templates\n\nUse these IDs with add_block(templateId). Override content/styling by displayName.\n${result.join('\n')}`,
+        text: `# Available Block Templates\n\nUse these slugs with apply_kit_block(slug).\n${result.join('\n')}`,
       }],
     };
   },

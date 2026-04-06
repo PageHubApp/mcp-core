@@ -35,7 +35,7 @@
   },
   {
     "name": "get_design_patterns",
-    "description": "Returns concrete CraftJS node structure recipes for building rich, production-quality custom blocks. Each pattern is a complete flat node map you can pass directly to add_custom_block (after changing IDs and content).\n\nPatterns cover layouts that pre-built templates do NOT — bento grids, rich contact blocks, quote testimonials, menu/offering lists, multi-column footers, etc.\n\nCall this BEFORE building any custom block to get a proven structure instead of guessing.",
+    "description": "Returns concrete CraftJS node structure recipes for building rich, production-quality sections. Each pattern is a complete flat node map you can pass to add_nodes (after changing IDs and content).\n\nPatterns cover layouts that pre-built blocks do NOT — bento grids, rich contact blocks, quote testimonials, menu/offering lists, multi-column footers, etc.\n\nCall this BEFORE hand-building any section to get a proven structure instead of guessing.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -69,7 +69,7 @@
   },
   {
     "name": "create_template",
-    "description": "Creates a new site from the acme base template with an empty page_home container. Saves to the API and auto-selects as active site.\n\nWorkflow: create_template → set_theme (includes company variables) → add_block (repeat) → set_nav → set_footer → update_page (set SEO title/description)",
+    "description": "Creates a new site from the acme base template with an empty page_home container. Saves to the API and auto-selects as active site.\n\nWorkflow: create_template → set_theme (includes company variables) → apply_kit_block / add_block (repeat) → set_nav → set_footer → update_page (set SEO title/description)",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -107,7 +107,7 @@
   },
   {
     "name": "set_theme",
-    "description": "Creates or updates the ROOT node theme for the active site — palette colors, styleGuide (spacing, radius, shadows, fonts), Google Fonts, and JSON-LD structured data. If no active site exists, creates one first. Always call this FIRST when building a new site, before adding blocks.\n\nIMPORTANT: After set_theme, set company variables on ROOT via patch_site_node with propsPatch: { company: { name, tagline, phone, email, address, location, website, type } }. These populate {{company.name}} etc. throughout the site. Without them, all variable placeholders show defaults (\"Acme Inc.\").\n\nWorkflow: create_template → set_theme → patch company vars on ROOT → add_block (repeat) → set_nav → set_footer → update_page (set pageTitle/pageDescription for SEO)",
+    "description": "Creates or updates the ROOT node theme for the active site — palette colors, styleGuide (spacing, radius, shadows, fonts), Google Fonts, and JSON-LD structured data. If no active site exists, creates one first. Always call this FIRST when building a new site, before adding blocks.\n\nIMPORTANT: After set_theme, set company variables on ROOT via patch_site_node with propsPatch: { company: { name, tagline, phone, email, address, location, website, type } }. These populate {{company.name}} etc. throughout the site. Without them, all variable placeholders show defaults (\"Acme Inc.\").\n\nWorkflow: set_theme → patch company vars on ROOT → apply_kit_block (repeat) → set_nav → set_footer → update_page (set pageTitle/pageDescription for SEO)",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -336,7 +336,7 @@
         },
         "copyrightHtml": {
           "type": "string",
-          "description": "Copyright line ONLY — a single short text like \"© {{year}} {{company.name}}\". Keep it simple.\n\nDO NOT cram address, phone, nav links, or multi-line content into this field. For rich footers with links, address, and multiple rows, use add_custom_section to build a proper footer structure with separate Text nodes and ButtonList for nav links.\n\nExample: \"© {{year}} {{company.name}}. All rights reserved.\""
+          "description": "Copyright line ONLY — a single short text like \"© {{year}} {{company.name}}\". Keep it simple.\n\nDO NOT cram address, phone, nav links, or multi-line content into this field. For rich footers with links, address, and multiple rows, use add_nodes or insert_node to build a proper footer structure with separate Text nodes and ButtonList for nav links.\n\nExample: \"© {{year}} {{company.name}}. All rights reserved.\""
         },
         "copyrightTagName": {
           "type": "string",
@@ -882,7 +882,7 @@
   },
   {
     "name": "select_template",
-    "description": "Set the active template context by slug for the current session. Once selected, all editing tools (patch_site_node, patch_site_bulk, add_nodes, update_node, delete_node, insert_node, list_pages, add_page, update_page, delete_page, set_theme, add_block, set_nav, set_footer, etc.) will operate on this template instead of a site. Clears any active site. Requires admin or tenant owner/editor role.",
+    "description": "Set the active template context by slug for the current session. Once selected, all editing tools (patch_site_node, patch_site_bulk, add_nodes, update_node, delete_node, insert_node, list_pages, add_page, update_page, delete_page, set_theme, apply_kit_block, set_nav, set_footer, etc.) will operate on this template instead of a site. Clears any active site. Requires admin or tenant owner/editor role.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1249,7 +1249,7 @@
   },
   {
     "name": "get_block",
-    "description": "Get a single block by slug with its full hierarchical structure. Use the structure as a building block inside add_custom_block or as reference when hand-crafting nodes.\n\nFor small edits without replacing the whole tree, prefer list_block_nodes then patch_block / patch_block_bulk (same patch fields as patch_site_node).\n\nAlso increments the block's usage counter.",
+    "description": "Get a single block by slug with its full hierarchical structure. Use the structure as reference when hand-crafting nodes with add_nodes.\n\nFor small edits without replacing the whole tree, prefer list_block_nodes then patch_block / patch_block_bulk (same patch fields as patch_site_node).\n\nAlso increments the block's usage counter.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1281,7 +1281,7 @@
   },
   {
     "name": "apply_kit_block",
-    "description": "Apply a library block (from search_blocks) into an existing **empty** section Container (isCanvas section).\n\n**Main agent / planner (this chat):** sectionContainerId is REQUIRED. First create the empty section with add_nodes (rootNodeId = new sec_* id, parentId = page_home, empty nodes: []), then search_blocks → apply_kit_block(slug, sectionContainerId: \"sec_cta\"). Calling apply_kit_block without sectionContainerId in planner mode always fails.\n\n**Parallel section fill workers only:** omit sectionContainerId — the server pins to the assigned section automatically. Never pass sectionContainerId in fill mode (it is ignored).",
+    "description": "Apply a library block (from search_blocks) to a site. The block is a complete section — it drops directly into the page.\n\n**Main agent:** just call apply_kit_block(slug). The block is added to page_home by default (use pageId for other pages, position to control order). Optionally pass sectionContainerId to install inside an existing empty section container (e.g. during full-page builds).\n\n**Parallel section fill workers only:** omit sectionContainerId — the server pins to the assigned section automatically.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1291,11 +1291,15 @@
         },
         "sectionContainerId": {
           "type": "string",
-          "description": "Required in main agent: id of an existing empty section container (e.g. sec_cta). Create it with add_nodes first if missing. Omit only in parallel fill mode."
+          "description": "Optional: id of an existing empty section container to install into (e.g. sec_cta for skeleton fills). Omit to add the block directly to the page."
+        },
+        "pageId": {
+          "type": "string",
+          "description": "Target page node ID (default: page_home). Only used when sectionContainerId is omitted."
         },
         "contentOverrides": {
           "type": "string",
-          "description": "Optional JSON object: keys are custom.displayName from the block, values are { text, url, content, alt, ... } per node type — same idea as add_block overrides."
+          "description": "Optional JSON object: keys are custom.displayName from the block, values are { text, url, content, alt, ... } per node type."
         },
         "propOverrides": {
           "type": "string",
@@ -1303,7 +1307,7 @@
         },
         "position": {
           "type": "number",
-          "description": "Insert index under the section container (default: append)."
+          "description": "Insert position in the parent's children array. 0 = first child, 1 = after first child, etc. Use pull_site to see page_home.nodes order. Default: append to end."
         }
       },
       "required": [
@@ -1582,7 +1586,7 @@
   },
   {
     "name": "list_pages",
-    "description": "Lists all pages in a site. Pages are Container nodes with type \"page\" that are direct children of ROOT. Returns each page's node ID, display name, URL slug, and flags (isHomePage, is404Page). Use this to discover page IDs before targeting them with add_section, add_custom_section, or update_page.",
+    "description": "Lists all pages in a site. Pages are Container nodes with type \"page\" that are direct children of ROOT. Returns each page's node ID, display name, URL slug, and flags (isHomePage, is404Page). Use this to discover page IDs before targeting them with apply_kit_block, add_nodes, or update_page.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1595,7 +1599,7 @@
   },
   {
     "name": "add_page",
-    "description": "Creates a new page in a site. A page is a Container node with type \"page\" added as a direct child of ROOT (alongside header and footer). The page gets an auto-generated node ID based on its name.\n\nThe first page in a site is automatically marked as the home page. Additional pages are accessible via their URL slug (derived from the display name).\n\nAfter creating a page, use add_block or add_custom_block with pageId to add content to it.",
+    "description": "Creates a new page in a site. A page is a Container node with type \"page\" added as a direct child of ROOT (alongside header and footer). The page gets an auto-generated node ID based on its name.\n\nThe first page in a site is automatically marked as the home page. Additional pages are accessible via their URL slug (derived from the display name).\n\nAfter creating a page, use apply_kit_block or add_nodes with pageId to add content to it.",
     "inputSchema": {
       "type": "object",
       "properties": {

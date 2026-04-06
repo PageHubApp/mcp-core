@@ -79,17 +79,22 @@ module.exports = {
       );
     }
     let sectionContainerId = argSectionId || ctx.sectionNodeId;
-    if (!sectionContainerId) {
-      throw new Error(
-        'sectionContainerId is required in main agent: create an empty section with add_nodes (rootNodeId sec_*, parentId page_home) then apply_kit_block(slug, sectionContainerId). Parallel fill workers omit it — fill mode supplies context.'
-      );
-    }
     // Parallel fills: always pin to the worker's section — ignore a wrong model-supplied id.
     if (ctx.fillMode && ctx.sectionNodeId) {
       sectionContainerId = String(ctx.sectionNodeId);
     }
+    if (ctx.fillMode && !sectionContainerId) {
+      throw new Error(
+        'sectionContainerId is required in fill mode. Use the section id from the planner (e.g. sec_hero).'
+      );
+    }
+    // Non-fill: if no container specified, drop block directly into the page node
+    const directToPage = !ctx.fillMode && !sectionContainerId;
+    const pageId = args.pageId || 'page_home';
 
-    const target = getActiveTarget(args);
+    // Strip block-specific params so getActiveTarget doesn't interpret slug as a template slug
+    const { slug: _blockSlug, sectionContainerId: _sec, contentOverrides: _co, propOverrides: _po, position: _pos, pageId: _pid, copyContext: _cc, ...targetArgs } = args;
+    const target = getActiveTarget(targetArgs);
     let sourceContent;
     if (ctx._pendingFlatMap) {
       sourceContent = ctx._pendingFlatMap;
@@ -114,20 +119,27 @@ module.exports = {
     }
 
     let flat = JSON.parse(JSON.stringify(sourceContent));
-    if (!flat[sectionContainerId] && ctx.fillMode && typeof ctx._reloadMergedDraft === 'function') {
-      await ctx._reloadMergedDraft();
-      if (ctx._pendingFlatMap && typeof ctx._pendingFlatMap === 'object') {
-        flat = JSON.parse(JSON.stringify(ctx._pendingFlatMap));
+    // For direct-to-page mode, use pageId as the parent
+    const parentNodeId = directToPage ? pageId : sectionContainerId;
+    if (!directToPage) {
+      if (!flat[sectionContainerId] && ctx.fillMode && typeof ctx._reloadMergedDraft === 'function') {
+        await ctx._reloadMergedDraft();
+        if (ctx._pendingFlatMap && typeof ctx._pendingFlatMap === 'object') {
+          flat = JSON.parse(JSON.stringify(ctx._pendingFlatMap));
+        }
+      }
+      if (!flat[sectionContainerId]) {
+        throw new Error(
+          `Section container "${sectionContainerId}" not found.${
+            ctx.fillMode
+              ? ' Use the section id from the planner (e.g. sec_hero). If you just ran signal_sections, retry once the draft has synced.'
+              : ''
+          }`
+        );
       }
     }
-    if (!flat[sectionContainerId]) {
-      throw new Error(
-        `Section container "${sectionContainerId}" not found.${
-          ctx.fillMode
-            ? ' Use the section id from the planner (e.g. sec_hero). If you just ran signal_sections, retry once the draft has synced.'
-            : ''
-        }`
-      );
+    if (directToPage && !flat[pageId]) {
+      throw new Error(`Page "${pageId}" not found in site. Use list_pages to see available pages.`);
     }
 
     const rawSlug = String(slug).trim();
@@ -141,16 +153,40 @@ module.exports = {
       const isNotFound = /not found|404/i.test(msg);
       if (!isNotFound) throw err;
 
-      // Model often invents plausible slugs; try library text search and exact slug match on results.
+      // Model often invents plausible slugs; try library text search and fuzzy matching.
+      const searchTerms = rawSlug.replace(/[-_]+/g, ' ');
       const searchRes = await apiFetch(
-        `/api/v1/components?q=${encodeURIComponent(rawSlug)}&limit=25`
+        `/api/v1/components?q=${encodeURIComponent(searchTerms)}&limit=25`
       );
       const hits = searchRes.components || [];
       const lower = rawSlug.toLowerCase();
       const exact = hits.find((c) => c.slug === rawSlug || c.slug === lower);
       const ci = hits.find((c) => String(c.slug).toLowerCase() === lower);
+      // Name-to-slug: model sees "Testimonial Card" and invents "testimonial-card"
+      const slugFromName = (name) => String(name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      const nameMatch = hits.find((c) => slugFromName(c.name) === lower);
       const lone = hits.length === 1 ? hits[0] : null;
-      const pick = exact || ci || lone;
+
+      // Fuzzy: score by word overlap between invented slug and real slugs
+      let fuzzy = null;
+      if (!exact && !ci && !nameMatch && !lone && hits.length > 0) {
+        const words = lower.replace(/[-_]+/g, ' ').split(/\s+/).filter(Boolean);
+        let bestScore = 0;
+        for (const c of hits) {
+          const slugWords = c.slug.replace(/[-_]+/g, ' ').split(/\s+/);
+          const nameWords = String(c.name || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').split(/\s+/);
+          const allWords = new Set([...slugWords, ...nameWords]);
+          const score = words.filter((w) => allWords.has(w)).length;
+          if (score > bestScore) {
+            bestScore = score;
+            fuzzy = c;
+          }
+        }
+        // Require at least 2 word matches to avoid random picks
+        if (bestScore < 2) fuzzy = null;
+      }
+
+      const pick = exact || ci || nameMatch || lone || fuzzy;
 
       if (!pick) {
         throw new Error(
@@ -170,7 +206,7 @@ module.exports = {
     const co = parseMaybeJson(contentOverrides) || contentOverrides || {};
     const po = parseMaybeJson(propOverrides) || propOverrides || {};
 
-    const { nodes: newNodes, rootId } = hierarchicalStructureToFlat(structure, sectionContainerId, resolvedSlug);
+    const { nodes: newNodes, rootId } = hierarchicalStructureToFlat(structure, parentNodeId, resolvedSlug);
     walkApplyKitOverrides(newNodes, rootId, co, po);
 
     for (const [id, node] of Object.entries(newNodes)) {
@@ -178,16 +214,16 @@ module.exports = {
       flat[id] = node;
     }
 
-    const parentNodes = flat[sectionContainerId].nodes || [];
+    const parentNodes = flat[parentNodeId].nodes || [];
     const position = args.position != null ? args.position : parentNodes.length;
     parentNodes.splice(position, 0, rootId);
-    flat[sectionContainerId].nodes = parentNodes;
+    flat[parentNodeId].nodes = parentNodes;
 
     const changedNodes = {};
     for (const id of Object.keys(newNodes)) {
       Object.assign(changedNodes, collectSubtree(flat, id));
     }
-    Object.assign(changedNodes, collectSubtree(flat, sectionContainerId));
+    Object.assign(changedNodes, collectSubtree(flat, parentNodeId));
 
     if (ctx.draftMode) {
       if (ctx.fillMode) {
@@ -200,7 +236,7 @@ module.exports = {
         ctx._pendingFlatMap = flat;
       }
       const summary =
-        `Applied kit block "${component.name}" (\`${resolvedSlug}\`) — ${Object.keys(newNodes).length} nodes.${resolvedSlug !== rawSlug ? ` (resolved from "${rawSlug}")` : ''}\n\n${formatKitNodeIdManifest(newNodes, rootId, sectionContainerId)}`;
+        `Applied kit block "${component.name}" (\`${resolvedSlug}\`) — ${Object.keys(newNodes).length} nodes.${resolvedSlug !== rawSlug ? ` (resolved from "${rawSlug}")` : ''}\n\n${formatKitNodeIdManifest(newNodes, rootId, parentNodeId)}`;
       return {
         content: [{ type: 'text', text: summary }],
         pendingContent: ctx.fillMode ? ctx._pendingFlatMap : flat,
