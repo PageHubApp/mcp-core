@@ -1,4 +1,5 @@
 const { apiFetch } = require('../api-fetch');
+const { getContext } = require('../context');
 const {
   applyNodePatches,
   normalizeNodePatchArgs,
@@ -12,6 +13,25 @@ const {
   formatBlockNodeManifest,
 } = require('../structure-ingest');
 const { quickA11yAudit } = require('../a11y-check');
+
+/** Scan _pendingFlatMap for kit_* node IDs to infer which block slugs are already in use. */
+function detectUsedBlockSlugs() {
+  try {
+    const ctx = getContext();
+    const flat = ctx?._pendingFlatMap;
+    if (!flat || typeof flat !== 'object') return [];
+    const slugSet = new Set();
+    for (const key of Object.keys(flat)) {
+      // kit node IDs follow pattern: kit_<slug_with_underscores>_<hash>_n<N>
+      const match = key.match(/^kit_(.+?)_[a-f0-9]{8}_n\d+$/);
+      if (match) {
+        // Convert underscored slug back to hyphenated
+        slugSet.add(match[1].replace(/_/g, '-'));
+      }
+    }
+    return [...slugSet];
+  } catch { return []; }
+}
 
 module.exports = {
   async search_blocks(args) {
@@ -88,10 +108,16 @@ module.exports = {
       ? `\nRecommended: \`${topBlock.slug}\` (most used).`
       : '';
 
+    // Warn about blocks already used on this page to encourage variety
+    const usedSlugs = detectUsedBlockSlugs();
+    const usedNote = usedSlugs.length > 0
+      ? `\n\n⚠️ Already used on this page: ${usedSlugs.map(s => `\`${s}\``).join(', ')}. Pick a DIFFERENT block for variety.`
+      : '';
+
     return {
       content: [{
         type: 'text',
-        text: `${head}${lines.join('\n\n')}\n\nPass a \`slug\` to apply_kit_block. Do NOT modify or invent slugs.${recommendation}`,
+        text: `${head}${lines.join('\n\n')}\n\nPass a \`slug\` to apply_kit_block. Do NOT modify or invent slugs.${recommendation}${usedNote}`,
       }],
     };
   },

@@ -271,7 +271,7 @@
                     {
                       "type": "Text",
                       "props": {
-                        "text": "WCAG-minded defaults on shipped blocks",
+                        "text": "Built with accessibility in mind",
                         "tagName": "p",
                         "custom": {
                           "displayName": "Label"

@@ -678,7 +678,7 @@ module.exports = {
   },
 
   async set_theme(args) {
-    const { preset, palette, styleGuide, fonts, jsonLd } = args;
+    const { preset, palette, darkPalette, styleGuide, fonts, jsonLd } = args;
     const target = getActiveTarget(args);
     const ctx = getContext();
 
@@ -698,6 +698,7 @@ module.exports = {
 
     // Resolve preset values (explicit args override preset)
     let resolvedPalette = parseMaybeJson(palette);
+    let resolvedDarkPalette = parseMaybeJson(darkPalette);
     let resolvedStyleGuide = parseMaybeJson(styleGuide);
     let resolvedFonts = parseMaybeJson(fonts);
     let presetRecord = null;
@@ -706,12 +707,19 @@ module.exports = {
       presetRecord = presetData.preset;
       if (!presetRecord) throw new Error(`Preset "${preset}" not found. Use list_presets to see available presets.`);
       if (!resolvedPalette) resolvedPalette = presetRecord.palette;
+      if (!resolvedDarkPalette && presetRecord.darkPalette) resolvedDarkPalette = presetRecord.darkPalette;
       if (!resolvedStyleGuide) resolvedStyleGuide = presetRecord.styleGuide;
       if (!resolvedFonts) resolvedFonts = presetRecord.fonts;
     }
 
     // Apply palette → ROOT.props.pallet (note: legacy misspelling)
     if (resolvedPalette) rootProps.pallet = resolvedPalette;
+
+    // Apply dark palette
+    if (resolvedDarkPalette) {
+      rootProps.darkPallet = resolvedDarkPalette;
+      rootProps.darkModeEnabled = true;
+    }
 
     // Merge styleGuide
     if (resolvedStyleGuide) {
