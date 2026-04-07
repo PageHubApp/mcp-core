@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Features dual highlight panel"
     },
-    "className": "bg-(--background) text-(--foreground) w-full py-16 px-6 md:py-24 md:px-8"
+    "className": "bg-(--background) text-(--foreground) w-full py-(--space-lg) px-(--container-padding-x)"
   },
   "children": [
     {
@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "Section inner"
         },
-        "className": "flex flex-col gap-12 w-full max-w-(--content-width) mx-auto items-center"
+        "className": "flex flex-col gap-(--space-md) w-full max-w-(--content-width) mx-auto items-center"
       },
       "children": [
         {
@@ -29,7 +29,7 @@
             "custom": {
               "displayName": "Section header"
             },
-            "className": "flex flex-col items-center text-center w-full max-w-3xl mx-auto gap-4"
+            "className": "flex flex-col items-center text-center w-full max-w-3xl mx-auto gap-(--space-sm)"
           },
           "children": [
             {
@@ -61,7 +61,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "className": "grid grid-cols-1 gap-10 w-full lg:grid-cols-2 lg:gap-x-16 lg:gap-y-8",
+            "className": "grid grid-cols-1 gap-(--space-md) w-full lg:grid-cols-2 lg:gap-x-16 lg:gap-y-8",
             "custom": {
               "displayName": "Highlight pair"
             }
@@ -75,7 +75,7 @@
                 "custom": {
                   "displayName": "Column velocity"
                 },
-                "className": "flex flex-col items-center text-center gap-4 w-full"
+                "className": "flex flex-col items-center text-center gap-(--space-sm) w-full"
               },
               "children": [
                 {
@@ -103,7 +103,7 @@
                         "custom": {
                           "displayName": "Icon velocity"
                         },
-                        "className": "bg-transparent px-0 py-0"
+                        "className": "bg-transparent px-(--container-padding-x) py-(--space-xs)"
                       }
                     }
                   ]
@@ -140,7 +140,7 @@
                 "custom": {
                   "displayName": "Column governance"
                 },
-                "className": "flex flex-col items-center text-center gap-4 w-full"
+                "className": "flex flex-col items-center text-center gap-(--space-sm) w-full"
               },
               "children": [
                 {
@@ -168,7 +168,7 @@
                         "custom": {
                           "displayName": "Icon governance"
                         },
-                        "className": "bg-transparent text-(--secondary-foreground) px-0 py-0"
+                        "className": "bg-transparent text-(--secondary-foreground) px-(--container-padding-x) py-(--space-xs)"
                       }
                     }
                   ]
@@ -224,7 +224,7 @@
                 "custom": {
                   "displayName": "Link differentiate"
                 },
-                "className": "bg-transparent text-(--primary) px-0 py-0 text-sm font-medium"
+                "className": "bg-transparent text-(--primary) px-(--container-padding-x) py-(--space-xs) text-sm font-medium"
               }
             }
           ]

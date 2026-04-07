@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Newsletter card name email section"
     },
-    "className": "bg-(--background) text-(--foreground) w-full py-16 px-6 md:py-20 md:px-8"
+    "className": "bg-(--background) text-(--foreground) w-full py-(--space-lg) px-(--container-padding-x)"
   },
   "children": [
     {
@@ -29,7 +29,7 @@
             "custom": {
               "displayName": "Subscribe card"
             },
-            "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) border border-(--muted) shadow-sm flex flex-col gap-6 p-8 w-full max-w-md mx-auto text-center items-center"
+            "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) border border-(--muted) shadow-sm flex flex-col gap-(--space-sm) p-8 w-full max-w-md mx-auto text-center items-center"
           },
           "children": [
             {
@@ -64,7 +64,7 @@
                 "custom": {
                   "displayName": "Subscribe form"
                 },
-                "className": "w-full flex flex-col gap-4 text-left items-stretch"
+                "className": "w-full flex flex-col gap-(--space-sm) text-left items-stretch"
               },
               "children": [
                 {
@@ -115,7 +115,7 @@
                     "custom": {
                       "displayName": "Submit"
                     },
-                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) w-full py-3 px-6 font-semibold text-sm text-center"
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) w-full py-(--space-xs) px-(--container-padding-x) font-semibold text-sm text-center"
                   }
                 }
               ]

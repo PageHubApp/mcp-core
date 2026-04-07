@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Team Split Intro"
     },
-    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-16 px-4 md:py-28 md:px-6"
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-(--space-lg) px-(--container-padding-x)"
   },
   "children": [
     {
@@ -16,7 +16,7 @@
         "custom": {
           "displayName": "Split Layout Wrapper"
         },
-        "className": "flex flex-col max-w-7xl mx-auto w-full gap-16 md:flex-row md:items-center md:gap-12"
+        "className": "flex flex-col max-w-7xl mx-auto w-full gap-(--space-lg) md:flex-row md:items-center"
       },
       "children": [
         {
@@ -25,7 +25,7 @@
             "custom": {
               "displayName": "Intro Content"
             },
-            "className": "flex flex-col w-full gap-6 md:w-5/12"
+            "className": "flex flex-col w-full gap-(--space-sm) md:w-5/12"
           },
           "children": [
             {
@@ -69,7 +69,7 @@
                 "custom": {
                   "displayName": "CTA Button"
                 },
-                "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) py-3 px-8 font-medium w-max mt-2"
+                "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) py-(--space-xs) px-(--container-padding-x) font-medium w-max mt-2"
               }
             }
           ]
@@ -89,7 +89,7 @@
             {
               "type": "Container",
               "props": {
-                "className": "flex flex-col gap-4"
+                "className": "flex flex-col gap-(--space-sm)"
               },
               "children": [
                 {
@@ -103,7 +103,7 @@
                 {
                   "type": "Container",
                   "props": {
-                    "className": "flex flex-col gap-1"
+                    "className": "flex flex-col gap-(--space-xs)"
                   },
                   "children": [
                     {
@@ -129,7 +129,7 @@
             {
               "type": "Container",
               "props": {
-                "className": "flex flex-col gap-4 md:mt-8"
+                "className": "flex flex-col gap-(--space-sm) md:mt-8"
               },
               "children": [
                 {
@@ -143,7 +143,7 @@
                 {
                   "type": "Container",
                   "props": {
-                    "className": "flex flex-col gap-1"
+                    "className": "flex flex-col gap-(--space-xs)"
                   },
                   "children": [
                     {
@@ -169,7 +169,7 @@
             {
               "type": "Container",
               "props": {
-                "className": "flex flex-col gap-4"
+                "className": "flex flex-col gap-(--space-sm)"
               },
               "children": [
                 {
@@ -183,7 +183,7 @@
                 {
                   "type": "Container",
                   "props": {
-                    "className": "flex flex-col gap-1"
+                    "className": "flex flex-col gap-(--space-xs)"
                   },
                   "children": [
                     {
@@ -209,7 +209,7 @@
             {
               "type": "Container",
               "props": {
-                "className": "flex flex-col gap-4 md:mt-8"
+                "className": "flex flex-col gap-(--space-sm) md:mt-8"
               },
               "children": [
                 {
@@ -223,7 +223,7 @@
                 {
                   "type": "Container",
                   "props": {
-                    "className": "flex flex-col gap-1"
+                    "className": "flex flex-col gap-(--space-xs)"
                   },
                   "children": [
                     {

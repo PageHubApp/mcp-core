@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "Footer inner"
         },
-        "className": "flex flex-col items-center text-center gap-6 w-full max-w-(--content-width) mx-auto px-6 py-12 md:py-16 md:gap-8"
+        "className": "flex flex-col items-center text-center gap-(--space-sm) w-full max-w-(--content-width) mx-auto px-(--container-padding-x) py-(--space-md)"
       },
       "children": [
         {
@@ -62,7 +62,7 @@
             "custom": {
               "displayName": "Legal links"
             },
-            "className": "flex flex-row flex-wrap justify-center items-center gap-6 md:gap-8"
+            "className": "flex flex-row flex-wrap justify-center items-center gap-(--space-sm)"
           },
           "children": [
             {
@@ -73,7 +73,7 @@
                 "custom": {
                   "displayName": "Privacy"
                 },
-                "className": "bg-transparent text-(--foreground) border-0 text-sm font-medium px-0 py-0"
+                "className": "bg-transparent text-(--foreground) border-0 text-sm font-medium px-(--container-padding-x) py-(--space-xs)"
               }
             },
             {
@@ -84,7 +84,7 @@
                 "custom": {
                   "displayName": "Terms"
                 },
-                "className": "bg-transparent text-(--foreground) border-0 text-sm font-medium px-0 py-0"
+                "className": "bg-transparent text-(--foreground) border-0 text-sm font-medium px-(--container-padding-x) py-(--space-xs)"
               }
             },
             {
@@ -95,7 +95,7 @@
                 "custom": {
                   "displayName": "Contact"
                 },
-                "className": "bg-transparent text-(--foreground) border-0 text-sm font-medium px-0 py-0"
+                "className": "bg-transparent text-(--foreground) border-0 text-sm font-medium px-(--container-padding-x) py-(--space-xs)"
               }
             }
           ]
@@ -108,7 +108,7 @@
             "custom": {
               "displayName": "Social row"
             },
-            "className": "border-t border-(--border) flex flex-col items-center gap-5 w-full max-w-md pt-8 mt-2"
+            "className": "border-t border-(--border) flex flex-col items-center gap-(--space-sm) w-full max-w-md pt-8 mt-2"
           },
           "children": [
             {
@@ -130,7 +130,7 @@
                 "custom": {
                   "displayName": "Social icons"
                 },
-                "className": "flex flex-row justify-center items-center gap-2"
+                "className": "flex flex-row justify-center items-center gap-(--space-xs)"
               },
               "children": [
                 {
@@ -146,7 +146,7 @@
                     "custom": {
                       "displayName": "GitHub"
                     },
-                    "className": "bg-(--card) text-(--foreground) border border-(--border) rounded-(--radius-lg) inline-flex items-center justify-center px-3 py-3"
+                    "className": "bg-(--card) text-(--foreground) border border-(--border) rounded-(--radius-lg) inline-flex items-center justify-center px-(--container-padding-x) py-(--space-xs)"
                   }
                 },
                 {
@@ -162,7 +162,7 @@
                     "custom": {
                       "displayName": "Website"
                     },
-                    "className": "bg-(--card) text-(--foreground) border border-(--border) rounded-(--radius-lg) inline-flex items-center justify-center px-3 py-3"
+                    "className": "bg-(--card) text-(--foreground) border border-(--border) rounded-(--radius-lg) inline-flex items-center justify-center px-(--container-padding-x) py-(--space-xs)"
                   }
                 },
                 {
@@ -178,7 +178,7 @@
                     "custom": {
                       "displayName": "Social share"
                     },
-                    "className": "bg-(--card) text-(--foreground) border border-(--border) rounded-(--radius-lg) inline-flex items-center justify-center px-3 py-3"
+                    "className": "bg-(--card) text-(--foreground) border border-(--border) rounded-(--radius-lg) inline-flex items-center justify-center px-(--container-padding-x) py-(--space-xs)"
                   }
                 }
               ]

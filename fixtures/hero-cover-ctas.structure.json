@@ -7,13 +7,13 @@
     "custom": {
       "displayName": "Hero Cover CTAs"
     },
-    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-12 px-4 md:py-24 md:px-6"
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-(--space-md) px-(--container-padding-x)"
   },
   "children": [
     {
       "type": "Container",
       "props": {
-        "className": "flex flex-col items-stretch gap-12 w-full max-w-7xl mx-auto lg:flex-row lg:gap-16 lg:items-center",
+        "className": "flex flex-col items-stretch gap-(--space-md) w-full max-w-7xl mx-auto lg:flex-row lg:items-center",
         "custom": {
           "displayName": "Inner Container"
         }
@@ -22,7 +22,7 @@
         {
           "type": "Container",
           "props": {
-            "className": "flex flex-col gap-8 w-full lg:w-1/2",
+            "className": "flex flex-col gap-(--space-md) w-full lg:w-1/2",
             "custom": {
               "displayName": "Left Content"
             }
@@ -34,7 +34,7 @@
                 "custom": {
                   "displayName": "Headline Stack"
                 },
-                "className": "flex flex-col gap-4 w-full"
+                "className": "flex flex-col gap-(--space-sm) w-full"
               },
               "children": [
                 {
@@ -67,7 +67,7 @@
                 "custom": {
                   "displayName": "Features Grid"
                 },
-                "className": "flex flex-col gap-8 w-full md:flex-row md:gap-8"
+                "className": "flex flex-col gap-(--space-md) w-full md:flex-row"
               },
               "children": [
                 {
@@ -76,7 +76,7 @@
                     "custom": {
                       "displayName": "Grid Item Left"
                     },
-                    "className": "flex flex-col gap-3 w-full items-start md:w-1/2"
+                    "className": "flex flex-col gap-(--space-xs) w-full items-start md:w-1/2"
                   },
                   "children": [
                     {
@@ -90,7 +90,7 @@
                           "size": "w-6 h-6",
                           "gap": "gap-0"
                         },
-                        "className": "bg-transparent text-(--muted-foreground) px-0 py-0 pointer-events-none",
+                        "className": "bg-transparent text-(--muted-foreground) px-(--container-padding-x) py-(--space-xs) pointer-events-none",
                         "custom": {
                           "displayName": "Icon"
                         }
@@ -132,7 +132,7 @@
                         "custom": {
                           "displayName": "Primary CTA"
                         },
-                        "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) py-2 px-5 text-sm font-medium"
+                        "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) py-(--space-xs) px-(--container-padding-x) text-sm font-medium"
                       }
                     }
                   ]
@@ -143,7 +143,7 @@
                     "custom": {
                       "displayName": "Grid Item Right"
                     },
-                    "className": "flex flex-col gap-3 w-full items-start md:w-1/2"
+                    "className": "flex flex-col gap-(--space-xs) w-full items-start md:w-1/2"
                   },
                   "children": [
                     {
@@ -157,7 +157,7 @@
                           "size": "w-6 h-6",
                           "gap": "gap-0"
                         },
-                        "className": "bg-transparent text-(--muted-foreground) px-0 py-0 pointer-events-none",
+                        "className": "bg-transparent text-(--muted-foreground) px-(--container-padding-x) py-(--space-xs) pointer-events-none",
                         "custom": {
                           "displayName": "Icon"
                         }
@@ -199,7 +199,7 @@
                         "custom": {
                           "displayName": "Secondary CTA"
                         },
-                        "className": "bg-transparent text-(--foreground) border border-(--muted) rounded-(--radius) py-2 px-5 text-sm font-medium"
+                        "className": "bg-transparent text-(--foreground) border border-(--muted) rounded-(--radius) py-(--space-xs) px-(--container-padding-x) text-sm font-medium"
                       }
                     }
                   ]

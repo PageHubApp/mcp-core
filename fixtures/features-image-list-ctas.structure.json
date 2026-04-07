@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Features Image List CTAs"
     },
-    "className": "bg-(--background) text-(--foreground) w-full py-16 px-6 md:py-24 md:px-8"
+    "className": "bg-(--background) text-(--foreground) w-full py-(--space-lg) px-(--container-padding-x)"
   },
   "children": [
     {
@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "Section Inner"
         },
-        "className": "flex flex-col gap-12 w-full max-w-6xl mx-auto items-start md:flex-row md:gap-14 md:items-start"
+        "className": "flex flex-col gap-(--space-md) w-full max-w-6xl mx-auto items-start md:flex-row md:items-start"
       },
       "children": [
         {
@@ -40,7 +40,7 @@
             "custom": {
               "displayName": "Content Column"
             },
-            "className": "flex flex-col gap-10 w-full md:w-1/2 md:flex-1"
+            "className": "flex flex-col gap-(--space-md) w-full md:w-1/2 md:flex-1"
           },
           "children": [
             {
@@ -51,7 +51,7 @@
                 "custom": {
                   "displayName": "Intro"
                 },
-                "className": "flex flex-col gap-4 w-full"
+                "className": "flex flex-col gap-(--space-sm) w-full"
               },
               "children": [
                 {
@@ -97,7 +97,7 @@
                     "custom": {
                       "displayName": "Feature — Security"
                     },
-                    "className": "flex flex-row gap-4 w-full items-start py-6"
+                    "className": "flex flex-row gap-(--space-sm) w-full items-start py-(--space-md)"
                   },
                   "children": [
                     {
@@ -132,7 +132,7 @@
                         "custom": {
                           "displayName": "Copy 1"
                         },
-                        "className": "flex flex-col gap-2 flex-1"
+                        "className": "flex flex-col gap-(--space-xs) flex-1"
                       },
                       "children": [
                         {
@@ -165,7 +165,7 @@
                             "custom": {
                               "displayName": "CTA 1"
                             },
-                            "className": "bg-transparent text-(--primary) text-sm font-semibold px-0 py-0 mt-1"
+                            "className": "bg-transparent text-(--primary) text-sm font-semibold px-(--container-padding-x) py-(--space-xs) mt-1"
                           }
                         }
                       ]
@@ -180,7 +180,7 @@
                     "custom": {
                       "displayName": "Feature — Insight"
                     },
-                    "className": "border-t border-(--muted) flex flex-row gap-4 w-full items-start py-6"
+                    "className": "border-t border-(--muted) flex flex-row gap-(--space-sm) w-full items-start py-(--space-md)"
                   },
                   "children": [
                     {
@@ -215,7 +215,7 @@
                         "custom": {
                           "displayName": "Copy 2"
                         },
-                        "className": "flex flex-col gap-2 flex-1"
+                        "className": "flex flex-col gap-(--space-xs) flex-1"
                       },
                       "children": [
                         {
@@ -248,7 +248,7 @@
                             "custom": {
                               "displayName": "CTA 2"
                             },
-                            "className": "bg-transparent text-(--accent) text-sm font-semibold px-0 py-0 mt-1"
+                            "className": "bg-transparent text-(--accent) text-sm font-semibold px-(--container-padding-x) py-(--space-xs) mt-1"
                           }
                         }
                       ]
@@ -263,7 +263,7 @@
                     "custom": {
                       "displayName": "Feature — Build"
                     },
-                    "className": "border-t border-(--muted) flex flex-row gap-4 w-full items-start py-6"
+                    "className": "border-t border-(--muted) flex flex-row gap-(--space-sm) w-full items-start py-(--space-md)"
                   },
                   "children": [
                     {
@@ -298,7 +298,7 @@
                         "custom": {
                           "displayName": "Copy 3"
                         },
-                        "className": "flex flex-col gap-2 flex-1"
+                        "className": "flex flex-col gap-(--space-xs) flex-1"
                       },
                       "children": [
                         {
@@ -331,7 +331,7 @@
                             "custom": {
                               "displayName": "CTA 3"
                             },
-                            "className": "bg-transparent text-(--secondary) text-sm font-semibold px-0 py-0 mt-1"
+                            "className": "bg-transparent text-(--secondary) text-sm font-semibold px-(--container-padding-x) py-(--space-xs) mt-1"
                           }
                         }
                       ]

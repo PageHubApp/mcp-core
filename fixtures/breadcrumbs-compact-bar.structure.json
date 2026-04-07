@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "Bar inner"
         },
-        "className": "flex flex-col gap-4 w-full max-w-(--content-width) mx-auto px-6 py-4 md:flex-row md:flex-wrap md:justify-between md:items-center md:gap-4 md:py-3"
+        "className": "flex flex-col gap-(--space-sm) w-full max-w-(--content-width) mx-auto px-(--container-padding-x) py-(--space-xs) md:flex-row md:flex-wrap md:justify-between md:items-center"
       },
       "children": [
         {
@@ -29,7 +29,7 @@
             "custom": {
               "displayName": "Trail"
             },
-            "className": "flex flex-row flex-wrap items-center gap-1.5 w-full min-w-0 md:flex-1 md:min-w-0"
+            "className": "flex flex-row flex-wrap items-center gap-(--space-xs) w-full min-w-0 md:flex-1 md:min-w-0"
           },
           "children": [
             {
@@ -40,7 +40,7 @@
                 "custom": {
                   "displayName": "Home"
                 },
-                "className": "bg-transparent text-(--primary) border-0 text-xs font-medium px-0 py-0"
+                "className": "bg-transparent text-(--primary) border-0 text-xs font-medium px-(--container-padding-x) py-(--space-xs)"
               }
             },
             {
@@ -62,7 +62,7 @@
                 "custom": {
                   "displayName": "Settings"
                 },
-                "className": "bg-transparent text-(--primary) border-0 text-xs font-medium px-0 py-0"
+                "className": "bg-transparent text-(--primary) border-0 text-xs font-medium px-(--container-padding-x) py-(--space-xs)"
               }
             },
             {
@@ -102,7 +102,7 @@
             "custom": {
               "displayName": "Secondary action"
             },
-            "className": "bg-(--card) text-(--foreground) border border-(--border) rounded-(--radius) inline-flex flex-start items-center gap-2 py-2 px-4 text-xs font-medium md:auto md:flex-none"
+            "className": "bg-(--card) text-(--foreground) border border-(--border) rounded-(--radius) inline-flex flex-start items-center gap-(--space-xs) py-(--space-xs) px-(--container-padding-x) text-xs font-medium md:auto md:flex-none"
           }
         }
       ]

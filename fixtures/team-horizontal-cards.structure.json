@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Team Horizontal Cards"
     },
-    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-16 px-4 gap-12 md:py-24 md:px-6 md:gap-16"
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-(--space-lg) px-(--container-padding-x) gap-(--space-md)"
   },
   "children": [
     {
@@ -16,7 +16,7 @@
         "custom": {
           "displayName": "Header"
         },
-        "className": "flex flex-col items-center text-center max-w-3xl mx-auto gap-4"
+        "className": "flex flex-col items-center text-center max-w-3xl mx-auto gap-(--space-sm)"
       },
       "children": [
         {
@@ -49,7 +49,7 @@
         "custom": {
           "displayName": "Team Grid"
         },
-        "className": "grid grid-cols-1 gap-8 max-w-6xl mx-auto w-full md:grid-cols-2"
+        "className": "grid grid-cols-1 gap-(--space-md) max-w-6xl mx-auto w-full md:grid-cols-2"
       },
       "children": [
         {
@@ -78,13 +78,13 @@
                 "custom": {
                   "displayName": "Details"
                 },
-                "className": "flex flex-col p-8 gap-4 w-full md:w-3/5"
+                "className": "flex flex-col p-8 gap-(--space-sm) w-full md:w-3/5"
               },
               "children": [
                 {
                   "type": "Container",
                   "props": {
-                    "className": "flex flex-col gap-1"
+                    "className": "flex flex-col gap-(--space-xs)"
                   },
                   "children": [
                     {
@@ -116,7 +116,7 @@
                 {
                   "type": "Container",
                   "props": {
-                    "className": "flex flex-row gap-3 mt-2"
+                    "className": "flex flex-row gap-(--space-xs) mt-2"
                   },
                   "children": [
                     {
@@ -136,7 +136,7 @@
                         "custom": {
                           "displayName": "Social Link"
                         },
-                        "className": "bg-transparent px-0 py-0"
+                        "className": "bg-transparent px-(--container-padding-x) py-(--space-xs)"
                       }
                     }
                   ]
@@ -171,13 +171,13 @@
                 "custom": {
                   "displayName": "Details"
                 },
-                "className": "flex flex-col p-8 gap-4 w-full md:w-3/5"
+                "className": "flex flex-col p-8 gap-(--space-sm) w-full md:w-3/5"
               },
               "children": [
                 {
                   "type": "Container",
                   "props": {
-                    "className": "flex flex-col gap-1"
+                    "className": "flex flex-col gap-(--space-xs)"
                   },
                   "children": [
                     {
@@ -209,7 +209,7 @@
                 {
                   "type": "Container",
                   "props": {
-                    "className": "flex flex-row gap-3 mt-2"
+                    "className": "flex flex-row gap-(--space-xs) mt-2"
                   },
                   "children": [
                     {
@@ -229,7 +229,7 @@
                         "custom": {
                           "displayName": "Social Link"
                         },
-                        "className": "bg-transparent px-0 py-0"
+                        "className": "bg-transparent px-(--container-padding-x) py-(--space-xs)"
                       }
                     }
                   ]

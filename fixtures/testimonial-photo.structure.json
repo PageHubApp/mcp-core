@@ -4,7 +4,7 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
-    "className": "bg-(--background) text-(--foreground) flex flex-col items-center w-full py-12 px-4 lg:py-16 lg:px-6",
+    "className": "bg-(--background) text-(--foreground) flex flex-col items-center w-full py-(--space-md) px-(--container-padding-x)",
     "custom": {
       "displayName": "Testimonial photo section"
     }
@@ -51,7 +51,7 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "className": "flex flex-col gap-6 justify-center w-full p-8 text-left lg:flex-1 lg:p-10 lg:pl-12",
+                "className": "flex flex-col gap-(--space-sm) justify-center w-full p-8 text-left lg:flex-1 lg:pl-12",
                 "custom": {
                   "displayName": "Quote column"
                 }
@@ -88,7 +88,7 @@
                     "custom": {
                       "displayName": "Attribution"
                     },
-                    "className": "flex flex-col gap-1"
+                    "className": "flex flex-col gap-(--space-xs)"
                   },
                   "children": [
                     {

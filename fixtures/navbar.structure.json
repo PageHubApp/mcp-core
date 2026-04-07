@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "Navbar inner"
         },
-        "className": "flex flex-row justify-between items-center w-full max-w-(--content-width) mx-auto gap-4 py-4 px-6 min-w-0 md:px-8"
+        "className": "flex flex-row justify-between items-center w-full max-w-(--content-width) mx-auto gap-(--space-sm) py-(--space-xs) px-(--container-padding-x) min-w-0"
       },
       "children": [
         {
@@ -60,7 +60,7 @@
                 "custom": {
                   "displayName": "Home"
                 },
-                "className": "bg-transparent text-(--background) hidden text-sm font-medium px-(--button-padding-x) py-(--button-padding-y) flex-col gap-1.5 items-center justify-center md:block"
+                "className": "bg-transparent text-(--background) hidden text-sm font-medium px-(--button-padding-x) py-(--button-padding-y) flex-col gap-(--space-xs) items-center justify-center md:block"
               }
             },
             {
@@ -73,7 +73,7 @@
                 "custom": {
                   "displayName": "About"
                 },
-                "className": "bg-transparent text-(--background) hidden text-sm px-(--button-padding-x) py-(--button-padding-y) flex-col gap-1.5 items-center justify-center md:block"
+                "className": "bg-transparent text-(--background) hidden text-sm px-(--button-padding-x) py-(--button-padding-y) flex-col gap-(--space-xs) items-center justify-center md:block"
               }
             },
             {
@@ -86,7 +86,7 @@
                 "custom": {
                   "displayName": "Services"
                 },
-                "className": "bg-transparent text-(--background) hidden text-sm px-(--button-padding-x) py-(--button-padding-y) flex-col gap-1.5 items-center justify-center md:block"
+                "className": "bg-transparent text-(--background) hidden text-sm px-(--button-padding-x) py-(--button-padding-y) flex-col gap-(--space-xs) items-center justify-center md:block"
               }
             },
             {
@@ -99,7 +99,7 @@
                 "custom": {
                   "displayName": "Contact CTA"
                 },
-                "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) hidden text-sm font-medium px-(--button-padding-x) py-(--button-padding-y) flex-col gap-1.5 items-center justify-center md:block"
+                "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) hidden text-sm font-medium px-(--button-padding-x) py-(--button-padding-y) flex-col gap-(--space-xs) items-center justify-center md:block"
               }
             },
             {

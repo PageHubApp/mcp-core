@@ -4,7 +4,7 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
-    "className": "bg-(--background) text-(--foreground) flex flex-col items-center w-full py-12 px-4 lg:py-20 lg:px-6",
+    "className": "bg-(--background) text-(--foreground) flex flex-col items-center w-full py-(--space-md) px-(--container-padding-x)",
     "custom": {
       "displayName": "Testimonial cards section"
     }
@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "Section content"
         },
-        "className": "flex flex-col items-center gap-10 w-full max-w-7xl mx-auto"
+        "className": "flex flex-col items-center gap-(--space-md) w-full max-w-7xl mx-auto"
       },
       "children": [
         {
@@ -29,7 +29,7 @@
             "custom": {
               "displayName": "Section header"
             },
-            "className": "flex flex-col items-center gap-4 text-center w-full max-w-2xl mx-auto"
+            "className": "flex flex-col items-center gap-(--space-sm) text-center w-full max-w-2xl mx-auto"
           },
           "children": [
             {
@@ -61,7 +61,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "className": "grid grid-cols-1 gap-8 w-full lg:grid-cols-2 lg:gap-10",
+            "className": "grid grid-cols-1 gap-(--space-md) w-full lg:grid-cols-2",
             "custom": {
               "displayName": "Cards grid"
             }
@@ -72,7 +72,7 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "className": "bg-(--card) rounded-(--card-radius) shadow-md flex flex-col gap-5 w-full p-8 items-start text-left border-l-4 border-l-(--primary)",
+                "className": "bg-(--card) rounded-(--card-radius) shadow-md flex flex-col gap-(--space-sm) w-full p-8 items-start text-left border-l-4 border-l-(--primary)",
                 "custom": {
                   "displayName": "Testimonial card"
                 }
@@ -108,7 +108,7 @@
                     "custom": {
                       "displayName": "Attribution"
                     },
-                    "className": "flex flex-row items-center gap-3 w-full mt-1"
+                    "className": "flex flex-row items-center gap-(--space-xs) w-full mt-1"
                   },
                   "children": [
                     {
@@ -133,7 +133,7 @@
                         "custom": {
                           "displayName": "Name and role"
                         },
-                        "className": "flex flex-col gap-0.5 items-start"
+                        "className": "flex flex-col gap-(--space-xs) items-start"
                       },
                       "children": [
                         {
@@ -169,7 +169,7 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "className": "bg-(--card) rounded-(--card-radius) shadow-md flex flex-col gap-5 w-full p-8 items-start text-left border-l-4 border-l-(--primary)",
+                "className": "bg-(--card) rounded-(--card-radius) shadow-md flex flex-col gap-(--space-sm) w-full p-8 items-start text-left border-l-4 border-l-(--primary)",
                 "custom": {
                   "displayName": "Testimonial card"
                 }
@@ -205,7 +205,7 @@
                     "custom": {
                       "displayName": "Attribution"
                     },
-                    "className": "flex flex-row items-center gap-3 w-full mt-1"
+                    "className": "flex flex-row items-center gap-(--space-xs) w-full mt-1"
                   },
                   "children": [
                     {
@@ -230,7 +230,7 @@
                         "custom": {
                           "displayName": "Name and role"
                         },
-                        "className": "flex flex-col gap-0.5 items-start"
+                        "className": "flex flex-col gap-(--space-xs) items-start"
                       },
                       "children": [
                         {

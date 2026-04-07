@@ -21,7 +21,7 @@
         "custom": {
           "displayName": "Hero Background"
         },
-        "className": "bg-(--accent) text-(--accent-foreground) px-3 mx-auto flex flex-col w-full gap-28 h-auto bg-cover bg-center md:h-screen md:bg-cover md:bg-center md:items-center md:justify-start md:bg-fixed"
+        "className": "bg-(--accent) text-(--accent-foreground) px-(--container-padding-x) mx-auto flex flex-col w-full gap-(--space-lg) h-auto bg-cover bg-center md:h-screen md:bg-cover md:bg-center md:items-center md:justify-start md:bg-fixed"
       },
       "children": [
         {
@@ -32,7 +32,7 @@
             "custom": {
               "displayName": "Header"
             },
-            "className": "mx-auto flex justify-center flex-col w-full gap-3 h-auto max-w-(--content-width) md:flex-row md:my-3"
+            "className": "mx-auto flex justify-center flex-col w-full gap-(--space-xs) h-auto max-w-(--content-width) md:flex-row md:my-3"
           },
           "children": [
             {
@@ -43,7 +43,7 @@
                 "custom": {
                   "displayName": "Left"
                 },
-                "className": "py-3 px-3 mx-auto flex justify-between flex-row w-full gap-3 h-auto md:flex-row md:items-center md:justify-start md:gap-9"
+                "className": "py-(--space-xs) px-(--container-padding-x) mx-auto flex justify-between flex-row w-full gap-(--space-xs) h-auto md:flex-row md:items-center md:justify-start"
               },
               "children": [
                 {
@@ -81,7 +81,7 @@
                     "custom": {
                       "displayName": "Main Navigation"
                     },
-                    "className": "text-(--foreground) justify-end gap-8 hidden md:flex-row md:gap-6 md:justify-start md:flex hover:text-(--background)"
+                    "className": "text-(--foreground) justify-end gap-(--space-md) hidden md:flex-row md:justify-start md:flex hover:text-(--background)"
                   },
                   "children": [
                     {
@@ -94,7 +94,7 @@
                         "custom": {
                           "displayName": "Home"
                         },
-                        "className": "text-(--foreground) flex flex-row items-center gap-2 md:flex-row md:items-center md:gap-2 hover:text-(--background)"
+                        "className": "text-(--foreground) flex flex-row items-center gap-(--space-xs) md:flex-row md:items-center hover:text-(--background)"
                       }
                     },
                     {
@@ -107,7 +107,7 @@
                         "custom": {
                           "displayName": "About"
                         },
-                        "className": "text-(--foreground) flex flex-row items-center gap-2 md:flex-row md:items-center md:gap-2 hover:text-(--background)"
+                        "className": "text-(--foreground) flex flex-row items-center gap-(--space-xs) md:flex-row md:items-center hover:text-(--background)"
                       }
                     }
                   ]
@@ -129,7 +129,7 @@
                     "custom": {
                       "displayName": "Button List"
                     },
-                    "className": "text-(--foreground) rounded-lg flex-col gap-6 px-3 py-6 w-auto flex cursor-pointer md:hidden hover:text-(--background)"
+                    "className": "text-(--foreground) rounded-lg flex-col gap-(--space-sm) px-(--container-padding-x) py-(--space-md) w-auto flex cursor-pointer md:hidden hover:text-(--background)"
                   },
                   "children": [
                     {
@@ -151,7 +151,7 @@
                         "custom": {
                           "displayName": "Button"
                         },
-                        "className": "flex flex-row items-center gap-2 md:flex-row md:items-center md:gap-2 hover:text-(--background)"
+                        "className": "flex flex-row items-center gap-(--space-xs) md:flex-row md:items-center hover:text-(--background)"
                       }
                     }
                   ]
@@ -166,7 +166,7 @@
                 "custom": {
                   "displayName": "Center"
                 },
-                "className": "mx-auto flex justify-center flex-col w-full gap-3 h-auto order-last md:items-center"
+                "className": "mx-auto flex justify-center flex-col w-full gap-(--space-xs) h-auto order-last md:items-center"
               },
               "children": [
                 {
@@ -191,7 +191,7 @@
                 "custom": {
                   "displayName": "Right"
                 },
-                "className": "py-3 px-3 mx-auto hidden justify-center flex-col w-full gap-3 h-auto md:flex-row md:justify-end md:order-last md:flex"
+                "className": "py-(--space-xs) px-(--container-padding-x) mx-auto hidden justify-center flex-col w-full gap-(--space-xs) h-auto md:flex-row md:justify-end md:order-last md:flex"
               },
               "children": [
                 {
@@ -212,7 +212,7 @@
                         "url": "/shop"
                       }
                     ],
-                    "className": "text-(--foreground) flex-col text-center gap-3 px-3 py-6 hidden md:flex-row md:items-center md:justify-end md:text-center md:gap-4 md:flex cursor-pointer hover:text-(--background)",
+                    "className": "text-(--foreground) flex-col text-center gap-(--space-xs) px-(--container-padding-x) py-(--space-md) hidden md:flex-row md:items-center md:justify-end md:text-center md:flex cursor-pointer hover:text-(--background)",
                     "iconGap": "gap-4",
                     "iconSize": "",
                     "text": "Contact",
@@ -238,7 +238,7 @@
                         "custom": {
                           "displayName": "Contact"
                         },
-                        "className": "text-(--foreground) rounded-lg flex flex-row items-center gap-2 md:flex-row md:items-center md:gap-2 hover:text-(--background)"
+                        "className": "text-(--foreground) rounded-lg flex flex-row items-center gap-(--space-xs) md:flex-row md:items-center hover:text-(--background)"
                       }
                     },
                     {
@@ -257,7 +257,7 @@
                         "custom": {
                           "displayName": "Products"
                         },
-                        "className": "text-(--foreground) rounded-lg flex flex-row items-center gap-2 md:flex-row md:items-center md:gap-2 hover:text-(--background)"
+                        "className": "text-(--foreground) rounded-lg flex flex-row items-center gap-(--space-xs) md:flex-row md:items-center hover:text-(--background)"
                       }
                     }
                   ]
@@ -274,7 +274,7 @@
             "custom": {
               "displayName": "Hero Position"
             },
-            "className": "size-full py-3 px-3 flex justify-center flex-col w-full gap-7 h-auto max-w-(--content-width) my-9 mx-auto md:h-full md:justify-center md:mx-auto"
+            "className": "size-full py-(--space-xs) px-(--container-padding-x) flex justify-center flex-col w-full gap-(--space-md) h-auto max-w-(--content-width) my-9 mx-auto md:h-full md:justify-center md:mx-auto"
           },
           "children": [
             {
@@ -282,7 +282,7 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "className": "mx-auto flex justify-center flex-col w-full gap-3 h-auto md:w-7/12 md:gap-14 md:justify-end",
+                "className": "mx-auto flex justify-center flex-col w-full gap-(--space-xs) h-auto md:w-7/12 md:justify-end",
                 "hidden": false,
                 "custom": {
                   "displayName": "Hero Contents"
@@ -322,7 +322,7 @@
                     "root": {
                       "animation": "spring"
                     },
-                    "className": "rounded-2xl border-(--foreground) border-4 text-(--foreground) hover:border-(--background) justify-center px-14 py-9 md:justify-items-stretch md:px-20 md:py-9 md:text-2xl md:font-semibold md:leading-normal hover:text-(--background)"
+                    "className": "rounded-2xl border-(--foreground) border-4 text-(--foreground) hover:border-(--background) justify-center px-(--container-padding-x) py-(--space-md) md:justify-items-stretch md:text-2xl md:font-semibold md:leading-normal hover:text-(--background)"
                   },
                   "children": [
                     {
@@ -342,7 +342,7 @@
                         "custom": {
                           "displayName": "View Products"
                         },
-                        "className": "flex flex-row items-center gap-2 md:flex-row md:items-center md:gap-2 md:text-2xl hover:text-(--background)"
+                        "className": "flex flex-row items-center gap-(--space-xs) md:flex-row md:items-center md:text-2xl hover:text-(--background)"
                       }
                     }
                   ]

@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "CTA Image Split"
     },
-    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-16 px-4 md:py-24 md:px-6"
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-(--space-lg) px-(--container-padding-x)"
   },
   "children": [
     {
@@ -27,7 +27,7 @@
             "custom": {
               "displayName": "Text Content"
             },
-            "className": "flex flex-col justify-center gap-6 w-full p-10 md:w-1/2 md:p-16"
+            "className": "flex flex-col justify-center gap-(--space-sm) w-full p-10 md:w-1/2"
           },
           "children": [
             {
@@ -69,7 +69,7 @@
                 "custom": {
                   "displayName": "Actions"
                 },
-                "className": "flex flex-col gap-4 mt-4 md:flex-row"
+                "className": "flex flex-col gap-(--space-sm) mt-4 md:flex-row"
               },
               "children": [
                 {
@@ -80,7 +80,7 @@
                     "custom": {
                       "displayName": "Primary Button"
                     },
-                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) py-3 px-6 font-medium text-center w-full md:w-auto"
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) py-(--space-xs) px-(--container-padding-x) font-medium text-center w-full md:w-auto"
                   }
                 },
                 {
@@ -91,7 +91,7 @@
                     "custom": {
                       "displayName": "Secondary Button"
                     },
-                    "className": "bg-transparent text-(--foreground) border border-(--border) rounded-(--radius) py-3 px-6 font-medium text-center w-full md:w-auto"
+                    "className": "bg-transparent text-(--foreground) border border-(--border) rounded-(--radius) py-(--space-xs) px-(--container-padding-x) font-medium text-center w-full md:w-auto"
                   }
                 }
               ]

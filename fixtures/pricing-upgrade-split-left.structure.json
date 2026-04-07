@@ -6,7 +6,7 @@
     "custom": {
       "displayName": "Upgrade story column"
     },
-    "className": "flex flex-col gap-8 w-full flex-1 min-w-0"
+    "className": "flex flex-col gap-(--space-md) w-full flex-1 min-w-0"
   },
   "children": [
     {
@@ -39,7 +39,7 @@
         "custom": {
           "displayName": "Proof points"
         },
-        "className": "flex flex-col gap-8 w-full"
+        "className": "flex flex-col gap-(--space-md) w-full"
       },
       "children": [
         {
@@ -50,7 +50,7 @@
             "custom": {
               "displayName": "Proof row"
             },
-            "className": "flex flex-row gap-4 items-start w-full"
+            "className": "flex flex-row gap-(--space-sm) items-start w-full"
           },
           "children": [
             {
@@ -85,7 +85,7 @@
                 "custom": {
                   "displayName": "Copy stack"
                 },
-                "className": "flex flex-col gap-1 flex-1 min-w-0"
+                "className": "flex flex-col gap-(--space-xs) flex-1 min-w-0"
               },
               "children": [
                 {
@@ -122,7 +122,7 @@
             "custom": {
               "displayName": "Proof row"
             },
-            "className": "flex flex-row gap-4 items-start w-full"
+            "className": "flex flex-row gap-(--space-sm) items-start w-full"
           },
           "children": [
             {
@@ -157,7 +157,7 @@
                 "custom": {
                   "displayName": "Copy stack"
                 },
-                "className": "flex flex-col gap-1 flex-1 min-w-0"
+                "className": "flex flex-col gap-(--space-xs) flex-1 min-w-0"
               },
               "children": [
                 {
@@ -194,7 +194,7 @@
             "custom": {
               "displayName": "Proof row"
             },
-            "className": "flex flex-row gap-4 items-start w-full"
+            "className": "flex flex-row gap-(--space-sm) items-start w-full"
           },
           "children": [
             {
@@ -229,7 +229,7 @@
                 "custom": {
                   "displayName": "Copy stack"
                 },
-                "className": "flex flex-col gap-1 flex-1 min-w-0"
+                "className": "flex flex-col gap-(--space-xs) flex-1 min-w-0"
               },
               "children": [
                 {
@@ -266,7 +266,7 @@
             "custom": {
               "displayName": "Proof row"
             },
-            "className": "flex flex-row gap-4 items-start w-full"
+            "className": "flex flex-row gap-(--space-sm) items-start w-full"
           },
           "children": [
             {
@@ -301,7 +301,7 @@
                 "custom": {
                   "displayName": "Copy stack"
                 },
-                "className": "flex flex-col gap-1 flex-1 min-w-0"
+                "className": "flex flex-col gap-(--space-xs) flex-1 min-w-0"
               },
               "children": [
                 {

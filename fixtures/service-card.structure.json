@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Commerce Bento Showcase"
     },
-    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-16 px-6 md:py-24 md:px-8"
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-(--space-lg) px-(--container-padding-x)"
   },
   "children": [
     {
@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "Bento Header"
         },
-        "className": "flex flex-col items-center gap-4 w-full text-center mb-16 md:text-center md:items-center md:max-w-2xl md:mx-auto"
+        "className": "flex flex-col items-center gap-(--space-sm) w-full text-center mb-16 md:text-center md:items-center md:max-w-2xl md:mx-auto"
       },
       "children": [
         {
@@ -53,7 +53,7 @@
         "custom": {
           "displayName": "Bento Grid"
         },
-        "className": "grid grid-cols-1 gap-8 w-full max-w-7xl mx-auto md:grid-cols-12 md:h-[700px] md:gap-6"
+        "className": "grid grid-cols-1 gap-(--space-md) w-full max-w-7xl mx-auto md:grid-cols-12 md:h-[700px]"
       },
       "children": [
         {
@@ -84,7 +84,7 @@
                 "custom": {
                   "displayName": "Content Layer"
                 },
-                "className": "relative z-10 flex flex-col gap-6 h-full justify-end px-12 pb-12"
+                "className": "relative z-10 flex flex-col gap-(--space-sm) h-full justify-end px-(--container-padding-x) pb-12"
               },
               "children": [
                 {
@@ -117,7 +117,7 @@
                     "custom": {
                       "displayName": "CTA"
                     },
-                    "className": "bg-(--primary-foreground) text-(--primary) rounded-(--radius) flex items-center justify-center py-5 px-12 text-base font-bold mt-4 w-max"
+                    "className": "bg-(--primary-foreground) text-(--primary) rounded-(--radius) flex items-center justify-center py-(--space-md) px-(--container-padding-x) text-base font-bold mt-4 w-max"
                   }
                 }
               ]
@@ -132,7 +132,7 @@
             "custom": {
               "displayName": "Stack Container"
             },
-            "className": "flex flex-col gap-6 md:col-start-9 md:col-end-13"
+            "className": "flex flex-col gap-(--space-sm) md:col-start-9 md:col-end-13"
           },
           "children": [
             {
@@ -163,7 +163,7 @@
                     "custom": {
                       "displayName": "Content Layer"
                     },
-                    "className": "relative z-10 flex flex-col gap-4 h-full justify-end px-10 pb-10"
+                    "className": "relative z-10 flex flex-col gap-(--space-sm) h-full justify-end px-(--container-padding-x) pb-10"
                   },
                   "children": [
                     {
@@ -220,7 +220,7 @@
                     "custom": {
                       "displayName": "Content Layer"
                     },
-                    "className": "relative z-10 flex flex-col gap-4 h-full justify-end px-10 pb-10"
+                    "className": "relative z-10 flex flex-col gap-(--space-sm) h-full justify-end px-(--container-padding-x) pb-10"
                   },
                   "children": [
                     {

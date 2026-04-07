@@ -3,7 +3,7 @@
   "props": {
     "canDelete": true,
     "canEditName": true,
-    "className": "bg-(--accent) text-(--accent-foreground) flex flex-row gap-3 items-center justify-center py-3 px-6 w-[100vw] max-w-[100vw] ml-[calc(50%-50vw)] box-border",
+    "className": "bg-(--accent) text-(--accent-foreground) flex flex-row gap-(--space-xs) items-center justify-center py-(--space-xs) px-(--container-padding-x) w-[100vw] max-w-[100vw] ml-[calc(50%-50vw)] box-border",
     "custom": {
       "displayName": "Banner"
     }
@@ -28,7 +28,7 @@
         "custom": {
           "displayName": "Link"
         },
-        "className": "bg-transparent text-(--accent-foreground) text-sm font-bold px-0 py-0"
+        "className": "bg-transparent text-(--accent-foreground) text-sm font-bold px-(--container-padding-x) py-(--space-xs)"
       }
     }
   ]

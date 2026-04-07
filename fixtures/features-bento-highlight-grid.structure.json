@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Features bento highlight grid"
     },
-    "className": "bg-(--muted) text-(--foreground) w-full py-16 px-6 md:py-24 md:px-8"
+    "className": "bg-(--muted) text-(--foreground) w-full py-(--space-lg) px-(--container-padding-x)"
   },
   "children": [
     {
@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "Section inner"
         },
-        "className": "flex flex-col gap-10 w-full max-w-(--content-width) mx-auto"
+        "className": "flex flex-col gap-(--space-md) w-full max-w-(--content-width) mx-auto"
       },
       "children": [
         {
@@ -29,7 +29,7 @@
             "custom": {
               "displayName": "Intro"
             },
-            "className": "flex flex-col gap-3 w-full max-w-2xl"
+            "className": "flex flex-col gap-(--space-xs) w-full max-w-2xl"
           },
           "children": [
             {
@@ -72,7 +72,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "className": "grid grid-cols-1 gap-4 w-full lg:grid-cols-3 lg:gap-4",
+            "className": "grid grid-cols-1 gap-(--space-sm) w-full lg:grid-cols-3",
             "custom": {
               "displayName": "Bento grid"
             }
@@ -83,7 +83,7 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) border border-(--muted) shadow-sm flex flex-col gap-5 p-8 w-full lg:col-span-2 lg:row-span-2",
+                "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) border border-(--muted) shadow-sm flex flex-col gap-(--space-sm) p-8 w-full lg:col-span-2 lg:row-span-2",
                 "custom": {
                   "displayName": "Hero cell"
                 }
@@ -130,7 +130,7 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) border border-(--muted) shadow-sm flex flex-col gap-3 p-6 w-full lg:col-span-1 lg:row-span-1",
+                "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) border border-(--muted) shadow-sm flex flex-col gap-(--space-xs) p-6 w-full lg:col-span-1 lg:row-span-1",
                 "custom": {
                   "displayName": "Cell tokens"
                 }
@@ -150,7 +150,7 @@
                     "custom": {
                       "displayName": "Icon tokens"
                     },
-                    "className": "bg-transparent px-0 py-0"
+                    "className": "bg-transparent px-(--container-padding-x) py-(--space-xs)"
                   }
                 },
                 {
@@ -182,7 +182,7 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) border border-(--muted) shadow-sm flex flex-col gap-3 p-6 w-full lg:col-span-1 lg:row-span-1",
+                "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) border border-(--muted) shadow-sm flex flex-col gap-(--space-xs) p-6 w-full lg:col-span-1 lg:row-span-1",
                 "custom": {
                   "displayName": "Cell responsive"
                 }
@@ -202,7 +202,7 @@
                     "custom": {
                       "displayName": "Icon responsive"
                     },
-                    "className": "bg-transparent px-0 py-0"
+                    "className": "bg-transparent px-(--container-padding-x) py-(--space-xs)"
                   }
                 },
                 {
@@ -234,7 +234,7 @@
               "props": {
                 "canDelete": true,
                 "canEditName": true,
-                "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) border border-(--muted) flex flex-row flex-wrap gap-6 items-center justify-between p-6 w-full lg:col-span-3 lg:flex-row",
+                "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) border border-(--muted) flex flex-row flex-wrap gap-(--space-sm) items-center justify-between p-6 w-full lg:col-span-3 lg:flex-row",
                 "custom": {
                   "displayName": "Foot strip"
                 }
@@ -245,7 +245,7 @@
                   "props": {
                     "canDelete": true,
                     "canEditName": true,
-                    "className": "flex row gap-3 items-center w-full lg:w-auto",
+                    "className": "flex row gap-(--space-xs) items-center w-full lg:w-auto",
                     "custom": {
                       "displayName": "Mini stat"
                     }
@@ -265,7 +265,7 @@
                         "custom": {
                           "displayName": "Check"
                         },
-                        "className": "bg-transparent px-0 py-0"
+                        "className": "bg-transparent px-(--container-padding-x) py-(--space-xs)"
                       }
                     },
                     {
@@ -289,7 +289,7 @@
                     "custom": {
                       "displayName": "CTA"
                     },
-                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) py-3 px-5 text-sm font-semibold w-full md:w-auto"
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) py-(--space-xs) px-(--container-padding-x) text-sm font-semibold w-full md:w-auto"
                   }
                 }
               ]

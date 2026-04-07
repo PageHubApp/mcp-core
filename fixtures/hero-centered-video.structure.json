@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Hero Centered Video"
     },
-    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-16 px-4 gap-16 md:py-24"
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-(--space-lg) px-(--container-padding-x) gap-(--space-lg)"
   },
   "children": [
     {
@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "Content Wrapper"
         },
-        "className": "flex flex-col items-center max-w-4xl mx-auto gap-8"
+        "className": "flex flex-col items-center max-w-4xl mx-auto gap-(--space-md)"
       },
       "children": [
         {
@@ -51,7 +51,7 @@
             "custom": {
               "displayName": "Actions"
             },
-            "className": "flex flex-col gap-4 justify-center items-center w-full md:flex-row md:w-auto"
+            "className": "flex flex-col gap-(--space-sm) justify-center items-center w-full md:flex-row md:w-auto"
           },
           "children": [
             {
@@ -62,7 +62,7 @@
                 "custom": {
                   "displayName": "Primary CTA"
                 },
-                "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) py-3 px-8 w-full text-sm font-medium text-center md:w-auto"
+                "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) py-(--space-xs) px-(--container-padding-x) w-full text-sm font-medium text-center md:w-auto"
               }
             },
             {
@@ -79,7 +79,7 @@
                 "custom": {
                   "displayName": "Secondary CTA"
                 },
-                "className": "bg-transparent text-(--foreground) border border-(--muted) rounded-(--radius) py-3 px-8 w-full text-sm font-medium text-center md:w-auto"
+                "className": "bg-transparent text-(--foreground) border border-(--muted) rounded-(--radius) py-(--space-xs) px-(--container-padding-x) w-full text-sm font-medium text-center md:w-auto"
               }
             }
           ]
@@ -92,7 +92,7 @@
             "custom": {
               "displayName": "Social Proof Row"
             },
-            "className": "flex flex-col items-center gap-6 mt-4 md:flex-row md:gap-8"
+            "className": "flex flex-col items-center gap-(--space-sm) mt-4 md:flex-row"
           },
           "children": [
             {
@@ -152,7 +152,7 @@
                 {
                   "type": "Container",
                   "props": {
-                    "className": "flex flex-row items-center gap-2"
+                    "className": "flex flex-row items-center gap-(--space-xs)"
                   },
                   "children": [
                     {
@@ -166,7 +166,7 @@
                           "size": "w-6 h-6",
                           "gap": "gap-0"
                         },
-                        "className": "text-[#00b67a] bg-transparent px-0 py-0 pointer-events-none"
+                        "className": "text-[#00b67a] bg-transparent px-(--container-padding-x) py-(--space-xs) pointer-events-none"
                       }
                     },
                     {

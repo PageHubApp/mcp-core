@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Split copy and photo"
     },
-    "className": "bg-(--background) text-(--foreground) flex flex-col items-center justify-center w-full py-12 px-4 md:py-16 md:px-6"
+    "className": "bg-(--background) text-(--foreground) flex flex-col items-center justify-center w-full py-(--space-md) px-(--container-padding-x)"
   },
   "children": [
     {
@@ -19,7 +19,7 @@
         "custom": {
           "displayName": "Split row"
         },
-        "className": "py-3 px-3 mx-auto flex justify-center flex-col w-full gap-8 h-auto max-w-(--content-width) md:flex-row md:items-center md:gap-12"
+        "className": "py-(--space-xs) px-(--container-padding-x) mx-auto flex justify-center flex-col w-full gap-(--space-md) h-auto max-w-(--content-width) md:flex-row md:items-center"
       },
       "children": [
         {
@@ -30,7 +30,7 @@
             "custom": {
               "displayName": "Copy column"
             },
-            "className": "flex justify-center flex-col w-full gap-4 h-auto md:items-start md:gap-6 md:w-1/2 md:px-4"
+            "className": "flex justify-center flex-col w-full gap-(--space-sm) h-auto md:items-start md:w-1/2"
           },
           "children": [
             {
@@ -71,7 +71,7 @@
             "custom": {
               "displayName": "Photo column"
             },
-            "className": "rounded-(--card-radius) py-3 px-3 mx-auto flex justify-center flex-col w-full gap-3 min-h-72 bg-cover bg-center overflow-hidden md:bg-cover md:bg-bottom md:min-h-96 md:w-1/2"
+            "className": "rounded-(--card-radius) py-(--space-xs) px-(--container-padding-x) mx-auto flex justify-center flex-col w-full gap-(--space-xs) min-h-72 bg-cover bg-center overflow-hidden md:bg-cover md:bg-bottom md:min-h-96 md:w-1/2"
           }
         }
       ]

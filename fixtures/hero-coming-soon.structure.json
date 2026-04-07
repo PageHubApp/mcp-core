@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Coming soon hero"
     },
-    "className": "bg-(--background) text-(--foreground) flex flex-col items-center justify-center w-full min-h-screen py-12 px-6 md:py-20 md:px-16"
+    "className": "bg-(--background) text-(--foreground) flex flex-col items-center justify-center w-full min-h-screen py-(--space-md) px-(--container-padding-x)"
   },
   "children": [
     {
@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "Section inner"
         },
-        "className": "flex flex-col items-center w-full max-w-(--content-width) mx-auto gap-10"
+        "className": "flex flex-col items-center w-full max-w-(--content-width) mx-auto gap-(--space-md)"
       },
       "children": [
         {
@@ -65,7 +65,7 @@
             "custom": {
               "displayName": "Form wrapper"
             },
-            "className": "flex flex-col items-center w-full gap-4 md:w-full md:max-w-xl"
+            "className": "flex flex-col items-center w-full gap-(--space-sm) md:w-full md:max-w-xl"
           },
           "children": [
             {
@@ -78,7 +78,7 @@
                 "custom": {
                   "displayName": "Email signup"
                 },
-                "className": "flex flex-col w-full gap-3 md:flex-row md:gap-0 md:items-stretch"
+                "className": "flex flex-col w-full gap-(--space-xs) md:flex-row md:items-stretch"
               },
               "children": [
                 {
@@ -111,7 +111,7 @@
                       "size": "w-5 h-5",
                       "gap": "gap-2"
                     },
-                    "className": "bg-(--primary) text-(--primary-foreground) rounded-r-(--radius) font-semibold w-full px-(--button-padding-x) py-3 flex items-center justify-center md:w-auto md:shrink-0 whitespace-nowrap",
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-r-(--radius) font-semibold w-full px-(--button-padding-x) py-(--space-xs) flex items-center justify-center md:w-auto md:shrink-0 whitespace-nowrap",
                     "custom": {
                       "displayName": "Submit"
                     }

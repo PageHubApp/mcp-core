@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Contact map section"
     },
-    "className": "bg-(--background) text-(--foreground) flex flex-col w-full max-w-none py-12 px-4 md:py-16 md:px-6"
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full max-w-none py-(--space-md) px-(--container-padding-x)"
   },
   "children": [
     {
@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "Contact map inner"
         },
-        "className": "flex flex-col gap-10 w-full max-w-(--content-width) mx-auto md:gap-12"
+        "className": "flex flex-col gap-(--space-md) w-full max-w-(--content-width) mx-auto"
       },
       "children": [
         {
@@ -29,7 +29,7 @@
             "custom": {
               "displayName": "Section intro"
             },
-            "className": "flex flex-col gap-4 w-full max-w-2xl"
+            "className": "flex flex-col gap-(--space-sm) w-full max-w-2xl"
           },
           "children": [
             {
@@ -75,7 +75,7 @@
             "custom": {
               "displayName": "Map + details grid"
             },
-            "className": "grid grid-cols-1 gap-10 w-full items-start md:grid-cols-2 md:gap-12"
+            "className": "grid grid-cols-1 gap-(--space-md) w-full items-start md:grid-cols-2"
           },
           "children": [
             {
@@ -86,7 +86,7 @@
                 "custom": {
                   "displayName": "Details column"
                 },
-                "className": "flex flex-col gap-8 w-full order-2 md:order-1 md:gap-8"
+                "className": "flex flex-col gap-(--space-md) w-full order-2 md:order-1"
               },
               "children": [
                 {
@@ -97,7 +97,7 @@
                     "custom": {
                       "displayName": "Address block"
                     },
-                    "className": "flex flex-col gap-3 w-full"
+                    "className": "flex flex-col gap-(--space-xs) w-full"
                   },
                   "children": [
                     {
@@ -143,7 +143,7 @@
                     "custom": {
                       "displayName": "Hours block"
                     },
-                    "className": "flex flex-col gap-2 w-full"
+                    "className": "flex flex-col gap-(--space-xs) w-full"
                   },
                   "children": [
                     {
@@ -222,7 +222,7 @@
                     "custom": {
                       "displayName": "Action row"
                     },
-                    "className": "flex flex-col gap-3 w-full md:flex-row md:flex-wrap md:gap-3"
+                    "className": "flex flex-col gap-(--space-xs) w-full md:flex-row md:flex-wrap"
                   },
                   "children": [
                     {
@@ -238,7 +238,7 @@
                         "custom": {
                           "displayName": "Email CTA"
                         },
-                        "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) inline-flex w-full justify-center py-2.5 px-5 text-sm font-medium md:w-auto"
+                        "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) inline-flex w-full justify-center py-(--space-xs) px-(--container-padding-x) text-sm font-medium md:w-auto"
                       }
                     },
                     {
@@ -254,7 +254,7 @@
                         "custom": {
                           "displayName": "Phone CTA"
                         },
-                        "className": "bg-(--secondary) text-(--secondary-foreground) border border-(--border) rounded-(--radius) inline-flex w-full justify-center py-2.5 px-5 text-sm font-medium md:w-auto"
+                        "className": "bg-(--secondary) text-(--secondary-foreground) border border-(--border) rounded-(--radius) inline-flex w-full justify-center py-(--space-xs) px-(--container-padding-x) text-sm font-medium md:w-auto"
                       }
                     },
                     {
@@ -270,7 +270,7 @@
                         "custom": {
                           "displayName": "Directions link"
                         },
-                        "className": "bg-transparent text-(--primary) border-0 inline-flex w-full justify-center py-2.5 px-2 text-sm font-semibold md:w-auto"
+                        "className": "bg-transparent text-(--primary) border-0 inline-flex w-full justify-center py-(--space-xs) px-(--container-padding-x) text-sm font-semibold md:w-auto"
                       }
                     }
                   ]

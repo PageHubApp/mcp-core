@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Editorial quote"
     },
-    "className": "bg-(--background) text-(--foreground) border-t border-(--border) flex flex-col px-4 py-20 w-full md:flex-row md:px-8 md:py-28 md:gap-16"
+    "className": "bg-(--background) text-(--foreground) border-t border-(--border) flex flex-col px-(--container-padding-x) py-(--space-lg) w-full md:flex-row"
   },
   "children": [
     {
@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "Inner"
         },
-        "className": "flex flex-col w-full max-w-(--content-width) mx-auto gap-12 md:flex-row md:gap-24"
+        "className": "flex flex-col w-full max-w-(--content-width) mx-auto gap-(--space-md) md:flex-row"
       },
       "children": [
         {

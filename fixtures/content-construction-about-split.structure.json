@@ -26,7 +26,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "className": "text-(--secondary-foreground) flex flex-col w-full py-24 px-8 md:w-1/2 md:px-24 md:justify-center",
+            "className": "text-(--secondary-foreground) flex flex-col w-full py-(--space-xl) px-(--container-padding-x) md:w-1/2 md:justify-center",
             "custom": {
               "displayName": "Copy column"
             }

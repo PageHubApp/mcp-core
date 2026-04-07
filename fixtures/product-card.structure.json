@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Product cards section"
     },
-    "className": "bg-(--muted) text-(--foreground) flex flex-col w-full py-12 px-4 gap-8 md:py-16 md:px-8"
+    "className": "bg-(--muted) text-(--foreground) flex flex-col w-full py-(--space-md) px-(--container-padding-x) gap-(--space-md)"
   },
   "children": [
     {
@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "Product grid"
         },
-        "className": "grid grid-cols-1 gap-6 w-full max-w-(--content-width) mx-auto md:grid-cols-2 md:gap-8"
+        "className": "grid grid-cols-1 gap-(--space-sm) w-full max-w-(--content-width) mx-auto md:grid-cols-2"
       },
       "children": [
         {
@@ -64,7 +64,7 @@
                     "custom": {
                       "displayName": "Badge"
                     },
-                    "className": "bg-(--accent) text-(--accent-foreground) rounded-(--radius) absolute top-3 left-3 inline-flex py-1 px-2.5"
+                    "className": "bg-(--accent) text-(--accent-foreground) rounded-(--radius) absolute top-3 left-3 inline-flex py-(--space-xs) px-(--container-padding-x)"
                   },
                   "children": [
                     {
@@ -92,7 +92,7 @@
                 "custom": {
                   "displayName": "Product body"
                 },
-                "className": "flex flex-col gap-3 w-full p-5 md:gap-4 md:p-6"
+                "className": "flex flex-col gap-(--space-xs) w-full p-5"
               },
               "children": [
                 {
@@ -142,7 +142,7 @@
                     "custom": {
                       "displayName": "Price row"
                     },
-                    "className": "flex flex-row items-baseline gap-2 w-full"
+                    "className": "flex flex-row items-baseline gap-(--space-xs) w-full"
                   },
                   "children": [
                     {
@@ -175,7 +175,7 @@
                     "custom": {
                       "displayName": "Add to cart"
                     },
-                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius-full) inline-flex items-center justify-center gap-2 w-full py-3 px-5 text-sm font-semibold mt-1"
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius-full) inline-flex items-center justify-center gap-(--space-xs) w-full py-(--space-xs) px-(--container-padding-x) text-sm font-semibold mt-1"
                   }
                 }
               ]
@@ -225,7 +225,7 @@
                     "custom": {
                       "displayName": "Badge"
                     },
-                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) absolute top-3 left-3 inline-flex py-1 px-2.5"
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) absolute top-3 left-3 inline-flex py-(--space-xs) px-(--container-padding-x)"
                   },
                   "children": [
                     {
@@ -253,7 +253,7 @@
                 "custom": {
                   "displayName": "Product body"
                 },
-                "className": "flex flex-col gap-3 w-full p-5 md:gap-4 md:p-6"
+                "className": "flex flex-col gap-(--space-xs) w-full p-5"
               },
               "children": [
                 {
@@ -303,7 +303,7 @@
                     "custom": {
                       "displayName": "Price row"
                     },
-                    "className": "flex flex-row items-baseline gap-2 flex-wrap w-full"
+                    "className": "flex flex-row items-baseline gap-(--space-xs) flex-wrap w-full"
                   },
                   "children": [
                     {
@@ -349,7 +349,7 @@
                     "custom": {
                       "displayName": "Add to cart"
                     },
-                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius-full) inline-flex items-center justify-center gap-2 w-full py-3 px-5 text-sm font-semibold mt-1"
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius-full) inline-flex items-center justify-center gap-(--space-xs) w-full py-(--space-xs) px-(--container-padding-x) text-sm font-semibold mt-1"
                   }
                 }
               ]

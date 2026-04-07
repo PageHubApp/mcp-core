@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Social Proof Large Metric"
     },
-    "className": "bg-(--background) text-(--foreground) flex flex-col items-center text-center w-full py-16 px-6 md:py-24 md:px-8"
+    "className": "bg-(--background) text-(--foreground) flex flex-col items-center text-center w-full py-(--space-lg) px-(--container-padding-x)"
   },
   "children": [
     {
@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "Inner"
         },
-        "className": "flex flex-col items-center gap-6 w-full max-w-4xl mx-auto"
+        "className": "flex flex-col items-center gap-(--space-sm) w-full max-w-4xl mx-auto"
       },
       "children": [
         {
@@ -62,7 +62,7 @@
             "custom": {
               "displayName": "CTA Button"
             },
-            "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) py-3 px-8 text-sm font-medium mt-4"
+            "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) py-(--space-xs) px-(--container-padding-x) text-sm font-medium mt-4"
           }
         }
       ]

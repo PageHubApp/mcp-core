@@ -6,7 +6,7 @@
     "custom": {
       "displayName": "Pricing tier card"
     },
-    "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) shadow-sm border border-(--muted) flex flex-col gap-6 w-full p-8 overflow-hidden"
+    "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) shadow-sm border border-(--muted) flex flex-col gap-(--space-sm) w-full p-8 overflow-hidden"
   },
   "children": [
     {
@@ -17,7 +17,7 @@
         "custom": {
           "displayName": "Plan header"
         },
-        "className": "flex flex-row justify-between items-start gap-4 w-full"
+        "className": "flex flex-row justify-between items-start gap-(--space-sm) w-full"
       },
       "children": [
         {
@@ -28,7 +28,7 @@
             "custom": {
               "displayName": "Plan copy"
             },
-            "className": "flex flex-col gap-2 flex-1 min-w-0"
+            "className": "flex flex-col gap-(--space-xs) flex-1 min-w-0"
           },
           "children": [
             {
@@ -60,7 +60,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "className": "flex flex-col items-end text-right gap-1 shrink-0",
+            "className": "flex flex-col items-end text-right gap-(--space-xs) shrink-0",
             "custom": {
               "displayName": "Price stack"
             }
@@ -100,7 +100,7 @@
         "custom": {
           "displayName": "Primary CTA"
         },
-        "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) w-full py-3 px-6 text-center text-sm font-medium"
+        "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) w-full py-(--space-xs) px-(--container-padding-x) text-center text-sm font-medium"
       }
     },
     {
@@ -108,7 +108,7 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "className": "border-t border-(--muted) grid grid-cols-1 gap-3 w-full pt-6 md:grid-cols-2 md:gap-x-10 md:gap-y-3",
+        "className": "border-t border-(--muted) grid grid-cols-1 gap-(--space-xs) w-full pt-6 md:grid-cols-2 md:gap-x-10 md:gap-y-3",
         "custom": {
           "displayName": "Included features"
         }
@@ -122,7 +122,7 @@
             "custom": {
               "displayName": "Feature"
             },
-            "className": "flex flex-row gap-3 items-center w-full"
+            "className": "flex flex-row gap-(--space-xs) items-center w-full"
           },
           "children": [
             {
@@ -170,7 +170,7 @@
             "custom": {
               "displayName": "Feature"
             },
-            "className": "flex flex-row gap-3 items-center w-full"
+            "className": "flex flex-row gap-(--space-xs) items-center w-full"
           },
           "children": [
             {
@@ -218,7 +218,7 @@
             "custom": {
               "displayName": "Feature"
             },
-            "className": "flex flex-row gap-3 items-center w-full"
+            "className": "flex flex-row gap-(--space-xs) items-center w-full"
           },
           "children": [
             {
@@ -266,7 +266,7 @@
             "custom": {
               "displayName": "Feature"
             },
-            "className": "flex flex-row gap-3 items-center w-full"
+            "className": "flex flex-row gap-(--space-xs) items-center w-full"
           },
           "children": [
             {
@@ -314,7 +314,7 @@
             "custom": {
               "displayName": "Feature"
             },
-            "className": "flex flex-row gap-3 items-center w-full"
+            "className": "flex flex-row gap-(--space-xs) items-center w-full"
           },
           "children": [
             {
@@ -362,7 +362,7 @@
             "custom": {
               "displayName": "Feature"
             },
-            "className": "flex flex-row gap-3 items-center w-full"
+            "className": "flex flex-row gap-(--space-xs) items-center w-full"
           },
           "children": [
             {
@@ -410,7 +410,7 @@
             "custom": {
               "displayName": "Feature"
             },
-            "className": "flex flex-row gap-3 items-center w-full"
+            "className": "flex flex-row gap-(--space-xs) items-center w-full"
           },
           "children": [
             {
@@ -458,7 +458,7 @@
             "custom": {
               "displayName": "Feature"
             },
-            "className": "flex flex-row gap-3 items-center w-full"
+            "className": "flex flex-row gap-(--space-xs) items-center w-full"
           },
           "children": [
             {
@@ -506,7 +506,7 @@
             "custom": {
               "displayName": "Feature"
             },
-            "className": "flex flex-row gap-3 items-center w-full"
+            "className": "flex flex-row gap-(--space-xs) items-center w-full"
           },
           "children": [
             {
@@ -554,7 +554,7 @@
             "custom": {
               "displayName": "Feature"
             },
-            "className": "flex flex-row gap-3 items-center w-full"
+            "className": "flex flex-row gap-(--space-xs) items-center w-full"
           },
           "children": [
             {

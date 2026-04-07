@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Pricing section"
     },
-    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-16 px-6 gap-12 md:py-24 md:px-8 md:gap-14"
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-(--space-lg) px-(--container-padding-x) gap-(--space-md)"
   },
   "children": [
     {
@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "Pricing content"
         },
-        "className": "flex flex-col w-full max-w-(--content-width) mx-auto gap-10 md:gap-12"
+        "className": "flex flex-col w-full max-w-(--content-width) mx-auto gap-(--space-md)"
       },
       "children": [
         {
@@ -29,7 +29,7 @@
             "custom": {
               "displayName": "Section header"
             },
-            "className": "flex flex-col items-center text-center w-full max-w-2xl mx-auto gap-3"
+            "className": "flex flex-col items-center text-center w-full max-w-2xl mx-auto gap-(--space-xs)"
           },
           "children": [
             {
@@ -75,7 +75,7 @@
             "custom": {
               "displayName": "Plan grid"
             },
-            "className": "grid grid-cols-1 gap-8 w-full items-stretch md:grid-cols-3 md:gap-8"
+            "className": "grid grid-cols-1 gap-(--space-md) w-full items-stretch md:grid-cols-3"
           },
           "children": [
             {
@@ -86,7 +86,7 @@
                 "custom": {
                   "displayName": "Launch plan"
                 },
-                "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) shadow-sm border border-(--muted) flex flex-col items-center text-center w-full p-8 gap-6"
+                "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) shadow-sm border border-(--muted) flex flex-col items-center text-center w-full p-8 gap-(--space-sm)"
               },
               "children": [
                 {
@@ -119,7 +119,7 @@
                     "custom": {
                       "displayName": "Price row"
                     },
-                    "className": "flex flex-row items-baseline justify-center gap-1 w-full"
+                    "className": "flex flex-row items-baseline justify-center gap-(--space-xs) w-full"
                   },
                   "children": [
                     {
@@ -154,7 +154,7 @@
                     "custom": {
                       "displayName": "Features"
                     },
-                    "className": "border-t border-(--muted) flex flex-col gap-3 pt-6 w-full max-w-xs mx-auto text-left"
+                    "className": "border-t border-(--muted) flex flex-col gap-(--space-xs) pt-6 w-full max-w-xs mx-auto text-left"
                   },
                   "children": [
                     {
@@ -165,7 +165,7 @@
                         "custom": {
                           "displayName": "Feature"
                         },
-                        "className": "flex flex-row gap-3 items-start w-full"
+                        "className": "flex flex-row gap-(--space-xs) items-start w-full"
                       },
                       "children": [
                         {
@@ -200,7 +200,7 @@
                         "custom": {
                           "displayName": "Feature"
                         },
-                        "className": "flex flex-row gap-3 items-start w-full"
+                        "className": "flex flex-row gap-(--space-xs) items-start w-full"
                       },
                       "children": [
                         {
@@ -235,7 +235,7 @@
                         "custom": {
                           "displayName": "Feature"
                         },
-                        "className": "flex flex-row gap-3 items-start w-full"
+                        "className": "flex flex-row gap-(--space-xs) items-start w-full"
                       },
                       "children": [
                         {
@@ -270,7 +270,7 @@
                         "custom": {
                           "displayName": "Feature"
                         },
-                        "className": "flex flex-row gap-3 items-start w-full"
+                        "className": "flex flex-row gap-(--space-xs) items-start w-full"
                       },
                       "children": [
                         {
@@ -305,7 +305,7 @@
                         "custom": {
                           "displayName": "Feature"
                         },
-                        "className": "flex flex-row gap-3 items-start w-full"
+                        "className": "flex flex-row gap-(--space-xs) items-start w-full"
                       },
                       "children": [
                         {
@@ -342,7 +342,7 @@
                     "custom": {
                       "displayName": "CTA"
                     },
-                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) w-full py-3 px-6 text-center text-sm font-medium mt-2"
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) w-full py-(--space-xs) px-(--container-padding-x) text-center text-sm font-medium mt-2"
                   }
                 }
               ]
@@ -355,7 +355,7 @@
                 "custom": {
                   "displayName": "Growth plan"
                 },
-                "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) shadow-lg border-2 border-(--primary) flex flex-col items-center text-center w-full p-8 gap-6"
+                "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) shadow-lg border-2 border-(--primary) flex flex-col items-center text-center w-full p-8 gap-(--space-sm)"
               },
               "children": [
                 {
@@ -388,7 +388,7 @@
                     "custom": {
                       "displayName": "Price row"
                     },
-                    "className": "flex flex-row items-baseline justify-center gap-1 w-full"
+                    "className": "flex flex-row items-baseline justify-center gap-(--space-xs) w-full"
                   },
                   "children": [
                     {
@@ -423,7 +423,7 @@
                     "custom": {
                       "displayName": "Features"
                     },
-                    "className": "border-t border-(--muted) flex flex-col gap-3 pt-6 w-full max-w-xs mx-auto text-left"
+                    "className": "border-t border-(--muted) flex flex-col gap-(--space-xs) pt-6 w-full max-w-xs mx-auto text-left"
                   },
                   "children": [
                     {
@@ -434,7 +434,7 @@
                         "custom": {
                           "displayName": "Feature"
                         },
-                        "className": "flex flex-row gap-3 items-start w-full"
+                        "className": "flex flex-row gap-(--space-xs) items-start w-full"
                       },
                       "children": [
                         {
@@ -469,7 +469,7 @@
                         "custom": {
                           "displayName": "Feature"
                         },
-                        "className": "flex flex-row gap-3 items-start w-full"
+                        "className": "flex flex-row gap-(--space-xs) items-start w-full"
                       },
                       "children": [
                         {
@@ -504,7 +504,7 @@
                         "custom": {
                           "displayName": "Feature"
                         },
-                        "className": "flex flex-row gap-3 items-start w-full"
+                        "className": "flex flex-row gap-(--space-xs) items-start w-full"
                       },
                       "children": [
                         {
@@ -539,7 +539,7 @@
                         "custom": {
                           "displayName": "Feature"
                         },
-                        "className": "flex flex-row gap-3 items-start w-full"
+                        "className": "flex flex-row gap-(--space-xs) items-start w-full"
                       },
                       "children": [
                         {
@@ -574,7 +574,7 @@
                         "custom": {
                           "displayName": "Feature"
                         },
-                        "className": "flex flex-row gap-3 items-start w-full"
+                        "className": "flex flex-row gap-(--space-xs) items-start w-full"
                       },
                       "children": [
                         {
@@ -611,7 +611,7 @@
                     "custom": {
                       "displayName": "CTA"
                     },
-                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) w-full py-3 px-6 text-center text-sm font-medium mt-2"
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) w-full py-(--space-xs) px-(--container-padding-x) text-center text-sm font-medium mt-2"
                   }
                 }
               ]
@@ -624,7 +624,7 @@
                 "custom": {
                   "displayName": "Scale plan"
                 },
-                "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) shadow-sm border border-(--muted) flex flex-col items-center text-center w-full p-8 gap-6"
+                "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) shadow-sm border border-(--muted) flex flex-col items-center text-center w-full p-8 gap-(--space-sm)"
               },
               "children": [
                 {
@@ -657,7 +657,7 @@
                     "custom": {
                       "displayName": "Price row"
                     },
-                    "className": "flex flex-row items-baseline justify-center gap-1 w-full"
+                    "className": "flex flex-row items-baseline justify-center gap-(--space-xs) w-full"
                   },
                   "children": [
                     {
@@ -692,7 +692,7 @@
                     "custom": {
                       "displayName": "Features"
                     },
-                    "className": "border-t border-(--muted) flex flex-col gap-3 pt-6 w-full max-w-xs mx-auto text-left"
+                    "className": "border-t border-(--muted) flex flex-col gap-(--space-xs) pt-6 w-full max-w-xs mx-auto text-left"
                   },
                   "children": [
                     {
@@ -703,7 +703,7 @@
                         "custom": {
                           "displayName": "Feature"
                         },
-                        "className": "flex flex-row gap-3 items-start w-full"
+                        "className": "flex flex-row gap-(--space-xs) items-start w-full"
                       },
                       "children": [
                         {
@@ -738,7 +738,7 @@
                         "custom": {
                           "displayName": "Feature"
                         },
-                        "className": "flex flex-row gap-3 items-start w-full"
+                        "className": "flex flex-row gap-(--space-xs) items-start w-full"
                       },
                       "children": [
                         {
@@ -773,7 +773,7 @@
                         "custom": {
                           "displayName": "Feature"
                         },
-                        "className": "flex flex-row gap-3 items-start w-full"
+                        "className": "flex flex-row gap-(--space-xs) items-start w-full"
                       },
                       "children": [
                         {
@@ -808,7 +808,7 @@
                         "custom": {
                           "displayName": "Feature"
                         },
-                        "className": "flex flex-row gap-3 items-start w-full"
+                        "className": "flex flex-row gap-(--space-xs) items-start w-full"
                       },
                       "children": [
                         {
@@ -843,7 +843,7 @@
                         "custom": {
                           "displayName": "Feature"
                         },
-                        "className": "flex flex-row gap-3 items-start w-full"
+                        "className": "flex flex-row gap-(--space-xs) items-start w-full"
                       },
                       "children": [
                         {
@@ -880,7 +880,7 @@
                     "custom": {
                       "displayName": "CTA"
                     },
-                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) w-full py-3 px-6 text-center text-sm font-medium mt-2"
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) w-full py-(--space-xs) px-(--container-padding-x) text-center text-sm font-medium mt-2"
                   }
                 }
               ]

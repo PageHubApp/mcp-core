@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Single Product Checkout"
     },
-    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-16 px-6 md:py-24 md:px-8"
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-(--space-lg) px-(--container-padding-x)"
   },
   "children": [
     {
@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "Inner"
         },
-        "className": "flex flex-col items-center gap-12 w-full max-w-6xl mx-auto md:flex-row md:items-center md:gap-16"
+        "className": "flex flex-col items-center gap-(--space-md) w-full max-w-6xl mx-auto md:flex-row md:items-center"
       },
       "children": [
         {
@@ -53,7 +53,7 @@
             "custom": {
               "displayName": "Product Info"
             },
-            "className": "flex flex-col gap-6 w-full md:flex-1"
+            "className": "flex flex-col gap-(--space-sm) w-full md:flex-1"
           },
           "children": [
             {
@@ -113,7 +113,7 @@
                 "custom": {
                   "displayName": "Buy Button"
                 },
-                "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) flex items-center justify-center gap-2 py-4 px-8 text-lg font-bold w-full md:w-max"
+                "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) flex items-center justify-center gap-(--space-xs) py-(--space-xs) px-(--container-padding-x) text-lg font-bold w-full md:w-max"
               }
             },
             {

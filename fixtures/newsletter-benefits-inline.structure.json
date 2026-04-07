@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Newsletter benefits inline section"
     },
-    "className": "bg-(--muted) text-(--foreground) w-full py-16 px-6 md:py-24 md:px-8"
+    "className": "bg-(--muted) text-(--foreground) w-full py-(--space-lg) px-(--container-padding-x)"
   },
   "children": [
     {
@@ -15,7 +15,7 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "className": "flex flex-col gap-12 w-full max-w-(--content-width) mx-auto lg:flex-row lg:gap-16 lg:items-start",
+        "className": "flex flex-col gap-(--space-md) w-full max-w-(--content-width) mx-auto lg:flex-row lg:items-start",
         "custom": {
           "displayName": "Section inner"
         }
@@ -26,7 +26,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "className": "flex flex-col gap-6 w-full lg:w-1/2 lg:shrink-0",
+            "className": "flex flex-col gap-(--space-sm) w-full lg:w-1/2 lg:shrink-0",
             "custom": {
               "displayName": "Benefits column"
             }
@@ -62,7 +62,7 @@
                 "custom": {
                   "displayName": "Benefit list"
                 },
-                "className": "flex flex-col gap-4 w-full"
+                "className": "flex flex-col gap-(--space-sm) w-full"
               },
               "children": [
                 {
@@ -73,7 +73,7 @@
                     "custom": {
                       "displayName": "Benefit row releases"
                     },
-                    "className": "flex row gap-3 items-start w-full"
+                    "className": "flex row gap-(--space-xs) items-start w-full"
                   },
                   "children": [
                     {
@@ -90,7 +90,7 @@
                         "custom": {
                           "displayName": "Icon"
                         },
-                        "className": "bg-transparent px-0 py-0"
+                        "className": "bg-transparent px-(--container-padding-x) py-(--space-xs)"
                       }
                     },
                     {
@@ -114,7 +114,7 @@
                     "custom": {
                       "displayName": "Benefit row templates"
                     },
-                    "className": "flex row gap-3 items-start w-full"
+                    "className": "flex row gap-(--space-xs) items-start w-full"
                   },
                   "children": [
                     {
@@ -131,7 +131,7 @@
                         "custom": {
                           "displayName": "Icon"
                         },
-                        "className": "bg-transparent px-0 py-0"
+                        "className": "bg-transparent px-(--container-padding-x) py-(--space-xs)"
                       }
                     },
                     {
@@ -155,7 +155,7 @@
                     "custom": {
                       "displayName": "Benefit row office"
                     },
-                    "className": "flex row gap-3 items-start w-full"
+                    "className": "flex row gap-(--space-xs) items-start w-full"
                   },
                   "children": [
                     {
@@ -172,7 +172,7 @@
                         "custom": {
                           "displayName": "Icon"
                         },
-                        "className": "bg-transparent px-0 py-0"
+                        "className": "bg-transparent px-(--container-padding-x) py-(--space-xs)"
                       }
                     },
                     {
@@ -197,7 +197,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) border border-(--border) shadow-sm flex flex-col gap-4 p-6 w-full lg:w-1/2 lg:shrink-0",
+            "className": "bg-(--card) text-(--card-foreground) rounded-(--card-radius) border border-(--border) shadow-sm flex flex-col gap-(--space-sm) p-6 w-full lg:w-1/2 lg:shrink-0",
             "custom": {
               "displayName": "Form card"
             }
@@ -224,7 +224,7 @@
                 "custom": {
                   "displayName": "Subscribe form"
                 },
-                "className": "w-full flex flex-col gap-3"
+                "className": "w-full flex flex-col gap-(--space-xs)"
               },
               "children": [
                 {
@@ -255,7 +255,7 @@
                     "custom": {
                       "displayName": "Submit"
                     },
-                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) w-full py-3 px-6 font-semibold text-sm text-center"
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) w-full py-(--space-xs) px-(--container-padding-x) font-semibold text-sm text-center"
                   }
                 }
               ]

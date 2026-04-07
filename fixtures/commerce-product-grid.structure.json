@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Simple Product Carousel"
     },
-    "className": "bg-(--muted) text-(--foreground) flex flex-col w-full py-16 px-6 md:py-24 md:px-8"
+    "className": "bg-(--muted) text-(--foreground) flex flex-col w-full py-(--space-lg) px-(--container-padding-x)"
   },
   "children": [
     {
@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "Intro Header"
         },
-        "className": "flex flex-col items-center gap-4 w-full text-center md:text-left md:items-start md:max-w-6xl md:mx-auto md:mb-12"
+        "className": "flex flex-col items-center gap-(--space-sm) w-full text-center md:text-left md:items-start md:max-w-6xl md:mx-auto md:mb-12"
       },
       "children": [
         {
@@ -64,7 +64,7 @@
         "custom": {
           "displayName": "Product Grid"
         },
-        "className": "grid grid-cols-1 gap-8 w-full max-w-6xl mx-auto md:grid-cols-3"
+        "className": "grid grid-cols-1 gap-(--space-md) w-full max-w-6xl mx-auto md:grid-cols-3"
       },
       "children": [
         {
@@ -95,7 +95,7 @@
                 "custom": {
                   "displayName": "Body"
                 },
-                "className": "flex flex-col gap-4 p-6"
+                "className": "flex flex-col gap-(--space-sm) p-6"
               },
               "children": [
                 {
@@ -133,7 +133,7 @@
                     "custom": {
                       "displayName": "Buy Button"
                     },
-                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) flex items-center justify-center gap-2 py-2.5 px-4 text-sm font-bold w-full"
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) flex items-center justify-center gap-(--space-xs) py-(--space-xs) px-(--container-padding-x) text-sm font-bold w-full"
                   }
                 }
               ]
@@ -168,7 +168,7 @@
                 "custom": {
                   "displayName": "Body"
                 },
-                "className": "flex flex-col gap-4 p-6"
+                "className": "flex flex-col gap-(--space-sm) p-6"
               },
               "children": [
                 {
@@ -206,7 +206,7 @@
                     "custom": {
                       "displayName": "Buy Button"
                     },
-                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) flex items-center justify-center gap-2 py-2.5 px-4 text-sm font-bold w-full"
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) flex items-center justify-center gap-(--space-xs) py-(--space-xs) px-(--container-padding-x) text-sm font-bold w-full"
                   }
                 }
               ]
@@ -241,7 +241,7 @@
                 "custom": {
                   "displayName": "Body"
                 },
-                "className": "flex flex-col gap-4 p-6"
+                "className": "flex flex-col gap-(--space-sm) p-6"
               },
               "children": [
                 {
@@ -279,7 +279,7 @@
                     "custom": {
                       "displayName": "Buy Button"
                     },
-                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) flex items-center justify-center gap-2 py-2.5 px-4 text-sm font-bold w-full"
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) flex items-center justify-center gap-(--space-xs) py-(--space-xs) px-(--container-padding-x) text-sm font-bold w-full"
                   }
                 }
               ]

@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Product categories section"
     },
-    "className": "bg-(--muted) text-(--foreground) flex flex-col w-full py-16 px-6 gap-10 md:py-20 md:px-8 md:gap-12"
+    "className": "bg-(--muted) text-(--foreground) flex flex-col w-full py-(--space-lg) px-(--container-padding-x) gap-(--space-md)"
   },
   "children": [
     {
@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "Categories inner"
         },
-        "className": "flex flex-col w-full max-w-(--content-width) mx-auto gap-10"
+        "className": "flex flex-col w-full max-w-(--content-width) mx-auto gap-(--space-md)"
       },
       "children": [
         {
@@ -29,7 +29,7 @@
             "custom": {
               "displayName": "Section header row"
             },
-            "className": "flex flex-col items-start gap-4 w-full md:flex-row md:justify-between md:items-center md:gap-6"
+            "className": "flex flex-col items-start gap-(--space-sm) w-full md:flex-row md:justify-between md:items-center"
           },
           "children": [
             {
@@ -51,7 +51,7 @@
                 "custom": {
                   "displayName": "See all CTA"
                 },
-                "className": "bg-(--card) text-(--foreground) rounded-(--radius) border border-(--border) py-2.5 px-4 text-sm font-medium"
+                "className": "bg-(--card) text-(--foreground) rounded-(--radius) border border-(--border) py-(--space-xs) px-(--container-padding-x) text-sm font-medium"
               }
             }
           ]
@@ -64,7 +64,7 @@
             "custom": {
               "displayName": "Category grid"
             },
-            "className": "grid grid-cols-2 gap-4 w-full md:grid-cols-4 md:gap-5"
+            "className": "grid grid-cols-2 gap-(--space-sm) w-full md:grid-cols-4"
           },
           "children": [
             {
@@ -75,7 +75,7 @@
                 "custom": {
                   "displayName": "Category cell"
                 },
-                "className": "bg-(--card) rounded-(--card-radius) border border-(--muted) flex flex-col items-center justify-center w-full min-h-[148px] p-5 md:min-h-[160px] md:p-6"
+                "className": "bg-(--card) rounded-(--card-radius) border border-(--muted) flex flex-col items-center justify-center w-full min-h-[148px] p-(--space-sm) md:min-h-[160px]"
               },
               "children": [
                 {
@@ -93,7 +93,7 @@
                     "custom": {
                       "displayName": "Category link"
                     },
-                    "className": "bg-transparent text-(--foreground) flex flex-col items-center justify-center gap-3 py-0 px-0 text-sm font-semibold text-center w-full"
+                    "className": "bg-transparent text-(--foreground) flex flex-col items-center justify-center gap-(--space-xs) py-(--space-xs) px-(--container-padding-x) text-sm font-semibold text-center w-full"
                   }
                 }
               ]
@@ -106,7 +106,7 @@
                 "custom": {
                   "displayName": "Category cell"
                 },
-                "className": "bg-(--card) rounded-(--card-radius) border border-(--muted) flex flex-col items-center justify-center w-full min-h-[148px] p-5 md:min-h-[160px] md:p-6"
+                "className": "bg-(--card) rounded-(--card-radius) border border-(--muted) flex flex-col items-center justify-center w-full min-h-[148px] p-(--space-sm) md:min-h-[160px]"
               },
               "children": [
                 {
@@ -124,7 +124,7 @@
                     "custom": {
                       "displayName": "Category link"
                     },
-                    "className": "bg-transparent text-(--foreground) flex flex-col items-center justify-center gap-3 py-0 px-0 text-sm font-semibold text-center w-full"
+                    "className": "bg-transparent text-(--foreground) flex flex-col items-center justify-center gap-(--space-xs) py-(--space-xs) px-(--container-padding-x) text-sm font-semibold text-center w-full"
                   }
                 }
               ]
@@ -137,7 +137,7 @@
                 "custom": {
                   "displayName": "Category cell"
                 },
-                "className": "bg-(--card) rounded-(--card-radius) border border-(--muted) flex flex-col items-center justify-center w-full min-h-[148px] p-5 md:min-h-[160px] md:p-6"
+                "className": "bg-(--card) rounded-(--card-radius) border border-(--muted) flex flex-col items-center justify-center w-full min-h-[148px] p-(--space-sm) md:min-h-[160px]"
               },
               "children": [
                 {
@@ -155,7 +155,7 @@
                     "custom": {
                       "displayName": "Category link"
                     },
-                    "className": "bg-transparent text-(--foreground) flex flex-col items-center justify-center gap-3 py-0 px-0 text-sm font-semibold text-center w-full"
+                    "className": "bg-transparent text-(--foreground) flex flex-col items-center justify-center gap-(--space-xs) py-(--space-xs) px-(--container-padding-x) text-sm font-semibold text-center w-full"
                   }
                 }
               ]
@@ -168,7 +168,7 @@
                 "custom": {
                   "displayName": "Category cell"
                 },
-                "className": "bg-(--card) rounded-(--card-radius) border border-(--muted) flex flex-col items-center justify-center w-full min-h-[148px] p-5 md:min-h-[160px] md:p-6"
+                "className": "bg-(--card) rounded-(--card-radius) border border-(--muted) flex flex-col items-center justify-center w-full min-h-[148px] p-(--space-sm) md:min-h-[160px]"
               },
               "children": [
                 {
@@ -186,7 +186,7 @@
                     "custom": {
                       "displayName": "Category link"
                     },
-                    "className": "bg-transparent text-(--foreground) flex flex-col items-center justify-center gap-3 py-0 px-0 text-sm font-semibold text-center w-full"
+                    "className": "bg-transparent text-(--foreground) flex flex-col items-center justify-center gap-(--space-xs) py-(--space-xs) px-(--container-padding-x) text-sm font-semibold text-center w-full"
                   }
                 }
               ]
@@ -199,7 +199,7 @@
                 "custom": {
                   "displayName": "Category cell"
                 },
-                "className": "bg-(--card) rounded-(--card-radius) border border-(--muted) flex flex-col items-center justify-center w-full min-h-[148px] p-5 md:min-h-[160px] md:p-6"
+                "className": "bg-(--card) rounded-(--card-radius) border border-(--muted) flex flex-col items-center justify-center w-full min-h-[148px] p-(--space-sm) md:min-h-[160px]"
               },
               "children": [
                 {
@@ -217,7 +217,7 @@
                     "custom": {
                       "displayName": "Category link"
                     },
-                    "className": "bg-transparent text-(--foreground) flex flex-col items-center justify-center gap-3 py-0 px-0 text-sm font-semibold text-center w-full"
+                    "className": "bg-transparent text-(--foreground) flex flex-col items-center justify-center gap-(--space-xs) py-(--space-xs) px-(--container-padding-x) text-sm font-semibold text-center w-full"
                   }
                 }
               ]
@@ -230,7 +230,7 @@
                 "custom": {
                   "displayName": "Category cell"
                 },
-                "className": "bg-(--card) rounded-(--card-radius) border border-(--muted) flex flex-col items-center justify-center w-full min-h-[148px] p-5 md:min-h-[160px] md:p-6"
+                "className": "bg-(--card) rounded-(--card-radius) border border-(--muted) flex flex-col items-center justify-center w-full min-h-[148px] p-(--space-sm) md:min-h-[160px]"
               },
               "children": [
                 {
@@ -248,7 +248,7 @@
                     "custom": {
                       "displayName": "Category link"
                     },
-                    "className": "bg-transparent text-(--foreground) flex flex-col items-center justify-center gap-3 py-0 px-0 text-sm font-semibold text-center w-full"
+                    "className": "bg-transparent text-(--foreground) flex flex-col items-center justify-center gap-(--space-xs) py-(--space-xs) px-(--container-padding-x) text-sm font-semibold text-center w-full"
                   }
                 }
               ]
@@ -261,7 +261,7 @@
                 "custom": {
                   "displayName": "Category cell"
                 },
-                "className": "bg-(--card) rounded-(--card-radius) border border-(--muted) flex flex-col items-center justify-center w-full min-h-[148px] p-5 md:min-h-[160px] md:p-6"
+                "className": "bg-(--card) rounded-(--card-radius) border border-(--muted) flex flex-col items-center justify-center w-full min-h-[148px] p-(--space-sm) md:min-h-[160px]"
               },
               "children": [
                 {
@@ -279,7 +279,7 @@
                     "custom": {
                       "displayName": "Category link"
                     },
-                    "className": "bg-transparent text-(--foreground) flex flex-col items-center justify-center gap-3 py-0 px-0 text-sm font-semibold text-center w-full"
+                    "className": "bg-transparent text-(--foreground) flex flex-col items-center justify-center gap-(--space-xs) py-(--space-xs) px-(--container-padding-x) text-sm font-semibold text-center w-full"
                   }
                 }
               ]
@@ -292,7 +292,7 @@
                 "custom": {
                   "displayName": "Category cell"
                 },
-                "className": "bg-(--card) rounded-(--card-radius) border border-(--muted) flex flex-col items-center justify-center w-full min-h-[148px] p-5 md:min-h-[160px] md:p-6"
+                "className": "bg-(--card) rounded-(--card-radius) border border-(--muted) flex flex-col items-center justify-center w-full min-h-[148px] p-(--space-sm) md:min-h-[160px]"
               },
               "children": [
                 {
@@ -310,7 +310,7 @@
                     "custom": {
                       "displayName": "Category link"
                     },
-                    "className": "bg-transparent text-(--foreground) flex flex-col items-center justify-center gap-3 py-0 px-0 text-sm font-semibold text-center w-full"
+                    "className": "bg-transparent text-(--foreground) flex flex-col items-center justify-center gap-(--space-xs) py-(--space-xs) px-(--container-padding-x) text-sm font-semibold text-center w-full"
                   }
                 }
               ]

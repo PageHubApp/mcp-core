@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Construction projects grid"
     },
-    "className": "bg-(--background) text-(--foreground) flex flex-col items-center w-full py-24 px-8"
+    "className": "bg-(--background) text-(--foreground) flex flex-col items-center w-full py-(--space-xl) px-(--container-padding-x)"
   },
   "children": [
     {
@@ -39,7 +39,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "className": "grid grid-cols-1 gap-12 w-full max-w-6xl md:grid md:grid-cols-2",
+            "className": "grid grid-cols-1 gap-(--space-md) w-full max-w-6xl md:grid md:grid-cols-2",
             "custom": {
               "displayName": "Project cards"
             }
@@ -67,7 +67,7 @@
                 {
                   "type": "Container",
                   "props": {
-                    "className": "bg-(--background) flex flex-col py-6 px-2"
+                    "className": "bg-(--background) flex flex-col py-(--space-md) px-(--container-padding-x)"
                   },
                   "children": [
                     {
@@ -112,7 +112,7 @@
                 {
                   "type": "Container",
                   "props": {
-                    "className": "bg-(--background) flex flex-col py-6 px-2"
+                    "className": "bg-(--background) flex flex-col py-(--space-md) px-(--container-padding-x)"
                   },
                   "children": [
                     {
@@ -157,7 +157,7 @@
                 {
                   "type": "Container",
                   "props": {
-                    "className": "bg-(--background) flex flex-col py-6 px-2"
+                    "className": "bg-(--background) flex flex-col py-(--space-md) px-(--container-padding-x)"
                   },
                   "children": [
                     {
@@ -202,7 +202,7 @@
                 {
                   "type": "Container",
                   "props": {
-                    "className": "bg-(--background) flex flex-col py-6 px-2"
+                    "className": "bg-(--background) flex flex-col py-(--space-md) px-(--container-padding-x)"
                   },
                   "children": [
                     {

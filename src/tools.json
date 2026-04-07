@@ -202,7 +202,7 @@
         },
         "propOverrides": {
           "type": "object",
-          "description": "Map of displayName → style patches. Each value can have { className, props } keys.\n\nExample:\n  {\"Section\": {\"className\": \"bg-(--primary) py-20 md:py-32\"}, \"Card\": {\"className\": \"rounded-xl shadow-lg\"}}"
+          "description": "Map of displayName → style patches. Each value can have { className, props } keys.\n\nExample:\n  {\"Section\": {\"className\": \"bg-(--primary) py-(--space-xl)\"}, \"Card\": {\"className\": \"rounded-xl shadow-lg\"}}"
         },
         "pageId": {
           "type": "string",
@@ -234,7 +234,7 @@
         },
         "nodes": {
           "type": "object",
-          "description": "Flat CraftJS node map: { nodeId: nodeDefinition, ... }. Each node definition must include:\n\n  {\n    \"type\": { \"resolvedName\": \"Container\" },  // Component type\n    \"isCanvas\": true,                          // true if it can have children\n    \"props\": {\n      \"canDelete\": true,\n      \"canEditName\": true,\n      \"type\": \"section\",                       // \"section\" for root, omit for children\n      \"className\": \"flex flex-col w-full py-12 px-6 md:py-20 md:px-16 bg-(--primary)\",\n      \"custom\": { \"displayName\": \"My Block\" }\n    },\n    \"parent\": \"page_home\",                     // parent node ID\n    \"nodes\": [\"child_id_1\", \"child_id_2\"],     // ordered child IDs\n    \"linkedNodes\": {}\n  }\n\nAll styling uses props.className — a single Tailwind class string. Mobile-first: unprefixed = base/mobile, md: = desktop, sm: = tablet.\n\nAvailable component types: Container, Text, Image, Button, ButtonList, ImageList, Form, FormElement, Divider, Spacer, Video, Audio, Embed.\nUse get_component_schema for full prop details."
+          "description": "Flat CraftJS node map: { nodeId: nodeDefinition, ... }. Each node definition must include:\n\n  {\n    \"type\": { \"resolvedName\": \"Container\" },  // Component type\n    \"isCanvas\": true,                          // true if it can have children\n    \"props\": {\n      \"canDelete\": true,\n      \"canEditName\": true,\n      \"type\": \"section\",                       // \"section\" for root, omit for children\n      \"className\": \"flex flex-col w-full py-(--space-lg) px-(--container-padding-x) bg-(--primary)\",\n      \"custom\": { \"displayName\": \"My Block\" }\n    },\n    \"parent\": \"page_home\",                     // parent node ID\n    \"nodes\": [\"child_id_1\", \"child_id_2\"],     // ordered child IDs\n    \"linkedNodes\": {}\n  }\n\nAll styling uses props.className — a single Tailwind class string. Mobile-first: unprefixed = base/mobile, md: = desktop, sm: = tablet.\n\nAvailable component types: Container, Text, Image, Button, ButtonList, ImageList, Form, FormElement, Divider, Spacer, Video, Audio, Embed.\nUse get_component_schema for full prop details."
         },
         "parentNodeId": {
           "type": "string",

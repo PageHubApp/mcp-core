@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Press logos section"
     },
-    "className": "bg-(--muted) text-(--foreground) flex flex-col items-center w-full py-10 px-4 md:py-14 md:px-6"
+    "className": "bg-(--muted) text-(--foreground) flex flex-col items-center w-full py-(--space-md) px-(--container-padding-x)"
   },
   "children": [
     {
@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "Inner"
         },
-        "className": "flex flex-col items-center gap-8 w-full max-w-(--content-width) mx-auto"
+        "className": "flex flex-col items-center gap-(--space-md) w-full max-w-(--content-width) mx-auto"
       },
       "children": [
         {
@@ -42,7 +42,7 @@
             "custom": {
               "displayName": "Logo row"
             },
-            "className": "flex flex-row flex-wrap justify-center items-center gap-8 w-full"
+            "className": "flex flex-row flex-wrap justify-center items-center gap-(--space-md) w-full"
           },
           "children": [
             {

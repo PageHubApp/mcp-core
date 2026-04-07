@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Contact minimal section"
     },
-    "className": "bg-(--background) text-(--foreground) flex flex-col w-full max-w-none py-12 px-4 md:py-16 md:px-6"
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full max-w-none py-(--space-md) px-(--container-padding-x)"
   },
   "children": [
     {
@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "Contact minimal inner"
         },
-        "className": "flex flex-col gap-8 w-full max-w-2xl mx-auto items-center text-center md:gap-10"
+        "className": "flex flex-col gap-(--space-md) w-full max-w-2xl mx-auto items-center text-center"
       },
       "children": [
         {
@@ -29,7 +29,7 @@
             "custom": {
               "displayName": "Intro stack"
             },
-            "className": "flex flex-col gap-3 w-full items-center"
+            "className": "flex flex-col gap-(--space-xs) w-full items-center"
           },
           "children": [
             {
@@ -75,7 +75,7 @@
             "custom": {
               "displayName": "Primary channels"
             },
-            "className": "flex flex-row flex-wrap items-center justify-center gap-3 w-full md:gap-4"
+            "className": "flex flex-row flex-wrap items-center justify-center gap-(--space-xs) w-full"
           },
           "children": [
             {
@@ -91,7 +91,7 @@
                 "custom": {
                   "displayName": "Email CTA"
                 },
-                "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium"
+                "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) inline-flex items-center gap-(--space-xs) px-(--container-padding-x) py-(--space-xs) text-sm font-medium"
               }
             },
             {
@@ -107,7 +107,7 @@
                 "custom": {
                   "displayName": "Phone CTA"
                 },
-                "className": "bg-(--secondary) text-(--secondary-foreground) border border-(--border) rounded-(--radius) inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium"
+                "className": "bg-(--secondary) text-(--secondary-foreground) border border-(--border) rounded-(--radius) inline-flex items-center gap-(--space-xs) px-(--container-padding-x) py-(--space-xs) text-sm font-medium"
               }
             }
           ]
@@ -142,7 +142,7 @@
             "custom": {
               "displayName": "Social icon row"
             },
-            "className": "flex flex-row flex-wrap justify-center items-center gap-2 w-full md:gap-3"
+            "className": "flex flex-row flex-wrap justify-center items-center gap-(--space-xs) w-full"
           },
           "children": [
             {
@@ -158,7 +158,7 @@
                 "custom": {
                   "displayName": "GitHub"
                 },
-                "className": "bg-(--card) text-(--foreground) border border-(--border) rounded-(--radius-lg) inline-flex px-3 py-3"
+                "className": "bg-(--card) text-(--foreground) border border-(--border) rounded-(--radius-lg) inline-flex px-(--container-padding-x) py-(--space-xs)"
               }
             },
             {
@@ -174,7 +174,7 @@
                 "custom": {
                   "displayName": "Website"
                 },
-                "className": "bg-(--card) text-(--foreground) border border-(--border) rounded-(--radius-lg) inline-flex px-3 py-3"
+                "className": "bg-(--card) text-(--foreground) border border-(--border) rounded-(--radius-lg) inline-flex px-(--container-padding-x) py-(--space-xs)"
               }
             },
             {
@@ -190,7 +190,7 @@
                 "custom": {
                   "displayName": "RSS"
                 },
-                "className": "bg-(--card) text-(--foreground) border border-(--border) rounded-(--radius-lg) inline-flex px-3 py-3"
+                "className": "bg-(--card) text-(--foreground) border border-(--border) rounded-(--radius-lg) inline-flex px-(--container-padding-x) py-(--space-xs)"
               }
             }
           ]

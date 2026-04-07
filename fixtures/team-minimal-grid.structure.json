@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Team Minimal Grid"
     },
-    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-16 px-4 gap-12 md:py-24 md:px-6 md:gap-16"
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-(--space-lg) px-(--container-padding-x) gap-(--space-md)"
   },
   "children": [
     {
@@ -16,7 +16,7 @@
         "custom": {
           "displayName": "Header"
         },
-        "className": "flex flex-col items-center text-center max-w-3xl mx-auto gap-4"
+        "className": "flex flex-col items-center text-center max-w-3xl mx-auto gap-(--space-sm)"
       },
       "children": [
         {
@@ -60,7 +60,7 @@
         "custom": {
           "displayName": "Team Grid"
         },
-        "className": "grid grid-cols-2 max-w-6xl mx-auto w-full md:grid-cols-4 md:gap-12",
+        "className": "grid grid-cols-2 max-w-6xl mx-auto w-full md:grid-cols-4",
         "root": {
           "style": "gap: gap-y-12 gap-x-6;"
         }
@@ -69,7 +69,7 @@
         {
           "type": "Container",
           "props": {
-            "className": "flex flex-col items-center gap-4"
+            "className": "flex flex-col items-center gap-(--space-sm)"
           },
           "children": [
             {
@@ -83,7 +83,7 @@
             {
               "type": "Container",
               "props": {
-                "className": "flex flex-col items-center gap-1"
+                "className": "flex flex-col items-center gap-(--space-xs)"
               },
               "children": [
                 {
@@ -109,7 +109,7 @@
         {
           "type": "Container",
           "props": {
-            "className": "flex flex-col items-center gap-4"
+            "className": "flex flex-col items-center gap-(--space-sm)"
           },
           "children": [
             {
@@ -123,7 +123,7 @@
             {
               "type": "Container",
               "props": {
-                "className": "flex flex-col items-center gap-1"
+                "className": "flex flex-col items-center gap-(--space-xs)"
               },
               "children": [
                 {
@@ -149,7 +149,7 @@
         {
           "type": "Container",
           "props": {
-            "className": "flex flex-col items-center gap-4"
+            "className": "flex flex-col items-center gap-(--space-sm)"
           },
           "children": [
             {
@@ -163,7 +163,7 @@
             {
               "type": "Container",
               "props": {
-                "className": "flex flex-col items-center gap-1"
+                "className": "flex flex-col items-center gap-(--space-xs)"
               },
               "children": [
                 {
@@ -189,7 +189,7 @@
         {
           "type": "Container",
           "props": {
-            "className": "flex flex-col items-center gap-4"
+            "className": "flex flex-col items-center gap-(--space-sm)"
           },
           "children": [
             {
@@ -203,7 +203,7 @@
             {
               "type": "Container",
               "props": {
-                "className": "flex flex-col items-center gap-1"
+                "className": "flex flex-col items-center gap-(--space-xs)"
               },
               "children": [
                 {

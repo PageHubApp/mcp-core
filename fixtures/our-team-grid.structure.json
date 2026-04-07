@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Our Team Section"
     },
-    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-16 px-6 gap-12 md:py-24 md:px-8 md:gap-14"
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-(--space-lg) px-(--container-padding-x) gap-(--space-md)"
   },
   "children": [
     {
@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "Team Content"
         },
-        "className": "flex flex-col w-full max-w-(--content-width) mx-auto gap-10 md:gap-12"
+        "className": "flex flex-col w-full max-w-(--content-width) mx-auto gap-(--space-md)"
       },
       "children": [
         {
@@ -29,7 +29,7 @@
             "custom": {
               "displayName": "Section Header"
             },
-            "className": "flex flex-col items-center text-center w-full max-w-2xl mx-auto gap-3"
+            "className": "flex flex-col items-center text-center w-full max-w-2xl mx-auto gap-(--space-xs)"
           },
           "children": [
             {
@@ -64,7 +64,7 @@
             "custom": {
               "displayName": "Team Grid"
             },
-            "className": "grid grid-cols-1 w-full gap-6 md:grid-cols-2 md:gap-6"
+            "className": "grid grid-cols-1 w-full gap-(--space-sm) md:grid-cols-2"
           },
           "children": [
             {
@@ -114,7 +114,7 @@
                     "custom": {
                       "displayName": "Details"
                     },
-                    "className": "flex flex-col gap-2 p-6 flex-1 min-w-0 justify-start md:justify-between md:p-6 md:gap-3"
+                    "className": "flex flex-col gap-(--space-xs) p-6 flex-1 min-w-0 justify-start md:justify-between"
                   },
                   "children": [
                     {
@@ -125,7 +125,7 @@
                         "custom": {
                           "displayName": "Text stack"
                         },
-                        "className": "flex flex-col gap-2"
+                        "className": "flex flex-col gap-(--space-xs)"
                       },
                       "children": [
                         {
@@ -171,7 +171,7 @@
                         "custom": {
                           "displayName": "Social links"
                         },
-                        "className": "flex flex-row gap-1 flex-wrap mt-3 md:mt-4"
+                        "className": "flex flex-row gap-(--space-xs) flex-wrap mt-3 md:mt-4"
                       },
                       "children": [
                         {
@@ -187,7 +187,7 @@
                             "custom": {
                               "displayName": "Community profile"
                             },
-                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
+                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-(--space-xs) px-(--container-padding-x)"
                           }
                         },
                         {
@@ -203,7 +203,7 @@
                             "custom": {
                               "displayName": "Share or social link"
                             },
-                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
+                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-(--space-xs) px-(--container-padding-x)"
                           }
                         },
                         {
@@ -219,7 +219,7 @@
                             "custom": {
                               "displayName": "Code repository"
                             },
-                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
+                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-(--space-xs) px-(--container-padding-x)"
                           }
                         },
                         {
@@ -235,7 +235,7 @@
                             "custom": {
                               "displayName": "Website"
                             },
-                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
+                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-(--space-xs) px-(--container-padding-x)"
                           }
                         }
                       ]
@@ -291,7 +291,7 @@
                     "custom": {
                       "displayName": "Details"
                     },
-                    "className": "flex flex-col gap-2 p-6 flex-1 min-w-0 justify-start md:justify-between md:p-6 md:gap-3"
+                    "className": "flex flex-col gap-(--space-xs) p-6 flex-1 min-w-0 justify-start md:justify-between"
                   },
                   "children": [
                     {
@@ -302,7 +302,7 @@
                         "custom": {
                           "displayName": "Text stack"
                         },
-                        "className": "flex flex-col gap-2"
+                        "className": "flex flex-col gap-(--space-xs)"
                       },
                       "children": [
                         {
@@ -348,7 +348,7 @@
                         "custom": {
                           "displayName": "Social links"
                         },
-                        "className": "flex flex-row gap-1 flex-wrap mt-3 md:mt-4"
+                        "className": "flex flex-row gap-(--space-xs) flex-wrap mt-3 md:mt-4"
                       },
                       "children": [
                         {
@@ -364,7 +364,7 @@
                             "custom": {
                               "displayName": "Community profile"
                             },
-                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
+                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-(--space-xs) px-(--container-padding-x)"
                           }
                         },
                         {
@@ -380,7 +380,7 @@
                             "custom": {
                               "displayName": "Share or social link"
                             },
-                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
+                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-(--space-xs) px-(--container-padding-x)"
                           }
                         },
                         {
@@ -396,7 +396,7 @@
                             "custom": {
                               "displayName": "Code repository"
                             },
-                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
+                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-(--space-xs) px-(--container-padding-x)"
                           }
                         },
                         {
@@ -412,7 +412,7 @@
                             "custom": {
                               "displayName": "Website"
                             },
-                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
+                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-(--space-xs) px-(--container-padding-x)"
                           }
                         }
                       ]
@@ -468,7 +468,7 @@
                     "custom": {
                       "displayName": "Details"
                     },
-                    "className": "flex flex-col gap-2 p-6 flex-1 min-w-0 justify-start md:justify-between md:p-6 md:gap-3"
+                    "className": "flex flex-col gap-(--space-xs) p-6 flex-1 min-w-0 justify-start md:justify-between"
                   },
                   "children": [
                     {
@@ -479,7 +479,7 @@
                         "custom": {
                           "displayName": "Text stack"
                         },
-                        "className": "flex flex-col gap-2"
+                        "className": "flex flex-col gap-(--space-xs)"
                       },
                       "children": [
                         {
@@ -525,7 +525,7 @@
                         "custom": {
                           "displayName": "Social links"
                         },
-                        "className": "flex flex-row gap-1 flex-wrap mt-3 md:mt-4"
+                        "className": "flex flex-row gap-(--space-xs) flex-wrap mt-3 md:mt-4"
                       },
                       "children": [
                         {
@@ -541,7 +541,7 @@
                             "custom": {
                               "displayName": "Community profile"
                             },
-                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
+                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-(--space-xs) px-(--container-padding-x)"
                           }
                         },
                         {
@@ -557,7 +557,7 @@
                             "custom": {
                               "displayName": "Share or social link"
                             },
-                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
+                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-(--space-xs) px-(--container-padding-x)"
                           }
                         },
                         {
@@ -573,7 +573,7 @@
                             "custom": {
                               "displayName": "Code repository"
                             },
-                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
+                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-(--space-xs) px-(--container-padding-x)"
                           }
                         },
                         {
@@ -589,7 +589,7 @@
                             "custom": {
                               "displayName": "Website"
                             },
-                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
+                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-(--space-xs) px-(--container-padding-x)"
                           }
                         }
                       ]
@@ -645,7 +645,7 @@
                     "custom": {
                       "displayName": "Details"
                     },
-                    "className": "flex flex-col gap-2 p-6 flex-1 min-w-0 justify-start md:justify-between md:p-6 md:gap-3"
+                    "className": "flex flex-col gap-(--space-xs) p-6 flex-1 min-w-0 justify-start md:justify-between"
                   },
                   "children": [
                     {
@@ -656,7 +656,7 @@
                         "custom": {
                           "displayName": "Text stack"
                         },
-                        "className": "flex flex-col gap-2"
+                        "className": "flex flex-col gap-(--space-xs)"
                       },
                       "children": [
                         {
@@ -702,7 +702,7 @@
                         "custom": {
                           "displayName": "Social links"
                         },
-                        "className": "flex flex-row gap-1 flex-wrap mt-3 md:mt-4"
+                        "className": "flex flex-row gap-(--space-xs) flex-wrap mt-3 md:mt-4"
                       },
                       "children": [
                         {
@@ -718,7 +718,7 @@
                             "custom": {
                               "displayName": "Community profile"
                             },
-                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
+                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-(--space-xs) px-(--container-padding-x)"
                           }
                         },
                         {
@@ -734,7 +734,7 @@
                             "custom": {
                               "displayName": "Share or social link"
                             },
-                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
+                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-(--space-xs) px-(--container-padding-x)"
                           }
                         },
                         {
@@ -750,7 +750,7 @@
                             "custom": {
                               "displayName": "Code repository"
                             },
-                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
+                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-(--space-xs) px-(--container-padding-x)"
                           }
                         },
                         {
@@ -766,7 +766,7 @@
                             "custom": {
                               "displayName": "Website"
                             },
-                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-2 px-2"
+                            "className": "bg-transparent text-(--muted-foreground) rounded-(--radius) py-(--space-xs) px-(--container-padding-x)"
                           }
                         }
                       ]

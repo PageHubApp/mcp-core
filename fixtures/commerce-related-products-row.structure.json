@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Related products section"
     },
-    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-12 px-4 md:py-16 md:px-6"
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-(--space-md) px-(--container-padding-x)"
   },
   "children": [
     {
@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "Inner"
         },
-        "className": "flex flex-col gap-8 w-full max-w-(--content-width) mx-auto"
+        "className": "flex flex-col gap-(--space-md) w-full max-w-(--content-width) mx-auto"
       },
       "children": [
         {
@@ -29,7 +29,7 @@
             "custom": {
               "displayName": "Header row"
             },
-            "className": "flex flex-col gap-2 w-full md:flex-row md:items-end md:justify-between md:gap-8"
+            "className": "flex flex-col gap-(--space-xs) w-full md:flex-row md:items-end md:justify-between"
           },
           "children": [
             {
@@ -40,7 +40,7 @@
                 "custom": {
                   "displayName": "Titles"
                 },
-                "className": "flex flex-col gap-2 w-full md:max-w-2xl"
+                "className": "flex flex-col gap-(--space-xs) w-full md:max-w-2xl"
               },
               "children": [
                 {
@@ -94,7 +94,7 @@
                 "custom": {
                   "displayName": "View all"
                 },
-                "className": "bg-transparent text-(--primary) border border-(--border) rounded-(--radius) inline-flex self-start py-2 px-4 text-sm font-medium mt-2 md:mt-0 md:shrink-0"
+                "className": "bg-transparent text-(--primary) border border-(--border) rounded-(--radius) inline-flex self-start py-(--space-xs) px-(--container-padding-x) text-sm font-medium mt-2 md:mt-0 md:shrink-0"
               }
             }
           ]
@@ -107,7 +107,7 @@
             "custom": {
               "displayName": "Product row"
             },
-            "className": "grid grid-cols-2 gap-4 w-full md:grid-cols-4 md:gap-6"
+            "className": "grid grid-cols-2 gap-(--space-sm) w-full md:grid-cols-4"
           },
           "children": [
             {
@@ -142,7 +142,7 @@
                     "custom": {
                       "displayName": "Body"
                     },
-                    "className": "flex flex-col gap-2 p-4"
+                    "className": "flex flex-col gap-(--space-xs) p-4"
                   },
                   "children": [
                     {
@@ -181,7 +181,7 @@
                         "custom": {
                           "displayName": "Link"
                         },
-                        "className": "bg-transparent text-(--primary) py-0 px-0 text-xs font-semibold"
+                        "className": "bg-transparent text-(--primary) py-(--space-xs) px-(--container-padding-x) text-xs font-semibold"
                       }
                     }
                   ]
@@ -220,7 +220,7 @@
                     "custom": {
                       "displayName": "Body"
                     },
-                    "className": "flex flex-col gap-2 p-4"
+                    "className": "flex flex-col gap-(--space-xs) p-4"
                   },
                   "children": [
                     {
@@ -259,7 +259,7 @@
                         "custom": {
                           "displayName": "Link"
                         },
-                        "className": "bg-transparent text-(--primary) py-0 px-0 text-xs font-semibold"
+                        "className": "bg-transparent text-(--primary) py-(--space-xs) px-(--container-padding-x) text-xs font-semibold"
                       }
                     }
                   ]
@@ -298,7 +298,7 @@
                     "custom": {
                       "displayName": "Body"
                     },
-                    "className": "flex flex-col gap-2 p-4"
+                    "className": "flex flex-col gap-(--space-xs) p-4"
                   },
                   "children": [
                     {
@@ -337,7 +337,7 @@
                         "custom": {
                           "displayName": "Link"
                         },
-                        "className": "bg-transparent text-(--primary) py-0 px-0 text-xs font-semibold"
+                        "className": "bg-transparent text-(--primary) py-(--space-xs) px-(--container-padding-x) text-xs font-semibold"
                       }
                     }
                   ]
@@ -376,7 +376,7 @@
                     "custom": {
                       "displayName": "Body"
                     },
-                    "className": "flex flex-col gap-2 p-4"
+                    "className": "flex flex-col gap-(--space-xs) p-4"
                   },
                   "children": [
                     {
@@ -415,7 +415,7 @@
                         "custom": {
                           "displayName": "Link"
                         },
-                        "className": "bg-transparent text-(--primary) py-0 px-0 text-xs font-semibold"
+                        "className": "bg-transparent text-(--primary) py-(--space-xs) px-(--container-padding-x) text-xs font-semibold"
                       }
                     }
                   ]

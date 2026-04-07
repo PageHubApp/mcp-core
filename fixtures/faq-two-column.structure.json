@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "FAQ dual column section"
     },
-    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-16 px-6 gap-12 md:py-24 md:px-8 md:gap-14"
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-(--space-lg) px-(--container-padding-x) gap-(--space-md)"
   },
   "children": [
     {
@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "FAQ section inner"
         },
-        "className": "flex flex-col w-full max-w-(--content-width) mx-auto gap-10 md:gap-12"
+        "className": "flex flex-col w-full max-w-(--content-width) mx-auto gap-(--space-md)"
       },
       "children": [
         {
@@ -29,7 +29,7 @@
             "custom": {
               "displayName": "FAQ section header"
             },
-            "className": "flex flex-col gap-3 w-full max-w-2xl"
+            "className": "flex flex-col gap-(--space-xs) w-full max-w-2xl"
           },
           "children": [
             {
@@ -72,7 +72,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "className": "grid grid-cols-1 gap-10 w-full md:grid-cols-2 md:gap-x-16",
+            "className": "grid grid-cols-1 gap-(--space-md) w-full md:grid-cols-2 md:gap-x-16",
             "custom": {
               "displayName": "FAQ columns"
             }
@@ -86,7 +86,7 @@
                 "custom": {
                   "displayName": "FAQ column A"
                 },
-                "className": "flex flex-col w-full gap-0"
+                "className": "flex flex-col w-full gap-(--space-xs)"
               },
               "children": [
                 {
@@ -97,7 +97,7 @@
                     "custom": {
                       "displayName": "FAQ row"
                     },
-                    "className": "border-b border-(--muted) flex flex-col gap-2 py-6 w-full"
+                    "className": "border-b border-(--muted) flex flex-col gap-(--space-xs) py-(--space-md) w-full"
                   },
                   "children": [
                     {
@@ -132,7 +132,7 @@
                     "custom": {
                       "displayName": "FAQ row"
                     },
-                    "className": "border-b border-(--muted) flex flex-col gap-2 py-6 w-full"
+                    "className": "border-b border-(--muted) flex flex-col gap-(--space-xs) py-(--space-md) w-full"
                   },
                   "children": [
                     {
@@ -167,7 +167,7 @@
                     "custom": {
                       "displayName": "FAQ row"
                     },
-                    "className": "border-b border-(--muted) flex flex-col gap-2 py-6 w-full"
+                    "className": "border-b border-(--muted) flex flex-col gap-(--space-xs) py-(--space-md) w-full"
                   },
                   "children": [
                     {
@@ -204,7 +204,7 @@
                 "custom": {
                   "displayName": "FAQ column B"
                 },
-                "className": "flex flex-col w-full gap-0"
+                "className": "flex flex-col w-full gap-(--space-xs)"
               },
               "children": [
                 {
@@ -215,7 +215,7 @@
                     "custom": {
                       "displayName": "FAQ row"
                     },
-                    "className": "border-b border-(--muted) flex flex-col gap-2 py-6 w-full"
+                    "className": "border-b border-(--muted) flex flex-col gap-(--space-xs) py-(--space-md) w-full"
                   },
                   "children": [
                     {
@@ -250,7 +250,7 @@
                     "custom": {
                       "displayName": "FAQ row"
                     },
-                    "className": "border-b border-(--muted) flex flex-col gap-2 py-6 w-full"
+                    "className": "border-b border-(--muted) flex flex-col gap-(--space-xs) py-(--space-md) w-full"
                   },
                   "children": [
                     {
@@ -285,7 +285,7 @@
                     "custom": {
                       "displayName": "FAQ row"
                     },
-                    "className": "border-b border-(--muted) flex flex-col gap-2 py-6 w-full"
+                    "className": "border-b border-(--muted) flex flex-col gap-(--space-xs) py-(--space-md) w-full"
                   },
                   "children": [
                     {

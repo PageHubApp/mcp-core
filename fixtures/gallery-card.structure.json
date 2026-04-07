@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Gallery card section"
     },
-    "className": "bg-(--muted) text-(--foreground) flex flex-col w-full max-w-none py-10 px-4 md:py-12 md:px-6"
+    "className": "bg-(--muted) text-(--foreground) flex flex-col w-full max-w-none py-(--space-md) px-(--container-padding-x)"
   },
   "children": [
     {
@@ -52,7 +52,7 @@
                 "custom": {
                   "displayName": "Overlay"
                 },
-                "className": "flex flex-col justify-end p-6 relative z-10 min-h-[240px] md:min-h-[300px]"
+                "className": "flex flex-col justify-end p-(--space-sm) relative z-10 min-h-[240px] md:min-h-[300px]"
               },
               "children": [
                 {

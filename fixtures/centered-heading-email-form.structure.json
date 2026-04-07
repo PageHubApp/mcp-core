@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Heading and email form"
     },
-    "className": "bg-(--background) text-(--foreground) flex flex-col items-center justify-center w-full py-12 px-4 md:py-16 md:px-6"
+    "className": "bg-(--background) text-(--foreground) flex flex-col items-center justify-center w-full py-(--space-md) px-(--container-padding-x)"
   },
   "children": [
     {
@@ -19,7 +19,7 @@
         "custom": {
           "displayName": "Inner"
         },
-        "className": "py-3 px-3 mx-auto flex justify-center flex-col w-full gap-6 max-w-(--content-width) md:max-w-3xl"
+        "className": "py-(--space-xs) px-(--container-padding-x) mx-auto flex justify-center flex-col w-full gap-(--space-sm) max-w-(--content-width) md:max-w-3xl"
       },
       "children": [
         {
@@ -30,7 +30,7 @@
             "custom": {
               "displayName": "Copy and form"
             },
-            "className": "flex justify-center flex-col w-full gap-4 items-stretch md:items-center md:gap-6 md:px-4"
+            "className": "flex justify-center flex-col w-full gap-(--space-sm) items-stretch md:items-center"
           },
           "children": [
             {
@@ -100,7 +100,7 @@
                         "custom": {
                           "displayName": "Email"
                         },
-                        "className": "border-0 rounded-none bg-transparent text-(--input-text-color) px-3 py-2.5 w-full flex-1 min-w-0 text-sm"
+                        "className": "border-0 rounded-none bg-transparent text-(--input-text-color) px-(--container-padding-x) py-(--space-xs) w-full flex-1 min-w-0 text-sm"
                       }
                     },
                     {
@@ -111,7 +111,7 @@
                         "custom": {
                           "displayName": "Submit"
                         },
-                        "className": "bg-(--primary) text-(--primary-foreground) rounded-none border-0 inline-flex items-center justify-center shrink-0 px-4 py-2.5 text-sm font-semibold border-l border-(--border)"
+                        "className": "bg-(--primary) text-(--primary-foreground) rounded-none border-0 inline-flex items-center justify-center shrink-0 px-(--container-padding-x) py-(--space-xs) text-sm font-semibold border-l border-(--border)"
                       }
                     }
                   ]

@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Social Proof Trusted Row"
     },
-    "className": "bg-(--background) text-(--foreground) flex flex-col items-center text-center w-full py-16 px-6 md:py-24 md:px-8"
+    "className": "bg-(--background) text-(--foreground) flex flex-col items-center text-center w-full py-(--space-lg) px-(--container-padding-x)"
   },
   "children": [
     {
@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "Inner"
         },
-        "className": "flex flex-col items-center gap-12 w-full max-w-6xl mx-auto md:flex-row md:gap-20"
+        "className": "flex flex-col items-center gap-(--space-md) w-full max-w-6xl mx-auto md:flex-row"
       },
       "children": [
         {
@@ -29,7 +29,7 @@
             "custom": {
               "displayName": "Content"
             },
-            "className": "flex flex-col items-center gap-4 w-full text-center md:items-start md:text-left md:flex-1"
+            "className": "flex flex-col items-center gap-(--space-sm) w-full text-center md:items-start md:text-left md:flex-1"
           },
           "children": [
             {
@@ -75,7 +75,7 @@
             "custom": {
               "displayName": "Logo Grid"
             },
-            "className": "grid grid-cols-2 gap-8 w-full items-center md:grid-cols-3 md:gap-12 md:flex-1"
+            "className": "grid grid-cols-2 gap-(--space-md) w-full items-center md:grid-cols-3 md:flex-1"
           },
           "children": [
             {

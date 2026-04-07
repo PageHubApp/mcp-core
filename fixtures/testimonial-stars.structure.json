@@ -4,7 +4,7 @@
     "canDelete": true,
     "canEditName": true,
     "type": "section",
-    "className": "bg-(--background) text-(--foreground) flex flex-col items-center w-full py-12 px-4 lg:py-16 lg:px-6",
+    "className": "bg-(--background) text-(--foreground) flex flex-col items-center w-full py-(--space-md) px-(--container-padding-x)",
     "custom": {
       "displayName": "Testimonial stars section"
     }
@@ -26,7 +26,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "className": "bg-(--card) rounded-(--card-radius) border border-(--border) shadow-md flex flex-col items-center text-center gap-6 w-full p-8 lg:p-10",
+            "className": "bg-(--card) rounded-(--card-radius) border border-(--border) shadow-md flex flex-col items-center text-center gap-(--space-sm) w-full p-8",
             "custom": {
               "displayName": "Review card"
             }
@@ -40,7 +40,7 @@
                 "custom": {
                   "displayName": "Star rating"
                 },
-                "className": "flex flex-row flex-wrap justify-center items-center gap-0.5 w-full"
+                "className": "flex flex-row flex-wrap justify-center items-center gap-(--space-xs) w-full"
               },
               "children": [
                 {
@@ -58,7 +58,7 @@
                     "custom": {
                       "displayName": "Star 1"
                     },
-                    "className": "bg-transparent text-(--accent) rounded-(--radius) py-0 px-0.5 min-w-0"
+                    "className": "bg-transparent text-(--accent) rounded-(--radius) py-(--space-xs) px-(--container-padding-x) min-w-0"
                   }
                 },
                 {
@@ -76,7 +76,7 @@
                     "custom": {
                       "displayName": "Star 2"
                     },
-                    "className": "bg-transparent text-(--accent) rounded-(--radius) py-0 px-0.5 min-w-0"
+                    "className": "bg-transparent text-(--accent) rounded-(--radius) py-(--space-xs) px-(--container-padding-x) min-w-0"
                   }
                 },
                 {
@@ -94,7 +94,7 @@
                     "custom": {
                       "displayName": "Star 3"
                     },
-                    "className": "bg-transparent text-(--accent) rounded-(--radius) py-0 px-0.5 min-w-0"
+                    "className": "bg-transparent text-(--accent) rounded-(--radius) py-(--space-xs) px-(--container-padding-x) min-w-0"
                   }
                 },
                 {
@@ -112,7 +112,7 @@
                     "custom": {
                       "displayName": "Star 4"
                     },
-                    "className": "bg-transparent text-(--accent) rounded-(--radius) py-0 px-0.5 min-w-0"
+                    "className": "bg-transparent text-(--accent) rounded-(--radius) py-(--space-xs) px-(--container-padding-x) min-w-0"
                   }
                 },
                 {
@@ -130,7 +130,7 @@
                     "custom": {
                       "displayName": "Star 5"
                     },
-                    "className": "bg-transparent text-(--accent) rounded-(--radius) py-0 px-0.5 min-w-0"
+                    "className": "bg-transparent text-(--accent) rounded-(--radius) py-(--space-xs) px-(--container-padding-x) min-w-0"
                   }
                 }
               ]
@@ -166,7 +166,7 @@
                 "custom": {
                   "displayName": "Attribution"
                 },
-                "className": "flex flex-col gap-1 items-center w-full"
+                "className": "flex flex-col gap-(--space-xs) items-center w-full"
               },
               "children": [
                 {

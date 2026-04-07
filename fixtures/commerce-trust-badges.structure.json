@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Trust badges section"
     },
-    "className": "bg-(--background) text-(--foreground) flex flex-col items-center w-full py-10 px-4 md:py-12 md:px-6"
+    "className": "bg-(--background) text-(--foreground) flex flex-col items-center w-full py-(--space-md) px-(--container-padding-x)"
   },
   "children": [
     {
@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "Inner"
         },
-        "className": "flex flex-col items-center gap-6 w-full max-w-(--content-width) mx-auto"
+        "className": "flex flex-col items-center gap-(--space-sm) w-full max-w-(--content-width) mx-auto"
       },
       "children": [
         {
@@ -55,7 +55,7 @@
             "custom": {
               "displayName": "Badge row"
             },
-            "className": "flex flex-row flex-wrap justify-center items-center gap-3 w-full md:gap-4"
+            "className": "flex flex-row flex-wrap justify-center items-center gap-(--space-xs) w-full"
           },
           "children": [
             {
@@ -66,7 +66,7 @@
                 "custom": {
                   "displayName": "Secure checkout"
                 },
-                "className": "bg-(--card) text-(--card-foreground) border border-(--border) rounded-(--radius-full) flex flex-row items-center gap-2 px-4 py-2"
+                "className": "bg-(--card) text-(--card-foreground) border border-(--border) rounded-(--radius-full) flex flex-row items-center gap-(--space-xs) px-(--container-padding-x) py-(--space-xs)"
               },
               "children": [
                 {
@@ -85,7 +85,7 @@
                     "custom": {
                       "displayName": "Icon"
                     },
-                    "className": "bg-transparent px-0 py-0"
+                    "className": "bg-transparent px-(--container-padding-x) py-(--space-xs)"
                   }
                 },
                 {
@@ -111,7 +111,7 @@
                 "custom": {
                   "displayName": "Verified"
                 },
-                "className": "bg-(--card) text-(--card-foreground) border border-(--border) rounded-(--radius-full) flex flex-row items-center gap-2 px-4 py-2"
+                "className": "bg-(--card) text-(--card-foreground) border border-(--border) rounded-(--radius-full) flex flex-row items-center gap-(--space-xs) px-(--container-padding-x) py-(--space-xs)"
               },
               "children": [
                 {
@@ -130,7 +130,7 @@
                     "custom": {
                       "displayName": "Icon"
                     },
-                    "className": "bg-transparent px-0 py-0"
+                    "className": "bg-transparent px-(--container-padding-x) py-(--space-xs)"
                   }
                 },
                 {
@@ -156,7 +156,7 @@
                 "custom": {
                   "displayName": "Returns"
                 },
-                "className": "bg-(--card) text-(--card-foreground) border border-(--border) rounded-(--radius-full) flex flex-row items-center gap-2 px-4 py-2"
+                "className": "bg-(--card) text-(--card-foreground) border border-(--border) rounded-(--radius-full) flex flex-row items-center gap-(--space-xs) px-(--container-padding-x) py-(--space-xs)"
               },
               "children": [
                 {
@@ -175,7 +175,7 @@
                     "custom": {
                       "displayName": "Icon"
                     },
-                    "className": "bg-transparent px-0 py-0"
+                    "className": "bg-transparent px-(--container-padding-x) py-(--space-xs)"
                   }
                 },
                 {
@@ -201,7 +201,7 @@
                 "custom": {
                   "displayName": "Support"
                 },
-                "className": "bg-(--card) text-(--card-foreground) border border-(--border) rounded-(--radius-full) flex flex-row items-center gap-2 px-4 py-2"
+                "className": "bg-(--card) text-(--card-foreground) border border-(--border) rounded-(--radius-full) flex flex-row items-center gap-(--space-xs) px-(--container-padding-x) py-(--space-xs)"
               },
               "children": [
                 {
@@ -220,7 +220,7 @@
                     "custom": {
                       "displayName": "Icon"
                     },
-                    "className": "bg-transparent px-0 py-0"
+                    "className": "bg-transparent px-(--container-padding-x) py-(--space-xs)"
                   }
                 },
                 {

@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Hero focus"
     },
-    "className": "bg-(--background) text-(--foreground) relative flex flex-col w-full min-h-screen pt-20 pb-12 px-4 overflow-hidden md:pt-24 md:pb-20 md:px-10"
+    "className": "bg-(--background) text-(--foreground) relative flex flex-col w-full min-h-screen pt-20 pb-12 px-(--container-padding-x) overflow-hidden md:pt-24 md:pb-20"
   },
   "children": [
     {
@@ -37,7 +37,7 @@
       "props": {
         "canDelete": true,
         "canEditName": true,
-        "className": "flex flex-col w-full z-10 relative max-w-(--content-width) mx-auto gap-12 md:max-w-none md:w-full md:flex-row md:items-stretch md:justify-between md:gap-10 md:min-h-[85vh] md:mx-auto md:px-2 lg:gap-16 xl:gap-24",
+        "className": "flex flex-col w-full z-10 relative max-w-(--content-width) mx-auto gap-(--space-md) md:max-w-none md:w-full md:flex-row md:items-stretch md:justify-between md:min-h-[85vh] md:mx-auto",
         "custom": {
           "displayName": "Hero inner"
         }
@@ -48,7 +48,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "className": "flex flex-col w-full justify-center gap-6 md:w-1/2 md:justify-center md:py-8 md:pr-6 xl:pr-10",
+            "className": "flex flex-col w-full justify-center gap-(--space-sm) md:w-1/2 md:justify-center md:pr-6 xl:pr-10",
             "custom": {
               "displayName": "Copy column"
             }

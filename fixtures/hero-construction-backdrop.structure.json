@@ -39,7 +39,7 @@
         "custom": {
           "displayName": "Hero copy"
         },
-        "className": "relative z-10 flex flex-col items-center text-center px-8 mt-24 w-full max-w-(--content-width) mx-auto"
+        "className": "relative z-10 flex flex-col items-center text-center px-(--container-padding-x) mt-24 w-full max-w-(--content-width) mx-auto"
       },
       "children": [
         {

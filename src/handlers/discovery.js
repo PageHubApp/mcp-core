@@ -52,13 +52,16 @@ All styling in a single props.className string:
 - md: prefix = desktop (768px+)
 - lg: prefix = large screens (1024px+)
 
-Example: "flex flex-col gap-4 py-16 bg-(--background) text-(--foreground) md:flex-row md:gap-8 md:py-24"
+Example: "flex flex-col gap-(--space-sm) py-(--space-lg) px-(--container-padding-x) bg-(--background) text-(--foreground) md:flex-row"
+
+Spatial tokens (fluid clamp, NO md:py-* or md:gap-* needed):
+  --space-xs (micro), --space-sm (element), --space-md (content), --space-lg (section), --space-xl (hero)
 
 ## Common className Utilities
 
-Layout: flex, flex-col, flex-row, grid, grid-cols-*, gap-*, items-*, justify-*,
+Layout: flex, flex-col, flex-row, grid, grid-cols-*, gap-(--space-*), items-*, justify-*,
   w-full, w-1/2, max-w-(--content-width), h-[400px], min-h-screen,
-  py-*, px-*, mx-auto, relative, absolute, z-*, overflow-hidden
+  py-(--space-*), px-(--container-padding-x), mx-auto, relative, absolute, z-*, overflow-hidden
 
 Surface: bg-(--primary), text-(--foreground), border, border-(--card),
   rounded-(--radius), shadow-sm, shadow-md

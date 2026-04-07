@@ -4,7 +4,7 @@
     "type": "section",
     "canDelete": true,
     "canEditName": true,
-    "className": "bg-(--muted) text-(--foreground) flex flex-col w-full max-w-none py-4 px-4 md:py-5 md:px-6 border-y border-(--border)",
+    "className": "bg-(--muted) text-(--foreground) flex flex-col w-full max-w-none py-(--space-xs) px-(--container-padding-x) border-y border-(--border)",
     "custom": {
       "displayName": "Newsletter footer strip section"
     }
@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "Strip inner"
         },
-        "className": "flex flex-col gap-4 w-full max-w-(--content-width) mx-auto items-stretch md:flex-row md:items-center md:justify-between md:gap-8"
+        "className": "flex flex-col gap-(--space-sm) w-full max-w-(--content-width) mx-auto items-stretch md:flex-row md:items-center md:justify-between"
       },
       "children": [
         {
@@ -29,7 +29,7 @@
             "custom": {
               "displayName": "Copy column"
             },
-            "className": "flex flex-col gap-1 w-full min-w-0 md:flex-none md:max-w-sm"
+            "className": "flex flex-col gap-(--space-xs) w-full min-w-0 md:flex-none md:max-w-sm"
           },
           "children": [
             {
@@ -97,7 +97,7 @@
                     "custom": {
                       "displayName": "Email"
                     },
-                    "className": "border-0 rounded-none bg-transparent text-(--input-text-color) px-3 py-2.5 w-full flex-1 min-w-0 text-sm"
+                    "className": "border-0 rounded-none bg-transparent text-(--input-text-color) px-(--container-padding-x) py-(--space-xs) w-full flex-1 min-w-0 text-sm"
                   }
                 },
                 {
@@ -108,7 +108,7 @@
                     "custom": {
                       "displayName": "Submit"
                     },
-                    "className": "bg-(--primary) text-(--primary-foreground) rounded-none border-0 inline-flex items-center justify-center shrink-0 px-4 py-2.5 text-sm font-semibold border-l border-(--border)"
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-none border-0 inline-flex items-center justify-center shrink-0 px-(--container-padding-x) py-(--space-xs) text-sm font-semibold border-l border-(--border)"
                   }
                 }
               ]

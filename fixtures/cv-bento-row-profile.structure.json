@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "CV bento — profile and photo row"
     },
-    "className": "bg-(--muted) text-(--foreground) w-full py-12 px-6 md:py-16 md:px-8"
+    "className": "bg-(--muted) text-(--foreground) w-full py-(--space-md) px-(--container-padding-x)"
   },
   "children": [
     {
@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "Section inner"
         },
-        "className": "flex flex-col gap-6 w-full max-w-(--content-width) mx-auto"
+        "className": "flex flex-col gap-(--space-sm) w-full max-w-(--content-width) mx-auto"
       },
       "children": [
         {
@@ -26,7 +26,7 @@
           "props": {
             "canDelete": true,
             "canEditName": true,
-            "className": "grid grid-cols-1 gap-4 w-full md:grid-cols-2",
+            "className": "grid grid-cols-1 gap-(--space-sm) w-full md:grid-cols-2",
             "custom": {
               "displayName": "Two-card row"
             }
@@ -40,7 +40,7 @@
                 "root": {
                   "style": "transition: transition-transform hover:-translate-y-1 duration-300;"
                 },
-                "className": "bg-(--background) rounded-3xl shadow-sm text-(--foreground) overflow-hidden flex flex-col w-full relative p-10 justify-end min-h-80 md:min-h-96",
+                "className": "bg-(--background) rounded-3xl shadow-sm text-(--foreground) overflow-hidden flex flex-col w-full relative p-(--space-sm) justify-end min-h-80 md:min-h-96",
                 "custom": {
                   "displayName": "Intro card"
                 }
@@ -83,7 +83,7 @@
                 "root": {
                   "style": "background: bg-cover bg-center; transition: transition-transform hover:-translate-y-1 duration-300;"
                 },
-                "className": "rounded-3xl shadow-sm text-(--foreground) overflow-hidden flex flex-col w-full relative min-h-80 justify-end p-6 bg-cover bg-center bg-no-repeat md:min-h-96",
+                "className": "rounded-3xl shadow-sm text-(--foreground) overflow-hidden flex flex-col w-full relative min-h-80 justify-end p-(--space-sm) bg-cover bg-center bg-no-repeat md:min-h-96",
                 "backgroundImage": "https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=800&auto=format&fit=crop",
                 "backgroundImageType": "url",
                 "custom": {

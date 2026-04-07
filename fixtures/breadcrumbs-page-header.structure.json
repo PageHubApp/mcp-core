@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "Page header inner"
         },
-        "className": "flex flex-col gap-6 w-full max-w-(--content-width) mx-auto px-6 py-8 md:gap-8 md:py-10"
+        "className": "flex flex-col gap-(--space-sm) w-full max-w-(--content-width) mx-auto px-(--container-padding-x) py-(--space-md)"
       },
       "children": [
         {
@@ -73,7 +73,7 @@
                 "custom": {
                   "displayName": "Breadcrumb trail"
                 },
-                "className": "flex flex-row flex-wrap items-center gap-2 w-full md:gap-2.5"
+                "className": "flex flex-row flex-wrap items-center gap-(--space-xs) w-full"
               },
               "children": [
                 {
@@ -84,7 +84,7 @@
                     "custom": {
                       "displayName": "Home"
                     },
-                    "className": "bg-transparent text-(--primary) border-0 text-sm font-medium px-0 py-0"
+                    "className": "bg-transparent text-(--primary) border-0 text-sm font-medium px-(--container-padding-x) py-(--space-xs)"
                   }
                 },
                 {
@@ -106,7 +106,7 @@
                     "custom": {
                       "displayName": "Resources"
                     },
-                    "className": "bg-transparent text-(--primary) border-0 text-sm font-medium px-0 py-0"
+                    "className": "bg-transparent text-(--primary) border-0 text-sm font-medium px-(--container-padding-x) py-(--space-xs)"
                   }
                 },
                 {

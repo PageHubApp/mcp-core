@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "Outline CTA section"
     },
-    "className": "bg-(--background) text-(--foreground) flex flex-col items-center justify-center w-full py-12 px-4 md:py-16 md:px-6"
+    "className": "bg-(--background) text-(--foreground) flex flex-col items-center justify-center w-full py-(--space-md) px-(--container-padding-x)"
   },
   "children": [
     {
@@ -19,7 +19,7 @@
         "custom": {
           "displayName": "Stack"
         },
-        "className": "py-3 px-3 mx-auto flex justify-center flex-col items-center w-full gap-9 h-auto max-w-(--content-width) md:w-full md:gap-12"
+        "className": "py-(--space-xs) px-(--container-padding-x) mx-auto flex justify-center flex-col items-center w-full gap-(--space-md) h-auto max-w-(--content-width) md:w-full"
       },
       "children": [
         {
@@ -61,7 +61,7 @@
               }
             ],
             "iconFontSize": "",
-            "className": "bg-transparent rounded-(--radius-lg) border-(--foreground) border-4 text-(--foreground) justify-center px-20 py-9 md:items-center md:px-20 md:py-9 md:text-2xl md:font-semibold md:leading-normal md:text-center md:flex-col md:justify-center border-dashed hover:border-(--accent) hover:text-(--accent) hover:bg-transparent",
+            "className": "bg-transparent rounded-(--radius-lg) border-(--foreground) border-4 text-(--foreground) justify-center px-(--container-padding-x) py-(--space-md) md:items-center md:text-2xl md:font-semibold md:leading-normal md:text-center md:flex-col md:justify-center border-dashed hover:border-(--accent) hover:text-(--accent) hover:bg-transparent",
             "custom": {
               "displayName": "Button List"
             }
@@ -78,7 +78,7 @@
                 "custom": {
                   "displayName": "Contact sales"
                 },
-                "className": "bg-transparent text-(--foreground) flex flex-row items-center gap-2 md:flex-row md:items-center md:gap-2 md:text-2xl hover:bg-transparent hover:text-(--accent)"
+                "className": "bg-transparent text-(--foreground) flex flex-row items-center gap-(--space-xs) md:flex-row md:items-center md:text-2xl hover:bg-transparent hover:text-(--accent)"
               }
             }
           ]

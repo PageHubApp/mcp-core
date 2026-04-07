@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "FAQ panel split section"
     },
-    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-16 px-6 gap-0 md:py-24 md:px-8"
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-(--space-lg) px-(--container-padding-x) gap-(--space-xs)"
   },
   "children": [
     {
@@ -18,7 +18,7 @@
         "custom": {
           "displayName": "Split body"
         },
-        "className": "flex flex-col w-full max-w-(--content-width) mx-auto gap-12 md:flex-row md:gap-16 md:items-start"
+        "className": "flex flex-col w-full max-w-(--content-width) mx-auto gap-(--space-md) md:flex-row md:items-start"
       },
       "children": [
         {
@@ -29,7 +29,7 @@
             "custom": {
               "displayName": "Intro column"
             },
-            "className": "flex flex-col gap-5 w-full flex-1 min-w-0 md:max-w-md"
+            "className": "flex flex-col gap-(--space-sm) w-full flex-1 min-w-0 md:max-w-md"
           },
           "children": [
             {
@@ -73,7 +73,7 @@
                 "custom": {
                   "displayName": "Support CTA"
                 },
-                "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) w-full max-w-xs py-3 px-6 text-center text-sm font-medium mt-2 md:w-auto md:max-w-none"
+                "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) w-full max-w-xs py-(--space-xs) px-(--container-padding-x) text-center text-sm font-medium mt-2 md:w-auto md:max-w-none"
               }
             }
           ]
@@ -86,7 +86,7 @@
             "custom": {
               "displayName": "FAQ stack card"
             },
-            "className": "bg-(--card) rounded-(--card-radius) border border-(--muted) flex flex-col w-full flex-1 min-w-0 p-6 md:p-8"
+            "className": "bg-(--card) rounded-(--card-radius) border border-(--muted) flex flex-col w-full flex-1 min-w-0 p-(--space-sm)"
           },
           "children": [
             {
@@ -97,7 +97,7 @@
                 "custom": {
                   "displayName": "FAQ row"
                 },
-                "className": "border-b border-(--muted) flex flex-col gap-2 pb-6 mb-6 w-full"
+                "className": "border-b border-(--muted) flex flex-col gap-(--space-xs) pb-6 mb-6 w-full"
               },
               "children": [
                 {
@@ -132,7 +132,7 @@
                 "custom": {
                   "displayName": "FAQ row"
                 },
-                "className": "border-b border-(--muted) flex flex-col gap-2 pb-6 mb-6 w-full"
+                "className": "border-b border-(--muted) flex flex-col gap-(--space-xs) pb-6 mb-6 w-full"
               },
               "children": [
                 {
@@ -167,7 +167,7 @@
                 "custom": {
                   "displayName": "FAQ row"
                 },
-                "className": "border-b border-(--muted) flex flex-col gap-2 pb-6 mb-6 w-full"
+                "className": "border-b border-(--muted) flex flex-col gap-(--space-xs) pb-6 mb-6 w-full"
               },
               "children": [
                 {
@@ -202,7 +202,7 @@
                 "custom": {
                   "displayName": "FAQ row"
                 },
-                "className": "flex flex-col gap-2 w-full"
+                "className": "flex flex-col gap-(--space-xs) w-full"
               },
               "children": [
                 {

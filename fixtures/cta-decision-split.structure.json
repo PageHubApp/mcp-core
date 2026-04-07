@@ -7,7 +7,7 @@
     "custom": {
       "displayName": "CTA Decision Split"
     },
-    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-16 px-4 md:py-28 md:px-6"
+    "className": "bg-(--background) text-(--foreground) flex flex-col w-full py-(--space-lg) px-(--container-padding-x)"
   },
   "children": [
     {
@@ -16,7 +16,7 @@
         "custom": {
           "displayName": "Content Container"
         },
-        "className": "flex flex-col items-center max-w-6xl mx-auto gap-12 md:gap-16"
+        "className": "flex flex-col items-center max-w-6xl mx-auto gap-(--space-md)"
       },
       "children": [
         {
@@ -25,7 +25,7 @@
             "custom": {
               "displayName": "Header Stack"
             },
-            "className": "flex flex-col items-center text-center max-w-2xl gap-4"
+            "className": "flex flex-col items-center text-center max-w-2xl gap-(--space-sm)"
           },
           "children": [
             {
@@ -58,7 +58,7 @@
             "custom": {
               "displayName": "Cards Grid"
             },
-            "className": "flex flex-col gap-8 w-full md:flex-row md:gap-8"
+            "className": "flex flex-col gap-(--space-md) w-full md:flex-row"
           },
           "children": [
             {
@@ -67,7 +67,7 @@
                 "custom": {
                   "displayName": "Agency Card"
                 },
-                "className": "bg-(--card) text-(--card-foreground) border border-(--border) rounded-(--card-radius) shadow-sm flex flex-col gap-6 p-8 w-full md:w-1/2 md:p-12"
+                "className": "bg-(--card) text-(--card-foreground) border border-(--border) rounded-(--card-radius) shadow-sm flex flex-col gap-(--space-sm) p-8 w-full md:w-1/2"
               },
               "children": [
                 {
@@ -90,7 +90,7 @@
                           "size": "w-7 h-7",
                           "gap": "gap-0"
                         },
-                        "className": "bg-transparent text-(--foreground) px-0 py-0 pointer-events-none"
+                        "className": "bg-transparent text-(--foreground) px-(--container-padding-x) py-(--space-xs) pointer-events-none"
                       }
                     }
                   ]
@@ -131,7 +131,7 @@
                     "custom": {
                       "displayName": "Agency CTA"
                     },
-                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) py-3 px-6 font-medium mt-2 md:w-max"
+                    "className": "bg-(--primary) text-(--primary-foreground) rounded-(--radius) py-(--space-xs) px-(--container-padding-x) font-medium mt-2 md:w-max"
                   }
                 }
               ]
@@ -142,7 +142,7 @@
                 "custom": {
                   "displayName": "Developer Card"
                 },
-                "className": "bg-transparent text-(--foreground) border border-(--border) rounded-(--card-radius) flex flex-col gap-6 p-8 w-full md:w-1/2 md:p-12"
+                "className": "bg-transparent text-(--foreground) border border-(--border) rounded-(--card-radius) flex flex-col gap-(--space-sm) p-8 w-full md:w-1/2"
               },
               "children": [
                 {
@@ -165,7 +165,7 @@
                           "size": "w-7 h-7",
                           "gap": "gap-0"
                         },
-                        "className": "bg-transparent text-(--foreground) px-0 py-0 pointer-events-none"
+                        "className": "bg-transparent text-(--foreground) px-(--container-padding-x) py-(--space-xs) pointer-events-none"
                       }
                     }
                   ]
@@ -206,7 +206,7 @@
                     "custom": {
                       "displayName": "Dev CTA"
                     },
-                    "className": "bg-transparent text-(--foreground) border border-(--border) rounded-(--radius) py-3 px-6 font-medium mt-2 md:w-max"
+                    "className": "bg-transparent text-(--foreground) border border-(--border) rounded-(--radius) py-(--space-xs) px-(--container-padding-x) font-medium mt-2 md:w-max"
                   }
                 }
               ]
