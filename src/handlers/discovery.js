@@ -92,19 +92,39 @@ Typography: text-4xl, font-bold, leading-relaxed, tracking-widest, uppercase
 | {{company.website}} | https://www.acme.com |
 | {{year}} | (current year, dynamic) |
 
-## Component Modifiers (CSS Class Toggles)
+## Component Modifiers (Composable CSS Presets)
 
-Modifiers are named CSS classes toggled on components. Add to className + track in props.root.activeModifiers.
+Modifiers are reusable class compositions toggled on components. PREFER modifiers over raw classes when the pattern exists or is likely reused. One-offs are fine as raw classes.
+
+### Composite Modifiers (multi-class presets — use instead of writing classes out)
+
+| Component | Name | Expands To |
+|-----------|------|------------|
+| Container | section-wrapper | bg-base-100 text-base-content flex flex-col items-center w-full py-space-lg px-container-x |
+| Container | section-wrapper-dark | bg-base-content text-base-100 flex flex-col items-center w-full py-space-lg px-container-x |
+| Container | card-surface | card bg-base-200 text-base-content rounded-box flex flex-col w-full overflow-hidden |
+| Container | icon-row | flex flex-row gap-space-xs items-center w-full |
+| Container | content-col | flex flex-col gap-space-md w-full max-w-(--content-width) mx-auto |
+| Container | hero-content-centered | hero-content flex flex-col items-center gap-space-md text-center max-w-(--content-width) mx-auto |
+| Text | body-text | text-neutral-content text-sm leading-relaxed |
+| Text | section-heading | font-bold leading-tight text-base-content text-3xl md:text-4xl font-heading |
+| Text | eyebrow | text-primary font-bold tracking-widest text-xs uppercase |
+| Text | subhead | text-neutral-content text-lg leading-relaxed max-w-2xl |
+| Button | cta-responsive | btn btn-primary w-full md:w-auto |
+| Button | cta-outline-responsive | btn btn-outline w-full md:w-auto |
+
+### Single-Class Modifiers (stackable with composites)
 
 | Component | Available Modifiers |
 |-----------|-------------------|
-| Button | btn-outline, btn-ghost, btn-sm, btn-lg, btn-pill, btn-wide, btn-square |
-| Container | pad-sm, pad-md, pad-lg, w-half, w-third, w-two-thirds, h-screen, h-half-screen, centered, overflow-hidden |
-| Text | text-xs, text-sm, text-lg, text-2xl, text-4xl, font-bold, font-light, text-center, text-right, uppercase |
-| Image | img-rounded, img-circle, img-cover, img-contain, aspect-square, aspect-video, aspect-4-3 |
+| Button | btn-primary, btn-secondary, btn-accent, btn-neutral, btn-outline, btn-ghost, btn-soft, btn-dash, btn-link, btn-xs..xl, btn-wide, btn-block, btn-circle, btn-square |
+| Container | card, card-body, hero, hero-content, p-space-xs..xl, bg-base-100..200, bg-primary..accent, w-full, w-1/2, mx-auto, overflow-hidden |
+| Text | text-xs..5xl, font-light..extrabold, text-left/center/right, uppercase, italic, font-heading, font-body |
+| Image | rounded-box, rounded-full, rounded-none, object-cover, object-contain, aspect-square, aspect-video |
 
-To apply: classNamePatch "btn-outline btn-lg", propsPatch { root: { activeModifiers: ["btn-outline", "btn-lg"] } }
-To remove: unsetClasses ["btn-outline"], update root.activeModifiers accordingly.
+To apply composite: classNamePatch with expanded classes + propsPatch { root: { activeModifiers: ["section-wrapper"] } }
+To apply single: classNamePatch "btn-outline btn-lg" + propsPatch { root: { activeModifiers: ["btn-outline", "btn-lg"] } }
+Composites + singles stack: section-wrapper + bg-primary override surface color.
 
 ## Key Rules
 

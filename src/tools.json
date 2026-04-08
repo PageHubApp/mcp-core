@@ -886,6 +886,33 @@
     }
   },
   {
+    "name": "find_image",
+    "description": "Search for stock photos with verified, working URLs. Use this instead of guessing Unsplash URLs (which 404). Searches a local image bank first, falls back to Unsplash API and caches results. Returns multiple options with ready-to-use URLs for Image nodes.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "q": {
+          "type": "string",
+          "description": "Search keywords (e.g. 'modern office', 'bakery interior', 'headshot woman', 'mountain landscape')"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["hero", "avatar", "product", "background", "team", "general"],
+          "description": "Image category. hero/background = wide landscape shots. avatar = headshots/faces. product = items/objects. team = people/groups."
+        },
+        "orientation": {
+          "type": "string",
+          "enum": ["landscape", "portrait", "square"],
+          "description": "Image orientation. Default: landscape."
+        },
+        "count": {
+          "type": "number",
+          "description": "Number of images to return (default 3, max 6)"
+        }
+      }
+    }
+  },
+  {
     "name": "patch_site_node",
     "description": "Edit one node on a live site (GET, patch, PUT). For multiple nodes use patch_site_bulk (atomic, no races). Uses classNamePatch for Tailwind classes, propsPatch for non-class props (text, src, href, etc.). Do not send \"children\" or ad-hoc node graphs — patch child Button/Text nodes by their kit_* nodeIds from apply_kit_block. Example: classNamePatch \"py-0\" to override page wrapper padding.",
     "inputSchema": {

@@ -129,13 +129,22 @@ module.exports = {
         ({ flat } = await fetchTarget(targetArgs));
       }
       if (!flat[sectionContainerId]) {
-        throw new Error(
-          `Section container "${sectionContainerId}" not found.${
-            ctx.fillMode
-              ? ' Use the section id from the planner (e.g. sec_hero). If you just ran signal_sections, retry once the draft has synced.'
-              : ''
-          }`
-        );
+        if (!ctx.fillMode) {
+          // Non-fill mode: fall back to adding directly to the page instead of failing
+          parentNodeId = pageId;
+          sectionContainerId = null;
+          if (!flat[pageId]) {
+            throw new Error(
+              `Section container "${argSectionId}" not found, and page "${pageId}" not found either. ` +
+              `Omit sectionContainerId and pass the correct pageId (e.g. "page_services") to add directly to the page. Use list_pages to see available pages.`
+            );
+          }
+        } else {
+          throw new Error(
+            `Section container "${sectionContainerId}" not found. ` +
+            'Use the section id from the planner (e.g. sec_hero). If you just ran signal_sections, retry once the draft has synced.'
+          );
+        }
       }
     }
 
@@ -186,8 +195,11 @@ module.exports = {
       const pick = exact || ci || nameMatch || lone || fuzzy;
 
       if (!pick) {
+        const available = hits.slice(0, 8).map((c) => `\`${c.slug}\``).join(', ');
         throw new Error(
-          `No kit block "${rawSlug}" (404). Do not invent slugs. Call search_blocks again, then apply_kit_block(slug) with the slug exactly as shown in backticks in the search results — or use the add_nodes fallback if nothing fits.`
+          `No kit block "${rawSlug}" (404). Do not invent slugs — copy exactly from search_blocks results.${
+            available ? ` Available from search: ${available}.` : ' Call search_blocks(category) first.'
+          }`
         );
       }
       resolvedSlug = pick.slug;
@@ -231,6 +243,24 @@ module.exports = {
     const position = args.position != null ? args.position : parentNodes.length;
     parentNodes.splice(position, 0, rootId);
     flat[parentNodeId].nodes = parentNodes;
+
+    // Merge block-level modifiers into site ROOT so they're available globally
+    if (component.modifiers && typeof component.modifiers === 'object') {
+      const rootNode = flat.ROOT || flat.root;
+      if (rootNode) {
+        const rootProps = rootNode.props || rootNode;
+        if (!rootProps.modifiers) rootProps.modifiers = {};
+        for (const [typeName, mods] of Object.entries(component.modifiers)) {
+          if (!Array.isArray(mods)) continue;
+          if (!rootProps.modifiers[typeName]) rootProps.modifiers[typeName] = [];
+          for (const mod of mods) {
+            if (!rootProps.modifiers[typeName].some((m) => m.name === mod.name)) {
+              rootProps.modifiers[typeName].push(mod);
+            }
+          }
+        }
+      }
+    }
 
     const changedNodes = {};
     for (const id of Object.keys(newNodes)) {

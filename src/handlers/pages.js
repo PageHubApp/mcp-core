@@ -131,7 +131,7 @@ module.exports = {
     if (ctx._batchMode) {
       ctx._pendingFlatMap = flat;
       return {
-        content: [{ type: 'text', text: `Page "${name}" created as ${pageId} (/${slug}).` }],
+        content: [{ type: 'text', text: `Page "${name}" created as ${pageId} (/${slug}). To add blocks: apply_kit_block(slug, pageId: "${pageId}") — do NOT pass sectionContainerId.` }],
         pendingContent: flat,
       };
     }
@@ -139,13 +139,13 @@ module.exports = {
     const result = await saveTarget(target.id, target.type, flat);
     const homeMsg = shouldBeHome ? ' Marked as home page.' : '';
     if (target.type === 'template') {
-      return { content: [{ type: 'text', text: `Page "${name}" created as ${pageId} (/${slug}) in template "${target.id}".${homeMsg}` }] };
+      return { content: [{ type: 'text', text: `Page "${name}" created as ${pageId} (/${slug}) in template "${target.id}".${homeMsg} To add blocks: apply_kit_block(slug, pageId: "${pageId}") — do NOT pass sectionContainerId.` }] };
     }
     const base = normalizeBaseUrl(ctx.apiBaseUrl) || 'https://pagehub.dev';
     return {
       content: [{
         type: 'text',
-        text: `Page "${name}" created as ${pageId} (/${slug}).${homeMsg}\nEditor: ${base}/build/${result.id}`,
+        text: `Page "${name}" created as ${pageId} (/${slug}).${homeMsg} To add blocks: apply_kit_block(slug, pageId: "${pageId}") — do NOT pass sectionContainerId.\nEditor: ${base}/build/${result.id}`,
       }],
     };
   },
