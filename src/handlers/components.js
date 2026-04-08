@@ -14,18 +14,32 @@ const {
 } = require('../structure-ingest');
 const { quickA11yAudit } = require('../a11y-check');
 
-/** Scan _pendingFlatMap for kit_* node IDs to infer which block slugs are already in use. */
+async function fetchComponents(params) {
+  const qs = params.toString();
+  return apiFetch(`/api/v1/components${qs ? `?${qs}` : ''}`);
+}
+
+async function fetchComponent(slug) {
+  return apiFetch(`/api/v1/components/${encodeURIComponent(slug)}`);
+}
+
+/** Scan _pendingFlatMap for block slugs via custom.source metadata and kit_* node ID prefixes. */
 function detectUsedBlockSlugs() {
   try {
     const ctx = getContext();
     const flat = ctx?._pendingFlatMap;
     if (!flat || typeof flat !== 'object') return [];
     const slugSet = new Set();
-    for (const key of Object.keys(flat)) {
-      // kit node IDs follow pattern: kit_<slug_with_underscores>_<hash>_n<N>
+    for (const [key, node] of Object.entries(flat)) {
+      // Prefer explicit source metadata (stamped by apply_kit_block)
+      const src = node?.custom?.source;
+      if (src?.type === 'block' && src.block) {
+        slugSet.add(src.block);
+        continue;
+      }
+      // Fallback: kit node IDs follow pattern: kit_<slug_with_underscores>_<hash>_n<N>
       const match = key.match(/^kit_(.+?)_[a-f0-9]{8}_n\d+$/);
       if (match) {
-        // Convert underscored slug back to hyphenated
         slugSet.add(match[1].replace(/_/g, '-'));
       }
     }
@@ -35,6 +49,13 @@ function detectUsedBlockSlugs() {
 
 module.exports = {
   async search_blocks(args) {
+    const ctx = getContext();
+
+    // Auto-inject buildStyle as a hard filter when present on context
+    if (ctx.buildStyle && !args.style && !args.preset) {
+      args = { ...args, style: ctx.buildStyle };
+    }
+
     const params = new URLSearchParams();
     if (args.q) params.set('q', args.q);
     if (args.category) params.set('category', args.category);
@@ -43,30 +64,23 @@ module.exports = {
     if (args.preset) params.set('preset', args.preset);
     if (args.source) params.set('source', args.source);
     if (args.group) params.set('group', args.group);
+    if (args.style) params.set('style', args.style);
+    if (args.blockType) params.set('blockType', args.blockType);
     if (args.featured) params.set('featured', 'true');
     if (args.sort) params.set('sort', args.sort);
     if (args.page) params.set('page', String(args.page));
     if (args.limit) params.set('limit', String(args.limit));
 
-    const qs = params.toString();
-    let data = await apiFetch(`/api/v1/components${qs ? `?${qs}` : ''}`);
+    let data = await fetchComponents(params);
     let { components, total, page, pages } = data;
     let broadened = false;
+    let styleWidened = false;
 
+    // Fallback 1: drop text query `q` if it returned zero hits
     if (!components.length && args.q) {
-      const wide = new URLSearchParams();
-      if (args.category) wide.set('category', args.category);
-      if (args.subcategory) wide.set('subcategory', args.subcategory);
-      if (args.tag) wide.set('tag', args.tag);
-      if (args.preset) wide.set('preset', args.preset);
-      if (args.source) wide.set('source', args.source);
-      if (args.group) wide.set('group', args.group);
-      if (args.featured) wide.set('featured', 'true');
-      if (args.sort) wide.set('sort', args.sort);
-      if (args.page) wide.set('page', String(args.page));
-      if (args.limit) wide.set('limit', String(args.limit));
-      const qs2 = wide.toString();
-      const data2 = await apiFetch(`/api/v1/components${qs2 ? `?${qs2}` : ''}`);
+      const wide = new URLSearchParams(params);
+      wide.delete('q');
+      const data2 = await fetchComponents(wide);
       if (data2.components?.length) {
         data = data2;
         components = data2.components;
@@ -77,13 +91,30 @@ module.exports = {
       }
     }
 
+    // Fallback 2: drop style filter if buildStyle narrowed to zero (show universal blocks)
+    if (!components.length && ctx.buildStyle && params.has('style')) {
+      const wide = new URLSearchParams(params);
+      wide.delete('style');
+      if (args.q) wide.delete('q');
+      const data2 = await fetchComponents(wide);
+      if (data2.components?.length) {
+        data = data2;
+        components = data2.components;
+        total = data2.total;
+        page = data2.page;
+        pages = data2.pages;
+        styleWidened = true;
+      }
+    }
+
     if (!components.length) {
       return { content: [{ type: 'text', text: 'No blocks found matching your query.' }] };
     }
 
     const lines = components.map(c => {
       const catLabel = c.subcategory ? `${c.category}/${c.subcategory}` : c.category;
-      let line = `• \`${c.slug}\` — ${c.name} (${catLabel})`;
+      const meta = [catLabel, c.preset && `preset:${c.preset}`, c.style && `style:${c.style}`].filter(Boolean).join(', ');
+      let line = `• \`${c.slug}\` — ${c.name} (${meta})`;
       line += `\n  ${c.description || c.visual || ''}`;
       if ((c.tags || []).length) line += `\n  Tags: ${c.tags.join(', ')}`;
       return line;
@@ -99,9 +130,15 @@ module.exports = {
           ? `**Note:** ${totalCount} total matches; this response lists ${components.length}. If you need more breadth, raise \`limit\` (max 100) or use \`list_blocks\`.\n\n`
           : '';
 
-    const head = broadened
-      ? `# Blocks (${totalCount} total, page ${pageNum}/${pageCount})\n\n*(Search widened: dropped text query \`q\` because it returned no hits — prefer category/tag alone next time.)*\n\n${paginationNote}`
-      : `# Blocks (${totalCount} total, page ${pageNum}/${pageCount})\n\n${paginationNote}`;
+    let widenedNote = '';
+    if (styleWidened) {
+      widenedNote = `*(Style widened: no \`${ctx.buildStyle}\` blocks for this category — showing universal blocks.)*\n\n`;
+    } else if (broadened) {
+      widenedNote = `*(Search widened: dropped text query \`q\` because it returned no hits — prefer category/tag alone next time.)*\n\n`;
+    }
+
+    const head = `# Blocks (${totalCount} total, page ${pageNum}/${pageCount})${ctx.buildStyle ? ` [style: ${ctx.buildStyle}]` : ''}\n\n${widenedNote}${paginationNote}`;
+
     // Recommend the most-used block to help the model pick
     const topBlock = [...components].sort((a, b) => (b.uses || 0) - (a.uses || 0))[0];
     const recommendation = topBlock
@@ -124,10 +161,10 @@ module.exports = {
 
   async get_block(args) {
     const { slug } = args;
-    if (!slug) throw new Error('slug is required');
+    if (!slug) throw new Error('slug is required.');
 
-    const data = await apiFetch(`/api/v1/components/${encodeURIComponent(slug)}`);
-    const c = data.component;
+    const raw = await fetchComponent(slug);
+    const c = raw.component || raw;
 
     return {
       content: [{
@@ -142,10 +179,10 @@ module.exports = {
    */
   async list_block_nodes(args) {
     const { slug } = args;
-    if (!slug) throw new Error('slug is required');
+    if (!slug) throw new Error('slug is required.');
 
-    const data = await apiFetch(`/api/v1/components/${encodeURIComponent(slug)}`);
-    const c = data.component;
+    const raw = await fetchComponent(slug);
+    const c = raw.component || raw;
     if (!c?.structure || typeof c.structure !== 'object') {
       throw new Error('Component has no structure to flatten.');
     }
@@ -162,14 +199,14 @@ module.exports = {
   },
 
   async save_block(args) {
-    const { name, slug, description, visual, category, subcategory, tags, preset, source, group, structure, isPublic, isCategoryPreview } = args;
+    const { name, slug, description, visual, category, subcategory, tags, preset, source, group, style, structure, isPublic, isCategoryPreview } = args;
     if (!name || !slug || !category || !structure) {
-      throw new Error('name, slug, category, and structure are required');
+      throw new Error('name, slug, category, and structure are required.');
     }
 
     const data = await apiFetch('/api/v1/components', {
       method: 'POST',
-      body: { name, slug, description, visual, category, subcategory, tags, preset, source, group, structure, isPublic, isCategoryPreview },
+      body: { name, slug, description, visual, category, subcategory, tags, preset, source, group, style, structure, isPublic, isCategoryPreview },
     });
 
     const audit = quickA11yAudit(structure);
@@ -184,10 +221,10 @@ module.exports = {
 
   async update_block(args) {
     const { slug } = args;
-    if (!slug) throw new Error('slug is required');
+    if (!slug) throw new Error('slug is required.');
 
     const body = {};
-    const fields = ['name', 'description', 'visual', 'category', 'subcategory', 'tags', 'preset', 'source', 'group', 'structure', 'isPublic', 'isFeatured', 'isCategoryPreview', 'newSlug'];
+    const fields = ['name', 'description', 'visual', 'category', 'subcategory', 'tags', 'preset', 'source', 'group', 'style', 'structure', 'isPublic', 'isFeatured', 'isCategoryPreview', 'newSlug'];
     for (const f of fields) {
       if (args[f] !== undefined) {
         body[f === 'newSlug' ? 'slug' : f] = args[f];
@@ -195,7 +232,7 @@ module.exports = {
     }
 
     if (Object.keys(body).length === 0) {
-      throw new Error('Nothing to update. Provide at least one field to change.');
+      throw new Error('Nothing to update. Provide at least one field.');
     }
 
     const data = await apiFetch(`/api/v1/components/${encodeURIComponent(slug)}`, {
@@ -216,8 +253,8 @@ module.exports = {
 
   async patch_block(args) {
     const { slug, nodeId } = args;
-    if (!slug) throw new Error('slug is required');
-    if (!nodeId) throw new Error('nodeId is required');
+    if (!slug) throw new Error('slug is required.');
+    if (!nodeId) throw new Error('nodeId is required.');
     assertPatchBlockNodeArgs(args);
 
     const data = await apiFetch(`/api/v1/components/${encodeURIComponent(slug)}`);
@@ -255,7 +292,7 @@ module.exports = {
 
   async patch_block_bulk(args) {
     const { slug } = args;
-    if (!slug) throw new Error('slug is required');
+    if (!slug) throw new Error('slug is required.');
 
     const list = normalizeBulkPatchesFromArgs(args);
     if (!Array.isArray(list) || list.length === 0) {
@@ -301,7 +338,7 @@ module.exports = {
 
   async delete_block(args) {
     const { slug } = args;
-    if (!slug) throw new Error('slug is required');
+    if (!slug) throw new Error('slug is required.');
     await apiFetch(`/api/v1/components/${encodeURIComponent(slug)}`, { method: 'DELETE' });
     return { content: [{ type: 'text', text: `Block "${slug}" deleted.` }] };
   },

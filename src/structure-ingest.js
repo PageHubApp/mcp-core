@@ -4,16 +4,7 @@
  */
 
 const crypto = require('crypto');
-
-const VALID_COMPONENTS = new Set([
-  'Audio', 'Background', 'Button', 'ButtonList', 'Container', 'ContainerGroup',
-  'Divider', 'Embed', 'Footer', 'Form', 'FormElement', 'Header', 'Image',
-  'ImageList', 'Map', 'MapPoint', 'Modal', 'Nav', 'Spacer', 'Text', 'Video',
-]);
-
-const CANVAS_COMPONENTS = new Set([
-  'Container', 'ContainerGroup', 'Footer', 'Header', 'Nav', 'Form', 'Background', 'Modal',
-]);
+const { VALID_COMPONENTS, CANVAS_COMPONENTS } = require('./node-utils');
 
 function deepClone(o) {
   return JSON.parse(JSON.stringify(o));
@@ -110,9 +101,10 @@ function applyPropOverride(node, patch) {
  * @param {object} structure - { type, props, children? }
  * @param {string} sectionContainerId - existing empty section container id
  * @param {string} slug - block slug (for id prefix)
+ * @param {object} [sourceMeta] - provenance metadata stamped on root node's custom.source
  * @returns {{ nodes: Record<string, object>, rootId: string }}
  */
-function hierarchicalStructureToFlat(structure, sectionContainerId, slug) {
+function hierarchicalStructureToFlat(structure, sectionContainerId, slug, sourceMeta) {
   if (!structure?.type) throw new Error('Block structure must have a root "type".');
   const prefix = makeKitInstancePrefix(slug, sectionContainerId);
   let seq = 0;
@@ -150,6 +142,9 @@ function hierarchicalStructureToFlat(structure, sectionContainerId, slug) {
 
   const rootId = walk(structure, sectionContainerId, true);
   nodes[rootId].parent = sectionContainerId;
+  if (sourceMeta) {
+    nodes[rootId].custom = { ...nodes[rootId].custom, source: sourceMeta };
+  }
   return { nodes, rootId };
 }
 
@@ -287,11 +282,22 @@ function formatBlockNodeManifest(flatMap, rootId, slug, maxLines = 120) {
   );
 }
 
+/**
+ * Stamp provenance metadata on a flat node map's ROOT node.
+ * @param {Record<string, object>} flatMap - the flat CraftJS node map (mutated in place)
+ * @param {object} meta - { template, version, ... } to store under ROOT.custom.source
+ */
+function stampRootSource(flatMap, meta) {
+  if (!flatMap?.ROOT || !meta) return;
+  const root = flatMap.ROOT;
+  root.custom = { ...(root.custom || {}), source: meta };
+}
+
 module.exports = {
   hierarchicalStructureToFlat,
   hierarchicalLibraryToFlat,
   flatLibraryToHierarchical,
   formatBlockNodeManifest,
   walkApplyKitOverrides,
-  VALID_COMPONENTS,
+  stampRootSource,
 };

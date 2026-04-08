@@ -13,6 +13,7 @@ const componentHandlers = require('./handlers/components');
 const portalHandlers = require('./handlers/portal');
 const pageHandlers = require('./handlers/pages');
 const nodeHandlers = require('./handlers/nodes');
+const siteConfigHandlers = require('./handlers/site-config');
 const discoveryHandlers = require('./handlers/discovery');
 const seoHandlers = require('./handlers/seo');
 const aiHandlers = require('./handlers/ai');
@@ -25,6 +26,7 @@ const handlers = {
   ...portalHandlers,
   ...pageHandlers,
   ...nodeHandlers,
+  ...siteConfigHandlers,
   ...discoveryHandlers,
   ...seoHandlers,
   ...aiHandlers,

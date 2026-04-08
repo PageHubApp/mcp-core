@@ -88,9 +88,32 @@ module.exports = {
     }
 
     const aiSettings = nodes.ROOT?.props?.ai || {};
+    const company = nodes.ROOT?.props?.company || {};
     const parts = [];
     if (data.title || data.description) {
       parts.push(`Site context: "${data.title || data.name}"${data.description ? ` — ${data.description}` : ''}`);
+    }
+    // Inject business info so copy matches the site's identity
+    const companyParts = [];
+    if (company.name) companyParts.push(`name: ${company.name}`);
+    if (company.tagline) companyParts.push(`tagline: ${company.tagline}`);
+    if (company.type) companyParts.push(`type: ${company.type}`);
+    if (companyParts.length > 0) {
+      parts.push(`Business info: ${companyParts.join(', ')}`);
+    }
+    // Gather existing site copy for tone/domain context (limit to ~500 chars)
+    const siteTextSnippets = [];
+    for (const [id, n] of Object.entries(nodes)) {
+      if (id === 'ROOT' || id === nodeId) continue;
+      const rn = n?.type?.resolvedName;
+      if ((rn === 'Text' || rn === 'Button') && n?.props?.text) {
+        const raw = String(n.props.text).replace(/<[^>]*>/g, '').trim();
+        if (raw && raw.length > 5 && !raw.startsWith('{{')) siteTextSnippets.push(raw);
+      }
+      if (siteTextSnippets.join(' ').length > 500) break;
+    }
+    if (siteTextSnippets.length > 0) {
+      parts.push(`Existing site copy (match this tone/domain): ${siteTextSnippets.slice(0, 8).join(' | ')}`);
     }
     if (aiSettings.prompt) parts.push(`Site tone guidelines: ${aiSettings.prompt}`);
     if (nodeLabel) parts.push(`This text is the "${nodeLabel}" element.`);

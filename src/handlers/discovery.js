@@ -2,6 +2,12 @@ const { apiFetch } = require('../api-fetch');
 const { getContext } = require('../context');
 const { parseMaybeJson } = require('../helpers');
 
+// Limits for compactComponentSchemaForFill — keeps schema payloads small for
+// parallel fill context windows without losing essential prop information.
+const MAX_SCHEMA_PROPS = 28;
+const MAX_DESCRIPTION_LENGTH = 160;
+const MAX_ENUM_VALUES = 12;
+
 /* ── Style reference ── */
 
 const STYLE_REFERENCE = `# PageHub Style Reference
@@ -11,27 +17,31 @@ const STYLE_REFERENCE = `# PageHub Style Reference
 | Variable | Slot | Typical Use |
 |----------|------|-------------|
 | var(--primary) | 0 | Main brand color (buttons, links, hero backgrounds) |
-| var(--primary-foreground) | 1 | Text on primary backgrounds |
+| var(--primary-content) | 1 | Text on primary backgrounds |
 | var(--secondary) | 2 | Supporting color (cards, badges, secondary buttons) |
-| var(--secondary-foreground) | 3 | Text on secondary backgrounds |
+| var(--secondary-content) | 3 | Text on secondary backgrounds |
 | var(--accent) | 4 | CTA/highlight color (call-to-action buttons, emphasis) |
-| var(--accent-foreground) | 5 | Text on accent backgrounds |
-| var(--muted) | 6 | Muted color (borders, disabled, subtle backgrounds) |
-| var(--muted-foreground) | 7 | Text on neutral backgrounds |
-| var(--background) | 8 | Page/site background |
-| var(--foreground) | 9 | Default body text (shadcn slot \"Foreground\"; not --text) |
-| var(--card) | 10 | Alternate section backgrounds, cards, dividers |
-| var(--card-foreground) | 11 | Text on alternate / card surfaces |
+| var(--accent-content) | 5 | Text on accent backgrounds |
+| var(--neutral) | 6 | Muted color (borders, disabled, subtle backgrounds) |
+| var(--neutral-content) | 7 | Text on neutral backgrounds |
+| var(--base-100) | 8 | Page/site background |
+| var(--base-content) | 9 | Default body text |
+| var(--base-200) | 10 | Alternate section backgrounds, cards, dividers |
+| var(--base-content) | 11 | Text on alternate / card surfaces |
 
 ## Style Guide CSS Variables (set via set_theme styleGuide)
 
 | Variable | Key | Default |
 |----------|-----|---------|
-| --radius | borderRadius | 0.5rem |
+| --radius-box | radiusBox | 0.5rem |
+| --radius-field | radiusField | 0.25rem |
+| --radius-selector | radiusSelector | 0.5rem |
+| --size-field | sizeField | 0.25rem |
+| --size-selector | sizeSelector | 0.25rem |
+| --depth | depth | 1 |
+| --noise | noise | 0 |
 | --button-padding-x / -y | buttonPadding | 1.5rem 0.75rem |
 | --container-padding / -x / -y | containerPadding | 2rem 2rem |
-| --section-gap | sectionGap | 4rem |
-| --container-gap | containerGap | 1.5rem |
 | --content-width | contentWidth | 80rem |
 | --shadow-style | shadowStyle | 0 1px 3px rgba(0,0,0,0.1) |
 | --heading-font-family | headingFontFamily | (from Google Fonts) |
@@ -41,7 +51,7 @@ const STYLE_REFERENCE = `# PageHub Style Reference
 
 ALWAYS use CSS variables via Tailwind token syntax in className — never hardcode hex or named colors:
 
-  "bg-(--primary) text-(--primary-foreground) border-(--card) rounded-(--radius) gap-(--container-gap) max-w-(--content-width)"
+  "bg-primary text-primary-content border-base-200 rounded-box gap-container max-w-content"
 
 Exception: bg-transparent, bg-white/10 (opacity modifiers) are OK.
 
@@ -52,19 +62,19 @@ All styling in a single props.className string:
 - md: prefix = desktop (768px+)
 - lg: prefix = large screens (1024px+)
 
-Example: "flex flex-col gap-(--space-sm) py-(--space-lg) px-(--container-padding-x) bg-(--background) text-(--foreground) md:flex-row"
+Example: "flex flex-col gap-space-sm py-space-lg px-container-x bg-base-100 text-base-content md:flex-row"
 
 Spatial tokens (fluid clamp, NO md:py-* or md:gap-* needed):
   --space-xs (micro), --space-sm (element), --space-md (content), --space-lg (section), --space-xl (hero)
 
 ## Common className Utilities
 
-Layout: flex, flex-col, flex-row, grid, grid-cols-*, gap-(--space-*), items-*, justify-*,
-  w-full, w-1/2, max-w-(--content-width), h-[400px], min-h-screen,
-  py-(--space-*), px-(--container-padding-x), mx-auto, relative, absolute, z-*, overflow-hidden
+Layout: flex, flex-col, flex-row, grid, grid-cols-*, gap-space-*, items-*, justify-*,
+  w-full, w-1/2, max-w-content, h-[400px], min-h-screen,
+  py-space-*, px-container-x, mx-auto, relative, absolute, z-*, overflow-hidden
 
-Surface: bg-(--primary), text-(--foreground), border, border-(--card),
-  rounded-(--radius), shadow-sm, shadow-md
+Surface: bg-primary, text-base-content, border, border-base-200,
+  rounded-box, shadow-sm, shadow-md
 
 Typography: text-4xl, font-bold, leading-relaxed, tracking-widest, uppercase
 
@@ -101,9 +111,9 @@ To remove: unsetClasses ["btn-outline"], update root.activeModifiers accordingly
 1. Page containers (type: "page") must NOT have gap, py, px, p, my, mx — spacing goes on sections.
 2. ROOT node must NOT have gap or spacing.
 3. Text "text" values: NO block tags. Only inline: <strong>, <em>, <br/>, <span>, <a>, <ul>/<li>.
-4. Always match text color to background: bg-(--primary) → text-(--primary-foreground); bg-(--background) → text-(--foreground).
+4. Always match text color to background: bg-primary → text-primary-content; bg-base-100 → text-base-content.
 5. Use descriptive node IDs: "sec_hero", "hero_title", etc.
-6. **All styling uses props.className** — a single Tailwind class string. Mobile-first: unprefixed utilities apply at all widths; **md:** = 768px+; **lg:** = 1024px+. Example: "flex flex-col gap-4 py-8 md:flex-row md:gap-8 bg-(--primary) text-(--primary-foreground)". Use **classNamePatch** in patch tools to merge classes via twMerge. Use **propsPatch** only for non-class props (text, src, href, style, animation). See **BLOCKS-AI-CONTEXT.md**.
+6. **All styling uses props.className** — a single Tailwind class string. Mobile-first: unprefixed utilities apply at all widths; **md:** = 768px+; **lg:** = 1024px+. Example: "flex flex-col gap-4 py-8 md:flex-row md:gap-8 bg-primary text-primary-content". Use **classNamePatch** in patch tools to merge classes via twMerge. Use **propsPatch** only for non-class props (text, src, href, style, animation). See **BLOCKS-AI-CONTEXT.md**.
 `;
 
 /* ── Design patterns (lazy-loaded) ── */
@@ -135,18 +145,13 @@ const TECHNIQUE_TRANSFER_RULES = `
 - Before building each section: check "which extracted techniques am I applying here?" If none, you're building generic.
 - Structural patterns transfer 1:1. Brand identity (palette, copy, imagery) gets replaced.`;
 
-function getDesignPatterns() {
-  return require('../data/patterns');
-}
-
 /** Shrink schema JSON for parallel fills — full props enums blow context (100k+ tokens). */
 function compactComponentSchemaForFill(schema) {
   if (!schema || typeof schema !== 'object') return schema;
   const propsIn = schema.props || {};
   const propsOut = {};
   const keys = Object.keys(propsIn);
-  const maxProps = 28;
-  for (let i = 0; i < keys.length && i < maxProps; i++) {
+  for (let i = 0; i < keys.length && i < MAX_SCHEMA_PROPS; i++) {
     const k = keys[i];
     const v = propsIn[k];
     if (!v || typeof v !== 'object') {
@@ -155,15 +160,15 @@ function compactComponentSchemaForFill(schema) {
     }
     propsOut[k] = {
       type: v.type,
-      description: typeof v.description === 'string' ? v.description.slice(0, 160) : v.description,
+      description: typeof v.description === 'string' ? v.description.slice(0, MAX_DESCRIPTION_LENGTH) : v.description,
     };
     if (Array.isArray(v.enum) && v.enum.length) {
-      propsOut[k].enum = v.enum.length <= 12 ? v.enum : v.enum.slice(0, 12).concat(['…']);
+      propsOut[k].enum = v.enum.length <= MAX_ENUM_VALUES ? v.enum : v.enum.slice(0, MAX_ENUM_VALUES).concat(['…']);
     }
     if (v.default !== undefined) propsOut[k].default = v.default;
   }
-  if (keys.length > maxProps) {
-    propsOut._truncatedPropKeys = keys.length - maxProps;
+  if (keys.length > MAX_SCHEMA_PROPS) {
+    propsOut._truncatedPropKeys = keys.length - MAX_SCHEMA_PROPS;
   }
   return {
     name: schema.name,
@@ -179,8 +184,11 @@ function compactComponentSchemaForFill(schema) {
 
 module.exports = {
   async list_blocks(args) {
+    const ctx = getContext();
     const params = { limit: '200' };
     if (args.category) params.category = args.category;
+    if (args.style) params.style = args.style;
+    else if (ctx.buildStyle) params.style = ctx.buildStyle;
     const qs = new URLSearchParams(params).toString();
     const data = await apiFetch(`/api/v1/components?${qs}`);
     const components = data.components || [];
@@ -251,37 +259,6 @@ module.exports = {
 
   async get_style_reference() {
     return { content: [{ type: 'text', text: STYLE_REFERENCE }] };
-  },
-
-  async get_design_patterns(args) {
-    const patterns = getDesignPatterns();
-    const fillMode = !!getContext().fillMode;
-    if (args.pattern) {
-      // Aliases for common section type names
-      const ALIASES = { footer: 'structured-footer', gallery: 'bento-gallery', testimonials: 'quote-testimonials', services: 'offering-list', menu: 'offering-list', contact: 'rich-contact' };
-      const key = ALIASES[args.pattern] || args.pattern;
-      const pattern = patterns[key];
-      if (!pattern) return { content: [{ type: 'text', text: `Unknown pattern: "${args.pattern}". Available: ${Object.keys(patterns).join(', ')}` }] };
-      // Parallel section fills: full node maps are huge and slow — kit path should win; keep recipe text only.
-      if (fillMode) {
-        const roots = Object.keys(pattern.nodes || {});
-        const rootLine = roots.length
-          ? `\n**Top-level node ids in this recipe:** ${roots.slice(0, 8).join(', ')}${roots.length > 8 ? ', ...' : ''}\n`
-          : '';
-        return {
-          content: [{
-            type: 'text',
-            text:
-              `# Design pattern (summary only): ${key}\n\n${pattern.description}\n\n**Usage:** ${pattern.usage}${rootLine}\n` +
-              `**Parallel fill:** You should already have tried \`search_blocks\` + \`apply_kit_block\`. Full JSON node map is omitted here (too large). ` +
-              `If no kit block worked, use \`get_component_schema\` + \`add_nodes\` and follow the usage above — do not wait for a full map dump.`,
-          }],
-        };
-      }
-      return { content: [{ type: 'text', text: `# Design Pattern: ${args.pattern}\n\n${pattern.description}\n\n**Usage:** ${pattern.usage}\n\n## Node Map\n\nPass this to add_custom_section(slug, sectionRootId: "${Object.keys(pattern.nodes)[0]}", nodes: <the nodes below>).\n\n\`\`\`json\n${JSON.stringify(pattern.nodes, null, 2)}\n\`\`\`` }] };
-    }
-    const summary = Object.entries(patterns).map(([k, v]) => `### ${k}\n${v.description}`).join('\n\n');
-    return { content: [{ type: 'text', text: `# Design Patterns\n\nCall get_design_patterns(pattern: "name") to get the full node map for any pattern.\n\n${summary}\n\n${TECHNIQUE_TRANSFER_RULES}` }] };
   },
 
   async list_presets(args) {

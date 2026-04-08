@@ -319,10 +319,24 @@ function getEditorUrl(siteId) {
 
 /**
  * Fetch content for the active target (site or template).
+ * Checks ctx._pendingFlatMap first (draft/fill mode), then fetches from API.
+ * Always returns a deep clone in `flat` — callers can mutate freely.
  * Returns { targetId, targetType, flat, data }.
  */
 async function fetchTarget(args) {
   const target = getActiveTarget(args);
+  const ctx = getContext();
+
+  // Draft/fill mode: use pending flat map if available
+  if (ctx._pendingFlatMap && typeof ctx._pendingFlatMap === 'object') {
+    return {
+      targetId: target.id,
+      targetType: target.type,
+      flat: JSON.parse(JSON.stringify(ctx._pendingFlatMap)),
+      data: { content: ctx._pendingFlatMap },
+    };
+  }
+
   if (target.type === 'template') {
     const data = await apiFetch(`/api/v1/templates/${encodeURIComponent(target.id)}`);
     if (!data.content || typeof data.content !== 'object') {

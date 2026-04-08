@@ -1,21 +1,11 @@
 const { twMerge } = require('tailwind-merge');
 const { apiFetch } = require('../api-fetch');
 const { getContext } = require('../context');
-const { getActiveTarget, parseMaybeJson, saveTarget } = require('../helpers');
+const { getActiveTarget, parseMaybeJson, saveTarget, fetchTarget } = require('../helpers');
 const { normalizeBaseUrl } = require('../api-fetch');
 const { hierarchicalStructureToFlat, walkApplyKitOverrides } = require('../structure-ingest');
 
-/** Collect a node and all its descendants from a flat map */
-function collectSubtree(flat, nodeId) {
-  const result = {};
-  const walk = (id) => {
-    if (!flat[id] || result[id]) return;
-    result[id] = flat[id];
-    for (const child of (flat[id].nodes || [])) walk(child);
-  };
-  walk(nodeId);
-  return result;
-}
+const { collectSubtree } = require('../node-utils');
 
 /** Lists real Craft ids so the model does not guess (random prefixes used to break patches). */
 function formatKitNodeIdManifest(newNodes, rootId, sectionContainerId, maxLines = 80) {
@@ -72,6 +62,9 @@ module.exports = {
     const { slug, sectionContainerId: argSectionId, contentOverrides, propOverrides } = args;
     if (!slug || typeof slug !== 'string') throw new Error('slug is required (from search_blocks).');
 
+    const slotTarget = args.target; // "header", "footer", or undefined (page)
+    const SLOT_MAP = { header: 'hdr_root', footer: 'ftr_root' };
+
     const ctx = getContext();
     if (ctx.fillMode && ctx._fillStructureLocked) {
       throw new Error(
@@ -83,50 +76,57 @@ module.exports = {
     if (ctx.fillMode && ctx.sectionNodeId) {
       sectionContainerId = String(ctx.sectionNodeId);
     }
-    if (ctx.fillMode && !sectionContainerId) {
+    if (ctx.fillMode && !sectionContainerId && !slotTarget) {
       throw new Error(
         'sectionContainerId is required in fill mode. Use the section id from the planner (e.g. sec_hero).'
       );
     }
     // Non-fill: if no container specified, drop block directly into the page node
-    const directToPage = !ctx.fillMode && !sectionContainerId;
+    const directToPage = !ctx.fillMode && !sectionContainerId && !slotTarget;
     const pageId = args.pageId || 'page_home';
 
     // Strip block-specific params so getActiveTarget doesn't interpret slug as a template slug
-    const { slug: _blockSlug, sectionContainerId: _sec, contentOverrides: _co, propOverrides: _po, position: _pos, pageId: _pid, copyContext: _cc, ...targetArgs } = args;
+    const { slug: _blockSlug, sectionContainerId: _sec, contentOverrides: _co, propOverrides: _po, position: _pos, pageId: _pid, copyContext: _cc, target: _tgt, ...targetArgs } = args;
     const target = getActiveTarget(targetArgs);
-    let sourceContent;
-    if (ctx._pendingFlatMap) {
-      sourceContent = ctx._pendingFlatMap;
-    } else if (ctx.fillMode && target.type === 'site') {
-      // Never use live published site content for fills — it has no sec_* skeleton nodes.
+
+    // Fill mode for sites: reload merged draft (live published content has no sec_* skeleton nodes)
+    if (!ctx._pendingFlatMap && ctx.fillMode && target.type === 'site') {
       if (typeof ctx._reloadMergedDraft === 'function') {
         await ctx._reloadMergedDraft();
       }
-      sourceContent = ctx._pendingFlatMap;
-      if (!sourceContent || typeof sourceContent !== 'object') {
+      if (!ctx._pendingFlatMap || typeof ctx._pendingFlatMap !== 'object') {
         throw new Error(
           'No AI draft loaded for this fill. The planner skeleton (signal_sections) may not be in the database yet — retry in a moment, or run the planner again.'
         );
       }
-    } else if (target.type === 'template') {
-      sourceContent = (await apiFetch(`/api/v1/templates/${encodeURIComponent(target.id)}`)).content;
-    } else {
-      sourceContent = (await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`)).content;
-    }
-    if (!sourceContent || typeof sourceContent !== 'object') {
-      throw new Error(`${target.type === 'template' ? 'Template' : 'Site'} has no decoded content.`);
     }
 
-    let flat = JSON.parse(JSON.stringify(sourceContent));
-    // For direct-to-page mode, use pageId as the parent
-    const parentNodeId = directToPage ? pageId : sectionContainerId;
-    if (!directToPage) {
+    let { flat } = await fetchTarget(targetArgs);
+
+    // Resolve parent node: slot (header/footer), section container, or page
+    let parentNodeId;
+    if (slotTarget && SLOT_MAP[slotTarget]) {
+      parentNodeId = SLOT_MAP[slotTarget];
+      if (!flat[parentNodeId]) {
+        throw new Error(`Slot "${slotTarget}" (node "${parentNodeId}") not found. Is this a PageHub site/template?`);
+      }
+      // Clear existing children of the slot before inserting the new block
+      const oldChildren = [...(flat[parentNodeId].nodes || [])];
+      for (const childId of oldChildren) {
+        const subtree = collectSubtree(flat, childId);
+        for (const id of Object.keys(subtree)) delete flat[id];
+      }
+      flat[parentNodeId].nodes = [];
+    } else if (directToPage) {
+      parentNodeId = pageId;
+      if (!flat[pageId]) {
+        throw new Error(`Page "${pageId}" not found in site. Use list_pages to see available pages.`);
+      }
+    } else {
+      parentNodeId = sectionContainerId;
       if (!flat[sectionContainerId] && ctx.fillMode && typeof ctx._reloadMergedDraft === 'function') {
         await ctx._reloadMergedDraft();
-        if (ctx._pendingFlatMap && typeof ctx._pendingFlatMap === 'object') {
-          flat = JSON.parse(JSON.stringify(ctx._pendingFlatMap));
-        }
+        ({ flat } = await fetchTarget(targetArgs));
       }
       if (!flat[sectionContainerId]) {
         throw new Error(
@@ -137,9 +137,6 @@ module.exports = {
           }`
         );
       }
-    }
-    if (directToPage && !flat[pageId]) {
-      throw new Error(`Page "${pageId}" not found in site. Use list_pages to see available pages.`);
     }
 
     const rawSlug = String(slug).trim();
@@ -202,11 +199,27 @@ module.exports = {
       throw new Error(`Block "${resolvedSlug}" has no structure.`);
     }
 
-    const structure = unwrapBlockStructure(component.structure);
+    // Track preset/style of applied blocks for cohesion hints in search_blocks
+    if (component.preset || component.style) {
+      if (!ctx._appliedBlockMeta) ctx._appliedBlockMeta = [];
+      ctx._appliedBlockMeta.push({ preset: component.preset, style: component.style });
+    }
+
+    // For header/footer slots, keep the block's section wrapper intact (it's the slot's direct child).
+    // For page sections, unwrap to avoid nesting two section shells.
+    const structure = slotTarget ? component.structure : unwrapBlockStructure(component.structure);
     const co = parseMaybeJson(contentOverrides) || contentOverrides || {};
     const po = parseMaybeJson(propOverrides) || propOverrides || {};
 
-    const { nodes: newNodes, rootId } = hierarchicalStructureToFlat(structure, parentNodeId, resolvedSlug);
+    const sourceMeta = {
+      type: 'block',
+      block: resolvedSlug,
+      ...(component.preset ? { preset: component.preset } : {}),
+      ...(component.style ? { style: component.style } : {}),
+      ...(component.version ? { version: component.version } : {}),
+      appliedAt: new Date().toISOString(),
+    };
+    const { nodes: newNodes, rootId } = hierarchicalStructureToFlat(structure, parentNodeId, resolvedSlug, sourceMeta);
     walkApplyKitOverrides(newNodes, rootId, co, po);
 
     for (const [id, node] of Object.entries(newNodes)) {

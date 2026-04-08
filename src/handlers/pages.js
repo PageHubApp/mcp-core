@@ -1,4 +1,3 @@
-const { apiFetch } = require('../api-fetch');
 const { getContext } = require('../context');
 const { parseMaybeJson, getActiveTarget, fetchTarget, saveTarget } = require('../helpers');
 const { normalizeBaseUrl } = require('../api-fetch');
@@ -28,18 +27,11 @@ function toSlug(name) {
 
 module.exports = {
   async list_pages(args) {
-    const target = getActiveTarget(args);
-    let flat;
-    if (target.type === 'template') {
-      flat = (await apiFetch(`/api/v1/templates/${encodeURIComponent(target.id)}`)).content;
-    } else {
-      flat = (await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`)).content;
-    }
-    if (!flat) throw new Error(`${target.type === 'template' ? 'Template' : 'Site'} has no content.`);
+    const { targetId, targetType, flat } = await fetchTarget(args);
     const pages = findPages(flat);
 
     if (pages.length === 0) {
-      return { content: [{ type: 'text', text: `No pages found in this ${target.type}.` }] };
+      return { content: [{ type: 'text', text: `No pages found in this ${targetType}.` }] };
     }
 
     const lines = pages.map((p, i) => {
@@ -55,7 +47,7 @@ module.exports = {
       return `${i + 1}. **${p.id}** — "${name}" (/${slug}, ${sectionCount} sections)${flagStr}`;
     });
 
-    const label = target.type === 'template' ? `template "${target.id}"` : `site ${target.id}`;
+    const label = targetType === 'template' ? `template "${targetId}"` : `site ${targetId}`;
     return {
       content: [{
         type: 'text',
@@ -69,14 +61,7 @@ module.exports = {
     if (!name) throw new Error('Page name is required.');
 
     const target = getActiveTarget(args);
-    let rawContent;
-    if (target.type === 'template') {
-      rawContent = (await apiFetch(`/api/v1/templates/${encodeURIComponent(target.id)}`)).content;
-    } else {
-      rawContent = (await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`)).content;
-    }
-    if (!rawContent) throw new Error(`${target.type === 'template' ? 'Template' : 'Site'} has no content.`);
-    const flat = JSON.parse(JSON.stringify(rawContent));
+    const { flat } = await fetchTarget(args);
     const root = flat.ROOT;
     if (!root) throw new Error('No ROOT node found.');
 
@@ -172,20 +157,7 @@ module.exports = {
     const target = getActiveTarget(args);
     const ctx = getContext();
 
-    // In draft mode, operate on _pendingFlatMap so SEO changes survive into the skeleton
-    let flat;
-    if (ctx.draftMode && ctx._pendingFlatMap) {
-      flat = JSON.parse(JSON.stringify(ctx._pendingFlatMap));
-    } else {
-      let rawContent;
-      if (target.type === 'template') {
-        rawContent = (await apiFetch(`/api/v1/templates/${encodeURIComponent(target.id)}`)).content;
-      } else {
-        rawContent = (await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`)).content;
-      }
-      if (!rawContent) throw new Error(`${target.type === 'template' ? 'Template' : 'Site'} has no content.`);
-      flat = JSON.parse(JSON.stringify(rawContent));
-    }
+    const { flat } = await fetchTarget(args);
 
     const page = flat[pageId];
     if (!page) throw new Error(`Page node "${pageId}" not found.`);
@@ -258,14 +230,7 @@ module.exports = {
     if (!pageId) throw new Error('pageId is required.');
 
     const target = getActiveTarget(args);
-    let rawContent;
-    if (target.type === 'template') {
-      rawContent = (await apiFetch(`/api/v1/templates/${encodeURIComponent(target.id)}`)).content;
-    } else {
-      rawContent = (await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`)).content;
-    }
-    if (!rawContent) throw new Error(`${target.type === 'template' ? 'Template' : 'Site'} has no content.`);
-    const flat = JSON.parse(JSON.stringify(rawContent));
+    const { flat } = await fetchTarget(args);
 
     const page = flat[pageId];
     if (!page) throw new Error(`Page node "${pageId}" not found.`);
