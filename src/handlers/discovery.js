@@ -96,6 +96,8 @@ Typography: text-4xl, font-bold, leading-relaxed, tracking-widest, uppercase
 
 Modifiers are reusable class compositions toggled on components. PREFER modifiers over raw classes when the pattern exists or is likely reused. One-offs are fine as raw classes.
 
+**Storage: ROOT.props.modifiers** (not ROOT.props.theme.modifiers).
+
 ### Composite Modifiers (multi-class presets — use instead of writing classes out)
 
 | Component | Name | Expands To |
@@ -110,8 +112,8 @@ Modifiers are reusable class compositions toggled on components. PREFER modifier
 | Text | section-heading | font-bold leading-tight text-base-content text-3xl md:text-4xl font-heading |
 | Text | eyebrow | text-primary font-bold tracking-widest text-xs uppercase |
 | Text | subhead | text-neutral-content text-lg leading-relaxed max-w-2xl |
-| Button | cta-responsive | btn btn-primary w-full md:w-auto |
-| Button | cta-outline-responsive | btn btn-outline w-full md:w-auto |
+| Button | cta-responsive | btn btn-primary rounded-box px-space-md py-space-xs min-h-12 font-semibold w-full md:w-auto |
+| Button | cta-outline-responsive | btn btn-outline rounded-box px-space-md py-space-xs min-h-12 font-semibold border-base-content/30 text-base-content w-full md:w-auto |
 
 ### Single-Class Modifiers (stackable with composites)
 
