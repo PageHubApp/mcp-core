@@ -51,7 +51,7 @@ const STYLE_REFERENCE = `# PageHub Style Reference
 
 ALWAYS use CSS variables via Tailwind token syntax in className — never hardcode hex or named colors:
 
-  "bg-primary text-primary-content border-base-200 rounded-box gap-container max-w-content"
+  "bg-primary text-primary-content border-base-200 rounded-box gap-container max-w-page"
 
 Exception: bg-transparent, bg-white/10 (opacity modifiers) are OK.
 
@@ -70,7 +70,7 @@ Spatial tokens (fluid clamp, NO md:py-* or md:gap-* needed):
 ## Common className Utilities
 
 Layout: flex, flex-col, flex-row, grid, grid-cols-*, gap-space-*, items-*, justify-*,
-  w-full, w-1/2, max-w-content, h-[400px], min-h-screen,
+  w-full, w-1/2, max-w-page, h-[400px], min-h-screen,
   py-space-*, px-container-x, mx-auto, relative, absolute, z-*, overflow-hidden
 
 Surface: bg-primary, text-base-content, border, border-base-200,
@@ -104,8 +104,8 @@ Modifiers are reusable class compositions toggled on components. PREFER modifier
 | Container | section-wrapper-dark | bg-base-content text-base-100 flex flex-col items-center w-full py-space-lg px-container-x |
 | Container | card-surface | card bg-base-200 text-base-content rounded-box flex flex-col w-full overflow-hidden |
 | Container | icon-row | flex flex-row gap-space-xs items-center w-full |
-| Container | content-col | flex flex-col gap-space-md w-full max-w-(--content-width) mx-auto |
-| Container | hero-content-centered | hero-content flex flex-col items-center gap-space-md text-center max-w-(--content-width) mx-auto |
+| Container | content-col | flex flex-col gap-space-md w-full max-w-page mx-auto |
+| Container | hero-content-centered | hero-content flex flex-col items-center gap-space-md text-center max-w-page mx-auto |
 | Text | body-text | text-neutral-content text-sm leading-relaxed |
 | Text | section-heading | font-bold leading-tight text-base-content text-3xl md:text-4xl font-heading |
 | Text | eyebrow | text-primary font-bold tracking-widest text-xs uppercase |
