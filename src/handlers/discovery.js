@@ -134,8 +134,9 @@ Composites + singles stack: section-wrapper + bg-primary override surface color.
 2. ROOT node must NOT have gap or spacing.
 3. Text "text" values: NO block tags. Only inline: <strong>, <em>, <br/>, <span>, <a>, <ul>/<li>.
 4. Always match text color to background: bg-primary → text-primary-content; bg-base-100 → text-base-content.
-5. Use descriptive node IDs: "sec_hero", "hero_title", etc.
-6. **All styling uses props.className** — a single Tailwind class string. Mobile-first: unprefixed utilities apply at all widths; **md:** = 768px+; **lg:** = 1024px+. Example: "flex flex-col gap-4 py-8 md:flex-row md:gap-8 bg-primary text-primary-content". Use **classNamePatch** in patch tools to merge classes via twMerge. Use **propsPatch** only for non-class props (text, src, href, style, animation). See **BLOCKS-AI-CONTEXT.md**.
+5. **Palette (outline CTAs):** On minimal monochrome themes, Primary and Base Content must differ in lightness — not both the same near-black OKLCH. DaisyUI 5 btn-outline uses --btn-color for label/border; if primary ≈ base-content, canonical outline + text-base-content can collapse to illegible dark-on-dark. Fix palette (and styleGuide linkColor/inputTextColor if Base Content changes). Reference: scripts/seed/data/templates/acme.json, THEME-SYSTEM.md.
+6. Use descriptive node IDs: "sec_hero", "hero_title", etc.
+7. **All styling uses props.className** — a single Tailwind class string. Mobile-first: unprefixed utilities apply at all widths; **md:** = 768px+; **lg:** = 1024px+. Example: "flex flex-col gap-4 py-8 md:flex-row md:gap-8 bg-primary text-primary-content". Use **classNamePatch** in patch tools to merge classes via twMerge. Use **propsPatch** only for non-class props (text, src, href, style, animation). See **BLOCKS-AI-CONTEXT.md**.
 `;
 
 /* ── Design patterns (lazy-loaded) ── */
