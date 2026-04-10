@@ -637,6 +637,10 @@
           "type": "boolean",
           "description": "Visible to all users. Default: true"
         },
+        "sortOrder": {
+          "type": "number",
+          "description": "Catalog sort order (lower first; ties by title). Default: 0"
+        },
         "category": {
           "type": "string",
           "description": "Template category (e.g. \"landing-page\", \"portfolio\", \"ecommerce\", \"blog\")"
@@ -689,6 +693,10 @@
           "type": "boolean",
           "description": "Visible to all users. Default: true"
         },
+        "sortOrder": {
+          "type": "number",
+          "description": "Catalog sort order (lower first; ties by title). Default: 0"
+        },
         "id": {
           "type": "string",
           "description": "Site id (defaults to active site)"
@@ -725,6 +733,10 @@
         "hidden": {
           "type": "boolean",
           "description": "Toggle hidden status"
+        },
+        "sortOrder": {
+          "type": "number",
+          "description": "Catalog sort order (lower first; ties by title)"
         },
         "category": {
           "type": "string",

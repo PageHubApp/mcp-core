@@ -45,13 +45,14 @@ module.exports = {
   },
 
   async save_template(args) {
-    const { slug, title, description, image, category, tags, content, hidden, isPublic } = args;
+    const { slug, title, description, image, category, tags, content, hidden, isPublic, sortOrder } =
+      args;
     if (!slug || !title || !content) {
       throw new Error('slug, title, and content are required');
     }
     const data = await apiFetch('/api/v1/templates', {
       method: 'POST',
-      body: { slug, title, description, image, category, tags, content, hidden, isPublic },
+      body: { slug, title, description, image, category, tags, content, hidden, isPublic, sortOrder },
     });
     const audit = quickA11yAudit(content);
     const auditText = audit ? `\n\n---\n${audit.summary}` : '';
@@ -64,7 +65,7 @@ module.exports = {
   },
 
   async publish_site_as_template(args) {
-    const { slug, title, description, image, category, tags, hidden, isPublic } = args;
+    const { slug, title, description, image, category, tags, hidden, isPublic, sortOrder } = args;
     const target = getActiveTarget(args);
     if (target.type !== 'site') throw new Error('Active target must be a site. Use select_site first.');
     const siteData = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`);
@@ -79,6 +80,7 @@ module.exports = {
       ...(tags && { tags }),
       ...(hidden !== undefined && { hidden }),
       ...(isPublic !== undefined && { isPublic }),
+      ...(sortOrder !== undefined && { sortOrder }),
     };
     const data = await apiFetch('/api/v1/templates', { method: 'POST', body });
     const audit = quickA11yAudit(siteData.content);
@@ -92,7 +94,16 @@ module.exports = {
     const { slug } = args;
     if (!slug) throw new Error('slug is required');
     const body = {};
-    for (const f of ['title', 'description', 'image', 'category', 'tags', 'content', 'hidden']) {
+    for (const f of [
+      'title',
+      'description',
+      'image',
+      'category',
+      'tags',
+      'content',
+      'hidden',
+      'sortOrder',
+    ]) {
       if (args[f] !== undefined) body[f] = args[f];
     }
     if (Object.keys(body).length === 0) {
