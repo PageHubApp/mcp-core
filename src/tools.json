@@ -273,7 +273,7 @@
           "items": {
             "type": "string"
           },
-          "description": "REPLACES node.nodes entirely. Use to reorder children. Get current order from pull_site first."
+          "description": "REORDER ONLY: must list exactly the same child ids the node already has (same multiset). Get order from pull_site; partial lists are rejected and would blank content."
         },
         "unsetClasses": {
           "type": "array",
@@ -950,7 +950,8 @@
           "type": "array",
           "items": {
             "type": "string"
-          }
+          },
+          "description": "REORDER ONLY: must list exactly the same child node ids the parent already has (same multiset, any order). Wrong or partial lists blank the canvas — omit nodesPatch unless truly reordering; use classNamePatch/propsPatch for design."
         },
         "unsetClasses": {
           "type": "array",
@@ -1012,7 +1013,8 @@
                 "type": "array",
                 "items": {
                   "type": "string"
-                }
+                },
+                "description": "REORDER ONLY: exact same child ids as the parent already has. Omit for design changes."
               },
               "unsetClasses": {
                 "type": "array",
@@ -1444,7 +1446,8 @@
           "type": "array",
           "items": {
             "type": "string"
-          }
+          },
+          "description": "REORDER ONLY: exact same child ids as the node already has. Omit unless reordering."
         },
         "unsetClasses": {
           "type": "array",
@@ -1497,7 +1500,8 @@
                 "type": "array",
                 "items": {
                   "type": "string"
-                }
+                },
+                "description": "REORDER ONLY: exact same child ids as the parent already has."
               },
               "unsetClasses": {
                 "type": "array",

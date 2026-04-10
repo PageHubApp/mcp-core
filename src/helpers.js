@@ -13,6 +13,19 @@ function parseMaybeJson(v) {
  * Remove specific Tailwind classes from a className string.
  * Supports exact matches and prefix matches (e.g. "gap-" removes "gap-4", "md:gap-8").
  */
+/** True if arrays contain the same node ids with the same multiplicities (order ignored). */
+function isSameChildIdMultiset(prev, next) {
+  const a = Array.isArray(prev) ? prev.map(String) : [];
+  const b = Array.isArray(next) ? next.map(String) : [];
+  if (a.length !== b.length) return false;
+  const sa = [...a].sort();
+  const sb = [...b].sort();
+  for (let i = 0; i < sa.length; i++) {
+    if (sa[i] !== sb[i]) return false;
+  }
+  return true;
+}
+
 function removeClasses(className, toRemove) {
   if (!className || !Array.isArray(toRemove) || toRemove.length === 0) return className;
   const parts = String(className).split(/\s+/).filter(Boolean);
@@ -72,7 +85,20 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
       flatMap[nodeId].props = { ...flatMap[nodeId].props, ...propsPatch };
     }
   }
-  if (nodesPatch) flatMap[nodeId].nodes = nodesPatch;
+  if (nodesPatch) {
+    const prevNodes = flatMap[nodeId].nodes;
+    if (!isSameChildIdMultiset(prevNodes, nodesPatch)) {
+      const prevJson = JSON.stringify(prevNodes || []);
+      const nextJson = JSON.stringify(nodesPatch);
+      throw new Error(
+        `nodesPatch must list the exact same child node ids as currently on "${nodeId}" (reorder only). ` +
+          `Existing: ${prevJson}. Received: ${nextJson}. ` +
+          `Do not use nodesPatch for design changes, "main areas", or partial lists — use classNamePatch and propsPatch. ` +
+          `To add/remove sections use add_nodes / delete_node.`
+      );
+    }
+    flatMap[nodeId].nodes = nodesPatch;
+  }
   if (Array.isArray(unsetProps)) {
     for (const k of unsetProps) delete flatMap[nodeId].props[k];
   }
