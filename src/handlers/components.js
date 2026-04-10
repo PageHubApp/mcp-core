@@ -75,6 +75,8 @@ module.exports = {
     let { components, total, page, pages } = data;
     let broadened = false;
     let styleWidened = false;
+    let subcategoryDropped = false;
+    let genericFallback = false;
 
     // Fallback 1: drop text query `q` if it returned zero hits
     if (!components.length && args.q) {
@@ -107,8 +109,47 @@ module.exports = {
       }
     }
 
+    // Fallback 3: drop subcategory — model often picks a subcategory with no indexed blocks
+    if (!components.length && (args.subcategory || params.has('subcategory'))) {
+      const wide = new URLSearchParams(params);
+      wide.delete('subcategory');
+      const data2 = await fetchComponents(wide);
+      if (data2.components?.length) {
+        data = data2;
+        components = data2.components;
+        total = data2.total;
+        page = data2.page;
+        pages = data2.pages;
+        subcategoryDropped = true;
+      }
+    }
+
+    // Fallback 4: last resort — top popular public blocks library-wide (never leave the agent empty-handed)
     if (!components.length) {
-      return { content: [{ type: 'text', text: 'No blocks found matching your query.' }] };
+      const last = new URLSearchParams();
+      last.set('limit', '24');
+      last.set('sort', 'popular');
+      const data2 = await fetchComponents(last);
+      if (data2.components?.length) {
+        data = data2;
+        components = data2.components;
+        total = data2.total;
+        page = data2.page;
+        pages = data2.pages;
+        genericFallback = true;
+      }
+    }
+
+    if (!components.length) {
+      return {
+        content: [
+          {
+            type: 'text',
+            text:
+              'No blocks found and the library returned no public components. Check that the component library is populated.',
+          },
+        ],
+      };
     }
 
     const lines = components.map(c => {
@@ -131,7 +172,13 @@ module.exports = {
           : '';
 
     let widenedNote = '';
-    if (styleWidened) {
+    if (genericFallback) {
+      widenedNote =
+        `**Fallback — not an exact match:** Nothing matched the previous filters (text search, category, style, or subcategory may be too narrow or the index has no hits for those terms). Below are **top popular** blocks from the **whole library**. Pick the closest \`slug\` for the section type you need (e.g. any hero for a “baker” site) and **rewrite copy** in patches for the user’s topic — do not keep searching in a loop.\n\n`;
+    } else if (subcategoryDropped) {
+      widenedNote =
+        `*(Subcategory widened: no blocks under that subcategory — showing the rest of this category.)*\n\n`;
+    } else if (styleWidened) {
       widenedNote = `*(Style widened: no \`${ctx.buildStyle}\` blocks for this category — showing universal blocks.)*\n\n`;
     } else if (broadened) {
       widenedNote = `*(Search widened: dropped text query \`q\` because it returned no hits — prefer category/tag alone next time.)*\n\n`;
