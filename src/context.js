@@ -2,13 +2,13 @@ const { AsyncLocalStorage } = require('async_hooks');
 
 /**
  * Per-request context via AsyncLocalStorage.
- * Stores apiKey, apiBaseUrl, activeSite — no global mutation.
+ * Stores apiKey, apiBaseUrl, activeSite, optional activePageNodeId (in-app agent only) — no global mutation.
  */
 const requestContext = new AsyncLocalStorage();
 
 /**
  * Run a function with per-request MCP context.
- * @param {{ apiKey: string, apiBaseUrl: string, activeSite?: { id: string } }} ctx
+ * @param {{ apiKey: string, apiBaseUrl: string, activeSite?: { id: string }, activePageNodeId?: string }} ctx
  * @param {() => Promise<any>} fn
  */
 function runWithContext(ctx, fn) {

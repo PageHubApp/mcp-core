@@ -16,6 +16,7 @@ const {
 } = require('../helpers');
 const { collectSubtree, sanitizeNodes, findSectionRoot } = require('../node-utils');
 const { resultMsg } = require('./remote-shared');
+const { resolveToolDefaultPageNodeId } = require('../active-page');
 
 module.exports = {
   async add_nodes(args) {
@@ -28,7 +29,12 @@ module.exports = {
     }
     const { flat } = await fetchTarget(args);
 
-    let parentId = args.parentId != null && args.parentId !== '' ? String(args.parentId) : 'page_home';
+    let parentId =
+      args.parentId != null && args.parentId !== ''
+        ? String(args.parentId)
+        : ctx.fillMode
+          ? 'page_home'
+          : resolveToolDefaultPageNodeId({ flat, ctx }) || 'page_home';
     if (ctx.fillMode && ctx.sectionNodeId) {
       const sec = String(ctx.sectionNodeId);
       if (args.parentId == null || args.parentId === '') {

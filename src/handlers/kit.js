@@ -7,6 +7,7 @@ const { normalizeBaseUrl } = require('../api-fetch');
 const { hierarchicalStructureToFlat, walkApplyKitOverrides } = require('../structure-ingest');
 
 const { collectSubtree } = require('../node-utils');
+const { resolveToolDefaultPageNodeId } = require('../active-page');
 
 /** Lists real Craft ids so the model does not guess (random prefixes used to break patches). */
 function formatKitNodeIdManifest(newNodes, rootId, sectionContainerId, maxLines = 80) {
@@ -84,7 +85,6 @@ module.exports = {
     }
     // Non-fill: if no container specified, drop block directly into the page node
     const directToPage = !ctx.fillMode && !sectionContainerId && !slotTarget;
-    const pageId = args.pageId || 'page_home';
 
     // Strip block-specific params so getActiveTarget doesn't interpret slug as a template slug
     const { slug: _blockSlug, sectionContainerId: _sec, contentOverrides: _co, propOverrides: _po, position: _pos, pageId: _pid, copyContext: _cc, target: _tgt, ...targetArgs } = args;
@@ -103,6 +103,8 @@ module.exports = {
     }
 
     let { flat } = await fetchTarget(targetArgs);
+
+    const pageId = resolveToolDefaultPageNodeId({ flat, ctx, explicitPageId: args.pageId }) || 'page_home';
 
     // Resolve parent node: slot (header/footer), section container, or page
     let parentNodeId;

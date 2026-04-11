@@ -1,6 +1,8 @@
 const { apiFetch } = require('../api-fetch');
+const { postAgentSse } = require('../agent-sse-fetch');
 const { getContext } = require('../context');
 const { getActiveTarget, getEditorUrl, applyNodePatches, fetchTarget, saveTarget } = require('../helpers');
+const { mergeDesignIntentFromChain } = require('../design-intent-merge.js');
 
 module.exports = {
   async generate_image(args) {
@@ -87,7 +89,9 @@ module.exports = {
       nodeLabel = node.custom?.displayName || resolvedName;
     }
 
-    const aiSettings = nodes.ROOT?.props?.ai || {};
+    const mergedIntent = mergeDesignIntentFromChain(nodes, nodeId || null);
+    const designNotesMerged = mergedIntent.designNotes.trim() || undefined;
+    const mergedDesignTags = mergedIntent.designTags.length ? mergedIntent.designTags : undefined;
     const company = nodes.ROOT?.props?.company || {};
     const parts = [];
     if (data.title || data.description) {
@@ -115,28 +119,51 @@ module.exports = {
     if (siteTextSnippets.length > 0) {
       parts.push(`Existing site copy (match this tone/domain): ${siteTextSnippets.slice(0, 8).join(' | ')}`);
     }
-    if (aiSettings.prompt) parts.push(`Site tone guidelines: ${aiSettings.prompt}`);
+    if (designNotesMerged) {
+      parts.push(`Design intent (page + ancestors): ${designNotesMerged}`);
+    }
     if (nodeLabel) parts.push(`This text is the "${nodeLabel}" element.`);
     if (intent) parts.push(intent);
 
     const customPrompt = parts.length > 0 ? parts.join('\n') : undefined;
-    const finalStyleTags = styleTags || aiSettings.styleTags || undefined;
+    const finalStyleTags =
+      styleTags || (Array.isArray(mergedDesignTags) && mergedDesignTags.length ? mergedDesignTags : undefined);
 
     if (!currentText.trim() && !customPrompt) {
       throw new Error('Nothing to generate. Provide intent, text, or a nodeId with existing text.');
     }
 
-    const result = await apiFetch('/api/v1/ai/text/improve', {
-      method: 'POST',
-      body: { text: currentText, customPrompt, styleTags: finalStyleTags },
-    });
-    if (!result.success) throw new Error(result.error || 'Copy generation failed.');
+    const messageBlocks = [];
+    if (customPrompt) messageBlocks.push(customPrompt);
+    if (finalStyleTags?.length) {
+      messageBlocks.push(`Style tags (tone/visual hints): ${finalStyleTags.join(', ')}`);
+    }
+    if (currentText.trim()) {
+      messageBlocks.push(`Current HTML/text:\n${currentText}`);
+    }
+    const message = messageBlocks.join('\n\n').trim();
+    if (!message) {
+      throw new Error('Nothing to send to the assistant.');
+    }
 
-    const lines = [`**Generated copy:**\n\n${result.result}`];
+    const body = {
+      message,
+      assistantScope: 'text',
+      ...(target.type === 'template'
+        ? { templateSlug: target.id }
+        : { siteId: target.id }),
+      ...(nodeId
+        ? { contextNodes: [{ id: nodeId, displayName: nodeLabel || 'Text' }] }
+        : {}),
+    };
+
+    const agentText = await postAgentSse(body);
+
+    const lines = [`**Assistant (copy mode):**\n\n${agentText}`];
     if (currentText.trim()) lines.push(`\n\n**Original:**\n\n${currentText}`);
     if (nodeId) {
       lines.push(
-        `\n\nApply with: patch_site_node(nodeId: "${nodeId}", propsPatch: { text: "<escaped result>" })`
+        `\n\nIf the draft was not applied automatically, use patch_site_node(nodeId: "${nodeId}", propsPatch: { text: "<escaped result>" }) with the generated HTML.`,
       );
     }
     return { content: [{ type: 'text', text: lines.join('') }] };

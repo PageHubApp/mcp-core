@@ -12,6 +12,7 @@ const {
 } = require('../helpers');
 const { ensurePaletteOklch } = require('../color-utils');
 const { resultMsg } = require('./remote-shared');
+const { stampPresetDesignIntent } = require('../root-design-intent');
 
 module.exports = {
   async suggest_palettes(args) {
@@ -88,6 +89,10 @@ module.exports = {
     }
     if (ctx.buildStyle) {
       rootProps.buildStyle = ctx.buildStyle;
+    }
+
+    if (presetRecord) {
+      stampPresetDesignIntent(rootProps, presetRecord);
     }
 
     // Read existing theme

@@ -161,7 +161,11 @@ module.exports = {
       const catLabel = c.subcategory ? `${c.category}/${c.subcategory}` : c.category;
       const meta = [catLabel, c.preset && `preset:${c.preset}`, c.style && `style:${c.style}`].filter(Boolean).join(', ');
       let line = `• \`${c.slug}\` — ${c.name} (${meta})`;
-      line += `\n  ${c.description || c.visual || ''}`;
+      let detail = c.description || c.visual || '';
+      if (c.description && c.visual && String(c.visual).trim() !== String(c.description).trim()) {
+        detail = `${c.description}\n  Visual: ${c.visual}`;
+      }
+      line += `\n  ${detail}`;
       if ((c.tags || []).length) line += `\n  Tags: ${c.tags.join(', ')}`;
       return line;
     });
