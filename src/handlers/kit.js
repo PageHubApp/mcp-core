@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const { twMerge } = require('tailwind-merge');
 const { apiFetch } = require('../api-fetch');
 const { getContext } = require('../context');
@@ -231,11 +232,25 @@ module.exports = {
       ...(component.version ? { version: component.version } : {}),
       appliedAt: new Date().toISOString(),
     };
-    const { nodes: newNodes, rootId } = hierarchicalStructureToFlat(structure, parentNodeId, resolvedSlug, sourceMeta);
+    let newNodes;
+    let rootId;
+    let idSalt = '';
+    for (let attempt = 0; attempt < 24; attempt++) {
+      const built = hierarchicalStructureToFlat(structure, parentNodeId, resolvedSlug, sourceMeta, idSalt);
+      newNodes = built.nodes;
+      rootId = built.rootId;
+      if (!Object.keys(newNodes).some((id) => flat[id])) break;
+      idSalt = crypto.randomBytes(8).toString('hex');
+    }
+    const colliding = Object.keys(newNodes).find((id) => flat[id]);
+    if (colliding) {
+      throw new Error(
+        `Internal error: node id "${colliding}" still collided after retries. Try a different block or report a bug.`,
+      );
+    }
     walkApplyKitOverrides(newNodes, rootId, co, po);
 
     for (const [id, node] of Object.entries(newNodes)) {
-      if (flat[id]) throw new Error(`Internal error: node id "${id}" already exists. Try a different block or report a bug.`);
       flat[id] = node;
     }
 

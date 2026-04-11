@@ -6,6 +6,7 @@ const {
   normalizeBulkPatchesFromArgs,
   assertPatchBlockNodeArgs,
   assertPatchBlockBulkItem,
+  mergeStrList,
 } = require('../helpers');
 const {
   hierarchicalLibraryToFlat,
@@ -51,20 +52,24 @@ module.exports = {
   async search_blocks(args) {
     const ctx = getContext();
 
+    let categories = mergeStrList(args.category, args.categories);
+    let styles = mergeStrList(args.style, args.styles);
     // Auto-inject buildStyle as a hard filter when present on context
-    if (ctx.buildStyle && !args.style && !args.preset) {
-      args = { ...args, style: ctx.buildStyle };
+    if (ctx.buildStyle && styles.length === 0 && !args.preset) {
+      styles = [ctx.buildStyle];
     }
 
     const params = new URLSearchParams();
     if (args.q) params.set('q', args.q);
-    if (args.category) params.set('category', args.category);
+    if (categories.length === 1) params.set('category', categories[0]);
+    else if (categories.length > 1) params.set('category', categories.join(','));
     if (args.subcategory) params.set('subcategory', args.subcategory);
     if (args.tag) params.set('tag', args.tag);
     if (args.preset) params.set('preset', args.preset);
     if (args.source) params.set('source', args.source);
     if (args.group) params.set('group', args.group);
-    if (args.style) params.set('style', args.style);
+    if (styles.length === 1) params.set('style', styles[0]);
+    else if (styles.length > 1) params.set('style', styles.join(','));
     if (args.blockType) params.set('blockType', args.blockType);
     if (args.featured) params.set('featured', 'true');
     if (args.sort) params.set('sort', args.sort);

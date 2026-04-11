@@ -11,6 +11,30 @@ function parseMaybeJson(v) {
 }
 
 /**
+ * Merge singular + list MCP args into deduped trimmed strings (comma-split on strings).
+ * @param {string|string[]|undefined|null} singular e.g. args.category
+ * @param {string|string[]|undefined|null} listish e.g. args.categories
+ * @returns {string[]}
+ */
+function mergeStrList(singular, listish) {
+  const parts = [];
+  const add = (v) => {
+    if (v == null || v === '') return;
+    if (Array.isArray(v)) {
+      for (const x of v) add(x);
+      return;
+    }
+    for (const piece of String(v).split(',')) {
+      const t = piece.trim();
+      if (t) parts.push(t);
+    }
+  };
+  add(singular);
+  add(listish);
+  return [...new Set(parts)];
+}
+
+/**
  * Remove specific Tailwind classes from a className string.
  * Supports exact matches and prefix matches (e.g. "gap-" removes "gap-4", "md:gap-8").
  */
@@ -505,6 +529,7 @@ function assertFillModeBulkPatchesAllowed(flat, patchList, ctx) {
 
 module.exports = {
   parseMaybeJson,
+  mergeStrList,
   applyNodePatches,
   normalizeNodePatchArgs,
   normalizeBulkPatchesFromArgs,

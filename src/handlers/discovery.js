@@ -1,6 +1,6 @@
 const { apiFetch } = require('../api-fetch');
 const { getContext } = require('../context');
-const { parseMaybeJson } = require('../helpers');
+const { parseMaybeJson, mergeStrList } = require('../helpers');
 
 // Limits for compactComponentSchemaForFill — keeps schema payloads small for
 // parallel fill context windows without losing essential prop information.
@@ -208,10 +208,15 @@ function compactComponentSchemaForFill(schema) {
 module.exports = {
   async list_blocks(args) {
     const ctx = getContext();
+    let categories = mergeStrList(args.category, args.categories);
+    let styles = mergeStrList(args.style, args.styles);
+    if (styles.length === 0 && ctx.buildStyle) styles = [ctx.buildStyle];
+
     const params = { limit: '200' };
-    if (args.category) params.category = args.category;
-    if (args.style) params.style = args.style;
-    else if (ctx.buildStyle) params.style = ctx.buildStyle;
+    if (categories.length === 1) params.category = categories[0];
+    else if (categories.length > 1) params.category = categories.join(',');
+    if (styles.length === 1) params.style = styles[0];
+    else if (styles.length > 1) params.style = styles.join(',');
     const qs = new URLSearchParams(params).toString();
     const data = await apiFetch(`/api/v1/components?${qs}`);
     const components = data.components || [];

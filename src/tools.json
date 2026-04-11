@@ -1,17 +1,27 @@
 [
   {
     "name": "list_blocks",
-    "description": "Lists block templates (up to ~200 per call), grouped by category — slug + name + short tags/visual per entry. Use when the user wants a **broad menu** of options or when search_blocks returned only one page but you need the full category inventory. For ranked/filtered discovery prefer search_blocks. Planner only — not used in parallel section fill.",
+    "description": "Lists block templates (up to ~200 per call), grouped by category — slug + name + short tags/visual per entry. Use when the user wants a **broad menu** of options or when search_blocks returned only one page but you need the full category inventory. For ranked/filtered discovery prefer search_blocks. Pass **categories** (array) or **styles** (array) to OR-match several values in **one** API call instead of parallel list_blocks. Planner only — not used in parallel section fill.",
     "inputSchema": {
       "type": "object",
       "properties": {
         "category": {
           "type": "string",
-          "description": "Optional: filter by category (hero, header, footer, pricing, services, imageText, optin, texts, team, cta, video). Omit for all."
+          "description": "Optional: filter by one category (hero, header, footer, pricing, services, imageText, optin, texts, team, cta, video). Merged with categories. Omit for all."
+        },
+        "categories": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Optional: OR-filter by any of these categories in one request (e.g. hero + features + cta). Merged with category."
         },
         "style": {
           "type": "string",
-          "description": "Optional: filter by visual style family. Auto-injected from build context if set. Values: minimal, bold, editorial, corporate, playful, soft, warm."
+          "description": "Optional: filter by one visual style family. Merged with styles. Auto-injected from build context when no style filter is set. Values: minimal, bold, editorial, corporate, playful, soft, warm."
+        },
+        "styles": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Optional: OR-filter by any of these style families in one request. Merged with style."
         }
       }
     }
@@ -1134,7 +1144,7 @@
   },
   {
     "name": "search_blocks",
-    "description": "Search the block library — returns **one page** of matches with names, slugs, descriptions, tags, uses/likes (no full structure — use get_block for JSON).\n\n**Pagination:** Header shows **total N** and **page X of Y**. The server does **not** auto-fetch page 2. If **Y === 1** and the listed rows match N, that is the **complete** result set for those filters (common when the library fits one page). If **Y > 1**, call again with `page: 2` (same filters) or raise `limit` (max 100); in planner, `list_blocks({ category })` can list many slugs at once.\n\n**Picking a block:** Compare 2–4 finalists using description + tags vs the user request; use the slug **exactly** as shown in backticks. Prefer category or tag filters; optional `q` can over-narrow (server may widen).\n\n**Style cohesion:** When building a site, filter by `preset` and/or `style` to keep blocks visually consistent. Results show `preset:X` and `style:Y` labels — pick blocks that match what's already on the page. If a cohesion hint appears at the bottom of results, follow it.\n\n**Server fallbacks:** If filters match nothing, the server may drop `subcategory`, then return **popular** blocks library-wide so you always get candidates. If the response says **Fallback — not an exact match**, pick the closest slug for the section type and adapt copy in patches — do **not** loop search_blocks.",
+    "description": "Search the block library — returns **one page** of matches with names, slugs, descriptions, tags, uses/likes (no full structure — use get_block for JSON).\n\n**Pagination:** Header shows **total N** and **page X of Y**. The server does **not** auto-fetch page 2. If **Y === 1** and the listed rows match N, that is the **complete** result set for those filters (common when the library fits one page). If **Y > 1**, call again with `page: 2` (same filters) or raise `limit` (max 100); in planner, `list_blocks({ category })` can list many slugs at once.\n\n**Multi-filter:** Pass **categories** and/or **styles** as arrays to OR-match several values in one call (same as GET `?category=hero,features&style=minimal`). Prefer this over firing parallel search_blocks per category.\n\n**Picking a block:** Compare 2–4 finalists using description + tags vs the user request; use the slug **exactly** as shown in backticks. Prefer category or tag filters; optional `q` can over-narrow (server may widen).\n\n**Style cohesion:** When building a site, filter by `preset` and/or `style` to keep blocks visually consistent. Results show `preset:X` and `style:Y` labels — pick blocks that match what's already on the page. If a cohesion hint appears at the bottom of results, follow it.\n\n**Server fallbacks:** If filters match nothing, the server may drop `subcategory`, then return **popular** blocks library-wide so you always get candidates. If the response says **Fallback — not an exact match**, pick the closest slug for the section type and adapt copy in patches — do **not** loop search_blocks.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1144,7 +1154,12 @@
         },
         "category": {
           "type": "string",
-          "description": "Filter by category. Available: \"hero\", \"features\", \"content\", \"cta\", \"testimonials\", \"team\", \"pricing\", \"contact\", \"faq\", \"commerce\", \"navigation\", \"social\"."
+          "description": "Filter by one category. Merged with categories. Available: \"hero\", \"features\", \"content\", \"cta\", \"testimonials\", \"team\", \"pricing\", \"contact\", \"faq\", \"commerce\", \"navigation\", \"social\"."
+        },
+        "categories": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "OR-filter: any of these categories (e.g. [\"hero\",\"features\",\"cta\"]). Merged with category."
         },
         "subcategory": {
           "type": "string",
@@ -1168,7 +1183,12 @@
         },
         "style": {
           "type": "string",
-          "description": "Filter by visual style family. Blocks with the same style mix well together. Examples: \"minimal\", \"bold\", \"editorial\", \"corporate\", \"playful\", \"brutalist\"."
+          "description": "Filter by one visual style family. Merged with styles. Blocks with the same style mix well together. Examples: \"minimal\", \"bold\", \"editorial\", \"corporate\", \"playful\", \"brutalist\"."
+        },
+        "styles": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "OR-filter: any of these style families. Merged with style."
         },
         "blockType": {
           "type": "string",

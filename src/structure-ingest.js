@@ -32,11 +32,14 @@ function slugify(s) {
     .slice(0, 40) || 'kit';
 }
 
-/** Stable per-section+slug prefix so patch steps match apply_kit_block (no Math.random() drift). */
-function makeKitInstancePrefix(slug, sectionContainerId) {
+/**
+ * Stable per-parent+slug prefix so one apply_kit_block run is deterministic.
+ * Optional idSalt breaks collisions when the same block is applied again under the same parent.
+ */
+function makeKitInstancePrefix(slug, sectionContainerId, idSalt = '') {
   const h = crypto
     .createHash('sha256')
-    .update(`${String(sectionContainerId)}\n${String(slug)}`, 'utf8')
+    .update(`${String(sectionContainerId)}\n${String(slug)}\n${String(idSalt)}`, 'utf8')
     .digest('hex')
     .slice(0, 8);
   return `kit_${slugify(slug)}_${h}`;
@@ -102,11 +105,12 @@ function applyPropOverride(node, patch) {
  * @param {string} sectionContainerId - existing empty section container id
  * @param {string} slug - block slug (for id prefix)
  * @param {object} [sourceMeta] - provenance metadata stamped on root node's custom.source
+ * @param {string} [idSalt] - optional extra entropy for kit_* ids (same slug + parent twice)
  * @returns {{ nodes: Record<string, object>, rootId: string }}
  */
-function hierarchicalStructureToFlat(structure, sectionContainerId, slug, sourceMeta) {
+function hierarchicalStructureToFlat(structure, sectionContainerId, slug, sourceMeta, idSalt = '') {
   if (!structure?.type) throw new Error('Block structure must have a root "type".');
-  const prefix = makeKitInstancePrefix(slug, sectionContainerId);
+  const prefix = makeKitInstancePrefix(slug, sectionContainerId, idSalt);
   let seq = 0;
   const nodes = {};
 
