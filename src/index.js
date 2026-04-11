@@ -1,4 +1,9 @@
 const tools = require('./tools.json');
+const {
+  isPlaceholderCompanyName,
+  userExplicitlyRequestsBrandingChange,
+  guardRootCompanyPropsPatch,
+} = require('./branding-guard');
 const { runWithContext, getContext } = require('./context');
 const { apiFetch, normalizeBaseUrl } = require('./api-fetch');
 const {
@@ -77,6 +82,11 @@ async function executeTool(name, args) {
 }
 
 module.exports = {
+  // Branding (AI + patch_site_node)
+  isPlaceholderCompanyName,
+  userExplicitlyRequestsBrandingChange,
+  guardRootCompanyPropsPatch,
+
   // Core
   runWithContext,
   getContext,

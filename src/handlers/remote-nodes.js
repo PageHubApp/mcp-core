@@ -12,6 +12,7 @@ const {
   saveTarget,
   assertFillModePatchAllowed,
   assertFillModeBulkPatchesAllowed,
+  guardRootCompanyPropsPatch,
 } = require('../helpers');
 const { collectSubtree, sanitizeNodes, findSectionRoot } = require('../node-utils');
 const { resultMsg } = require('./remote-shared');
@@ -108,11 +109,11 @@ module.exports = {
     const ctx = getContext();
     const { flat } = await fetchTarget(args);
     assertFillModePatchAllowed(flat, nodeId, ctx);
-    applyNodePatches(
-      flat,
-      nodeId,
-      normalizeNodePatchArgs({ ...args, nodesPatch, unsetProps, unsetClasses })
-    );
+    let patchArgs = normalizeNodePatchArgs({ ...args, nodesPatch, unsetProps, unsetClasses });
+    if (String(nodeId) === 'ROOT' && patchArgs.propsPatch) {
+      patchArgs = { ...patchArgs, propsPatch: guardRootCompanyPropsPatch(flat, patchArgs.propsPatch, ctx) };
+    }
+    applyNodePatches(flat, nodeId, patchArgs);
     const changedNodes = collectSubtree(flat, findSectionRoot(flat, nodeId));
 
     // Dry run: return proposed changes without saving
@@ -175,7 +176,11 @@ module.exports = {
       assertPatchBulkItem(item, i);
       const { nodeId: nid, name: _name, title: _title, description: _desc, id: _id, patches: _patches, ...rest } = item;
       assertFillModePatchAllowed(flat, nid, ctx);
-      applyNodePatches(flat, nid, normalizeNodePatchArgs(rest));
+      let bulkPatch = normalizeNodePatchArgs(rest);
+      if (String(nid) === 'ROOT' && bulkPatch.propsPatch) {
+        bulkPatch = { ...bulkPatch, propsPatch: guardRootCompanyPropsPatch(flat, bulkPatch.propsPatch, ctx) };
+      }
+      applyNodePatches(flat, nid, bulkPatch);
       touched.push(nid);
     }
     const changedNodes = Object.assign({}, ...touched.map(id => collectSubtree(flat, findSectionRoot(flat, id))));

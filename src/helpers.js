@@ -1,4 +1,5 @@
 const { twMerge } = require('tailwind-merge');
+const { guardRootCompanyPropsPatch } = require('./branding-guard');
 
 /** Try to JSON.parse a string, return as-is if it fails or isn't a string. */
 function parseMaybeJson(v) {
@@ -515,4 +516,5 @@ module.exports = {
   getEditorUrl, fetchTarget, fetchSite, saveTarget, saveSite,
   extractImageUrls, validateImageUrls, collectAllImageUrls,
   collectSubtreeNodeIds, assertFillModePatchAllowed, assertFillModeBulkPatchesAllowed,
+  guardRootCompanyPropsPatch,
 };
