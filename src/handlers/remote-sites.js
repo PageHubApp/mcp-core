@@ -21,6 +21,10 @@ module.exports = {
     const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(id)}`);
     const ctx = getContext();
     ctx.activeSite = { id: data.id, name: data.name, draftId: data.draftId };
+    if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object") ctx._targetRevisions = {};
+    if (data.updatedAt) {
+      ctx._targetRevisions[`site:${data.id}`] = { expectedUpdatedAt: String(data.updatedAt) };
+    }
     // Clear activeTemplate so site takes priority
     ctx.activeTemplate = null;
     return {
@@ -31,15 +35,14 @@ module.exports = {
   },
 
   async pull_site(args) {
-    const target = getActiveTarget(args);
     const ctx = getContext();
+    const target = getActiveTarget(args);
     let content;
     if (ctx._pendingFlatMap) {
       content = ctx._pendingFlatMap;
-    } else if (target.type === "template") {
-      content = (await apiFetch(`/api/v1/templates/${encodeURIComponent(target.id)}`)).content;
     } else {
-      content = (await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`)).content;
+      const fetched = await fetchTarget(args);
+      content = fetched?.flat;
     }
     if (!content)
       throw new Error(`${target.type === "template" ? "Template" : "Site"} has no content.`);
@@ -134,6 +137,8 @@ module.exports = {
 
     if (targetId) {
       const result = await saveTarget(targetId, targetType, content, {
+        expectedUpdatedAt: args.expectedUpdatedAt,
+        expectedVersion: args.expectedVersion,
         name: args.name,
         title: args.title,
         description: args.description,

@@ -149,6 +149,22 @@ module.exports = {
       );
     }
     const { flat } = await fetchTarget(args);
+    const rawNodes = parseMaybeJson(args.nodes);
+    if (!rawNodes || typeof rawNodes !== "object")
+      throw new Error("nodes must be an object map of nodeId → node definition.");
+
+    const rootNodeId =
+      args.rootNodeId != null && args.rootNodeId !== "" ? String(args.rootNodeId) : null;
+    if (!rootNodeId) {
+      throw new Error(
+        "add_nodes requires rootNodeId. Pass the top-level node id from your nodes payload to attach."
+      );
+    }
+    if (!rawNodes[rootNodeId]) {
+      throw new Error(
+        `rootNodeId "${rootNodeId}" was not found in nodes payload. Include that node in args.nodes.`
+      );
+    }
 
     let parentId =
       args.parentId != null && args.parentId !== ""
@@ -167,10 +183,15 @@ module.exports = {
       }
     }
 
-    const rawNodes = parseMaybeJson(args.nodes);
-    if (!rawNodes || typeof rawNodes !== "object")
-      throw new Error("nodes must be an object map of nodeId → node definition.");
-    if (!flat[parentId]) throw new Error(`Parent node "${parentId}" not found.`);
+    if (!flat[parentId]) {
+      if (rawNodes[parentId]) {
+        throw new Error(
+          `Parent node "${parentId}" not found in the current site/template. parentId must be an EXISTING node, but "${parentId}" appears in your new nodes payload.\n` +
+            `Use parentId as an existing container (for example "page_home" or your section id), and set rootNodeId to your new top-level node id.`
+        );
+      }
+      throw new Error(`Parent node "${parentId}" not found.`);
+    }
 
     // Validate & auto-fix new nodes before sanitizing
     const validation = validateNodes(rawNodes, { autoFix: true, warnColors: true });
@@ -181,18 +202,35 @@ module.exports = {
     if (Object.keys(cleanNodes).length === 0) {
       return { content: [{ type: "text", text: "No valid nodes to add." }], changedNodes: {} };
     }
+    if (!cleanNodes[rootNodeId]) {
+      throw new Error(
+        `rootNodeId "${rootNodeId}" was filtered out during sanitization (invalid type, duplicate id, or malformed node).`
+      );
+    }
+    if (!roots.includes(rootNodeId)) {
+      throw new Error(
+        `rootNodeId "${rootNodeId}" is not a top-level root in the provided nodes map.\n` +
+          `Ensure "${rootNodeId}" has no parent inside args.nodes and is the subtree root you want attached to "${parentId}".`
+      );
+    }
+    const extraRoots = roots.filter(id => id !== rootNodeId);
+    if (extraRoots.length > 0) {
+      throw new Error(
+        `add_nodes received multiple root candidates (${[rootNodeId, ...extraRoots].join(", ")}).\n` +
+          `Provide one subtree rooted at rootNodeId, or split into multiple add_nodes calls.`
+      );
+    }
 
     // Merge sanitized nodes into the flat map
     for (const [id, node] of Object.entries(cleanNodes)) {
       flat[id] = node;
     }
 
-    // Register root nodes as children of the parent container
+    // Register the requested root as child of the parent container
     const parentNodes = flat[parentId].nodes || [];
     const position = args.position != null ? args.position : parentNodes.length;
-    for (let i = 0; i < roots.length; i++) {
-      parentNodes.splice(position + i, 0, roots[i]);
-    }
+    parentNodes.splice(position, 0, rootNodeId);
+    flat[rootNodeId].parent = parentId;
     flat[parentId].nodes = parentNodes;
 
     const changedNodes = {};
@@ -216,7 +254,7 @@ module.exports = {
         content: [
           {
             type: "text",
-            text: `${Object.keys(cleanNodes).length} nodes added to ${parentId} successfully.`,
+            text: `${Object.keys(cleanNodes).length} nodes added to ${parentId} (root: ${rootNodeId}) successfully.`,
           },
         ],
         pendingContent: ctx.fillMode ? ctx._pendingFlatMap : flat,

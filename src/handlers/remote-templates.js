@@ -10,6 +10,10 @@ module.exports = {
     const data = await apiFetch(`/api/v1/templates/${encodeURIComponent(slug)}`);
     const ctx = getContext();
     ctx.activeTemplate = { slug: data.slug, title: data.title };
+    if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object") ctx._targetRevisions = {};
+    if (Number.isFinite(Number(data.version))) {
+      ctx._targetRevisions[`template:${data.slug}`] = { expectedVersion: Number(data.version) };
+    }
     // Clear activeSite so template takes priority
     ctx.activeSite = null;
     return {
@@ -44,6 +48,11 @@ module.exports = {
   async pull_template(args) {
     const { slug } = args;
     const data = await apiFetch(`/api/v1/templates/${encodeURIComponent(slug)}`);
+    const ctx = getContext();
+    if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object") ctx._targetRevisions = {};
+    if (Number.isFinite(Number(data.version))) {
+      ctx._targetRevisions[`template:${slug}`] = { expectedVersion: Number(data.version) };
+    }
     const nodeCount = data.content ? Object.keys(data.content).length : 0;
     return {
       content: [
@@ -135,6 +144,8 @@ module.exports = {
   async update_template(args) {
     const { slug } = args;
     if (!slug) throw new Error("slug is required");
+    const current = await apiFetch(`/api/v1/templates/${encodeURIComponent(slug)}`);
+    const expectedVersion = Number(current?.version || 1);
     const body = {};
     for (const f of [
       "title",
@@ -153,7 +164,7 @@ module.exports = {
     }
     const data = await apiFetch(`/api/v1/templates/${encodeURIComponent(slug)}`, {
       method: "PUT",
-      body,
+      body: { ...body, expectedVersion },
     });
     const audit = args.content ? quickA11yAudit(args.content) : null;
     const auditText = audit ? `\n\n---\n${audit.summary}` : "";

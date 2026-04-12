@@ -71,7 +71,7 @@ function sanitizeNodes(rawNodes, existingFlat, sectionContainerId) {
     clean[id] = node;
   }
 
-  if (Object.keys(clean).length === 0) return clean;
+  if (Object.keys(clean).length === 0) return { nodes: {}, roots: [] };
 
   // Step 2: Ensure required fields on every node
   for (const [id, node] of Object.entries(clean)) {

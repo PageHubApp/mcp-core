@@ -32,8 +32,21 @@ async function apiFetch(pathStr, opts = {}) {
     headers,
     body: opts.body ? JSON.stringify(opts.body) : undefined,
   });
-  const json = await resp.json();
-  if (!resp.ok) throw new Error(json.error || `API ${resp.status}: ${resp.statusText}`);
+  const text = await resp.text();
+  let json = null;
+  try {
+    json = text ? JSON.parse(text) : {};
+  } catch {
+    json = { error: text || `API ${resp.status}: ${resp.statusText}` };
+  }
+  if (!resp.ok) {
+    const code = json?.code ? `[${json.code}] ` : "";
+    const detail =
+      json?.currentUpdatedAt || json?.currentVersion
+        ? ` (current: ${json.currentUpdatedAt || json.currentVersion})`
+        : "";
+    throw new Error(`${code}${json.error || `API ${resp.status}: ${resp.statusText}`}${detail}`);
+  }
   return json;
 }
 

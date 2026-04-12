@@ -316,6 +316,9 @@ module.exports = {
   async update_block(args) {
     const { slug } = args;
     if (!slug) throw new Error("slug is required.");
+    const existing = await fetchComponent(slug);
+    const existingComponent = existing.component || existing;
+    const expectedVersion = Number(existingComponent?.version || 1);
 
     const body = {};
     const fields = [
@@ -347,7 +350,7 @@ module.exports = {
 
     const data = await apiFetch(`/api/v1/components/${encodeURIComponent(slug)}`, {
       method: "PUT",
-      body,
+      body: { ...body, expectedVersion },
     });
 
     const c = data.component;
@@ -387,7 +390,7 @@ module.exports = {
 
     await apiFetch(`/api/v1/components/${encodeURIComponent(slug)}`, {
       method: "PUT",
-      body: { structure: newStructure },
+      body: { structure: newStructure, expectedVersion: Number(c.version || 1) },
     });
 
     return {
@@ -435,7 +438,7 @@ module.exports = {
 
     await apiFetch(`/api/v1/components/${encodeURIComponent(slug)}`, {
       method: "PUT",
-      body: { structure: newStructure },
+      body: { structure: newStructure, expectedVersion: Number(c.version || 1) },
     });
 
     return {

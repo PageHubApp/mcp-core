@@ -395,6 +395,23 @@ function getEditorUrl(siteId) {
   return `${base}/build/${siteId}`;
 }
 
+function getTargetRevisionKey(targetType, targetId) {
+  return `${String(targetType)}:${String(targetId)}`;
+}
+
+function extractTargetRevision(targetType, data) {
+  if (!data || typeof data !== "object") return null;
+  if (targetType === "template") {
+    const version = Number(data.version);
+    return Number.isFinite(version) ? { expectedVersion: version } : null;
+  }
+  if (targetType === "site") {
+    if (data.updatedAt) return { expectedUpdatedAt: String(data.updatedAt) };
+    return null;
+  }
+  return null;
+}
+
 /**
  * Fetch content for the active target (site or template).
  * Checks ctx._pendingFlatMap first (draft/fill mode), then fetches from API.
@@ -420,6 +437,11 @@ async function fetchTarget(args) {
     if (!data.content || typeof data.content !== "object") {
       throw new Error("Template has no decoded content (empty or corrupt).");
     }
+    const revision = extractTargetRevision(target.type, data);
+    if (revision) {
+      if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object") ctx._targetRevisions = {};
+      ctx._targetRevisions[getTargetRevisionKey(target.type, target.id)] = revision;
+    }
     return {
       targetId: target.id,
       targetType: "template",
@@ -430,6 +452,11 @@ async function fetchTarget(args) {
   const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`);
   if (!data.content || typeof data.content !== "object") {
     throw new Error("Site has no decoded content (empty or corrupt).");
+  }
+  const revision = extractTargetRevision(target.type, data);
+  if (revision) {
+    if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object") ctx._targetRevisions = {};
+    ctx._targetRevisions[getTargetRevisionKey(target.type, target.id)] = revision;
   }
   return {
     targetId: target.id,
@@ -449,19 +476,35 @@ async function fetchSite(args) {
  * Save content for the active target (site or template).
  */
 async function saveTarget(targetId, targetType, flat, extra = {}) {
+  const ctx = getContext();
+  const revisionKey = getTargetRevisionKey(targetType, targetId);
+  const knownRevision =
+    ctx?._targetRevisions && typeof ctx._targetRevisions === "object"
+      ? ctx._targetRevisions[revisionKey]
+      : null;
+  const body = { content: flat, ...knownRevision, ...extra };
+
   if (targetType === "template") {
-    const body = { content: flat, ...extra };
     const put = await apiFetch(`/api/v1/templates/${encodeURIComponent(targetId)}`, {
       method: "PUT",
       body,
     });
+    const freshRevision = extractTargetRevision(targetType, put);
+    if (freshRevision) {
+      if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object") ctx._targetRevisions = {};
+      ctx._targetRevisions[revisionKey] = freshRevision;
+    }
     return { id: put.slug || targetId, url: null, type: "template" };
   }
-  const body = { content: flat, ...extra };
   const put = await apiFetch(`/api/v1/sites/${encodeURIComponent(targetId)}`, {
     method: "PUT",
     body,
   });
+  const freshRevision = extractTargetRevision(targetType, put);
+  if (freshRevision) {
+    if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object") ctx._targetRevisions = {};
+    ctx._targetRevisions[revisionKey] = freshRevision;
+  }
   return { id: put.id, url: getEditorUrl(put.id || targetId), type: "site" };
 }
 
