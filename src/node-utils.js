@@ -1,22 +1,47 @@
-const { parseMaybeJson } = require('./helpers');
+const { parseMaybeJson } = require("./helpers");
 
 const VALID_COMPONENTS = new Set([
-  'Audio', 'Background', 'Button', 'ButtonList', 'Container', 'ContainerGroup',
-  'Divider', 'Embed', 'Footer', 'Form', 'FormElement', 'Header', 'Image',
-  'ImageList', 'Map', 'MapPoint', 'Modal', 'Nav', 'Spacer', 'Text', 'Video',
+  "Audio",
+  "Background",
+  "Button",
+  "ButtonList",
+  "Container",
+  "ContainerGroup",
+  "Divider",
+  "Embed",
+  "Footer",
+  "Form",
+  "FormElement",
+  "Header",
+  "Image",
+  "ImageList",
+  "Map",
+  "MapPoint",
+  "Modal",
+  "Nav",
+  "Spacer",
+  "Text",
+  "Video",
 ]);
 
 const CANVAS_COMPONENTS = new Set([
-  'Container', 'ContainerGroup', 'Footer', 'Header', 'Nav', 'Form', 'Background', 'Modal',
+  "Container",
+  "ContainerGroup",
+  "Footer",
+  "Header",
+  "Nav",
+  "Form",
+  "Background",
+  "Modal",
 ]);
 
 /** Collect a node and all its descendants from a flat map */
 function collectSubtree(flat, nodeId) {
   const result = {};
-  const walk = (id) => {
+  const walk = id => {
     if (!flat[id] || result[id]) return;
     result[id] = flat[id];
-    for (const child of (flat[id].nodes || [])) walk(child);
+    for (const child of flat[id].nodes || []) walk(child);
   };
   walk(nodeId);
   return result;
@@ -39,8 +64,8 @@ function sanitizeNodes(rawNodes, existingFlat, sectionContainerId) {
   // Step 1: Parse and validate — only keep nodes with valid component types
   for (const [id, rawNode] of Object.entries(rawNodes)) {
     if (id === sectionContainerId) continue; // never overwrite the container
-    const node = typeof rawNode === 'string' ? parseMaybeJson(rawNode) : rawNode;
-    if (!node || typeof node !== 'object') continue;
+    const node = typeof rawNode === "string" ? parseMaybeJson(rawNode) : rawNode;
+    if (!node || typeof node !== "object") continue;
     if (!node.type?.resolvedName || !VALID_COMPONENTS.has(node.type.resolvedName)) continue;
     if (existingFlat[id]) continue; // don't overwrite existing nodes
     clean[id] = node;
@@ -53,18 +78,18 @@ function sanitizeNodes(rawNodes, existingFlat, sectionContainerId) {
     const isCanvas = CANVAS_COMPONENTS.has(node.type.resolvedName);
     node.isCanvas = isCanvas;
     if (!Array.isArray(node.nodes)) node.nodes = [];
-    if (!node.linkedNodes || typeof node.linkedNodes !== 'object') node.linkedNodes = {};
+    if (!node.linkedNodes || typeof node.linkedNodes !== "object") node.linkedNodes = {};
     if (node.hidden == null) node.hidden = false;
     if (!node.displayName) node.displayName = node.type.resolvedName;
     if (!node.custom) node.custom = {};
     if (!node.props) node.props = {};
     // className is the canonical styling prop; ensure it exists (may be empty string)
-    if (node.props.className == null) node.props.className = '';
+    if (node.props.className == null) node.props.className = "";
 
     // Strip class/className/style attributes from Text content — AI keeps adding them
-    if (node.type.resolvedName === 'Text' && node.props.root?.text) {
+    if (node.type.resolvedName === "Text" && node.props.root?.text) {
       node.props.root.text = node.props.root.text
-        .replace(/\s*(class|className|style)="[^"]*"/gi, '')
+        .replace(/\s*(class|className|style)="[^"]*"/gi, "")
         .replace(/<(p|div|h[1-6]|span)[^>]*>/gi, (match, tag) => `<${tag}>`)
         .trim();
     }
@@ -121,11 +146,17 @@ function findSectionRoot(flat, nodeId) {
   while (cur) {
     const n = flat[cur];
     if (!n) break;
-    if (n.props?.type === 'section' || n.parent === 'page_home' || n.parent === 'ROOT') return cur;
+    if (n.props?.type === "section" || n.parent === "page_home" || n.parent === "ROOT") return cur;
     if (!n.parent) break;
     cur = n.parent;
   }
   return nodeId;
 }
 
-module.exports = { VALID_COMPONENTS, CANVAS_COMPONENTS, collectSubtree, sanitizeNodes, findSectionRoot };
+module.exports = {
+  VALID_COMPONENTS,
+  CANVAS_COMPONENTS,
+  collectSubtree,
+  sanitizeNodes,
+  findSectionRoot,
+};

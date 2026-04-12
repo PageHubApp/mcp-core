@@ -4,7 +4,7 @@
  * @param {string} id
  */
 function isPageNode(flat, id) {
-  return flat[id]?.props?.type === 'page';
+  return flat[id]?.props?.type === "page";
 }
 
 /**
@@ -19,7 +19,7 @@ function resolveToolDefaultPageNodeId({ flat, ctx, explicitPageId }) {
   if (!ctx.fillMode && ctx.activePageNodeId && isPageNode(flat, ctx.activePageNodeId)) {
     return ctx.activePageNodeId;
   }
-  return isPageNode(flat, 'page_home') ? 'page_home' : null;
+  return isPageNode(flat, "page_home") ? "page_home" : null;
 }
 
 module.exports = { isPageNode, resolveToolDefaultPageNodeId };

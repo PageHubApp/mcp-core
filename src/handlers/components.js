@@ -1,5 +1,5 @@
-const { apiFetch } = require('../api-fetch');
-const { getContext } = require('../context');
+const { apiFetch } = require("../api-fetch");
+const { getContext } = require("../context");
 const {
   applyNodePatches,
   normalizeNodePatchArgs,
@@ -7,17 +7,17 @@ const {
   assertPatchBlockNodeArgs,
   assertPatchBlockBulkItem,
   mergeStrList,
-} = require('../helpers');
+} = require("../helpers");
 const {
   hierarchicalLibraryToFlat,
   flatLibraryToHierarchical,
   formatBlockNodeManifest,
-} = require('../structure-ingest');
-const { quickA11yAudit } = require('../a11y-check');
+} = require("../structure-ingest");
+const { quickA11yAudit } = require("../a11y-check");
 
 async function fetchComponents(params) {
   const qs = params.toString();
-  return apiFetch(`/api/v1/components${qs ? `?${qs}` : ''}`);
+  return apiFetch(`/api/v1/components${qs ? `?${qs}` : ""}`);
 }
 
 async function fetchComponent(slug) {
@@ -29,23 +29,25 @@ function detectUsedBlockSlugs() {
   try {
     const ctx = getContext();
     const flat = ctx?._pendingFlatMap;
-    if (!flat || typeof flat !== 'object') return [];
+    if (!flat || typeof flat !== "object") return [];
     const slugSet = new Set();
     for (const [key, node] of Object.entries(flat)) {
       // Prefer explicit source metadata (stamped by apply_kit_block)
       const src = node?.custom?.source;
-      if (src?.type === 'block' && src.block) {
+      if (src?.type === "block" && src.block) {
         slugSet.add(src.block);
         continue;
       }
       // Fallback: kit node IDs follow pattern: kit_<slug_with_underscores>_<hash>_n<N>
       const match = key.match(/^kit_(.+?)_[a-f0-9]{8}_n\d+$/);
       if (match) {
-        slugSet.add(match[1].replace(/_/g, '-'));
+        slugSet.add(match[1].replace(/_/g, "-"));
       }
     }
     return [...slugSet];
-  } catch { return []; }
+  } catch {
+    return [];
+  }
 }
 
 module.exports = {
@@ -60,21 +62,21 @@ module.exports = {
     }
 
     const params = new URLSearchParams();
-    if (args.q) params.set('q', args.q);
-    if (categories.length === 1) params.set('category', categories[0]);
-    else if (categories.length > 1) params.set('category', categories.join(','));
-    if (args.subcategory) params.set('subcategory', args.subcategory);
-    if (args.tag) params.set('tag', args.tag);
-    if (args.preset) params.set('preset', args.preset);
-    if (args.source) params.set('source', args.source);
-    if (args.group) params.set('group', args.group);
-    if (styles.length === 1) params.set('style', styles[0]);
-    else if (styles.length > 1) params.set('style', styles.join(','));
-    if (args.blockType) params.set('blockType', args.blockType);
-    if (args.featured) params.set('featured', 'true');
-    if (args.sort) params.set('sort', args.sort);
-    if (args.page) params.set('page', String(args.page));
-    if (args.limit) params.set('limit', String(args.limit));
+    if (args.q) params.set("q", args.q);
+    if (categories.length === 1) params.set("category", categories[0]);
+    else if (categories.length > 1) params.set("category", categories.join(","));
+    if (args.subcategory) params.set("subcategory", args.subcategory);
+    if (args.tag) params.set("tag", args.tag);
+    if (args.preset) params.set("preset", args.preset);
+    if (args.source) params.set("source", args.source);
+    if (args.group) params.set("group", args.group);
+    if (styles.length === 1) params.set("style", styles[0]);
+    else if (styles.length > 1) params.set("style", styles.join(","));
+    if (args.blockType) params.set("blockType", args.blockType);
+    if (args.featured) params.set("featured", "true");
+    if (args.sort) params.set("sort", args.sort);
+    if (args.page) params.set("page", String(args.page));
+    if (args.limit) params.set("limit", String(args.limit));
 
     let data = await fetchComponents(params);
     let { components, total, page, pages } = data;
@@ -86,7 +88,7 @@ module.exports = {
     // Fallback 1: drop text query `q` if it returned zero hits
     if (!components.length && args.q) {
       const wide = new URLSearchParams(params);
-      wide.delete('q');
+      wide.delete("q");
       const data2 = await fetchComponents(wide);
       if (data2.components?.length) {
         data = data2;
@@ -99,10 +101,10 @@ module.exports = {
     }
 
     // Fallback 2: drop style filter if buildStyle narrowed to zero (show universal blocks)
-    if (!components.length && ctx.buildStyle && params.has('style')) {
+    if (!components.length && ctx.buildStyle && params.has("style")) {
       const wide = new URLSearchParams(params);
-      wide.delete('style');
-      if (args.q) wide.delete('q');
+      wide.delete("style");
+      if (args.q) wide.delete("q");
       const data2 = await fetchComponents(wide);
       if (data2.components?.length) {
         data = data2;
@@ -115,9 +117,9 @@ module.exports = {
     }
 
     // Fallback 3: drop subcategory — model often picks a subcategory with no indexed blocks
-    if (!components.length && (args.subcategory || params.has('subcategory'))) {
+    if (!components.length && (args.subcategory || params.has("subcategory"))) {
       const wide = new URLSearchParams(params);
-      wide.delete('subcategory');
+      wide.delete("subcategory");
       const data2 = await fetchComponents(wide);
       if (data2.components?.length) {
         data = data2;
@@ -132,8 +134,8 @@ module.exports = {
     // Fallback 4: last resort — top popular public blocks library-wide (never leave the agent empty-handed)
     if (!components.length) {
       const last = new URLSearchParams();
-      last.set('limit', '24');
-      last.set('sort', 'popular');
+      last.set("limit", "24");
+      last.set("sort", "popular");
       const data2 = await fetchComponents(last);
       if (data2.components?.length) {
         data = data2;
@@ -149,9 +151,8 @@ module.exports = {
       return {
         content: [
           {
-            type: 'text',
-            text:
-              'No blocks found and the library returned no public components. Check that the component library is populated.',
+            type: "text",
+            text: "No blocks found and the library returned no public components. Check that the component library is populated.",
           },
         ],
       };
@@ -159,14 +160,16 @@ module.exports = {
 
     const lines = components.map(c => {
       const catLabel = c.subcategory ? `${c.category}/${c.subcategory}` : c.category;
-      const meta = [catLabel, c.preset && `preset:${c.preset}`, c.style && `style:${c.style}`].filter(Boolean).join(', ');
+      const meta = [catLabel, c.preset && `preset:${c.preset}`, c.style && `style:${c.style}`]
+        .filter(Boolean)
+        .join(", ");
       let line = `• \`${c.slug}\` — ${c.name} (${meta})`;
-      let detail = c.description || c.visual || '';
+      let detail = c.description || c.visual || "";
       if (c.description && c.visual && String(c.visual).trim() !== String(c.description).trim()) {
         detail = `${c.description}\n  Visual: ${c.visual}`;
       }
       line += `\n  ${detail}`;
-      if ((c.tags || []).length) line += `\n  Tags: ${c.tags.join(', ')}`;
+      if ((c.tags || []).length) line += `\n  Tags: ${c.tags.join(", ")}`;
       return line;
     });
 
@@ -178,55 +181,56 @@ module.exports = {
         ? `**More exist:** ${totalCount} total — this is **page ${pageNum} of ${pageCount}**. Call \`search_blocks\` again with the same filters and \`page: ${pageNum + 1}\` (etc.) to see more. For a full category slug list in one shot, use \`list_blocks({ category: "…" })\` (planner only).\n\n`
         : totalCount > components.length
           ? `**Note:** ${totalCount} total matches; this response lists ${components.length}. If you need more breadth, raise \`limit\` (max 100) or use \`list_blocks\`.\n\n`
-          : '';
+          : "";
 
-    let widenedNote = '';
+    let widenedNote = "";
     if (genericFallback) {
-      widenedNote =
-        `**Fallback — not an exact match:** Nothing matched the previous filters (text search, category, style, or subcategory may be too narrow or the index has no hits for those terms). Below are **top popular** blocks from the **whole library**. Pick the closest \`slug\` for the section type you need (e.g. any hero for a “baker” site) and **rewrite copy** in patches for the user’s topic — do not keep searching in a loop.\n\n`;
+      widenedNote = `**Fallback — not an exact match:** Nothing matched the previous filters (text search, category, style, or subcategory may be too narrow or the index has no hits for those terms). Below are **top popular** blocks from the **whole library**. Pick the closest \`slug\` for the section type you need (e.g. any hero for a “baker” site) and **rewrite copy** in patches for the user’s topic — do not keep searching in a loop.\n\n`;
     } else if (subcategoryDropped) {
-      widenedNote =
-        `*(Subcategory widened: no blocks under that subcategory — showing the rest of this category.)*\n\n`;
+      widenedNote = `*(Subcategory widened: no blocks under that subcategory — showing the rest of this category.)*\n\n`;
     } else if (styleWidened) {
       widenedNote = `*(Style widened: no \`${ctx.buildStyle}\` blocks for this category — showing universal blocks.)*\n\n`;
     } else if (broadened) {
       widenedNote = `*(Search widened: dropped text query \`q\` because it returned no hits — prefer category/tag alone next time.)*\n\n`;
     }
 
-    const head = `# Blocks (${totalCount} total, page ${pageNum}/${pageCount})${ctx.buildStyle ? ` [style: ${ctx.buildStyle}]` : ''}\n\n${widenedNote}${paginationNote}`;
+    const head = `# Blocks (${totalCount} total, page ${pageNum}/${pageCount})${ctx.buildStyle ? ` [style: ${ctx.buildStyle}]` : ""}\n\n${widenedNote}${paginationNote}`;
 
     // Recommend the most-used block to help the model pick
     const topBlock = [...components].sort((a, b) => (b.uses || 0) - (a.uses || 0))[0];
-    const recommendation = topBlock
-      ? `\nRecommended: \`${topBlock.slug}\` (most used).`
-      : '';
+    const recommendation = topBlock ? `\nRecommended: \`${topBlock.slug}\` (most used).` : "";
 
     // Warn about blocks already used on this page to encourage variety
     const usedSlugs = detectUsedBlockSlugs();
-    const usedNote = usedSlugs.length > 0
-      ? `\n\n⚠️ Already used on this page: ${usedSlugs.map(s => `\`${s}\``).join(', ')}. Pick a DIFFERENT block for variety.`
-      : '';
+    const usedNote =
+      usedSlugs.length > 0
+        ? `\n\n⚠️ Already used on this page: ${usedSlugs.map(s => `\`${s}\``).join(", ")}. Pick a DIFFERENT block for variety.`
+        : "";
 
     return {
-      content: [{
-        type: 'text',
-        text: `${head}${lines.join('\n\n')}\n\nPass a \`slug\` to apply_kit_block. Do NOT modify or invent slugs.${recommendation}${usedNote}`,
-      }],
+      content: [
+        {
+          type: "text",
+          text: `${head}${lines.join("\n\n")}\n\nPass a \`slug\` to apply_kit_block. Do NOT modify or invent slugs.${recommendation}${usedNote}`,
+        },
+      ],
     };
   },
 
   async get_block(args) {
     const { slug } = args;
-    if (!slug) throw new Error('slug is required.');
+    if (!slug) throw new Error("slug is required.");
 
     const raw = await fetchComponent(slug);
     const c = raw.component || raw;
 
     return {
-      content: [{
-        type: 'text',
-        text: `# ${c.name} (\`${c.slug}\`)\n\n**Category:** ${c.category}${c.preset || c.source ? `\n**Preset:** ${c.preset || c.source}${c.source && !c.preset ? ' (from legacy source field)' : ''}` : ''}${c.group ? `\n**Group:** ${c.group}` : ''}\n**Description:** ${c.description || ''}\n**Visual:** ${c.visual || ''}\n**Tags:** ${(c.tags || []).join(', ')}\n**Uses:** ${c.uses} · **Likes:** ${c.likes}\n\n**Patching:** Call \`list_block_nodes({ slug: "${c.slug}" })\` for deterministic \`lib_*\` node ids, then \`patch_block\` / \`patch_block_bulk\` (same patch fields as \`patch_site_node\`).\n\n## Structure\n\n\`\`\`json\n${JSON.stringify(c.structure, null, 2)}\n\`\`\``,
-      }],
+      content: [
+        {
+          type: "text",
+          text: `# ${c.name} (\`${c.slug}\`)\n\n**Category:** ${c.category}${c.preset || c.source ? `\n**Preset:** ${c.preset || c.source}${c.source && !c.preset ? " (from legacy source field)" : ""}` : ""}${c.group ? `\n**Group:** ${c.group}` : ""}\n**Description:** ${c.description || ""}\n**Visual:** ${c.visual || ""}\n**Tags:** ${(c.tags || []).join(", ")}\n**Uses:** ${c.uses} · **Likes:** ${c.likes}\n\n**Patching:** Call \`list_block_nodes({ slug: "${c.slug}" })\` for deterministic \`lib_*\` node ids, then \`patch_block\` / \`patch_block_bulk\` (same patch fields as \`patch_site_node\`).\n\n## Structure\n\n\`\`\`json\n${JSON.stringify(c.structure, null, 2)}\n\`\`\``,
+        },
+      ],
     };
   },
 
@@ -235,97 +239,145 @@ module.exports = {
    */
   async list_block_nodes(args) {
     const { slug } = args;
-    if (!slug) throw new Error('slug is required.');
+    if (!slug) throw new Error("slug is required.");
 
     const raw = await fetchComponent(slug);
     const c = raw.component || raw;
-    if (!c?.structure || typeof c.structure !== 'object') {
-      throw new Error('Component has no structure to flatten.');
+    if (!c?.structure || typeof c.structure !== "object") {
+      throw new Error("Component has no structure to flatten.");
     }
 
     const { nodes, rootId } = hierarchicalLibraryToFlat(c.structure, slug);
     const manifest = formatBlockNodeManifest(nodes, rootId, slug);
 
     return {
-      content: [{
-        type: 'text',
-        text: `# ${c.name} (\`${c.slug}\`)\n\n${manifest}\n\nPatch with the same \`slug\` you passed here (\`${slug}\`) so ids stay aligned.`,
-      }],
+      content: [
+        {
+          type: "text",
+          text: `# ${c.name} (\`${c.slug}\`)\n\n${manifest}\n\nPatch with the same \`slug\` you passed here (\`${slug}\`) so ids stay aligned.`,
+        },
+      ],
     };
   },
 
   async save_block(args) {
-    const { name, slug, description, visual, category, subcategory, tags, preset, source, group, style, structure, isPublic, isCategoryPreview } = args;
+    const {
+      name,
+      slug,
+      description,
+      visual,
+      category,
+      subcategory,
+      tags,
+      preset,
+      source,
+      group,
+      style,
+      structure,
+      isPublic,
+      isCategoryPreview,
+    } = args;
     if (!name || !slug || !category || !structure) {
-      throw new Error('name, slug, category, and structure are required.');
+      throw new Error("name, slug, category, and structure are required.");
     }
 
-    const data = await apiFetch('/api/v1/components', {
-      method: 'POST',
-      body: { name, slug, description, visual, category, subcategory, tags, preset, source, group, style, structure, isPublic, isCategoryPreview },
+    const data = await apiFetch("/api/v1/components", {
+      method: "POST",
+      body: {
+        name,
+        slug,
+        description,
+        visual,
+        category,
+        subcategory,
+        tags,
+        preset,
+        source,
+        group,
+        style,
+        structure,
+        isPublic,
+        isCategoryPreview,
+      },
     });
 
     const audit = quickA11yAudit(structure);
-    const auditText = audit ? `\n\n---\n${audit.summary}` : '';
+    const auditText = audit ? `\n\n---\n${audit.summary}` : "";
     return {
-      content: [{
-        type: 'text',
-        text: `Block saved: **${data.component.name}** (\`${data.component.slug}\`)\nPublic: ${data.component.isPublic}\nCategory: ${data.component.category}${auditText}`,
-      }],
+      content: [
+        {
+          type: "text",
+          text: `Block saved: **${data.component.name}** (\`${data.component.slug}\`)\nPublic: ${data.component.isPublic}\nCategory: ${data.component.category}${auditText}`,
+        },
+      ],
     };
   },
 
   async update_block(args) {
     const { slug } = args;
-    if (!slug) throw new Error('slug is required.');
+    if (!slug) throw new Error("slug is required.");
 
     const body = {};
-    const fields = ['name', 'description', 'visual', 'category', 'subcategory', 'tags', 'preset', 'source', 'group', 'style', 'structure', 'isPublic', 'isFeatured', 'isCategoryPreview', 'newSlug'];
+    const fields = [
+      "name",
+      "description",
+      "visual",
+      "category",
+      "subcategory",
+      "tags",
+      "preset",
+      "source",
+      "group",
+      "style",
+      "structure",
+      "isPublic",
+      "isFeatured",
+      "isCategoryPreview",
+      "newSlug",
+    ];
     for (const f of fields) {
       if (args[f] !== undefined) {
-        body[f === 'newSlug' ? 'slug' : f] = args[f];
+        body[f === "newSlug" ? "slug" : f] = args[f];
       }
     }
 
     if (Object.keys(body).length === 0) {
-      throw new Error('Nothing to update. Provide at least one field.');
+      throw new Error("Nothing to update. Provide at least one field.");
     }
 
     const data = await apiFetch(`/api/v1/components/${encodeURIComponent(slug)}`, {
-      method: 'PUT',
+      method: "PUT",
       body,
     });
 
     const c = data.component;
     const audit = args.structure ? quickA11yAudit(args.structure) : null;
-    const auditText = audit ? `\n\n---\n${audit.summary}` : '';
+    const auditText = audit ? `\n\n---\n${audit.summary}` : "";
     return {
-      content: [{
-        type: 'text',
-        text: `Block updated: **${c.name}** (\`${c.slug}\`)\nCategory: ${c.category}\nPublic: ${c.isPublic}${auditText}`,
-      }],
+      content: [
+        {
+          type: "text",
+          text: `Block updated: **${c.name}** (\`${c.slug}\`)\nCategory: ${c.category}\nPublic: ${c.isPublic}${auditText}`,
+        },
+      ],
     };
   },
 
   async patch_block(args) {
     const { slug, nodeId } = args;
-    if (!slug) throw new Error('slug is required.');
-    if (!nodeId) throw new Error('nodeId is required.');
+    if (!slug) throw new Error("slug is required.");
+    if (!nodeId) throw new Error("nodeId is required.");
     assertPatchBlockNodeArgs(args);
 
     const data = await apiFetch(`/api/v1/components/${encodeURIComponent(slug)}`);
     const c = data.component;
-    if (!c?.structure || typeof c.structure !== 'object') {
-      throw new Error('Component has no structure to patch.');
+    if (!c?.structure || typeof c.structure !== "object") {
+      throw new Error("Component has no structure to patch.");
     }
 
     const { nodes, rootId } = hierarchicalLibraryToFlat(c.structure, slug);
     const flat = JSON.parse(JSON.stringify(nodes));
-    const {
-      nodesPatch,
-      unsetProps,
-      unsetClasses,
-    } = args;
+    const { nodesPatch, unsetProps, unsetClasses } = args;
     applyNodePatches(
       flat,
       nodeId,
@@ -334,33 +386,35 @@ module.exports = {
     const newStructure = flatLibraryToHierarchical(flat, rootId);
 
     await apiFetch(`/api/v1/components/${encodeURIComponent(slug)}`, {
-      method: 'PUT',
+      method: "PUT",
       body: { structure: newStructure },
     });
 
     return {
-      content: [{
-        type: 'text',
-        text: `Block \`${slug}\` patched (node \`${nodeId}\`). Structure saved. Re-run list_block_nodes if you renamed the slug.`,
-      }],
+      content: [
+        {
+          type: "text",
+          text: `Block \`${slug}\` patched (node \`${nodeId}\`). Structure saved. Re-run list_block_nodes if you renamed the slug.`,
+        },
+      ],
     };
   },
 
   async patch_block_bulk(args) {
     const { slug } = args;
-    if (!slug) throw new Error('slug is required.');
+    if (!slug) throw new Error("slug is required.");
 
     const list = normalizeBulkPatchesFromArgs(args);
     if (!Array.isArray(list) || list.length === 0) {
       throw new Error(
-        'patches must be a non-empty array of { nodeId, classNamePatch?, propsPatch?, ... } (same shape as patch_site_bulk).'
+        "patches must be a non-empty array of { nodeId, classNamePatch?, propsPatch?, ... } (same shape as patch_site_bulk)."
       );
     }
 
     const data = await apiFetch(`/api/v1/components/${encodeURIComponent(slug)}`);
     const c = data.component;
-    if (!c?.structure || typeof c.structure !== 'object') {
-      throw new Error('Component has no structure to patch.');
+    if (!c?.structure || typeof c.structure !== "object") {
+      throw new Error("Component has no structure to patch.");
     }
 
     const { nodes, rootId } = hierarchicalLibraryToFlat(c.structure, slug);
@@ -368,7 +422,7 @@ module.exports = {
     const touched = [];
     for (let i = 0; i < list.length; i++) {
       const item = list[i];
-      if (!item || typeof item.nodeId !== 'string') {
+      if (!item || typeof item.nodeId !== "string") {
         throw new Error(`patches[${i}]: missing nodeId`);
       }
       assertPatchBlockBulkItem(item, i);
@@ -380,22 +434,24 @@ module.exports = {
     const newStructure = flatLibraryToHierarchical(flat, rootId);
 
     await apiFetch(`/api/v1/components/${encodeURIComponent(slug)}`, {
-      method: 'PUT',
+      method: "PUT",
       body: { structure: newStructure },
     });
 
     return {
-      content: [{
-        type: 'text',
-        text: `Block \`${slug}\` patched (${touched.length} nodes): ${touched.join(', ')}. Structure saved.`,
-      }],
+      content: [
+        {
+          type: "text",
+          text: `Block \`${slug}\` patched (${touched.length} nodes): ${touched.join(", ")}. Structure saved.`,
+        },
+      ],
     };
   },
 
   async delete_block(args) {
     const { slug } = args;
-    if (!slug) throw new Error('slug is required.');
-    await apiFetch(`/api/v1/components/${encodeURIComponent(slug)}`, { method: 'DELETE' });
-    return { content: [{ type: 'text', text: `Block "${slug}" deleted.` }] };
+    if (!slug) throw new Error("slug is required.");
+    await apiFetch(`/api/v1/components/${encodeURIComponent(slug)}`, { method: "DELETE" });
+    return { content: [{ type: "text", text: `Block "${slug}" deleted.` }] };
   },
 };

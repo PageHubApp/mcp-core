@@ -1,7 +1,7 @@
-const { apiFetch } = require('../api-fetch');
-const { getContext } = require('../context');
-const { parseMaybeJson, mergeStrList } = require('../helpers');
-const { buildButtonClassFramework, validateButtonClasses } = require('../button-system');
+const { apiFetch } = require("../api-fetch");
+const { getContext } = require("../context");
+const { parseMaybeJson, mergeStrList } = require("../helpers");
+const { buildButtonClassFramework, validateButtonClasses } = require("../button-system");
 
 // Limits for compactComponentSchemaForFill — keeps schema payloads small for
 // parallel fill context windows without losing essential prop information.
@@ -171,23 +171,27 @@ const TECHNIQUE_TRANSFER_RULES = `
 
 /** Shrink schema JSON for parallel fills — full props enums blow context (100k+ tokens). */
 function compactComponentSchemaForFill(schema) {
-  if (!schema || typeof schema !== 'object') return schema;
+  if (!schema || typeof schema !== "object") return schema;
   const propsIn = schema.props || {};
   const propsOut = {};
   const keys = Object.keys(propsIn);
   for (let i = 0; i < keys.length && i < MAX_SCHEMA_PROPS; i++) {
     const k = keys[i];
     const v = propsIn[k];
-    if (!v || typeof v !== 'object') {
+    if (!v || typeof v !== "object") {
       propsOut[k] = v;
       continue;
     }
     propsOut[k] = {
       type: v.type,
-      description: typeof v.description === 'string' ? v.description.slice(0, MAX_DESCRIPTION_LENGTH) : v.description,
+      description:
+        typeof v.description === "string"
+          ? v.description.slice(0, MAX_DESCRIPTION_LENGTH)
+          : v.description,
     };
     if (Array.isArray(v.enum) && v.enum.length) {
-      propsOut[k].enum = v.enum.length <= MAX_ENUM_VALUES ? v.enum : v.enum.slice(0, MAX_ENUM_VALUES).concat(['…']);
+      propsOut[k].enum =
+        v.enum.length <= MAX_ENUM_VALUES ? v.enum : v.enum.slice(0, MAX_ENUM_VALUES).concat(["…"]);
     }
     if (v.default !== undefined) propsOut[k].default = v.default;
   }
@@ -213,22 +217,22 @@ module.exports = {
     let styles = mergeStrList(args.style, args.styles);
     if (styles.length === 0 && ctx.buildStyle) styles = [ctx.buildStyle];
 
-    const params = { limit: '200' };
+    const params = { limit: "200" };
     if (categories.length === 1) params.category = categories[0];
-    else if (categories.length > 1) params.category = categories.join(',');
+    else if (categories.length > 1) params.category = categories.join(",");
     if (styles.length === 1) params.style = styles[0];
-    else if (styles.length > 1) params.style = styles.join(',');
+    else if (styles.length > 1) params.style = styles.join(",");
     const qs = new URLSearchParams(params).toString();
     const data = await apiFetch(`/api/v1/components?${qs}`);
     const components = data.components || [];
 
     if (components.length === 0) {
-      return { content: [{ type: 'text', text: 'No block templates found.' }] };
+      return { content: [{ type: "text", text: "No block templates found." }] };
     }
 
     const byCategory = {};
     for (const comp of components) {
-      const cat = comp.category || 'uncategorized';
+      const cat = comp.category || "uncategorized";
       if (!byCategory[cat]) byCategory[cat] = [];
       byCategory[cat].push(comp);
     }
@@ -237,17 +241,19 @@ module.exports = {
     for (const [cat, templates] of Object.entries(byCategory)) {
       result.push(`\n## ${cat}`);
       for (const tpl of templates) {
-        const visual = tpl.visual ? `\nVisual: ${tpl.visual}` : '';
-        const tags = tpl.tags?.length ? `\nTags: ${tpl.tags.join(', ')}` : '';
+        const visual = tpl.visual ? `\nVisual: ${tpl.visual}` : "";
+        const tags = tpl.tags?.length ? `\nTags: ${tpl.tags.join(", ")}` : "";
         result.push(`\n### ${tpl.slug} — "${tpl.name}"${visual}${tags}`);
       }
     }
 
     return {
-      content: [{
-        type: 'text',
-        text: `# Available Block Templates\n\nUse these slugs with apply_kit_block(slug).\n${result.join('\n')}`,
-      }],
+      content: [
+        {
+          type: "text",
+          text: `# Available Block Templates\n\nUse these slugs with apply_kit_block(slug).\n${result.join("\n")}`,
+        },
+      ],
     };
   },
 
@@ -256,7 +262,10 @@ module.exports = {
     // Accept single component, comma-separated list, or omit for all
     const requested = args.components || args.component;
     if (requested) {
-      const names = requested.split(',').map(s => s.trim()).filter(Boolean);
+      const names = requested
+        .split(",")
+        .map(s => s.trim())
+        .filter(Boolean);
       const schemas = {};
       for (const name of names) {
         const data = await apiFetch(`/api/v1/schemas?component=${encodeURIComponent(name)}`);
@@ -265,90 +274,101 @@ module.exports = {
         }
       }
       if (Object.keys(schemas).length === 0) {
-        return { content: [{ type: 'text', text: `No schemas found for: ${names.join(', ')}` }] };
+        return { content: [{ type: "text", text: `No schemas found for: ${names.join(", ")}` }] };
       }
       const note = fillMode
-        ? '\n\n(Fill mode: prop lists are truncated — ask for a specific component again if you need more detail.)\n'
-        : '';
-      return { content: [{ type: 'text', text: `${JSON.stringify(schemas, null, 2)}${note}` }] };
+        ? "\n\n(Fill mode: prop lists are truncated — ask for a specific component again if you need more detail.)\n"
+        : "";
+      return { content: [{ type: "text", text: `${JSON.stringify(schemas, null, 2)}${note}` }] };
     }
     if (fillMode) {
       return {
-        content: [{
-          type: 'text',
-          text:
-            'In parallel fill, omitting `components` is not supported — pass a comma list (e.g. `Container,Text,Button`). ' +
-            'Prefer `search_blocks` + `apply_kit_block` instead of loading all schemas.',
-        }],
+        content: [
+          {
+            type: "text",
+            text:
+              "In parallel fill, omitting `components` is not supported — pass a comma list (e.g. `Container,Text,Button`). " +
+              "Prefer `search_blocks` + `apply_kit_block` instead of loading all schemas.",
+          },
+        ],
       };
     }
-    const data = await apiFetch('/api/v1/schemas');
-    return { content: [{ type: 'text', text: JSON.stringify(data.schemas, null, 2) }] };
+    const data = await apiFetch("/api/v1/schemas");
+    return { content: [{ type: "text", text: JSON.stringify(data.schemas, null, 2) }] };
   },
 
   async get_style_reference() {
-    return { content: [{ type: 'text', text: STYLE_REFERENCE }] };
+    return { content: [{ type: "text", text: STYLE_REFERENCE }] };
   },
 
   async generate_button_classes(args) {
     const out = buildButtonClassFramework(args || {});
     return {
-      content: [{
-        type: 'text',
-        text: JSON.stringify({
-          className: out.className,
-          activeModifiers: out.activeModifiers,
-          variant: out.variant,
-          note:
-            'Framework output: canonical starter classes + modifiers. You can append custom classes; run validate_button_classes before patch/save.',
-        }, null, 2),
-      }],
+      content: [
+        {
+          type: "text",
+          text: JSON.stringify(
+            {
+              className: out.className,
+              activeModifiers: out.activeModifiers,
+              variant: out.variant,
+              note: "Framework output: canonical starter classes + modifiers. You can append custom classes; run validate_button_classes before patch/save.",
+            },
+            null,
+            2
+          ),
+        },
+      ],
     };
   },
 
   async validate_button_classes(args) {
     const out = validateButtonClasses(args || {});
-    return { content: [{ type: 'text', text: JSON.stringify(out, null, 2) }] };
+    return { content: [{ type: "text", text: JSON.stringify(out, null, 2) }] };
   },
 
   async list_presets(args) {
-    const a = args && typeof args === 'object' ? args : {};
-    const qs = a.mood ? `?mood=${encodeURIComponent(a.mood)}` : '';
+    const a = args && typeof args === "object" ? args : {};
+    const qs = a.mood ? `?mood=${encodeURIComponent(a.mood)}` : "";
     const data = await apiFetch(`/api/v1/presets${qs}`);
     const presets = data.presets || [];
 
     if (presets.length === 0) {
-      return { content: [{ type: 'text', text: 'No presets found.' }] };
+      return { content: [{ type: "text", text: "No presets found." }] };
     }
 
     // compact / brief: id + human name only (planner default via agent) — saves thousands of tokens vs description blurbs
     const useCompact = a.compact === true || a.brief === true;
     if (useCompact) {
-      const lines = presets.map((p) => `• \`${p.presetId}\` — ${p.name || p.presetId}`);
+      const lines = presets.map(p => `• \`${p.presetId}\` — ${p.name || p.presetId}`);
       return {
-        content: [{
-          type: 'text',
-          text:
-            '# Theme presets (compact)\n\n' +
-            'Use `set_theme({ preset: "preset-id" })`. Full palette/fonts load from the preset.\n\n' +
-            `${lines.join('\n')}\n\n` +
-            'Pass `{ compact: false }` if you need longer descriptions per preset.',
-        }],
+        content: [
+          {
+            type: "text",
+            text:
+              "# Theme presets (compact)\n\n" +
+              'Use `set_theme({ preset: "preset-id" })`. Full palette/fonts load from the preset.\n\n' +
+              `${lines.join("\n")}\n\n` +
+              "Pass `{ compact: false }` if you need longer descriptions per preset.",
+          },
+        ],
       };
     }
 
-    const lines = presets.map((p) => {
-      const desc = (p.description || '').replace(/\s+/g, ' ').trim();
+    const lines = presets.map(p => {
+      const desc = (p.description || "").replace(/\s+/g, " ").trim();
       const short = desc.length > 140 ? `${desc.slice(0, 137)}…` : desc;
       return `• \`${p.presetId}\` — **${p.name}** — ${short}`;
     });
     return {
-      content: [{
-        type: 'text',
-        text:
-          '# Theme Presets\n\nUse `set_theme({ preset: "preset-id" })`. One line per preset — pick by name/mood; full palette loads from the preset.\n\n' +
-          `${lines.join('\n')}`,
-      }],
+      content: [
+        {
+          type: "text",
+          text:
+            '# Theme Presets\n\nUse `set_theme({ preset: "preset-id" })`. One line per preset — pick by name/mood; full palette loads from the preset.\n\n' +
+            `${lines.join("\n")}`,
+        },
+      ],
     };
   },
 };

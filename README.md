@@ -40,36 +40,36 @@ Get a free API key by calling the `register` tool with your email, or sign up at
 
 ### Core
 
-| Export | Description |
-|--------|-------------|
+| Export                    | Description                                                              |
+| ------------------------- | ------------------------------------------------------------------------ |
 | `runWithContext(ctx, fn)` | Run a function with per-request context (apiKey, apiBaseUrl, activeSite) |
-| `getContext()` | Get the current request context |
-| `apiFetch(path, opts)` | Authenticated fetch against the PageHub API |
-| `normalizeBaseUrl(url)` | Strip trailing slashes from URLs |
+| `getContext()`            | Get the current request context                                          |
+| `apiFetch(path, opts)`    | Authenticated fetch against the PageHub API                              |
+| `normalizeBaseUrl(url)`   | Strip trailing slashes from URLs                                         |
 
 ### Tools
 
-| Export | Description |
-|--------|-------------|
-| `getAllTools()` | All 49 tool schemas (MCP format with `inputSchema`) |
-| `getAgentTools()` | HTTP-only tool schemas (Claude API format with `input_schema`), excludes auth-sensitive tools |
-| `executeTool(name, args)` | Execute an HTTP-based tool by name within the current context |
-| `handlers` | Raw handler function map |
+| Export                    | Description                                                                                   |
+| ------------------------- | --------------------------------------------------------------------------------------------- |
+| `getAllTools()`           | All 49 tool schemas (MCP format with `inputSchema`)                                           |
+| `getAgentTools()`         | HTTP-only tool schemas (Claude API format with `input_schema`), excludes auth-sensitive tools |
+| `executeTool(name, args)` | Execute an HTTP-based tool by name within the current context                                 |
+| `handlers`                | Raw handler function map                                                                      |
 
 ### Helpers
 
-| Export | Description |
-|--------|-------------|
-| `parseMaybeJson(v)` | Safely parse a JSON string, return as-is on failure |
+| Export                                       | Description                                              |
+| -------------------------------------------- | -------------------------------------------------------- |
+| `parseMaybeJson(v)`                          | Safely parse a JSON string, return as-is on failure      |
 | `applyNodePatches(flatMap, nodeId, patches)` | Shallow-merge patch objects into a CraftJS flat node map |
-| `normalizeNodePatchArgs(raw)` | Parse and normalize raw patch arguments |
+| `normalizeNodePatchArgs(raw)`                | Parse and normalize raw patch arguments                  |
 
 ### Constants
 
-| Export | Description |
-|--------|-------------|
+| Export            | Description                                          |
+| ----------------- | ---------------------------------------------------- |
 | `HTTP_TOOL_NAMES` | Set of tool names with HTTP handlers in this package |
-| `AGENT_EXCLUDED` | Set of tool names excluded from the agent endpoint |
+| `AGENT_EXCLUDED`  | Set of tool names excluded from the agent endpoint   |
 
 ## HTTP Handlers (24 tools)
 

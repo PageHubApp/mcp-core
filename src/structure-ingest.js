@@ -3,19 +3,26 @@
  * and attach the root under sectionContainerId (empty section canvas).
  */
 
-const crypto = require('crypto');
-const { VALID_COMPONENTS, CANVAS_COMPONENTS } = require('./node-utils');
+const crypto = require("crypto");
+const { VALID_COMPONENTS, CANVAS_COMPONENTS } = require("./node-utils");
 
 function deepClone(o) {
   return JSON.parse(JSON.stringify(o));
 }
 
 function deepMerge(target, source) {
-  if (!source || typeof source !== 'object') return target;
+  if (!source || typeof source !== "object") return target;
   for (const k of Object.keys(source)) {
     const sv = source[k];
     const tv = target[k];
-    if (sv && typeof sv === 'object' && !Array.isArray(sv) && tv && typeof tv === 'object' && !Array.isArray(tv)) {
+    if (
+      sv &&
+      typeof sv === "object" &&
+      !Array.isArray(sv) &&
+      tv &&
+      typeof tv === "object" &&
+      !Array.isArray(tv)
+    ) {
       deepMerge(tv, sv);
     } else {
       target[k] = sv;
@@ -25,29 +32,31 @@ function deepMerge(target, source) {
 }
 
 function slugify(s) {
-  return String(s || 'kit')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '_')
-    .replace(/^_|_$/g, '')
-    .slice(0, 40) || 'kit';
+  return (
+    String(s || "kit")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "_")
+      .replace(/^_|_$/g, "")
+      .slice(0, 40) || "kit"
+  );
 }
 
 /**
  * Stable per-parent+slug prefix so one apply_kit_block run is deterministic.
  * Optional idSalt breaks collisions when the same block is applied again under the same parent.
  */
-function makeKitInstancePrefix(slug, sectionContainerId, idSalt = '') {
+function makeKitInstancePrefix(slug, sectionContainerId, idSalt = "") {
   const h = crypto
-    .createHash('sha256')
-    .update(`${String(sectionContainerId)}\n${String(slug)}\n${String(idSalt)}`, 'utf8')
-    .digest('hex')
+    .createHash("sha256")
+    .update(`${String(sectionContainerId)}\n${String(slug)}\n${String(idSalt)}`, "utf8")
+    .digest("hex")
     .slice(0, 8);
   return `kit_${slugify(slug)}_${h}`;
 }
 
 function normalizeTemplateProps(props, resolvedName) {
   const p = deepClone(props || {});
-  if (resolvedName === 'FormElement') {
+  if (resolvedName === "FormElement") {
     if (p.fieldType && !p.type) p.type = p.fieldType;
     if (p.fieldName && !p.name) p.name = p.fieldName;
     delete p.fieldType;
@@ -59,31 +68,31 @@ function normalizeTemplateProps(props, resolvedName) {
 }
 
 function applyContentOverride(node, resolvedName, override) {
-  if (!override || typeof override !== 'object') return;
+  if (!override || typeof override !== "object") return;
   const props = node.props;
-  if (resolvedName === 'Text' && override.text != null) props.text = override.text;
-  if (resolvedName === 'Text' && override.tagName) {
+  if (resolvedName === "Text" && override.text != null) props.text = override.text;
+  if (resolvedName === "Text" && override.tagName) {
     const t = String(override.tagName).split(/[,\s]/)[0].toLowerCase();
     if (/^[a-z][a-z0-6]*$/.test(t)) props.tagName = t;
   }
-  if (resolvedName === 'Button') {
+  if (resolvedName === "Button") {
     if (override.text != null) props.text = override.text;
     if (override.url != null) props.url = override.url;
     if (override.icon) props.icon = { ...props.icon, ...override.icon };
   }
-  if (resolvedName === 'Image') {
+  if (resolvedName === "Image") {
     if (override.content != null) props.content = override.content;
     if (override.alt != null) props.alt = override.alt;
     if (override.type) props.type = override.type;
     if (override.src != null) props.src = override.src;
   }
-  if (resolvedName === 'FormElement') {
+  if (resolvedName === "FormElement") {
     if (override.placeholder != null) props.placeholder = override.placeholder;
     if (override.type) props.type = override.type;
     if (override.name) props.name = override.name;
     if (override.required != null) props.required = override.required;
   }
-  if (resolvedName === 'Form') {
+  if (resolvedName === "Form") {
     if (override.formName != null) props.formName = override.formName;
     if (override.formType != null) props.formType = override.formType;
     if (override.submissionType != null) props.submissionType = override.submissionType;
@@ -92,12 +101,16 @@ function applyContentOverride(node, resolvedName, override) {
 }
 
 function applyPropOverride(node, patch) {
-  if (!patch || typeof patch !== 'object') return;
+  if (!patch || typeof patch !== "object") return;
   // New className-based patching
   if (patch.className) {
     let twMerge;
-    try { twMerge = require('tailwind-merge').twMerge; } catch { twMerge = (a, b) => `${a} ${b}`.trim(); }
-    node.props.className = twMerge(node.props.className || '', patch.className);
+    try {
+      twMerge = require("tailwind-merge").twMerge;
+    } catch {
+      twMerge = (a, b) => `${a} ${b}`.trim();
+    }
+    node.props.className = twMerge(node.props.className || "", patch.className);
   }
   // Non-class props
   if (patch.props) deepMerge(node.props, patch.props);
@@ -111,7 +124,7 @@ function applyPropOverride(node, patch) {
  * @param {string} [idSalt] - optional extra entropy for kit_* ids (same slug + parent twice)
  * @returns {{ nodes: Record<string, object>, rootId: string }}
  */
-function hierarchicalStructureToFlat(structure, sectionContainerId, slug, sourceMeta, idSalt = '') {
+function hierarchicalStructureToFlat(structure, sectionContainerId, slug, sourceMeta, idSalt = "") {
   if (!structure?.type) throw new Error('Block structure must have a root "type".');
   const prefix = makeKitInstancePrefix(slug, sectionContainerId, idSalt);
   let seq = 0;
@@ -156,7 +169,7 @@ function hierarchicalStructureToFlat(structure, sectionContainerId, slug, source
 }
 
 function walkApplyKitOverrides(nodes, rootId, contentOverrides, propOverrides) {
-  const visit = (id) => {
+  const visit = id => {
     const node = nodes[id];
     if (!node) return;
     const label = node.custom?.displayName;
@@ -174,9 +187,9 @@ function walkApplyKitOverrides(nodes, rootId, contentOverrides, propOverrides) {
 /** Stable prefix for library block patching (same slug always yields same lib_* ids). */
 function makeLibraryInstancePrefix(slug) {
   const h = crypto
-    .createHash('sha256')
-    .update(`library-block\n${String(slug)}`, 'utf8')
-    .digest('hex')
+    .createHash("sha256")
+    .update(`library-block\n${String(slug)}`, "utf8")
+    .digest("hex")
     .slice(0, 8);
   return `lib_${slugify(slug)}_${h}`;
 }
@@ -233,7 +246,7 @@ function hierarchicalLibraryToFlat(structure, slug) {
  */
 function flatLibraryToHierarchical(flatMap, rootId) {
   if (!flatMap || !flatMap[rootId]) {
-    throw new Error('Invalid flat map or missing rootId after patch.');
+    throw new Error("Invalid flat map or missing rootId after patch.");
   }
 
   function toHier(id) {
@@ -242,12 +255,15 @@ function flatLibraryToHierarchical(flatMap, rootId) {
       throw new Error(`Missing or invalid node "${id}" while rebuilding hierarchy.`);
     }
     const props = deepClone(n.props || {});
-    const custom = n.custom && typeof n.custom === 'object' && Object.keys(n.custom).length ? { ...n.custom } : null;
+    const custom =
+      n.custom && typeof n.custom === "object" && Object.keys(n.custom).length
+        ? { ...n.custom }
+        : null;
     if (custom) {
       props.custom = { ...(props.custom || {}), ...custom };
     }
     const childIds = n.nodes || [];
-    const children = childIds.map((cid) => toHier(cid));
+    const children = childIds.map(cid => toHier(cid));
     const out = { type: n.type.resolvedName, props };
     if (children.length) out.children = children;
     return out;
@@ -259,7 +275,7 @@ function flatLibraryToHierarchical(flatMap, rootId) {
 /** DFS node ids from root (stable human order for manifests). */
 function collectLibraryFlatIdsDfs(flatMap, rootId) {
   const out = [];
-  const walk = (id) => {
+  const walk = id => {
     if (!flatMap[id]) return;
     out.push(id);
     for (const c of flatMap[id].nodes || []) walk(c);
@@ -274,18 +290,19 @@ function collectLibraryFlatIdsDfs(flatMap, rootId) {
 function formatBlockNodeManifest(flatMap, rootId, slug, maxLines = 120) {
   const ids = collectLibraryFlatIdsDfs(flatMap, rootId);
   const head = ids.slice(0, maxLines);
-  const lines = head.map((id) => {
+  const lines = head.map(id => {
     const n = flatMap[id];
-    const rn = n?.type?.resolvedName || '?';
-    const label = n?.custom?.displayName ? ` label="${n.custom.displayName}"` : '';
+    const rn = n?.type?.resolvedName || "?";
+    const label = n?.custom?.displayName ? ` label="${n.custom.displayName}"` : "";
     return `  ${id} | ${rn}${label}`;
   });
-  const tail = ids.length > maxLines ? `\n  …and ${ids.length - maxLines} more (same \`lib_…\` prefix)` : '';
+  const tail =
+    ids.length > maxLines ? `\n  …and ${ids.length - maxLines} more (same \`lib_…\` prefix)` : "";
   return (
     `Block slug: \`${slug}\`\n` +
     `Library root id: \`${rootId}\`\n` +
     `Use these node ids in patch_block / patch_block_bulk (copy exactly):\n` +
-    `${lines.join('\n')}${tail}`
+    `${lines.join("\n")}${tail}`
   );
 }
 

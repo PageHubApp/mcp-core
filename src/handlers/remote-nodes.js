@@ -1,5 +1,5 @@
-const { apiFetch } = require('../api-fetch');
-const { getContext } = require('../context');
+const { apiFetch } = require("../api-fetch");
+const { getContext } = require("../context");
 const {
   parseMaybeJson,
   applyNodePatches,
@@ -13,47 +13,56 @@ const {
   assertFillModePatchAllowed,
   assertFillModeBulkPatchesAllowed,
   guardRootCompanyPropsPatch,
-} = require('../helpers');
-const { collectSubtree, sanitizeNodes, findSectionRoot } = require('../node-utils');
-const { resultMsg } = require('./remote-shared');
-const { resolveToolDefaultPageNodeId } = require('../active-page');
-const { validateNodes, formatValidationReport } = require('../node-validation');
-const { validateButtonClasses } = require('../button-system');
+} = require("../helpers");
+const { collectSubtree, sanitizeNodes, findSectionRoot } = require("../node-utils");
+const { resultMsg } = require("./remote-shared");
+const { resolveToolDefaultPageNodeId } = require("../active-page");
+const { validateNodes, formatValidationReport } = require("../node-validation");
+const { validateButtonClasses } = require("../button-system");
 
 function normalizeButtonValidationMode(value) {
-  if (value == null) return 'warn';
-  if (value === true) return 'warn';
-  if (value === false) return 'off';
+  if (value == null) return "warn";
+  if (value === true) return "warn";
+  if (value === false) return "off";
   const raw = String(value).trim().toLowerCase();
-  if (['off', 'warn', 'fix', 'strict'].includes(raw)) return raw;
-  return 'warn';
+  if (["off", "warn", "fix", "strict"].includes(raw)) return raw;
+  return "warn";
 }
 
 function normalizeDesignValidationMode(value) {
-  if (value == null) return 'warn';
-  if (value === true) return 'warn';
-  if (value === false) return 'off';
+  if (value == null) return "warn";
+  if (value === true) return "warn";
+  if (value === false) return "off";
   const raw = String(value).trim().toLowerCase();
-  if (['off', 'warn', 'strict'].includes(raw)) return raw;
-  return 'warn';
+  if (["off", "warn", "strict"].includes(raw)) return raw;
+  return "warn";
 }
 
 function warningMentionsNode(warning, nodeId) {
   if (!warning || !nodeId) return false;
-  return warning.includes(`${nodeId}:`) || warning.includes(` ${nodeId} `) || warning.includes(`"${nodeId}"`);
+  return (
+    warning.includes(`${nodeId}:`) ||
+    warning.includes(` ${nodeId} `) ||
+    warning.includes(`"${nodeId}"`)
+  );
 }
 
 function runDesignValidation(flat, touchedNodeIds, mode) {
-  if (mode === 'off') return null;
+  if (mode === "off") return null;
   const result = validateNodes(flat, { autoFix: false, warnColors: true });
   const touched = Array.isArray(touchedNodeIds) ? touchedNodeIds : [];
-  const touchedWarnings = result.warnings.filter(w => touched.some(id => warningMentionsNode(w, id)));
+  const touchedWarnings = result.warnings.filter(w =>
+    touched.some(id => warningMentionsNode(w, id))
+  );
   const touchedErrors = result.errors.filter(e => touched.some(id => warningMentionsNode(e, id)));
-  if (mode === 'strict' && (touchedErrors.length > 0 || touchedWarnings.some(w => w.startsWith('🎨')))) {
-    const issues = [...touchedErrors, ...touchedWarnings.filter(w => w.startsWith('🎨'))];
+  if (
+    mode === "strict" &&
+    (touchedErrors.length > 0 || touchedWarnings.some(w => w.startsWith("🎨")))
+  ) {
+    const issues = [...touchedErrors, ...touchedWarnings.filter(w => w.startsWith("🎨"))];
     throw new Error(
-      `Design token preflight failed for touched nodes.\n- ${issues.join('\n- ')}\n\n` +
-      'Use semantic tokens (bg-base-*, text-base-content, border-base-*) instead of hardcoded color classes.'
+      `Design token preflight failed for touched nodes.\n- ${issues.join("\n- ")}\n\n` +
+        "Use semantic tokens (bg-base-*, text-base-content, border-base-*) instead of hardcoded color classes."
     );
   }
   if (touchedWarnings.length === 0 && touchedErrors.length === 0) return null;
@@ -65,43 +74,45 @@ function runDesignValidation(flat, touchedNodeIds, mode) {
 }
 
 function formatDesignValidationReport(rec) {
-  if (!rec) return '';
+  if (!rec) return "";
   const lines = [`Design validation [${rec.mode}]:`];
   if (rec.errors.length > 0) lines.push(`- errors: ${rec.errors.length}`);
   if (rec.warnings.length > 0) lines.push(`- warnings: ${rec.warnings.length}`);
   const preview = [...rec.errors, ...rec.warnings].slice(0, 6);
   for (const item of preview) lines.push(`  ${item}`);
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 function maybePreflightButton(flat, nodeId, mode) {
-  if (mode === 'off') return null;
+  if (mode === "off") return null;
   const node = flat[nodeId];
-  if (!node || node.type?.resolvedName !== 'Button') return null;
+  if (!node || node.type?.resolvedName !== "Button") return null;
 
   const props = node.props || {};
   const result = validateButtonClasses({
-    className: props.className || '',
+    className: props.className || "",
     activeModifiers: props?.root?.activeModifiers || [],
-    autoFix: mode === 'fix',
+    autoFix: mode === "fix",
     allowCustomClasses: true,
   });
 
-  const currentModifiers = Array.isArray(props?.root?.activeModifiers) ? props.root.activeModifiers : [];
+  const currentModifiers = Array.isArray(props?.root?.activeModifiers)
+    ? props.root.activeModifiers
+    : [];
   const modifiersChanged =
     result.activeModifiers.length !== currentModifiers.length ||
     result.activeModifiers.some((m, i) => m !== currentModifiers[i]);
-  if (mode === 'fix' && (result.className !== (props.className || '') || modifiersChanged)) {
+  if (mode === "fix" && (result.className !== (props.className || "") || modifiersChanged)) {
     if (!node.props) node.props = {};
     node.props.className = result.className;
     node.props.root = { ...(node.props.root || {}), activeModifiers: result.activeModifiers };
   }
 
-  if (mode === 'strict' && !result.ok) {
-    const critical = result.issues.map(i => `${i.code}: ${i.message}`).join('\n- ');
+  if (mode === "strict" && !result.ok) {
+    const critical = result.issues.map(i => `${i.code}: ${i.message}`).join("\n- ");
     throw new Error(
       `Button class preflight failed for node "${nodeId}".\n- ${critical}\n\n` +
-      'Tip: use buttonValidation: "fix" to auto-correct common button class conflicts.'
+        'Tip: use buttonValidation: "fix" to auto-correct common button class conflicts.'
     );
   }
 
@@ -118,18 +129,14 @@ function maybePreflightButton(flat, nodeId, mode) {
 }
 
 function formatButtonPreflightReport(records) {
-  if (!records || records.length === 0) return '';
-  const lines = ['Button class preflight:'];
+  if (!records || records.length === 0) return "";
+  const lines = ["Button class preflight:"];
   for (const rec of records) {
-    const issueSummary = rec.issues.length > 0
-      ? rec.issues.map(i => i.code).join(', ')
-      : 'none';
-    const fixSummary = rec.appliedFixes.length > 0
-      ? rec.appliedFixes.join(' | ')
-      : 'none';
+    const issueSummary = rec.issues.length > 0 ? rec.issues.map(i => i.code).join(", ") : "none";
+    const fixSummary = rec.appliedFixes.length > 0 ? rec.appliedFixes.join(" | ") : "none";
     lines.push(`- ${rec.nodeId} [${rec.mode}] issues: ${issueSummary}; fixes: ${fixSummary}`);
   }
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 module.exports = {
@@ -138,20 +145,20 @@ module.exports = {
     const ctx = getContext();
     if (ctx.fillMode && ctx._fillStructureLocked) {
       throw new Error(
-        'This fill already created structure (kit or prior add_nodes). Use patch_site_node / patch_site_bulk only — do not call add_nodes again.'
+        "This fill already created structure (kit or prior add_nodes). Use patch_site_node / patch_site_bulk only — do not call add_nodes again."
       );
     }
     const { flat } = await fetchTarget(args);
 
     let parentId =
-      args.parentId != null && args.parentId !== ''
+      args.parentId != null && args.parentId !== ""
         ? String(args.parentId)
         : ctx.fillMode
-          ? 'page_home'
-          : resolveToolDefaultPageNodeId({ flat, ctx }) || 'page_home';
+          ? "page_home"
+          : resolveToolDefaultPageNodeId({ flat, ctx }) || "page_home";
     if (ctx.fillMode && ctx.sectionNodeId) {
       const sec = String(ctx.sectionNodeId);
-      if (args.parentId == null || args.parentId === '') {
+      if (args.parentId == null || args.parentId === "") {
         parentId = sec;
       } else if (parentId !== sec) {
         throw new Error(
@@ -161,7 +168,8 @@ module.exports = {
     }
 
     const rawNodes = parseMaybeJson(args.nodes);
-    if (!rawNodes || typeof rawNodes !== 'object') throw new Error('nodes must be an object map of nodeId → node definition.');
+    if (!rawNodes || typeof rawNodes !== "object")
+      throw new Error("nodes must be an object map of nodeId → node definition.");
     if (!flat[parentId]) throw new Error(`Parent node "${parentId}" not found.`);
 
     // Validate & auto-fix new nodes before sanitizing
@@ -171,7 +179,7 @@ module.exports = {
     // Sanitize: parse strings, validate types, rebuild parent↔children, reparent orphans
     const { nodes: cleanNodes, roots } = sanitizeNodes(rawNodes, flat, parentId);
     if (Object.keys(cleanNodes).length === 0) {
-      return { content: [{ type: 'text', text: 'No valid nodes to add.' }], changedNodes: {} };
+      return { content: [{ type: "text", text: "No valid nodes to add." }], changedNodes: {} };
     }
 
     // Merge sanitized nodes into the flat map
@@ -205,16 +213,28 @@ module.exports = {
         ctx._pendingFlatMap = flat;
       }
       return {
-        content: [{ type: 'text', text: `${Object.keys(cleanNodes).length} nodes added to ${parentId} successfully.` }],
+        content: [
+          {
+            type: "text",
+            text: `${Object.keys(cleanNodes).length} nodes added to ${parentId} successfully.`,
+          },
+        ],
         pendingContent: ctx.fillMode ? ctx._pendingFlatMap : flat,
         changedNodes,
       };
     }
 
     const result = await saveTarget(target.id, target.type, flat);
-    const reportSuffix = validationReport ? `\n\n---\n${validationReport}` : '';
+    const reportSuffix = validationReport ? `\n\n---\n${validationReport}` : "";
     return {
-      content: [{ type: 'text', text: resultMsg(target.id, target.type, `${Object.keys(cleanNodes).length} nodes added.`) + reportSuffix }],
+      content: [
+        {
+          type: "text",
+          text:
+            resultMsg(target.id, target.type, `${Object.keys(cleanNodes).length} nodes added.`) +
+            reportSuffix,
+        },
+      ],
       changedNodes,
     };
   },
@@ -237,8 +257,11 @@ module.exports = {
     const { flat } = await fetchTarget(args);
     assertFillModePatchAllowed(flat, nodeId, ctx);
     let patchArgs = normalizeNodePatchArgs({ ...args, nodesPatch, unsetProps, unsetClasses });
-    if (String(nodeId) === 'ROOT' && patchArgs.propsPatch) {
-      patchArgs = { ...patchArgs, propsPatch: guardRootCompanyPropsPatch(flat, patchArgs.propsPatch, ctx) };
+    if (String(nodeId) === "ROOT" && patchArgs.propsPatch) {
+      patchArgs = {
+        ...patchArgs,
+        propsPatch: guardRootCompanyPropsPatch(flat, patchArgs.propsPatch, ctx),
+      };
     }
     applyNodePatches(flat, nodeId, patchArgs);
     const buttonReport = maybePreflightButton(flat, nodeId, buttonValidationMode);
@@ -253,13 +276,15 @@ module.exports = {
         Object.assign(ctx._fillPatch, changedNodes);
       }
       return {
-        content: [{
-          type: 'text',
-          text:
-            `Node ${nodeId} updated successfully.` +
-            `${buttonReport ? `\n\n${formatButtonPreflightReport([buttonReport])}` : ''}` +
-            `${designReport ? `\n\n${formatDesignValidationReport(designReport)}` : ''}`,
-        }],
+        content: [
+          {
+            type: "text",
+            text:
+              `Node ${nodeId} updated successfully.` +
+              `${buttonReport ? `\n\n${formatButtonPreflightReport([buttonReport])}` : ""}` +
+              `${designReport ? `\n\n${formatDesignValidationReport(designReport)}` : ""}`,
+          },
+        ],
         pendingContent: flat,
         changedNodes,
       };
@@ -271,13 +296,15 @@ module.exports = {
     if (description !== undefined) extra.description = description;
     const result = await saveTarget(target.id, target.type, flat, extra);
     return {
-      content: [{
-        type: 'text',
-        text:
-          `${resultMsg(result.id, target.type, `Updated (node ${nodeId}).`)}` +
-          `${buttonReport ? `\n\n${formatButtonPreflightReport([buttonReport])}` : ''}` +
-          `${designReport ? `\n\n${formatDesignValidationReport(designReport)}` : ''}`,
-      }],
+      content: [
+        {
+          type: "text",
+          text:
+            `${resultMsg(result.id, target.type, `Updated (node ${nodeId}).`)}` +
+            `${buttonReport ? `\n\n${formatButtonPreflightReport([buttonReport])}` : ""}` +
+            `${designReport ? `\n\n${formatDesignValidationReport(designReport)}` : ""}`,
+        },
+      ],
       changedNodes,
     };
   },
@@ -289,18 +316,19 @@ module.exports = {
     const list = normalizeBulkPatchesFromArgs(args);
     if (!Array.isArray(list) || list.length === 0) {
       const p = args.patches !== undefined ? args.patches : args.patch;
-      let received = 'missing patches';
+      let received = "missing patches";
       if (p !== undefined) {
-        if (p === null) received = 'null';
-        else if (typeof p === 'string') received = `string (length ${p.length})`;
+        if (p === null) received = "null";
+        else if (typeof p === "string") received = `string (length ${p.length})`;
         else if (Array.isArray(p)) received = `array length ${p.length}`;
-        else if (typeof p === 'object') received = `object keys: ${Object.keys(p).slice(0, 12).join(', ')}`;
+        else if (typeof p === "object")
+          received = `object keys: ${Object.keys(p).slice(0, 12).join(", ")}`;
         else received = typeof p;
       }
-      let jsonHint = '';
-      if (typeof p === 'string' && p.length > 0) {
+      let jsonHint = "";
+      if (typeof p === "string" && p.length > 0) {
         jsonHint =
-          ' Prefer patches as a native JSON array (not a string). If string: valid JSON only — escape quotes in text or use patch_site_node.';
+          " Prefer patches as a native JSON array (not a string). If string: valid JSON only — escape quotes in text or use patch_site_node.";
       }
       throw new Error(
         `patches must be a non-empty array of { nodeId, classNamePatch?, propsPatch?, ... }. ` +
@@ -314,15 +342,26 @@ module.exports = {
     const buttonReports = [];
     for (let i = 0; i < list.length; i++) {
       const item = list[i];
-      if (!item || typeof item.nodeId !== 'string') {
+      if (!item || typeof item.nodeId !== "string") {
         throw new Error(`patches[${i}]: missing nodeId`);
       }
       assertPatchBulkItem(item, i);
-      const { nodeId: nid, name: _name, title: _title, description: _desc, id: _id, patches: _patches, ...rest } = item;
+      const {
+        nodeId: nid,
+        name: _name,
+        title: _title,
+        description: _desc,
+        id: _id,
+        patches: _patches,
+        ...rest
+      } = item;
       assertFillModePatchAllowed(flat, nid, ctx);
       let bulkPatch = normalizeNodePatchArgs(rest);
-      if (String(nid) === 'ROOT' && bulkPatch.propsPatch) {
-        bulkPatch = { ...bulkPatch, propsPatch: guardRootCompanyPropsPatch(flat, bulkPatch.propsPatch, ctx) };
+      if (String(nid) === "ROOT" && bulkPatch.propsPatch) {
+        bulkPatch = {
+          ...bulkPatch,
+          propsPatch: guardRootCompanyPropsPatch(flat, bulkPatch.propsPatch, ctx),
+        };
       }
       applyNodePatches(flat, nid, bulkPatch);
       const report = maybePreflightButton(flat, nid, buttonValidationMode);
@@ -330,7 +369,10 @@ module.exports = {
       touched.push(nid);
     }
     const designReport = runDesignValidation(flat, touched, designValidationMode);
-    const changedNodes = Object.assign({}, ...touched.map(id => collectSubtree(flat, findSectionRoot(flat, id))));
+    const changedNodes = Object.assign(
+      {},
+      ...touched.map(id => collectSubtree(flat, findSectionRoot(flat, id)))
+    );
 
     // Dry run: return proposed changes without saving
     if (ctx.draftMode) {
@@ -340,13 +382,15 @@ module.exports = {
         Object.assign(ctx._fillPatch, changedNodes);
       }
       return {
-        content: [{
-          type: 'text',
-          text:
-            `${touched.length} nodes updated successfully: ${touched.join(', ')}.` +
-            `${buttonReports.length ? `\n\n${formatButtonPreflightReport(buttonReports)}` : ''}` +
-            `${designReport ? `\n\n${formatDesignValidationReport(designReport)}` : ''}`,
-        }],
+        content: [
+          {
+            type: "text",
+            text:
+              `${touched.length} nodes updated successfully: ${touched.join(", ")}.` +
+              `${buttonReports.length ? `\n\n${formatButtonPreflightReport(buttonReports)}` : ""}` +
+              `${designReport ? `\n\n${formatDesignValidationReport(designReport)}` : ""}`,
+          },
+        ],
         pendingContent: flat,
         changedNodes,
       };
@@ -359,13 +403,15 @@ module.exports = {
     if (description !== undefined) extra.description = description;
     const result = await saveTarget(target.id, target.type, flat, extra);
     return {
-      content: [{
-        type: 'text',
-        text:
-          `${resultMsg(result.id, target.type, `Updated (${touched.length} nodes: ${touched.join(', ')}).`)}` +
-          `${buttonReports.length ? `\n\n${formatButtonPreflightReport(buttonReports)}` : ''}` +
-          `${designReport ? `\n\n${formatDesignValidationReport(designReport)}` : ''}`,
-      }],
+      content: [
+        {
+          type: "text",
+          text:
+            `${resultMsg(result.id, target.type, `Updated (${touched.length} nodes: ${touched.join(", ")}).`)}` +
+            `${buttonReports.length ? `\n\n${formatButtonPreflightReport(buttonReports)}` : ""}` +
+            `${designReport ? `\n\n${formatDesignValidationReport(designReport)}` : ""}`,
+        },
+      ],
       changedNodes,
     };
   },

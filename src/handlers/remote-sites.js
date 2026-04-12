@@ -1,16 +1,19 @@
-const { apiFetch, normalizeBaseUrl } = require('../api-fetch');
-const { getContext } = require('../context');
-const { parseMaybeJson, getActiveTarget, fetchTarget, saveTarget } = require('../helpers');
-const { quickA11yAudit } = require('../a11y-check');
-const { validateNodes, formatValidationReport } = require('../node-validation');
+const { apiFetch, normalizeBaseUrl } = require("../api-fetch");
+const { getContext } = require("../context");
+const { parseMaybeJson, getActiveTarget, fetchTarget, saveTarget } = require("../helpers");
+const { quickA11yAudit } = require("../a11y-check");
+const { validateNodes, formatValidationReport } = require("../node-validation");
 
 module.exports = {
   async list_sites() {
-    const data = await apiFetch('/api/v1/sites');
-    const lines = (data.sites || []).map(s =>
-      `• ${s._id} — ${s.name || '(unnamed)'}${s.domain ? ` [${s.domain}]` : ''} (updated ${s.updatedAt})`
+    const data = await apiFetch("/api/v1/sites");
+    const lines = (data.sites || []).map(
+      s =>
+        `• ${s._id} — ${s.name || "(unnamed)"}${s.domain ? ` [${s.domain}]` : ""} (updated ${s.updatedAt})`
     );
-    return { content: [{ type: 'text', text: lines.length ? lines.join('\n') : 'No sites found.' }] };
+    return {
+      content: [{ type: "text", text: lines.length ? lines.join("\n") : "No sites found." }],
+    };
   },
 
   async select_site(args) {
@@ -20,7 +23,11 @@ module.exports = {
     ctx.activeSite = { id: data.id, name: data.name, draftId: data.draftId };
     // Clear activeTemplate so site takes priority
     ctx.activeTemplate = null;
-    return { content: [{ type: 'text', text: `Active site set to ${data.id} (${data.name || 'unnamed'})` }] };
+    return {
+      content: [
+        { type: "text", text: `Active site set to ${data.id} (${data.name || "unnamed"})` },
+      ],
+    };
   },
 
   async pull_site(args) {
@@ -29,19 +36,22 @@ module.exports = {
     let content;
     if (ctx._pendingFlatMap) {
       content = ctx._pendingFlatMap;
-    } else if (target.type === 'template') {
+    } else if (target.type === "template") {
       content = (await apiFetch(`/api/v1/templates/${encodeURIComponent(target.id)}`)).content;
     } else {
       content = (await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`)).content;
     }
-    if (!content) throw new Error(`${target.type === 'template' ? 'Template' : 'Site'} has no content.`);
+    if (!content)
+      throw new Error(`${target.type === "template" ? "Template" : "Site"} has no content.`);
     const nodeCount = Object.keys(content).length;
-    const label = target.type === 'template' ? `Template "${target.id}"` : `Site ${target.id}`;
+    const label = target.type === "template" ? `Template "${target.id}"` : `Site ${target.id}`;
     return {
-      content: [{
-        type: 'text',
-        text: `${label} fetched (${nodeCount} nodes).\n\n\`\`\`json\n${JSON.stringify(content, null, 2)}\n\`\`\``,
-      }],
+      content: [
+        {
+          type: "text",
+          text: `${label} fetched (${nodeCount} nodes).\n\n\`\`\`json\n${JSON.stringify(content, null, 2)}\n\`\`\``,
+        },
+      ],
     };
   },
 
@@ -49,7 +59,9 @@ module.exports = {
     const ctx = getContext();
     const content = parseMaybeJson(args.content) || ctx._pendingFlatMap;
     if (!content) {
-      throw new Error('Provide content (inline JSON), or call patch_site_node/patch_site_bulk first.');
+      throw new Error(
+        "Provide content (inline JSON), or call patch_site_node/patch_site_bulk first."
+      );
     }
 
     // ── Node validation & auto-fix pass ──
@@ -58,15 +70,19 @@ module.exports = {
     // Block on structural errors (broken parent/child refs)
     if (validation.errors.length > 0) {
       throw new Error(
-        `Cannot save — ${validation.errors.length} structural error(s) found:\n${validation.errors.join('\n')}\n\nFix these before saving.`
+        `Cannot save — ${validation.errors.length} structural error(s) found:\n${validation.errors.join("\n")}\n\nFix these before saving.`
       );
     }
 
     const target = (() => {
-      try { return getActiveTarget(args); } catch { return null; }
+      try {
+        return getActiveTarget(args);
+      } catch {
+        return null;
+      }
     })();
     const targetId = args.createNew ? null : target?.id;
-    const targetType = target?.type || 'site';
+    const targetType = target?.type || "site";
 
     // Dry run: return proposed content without saving
     if (ctx.draftMode) {
@@ -74,9 +90,10 @@ module.exports = {
       let changed = content;
       if (targetId) {
         try {
-          const fetchUrl = targetType === 'template'
-            ? `/api/v1/templates/${encodeURIComponent(targetId)}`
-            : `/api/v1/sites/${encodeURIComponent(targetId)}`;
+          const fetchUrl =
+            targetType === "template"
+              ? `/api/v1/templates/${encodeURIComponent(targetId)}`
+              : `/api/v1/sites/${encodeURIComponent(targetId)}`;
           const original = (await apiFetch(fetchUrl)).content;
           if (original) {
             const diff = {};
@@ -95,48 +112,68 @@ module.exports = {
           }
         } catch {}
       }
-      const label = targetType === 'template' ? `Template "${targetId || 'new'}"` : `Site ${targetId || 'new'}`;
+      const label =
+        targetType === "template" ? `Template "${targetId || "new"}"` : `Site ${targetId || "new"}`;
       const audit = quickA11yAudit(content);
-      const auditText = audit ? `\n\n---\n${audit.summary}` : '';
+      const auditText = audit ? `\n\n---\n${audit.summary}` : "";
       return {
-        content: [{ type: 'text', text: `${label} saved successfully (${Object.keys(content).length} nodes).${auditText}` }],
+        content: [
+          {
+            type: "text",
+            text: `${label} saved successfully (${Object.keys(content).length} nodes).${auditText}`,
+          },
+        ],
         pendingContent: content,
         changedNodes: changed,
       };
     }
 
     const audit = quickA11yAudit(content);
-    const auditText = audit ? `\n\n---\n${audit.summary}` : '';
-    const validationText = validationReport ? `\n\n---\n${validationReport}` : '';
+    const auditText = audit ? `\n\n---\n${audit.summary}` : "";
+    const validationText = validationReport ? `\n\n---\n${validationReport}` : "";
 
     if (targetId) {
       const result = await saveTarget(targetId, targetType, content, {
-        name: args.name, title: args.title, description: args.description,
+        name: args.name,
+        title: args.title,
+        description: args.description,
       });
-      if (targetType === 'template') {
-        return { content: [{ type: 'text', text: `Template "${result.id}" updated.${auditText}` }] };
+      if (targetType === "template") {
+        return {
+          content: [{ type: "text", text: `Template "${result.id}" updated.${auditText}` }],
+        };
       }
-      const base = normalizeBaseUrl(ctx.apiBaseUrl) || 'https://pagehub.dev';
+      const base = normalizeBaseUrl(ctx.apiBaseUrl) || "https://pagehub.dev";
       return {
-        content: [{ type: 'text', text: `Site ${result.id} updated. View: ${base}/build/${result.id}${auditText}${validationText}` }],
+        content: [
+          {
+            type: "text",
+            text: `Site ${result.id} updated. View: ${base}/build/${result.id}${auditText}${validationText}`,
+          },
+        ],
       };
     }
     // Create new — sites only (templates use save_template for creation)
-    const data = await apiFetch('/api/v1/sites', {
-      method: 'POST',
+    const data = await apiFetch("/api/v1/sites", {
+      method: "POST",
       body: { content, name: args.name, title: args.title, description: args.description },
     });
     ctx.activeSite = { id: data.id, name: data.name, draftId: data.draftId };
     return {
-      content: [{ type: 'text', text: `New site created: ${data.id}\nEditor: ${data.url}\nPreview: ${data.staticUrl}${auditText}${validationText}` }],
+      content: [
+        {
+          type: "text",
+          text: `New site created: ${data.id}\nEditor: ${data.url}\nPreview: ${data.staticUrl}${auditText}${validationText}`,
+        },
+      ],
     };
   },
 
   async delete_site(args) {
     const { id } = args;
-    await apiFetch(`/api/v1/sites/${encodeURIComponent(id)}`, { method: 'DELETE' });
+    await apiFetch(`/api/v1/sites/${encodeURIComponent(id)}`, { method: "DELETE" });
     const ctx = getContext();
     if (ctx.activeSite?.id === id) ctx.activeSite = null;
-    return { content: [{ type: 'text', text: `Site ${id} deleted.` }] };
+    return { content: [{ type: "text", text: `Site ${id} deleted.` }] };
   },
 };

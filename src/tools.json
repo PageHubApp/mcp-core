@@ -290,9 +290,7 @@
           "description": "Insert index in page's nodes. 0 = first section. Default: append to end."
         }
       },
-      "required": [
-        "templateId"
-      ]
+      "required": ["templateId"]
     }
   },
   {
@@ -322,10 +320,7 @@
           "description": "Insert index in parent's nodes array. Default: append to end."
         }
       },
-      "required": [
-        "sectionRootId",
-        "nodes"
-      ]
+      "required": ["sectionRootId", "nodes"]
     }
   },
   {
@@ -372,9 +367,7 @@
           "description": "Top-level props keys to delete."
         }
       },
-      "required": [
-        "nodeId"
-      ]
+      "required": ["nodeId"]
     }
   },
   {
@@ -392,9 +385,7 @@
           "description": "Node ID to delete. Use pull_site to find IDs."
         }
       },
-      "required": [
-        "nodeId"
-      ]
+      "required": ["nodeId"]
     }
   },
   {
@@ -424,11 +415,7 @@
           "description": "Node definition. Must include:\n  type: { resolvedName: \"Text\" | \"Container\" | \"Image\" | \"Button\" | \"ButtonList\" | etc }\n  isCanvas: true (containers) or false (leaf elements)\n  props: { canDelete: true, canEditName: true, className: \"flex flex-col gap-4 ...\", text/content/etc, custom: { displayName: \"...\" } }\n\nparent and linkedNodes are set automatically — do not include them."
         }
       },
-      "required": [
-        "nodeId",
-        "parentId",
-        "node"
-      ]
+      "required": ["nodeId", "parentId", "node"]
     }
   },
   {
@@ -467,9 +454,7 @@
           "description": "If true, attempt to replace hardcoded years with {{year}} and flag hardcoded colors for manual palette mapping. Default: false."
         }
       },
-      "required": [
-        "sectionRootId"
-      ]
+      "required": ["sectionRootId"]
     }
   },
   {
@@ -510,12 +495,7 @@
           "description": "Hierarchical section structure {type, props, children}. Output from extract_section or hand-crafted."
         }
       },
-      "required": [
-        "category",
-        "templateId",
-        "name",
-        "structure"
-      ]
+      "required": ["category", "templateId", "name", "structure"]
     }
   },
   {
@@ -541,9 +521,7 @@
           "description": "Page node ID the section lives on. Default: page_home."
         }
       },
-      "required": [
-        "sectionRootId"
-      ]
+      "required": ["sectionRootId"]
     }
   },
   {
@@ -680,9 +658,7 @@
           "description": "Template slug to pull"
         }
       },
-      "required": [
-        "slug"
-      ]
+      "required": ["slug"]
     }
   },
   {
@@ -866,9 +842,7 @@
           "description": "Page _id to set as active"
         }
       },
-      "required": [
-        "id"
-      ]
+      "required": ["id"]
     }
   },
   {
@@ -882,9 +856,7 @@
           "description": "Template slug to set as active"
         }
       },
-      "required": [
-        "slug"
-      ]
+      "required": ["slug"]
     }
   },
   {
@@ -929,9 +901,7 @@
           "description": "Force create a new site even if an active site exists. Ignores id and activeSite."
         }
       },
-      "required": [
-        "content"
-      ]
+      "required": ["content"]
     }
   },
   {
@@ -945,9 +915,7 @@
           "description": "Page _id to delete"
         }
       },
-      "required": [
-        "id"
-      ]
+      "required": ["id"]
     }
   },
   {
@@ -1069,9 +1037,7 @@
           "description": "Optional design-token preflight mode for touched nodes. Values: off, warn, strict. Default: warn. Flags hardcoded color classes and other node-validation issues relevant to edited nodes."
         }
       },
-      "required": [
-        "nodeId"
-      ]
+      "required": ["nodeId"]
     }
   },
   {
@@ -1122,9 +1088,7 @@
                 }
               }
             },
-            "required": [
-              "nodeId"
-            ]
+            "required": ["nodeId"]
           },
           "description": "Ordered list of patches; all applied to the same fetched document before save. Pass as a real array, not a string."
         },
@@ -1149,9 +1113,7 @@
           "description": "Optional design-token preflight mode for touched nodes. Values: off, warn, strict. Default: warn."
         }
       },
-      "required": [
-        "patches"
-      ]
+      "required": ["patches"]
     }
   },
   {
@@ -1177,9 +1139,7 @@
           "description": "Additional portal-specific config (merged into portal object)"
         }
       },
-      "required": [
-        "type"
-      ]
+      "required": ["type"]
     }
   },
   {
@@ -1224,11 +1184,7 @@
         },
         "level": {
           "type": "string",
-          "enum": [
-            "A",
-            "AA",
-            "AAA"
-          ],
+          "enum": ["A", "AA", "AAA"],
           "description": "WCAG conformance level. Default: \"AA\". A = minimum, AA = standard (most common requirement), AAA = strictest."
         }
       }
@@ -1317,9 +1273,7 @@
           "description": "Block slug (from search_blocks results)."
         }
       },
-      "required": [
-        "slug"
-      ]
+      "required": ["slug"]
     }
   },
   {
@@ -1333,9 +1287,7 @@
           "description": "Block slug (from search_blocks)."
         }
       },
-      "required": [
-        "slug"
-      ]
+      "required": ["slug"]
     }
   },
   {
@@ -1374,9 +1326,7 @@
           "description": "Insert position in the parent's children array. 0 = first child, 1 = after first child, etc. Use pull_site to see page_home.nodes order. Default: append to end."
         }
       },
-      "required": [
-        "slug"
-      ]
+      "required": ["slug"]
     }
   },
   {
@@ -1445,12 +1395,7 @@
           "description": "Use this block as the representative preview/thumbnail for its category. Default: false."
         }
       },
-      "required": [
-        "name",
-        "slug",
-        "category",
-        "structure"
-      ]
+      "required": ["name", "slug", "category", "structure"]
     }
   },
   {
@@ -1527,9 +1472,7 @@
           "description": "Toggle category preview thumbnail."
         }
       },
-      "required": [
-        "slug"
-      ]
+      "required": ["slug"]
     }
   },
   {
@@ -1575,10 +1518,7 @@
           }
         }
       },
-      "required": [
-        "slug",
-        "nodeId"
-      ]
+      "required": ["slug", "nodeId"]
     }
   },
   {
@@ -1629,17 +1569,12 @@
                 }
               }
             },
-            "required": [
-              "nodeId"
-            ]
+            "required": ["nodeId"]
           },
           "description": "Non-empty array of per-node patches (same keys as patch_block)."
         }
       },
-      "required": [
-        "slug",
-        "patches"
-      ]
+      "required": ["slug", "patches"]
     }
   },
   {
@@ -1653,9 +1588,7 @@
           "description": "Block slug to delete."
         }
       },
-      "required": [
-        "slug"
-      ]
+      "required": ["slug"]
     }
   },
   {
@@ -1701,15 +1634,27 @@
           "type": "object",
           "description": "Per-page SEO metadata.",
           "properties": {
-            "pageTitle": { "type": "string", "description": "Page <title> tag. Falls back to displayName." },
-            "pageDescription": { "type": "string", "description": "Meta description for this page." },
+            "pageTitle": {
+              "type": "string",
+              "description": "Page <title> tag. Falls back to displayName."
+            },
+            "pageDescription": {
+              "type": "string",
+              "description": "Meta description for this page."
+            },
             "pageKeywords": { "type": "string", "description": "Meta keywords (comma-separated)." },
             "ogTitle": { "type": "string", "description": "Open Graph title." },
             "ogDescription": { "type": "string", "description": "Open Graph description." },
             "ogImage": { "type": "string", "description": "Open Graph image URL." },
-            "ogType": { "type": "string", "description": "Open Graph type (default: \"website\")." },
+            "ogType": {
+              "type": "string",
+              "description": "Open Graph type (default: \"website\")."
+            },
             "canonicalUrl": { "type": "string", "description": "Canonical URL for this page." },
-            "robots": { "type": "string", "description": "Robots meta tag (e.g. \"noindex, nofollow\")." }
+            "robots": {
+              "type": "string",
+              "description": "Robots meta tag (e.g. \"noindex, nofollow\")."
+            }
           }
         }
       },
@@ -1810,10 +1755,7 @@
           "description": "Insert position in parent nodes array. Default: append to end."
         }
       },
-      "required": [
-        "nodes",
-        "rootNodeId"
-      ]
+      "required": ["nodes", "rootNodeId"]
     }
   },
   {
@@ -1849,16 +1791,11 @@
                 }
               }
             },
-            "required": [
-              "name",
-              "palette"
-            ]
+            "required": ["name", "palette"]
           }
         }
       },
-      "required": [
-        "options"
-      ]
+      "required": ["options"]
     }
   },
   {

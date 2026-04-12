@@ -1,6 +1,6 @@
-const { getContext } = require('../context');
-const { parseMaybeJson, getActiveTarget, fetchTarget, saveTarget } = require('../helpers');
-const { normalizeBaseUrl } = require('../api-fetch');
+const { getContext } = require("../context");
+const { parseMaybeJson, getActiveTarget, fetchTarget, saveTarget } = require("../helpers");
+const { normalizeBaseUrl } = require("../api-fetch");
 
 /** Find all page nodes — direct ROOT children with props.type === 'page'. */
 function findPages(flat) {
@@ -9,7 +9,7 @@ function findPages(flat) {
   const pages = [];
   for (const childId of root.nodes || []) {
     const node = flat[childId];
-    if (node && node.props?.type === 'page') {
+    if (node && node.props?.type === "page") {
       pages.push({ id: childId, node });
     }
   }
@@ -18,11 +18,11 @@ function findPages(flat) {
 
 /** Slugify a display name to a URL path (simple lowercase + hyphens). */
 function toSlug(name) {
-  return (name || '')
+  return (name || "")
     .toLowerCase()
     .trim()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 }
 
 module.exports = {
@@ -31,49 +31,62 @@ module.exports = {
     const pages = findPages(flat);
 
     if (pages.length === 0) {
-      return { content: [{ type: 'text', text: `No pages found in this ${targetType}.` }] };
+      return { content: [{ type: "text", text: `No pages found in this ${targetType}.` }] };
     }
 
     const lines = pages.map((p, i) => {
       const props = p.node.props || {};
-      const name = p.node.custom?.displayName || p.node.displayName || '(unnamed)';
+      const name = p.node.custom?.displayName || p.node.displayName || "(unnamed)";
       const slug = toSlug(name);
       const flags = [];
-      if (props.isHomePage) flags.push('HOME');
-      if (props.is404Page) flags.push('404');
-      if (props.isHidden || p.node.hidden) flags.push('HIDDEN');
+      if (props.isHomePage) flags.push("HOME");
+      if (props.is404Page) flags.push("404");
+      if (props.isHidden || p.node.hidden) flags.push("HIDDEN");
       const sectionCount = (p.node.nodes || []).length;
-      const flagStr = flags.length ? ` [${flags.join(', ')}]` : '';
+      const flagStr = flags.length ? ` [${flags.join(", ")}]` : "";
       return `${i + 1}. **${p.id}** — "${name}" (/${slug}, ${sectionCount} sections)${flagStr}`;
     });
 
-    const label = targetType === 'template' ? `template "${targetId}"` : `site ${targetId}`;
+    const label = targetType === "template" ? `template "${targetId}"` : `site ${targetId}`;
     return {
-      content: [{
-        type: 'text',
-        text: `# Pages in ${label}\n\n${lines.join('\n')}\n\nUse pageId with add_section, add_custom_section, or update_page.`,
-      }],
+      content: [
+        {
+          type: "text",
+          text: `# Pages in ${label}\n\n${lines.join("\n")}\n\nUse pageId with add_section, add_custom_section, or update_page.`,
+        },
+      ],
     };
   },
 
   async add_page(args) {
     const { name, isHomePage, is404Page, position } = args;
-    if (!name) throw new Error('Page name is required.');
+    if (!name) throw new Error("Page name is required.");
 
     const target = getActiveTarget(args);
     const { flat } = await fetchTarget(args);
     const root = flat.ROOT;
-    if (!root) throw new Error('No ROOT node found.');
+    if (!root) throw new Error("No ROOT node found.");
 
     const pages = findPages(flat);
     const slug = toSlug(name);
-    const pageId = `page_${slug.replace(/-/g, '_')}`;
-    if (flat[pageId]) throw new Error(`Node ID "${pageId}" already exists. Choose a different page name.`);
+    const pageId = `page_${slug.replace(/-/g, "_")}`;
+    if (flat[pageId])
+      throw new Error(`Node ID "${pageId}" already exists. Choose a different page name.`);
 
     // Build SEO props from args
     const seo = parseMaybeJson(args.seo) || {};
     const seoProps = {};
-    for (const key of ['pageTitle', 'pageDescription', 'pageKeywords', 'ogTitle', 'ogDescription', 'ogImage', 'ogType', 'canonicalUrl', 'robots']) {
+    for (const key of [
+      "pageTitle",
+      "pageDescription",
+      "pageKeywords",
+      "ogTitle",
+      "ogDescription",
+      "ogImage",
+      "ogType",
+      "canonicalUrl",
+      "robots",
+    ]) {
       if (seo[key] != null) seoProps[key] = seo[key];
     }
 
@@ -91,20 +104,20 @@ module.exports = {
 
     // Create the page node
     flat[pageId] = {
-      type: { resolvedName: 'Container' },
+      type: { resolvedName: "Container" },
       isCanvas: true,
       props: {
         canDelete: true,
         canEditName: true,
-        type: 'page',
-        className: 'flex flex-col w-full',
+        type: "page",
+        className: "flex flex-col w-full",
         ...(shouldBeHome ? { isHomePage: true } : {}),
         ...(is404Page === true ? { is404Page: true } : {}),
         ...seoProps,
       },
-      displayName: 'Container',
+      displayName: "Container",
       custom: { displayName: name },
-      parent: 'ROOT',
+      parent: "ROOT",
       hidden: false,
       nodes: [],
       linkedNodes: {},
@@ -119,7 +132,7 @@ module.exports = {
       let lastPageIdx = -1;
       for (let i = 0; i < rootNodes.length; i++) {
         const n = flat[rootNodes[i]];
-        if (n && n.props?.type === 'page') lastPageIdx = i;
+        if (n && n.props?.type === "page") lastPageIdx = i;
       }
       insertPos = lastPageIdx >= 0 ? lastPageIdx + 1 : rootNodes.length;
     }
@@ -131,28 +144,42 @@ module.exports = {
     if (ctx._batchMode) {
       ctx._pendingFlatMap = flat;
       return {
-        content: [{ type: 'text', text: `Page "${name}" created as ${pageId} (/${slug}). To add blocks: apply_kit_block(slug, pageId: "${pageId}") — do NOT pass sectionContainerId.` }],
+        content: [
+          {
+            type: "text",
+            text: `Page "${name}" created as ${pageId} (/${slug}). To add blocks: apply_kit_block(slug, pageId: "${pageId}") — do NOT pass sectionContainerId.`,
+          },
+        ],
         pendingContent: flat,
       };
     }
 
     const result = await saveTarget(target.id, target.type, flat);
-    const homeMsg = shouldBeHome ? ' Marked as home page.' : '';
-    if (target.type === 'template') {
-      return { content: [{ type: 'text', text: `Page "${name}" created as ${pageId} (/${slug}) in template "${target.id}".${homeMsg} To add blocks: apply_kit_block(slug, pageId: "${pageId}") — do NOT pass sectionContainerId.` }] };
+    const homeMsg = shouldBeHome ? " Marked as home page." : "";
+    if (target.type === "template") {
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Page "${name}" created as ${pageId} (/${slug}) in template "${target.id}".${homeMsg} To add blocks: apply_kit_block(slug, pageId: "${pageId}") — do NOT pass sectionContainerId.`,
+          },
+        ],
+      };
     }
-    const base = normalizeBaseUrl(ctx.apiBaseUrl) || 'https://pagehub.dev';
+    const base = normalizeBaseUrl(ctx.apiBaseUrl) || "https://pagehub.dev";
     return {
-      content: [{
-        type: 'text',
-        text: `Page "${name}" created as ${pageId} (/${slug}).${homeMsg} To add blocks: apply_kit_block(slug, pageId: "${pageId}") — do NOT pass sectionContainerId.\nEditor: ${base}/build/${result.id}`,
-      }],
+      content: [
+        {
+          type: "text",
+          text: `Page "${name}" created as ${pageId} (/${slug}).${homeMsg} To add blocks: apply_kit_block(slug, pageId: "${pageId}") — do NOT pass sectionContainerId.\nEditor: ${base}/build/${result.id}`,
+        },
+      ],
     };
   },
 
   async update_page(args) {
     const { pageId, name, isHomePage, is404Page, isHidden } = args;
-    if (!pageId) throw new Error('pageId is required.');
+    if (!pageId) throw new Error("pageId is required.");
 
     const target = getActiveTarget(args);
     const ctx = getContext();
@@ -161,7 +188,8 @@ module.exports = {
 
     const page = flat[pageId];
     if (!page) throw new Error(`Page node "${pageId}" not found.`);
-    if (page.props?.type !== 'page') throw new Error(`Node "${pageId}" is not a page (type: ${page.props?.type || 'unknown'}).`);
+    if (page.props?.type !== "page")
+      throw new Error(`Node "${pageId}" is not a page (type: ${page.props?.type || "unknown"}).`);
 
     const changes = [];
 
@@ -177,10 +205,10 @@ module.exports = {
         if (p.node.props?.isHomePage) p.node.props.isHomePage = false;
       }
       page.props.isHomePage = true;
-      changes.push('isHomePage → true');
+      changes.push("isHomePage → true");
     } else if (isHomePage === false) {
       page.props.isHomePage = false;
-      changes.push('isHomePage → false');
+      changes.push("isHomePage → false");
     }
 
     if (is404Page != null) {
@@ -195,7 +223,17 @@ module.exports = {
     }
 
     const seo = parseMaybeJson(args.seo) || {};
-    for (const key of ['pageTitle', 'pageDescription', 'pageKeywords', 'ogTitle', 'ogDescription', 'ogImage', 'ogType', 'canonicalUrl', 'robots']) {
+    for (const key of [
+      "pageTitle",
+      "pageDescription",
+      "pageKeywords",
+      "ogTitle",
+      "ogDescription",
+      "ogImage",
+      "ogType",
+      "canonicalUrl",
+      "robots",
+    ]) {
       if (seo[key] != null) {
         page.props[key] = seo[key];
         changes.push(`${key} → "${seo[key]}"`);
@@ -203,41 +241,48 @@ module.exports = {
     }
 
     if (changes.length === 0) {
-      return { content: [{ type: 'text', text: 'No changes specified.' }] };
+      return { content: [{ type: "text", text: "No changes specified." }] };
     }
 
     // Draft mode: persist into _pendingFlatMap so signal_sections picks up SEO changes
     if (ctx.draftMode) {
       ctx._pendingFlatMap = flat;
       return {
-        content: [{ type: 'text', text: `Page ${pageId} updated:\n  ${changes.join('\n  ')}` }],
+        content: [{ type: "text", text: `Page ${pageId} updated:\n  ${changes.join("\n  ")}` }],
       };
     }
 
     const result = await saveTarget(target.id, target.type, flat);
-    const label = target.type === 'template' ? `template "${target.id}"` : `site`;
-    const editorLine = target.type === 'site' ? `\nEditor: ${normalizeBaseUrl(getContext().apiBaseUrl) || 'https://pagehub.dev'}/build/${result.id}` : '';
+    const label = target.type === "template" ? `template "${target.id}"` : `site`;
+    const editorLine =
+      target.type === "site"
+        ? `\nEditor: ${normalizeBaseUrl(getContext().apiBaseUrl) || "https://pagehub.dev"}/build/${result.id}`
+        : "";
     return {
-      content: [{
-        type: 'text',
-        text: `Page ${pageId} updated in ${label}:\n  ${changes.join('\n  ')}${editorLine}`,
-      }],
+      content: [
+        {
+          type: "text",
+          text: `Page ${pageId} updated in ${label}:\n  ${changes.join("\n  ")}${editorLine}`,
+        },
+      ],
     };
   },
 
   async delete_page(args) {
     const { pageId } = args;
-    if (!pageId) throw new Error('pageId is required.');
+    if (!pageId) throw new Error("pageId is required.");
 
     const target = getActiveTarget(args);
     const { flat } = await fetchTarget(args);
 
     const page = flat[pageId];
     if (!page) throw new Error(`Page node "${pageId}" not found.`);
-    if (page.props?.type !== 'page') throw new Error(`Node "${pageId}" is not a page (type: ${page.props?.type || 'unknown'}).`);
+    if (page.props?.type !== "page")
+      throw new Error(`Node "${pageId}" is not a page (type: ${page.props?.type || "unknown"}).`);
 
     const pages = findPages(flat);
-    if (pages.length <= 1) throw new Error(`Cannot delete the last page. A ${target.type} must have at least one page.`);
+    if (pages.length <= 1)
+      throw new Error(`Cannot delete the last page. A ${target.type} must have at least one page.`);
 
     const wasHomePage = page.props?.isHomePage === true;
     const pageName = page.custom?.displayName || page.displayName || pageId;
@@ -247,7 +292,7 @@ module.exports = {
       root.nodes = (root.nodes || []).filter(id => id !== pageId);
     }
 
-    const deleteSubtree = (id) => {
+    const deleteSubtree = id => {
       const n = flat[id];
       if (!n) return;
       for (const child of [...(n.nodes || [])]) deleteSubtree(child);
@@ -265,16 +310,25 @@ module.exports = {
     }
 
     const result = await saveTarget(target.id, target.type, flat);
-    const promoMsg = promotedPage ? ` ${promotedPage} promoted to home page.` : '';
-    if (target.type === 'template') {
-      return { content: [{ type: 'text', text: `Page "${pageName}" (${pageId}) deleted from template "${target.id}".${promoMsg}` }] };
+    const promoMsg = promotedPage ? ` ${promotedPage} promoted to home page.` : "";
+    if (target.type === "template") {
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Page "${pageName}" (${pageId}) deleted from template "${target.id}".${promoMsg}`,
+          },
+        ],
+      };
     }
-    const base = normalizeBaseUrl(getContext().apiBaseUrl) || 'https://pagehub.dev';
+    const base = normalizeBaseUrl(getContext().apiBaseUrl) || "https://pagehub.dev";
     return {
-      content: [{
-        type: 'text',
-        text: `Page "${pageName}" (${pageId}) deleted.${promoMsg}\nEditor: ${base}/build/${result.id}`,
-      }],
+      content: [
+        {
+          type: "text",
+          text: `Page "${pageName}" (${pageId}) deleted.${promoMsg}\nEditor: ${base}/build/${result.id}`,
+        },
+      ],
     };
   },
 };

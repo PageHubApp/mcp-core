@@ -1,28 +1,38 @@
-const tools = require('./tools.json');
+const tools = require("./tools.json");
 const {
   isPlaceholderCompanyName,
   userExplicitlyRequestsBrandingChange,
   guardRootCompanyPropsPatch,
-} = require('./branding-guard');
-const { runWithContext, getContext } = require('./context');
-const { apiFetch, normalizeBaseUrl } = require('./api-fetch');
+} = require("./branding-guard");
+const { runWithContext, getContext } = require("./context");
+const { apiFetch, normalizeBaseUrl } = require("./api-fetch");
 const {
-  parseMaybeJson, applyNodePatches, normalizeNodePatchArgs,
-  getActiveTarget, getActiveSiteId, isTemplateTarget,
-  getEditorUrl, fetchTarget, fetchSite, saveTarget, saveSite,
-  extractImageUrls, validateImageUrls, collectAllImageUrls,
-} = require('./helpers');
-const remoteHandlers = require('./handlers/remote');
-const kitHandlers = require('./handlers/kit');
-const componentHandlers = require('./handlers/components');
-const portalHandlers = require('./handlers/portal');
-const pageHandlers = require('./handlers/pages');
-const nodeHandlers = require('./handlers/nodes');
-const siteConfigHandlers = require('./handlers/site-config');
-const discoveryHandlers = require('./handlers/discovery');
-const seoHandlers = require('./handlers/seo');
-const aiHandlers = require('./handlers/ai');
-const stockImageHandlers = require('./handlers/stock-images');
+  parseMaybeJson,
+  applyNodePatches,
+  normalizeNodePatchArgs,
+  getActiveTarget,
+  getActiveSiteId,
+  isTemplateTarget,
+  getEditorUrl,
+  fetchTarget,
+  fetchSite,
+  saveTarget,
+  saveSite,
+  extractImageUrls,
+  validateImageUrls,
+  collectAllImageUrls,
+} = require("./helpers");
+const remoteHandlers = require("./handlers/remote");
+const kitHandlers = require("./handlers/kit");
+const componentHandlers = require("./handlers/components");
+const portalHandlers = require("./handlers/portal");
+const pageHandlers = require("./handlers/pages");
+const nodeHandlers = require("./handlers/nodes");
+const siteConfigHandlers = require("./handlers/site-config");
+const discoveryHandlers = require("./handlers/discovery");
+const seoHandlers = require("./handlers/seo");
+const aiHandlers = require("./handlers/ai");
+const stockImageHandlers = require("./handlers/stock-images");
 
 // All HTTP handlers merged into a single dispatch map
 const handlers = {
@@ -44,11 +54,18 @@ const HTTP_TOOL_NAMES = new Set(Object.keys(handlers));
 
 // Tools excluded from the agent endpoint (auth handled per-request)
 const AGENT_EXCLUDED = new Set([
-  'register',
+  "register",
   // Block library admin tools
-  'save_block', 'update_block', 'patch_block', 'patch_block_bulk', 'delete_block',
+  "save_block",
+  "update_block",
+  "patch_block",
+  "patch_block_bulk",
+  "delete_block",
   // Template admin tools
-  'save_template', 'update_template', 'delete_template', 'publish_site_as_template',
+  "save_template",
+  "update_template",
+  "delete_template",
+  "publish_site_as_template",
 ]);
 
 /**
