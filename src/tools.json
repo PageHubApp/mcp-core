@@ -48,6 +48,78 @@
     }
   },
   {
+    "name": "generate_button_classes",
+    "description": "Generates a canonical Button class framework (className + activeModifiers) from semantic intent. Flexible by design: this is a starter framework, not a hard lock. You can still append custom classes.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "variant": {
+          "type": "string",
+          "description": "Button variant intent. Values: primary, outline, ghost. Default: primary."
+        },
+        "shape": {
+          "type": "string",
+          "description": "Corner style class to apply. Typical: rounded-box or rounded-full. Default: rounded-box."
+        },
+        "size": {
+          "type": "string",
+          "description": "Size hint. Values: sm, md, lg. Default: md."
+        },
+        "cta": {
+          "type": "boolean",
+          "description": "If true, apply canonical CTA spacing/min-height tokens. Default: true."
+        },
+        "responsive": {
+          "type": "boolean",
+          "description": "If true, include mobile full-width + desktop auto-width classes. Default: true."
+        },
+        "emphasis": {
+          "type": "string",
+          "description": "Primary-only visual emphasis. Values: default, neon. Default: default."
+        },
+        "includeModifiers": {
+          "type": "boolean",
+          "description": "If true, returns matching activeModifiers along with classes. Default: true."
+        },
+        "extraClasses": {
+          "type": "string",
+          "description": "Optional additional Tailwind classes to append."
+        }
+      }
+    }
+  },
+  {
+    "name": "validate_button_classes",
+    "description": "Validates a Button className semantically (variant conflicts, token usage, outline/primary rules) and optionally auto-fixes it. This guards against accidental class regressions while still allowing custom styling.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "className": {
+          "type": "string",
+          "description": "Button className to validate."
+        },
+        "activeModifiers": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Optional current active modifiers for the button (e.g. [\"btn-neon\"])."
+        },
+        "intentVariant": {
+          "type": "string",
+          "description": "Optional intent guard. Values: primary, outline, ghost."
+        },
+        "autoFix": {
+          "type": "boolean",
+          "description": "If true, returns fixed className/modifiers when issues are found. Default: true."
+        },
+        "allowCustomClasses": {
+          "type": "boolean",
+          "description": "If false, hardcoded color classes are treated as errors; otherwise warnings. Default: true."
+        }
+      },
+      "required": ["className"]
+    }
+  },
+  {
     "name": "list_presets",
     "description": "Lists curated theme presets. With compact:true (PageHub planner default): id + display name only, minimal tokens. With compact:false: id, name, and ~140 char description each. Full palette/fonts apply when you call set_theme(preset).",
     "inputSchema": {
@@ -985,6 +1057,16 @@
         },
         "description": {
           "type": "string"
+        },
+        "buttonValidation": {
+          "type": "string",
+          "enum": ["off", "warn", "fix", "strict"],
+          "description": "Optional button class preflight mode for touched Button nodes. Values: off, warn, fix, strict. Default: warn. `fix` auto-corrects common class/modifier conflicts; `strict` rejects invalid button classes before save."
+        },
+        "designValidation": {
+          "type": "string",
+          "enum": ["off", "warn", "strict"],
+          "description": "Optional design-token preflight mode for touched nodes. Values: off, warn, strict. Default: warn. Flags hardcoded color classes and other node-validation issues relevant to edited nodes."
         }
       },
       "required": [
@@ -1055,6 +1137,16 @@
         },
         "description": {
           "type": "string"
+        },
+        "buttonValidation": {
+          "type": "string",
+          "enum": ["off", "warn", "fix", "strict"],
+          "description": "Optional button class preflight mode applied to touched Button nodes. Values: off, warn, fix, strict. Default: warn."
+        },
+        "designValidation": {
+          "type": "string",
+          "enum": ["off", "warn", "strict"],
+          "description": "Optional design-token preflight mode for touched nodes. Values: off, warn, strict. Default: warn."
         }
       },
       "required": [

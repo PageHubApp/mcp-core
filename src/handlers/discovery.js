@@ -1,6 +1,7 @@
 const { apiFetch } = require('../api-fetch');
 const { getContext } = require('../context');
 const { parseMaybeJson, mergeStrList } = require('../helpers');
+const { buildButtonClassFramework, validateButtonClasses } = require('../button-system');
 
 // Limits for compactComponentSchemaForFill — keeps schema payloads small for
 // parallel fill context windows without losing essential prop information.
@@ -287,6 +288,27 @@ module.exports = {
 
   async get_style_reference() {
     return { content: [{ type: 'text', text: STYLE_REFERENCE }] };
+  },
+
+  async generate_button_classes(args) {
+    const out = buildButtonClassFramework(args || {});
+    return {
+      content: [{
+        type: 'text',
+        text: JSON.stringify({
+          className: out.className,
+          activeModifiers: out.activeModifiers,
+          variant: out.variant,
+          note:
+            'Framework output: canonical starter classes + modifiers. You can append custom classes; run validate_button_classes before patch/save.',
+        }, null, 2),
+      }],
+    };
+  },
+
+  async validate_button_classes(args) {
+    const out = validateButtonClasses(args || {});
+    return { content: [{ type: 'text', text: JSON.stringify(out, null, 2) }] };
   },
 
   async list_presets(args) {
