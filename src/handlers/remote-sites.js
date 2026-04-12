@@ -2,6 +2,7 @@ const { apiFetch, normalizeBaseUrl } = require('../api-fetch');
 const { getContext } = require('../context');
 const { parseMaybeJson, getActiveTarget, fetchTarget, saveTarget } = require('../helpers');
 const { quickA11yAudit } = require('../a11y-check');
+const { validateNodes, formatValidationReport } = require('../node-validation');
 
 module.exports = {
   async list_sites() {
@@ -51,6 +52,16 @@ module.exports = {
       throw new Error('Provide content (inline JSON), or call patch_site_node/patch_site_bulk first.');
     }
 
+    // ── Node validation & auto-fix pass ──
+    const validation = validateNodes(content, { autoFix: true, warnColors: true });
+    const validationReport = formatValidationReport(validation);
+    // Block on structural errors (broken parent/child refs)
+    if (validation.errors.length > 0) {
+      throw new Error(
+        `Cannot save — ${validation.errors.length} structural error(s) found:\n${validation.errors.join('\n')}\n\nFix these before saving.`
+      );
+    }
+
     const target = (() => {
       try { return getActiveTarget(args); } catch { return null; }
     })();
@@ -96,6 +107,7 @@ module.exports = {
 
     const audit = quickA11yAudit(content);
     const auditText = audit ? `\n\n---\n${audit.summary}` : '';
+    const validationText = validationReport ? `\n\n---\n${validationReport}` : '';
 
     if (targetId) {
       const result = await saveTarget(targetId, targetType, content, {
@@ -106,7 +118,7 @@ module.exports = {
       }
       const base = normalizeBaseUrl(ctx.apiBaseUrl) || 'https://pagehub.dev';
       return {
-        content: [{ type: 'text', text: `Site ${result.id} updated. View: ${base}/build/${result.id}${auditText}` }],
+        content: [{ type: 'text', text: `Site ${result.id} updated. View: ${base}/build/${result.id}${auditText}${validationText}` }],
       };
     }
     // Create new — sites only (templates use save_template for creation)
@@ -116,7 +128,7 @@ module.exports = {
     });
     ctx.activeSite = { id: data.id, name: data.name, draftId: data.draftId };
     return {
-      content: [{ type: 'text', text: `New site created: ${data.id}\nEditor: ${data.url}\nPreview: ${data.staticUrl}${auditText}` }],
+      content: [{ type: 'text', text: `New site created: ${data.id}\nEditor: ${data.url}\nPreview: ${data.staticUrl}${auditText}${validationText}` }],
     };
   },
 

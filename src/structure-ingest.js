@@ -62,7 +62,10 @@ function applyContentOverride(node, resolvedName, override) {
   if (!override || typeof override !== 'object') return;
   const props = node.props;
   if (resolvedName === 'Text' && override.text != null) props.text = override.text;
-  if (resolvedName === 'Text' && override.tagName) props.tagName = override.tagName;
+  if (resolvedName === 'Text' && override.tagName) {
+    const t = String(override.tagName).split(/[,\s]/)[0].toLowerCase();
+    if (/^[a-z][a-z0-6]*$/.test(t)) props.tagName = t;
+  }
   if (resolvedName === 'Button') {
     if (override.text != null) props.text = override.text;
     if (override.url != null) props.url = override.url;

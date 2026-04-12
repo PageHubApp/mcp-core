@@ -17,6 +17,7 @@ const {
 const { collectSubtree, sanitizeNodes, findSectionRoot } = require('../node-utils');
 const { resultMsg } = require('./remote-shared');
 const { resolveToolDefaultPageNodeId } = require('../active-page');
+const { validateNodes, formatValidationReport } = require('../node-validation');
 
 module.exports = {
   async add_nodes(args) {
@@ -49,6 +50,10 @@ module.exports = {
     const rawNodes = parseMaybeJson(args.nodes);
     if (!rawNodes || typeof rawNodes !== 'object') throw new Error('nodes must be an object map of nodeId → node definition.');
     if (!flat[parentId]) throw new Error(`Parent node "${parentId}" not found.`);
+
+    // Validate & auto-fix new nodes before sanitizing
+    const validation = validateNodes(rawNodes, { autoFix: true, warnColors: true });
+    const validationReport = formatValidationReport(validation);
 
     // Sanitize: parse strings, validate types, rebuild parent↔children, reparent orphans
     const { nodes: cleanNodes, roots } = sanitizeNodes(rawNodes, flat, parentId);
@@ -94,8 +99,9 @@ module.exports = {
     }
 
     const result = await saveTarget(target.id, target.type, flat);
+    const reportSuffix = validationReport ? `\n\n---\n${validationReport}` : '';
     return {
-      content: [{ type: 'text', text: resultMsg(target.id, target.type, `${Object.keys(cleanNodes).length} nodes added.`) }],
+      content: [{ type: 'text', text: resultMsg(target.id, target.type, `${Object.keys(cleanNodes).length} nodes added.`) + reportSuffix }],
       changedNodes,
     };
   },

@@ -101,6 +101,12 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
   }
   // propsPatch — shallow merge non-class props (text, src, href, alt, style, animation, etc.)
   // Deep-merge `root` to preserve existing keys (animation, pattern, activeModifiers, etc.)
+  // Sanitize tagName to prevent corrupted data from crashing createElement
+  if (propsPatch && typeof propsPatch.tagName === 'string') {
+    const t = propsPatch.tagName.split(/[,\s]/)[0].toLowerCase();
+    if (/^[a-z][a-z0-6]*$/.test(t)) propsPatch.tagName = t;
+    else delete propsPatch.tagName;
+  }
   if (propsPatch) {
     if (propsPatch.root && typeof propsPatch.root === 'object') {
       flatMap[nodeId].props.root = { ...(flatMap[nodeId].props.root || {}), ...propsPatch.root };
