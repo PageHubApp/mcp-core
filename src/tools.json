@@ -28,7 +28,7 @@
   },
   {
     "name": "get_component_schema",
-    "description": "Returns full schemas for CraftJS components — types, props, valid values, and responsive patterns. Pass one or more component names to get exactly what you need in a single call.\n\nAvailable: Background, Container, ContainerGroup, Text, Image, ImageList, Button, ButtonList, Form, FormElement, Divider, Spacer, Video, Audio, Embed, Header, Footer, Map, MapPoint.\n\nParallel section fill: responses are compact (truncated props). Omitting `components` is rejected in fill — always pass a comma list. Prefer search_blocks + apply_kit_block over schema dumps.",
+    "description": "Returns full schemas for CraftJS components — types, props, valid values, and responsive patterns. Pass one or more component names to get exactly what you need in a single call.\n\nAvailable: Accordion, Background, Button, ButtonList, Container, ContainerGroup, Divider, Dropdown, Embed, Footer, Form, FormElement, Header, Image, ImageList, Map, MapPoint, Spacer, Tabs, Text, Video, Audio.\n\nParallel section fill: responses are compact (truncated props). Omitting `components` is rejected in fill — always pass a comma list. Prefer search_blocks + apply_kit_block over schema dumps.",
     "inputSchema": {
       "type": "object",
       "properties": {

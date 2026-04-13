@@ -28,7 +28,7 @@ const STYLE_REFERENCE = `# PageHub Style Reference
 | var(--base-100) | 8 | Page/site background |
 | var(--base-content) | 9 | Default body text |
 | var(--base-200) | 10 | Alternate section backgrounds, cards, dividers |
-| var(--base-content) | 11 | Text on alternate / card surfaces |
+| var(--base-300) | 11 | Deeper alternates, heavy borders |
 
 ## Style Guide CSS Variables (set via set_theme styleGuide)
 
@@ -78,6 +78,20 @@ Surface: bg-primary, text-base-content, border, border-base-200,
   rounded-box, shadow-sm, shadow-md
 
 Typography: text-4xl, font-bold, leading-relaxed, tracking-widest, uppercase
+
+## Background Image Overlays
+
+Use the \`backgroundOverlay\` prop on Container to layer gradients over background images:
+- Presets: "dark-left", "dark-right", "dark-bottom", "dark-top", "dark", "light"
+- Custom: { direction: "to right", from: { color: "#000", opacity: 85 }, to: { color: "#000", opacity: 20 } }
+- Do NOT use root.style for overlays — use this prop.
+
+## Form Styling
+
+FormElement inputs must be explicitly styled — they don't inherit card backgrounds:
+- Input bg must differ from parent card bg (e.g. \`bg-base-300\` input inside \`bg-base-200\` card)
+- Use styleGuide tokens: inputBorderColor, inputBgColor, inputTextColor, inputPlaceholderColor, inputFocusRingColor
+- Submit button: use canonical CTA classes (\`btn btn-primary cta-responsive rounded-box px-space-md py-space-xs min-h-12 font-semibold\`)
 
 ## Template Variables
 
