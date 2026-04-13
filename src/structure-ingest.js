@@ -81,10 +81,11 @@ function applyContentOverride(node, resolvedName, override) {
     if (override.icon) props.icon = { ...props.icon, ...override.icon };
   }
   if (resolvedName === "Image") {
-    if (override.content != null) props.content = override.content;
+    if (override.src != null) props.src = override.src;
+    // Legacy compat: accept override.content too
+    if (override.content != null && override.src == null) props.src = override.content;
     if (override.alt != null) props.alt = override.alt;
     if (override.type) props.type = override.type;
-    if (override.src != null) props.src = override.src;
   }
   if (resolvedName === "FormElement") {
     if (override.placeholder != null) props.placeholder = override.placeholder;

@@ -48,7 +48,7 @@ module.exports = {
       const siteData = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`);
       if (siteData.content?.[nodeId]) {
         applyNodePatches(siteData.content, nodeId, {
-          propsPatch: JSON.stringify({ type: "cdn", content: uploadResult.mediaId }),
+          propsPatch: JSON.stringify({ type: "cdn", src: uploadResult.mediaId }),
         });
         await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`, {
           method: "PUT",
@@ -66,7 +66,7 @@ module.exports = {
       lines.push(`  Editor: ${getEditorUrl(siteId)}`);
     } else {
       lines.push(
-        `\nApply with: update_node(nodeId: "<IMAGE_NODE_ID>", propsPatch: { type: "cdn", content: "${uploadResult.mediaId}" })`
+        `\nApply with: update_node(nodeId: "<IMAGE_NODE_ID>", propsPatch: { type: "cdn", src: "${uploadResult.mediaId}" })`
       );
     }
     return { content: [{ type: "text", text: lines.join("\n") }] };

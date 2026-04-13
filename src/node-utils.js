@@ -1,6 +1,7 @@
 const { parseMaybeJson } = require("./helpers");
 
 const VALID_COMPONENTS = new Set([
+  "Accordion",
   "Audio",
   "Background",
   "Button",
@@ -8,6 +9,7 @@ const VALID_COMPONENTS = new Set([
   "Container",
   "ContainerGroup",
   "Divider",
+  "Dropdown",
   "Embed",
   "Footer",
   "Form",
@@ -20,19 +22,23 @@ const VALID_COMPONENTS = new Set([
   "Modal",
   "Nav",
   "Spacer",
+  "Tabs",
   "Text",
   "Video",
 ]);
 
 const CANVAS_COMPONENTS = new Set([
+  "Accordion",
   "Container",
   "ContainerGroup",
+  "Dropdown",
   "Footer",
   "Header",
   "Nav",
   "Form",
   "Background",
   "Modal",
+  "Tabs",
 ]);
 
 /** Collect a node and all its descendants from a flat map */

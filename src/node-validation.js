@@ -106,36 +106,37 @@ function validateNodes(flatMap, opts = {}) {
     const props = node.props || {};
     const isStructural = STRUCTURAL_NODE_IDS.has(nodeId);
 
-    // ─── Image: src → content migration ───
+    // ─── Image: content → src migration (canonical prop is now "src") ───
     if (resolvedName === "Image") {
-      if (props.src && !props.content) {
+      if (props.content && !props.src) {
         if (autoFix) {
-          props.content = props.src;
-          delete props.src;
+          props.src = props.content;
+          delete props.content;
           // Set type to 'url' for external URLs
           if (
             !props.type &&
-            typeof props.content === "string" &&
-            props.content.startsWith("http")
+            typeof props.src === "string" &&
+            props.src.startsWith("http")
           ) {
             props.type = "url";
           }
           fixes.push(
-            `🔧 ${nodeId}: Migrated Image prop "src" → "content" (type: "${props.type || "cdn"}")`
+            `🔧 ${nodeId}: Migrated Image prop "content" → "src" (type: "${props.type || "cdn"}")`
           );
         } else {
           errors.push(
-            `❌ ${nodeId}: Image uses "src" prop — must use "content" (+ type: "url" for external URLs)`
+            `❌ ${nodeId}: Image uses legacy "content" prop — must use "src" (+ type: "url" for external URLs)`
           );
         }
       }
-      if (!props.content && !props.src) {
-        warnings.push(`⚠️ ${nodeId}: Image has no content/src — will render empty`);
+      if (!props.src && !props.content) {
+        warnings.push(`⚠️ ${nodeId}: Image has no src — will render empty`);
       }
+      const imgSrc = props.src ?? props.content;
       if (
-        props.content &&
-        typeof props.content === "string" &&
-        props.content.startsWith("http") &&
+        imgSrc &&
+        typeof imgSrc === "string" &&
+        imgSrc.startsWith("http") &&
         !props.type
       ) {
         if (autoFix) {
@@ -184,6 +185,32 @@ function validateNodes(flatMap, opts = {}) {
         warnings.push(
           `⚠️ ${nodeId}: Text has invalid tagName "${props.tagName}" — valid: ${[...VALID_TAG_NAMES].join(", ")}`
         );
+      }
+
+      // ─── Heading typography defaults ───
+      // If a heading tag has no text-size class, inject sensible defaults so
+      // headings never render at body size with no heading font.
+      if (autoFix && props.tagName && /^h[1-6]$/.test(props.tagName)) {
+        const cn = props.className || "";
+        const hasTextSize = /(?:^|\s)(?:md:|lg:|sm:)?text-(?:xs|sm|base|lg|xl|2xl|3xl|4xl|5xl|6xl|7xl|8xl|9xl|\[)/.test(cn);
+        if (!hasTextSize) {
+          const HEADING_DEFAULTS = {
+            h1: "font-heading font-bold text-3xl leading-tight text-base-content md:text-4xl lg:text-5xl",
+            h2: "font-heading font-semibold text-2xl leading-tight text-base-content md:text-3xl",
+            h3: "font-heading font-semibold text-xl leading-tight text-base-content md:text-2xl",
+            h4: "font-heading font-semibold text-lg leading-tight text-base-content",
+            h5: "font-heading font-medium text-base leading-tight text-base-content",
+            h6: "font-heading font-medium text-sm leading-tight text-base-content",
+          };
+          const defaults = HEADING_DEFAULTS[props.tagName];
+          if (defaults) {
+            // Prepend defaults, keep any existing classes (like m-0)
+            props.className = cn ? `${defaults} ${cn}` : defaults;
+            fixes.push(
+              `🔧 ${nodeId}: Applied heading typography defaults for <${props.tagName}>`
+            );
+          }
+        }
       }
 
       // Wrap bare text in <p> tags

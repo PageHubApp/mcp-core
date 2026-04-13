@@ -518,9 +518,10 @@ async function saveSite(siteId, flat, extra = {}) {
 function extractImageUrls(props, resolvedName) {
   const urls = [];
   if (!props) return urls;
-  if (resolvedName === "Image" && props.content && typeof props.content === "string") {
-    if (props.type === "url" || (!props.type && props.content.startsWith("http"))) {
-      urls.push(props.content);
+  const imgSrc = resolvedName === "Image" ? (props.src ?? props.content) : null;
+  if (imgSrc && typeof imgSrc === "string") {
+    if (props.type === "url" || (!props.type && imgSrc.startsWith("http"))) {
+      urls.push(imgSrc);
     }
   }
   if (

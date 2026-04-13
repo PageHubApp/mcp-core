@@ -99,5 +99,5 @@ function formatResults(images) {
     return `• \`${img.photoId}\` — ${tags}${dims}\n${urlBlock}`;
   });
 
-  return `Found ${images.length} image${images.length === 1 ? "" : "s"}:\n${lines.join("\n\n")}\n\nUse in Image nodes: propsPatch { "type": "url", "content": "<url>" }. Append ?w=WIDTH&h=HEIGHT&fit=crop&q=80 to resize.`;
+  return `Found ${images.length} image${images.length === 1 ? "" : "s"}:\n${lines.join("\n\n")}\n\nUse in Image nodes: propsPatch { "type": "url", "src": "<url>" }. Append ?w=WIDTH&h=HEIGHT&fit=crop&q=80 to resize.`;
 }

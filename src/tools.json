@@ -246,11 +246,11 @@
         },
         "styleGuide": {
           "type": "object",
-          "description": "Design tokens object. All values become CSS variables (--*).\n\nCommon keys:\n  radiusBox: \"0.5rem\" — buttons, cards, containers (→ --radius-box)\n  radiusField: \"0.375rem\" — form inputs (→ --radius-field)\n  radiusSelector: \"0.5rem\" — checkboxes, radios (→ --radius-selector)\n  sizeField: \"0.25rem\" — input/button height base (→ --size-field)\n  sizeSelector: \"0.25rem\" — checkbox/radio size (→ --size-selector)\n  depth: \"1\" — 3D effect toggle: 0=flat, 1=raised (→ --depth)\n  noise: \"0\" — texture overlay toggle: 0=off, 1=on (→ --noise)\n  buttonPadding: \"0.75rem 1.5rem\" — button padding (Y X)\n  containerPadding: \"2rem 2rem\" — section inner padding (Y X)\n  contentWidth: \"80rem\" — max-width for content containers\n  headingFont: \"font-bold\" — Tailwind font-weight for headings\n  headingFontFamily: \"Playfair Display\" — Google Font name for headings\n  bodyFont: \"font-normal\" — Tailwind font-weight for body\n  bodyFontFamily: \"Inter\" — Google Font name for body text\n  shadowStyle: \"0 1px 3px rgba(0,0,0,0.1)\" — default box-shadow\n  border: \"1px\" — component border width (→ --border)\n  inputBorderColor: \"#e2e8f0\"\n  inputBgColor: \"#ffffff\"\n  inputPlaceholderColor: \"#94a3b8\"\n  inputFocusRingColor: \"#3b82f6\"\n  linkColor: \"#2563eb\"\n  linkHoverColor: \"#1d4ed8\""
+          "description": "Design tokens object. All values become CSS variables (--*).\n\nFONT HIERARCHY: Set fonts HERE — headingFontFamily, bodyFontFamily, and optionally accentFontFamily are the single source of truth. Then use `font-heading` / `font-body` / `font-accent` tokens on nodes (they resolve via CSS vars). Any *FontFamily key auto-generates a CSS var (e.g. displayFontFamily → --display-font-family). NEVER scatter font-['Name'] across individual nodes.\n\nCommon keys:\n  radiusBox: \"0.5rem\" — buttons, cards, containers (→ --radius-box)\n  radiusField: \"0.375rem\" — form inputs (→ --radius-field)\n  radiusSelector: \"0.5rem\" — checkboxes, radios (→ --radius-selector)\n  sizeField: \"0.25rem\" — input/button height base (→ --size-field)\n  sizeSelector: \"0.25rem\" — checkbox/radio size (→ --size-selector)\n  depth: \"1\" — 3D effect toggle: 0=flat, 1=raised (→ --depth)\n  noise: \"0\" — texture overlay toggle: 0=off, 1=on (→ --noise)\n  buttonPadding: \"0.75rem 1.5rem\" — button padding (Y X)\n  containerPadding: \"2rem 2rem\" — section inner padding (Y X)\n  contentWidth: \"80rem\" — max-width for content containers\n  headingFont: \"font-bold\" — Tailwind font-weight for headings\n  headingFontFamily: \"Playfair Display\" — Google Font name for headings (→ --heading-font-family, used by font-heading token)\n  bodyFont: \"font-normal\" — Tailwind font-weight for body\n  bodyFontFamily: \"Inter\" — Google Font name for body text (→ --body-font-family, used by font-body token)\n  accentFontFamily: \"IBM Plex Mono\" — optional third font (→ --accent-font-family, used by font-accent token)\n  (any *FontFamily key auto-generates a CSS var)\n  shadowStyle: \"0 1px 3px rgba(0,0,0,0.1)\" — default box-shadow\n  border: \"1px\" — component border width (→ --border)\n  inputBorderColor: \"#e2e8f0\"\n  inputBgColor: \"#ffffff\"\n  inputPlaceholderColor: \"#94a3b8\"\n  inputFocusRingColor: \"#3b82f6\"\n  linkColor: \"#2563eb\"\n  linkHoverColor: \"#1d4ed8\""
         },
         "fonts": {
           "type": "object",
-          "description": "Optional hint when `styleGuide` omits families: same shapes (\"url\" or \"families\") — parsed into `headingFontFamily` / `bodyFontFamily` only. Put `font-body` / `font-['Name']` on ROOT `className` yourself; `extractGoogleFontsUrl` loads Google CSS from those utilities. No `<link>` font tags in `ROOT.props.header`."
+          "description": "Optional hint when `styleGuide` omits families: same shapes (\"url\" or \"families\") — parsed into `headingFontFamily` / `bodyFontFamily` only. Use `font-heading` / `font-body` in className — these resolve via CSS vars and extractGoogleFontsUrl correctly pairs weights. Only use `font-['Name']` for a third accent font not in styleGuide. No `<link>` font tags in `ROOT.props.header`."
         },
         "jsonLd": {
           "type": "object",
@@ -275,7 +275,7 @@
         },
         "contentOverrides": {
           "type": "object",
-          "description": "Map of displayName → content patch. Patches the node's top-level props (text, url, content, alt, icon, etc.).\n\nExamples:\n  {\"Title\": {\"text\": \"Welcome to our store\"}, \"CTA Button\": {\"text\": \"Shop Now\", \"url\": \"/shop\"}, \"Image\": {\"content\": \"https://example.com/hero.jpg\"}}\n\nFor Text nodes: set \"text\" (plain text or inline HTML with <strong>, <em>, <br/>, <span>).\nFor Button nodes: set \"text\", \"url\", \"icon\".\nFor Image nodes: set \"content\" (URL), \"alt\", \"type\" (\"url\" for external images)."
+          "description": "Map of displayName → content patch. Patches the node's top-level props (text, url, src, alt, icon, etc.).\n\nExamples:\n  {\"Title\": {\"text\": \"Welcome to our store\"}, \"CTA Button\": {\"text\": \"Shop Now\", \"url\": \"/shop\"}, \"Image\": {\"src\": \"https://example.com/hero.jpg\"}}\n\nFor Text nodes: set \"text\" (plain text or inline HTML with <strong>, <em>, <br/>, <span>).\nFor Button nodes: set \"text\", \"url\", \"icon\".\nFor Image nodes: set \"src\" (URL), \"alt\", \"type\" (\"url\" for external images)."
         },
         "propOverrides": {
           "type": "object",
@@ -412,7 +412,7 @@
         },
         "node": {
           "type": "object",
-          "description": "Node definition. Must include:\n  type: { resolvedName: \"Text\" | \"Container\" | \"Image\" | \"Button\" | \"ButtonList\" | etc }\n  isCanvas: true (containers) or false (leaf elements)\n  props: { canDelete: true, canEditName: true, className: \"flex flex-col gap-4 ...\", text/content/etc, custom: { displayName: \"...\" } }\n\nparent and linkedNodes are set automatically — do not include them."
+          "description": "Node definition. Must include:\n  type: { resolvedName: \"Text\" | \"Container\" | \"Image\" | \"Button\" | \"ButtonList\" | etc }\n  isCanvas: true (containers) or false (leaf elements)\n  props: { canDelete: true, canEditName: true, className: \"flex flex-col gap-4 ...\", text/src/etc, custom: { displayName: \"...\" } }\n\nparent and linkedNodes are set automatically — do not include them."
         }
       },
       "required": ["nodeId", "parentId", "node"]
@@ -547,7 +547,7 @@
   },
   {
     "name": "generate_image",
-    "description": "Generates an AI image, uploads it to CDN, and returns the CDN URL ready to use in nodes.\n\nFull pipeline: prompt optimization (Claude) → image generation (OpenAI GPT Image / DALL-E) → CDN upload (Cloudflare) → returns URL + alt text suggestion.\n\nThe generated image is automatically uploaded — no separate upload_image call needed.\n\nUse update_node to apply: propsPatch: { type: \"cdn\", content: \"<mediaId>\" }",
+    "description": "Generates an AI image, uploads it to CDN, and returns the CDN URL ready to use in nodes.\n\nFull pipeline: prompt optimization (Claude) → image generation (OpenAI GPT Image / DALL-E) → CDN upload (Cloudflare) → returns URL + alt text suggestion.\n\nThe generated image is automatically uploaded — no separate upload_image call needed.\n\nUse update_node to apply: propsPatch: { type: \"cdn\", src: \"<mediaId>\" }",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -920,7 +920,7 @@
   },
   {
     "name": "upload_image",
-    "description": "Upload an image to the tenant CDN for a site (requires Cloudflare Images on the server). Returns mediaId and url; use type \"cdn\" and content mediaId on Image/Background nodes. Prefer imageUrl for large files.",
+    "description": "Upload an image to the tenant CDN for a site (requires Cloudflare Images on the server). Returns mediaId and url; use type \"cdn\" and src mediaId on Image/Background nodes. Prefer imageUrl for large files.",
     "inputSchema": {
       "type": "object",
       "properties": {
