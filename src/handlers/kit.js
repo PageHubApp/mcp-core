@@ -289,7 +289,7 @@ module.exports = {
         `Internal error: node id "${colliding}" still collided after retries. Try a different block or report a bug.`
       );
     }
-    walkApplyKitOverrides(newNodes, rootId, co, po);
+    const overrideWarnings = walkApplyKitOverrides(newNodes, rootId, co, po) || [];
 
     for (const [id, node] of Object.entries(newNodes)) {
       flat[id] = node;
@@ -334,7 +334,10 @@ module.exports = {
       } else {
         ctx._pendingFlatMap = flat;
       }
-      const summary = `Applied kit block "${component.name}" (\`${resolvedSlug}\`) — ${Object.keys(newNodes).length} nodes.${resolvedSlug !== rawSlug ? ` (resolved from "${rawSlug}")` : ""}\n\n${formatKitNodeIdManifest(newNodes, rootId, parentNodeId)}`;
+      const warnText = overrideWarnings.length
+        ? `\n\n⚠️ Override warnings:\n${overrideWarnings.map(w => `  - ${w}`).join("\n")}`
+        : "";
+      const summary = `Applied kit block "${component.name}" (\`${resolvedSlug}\`) — ${Object.keys(newNodes).length} nodes.${resolvedSlug !== rawSlug ? ` (resolved from "${rawSlug}")` : ""}${warnText}\n\n${formatKitNodeIdManifest(newNodes, rootId, parentNodeId)}`;
       return {
         content: [{ type: "text", text: summary }],
         pendingContent: ctx.fillMode ? ctx._pendingFlatMap : flat,
@@ -344,10 +347,13 @@ module.exports = {
 
     const result = await saveTarget(target.id, target.type, flat);
     const base = normalizeBaseUrl(ctx.apiBaseUrl) || "https://pagehub.dev";
+    const warnText = overrideWarnings.length
+      ? `\n\n⚠️ Override warnings:\n${overrideWarnings.map(w => `  - ${w}`).join("\n")}`
+      : "";
     const msg =
       target.type === "template"
-        ? `Applied kit block "${resolvedSlug}" to template "${result.id}".`
-        : `Applied kit block "${resolvedSlug}".\nEditor: ${base}/build/${result.id}`;
+        ? `Applied kit block "${resolvedSlug}" to template "${result.id}".${warnText}`
+        : `Applied kit block "${resolvedSlug}".${warnText}\nEditor: ${base}/build/${result.id}`;
     return { content: [{ type: "text", text: msg }], changedNodes };
   },
 };

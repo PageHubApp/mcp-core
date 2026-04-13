@@ -372,7 +372,7 @@
   },
   {
     "name": "delete_node",
-    "description": "Deletes a node and all its descendants from the active site. Also removes the node ID from its parent's nodes array. Use this to remove unwanted elements, then insert_node to add replacements.\n\nCANNOT delete ROOT, page_home, hdr_root, hdr_section, hdr_inner, ftr_root, ftr_content, ftr_inner — these are structural.",
+    "description": "Deletes a node and all its descendants from the active site. Also removes the node ID from its parent's nodes array. Use list_site_nodes or search_site_nodes to find node IDs first.\n\nCANNOT delete ROOT, page_home, hdr_root, ftr_root — these are structural.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -416,6 +416,40 @@
         }
       },
       "required": ["nodeId", "parentId", "node"]
+    }
+  },
+  {
+    "name": "list_site_nodes",
+    "description": "Lightweight site node tree — returns ID, displayName, component type, and child count for every node in DFS order. ~2KB output vs 100KB+ from pull_site. Use this instead of pull_site when you need to find node IDs, understand structure, or check section order.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id (defaults to active site)."
+        }
+      }
+    }
+  },
+  {
+    "name": "search_site_nodes",
+    "description": "Search site nodes by displayName text or component type. Returns matching node IDs with displayName, className, parent, and text preview. Use this to find specific nodes without pulling the entire site.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id (defaults to active site)."
+        },
+        "q": {
+          "type": "string",
+          "description": "Search query — matches against displayName, text content, and node ID. Case-insensitive."
+        },
+        "type": {
+          "type": "string",
+          "description": "Filter by component type: Text, Button, Container, Image, Form, FormElement, Nav, ButtonList, Footer, Header, Divider."
+        }
+      }
     }
   },
   {
@@ -861,7 +895,7 @@
   },
   {
     "name": "pull_site",
-    "description": "Fetches site content from the API for inspection. Returns the full decoded node tree. Use this to inspect node IDs, current props, and structure before making edits.",
+    "description": "Fetches the FULL site content (100KB+). Prefer list_site_nodes (lightweight tree summary, ~2KB) or search_site_nodes (find nodes by name/type) for most tasks. Only use pull_site when you need the complete props/className of many nodes at once.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1315,11 +1349,11 @@
         },
         "contentOverrides": {
           "type": "string",
-          "description": "Optional JSON object: keys are custom.displayName from the block, values are { text, url, content, alt, ... } per node type."
+          "description": "Optional JSON object: keys are custom.displayName from the block (use list_block_nodes to see them). Values are { text, url, alt, src, ... } per node type. **For repeated nodes** (e.g. 3 \"Title\" nodes in a 3-pillar grid), pass an **array** of overrides — each matching node consumes the next element in DFS order. Example: { \"Heading\": { \"text\": \"Our Services\" }, \"Title\": [{ \"text\": \"SEO\" }, { \"text\": \"PPC\" }, { \"text\": \"Content\" }], \"Body\": [{ \"text\": \"...\" }, { \"text\": \"...\" }, { \"text\": \"...\" }] }"
         },
         "propOverrides": {
           "type": "string",
-          "description": "Optional JSON object: keys are custom.displayName, values are { className, props } partial patches. className is a Tailwind class string."
+          "description": "Optional JSON object: keys are custom.displayName, values are { className, replaceClassName?, props } partial patches. className is merged via tailwind-merge by default. Set **replaceClassName: true** to REPLACE instead of merge — use when block defaults conflict with your design (e.g. btn-ghost vs btn-circle). **For repeated nodes**, pass an **array** — each match consumes the next element. Example: { \"Icon isolation\": { \"className\": \"btn btn-circle bg-accent/10 text-accent\", \"replaceClassName\": true } }"
         },
         "position": {
           "type": "number",

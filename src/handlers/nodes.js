@@ -111,4 +111,96 @@ module.exports = {
         : `Node "${nodeId}" inserted into "${parentId}" at position ${pos}.\nEditor: ${result.url}`;
     return { content: [{ type: "text", text: label }] };
   },
+
+  /**
+   * Lightweight node summary — returns ID, displayName, component type, parent, children count.
+   * ~2KB instead of 100KB+ from pull_site. Use this instead of pull_site for navigation/inspection.
+   */
+  async list_site_nodes(args) {
+    const { flat } = await fetchTarget(args);
+
+    // Build DFS tree from ROOT
+    const lines = [];
+    const visit = (id, depth) => {
+      const node = flat[id];
+      if (!node) return;
+      const type = node.type?.resolvedName || "?";
+      const label = node.custom?.displayName || "";
+      const childCount = (node.nodes || []).length;
+      const indent = "  ".repeat(depth);
+      const text = node.props?.text
+        ? ` text="${String(node.props.text).replace(/<[^>]*>/g, "").substring(0, 40)}"`
+        : "";
+      lines.push(`${indent}${id} | ${type}${label ? ` "${label}"` : ""}${text} (${childCount} children)`);
+      for (const childId of node.nodes || []) visit(childId, depth + 1);
+    };
+
+    // Start from ROOT → hdr_root, page_home, ftr_root
+    visit("ROOT", 0);
+
+    return {
+      content: [{
+        type: "text",
+        text: `Site node tree (${Object.keys(flat).length} nodes):\n\n${lines.join("\n")}`,
+      }],
+    };
+  },
+
+  /**
+   * Search site nodes by displayName pattern or component type.
+   * Returns matching node IDs with their displayName, type, className, and parent.
+   */
+  async search_site_nodes(args) {
+    const { q, type: componentType } = args;
+    const { flat } = await fetchTarget(args);
+
+    if (!q && !componentType) {
+      throw new Error("Provide q (displayName search) and/or type (component type like Text, Button, Container).");
+    }
+
+    const qLower = q ? q.toLowerCase() : null;
+    const typeLower = componentType ? componentType.toLowerCase() : null;
+    const matches = [];
+
+    for (const [id, node] of Object.entries(flat)) {
+      const nodeType = node.type?.resolvedName || "";
+      const displayName = node.custom?.displayName || "";
+      const text = node.props?.text || "";
+
+      let match = true;
+      if (qLower) {
+        match = displayName.toLowerCase().includes(qLower) ||
+                text.toLowerCase().includes(qLower) ||
+                id.toLowerCase().includes(qLower);
+      }
+      if (typeLower && match) {
+        match = nodeType.toLowerCase() === typeLower;
+      }
+      if (match) {
+        matches.push({
+          id,
+          type: nodeType,
+          displayName,
+          className: (node.props?.className || "").substring(0, 80),
+          parent: node.parent || "",
+          text: text.replace(/<[^>]*>/g, "").substring(0, 50),
+        });
+      }
+    }
+
+    if (matches.length === 0) {
+      return { content: [{ type: "text", text: `No nodes matched${q ? ` q="${q}"` : ""}${componentType ? ` type="${componentType}"` : ""}.` }] };
+    }
+
+    const lines = matches.map(m =>
+      `${m.id} | ${m.type}${m.displayName ? ` "${m.displayName}"` : ""}${m.text ? ` text="${m.text}"` : ""}\n  className: ${m.className || "(none)"}\n  parent: ${m.parent}`
+    );
+
+    return {
+      content: [{
+        type: "text",
+        text: `Found ${matches.length} node(s):\n\n${lines.join("\n\n")}`,
+      }],
+    };
+  },
 };

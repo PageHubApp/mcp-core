@@ -103,15 +103,20 @@ function applyContentOverride(node, resolvedName, override) {
 
 function applyPropOverride(node, patch) {
   if (!patch || typeof patch !== "object") return;
-  // New className-based patching
   if (patch.className) {
-    let twMerge;
-    try {
-      twMerge = require("tailwind-merge").twMerge;
-    } catch {
-      twMerge = (a, b) => `${a} ${b}`.trim();
+    if (patch.replaceClassName) {
+      // Full replacement — use when the block's default classes conflict (e.g. btn-ghost vs btn-circle)
+      node.props.className = patch.className;
+    } else {
+      // Default: merge via tailwind-merge
+      let twMerge;
+      try {
+        twMerge = require("tailwind-merge").twMerge;
+      } catch {
+        twMerge = (a, b) => `${a} ${b}`.trim();
+      }
+      node.props.className = twMerge(node.props.className || "", patch.className);
     }
-    node.props.className = twMerge(node.props.className || "", patch.className);
   }
   // Non-class props
   if (patch.props) deepMerge(node.props, patch.props);
@@ -169,20 +174,84 @@ function hierarchicalStructureToFlat(structure, sectionContainerId, slug, source
   return { nodes, rootId };
 }
 
+/**
+ * Walk the kit node tree and apply content/prop overrides by displayName.
+ *
+ * Overrides are keyed by displayName. When a block has **repeated** nodes with the
+ * same displayName (e.g. three "Title" nodes in a 3-pillar grid), the override value
+ * can be an **array** — each matching node consumes the next element in DFS order.
+ *
+ * Examples:
+ *   { "Heading": { "text": "What We Do" } }              — single override
+ *   { "Title": [{ "text": "SEO" }, { "text": "PPC" }] }  — array for repeated nodes
+ */
 function walkApplyKitOverrides(nodes, rootId, contentOverrides, propOverrides) {
+  // Track consumption index for array-valued overrides
+  const coIndex = {};
+  const poIndex = {};
+
   const visit = id => {
     const node = nodes[id];
     if (!node) return;
     const label = node.custom?.displayName;
-    if (label && contentOverrides && contentOverrides[label]) {
-      applyContentOverride(node, node.type.resolvedName, contentOverrides[label]);
+
+    if (label && contentOverrides && contentOverrides[label] != null) {
+      const raw = contentOverrides[label];
+      if (Array.isArray(raw)) {
+        const idx = coIndex[label] || 0;
+        if (idx < raw.length) {
+          applyContentOverride(node, node.type.resolvedName, raw[idx]);
+        }
+        coIndex[label] = idx + 1;
+      } else {
+        applyContentOverride(node, node.type.resolvedName, raw);
+      }
     }
-    if (label && propOverrides && propOverrides[label]) {
-      applyPropOverride(node, propOverrides[label]);
+
+    if (label && propOverrides && propOverrides[label] != null) {
+      const raw = propOverrides[label];
+      if (Array.isArray(raw)) {
+        const idx = poIndex[label] || 0;
+        if (idx < raw.length) {
+          applyPropOverride(node, raw[idx]);
+        }
+        poIndex[label] = idx + 1;
+      } else {
+        applyPropOverride(node, raw);
+      }
     }
+
     for (const c of node.nodes || []) visit(c);
   };
   visit(rootId);
+
+  // Collect all displayNames present in the node tree
+  const allLabels = new Set();
+  const visitLabels = id => {
+    const node = nodes[id];
+    if (!node) return;
+    if (node.custom?.displayName) allLabels.add(node.custom.displayName);
+    for (const c of node.nodes || []) visitLabels(c);
+  };
+  visitLabels(rootId);
+
+  // Report unmatched override keys — these silently fail otherwise
+  const warnings = [];
+  if (contentOverrides) {
+    for (const key of Object.keys(contentOverrides)) {
+      if (!allLabels.has(key)) {
+        warnings.push(`contentOverride "${key}" did not match any node (available: ${[...allLabels].join(", ") || "none — block has no displayName labels"})`);
+      }
+    }
+  }
+  if (propOverrides) {
+    for (const key of Object.keys(propOverrides)) {
+      if (!allLabels.has(key)) {
+        warnings.push(`propOverride "${key}" did not match any node`);
+      }
+    }
+  }
+  return warnings;
 }
 
 /** Stable prefix for library block patching (same slug always yields same lib_* ids). */
