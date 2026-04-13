@@ -150,6 +150,53 @@ module.exports = {
    * Search site nodes by displayName pattern or component type.
    * Returns matching node IDs with their displayName, type, className, and parent.
    */
+  async move_node(args) {
+    const { nodeId, newParentId, position } = args;
+    if (PROTECTED_IDS.includes(nodeId))
+      throw new Error(`Cannot move structural node: ${nodeId}.`);
+    const ctx = getContext();
+    const { targetId, targetType, flat } = await fetchTarget(args);
+    if (!flat[nodeId]) throw new Error(`Node "${nodeId}" not found.`);
+    if (!flat[newParentId]) throw new Error(`New parent "${newParentId}" not found.`);
+
+    const oldParentId = flat[nodeId].parent;
+    if (!oldParentId || !flat[oldParentId])
+      throw new Error(`Node "${nodeId}" has no valid parent — cannot move.`);
+    if (oldParentId === newParentId && position == null) {
+      return { content: [{ type: "text", text: `Node "${nodeId}" is already a child of "${newParentId}". Nothing to do.` }] };
+    }
+
+    // Prevent moving a node into its own subtree
+    let ancestor = newParentId;
+    while (ancestor) {
+      if (ancestor === nodeId)
+        throw new Error(`Cannot move "${nodeId}" into its own subtree (circular reference).`);
+      ancestor = flat[ancestor]?.parent || null;
+    }
+
+    // Remove from old parent
+    flat[oldParentId].nodes = (flat[oldParentId].nodes || []).filter(id => id !== nodeId);
+
+    // Insert into new parent
+    const list = flat[newParentId].nodes || (flat[newParentId].nodes = []);
+    const pos = position != null ? position : list.length;
+    list.splice(pos, 0, nodeId);
+
+    // Update node's parent ref
+    flat[nodeId].parent = newParentId;
+
+    if (ctx.draftMode) {
+      ctx._pendingFlatMap = flat;
+      return { content: [{ type: "text", text: `Node "${nodeId}" moved from "${oldParentId}" to "${newParentId}" at position ${pos}.` }] };
+    }
+    const result = await saveTarget(targetId, targetType, flat);
+    const label =
+      targetType === "template"
+        ? `Node "${nodeId}" moved from "${oldParentId}" to "${newParentId}" at position ${pos} in template "${targetId}".`
+        : `Node "${nodeId}" moved from "${oldParentId}" to "${newParentId}" at position ${pos}.\nEditor: ${result.url}`;
+    return { content: [{ type: "text", text: label }] };
+  },
+
   async search_site_nodes(args) {
     const { q, type: componentType } = args;
     const { flat } = await fetchTarget(args);

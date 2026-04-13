@@ -389,6 +389,32 @@
     }
   },
   {
+    "name": "move_node",
+    "description": "Moves a node from its current parent to a new parent node. Updates parent references on both old and new parent, and the node itself. The entire subtree moves with the node. Cannot move ROOT or page_home. Cannot move a node into its own subtree.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id (defaults to active site)."
+        },
+        "nodeId": {
+          "type": "string",
+          "description": "ID of the node to move."
+        },
+        "newParentId": {
+          "type": "string",
+          "description": "ID of the new parent node."
+        },
+        "position": {
+          "type": "number",
+          "description": "Index in new parent's nodes array. Default: append to end."
+        }
+      },
+      "required": ["nodeId", "newParentId"]
+    }
+  },
+  {
     "name": "insert_node",
     "description": "Inserts a new node into the active site as a child of an existing parent node. The node definition must include type.resolvedName, isCanvas, props (with className for Tailwind classes, custom.displayName), and an empty nodes array.\n\nUse this to add individual elements (Text, Image, Button, Container, ButtonList, etc.) into existing sections or containers.",
     "inputSchema": {
