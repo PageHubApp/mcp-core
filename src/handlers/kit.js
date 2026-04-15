@@ -2,7 +2,13 @@ const crypto = require("crypto");
 const { twMerge } = require("tailwind-merge");
 const { apiFetch } = require("../api-fetch");
 const { getContext } = require("../context");
-const { getActiveTarget, parseMaybeJson, saveTarget, fetchTarget } = require("../helpers");
+const {
+  getActiveTarget,
+  parseMaybeJson,
+  saveTarget,
+  fetchTarget,
+  decodeContentOrThrow,
+} = require("../helpers");
 const { normalizeBaseUrl } = require("../api-fetch");
 const { hierarchicalStructureToFlat, walkApplyKitOverrides } = require("../structure-ingest");
 
@@ -255,7 +261,11 @@ module.exports = {
 
     // For header/footer slots, keep the block's section wrapper intact (it's the slot's direct child).
     // For page sections, unwrap to avoid nesting two section shells.
-    const structure = slotTarget ? component.structure : unwrapBlockStructure(component.structure);
+    const decodedStructure = decodeContentOrThrow(
+      component.structure,
+      `Component "${resolvedSlug}" structure`
+    );
+    const structure = slotTarget ? decodedStructure : unwrapBlockStructure(decodedStructure);
     const co = parseMaybeJson(contentOverrides) || contentOverrides || {};
     const po = parseMaybeJson(propOverrides) || propOverrides || {};
 

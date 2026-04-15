@@ -1,6 +1,11 @@
 const { apiFetch } = require("../api-fetch");
 const { getContext } = require("../context");
-const { parseMaybeJson, getActiveTarget } = require("../helpers");
+const {
+  parseMaybeJson,
+  getActiveTarget,
+  compressJsonToBase64Lz,
+  decodeContentOrThrow,
+} = require("../helpers");
 const { quickA11yAudit } = require("../a11y-check");
 
 module.exports = {
@@ -53,12 +58,13 @@ module.exports = {
     if (Number.isFinite(Number(data.version))) {
       ctx._targetRevisions[`template:${slug}`] = { expectedVersion: Number(data.version) };
     }
-    const nodeCount = data.content ? Object.keys(data.content).length : 0;
+    const decodedContent = decodeContentOrThrow(data.content, `Template "${slug}" content`);
+    const nodeCount = Object.keys(decodedContent).length;
     return {
       content: [
         {
           type: "text",
-          text: `Template "${slug}" fetched (${nodeCount} nodes).\n\n\`\`\`json\n${JSON.stringify(data.content, null, 2)}\n\`\`\``,
+          text: `Template "${slug}" fetched (${nodeCount} nodes).\n\n\`\`\`json\n${JSON.stringify(decodedContent, null, 2)}\n\`\`\``,
         },
       ],
     };
@@ -80,6 +86,11 @@ module.exports = {
     if (!slug || !title || !content) {
       throw new Error("slug, title, and content are required");
     }
+    const resolvedContent = parseMaybeJson(content) || content;
+    const encodedContent =
+      typeof resolvedContent === "string"
+        ? resolvedContent
+        : compressJsonToBase64Lz(resolvedContent);
     const data = await apiFetch("/api/v1/templates", {
       method: "POST",
       body: {
@@ -89,13 +100,13 @@ module.exports = {
         image,
         category,
         tags,
-        content,
+        content: encodedContent,
         hidden,
         isPublic,
         sortOrder,
       },
     });
-    const audit = quickA11yAudit(content);
+    const audit = typeof resolvedContent === "object" ? quickA11yAudit(resolvedContent) : null;
     const auditText = audit ? `\n\n---\n${audit.summary}` : "";
     return {
       content: [
@@ -119,7 +130,7 @@ module.exports = {
     const body = {
       slug: finalSlug,
       title: finalTitle,
-      content: siteData.content,
+      content: compressJsonToBase64Lz(siteData.content),
       ...(description && { description }),
       ...(image && { image }),
       ...(category && { category }),
@@ -159,6 +170,13 @@ module.exports = {
     ]) {
       if (args[f] !== undefined) body[f] = args[f];
     }
+    if (body.content !== undefined) {
+      const resolvedContent = parseMaybeJson(body.content) || body.content;
+      body.content =
+        typeof resolvedContent === "string"
+          ? resolvedContent
+          : compressJsonToBase64Lz(resolvedContent);
+    }
     if (Object.keys(body).length === 0) {
       throw new Error("Nothing to update. Provide at least one field.");
     }
@@ -166,7 +184,10 @@ module.exports = {
       method: "PUT",
       body: { ...body, expectedVersion },
     });
-    const audit = args.content ? quickA11yAudit(args.content) : null;
+    const parsedAuditContent = parseMaybeJson(args.content);
+    const audit = parsedAuditContent && typeof parsedAuditContent === "object"
+      ? quickA11yAudit(parsedAuditContent)
+      : null;
     const auditText = audit ? `\n\n---\n${audit.summary}` : "";
     return {
       content: [

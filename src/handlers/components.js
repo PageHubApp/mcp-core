@@ -7,6 +7,8 @@ const {
   assertPatchBlockNodeArgs,
   assertPatchBlockBulkItem,
   mergeStrList,
+  compressJsonToBase64Lz,
+  decodeContentOrThrow,
 } = require("../helpers");
 const {
   hierarchicalLibraryToFlat,
@@ -22,6 +24,17 @@ async function fetchComponents(params) {
 
 async function fetchComponent(slug) {
   return apiFetch(`/api/v1/components/${encodeURIComponent(slug)}`);
+}
+
+function decodeComponentStructure(component) {
+  const decoded = decodeContentOrThrow(component?.structure, `Component "${component?.slug || "unknown"}" structure`);
+  return { ...component, structure: decoded };
+}
+
+function encodeStructurePayload(structure) {
+  if (typeof structure === "string" && structure) return structure;
+  if (structure && typeof structure === "object") return compressJsonToBase64Lz(structure);
+  throw new Error("structure must be an object or lzutf8+base64 compressed JSON string.");
 }
 
 /** Scan _pendingFlatMap for block slugs via custom.source metadata and kit_* node ID prefixes. */
@@ -222,7 +235,7 @@ module.exports = {
     if (!slug) throw new Error("slug is required.");
 
     const raw = await fetchComponent(slug);
-    const c = raw.component || raw;
+    const c = decodeComponentStructure(raw.component || raw);
 
     return {
       content: [
@@ -242,10 +255,7 @@ module.exports = {
     if (!slug) throw new Error("slug is required.");
 
     const raw = await fetchComponent(slug);
-    const c = raw.component || raw;
-    if (!c?.structure || typeof c.structure !== "object") {
-      throw new Error("Component has no structure to flatten.");
-    }
+    const c = decodeComponentStructure(raw.component || raw);
 
     const { nodes, rootId } = hierarchicalLibraryToFlat(c.structure, slug);
     const manifest = formatBlockNodeManifest(nodes, rootId, slug);
@@ -295,13 +305,14 @@ module.exports = {
         source,
         group,
         style,
-        structure,
+        structure: encodeStructurePayload(structure),
         isPublic,
         isCategoryPreview,
       },
     });
 
-    const audit = quickA11yAudit(structure);
+    const auditInput = typeof structure === "string" ? null : structure;
+    const audit = auditInput ? quickA11yAudit(auditInput) : null;
     const auditText = audit ? `\n\n---\n${audit.summary}` : "";
     return {
       content: [
@@ -340,7 +351,8 @@ module.exports = {
     ];
     for (const f of fields) {
       if (args[f] !== undefined) {
-        body[f === "newSlug" ? "slug" : f] = args[f];
+        body[f === "newSlug" ? "slug" : f] =
+          f === "structure" ? encodeStructurePayload(args[f]) : args[f];
       }
     }
 
@@ -354,7 +366,7 @@ module.exports = {
     });
 
     const c = data.component;
-    const audit = args.structure ? quickA11yAudit(args.structure) : null;
+    const audit = args.structure && typeof args.structure === "object" ? quickA11yAudit(args.structure) : null;
     const auditText = audit ? `\n\n---\n${audit.summary}` : "";
     return {
       content: [
@@ -373,10 +385,7 @@ module.exports = {
     assertPatchBlockNodeArgs(args);
 
     const data = await apiFetch(`/api/v1/components/${encodeURIComponent(slug)}`);
-    const c = data.component;
-    if (!c?.structure || typeof c.structure !== "object") {
-      throw new Error("Component has no structure to patch.");
-    }
+    const c = decodeComponentStructure(data.component);
 
     const { nodes, rootId } = hierarchicalLibraryToFlat(c.structure, slug);
     const flat = JSON.parse(JSON.stringify(nodes));
@@ -390,7 +399,10 @@ module.exports = {
 
     await apiFetch(`/api/v1/components/${encodeURIComponent(slug)}`, {
       method: "PUT",
-      body: { structure: newStructure, expectedVersion: Number(c.version || 1) },
+      body: {
+        structure: encodeStructurePayload(newStructure),
+        expectedVersion: Number(c.version || 1),
+      },
     });
 
     return {
@@ -415,10 +427,7 @@ module.exports = {
     }
 
     const data = await apiFetch(`/api/v1/components/${encodeURIComponent(slug)}`);
-    const c = data.component;
-    if (!c?.structure || typeof c.structure !== "object") {
-      throw new Error("Component has no structure to patch.");
-    }
+    const c = decodeComponentStructure(data.component);
 
     const { nodes, rootId } = hierarchicalLibraryToFlat(c.structure, slug);
     const flat = JSON.parse(JSON.stringify(nodes));
@@ -438,7 +447,10 @@ module.exports = {
 
     await apiFetch(`/api/v1/components/${encodeURIComponent(slug)}`, {
       method: "PUT",
-      body: { structure: newStructure, expectedVersion: Number(c.version || 1) },
+      body: {
+        structure: encodeStructurePayload(newStructure),
+        expectedVersion: Number(c.version || 1),
+      },
     });
 
     return {

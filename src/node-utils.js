@@ -6,6 +6,9 @@ const VALID_COMPONENTS = new Set([
   "Background",
   "Button",
   "ButtonList",
+  "CartBadge",
+  "CartDrawer",
+  "CheckoutBanner",
   "Container",
   "ContainerGroup",
   "Divider",
@@ -29,6 +32,8 @@ const VALID_COMPONENTS = new Set([
 
 const CANVAS_COMPONENTS = new Set([
   "Accordion",
+  "CartDrawer",
+  "CheckoutBanner",
   "Container",
   "ContainerGroup",
   "Dropdown",

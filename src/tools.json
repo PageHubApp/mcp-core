@@ -1230,22 +1230,26 @@
   },
   {
     "name": "audit_accessibility",
-    "description": "Runs a WCAG accessibility audit on a URL or raw HTML using axe-core. Returns violations grouped by severity (critical, serious, moderate, minor) with fix suggestions.\n\nSupports WCAG levels A, AA (default), and AAA. Provide either a public URL to fetch or raw HTML markup.",
+    "description": "Runs a WCAG AA accessibility audit on a site or template's node tree. Checks color contrast, alt text, heading hierarchy, ARIA usage, and interactive element accessibility.\n\nSupports both live sites (by id) and templates (by templateSlug). Returns violations grouped by severity with fix suggestions and specific node IDs.\n\nPairs with audit_seo for a complete site health check.",
     "inputSchema": {
       "type": "object",
       "properties": {
-        "url": {
+        "id": {
           "type": "string",
-          "description": "Public URL to fetch and audit. Mutually exclusive with html."
+          "description": "Site id (defaults to active site). Mutually exclusive with templateSlug."
         },
-        "html": {
+        "templateSlug": {
           "type": "string",
-          "description": "Raw HTML string to audit. Mutually exclusive with url."
+          "description": "Template slug to audit (e.g. \"artist\"). Mutually exclusive with id."
+        },
+        "pageId": {
+          "type": "string",
+          "description": "Page to audit. Default: page_home. Use list_pages to see available pages."
         },
         "level": {
           "type": "string",
           "enum": ["A", "AA", "AAA"],
-          "description": "WCAG conformance level. Default: \"AA\". A = minimum, AA = standard (most common requirement), AAA = strictest."
+          "description": "WCAG conformance level. Default: \"AA\"."
         }
       }
     }
@@ -1352,10 +1356,14 @@
   },
   {
     "name": "apply_kit_block",
-    "description": "Apply a library block (from search_blocks) to a site. The block is a complete section.\n\n**Page sections (default):** apply_kit_block(slug) adds the block to page_home. Use pageId for other pages, position to control order.\n\n**Header / Footer:** use target: \"header\" or target: \"footer\" to replace the site's header or footer with a library nav/footer block. This clears the existing header/footer content and inserts the block. Use contentOverrides to customize logo, links, copyright text.\n\n**Parallel section fill workers only:** omit sectionContainerId — the server pins to the assigned section automatically.",
+    "description": "Apply a library block (from search_blocks) to a site. The block is a complete section.\n\n**Page sections (default):** apply_kit_block(slug, id) adds the block to page_home. Use pageId for other pages, position to control order.\n\n**Header / Footer:** use target: \"header\" or target: \"footer\" to replace the site's header or footer with a library nav/footer block. This clears the existing header/footer content and inserts the block. Use contentOverrides to customize logo, links, copyright text.\n\n**Parallel section fill workers only:** omit sectionContainerId — the server pins to the assigned section automatically.",
     "inputSchema": {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id (defaults to active site). Pass explicitly for stateless usage."
+        },
         "slug": {
           "type": "string",
           "description": "Block slug from search_blocks (e.g. \"hero-split\", \"navbar\", \"footer-multi-column\")."

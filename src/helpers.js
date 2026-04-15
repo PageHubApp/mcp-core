@@ -1,5 +1,10 @@
 const { twMerge } = require("tailwind-merge");
 const { guardRootCompanyPropsPatch } = require("./branding-guard");
+const {
+  compressJsonToBase64Lz,
+  decompressBase64LzToJson,
+  tryDecompressBase64LzToJson,
+} = require("./lz");
 
 /** Try to JSON.parse a string, return as-is if it fails or isn't a string. */
 function parseMaybeJson(v) {
@@ -8,6 +13,27 @@ function parseMaybeJson(v) {
     try {
       return JSON.parse(v);
     } catch {
+      // Attempt lightweight repairs for common model JSON mistakes:
+      // 1. Swapped ]} → }] (model closes array before object)
+      // 2. Trailing commas before } or ]
+      const repaired = v
+        .replace(/"\s*\]\s*\}/g, (m, offset) => {
+          // Check if there's an unclosed { — the ] and } may be swapped
+          const lastOpen = v.lastIndexOf("{", offset);
+          const lastClose = v.lastIndexOf("}", offset);
+          if (lastOpen > lastClose) {
+            return '"}]';
+          }
+          return m;
+        })
+        .replace(/,\s*([}\]])/g, "$1");
+      if (repaired !== v) {
+        try {
+          return JSON.parse(repaired);
+        } catch {
+          /* fall through */
+        }
+      }
       return v;
     }
   }
@@ -105,6 +131,14 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
   }
   // propsPatch — shallow merge non-class props (text, src, href, alt, style, animation, etc.)
   // Deep-merge `root` to preserve existing keys (animation, pattern, activeModifiers, etc.)
+  // Guard: propsPatch must be an object, never a string. A string here means parseMaybeJson
+  // failed to parse malformed model JSON — spreading a string scatters chars as numeric keys.
+  if (propsPatch && typeof propsPatch === "string") {
+    throw new Error(
+      `propsPatch for node "${nodeId}" is a string (invalid JSON from model). ` +
+        `propsPatch must be a JSON object, not a string. Raw value starts with: ${propsPatch.substring(0, 120)}…`
+    );
+  }
   // Sanitize tagName to prevent corrupted data from crashing createElement
   if (propsPatch && typeof propsPatch.tagName === "string") {
     const t = propsPatch.tagName.split(/[,\s]/)[0].toLowerCase();
@@ -232,6 +266,16 @@ function parseBulkPatchesJsonString(raw) {
   const attempts = [];
   for (const v of variants) {
     attempts.push(v, v.replace(/,\s*([\]}])/g, "$1"));
+    // Also try repairing swapped ]} → }] (common model mistake)
+    const repaired = v.replace(/"\s*\]\s*\}/g, (m, offset) => {
+      const lastOpen = v.lastIndexOf("{", offset);
+      const lastClose = v.lastIndexOf("}", offset);
+      if (lastOpen > lastClose) return '"}]';
+      return m;
+    });
+    if (repaired !== v) {
+      attempts.push(repaired, repaired.replace(/,\s*([\]}])/g, "$1"));
+    }
   }
   for (const s of attempts) {
     try {
@@ -353,6 +397,14 @@ function normalizeBulkPatchesFromArgs(args = {}) {
   return null;
 }
 
+function decodeContentOrThrow(content, label = "content") {
+  const decoded = tryDecompressBase64LzToJson(content);
+  if (!decoded || typeof decoded !== "object") {
+    throw new Error(`${label} must be an lzutf8+base64 compressed JSON string.`);
+  }
+  return decoded;
+}
+
 // ── Target (site OR template) fetch/save helpers ──
 
 const { apiFetch } = require("./api-fetch");
@@ -434,9 +486,7 @@ async function fetchTarget(args) {
 
   if (target.type === "template") {
     const data = await apiFetch(`/api/v1/templates/${encodeURIComponent(target.id)}`);
-    if (!data.content || typeof data.content !== "object") {
-      throw new Error("Template has no decoded content (empty or corrupt).");
-    }
+    const decodedContent = decodeContentOrThrow(data.content, "Template content");
     const revision = extractTargetRevision(target.type, data);
     if (revision) {
       if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object") ctx._targetRevisions = {};
@@ -445,7 +495,7 @@ async function fetchTarget(args) {
     return {
       targetId: target.id,
       targetType: "template",
-      flat: JSON.parse(JSON.stringify(data.content)),
+      flat: JSON.parse(JSON.stringify(decodedContent)),
       data,
     };
   }
@@ -482,7 +532,10 @@ async function saveTarget(targetId, targetType, flat, extra = {}) {
     ctx?._targetRevisions && typeof ctx._targetRevisions === "object"
       ? ctx._targetRevisions[revisionKey]
       : null;
-  const body = { content: flat, ...knownRevision, ...extra };
+  const body =
+    targetType === "template"
+      ? { content: compressJsonToBase64Lz(flat), ...knownRevision, ...extra }
+      : { content: flat, ...knownRevision, ...extra };
 
   if (targetType === "template") {
     const put = await apiFetch(`/api/v1/templates/${encodeURIComponent(targetId)}`, {
@@ -621,6 +674,9 @@ module.exports = {
   applyNodePatches,
   normalizeNodePatchArgs,
   normalizeBulkPatchesFromArgs,
+  compressJsonToBase64Lz,
+  decompressBase64LzToJson,
+  decodeContentOrThrow,
   assertPatchSiteNodeArgs,
   assertPatchBulkItem,
   assertPatchBlockNodeArgs,

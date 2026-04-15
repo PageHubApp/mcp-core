@@ -1,6 +1,12 @@
 const { apiFetch, normalizeBaseUrl } = require("../api-fetch");
 const { getContext } = require("../context");
-const { parseMaybeJson, getActiveTarget, fetchTarget, saveTarget } = require("../helpers");
+const {
+  parseMaybeJson,
+  getActiveTarget,
+  fetchTarget,
+  saveTarget,
+  decodeContentOrThrow,
+} = require("../helpers");
 const { quickA11yAudit } = require("../a11y-check");
 const { validateNodes, formatValidationReport } = require("../node-validation");
 
@@ -97,7 +103,14 @@ module.exports = {
             targetType === "template"
               ? `/api/v1/templates/${encodeURIComponent(targetId)}`
               : `/api/v1/sites/${encodeURIComponent(targetId)}`;
-          const original = (await apiFetch(fetchUrl)).content;
+          const fetchedOriginal = await apiFetch(fetchUrl);
+          const original =
+            targetType === "template"
+              ? decodeContentOrThrow(
+                  fetchedOriginal.content,
+                  `Template "${targetId}" content`
+                )
+              : fetchedOriginal.content;
           if (original) {
             const diff = {};
             for (const [id, node] of Object.entries(content)) {

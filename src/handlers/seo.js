@@ -1,5 +1,5 @@
 const { apiFetch } = require("../api-fetch");
-const { getActiveTarget } = require("../helpers");
+const { getActiveTarget, decodeContentOrThrow } = require("../helpers");
 const {
   collectNodes,
   resolveRootId,
@@ -256,7 +256,7 @@ module.exports = {
         const slug = args.templateSlug || getActiveTarget(args).id;
         const tpl = await apiFetch(`/api/v1/templates/${encodeURIComponent(slug)}`);
         if (!tpl.content) throw new Error(`Template "${slug}" has no content.`);
-        nodes = tpl.content;
+        nodes = decodeContentOrThrow(tpl.content, `Template "${slug}" content`);
         const rootProps = nodes.ROOT?.props || {};
         data = {
           title: tpl.title || rootProps.title || "",
@@ -354,7 +354,7 @@ module.exports = {
         const slug = args.templateSlug || getActiveTarget(args).id;
         const tpl = await apiFetch(`/api/v1/templates/${encodeURIComponent(slug)}`);
         if (!tpl.content) throw new Error(`Template "${slug}" has no content.`);
-        nodes = tpl.content;
+        nodes = decodeContentOrThrow(tpl.content, `Template "${slug}" content`);
         label = `template:${slug}`;
       } else {
         const target = getActiveTarget(args);

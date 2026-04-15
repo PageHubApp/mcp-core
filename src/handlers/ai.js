@@ -7,6 +7,7 @@ const {
   applyNodePatches,
   fetchTarget,
   saveTarget,
+  decodeContentOrThrow,
 } = require("../helpers");
 const { mergeDesignIntentFromChain } = require("../design-intent-merge.js");
 
@@ -90,7 +91,11 @@ module.exports = {
 
     const pending =
       ctx._pendingFlatMap && typeof ctx._pendingFlatMap === "object" ? ctx._pendingFlatMap : null;
-    const nodes = pending || data.content;
+    const nodes =
+      pending ||
+      (target.type === "template"
+        ? decodeContentOrThrow(data.content, `Template "${target.id}" content`)
+        : data.content);
     if (!nodes || typeof nodes !== "object") {
       throw new Error(`${target.type === "template" ? "Template" : "Site"} has no content.`);
     }

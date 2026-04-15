@@ -77,6 +77,8 @@ These handlers make API calls to PageHub and are included in this package:
 
 **Sites** — `list_templates`, `pull_template`, `list_sites`, `select_site`, `pull_site`, `save_site`, `delete_site`, `add_nodes`, `suggest_palettes`, `upload_image`, `patch_site_node`, `patch_site_bulk`
 
+**Nodes** — `update_node`, `delete_node`, `insert_node`, `move_node`, `list_site_nodes`, `search_site_nodes`
+
 **Pages** — `list_pages`, `add_page`, `update_page`, `delete_page`
 
 **Blocks** — `search_blocks`, `get_block`, `list_block_nodes`, `patch_block`, `patch_block_bulk`, `save_block`, `update_block`, `delete_block`
@@ -97,7 +99,8 @@ The `tools.json` file contains schemas for all 49 PageHub tools. The remaining 2
 ├── helpers.js              │   ├── nav, footer
 └── handlers/               │   ├── AI generation
     ├── remote.js           │   └── audits, patterns
-    ├── components.js       └── MCP stdio transport
+    ├── nodes.js            └── MCP stdio transport
+    ├── components.js
     ├── pages.js
     └── portal.js
 ```
