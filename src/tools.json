@@ -28,7 +28,7 @@
   },
   {
     "name": "get_component_schema",
-    "description": "Returns full schemas for CraftJS components — types, props, valid values, and responsive patterns. Pass one or more component names to get exactly what you need in a single call.\n\nAvailable: Accordion, Background, Button, ButtonList, Container, ContainerGroup, Divider, Dropdown, Embed, Footer, Form, FormElement, Header, Image, ImageList, Map, MapPoint, Spacer, Tabs, Text, Video, Audio.\n\nParallel section fill: responses are compact (truncated props). Omitting `components` is rejected in fill — always pass a comma list. Prefer search_blocks + apply_kit_block over schema dumps.",
+    "description": "Returns full schemas for CraftJS components — types, props, valid values, and responsive patterns. Pass one or more component names to get exactly what you need in a single call.\n\nAvailable: Accordion, Background, Button, ButtonList, Container, ContainerGroup, Divider, Dropdown, Embed, Footer, Form, FormElement, Header, Image, ImageList, List, ListItem, Map, MapPoint, Spacer, Table, TableCell, TableRow, TableSection, Tabs, Text, Video, Audio.\n\nParallel section fill: responses are compact (truncated props). Omitting `components` is rejected in fill — always pass a comma list. Prefer search_blocks + apply_kit_block over schema dumps.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -309,7 +309,7 @@
         },
         "nodes": {
           "type": "object",
-          "description": "Flat CraftJS node map: { nodeId: nodeDefinition, ... }. Each node definition must include:\n\n  {\n    \"type\": { \"resolvedName\": \"Container\" },  // Component type\n    \"isCanvas\": true,                          // true if it can have children\n    \"props\": {\n      \"canDelete\": true,\n      \"canEditName\": true,\n      \"type\": \"section\",                       // \"section\" for root, omit for children\n      \"className\": \"flex flex-col w-full py-space-lg px-container-x bg-primary\",\n      \"custom\": { \"displayName\": \"My Block\" }\n    },\n    \"parent\": \"page_home\",                     // parent node ID\n    \"nodes\": [\"child_id_1\", \"child_id_2\"],     // ordered child IDs\n    \"linkedNodes\": {}\n  }\n\nAll styling uses props.className — a single Tailwind class string. Mobile-first: unprefixed = base/mobile, md: = desktop, sm: = tablet.\n\nAvailable component types: Container, Text, Image, Button, ButtonList, ImageList, Form, FormElement, Divider, Spacer, Video, Audio, Embed.\nUse get_component_schema for full prop details."
+          "description": "Flat CraftJS node map: { nodeId: nodeDefinition, ... }. Each node definition must include:\n\n  {\n    \"type\": { \"resolvedName\": \"Container\" },  // Component type\n    \"isCanvas\": true,                          // true if it can have children\n    \"props\": {\n      \"canDelete\": true,\n      \"canEditName\": true,\n      \"type\": \"section\",                       // \"section\" for root, omit for children\n      \"className\": \"flex flex-col w-full py-space-lg px-container-x bg-primary\",\n      \"custom\": { \"displayName\": \"My Block\" }\n    },\n    \"parent\": \"page_home\",                     // parent node ID\n    \"nodes\": [\"child_id_1\", \"child_id_2\"],     // ordered child IDs\n    \"linkedNodes\": {}\n  }\n\nAll styling uses props.className — a single Tailwind class string. Mobile-first: unprefixed = base/mobile, md: = desktop, sm: = tablet.\n\nAvailable component types: Container, Text, Image, Button, ButtonList, ImageList, List, ListItem, Table, TableSection, TableRow, TableCell, Form, FormElement, Divider, Spacer, Video, Audio, Embed.\nUse get_component_schema for full prop details."
         },
         "parentNodeId": {
           "type": "string",
@@ -416,7 +416,7 @@
   },
   {
     "name": "insert_node",
-    "description": "Inserts a new node into the active site as a child of an existing parent node. The node definition must include type.resolvedName, isCanvas, props (with className for Tailwind classes, custom.displayName), and an empty nodes array.\n\nUse this to add individual elements (Text, Image, Button, Container, ButtonList, etc.) into existing sections or containers.",
+    "description": "Inserts a new node into the active site as a child of an existing parent node. The node definition must include type.resolvedName, isCanvas, props (with className for Tailwind classes, custom.displayName), and an empty nodes array.\n\nUse this to add individual elements (Text, Image, Button, Container, ButtonList, List, ListItem, Table, TableSection, TableRow, TableCell, etc.) into existing sections or containers.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -438,7 +438,7 @@
         },
         "node": {
           "type": "object",
-          "description": "Node definition. Must include:\n  type: { resolvedName: \"Text\" | \"Container\" | \"Image\" | \"Button\" | \"ButtonList\" | etc }\n  isCanvas: true (containers) or false (leaf elements)\n  props: { canDelete: true, canEditName: true, className: \"flex flex-col gap-4 ...\", text/src/etc, custom: { displayName: \"...\" } }\n\nparent and linkedNodes are set automatically — do not include them."
+          "description": "Node definition. Must include:\n  type: { resolvedName: \"Text\" | \"Container\" | \"Image\" | \"Button\" | \"ButtonList\" | \"List\" | \"ListItem\" | etc }\n  isCanvas: true (containers) or false (leaf elements)\n  props: { canDelete: true, canEditName: true, className: \"flex flex-col gap-4 ...\", text/src/etc, custom: { displayName: \"...\" } }\n\nparent and linkedNodes are set automatically — do not include them."
         }
       },
       "required": ["nodeId", "parentId", "node"]
@@ -473,7 +473,7 @@
         },
         "type": {
           "type": "string",
-          "description": "Filter by component type: Text, Button, Container, Image, Form, FormElement, Nav, ButtonList, Footer, Header, Divider."
+          "description": "Filter by component type: Text, Button, Container, Image, Form, FormElement, Nav, ButtonList, List, ListItem, Table, TableSection, TableRow, TableCell, Footer, Header, Divider."
         }
       }
     }
@@ -962,6 +962,32 @@
         }
       },
       "required": ["content"]
+    }
+  },
+  {
+    "name": "publish_site",
+    "description": "Publish the active site so it's live on its domain. Sets published=true and publishedAt.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id (defaults to active site)."
+        }
+      }
+    }
+  },
+  {
+    "name": "unpublish_site",
+    "description": "Unpublish the active site (take it offline). Sets published=false.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id (defaults to active site)."
+        }
+      }
     }
   },
   {

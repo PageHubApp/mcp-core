@@ -15,7 +15,8 @@ module.exports = {
     const data = await apiFetch(`/api/v1/templates/${encodeURIComponent(slug)}`);
     const ctx = getContext();
     ctx.activeTemplate = { slug: data.slug, title: data.title };
-    if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object") ctx._targetRevisions = {};
+    if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object")
+      ctx._targetRevisions = {};
     if (Number.isFinite(Number(data.version))) {
       ctx._targetRevisions[`template:${data.slug}`] = { expectedVersion: Number(data.version) };
     }
@@ -54,7 +55,8 @@ module.exports = {
     const { slug } = args;
     const data = await apiFetch(`/api/v1/templates/${encodeURIComponent(slug)}`);
     const ctx = getContext();
-    if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object") ctx._targetRevisions = {};
+    if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object")
+      ctx._targetRevisions = {};
     if (Number.isFinite(Number(data.version))) {
       ctx._targetRevisions[`template:${slug}`] = { expectedVersion: Number(data.version) };
     }
@@ -185,9 +187,10 @@ module.exports = {
       body: { ...body, expectedVersion },
     });
     const parsedAuditContent = parseMaybeJson(args.content);
-    const audit = parsedAuditContent && typeof parsedAuditContent === "object"
-      ? quickA11yAudit(parsedAuditContent)
-      : null;
+    const audit =
+      parsedAuditContent && typeof parsedAuditContent === "object"
+        ? quickA11yAudit(parsedAuditContent)
+        : null;
     const auditText = audit ? `\n\n---\n${audit.summary}` : "";
     return {
       content: [

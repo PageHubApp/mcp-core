@@ -129,9 +129,13 @@ module.exports = {
       const childCount = (node.nodes || []).length;
       const indent = "  ".repeat(depth);
       const text = node.props?.text
-        ? ` text="${String(node.props.text).replace(/<[^>]*>/g, "").substring(0, 40)}"`
+        ? ` text="${String(node.props.text)
+            .replace(/<[^>]*>/g, "")
+            .substring(0, 40)}"`
         : "";
-      lines.push(`${indent}${id} | ${type}${label ? ` "${label}"` : ""}${text} (${childCount} children)`);
+      lines.push(
+        `${indent}${id} | ${type}${label ? ` "${label}"` : ""}${text} (${childCount} children)`
+      );
       for (const childId of node.nodes || []) visit(childId, depth + 1);
     };
 
@@ -139,10 +143,12 @@ module.exports = {
     visit("ROOT", 0);
 
     return {
-      content: [{
-        type: "text",
-        text: `Site node tree (${Object.keys(flat).length} nodes):\n\n${lines.join("\n")}`,
-      }],
+      content: [
+        {
+          type: "text",
+          text: `Site node tree (${Object.keys(flat).length} nodes):\n\n${lines.join("\n")}`,
+        },
+      ],
     };
   },
 
@@ -152,8 +158,7 @@ module.exports = {
    */
   async move_node(args) {
     const { nodeId, newParentId, position } = args;
-    if (PROTECTED_IDS.includes(nodeId))
-      throw new Error(`Cannot move structural node: ${nodeId}.`);
+    if (PROTECTED_IDS.includes(nodeId)) throw new Error(`Cannot move structural node: ${nodeId}.`);
     const ctx = getContext();
     const { targetId, targetType, flat } = await fetchTarget(args);
     if (!flat[nodeId]) throw new Error(`Node "${nodeId}" not found.`);
@@ -163,7 +168,14 @@ module.exports = {
     if (!oldParentId || !flat[oldParentId])
       throw new Error(`Node "${nodeId}" has no valid parent — cannot move.`);
     if (oldParentId === newParentId && position == null) {
-      return { content: [{ type: "text", text: `Node "${nodeId}" is already a child of "${newParentId}". Nothing to do.` }] };
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Node "${nodeId}" is already a child of "${newParentId}". Nothing to do.`,
+          },
+        ],
+      };
     }
 
     // Prevent moving a node into its own subtree
@@ -187,7 +199,14 @@ module.exports = {
 
     if (ctx.draftMode) {
       ctx._pendingFlatMap = flat;
-      return { content: [{ type: "text", text: `Node "${nodeId}" moved from "${oldParentId}" to "${newParentId}" at position ${pos}.` }] };
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Node "${nodeId}" moved from "${oldParentId}" to "${newParentId}" at position ${pos}.`,
+          },
+        ],
+      };
     }
     const result = await saveTarget(targetId, targetType, flat);
     const label =
@@ -202,7 +221,9 @@ module.exports = {
     const { flat } = await fetchTarget(args);
 
     if (!q && !componentType) {
-      throw new Error("Provide q (displayName search) and/or type (component type like Text, Button, Container).");
+      throw new Error(
+        "Provide q (displayName search) and/or type (component type like Text, Button, Container)."
+      );
     }
 
     const qLower = q ? q.toLowerCase() : null;
@@ -216,9 +237,10 @@ module.exports = {
 
       let match = true;
       if (qLower) {
-        match = displayName.toLowerCase().includes(qLower) ||
-                text.toLowerCase().includes(qLower) ||
-                id.toLowerCase().includes(qLower);
+        match =
+          displayName.toLowerCase().includes(qLower) ||
+          text.toLowerCase().includes(qLower) ||
+          id.toLowerCase().includes(qLower);
       }
       if (typeLower && match) {
         match = nodeType.toLowerCase() === typeLower;
@@ -236,18 +258,28 @@ module.exports = {
     }
 
     if (matches.length === 0) {
-      return { content: [{ type: "text", text: `No nodes matched${q ? ` q="${q}"` : ""}${componentType ? ` type="${componentType}"` : ""}.` }] };
+      return {
+        content: [
+          {
+            type: "text",
+            text: `No nodes matched${q ? ` q="${q}"` : ""}${componentType ? ` type="${componentType}"` : ""}.`,
+          },
+        ],
+      };
     }
 
-    const lines = matches.map(m =>
-      `${m.id} | ${m.type}${m.displayName ? ` "${m.displayName}"` : ""}${m.text ? ` text="${m.text}"` : ""}\n  className: ${m.className || "(none)"}\n  parent: ${m.parent}`
+    const lines = matches.map(
+      m =>
+        `${m.id} | ${m.type}${m.displayName ? ` "${m.displayName}"` : ""}${m.text ? ` text="${m.text}"` : ""}\n  className: ${m.className || "(none)"}\n  parent: ${m.parent}`
     );
 
     return {
-      content: [{
-        type: "text",
-        text: `Found ${matches.length} node(s):\n\n${lines.join("\n\n")}`,
-      }],
+      content: [
+        {
+          type: "text",
+          text: `Found ${matches.length} node(s):\n\n${lines.join("\n\n")}`,
+        },
+      ],
     };
   },
 };

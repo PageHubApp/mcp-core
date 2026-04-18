@@ -117,6 +117,11 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
     }
     throw new Error(`Node ${nodeId} not found.${hint}`);
   }
+  const entry = flatMap[nodeId];
+  const p = entry.props;
+  if (p == null || typeof p !== "object" || Array.isArray(p)) {
+    entry.props = {};
+  }
   // className patch — merge Tailwind classes into props.className via twMerge
   if (classNamePatch) {
     const existing = flatMap[nodeId].props.className || "";
@@ -489,7 +494,8 @@ async function fetchTarget(args) {
     const decodedContent = decodeContentOrThrow(data.content, "Template content");
     const revision = extractTargetRevision(target.type, data);
     if (revision) {
-      if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object") ctx._targetRevisions = {};
+      if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object")
+        ctx._targetRevisions = {};
       ctx._targetRevisions[getTargetRevisionKey(target.type, target.id)] = revision;
     }
     return {
@@ -505,7 +511,8 @@ async function fetchTarget(args) {
   }
   const revision = extractTargetRevision(target.type, data);
   if (revision) {
-    if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object") ctx._targetRevisions = {};
+    if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object")
+      ctx._targetRevisions = {};
     ctx._targetRevisions[getTargetRevisionKey(target.type, target.id)] = revision;
   }
   return {
@@ -544,7 +551,8 @@ async function saveTarget(targetId, targetType, flat, extra = {}) {
     });
     const freshRevision = extractTargetRevision(targetType, put);
     if (freshRevision) {
-      if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object") ctx._targetRevisions = {};
+      if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object")
+        ctx._targetRevisions = {};
       ctx._targetRevisions[revisionKey] = freshRevision;
     }
     return { id: put.slug || targetId, url: null, type: "template" };
@@ -555,7 +563,8 @@ async function saveTarget(targetId, targetType, flat, extra = {}) {
   });
   const freshRevision = extractTargetRevision(targetType, put);
   if (freshRevision) {
-    if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object") ctx._targetRevisions = {};
+    if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object")
+      ctx._targetRevisions = {};
     ctx._targetRevisions[revisionKey] = freshRevision;
   }
   return { id: put.id, url: getEditorUrl(put.id || targetId), type: "site" };

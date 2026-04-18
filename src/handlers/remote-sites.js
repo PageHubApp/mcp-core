@@ -27,7 +27,8 @@ module.exports = {
     const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(id)}`);
     const ctx = getContext();
     ctx.activeSite = { id: data.id, name: data.name, draftId: data.draftId };
-    if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object") ctx._targetRevisions = {};
+    if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object")
+      ctx._targetRevisions = {};
     if (data.updatedAt) {
       ctx._targetRevisions[`site:${data.id}`] = { expectedUpdatedAt: String(data.updatedAt) };
     }
@@ -106,10 +107,7 @@ module.exports = {
           const fetchedOriginal = await apiFetch(fetchUrl);
           const original =
             targetType === "template"
-              ? decodeContentOrThrow(
-                  fetchedOriginal.content,
-                  `Template "${targetId}" content`
-                )
+              ? decodeContentOrThrow(fetchedOriginal.content, `Template "${targetId}" content`)
               : fetchedOriginal.content;
           if (original) {
             const diff = {};
@@ -185,6 +183,27 @@ module.exports = {
         },
       ],
     };
+  },
+
+  async publish_site(args) {
+    const target = getActiveTarget(args);
+    if (target.type !== "site") throw new Error("publish_site only works on sites, not templates.");
+    await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`, {
+      method: "PUT",
+      body: { published: true },
+    });
+    return { content: [{ type: "text", text: `Site ${target.id} published.` }] };
+  },
+
+  async unpublish_site(args) {
+    const target = getActiveTarget(args);
+    if (target.type !== "site")
+      throw new Error("unpublish_site only works on sites, not templates.");
+    await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`, {
+      method: "PUT",
+      body: { published: false },
+    });
+    return { content: [{ type: "text", text: `Site ${target.id} unpublished.` }] };
   },
 
   async delete_site(args) {

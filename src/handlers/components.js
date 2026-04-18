@@ -27,7 +27,10 @@ async function fetchComponent(slug) {
 }
 
 function decodeComponentStructure(component) {
-  const decoded = decodeContentOrThrow(component?.structure, `Component "${component?.slug || "unknown"}" structure`);
+  const decoded = decodeContentOrThrow(
+    component?.structure,
+    `Component "${component?.slug || "unknown"}" structure`
+  );
   return { ...component, structure: decoded };
 }
 
@@ -366,7 +369,8 @@ module.exports = {
     });
 
     const c = data.component;
-    const audit = args.structure && typeof args.structure === "object" ? quickA11yAudit(args.structure) : null;
+    const audit =
+      args.structure && typeof args.structure === "object" ? quickA11yAudit(args.structure) : null;
     const auditText = audit ? `\n\n---\n${audit.summary}` : "";
     return {
       content: [

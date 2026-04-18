@@ -86,7 +86,7 @@ const STRUCTURAL_NODE_IDS = new Set([
  * @returns {{ warnings: string[], fixes: string[], errors: string[] }}
  */
 function validateNodes(flatMap, opts = {}) {
-  const { autoFix = true, warnColors = true } = opts;
+  const { autoFix = true, warnColors = true, sectionRootId = null } = opts;
   const warnings = [];
   const fixes = [];
   const errors = [];
@@ -113,11 +113,7 @@ function validateNodes(flatMap, opts = {}) {
           props.src = props.content;
           delete props.content;
           // Set type to 'url' for external URLs
-          if (
-            !props.type &&
-            typeof props.src === "string" &&
-            props.src.startsWith("http")
-          ) {
+          if (!props.type && typeof props.src === "string" && props.src.startsWith("http")) {
             props.type = "url";
           }
           fixes.push(
@@ -133,12 +129,7 @@ function validateNodes(flatMap, opts = {}) {
         warnings.push(`⚠️ ${nodeId}: Image has no src — will render empty`);
       }
       const imgSrc = props.src ?? props.content;
-      if (
-        imgSrc &&
-        typeof imgSrc === "string" &&
-        imgSrc.startsWith("http") &&
-        !props.type
-      ) {
+      if (imgSrc && typeof imgSrc === "string" && imgSrc.startsWith("http") && !props.type) {
         if (autoFix) {
           props.type = "url";
           fixes.push(`🔧 ${nodeId}: Set Image type to "url" for external URL`);
@@ -192,7 +183,10 @@ function validateNodes(flatMap, opts = {}) {
       // headings never render at body size with no heading font.
       if (autoFix && props.tagName && /^h[1-6]$/.test(props.tagName)) {
         const cn = props.className || "";
-        const hasTextSize = /(?:^|\s)(?:md:|lg:|sm:)?text-(?:xs|sm|base|lg|xl|2xl|3xl|4xl|5xl|6xl|7xl|8xl|9xl|\[)/.test(cn);
+        const hasTextSize =
+          /(?:^|\s)(?:md:|lg:|sm:)?text-(?:xs|sm|base|lg|xl|2xl|3xl|4xl|5xl|6xl|7xl|8xl|9xl|\[)/.test(
+            cn
+          );
         if (!hasTextSize) {
           const HEADING_DEFAULTS = {
             h1: "font-heading font-bold text-3xl leading-tight text-base-content md:text-4xl lg:text-5xl",
@@ -206,9 +200,7 @@ function validateNodes(flatMap, opts = {}) {
           if (defaults) {
             // Prepend defaults, keep any existing classes (like m-0)
             props.className = cn ? `${defaults} ${cn}` : defaults;
-            fixes.push(
-              `🔧 ${nodeId}: Applied heading typography defaults for <${props.tagName}>`
-            );
+            fixes.push(`🔧 ${nodeId}: Applied heading typography defaults for <${props.tagName}>`);
           }
         }
       }
@@ -283,7 +275,8 @@ function validateNodes(flatMap, opts = {}) {
     }
 
     // ─── Parent reference validation ───
-    if (node.parent && nodeId !== "ROOT") {
+    // Skip for the section root node — its parent (e.g. page_home) lives in the site, not the submitted map
+    if (node.parent && nodeId !== "ROOT" && nodeId !== sectionRootId) {
       if (!flatMap[node.parent]) {
         errors.push(`❌ ${nodeId}: Parent "${node.parent}" does not exist in the node map`);
       }

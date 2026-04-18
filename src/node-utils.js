@@ -3,6 +3,7 @@ const { parseMaybeJson } = require("./helpers");
 const VALID_COMPONENTS = new Set([
   "Accordion",
   "Audio",
+  "Automatic",
   "Background",
   "Button",
   "ButtonList",
@@ -17,9 +18,16 @@ const VALID_COMPONENTS = new Set([
   "Footer",
   "Form",
   "FormElement",
+  "Grid",
   "Header",
   "Image",
   "ImageList",
+  "List",
+  "ListItem",
+  "Table",
+  "TableSection",
+  "TableRow",
+  "TableCell",
   "Map",
   "MapPoint",
   "Modal",
@@ -32,6 +40,7 @@ const VALID_COMPONENTS = new Set([
 
 const CANVAS_COMPONENTS = new Set([
   "Accordion",
+  "Automatic",
   "CartDrawer",
   "CheckoutBanner",
   "Container",
@@ -41,9 +50,14 @@ const CANVAS_COMPONENTS = new Set([
   "Header",
   "Nav",
   "Form",
+  "Grid",
   "Background",
   "Modal",
   "Tabs",
+  "List",
+  "Table",
+  "TableSection",
+  "TableRow",
 ]);
 
 /** Collect a node and all its descendants from a flat map */

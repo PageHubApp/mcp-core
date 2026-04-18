@@ -10,6 +10,15 @@ function deepClone(o) {
   return JSON.parse(JSON.stringify(o));
 }
 
+/** Craft expects every flat-map node to have a plain object `props`. */
+function ensureNodeProps(node) {
+  if (!node || typeof node !== "object") return;
+  const p = node.props;
+  if (p == null || typeof p !== "object" || Array.isArray(p)) {
+    node.props = {};
+  }
+}
+
 function deepMerge(target, source) {
   if (!source || typeof source !== "object") return target;
   for (const k of Object.keys(source)) {
@@ -69,6 +78,7 @@ function normalizeTemplateProps(props, resolvedName) {
 
 function applyContentOverride(node, resolvedName, override) {
   if (!override || typeof override !== "object") return;
+  ensureNodeProps(node);
   const props = node.props;
   if (resolvedName === "Text" && override.text != null) props.text = override.text;
   if (resolvedName === "Text" && override.tagName) {
@@ -103,6 +113,7 @@ function applyContentOverride(node, resolvedName, override) {
 
 function applyPropOverride(node, patch) {
   if (!patch || typeof patch !== "object") return;
+  ensureNodeProps(node);
   if (patch.className) {
     if (patch.replaceClassName) {
       // Full replacement — use when the block's default classes conflict (e.g. btn-ghost vs btn-circle)
@@ -240,7 +251,9 @@ function walkApplyKitOverrides(nodes, rootId, contentOverrides, propOverrides) {
   if (contentOverrides) {
     for (const key of Object.keys(contentOverrides)) {
       if (!allLabels.has(key)) {
-        warnings.push(`contentOverride "${key}" did not match any node (available: ${[...allLabels].join(", ") || "none — block has no displayName labels"})`);
+        warnings.push(
+          `contentOverride "${key}" did not match any node (available: ${[...allLabels].join(", ") || "none — block has no displayName labels"})`
+        );
       }
     }
   }
