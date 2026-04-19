@@ -284,6 +284,29 @@ function validateNodes(flatMap, opts = {}) {
       }
     }
 
+    // ─── FormElement: attrs.value → defaultValue migration ───
+    // React warns when an <input> has `value` without `onChange` (read-only),
+    // and errors when `value` + `defaultValue` are both set. Block authors
+    // sometimes pass `value` via attrs to pre-fill a number/text field — the
+    // correct slot is the top-level `defaultValue` prop.
+    if (resolvedName === "FormElement" && props.attrs && typeof props.attrs === "object") {
+      if (props.attrs.value !== undefined) {
+        if (autoFix) {
+          if (props.defaultValue === undefined || props.defaultValue === "") {
+            props.defaultValue = props.attrs.value;
+          }
+          delete props.attrs.value;
+          fixes.push(
+            `🔧 ${nodeId}: Moved FormElement "attrs.value" → top-level "defaultValue" (React requires defaultValue for uncontrolled inputs)`
+          );
+        } else {
+          errors.push(
+            `❌ ${nodeId}: FormElement has "attrs.value" — use top-level "defaultValue" prop (React warns on value without onChange)`
+          );
+        }
+      }
+    }
+
     // ─── Missing custom.displayName ───
     if (!isStructural && !node.custom?.displayName) {
       if (autoFix) {
