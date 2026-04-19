@@ -9,6 +9,8 @@ const VALID_COMPONENTS = new Set([
   "ButtonList",
   "CartBadge",
   "CartDrawer",
+  "CartItems",
+  "CartSubtotal",
   "CheckoutBanner",
   "Container",
   "ContainerGroup",
