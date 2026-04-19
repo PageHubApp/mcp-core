@@ -1956,5 +1956,55 @@
       },
       "required": ["redirects"]
     }
+  },
+  {
+    "name": "stripe_search_products",
+    "description": "Search Stripe products for the active site via the Stripe Search API. Returns up to ~100 normalized product items (id, title, price, image, metadata). Use when picking specific products to feature in a template or when confirming that a category/metadata convention is populated. Results are live from Stripe — no local sync.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "description": "Free-text query. Matches against product name and description (fuzzy). Optional — omit to list all products."
+        },
+        "category": {
+          "type": "string",
+          "description": "Filter by metadata.category exact-match (e.g. 'candles')."
+        },
+        "limit": {
+          "type": "number",
+          "description": "Max items to return (default 50, hard cap ~500)."
+        },
+        "sort": {
+          "type": "string",
+          "description": "Sort order: alpha | price_asc | price_desc | newest | oldest. Note: Stripe Search has no native sort, so sort applies client-side to the fetched hit set."
+        }
+      }
+    }
+  },
+  {
+    "name": "stripe_list_categories",
+    "description": "Aggregates distinct metadata.category values across the active site's Stripe catalog and returns them with product counts and a representative image. Use before building a category nav block, or to audit which categories the site uses.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {}
+    }
+  },
+  {
+    "name": "stripe_get_product",
+    "description": "Fetches a single Stripe product by id or metadata.slug for the active site. Returns title, description, price (and priceRange when multiple prices exist), images, and metadata. Use when populating a product detail page or verifying a product's fields before binding it into a block.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Stripe product id (prod_...). Takes precedence over slug."
+        },
+        "slug": {
+          "type": "string",
+          "description": "URL-safe slug stored on the product as metadata.slug."
+        }
+      }
+    }
   }
 ]

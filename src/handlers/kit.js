@@ -55,6 +55,9 @@ function unwrapBlockStructure(structure) {
         root: { ...(p.root || {}) },
         className: shellClass,
         ...(p.custom ? { custom: p.custom } : {}),
+        // Block roots often carry connector bindings + DOM hook attrs; do not drop on unwrap.
+        ...(p.dataSource ? { dataSource: p.dataSource } : {}),
+        ...(p.attrs ? { attrs: p.attrs } : {}),
       },
       children: structure.children || [],
     };

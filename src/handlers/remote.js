@@ -3,4 +3,5 @@ module.exports = {
   ...require("./remote-sites"),
   ...require("./remote-nodes"),
   ...require("./remote-theme"),
+  ...require("./remote-stripe"),
 };

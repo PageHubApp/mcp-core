@@ -217,6 +217,71 @@ function validateNodes(flatMap, opts = {}) {
           }
         }
       }
+
+      // ─── Block-tag-in-block-tagName (invalid nesting) ───
+      // <p><p>…</p></p> or <h1><p>…</p></h1> breaks hydration — especially when an
+      // action wraps text in <a>, since the no-action render path already strips
+      // the wrapper via unwrapP but the link path does not.
+      if (
+        props.tagName &&
+        /^(?:p|h[1-6])$/.test(props.tagName) &&
+        typeof props.text === "string"
+      ) {
+        const BLOCK_WRAP_RE = /^\s*<(p|h[1-6]|div)(\s[^>]*)?>([\s\S]*)<\/\1>\s*$/;
+        const m = props.text.match(BLOCK_WRAP_RE);
+        if (m) {
+          if (autoFix) {
+            props.text = m[3];
+            if (!props.richTextMode) props.richTextMode = "inline";
+            fixes.push(
+              `🔧 ${nodeId}: Stripped redundant <${m[1]}> wrapper inside tagName="${props.tagName}" (set richTextMode="inline")`
+            );
+          } else {
+            errors.push(
+              `❌ ${nodeId}: Text tagName="${props.tagName}" with props.text wrapped in <${m[1]}> — invalid nesting, causes hydration errors`
+            );
+          }
+        }
+      }
+
+      // ─── Block children inside inline/phrasing tagName ───
+      // <p> / <h1–h6> cannot contain block elements (Container, Form, Divider, etc.)
+      if (
+        props.tagName &&
+        /^(?:p|h[1-6])$/.test(props.tagName) &&
+        Array.isArray(node.nodes) &&
+        node.nodes.length > 0
+      ) {
+        const BLOCK_CHILD_TYPES = new Set([
+          "Container",
+          "Form",
+          "FormElement",
+          "Divider",
+          "Image",
+          "VideoEmbed",
+          "Embed",
+          "Footer",
+          "Header",
+          "Background",
+        ]);
+        const hasBlockChild = node.nodes.some(childId => {
+          const child = flatMap[childId];
+          return child && BLOCK_CHILD_TYPES.has(child.type?.resolvedName);
+        });
+        if (hasBlockChild) {
+          if (autoFix) {
+            const oldTag = props.tagName;
+            props.tagName = "div";
+            fixes.push(
+              `🔧 ${nodeId}: Switched tagName "${oldTag}" → "div" — block-level children can't live inside <${oldTag}>`
+            );
+          } else {
+            errors.push(
+              `❌ ${nodeId}: Text tagName="${props.tagName}" has block-level children (Container/Form/etc.) — invalid HTML`
+            );
+          }
+        }
+      }
     }
 
     // ─── Missing custom.displayName ───
