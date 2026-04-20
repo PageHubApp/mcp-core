@@ -69,13 +69,30 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
     else delete propsPatch.tagName;
   }
   if (propsPatch) {
-    if (propsPatch.root && typeof propsPatch.root === "object") {
-      flatMap[nodeId].props.root = { ...(flatMap[nodeId].props.root || {}), ...propsPatch.root };
-      const { root: _, ...rest } = propsPatch;
-      flatMap[nodeId].props = { ...flatMap[nodeId].props, ...rest };
-    } else {
-      flatMap[nodeId].props = { ...flatMap[nodeId].props, ...propsPatch };
+    // Deep-merge the typed nested namespaces so targeted updates
+    // (e.g. propsPatch: { seo: { title: "X" } }) preserve sibling fields
+    // on the existing object. Shallow-merge is fine for flat props.
+    const DEEP_MERGE_KEYS = [
+      "root",
+      "background",
+      "overflow",
+      "seo",
+      "design",
+      "inject",
+      "relation",
+      "richText",
+    ];
+    const rest = { ...propsPatch };
+    for (const key of DEEP_MERGE_KEYS) {
+      if (rest[key] && typeof rest[key] === "object" && !Array.isArray(rest[key])) {
+        flatMap[nodeId].props[key] = {
+          ...(flatMap[nodeId].props[key] || {}),
+          ...rest[key],
+        };
+        delete rest[key];
+      }
     }
+    flatMap[nodeId].props = { ...flatMap[nodeId].props, ...rest };
   }
   if (nodesPatch) {
     const prevNodes = flatMap[nodeId].nodes;
