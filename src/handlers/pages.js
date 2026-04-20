@@ -240,6 +240,20 @@ module.exports = {
       }
     }
 
+    for (const key of ["headCode", "bodyClass"]) {
+      if (args[key] != null) {
+        const val = String(args[key]);
+        if (val === "") {
+          delete page.props[key];
+          changes.push(`${key} → (cleared)`);
+        } else {
+          page.props[key] = val;
+          const preview = val.length > 40 ? val.slice(0, 40) + "…" : val;
+          changes.push(`${key} → "${preview}"`);
+        }
+      }
+    }
+
     if (changes.length === 0) {
       return { content: [{ type: "text", text: "No changes specified." }] };
     }
