@@ -77,7 +77,7 @@ These handlers make API calls to PageHub and are included in this package:
 
 **Sites** — `list_templates`, `pull_template`, `list_sites`, `select_site`, `pull_site`, `save_site`, `delete_site`, `add_nodes`, `suggest_palettes`, `upload_image`, `patch_site_node`, `patch_site_bulk`
 
-**Nodes** — `update_node`, `delete_node`, `insert_node`, `move_node`, `list_site_nodes`, `search_site_nodes`
+**Nodes** — `delete_node`, `insert_node`, `move_node`, `list_site_nodes`, `search_site_nodes`
 
 **Pages** — `list_pages`, `add_page`, `update_page`, `delete_page`
 

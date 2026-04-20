@@ -67,7 +67,7 @@ module.exports = {
       lines.push(`  Editor: ${getEditorUrl(siteId)}`);
     } else {
       lines.push(
-        `\nApply with: update_node(nodeId: "<IMAGE_NODE_ID>", propsPatch: { type: "cdn", src: "${uploadResult.mediaId}" })`
+        `\nApply with: patch_site_node(nodeId: "<IMAGE_NODE_ID>", propsPatch: { type: "cdn", src: "${uploadResult.mediaId}" })`
       );
     }
     return { content: [{ type: "text", text: lines.join("\n") }] };

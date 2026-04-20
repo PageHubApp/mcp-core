@@ -1,6 +1,5 @@
 const {
   parseMaybeJson,
-  applyNodePatches,
   fetchTarget,
   saveTarget,
   extractImageUrls,
@@ -11,43 +10,6 @@ const { getContext } = require("../context");
 const PROTECTED_IDS = ["ROOT", "page_home"];
 
 module.exports = {
-  async update_node(args) {
-    const { nodeId, ...patches } = args;
-    const { targetId, targetType, flat } = await fetchTarget(args);
-    const patchedProps = patches.propsPatch ? parseMaybeJson(patches.propsPatch) : {};
-    const imgUrls = [];
-    if (
-      patchedProps?.content &&
-      typeof patchedProps.content === "string" &&
-      patchedProps.content.startsWith("http")
-    ) {
-      imgUrls.push(patchedProps.content);
-    }
-    if (
-      patchedProps?.backgroundImage &&
-      typeof patchedProps.backgroundImage === "string" &&
-      patchedProps.backgroundImage.startsWith("http")
-    ) {
-      imgUrls.push(patchedProps.backgroundImage);
-    }
-    if (imgUrls.length > 0) {
-      const failures = await validateImageUrls(imgUrls);
-      if (failures.length > 0) {
-        const msg = failures.map(f => `  ${f.url} → ${f.status}`).join("\n");
-        throw new Error(
-          `Image validation failed — these URLs are broken:\n${msg}\n\nFix the URLs and try again.`
-        );
-      }
-    }
-    applyNodePatches(flat, nodeId, patches);
-    const result = await saveTarget(targetId, targetType, flat);
-    const label =
-      targetType === "template"
-        ? `Node ${nodeId} updated in template "${targetId}".`
-        : `Node ${nodeId} updated.\nEditor: ${result.url}`;
-    return { content: [{ type: "text", text: label }] };
-  },
-
   async delete_node(args) {
     const { nodeId } = args;
     if (PROTECTED_IDS.includes(nodeId))

@@ -324,53 +324,6 @@
     }
   },
   {
-    "name": "update_node",
-    "description": "Surgically patches a single node on the active site (GET → patch → PUT). Same as patch_site_node but with image URL validation.\n\nAll styling uses className — a single string of Tailwind classes on props.className. Mobile-first: unprefixed classes are base/mobile, md: prefix for desktop, sm: for tablet.\n\nCommon uses:\n  - Change text: propsPatch: { \"text\": \"New heading\" }\n  - Change colors: classNamePatch: \"bg-accent text-accent-content\"\n  - Change layout: classNamePatch: \"flex flex-col gap-4 py-8 md:flex-row md:gap-8\"\n  - Reorder children: nodesPatch: [\"child2\", \"child1\", \"child3\"]\n  - Remove classes: unsetClasses: [\"gap-\", \"py-\"] removes all gap-* and py-* classes\n  - Apply modifiers: classNamePatch: \"btn-outline btn-lg\", propsPatch: { \"root\": { \"activeModifiers\": [\"btn-outline\", \"btn-lg\"] } }\n  - Remove modifiers: unsetClasses: [\"btn-outline\"], propsPatch: { \"root\": { \"activeModifiers\": [] } }",
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Site id (defaults to active site)."
-        },
-        "nodeId": {
-          "type": "string",
-          "description": "Node ID to patch. Use pull_site to find IDs."
-        },
-        "classNamePatch": {
-          "type": "string",
-          "description": "Tailwind classes to merge into props.className via twMerge. Mobile-first: unprefixed = base/mobile, md: = desktop, sm: = tablet. Examples: \"flex flex-col gap-4 md:flex-row md:gap-8\", \"bg-primary text-primary-content rounded-xl shadow-lg\". Conflicting classes are resolved by twMerge (last wins)."
-        },
-        "propsPatch": {
-          "type": "object",
-          "description": "Shallow merge into node.props for NON-CLASS properties only: text, src, href, alt, tagName, content, type, icon, style, animation, company, header, etc. Do NOT put Tailwind classes here — use classNamePatch."
-        },
-        "nodesPatch": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "REORDER ONLY: must list exactly the same child ids the node already has (same multiset). Get order from pull_site; partial lists are rejected and would blank content."
-        },
-        "unsetClasses": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "Tailwind classes or prefixes to remove from props.className. Exact match: [\"gap-4\"] removes \"gap-4\". Prefix match: [\"gap-\"] removes \"gap-4\", \"md:gap-8\", etc. Responsive variants are stripped for matching."
-        },
-        "unsetProps": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "Top-level props keys to delete."
-        }
-      },
-      "required": ["nodeId"]
-    }
-  },
-  {
     "name": "delete_node",
     "description": "Deletes a node and all its descendants from the active site. Also removes the node ID from its parent's nodes array. Use list_site_nodes or search_site_nodes to find node IDs first.\n\nCANNOT delete ROOT, page_home, hdr_root, ftr_root — these are structural.",
     "inputSchema": {
@@ -607,7 +560,7 @@
   },
   {
     "name": "generate_image",
-    "description": "Generates an AI image, uploads it to CDN, and returns the CDN URL ready to use in nodes.\n\nFull pipeline: prompt optimization (Claude) → image generation (OpenAI GPT Image / DALL-E) → CDN upload (Cloudflare) → returns URL + alt text suggestion.\n\nThe generated image is automatically uploaded — no separate upload_image call needed.\n\nUse update_node to apply: propsPatch: { type: \"cdn\", src: \"<mediaId>\" }",
+    "description": "Generates an AI image, uploads it to CDN, and returns the CDN URL ready to use in nodes.\n\nFull pipeline: prompt optimization (Claude) → image generation (OpenAI GPT Image / DALL-E) → CDN upload (Cloudflare) → returns URL + alt text suggestion.\n\nThe generated image is automatically uploaded — no separate upload_image call needed.\n\nUse patch_site_node to apply: propsPatch: { type: \"cdn\", src: \"<mediaId>\" }",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -639,7 +592,7 @@
   },
   {
     "name": "generate_copy",
-    "description": "AI-powered copywriting tool. Reads a text node's current content, improves or generates new copy based on an intent/prompt, and returns the result. The agent can then apply it with update_node.\n\nSupports two modes:\n1. **Improve existing:** Pass a nodeId to read current text + an intent to guide improvement.\n2. **Generate from scratch:** Pass just an intent/prompt without a nodeId.\n\nAutomatically reads site-level AI settings (prompt, styleTags) from ROOT node for consistent tone. Also reads site title/description for business context.\n\nCommon intents: \"make it punchier\", \"add social proof\", \"shorter and more direct\", \"more professional\", \"add a call to action\".",
+    "description": "AI-powered copywriting tool. Reads a text node's current content, improves or generates new copy based on an intent/prompt, and returns the result. The agent can then apply it with patch_site_node.\n\nSupports two modes:\n1. **Improve existing:** Pass a nodeId to read current text + an intent to guide improvement.\n2. **Generate from scratch:** Pass just an intent/prompt without a nodeId.\n\nAutomatically reads site-level AI settings (prompt, styleTags) from ROOT node for consistent tone. Also reads site title/description for business context.\n\nCommon intents: \"make it punchier\", \"add social proof\", \"shorter and more direct\", \"more professional\", \"add a call to action\".",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -907,7 +860,7 @@
   },
   {
     "name": "select_template",
-    "description": "Set the active template context by slug for the current session. Once selected, all editing tools (patch_site_node, patch_site_bulk, add_nodes, update_node, delete_node, insert_node, list_pages, add_page, update_page, delete_page, set_theme, apply_kit_block, etc.) will operate on this template instead of a site. Clears any active site. Requires admin or tenant owner/editor role.",
+    "description": "Set the active template context by slug for the current session. Once selected, all editing tools (patch_site_node, patch_site_bulk, add_nodes, delete_node, insert_node, list_pages, add_page, update_page, delete_page, set_theme, apply_kit_block, etc.) will operate on this template instead of a site. Clears any active site. Requires admin or tenant owner/editor role.",
     "inputSchema": {
       "type": "object",
       "properties": {
