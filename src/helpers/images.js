@@ -7,12 +7,9 @@ function extractImageUrls(props, resolvedName) {
       urls.push(imgSrc);
     }
   }
-  if (
-    props.backgroundImage &&
-    typeof props.backgroundImage === "string" &&
-    props.backgroundImage.startsWith("http")
-  ) {
-    urls.push(props.backgroundImage);
+  const bgImage = props.background?.image;
+  if (bgImage && typeof bgImage === "string" && bgImage.startsWith("http")) {
+    urls.push(bgImage);
   }
   return urls;
 }

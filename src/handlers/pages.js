@@ -73,22 +73,26 @@ module.exports = {
     if (flat[pageId])
       throw new Error(`Node ID "${pageId}" already exists. Choose a different page name.`);
 
-    // Build SEO props from args
+    // Build SEO props from args. Accept the legacy flat keys (pageTitle, pageDescription, …)
+    // on the `seo` arg for back-compat, but store under the canonical seo.* shape on the node.
     const seo = parseMaybeJson(args.seo) || {};
-    const seoProps = {};
-    for (const key of [
-      "pageTitle",
-      "pageDescription",
-      "pageKeywords",
-      "ogTitle",
-      "ogDescription",
-      "ogImage",
-      "ogType",
-      "canonicalUrl",
-      "robots",
-    ]) {
-      if (seo[key] != null) seoProps[key] = seo[key];
+    const keyMap = {
+      pageTitle: "title",
+      pageDescription: "description",
+      pageKeywords: "keywords",
+      ogTitle: "ogTitle",
+      ogDescription: "ogDescription",
+      ogImage: "ogImage",
+      ogType: "ogType",
+      canonicalUrl: "canonicalUrl",
+      robots: "robots",
+    };
+    const seoNested = {};
+    for (const [flatKey, nestedKey] of Object.entries(keyMap)) {
+      const value = seo[flatKey] != null ? seo[flatKey] : seo[nestedKey];
+      if (value != null) seoNested[nestedKey] = value;
     }
+    const seoProps = Object.keys(seoNested).length ? { seo: seoNested } : {};
 
     // Determine home page flag
     const shouldBeHome = isHomePage === true || pages.length === 0;
@@ -223,20 +227,23 @@ module.exports = {
     }
 
     const seo = parseMaybeJson(args.seo) || {};
-    for (const key of [
-      "pageTitle",
-      "pageDescription",
-      "pageKeywords",
-      "ogTitle",
-      "ogDescription",
-      "ogImage",
-      "ogType",
-      "canonicalUrl",
-      "robots",
-    ]) {
-      if (seo[key] != null) {
-        page.props[key] = seo[key];
-        changes.push(`${key} → "${seo[key]}"`);
+    const seoKeyMap = {
+      pageTitle: "title",
+      pageDescription: "description",
+      pageKeywords: "keywords",
+      ogTitle: "ogTitle",
+      ogDescription: "ogDescription",
+      ogImage: "ogImage",
+      ogType: "ogType",
+      canonicalUrl: "canonicalUrl",
+      robots: "robots",
+    };
+    for (const [flatKey, nestedKey] of Object.entries(seoKeyMap)) {
+      const value = seo[flatKey] != null ? seo[flatKey] : seo[nestedKey];
+      if (value != null) {
+        if (!page.props.seo) page.props.seo = {};
+        page.props.seo[nestedKey] = value;
+        changes.push(`seo.${nestedKey} → "${value}"`);
       }
     }
 

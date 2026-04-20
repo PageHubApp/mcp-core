@@ -34,7 +34,9 @@ function normalizeDesignTags(tags) {
  */
 function stampPresetDesignIntent(rootProps, presetRecord) {
   if (!rootProps || !presetRecord) return;
-  const hasNotes = typeof rootProps.designNotes === "string" && rootProps.designNotes.trim();
+  if (!rootProps.design) rootProps.design = {};
+  const design = rootProps.design;
+  const hasNotes = typeof design.notes === "string" && design.notes.trim();
   if (!hasNotes) {
     const bits = [
       presetRecord.description,
@@ -44,12 +46,12 @@ function stampPresetDesignIntent(rootProps, presetRecord) {
       presetRecord.name ? `Theme: ${presetRecord.name}` : "",
     ].filter(Boolean);
     const joined = bits.join(" ").trim();
-    if (joined) rootProps.designNotes = truncateDesignNotes(joined);
+    if (joined) design.notes = truncateDesignNotes(joined);
   }
-  if (!Array.isArray(rootProps.designTags) || rootProps.designTags.length === 0) {
+  if (!Array.isArray(design.tags) || design.tags.length === 0) {
     const tags = [...(presetRecord.mood || [])];
     if (presetRecord.style) tags.push(presetRecord.style);
-    rootProps.designTags = normalizeDesignTags(tags);
+    design.tags = normalizeDesignTags(tags);
   }
 }
 

@@ -154,15 +154,19 @@ module.exports = {
 
     finalizeRootThemeFonts(rootProps, resolvedFonts);
 
-    const headerClean = stripGoogleFontLinksFromHeader(rootProps.header || "");
+    if (!rootProps.inject) rootProps.inject = {};
+    const headerClean = stripGoogleFontLinksFromHeader(rootProps.inject.head || "");
     let ld = "";
     const resolvedJsonLd = parseMaybeJson(jsonLd);
     if (resolvedJsonLd) {
       ld = `<script type="application/ld+json">${JSON.stringify(resolvedJsonLd)}</script>`;
+      if (!rootProps.seo) rootProps.seo = {};
+      rootProps.seo.jsonLd = resolvedJsonLd;
     }
     const nextHeader = [headerClean, ld].filter(Boolean).join("");
-    if (nextHeader) rootProps.header = nextHeader;
-    else delete rootProps.header;
+    if (nextHeader) rootProps.inject.head = nextHeader;
+    else delete rootProps.inject.head;
+    if (Object.keys(rootProps.inject).length === 0) delete rootProps.inject;
 
     const changedNodes = { ROOT: flat.ROOT };
     const presetMsg = preset ? ` (preset: ${preset})` : "";

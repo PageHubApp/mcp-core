@@ -176,7 +176,7 @@ const TECHNIQUE_TRANSFER_RULES = `
   - Form cards: shadow, header, subtitle, response-time note, input styling
   - Split sections: column ratio, vertical alignment, content arrangement
 - Visual depth techniques:
-  - Background images with gradient overlays — prefer **backgroundOverlay** on Container with **backgroundImage**; avoid root.style in block/kit JSON.
+  - Background images with gradient overlays — prefer **backgroundOverlay** on Container with **background.image**; avoid root.style in block/kit JSON.
   - Section background rhythm — alternate white/tinted/white/dark, never 4+ same bg
   - Background overlays: use "backgroundOverlay" prop. Presets: "dark-left", "dark-right", "dark-bottom", "dark-top", "dark", "light". Custom: { direction: "to right", from: { color: "#000", opacity: 85 }, to: { color: "#000", opacity: 20 } }
   - For ad-hoc editor sites only (not library blocks): root.style may be used for backdrop-filter, rgba fills, etc. — never for image overlays (use backgroundOverlay).

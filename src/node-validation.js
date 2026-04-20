@@ -233,9 +233,10 @@ function validateNodes(flatMap, opts = {}) {
         if (m) {
           if (autoFix) {
             props.text = m[3];
-            if (!props.richTextMode) props.richTextMode = "inline";
+            if (!props.richText) props.richText = {};
+            if (!props.richText.mode) props.richText.mode = "inline";
             fixes.push(
-              `${nodeId}: Stripped redundant <${m[1]}> wrapper inside tagName="${props.tagName}" (set richTextMode="inline")`
+              `${nodeId}: Stripped redundant <${m[1]}> wrapper inside tagName="${props.tagName}" (set richText.mode="inline")`
             );
           } else {
             errors.push(

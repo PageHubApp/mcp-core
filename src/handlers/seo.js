@@ -74,7 +74,7 @@ function runChecks(siteData, nodes, pageId) {
     });
   }
 
-  const jsonLd = nodes.ROOT?.props?.jsonLd;
+  const jsonLd = nodes.ROOT?.props?.seo?.jsonLd;
   if (!jsonLd || (typeof jsonLd === "object" && Object.keys(jsonLd).length === 0)) {
     results.push({
       id: "structured-data",
