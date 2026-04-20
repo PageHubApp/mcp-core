@@ -1015,7 +1015,7 @@
   },
   {
     "name": "patch_site_node",
-    "description": "Edit one node on a live site (GET, patch, PUT). For multiple nodes use patch_site_bulk (atomic, no races). Uses classNamePatch for Tailwind classes, propsPatch for non-class props (text, src, href, etc.). Do not send \"children\" or ad-hoc node graphs — patch child Button/Text nodes by their kit_* nodeIds from apply_kit_block. Example: classNamePatch \"py-0\" to override page wrapper padding.\n\nSITE-WIDE CUSTOM CODE (ROOT node): set propsPatch.header (raw HTML into every page's <head> — scripts, styles, link/meta tags) and propsPatch.footer (raw HTML before every page's </body>). Use for third-party scripts, custom CSS, chat widgets, verification tags. For analytics/pixels with structured config prefer set_integrations. For per-page head code use update_page (headCode).",
+    "description": "Edit one node on a live site (GET, patch, PUT). For multiple nodes use patch_site_bulk (atomic, no races). Uses typePatch to change type.resolvedName, classNamePatch for Tailwind classes, propsPatch for non-class props (text, src, href, etc.). Do not send \"children\" or ad-hoc node graphs — patch child Button/Text nodes by their kit_* nodeIds from apply_kit_block. Example: classNamePatch \"py-0\" to override page wrapper padding.\n\nSITE-WIDE CUSTOM CODE (ROOT node): set propsPatch.header (raw HTML into every page's <head> — scripts, styles, link/meta tags) and propsPatch.footer (raw HTML before every page's </body>). Use for third-party scripts, custom CSS, chat widgets, verification tags. For analytics/pixels with structured config prefer set_integrations. For per-page head code use update_page (headCode).\n\nUseful when a node must switch component type (for example Button → Text) without recreating the node.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1026,6 +1026,10 @@
         "nodeId": {
           "type": "string",
           "description": "Craft node id e.g. page_home, ROOT"
+        },
+        "typePatch": {
+          "type": "string",
+          "description": "Optional component type replacement for node.type.resolvedName (e.g. \"Button\", \"Text\", \"Image\"). Keeps node.isCanvas aligned automatically."
         },
         "classNamePatch": {
           "type": "string",
@@ -1081,7 +1085,7 @@
   },
   {
     "name": "patch_site_bulk",
-    "description": "Same as patch_site_node but one GET and one PUT: apply many node patches atomically (no lost updates from parallel calls). patches MUST be a native JSON array in the tool args (not a stringified JSON string). Each item: { nodeId, classNamePatch?, propsPatch?, nodesPatch?, unsetClasses?, unsetProps? } — never \"children\"; patch Buttons by kit_* id.\n\nSITE-WIDE CUSTOM CODE (ROOT node): include a patch with nodeId \"ROOT\" and propsPatch.header / propsPatch.footer set to raw HTML — injected into every page's <head> / before </body> respectively. Use for scripts, styles, widgets. Analytics/pixels → set_integrations. Per-page head code → update_page (headCode).",
+    "description": "Same as patch_site_node but one GET and one PUT: apply many node patches atomically (no lost updates from parallel calls). patches MUST be a native JSON array in the tool args (not a stringified JSON string). Each item: { nodeId, typePatch?, classNamePatch?, propsPatch?, nodesPatch?, unsetClasses?, unsetProps? } — never \"children\"; patch Buttons by kit_* id.\n\nSITE-WIDE CUSTOM CODE (ROOT node): include a patch with nodeId \"ROOT\" and propsPatch.header / propsPatch.footer set to raw HTML — injected into every page's <head> / before </body> respectively. Use for scripts, styles, widgets. Analytics/pixels → set_integrations. Per-page head code → update_page (headCode).",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1097,6 +1101,10 @@
               "nodeId": {
                 "type": "string",
                 "description": "Craft node id e.g. page_home, ROOT"
+              },
+              "typePatch": {
+                "type": "string",
+                "description": "Optional component type replacement for node.type.resolvedName."
               },
               "classNamePatch": {
                 "type": "string",
@@ -1524,7 +1532,7 @@
   },
   {
     "name": "patch_block",
-    "description": "Patch one node inside a library block's stored structure (GET, flatten, merge, PUT). Uses classNamePatch for Tailwind classes, propsPatch for non-class props. Node ids are lib_* from list_block_nodes for this slug — not kit_* (those only exist after apply_kit_block on a site). Does not create nodes; use update_block(structure: ...) for wholesale replacement.",
+    "description": "Patch one node inside a library block's stored structure (GET, flatten, merge, PUT). Uses typePatch to change type.resolvedName, classNamePatch for Tailwind classes, propsPatch for non-class props. Node ids are lib_* from list_block_nodes for this slug — not kit_* (those only exist after apply_kit_block on a site). Does not create nodes; use update_block(structure: ...) for wholesale replacement.\n\nUseful when a block node must switch component type without replacing the whole block structure.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1535,6 +1543,10 @@
         "nodeId": {
           "type": "string",
           "description": "Flat node id from list_block_nodes (lib_*)."
+        },
+        "typePatch": {
+          "type": "string",
+          "description": "Optional component type replacement for node.type.resolvedName (e.g. \"Button\", \"Text\", \"Image\"). Keeps node.isCanvas aligned automatically."
         },
         "classNamePatch": {
           "type": "string",
@@ -1570,7 +1582,7 @@
   },
   {
     "name": "patch_block_bulk",
-    "description": "Same as patch_block but one GET and one PUT: patch many lib_* nodes atomically. patches MUST be a native JSON array. Each item: { nodeId, classNamePatch?, propsPatch?, nodesPatch?, unsetClasses?, unsetProps? }. Slug must match list_block_nodes.",
+    "description": "Same as patch_block but one GET and one PUT: patch many lib_* nodes atomically. patches MUST be a native JSON array. Each item: { nodeId, typePatch?, classNamePatch?, propsPatch?, nodesPatch?, unsetClasses?, unsetProps? }. Slug must match list_block_nodes.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1586,6 +1598,10 @@
               "nodeId": {
                 "type": "string",
                 "description": "lib_* id from list_block_nodes"
+              },
+              "typePatch": {
+                "type": "string",
+                "description": "Optional component type replacement for node.type.resolvedName."
               },
               "classNamePatch": {
                 "type": "string",

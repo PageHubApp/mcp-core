@@ -100,7 +100,8 @@ function removeClasses(className, toRemove) {
 
 /** Shallow-merge patch objects into a flat node map entry. */
 function applyNodePatches(flatMap, nodeId, patchArgs) {
-  const { propsPatch, classNamePatch, nodesPatch, unsetProps, unsetClasses } = patchArgs;
+  const { typePatch, propsPatch, classNamePatch, nodesPatch, unsetProps, unsetClasses } =
+    patchArgs;
   if (!flatMap[nodeId]) {
     let hint = "";
     if (String(nodeId).startsWith("kit_")) {
@@ -121,6 +122,13 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
   const p = entry.props;
   if (p == null || typeof p !== "object" || Array.isArray(p)) {
     entry.props = {};
+  }
+  // typePatch — update component type and keep isCanvas aligned with container semantics
+  const normalizedTypePatch = normalizeTypePatch(typePatch);
+  if (normalizedTypePatch) {
+    entry.type = { ...(entry.type || {}), resolvedName: normalizedTypePatch };
+    entry.isCanvas = CANVAS_TYPE_PATCH_COMPONENTS.has(normalizedTypePatch);
+    if (!Array.isArray(entry.nodes)) entry.nodes = [];
   }
   // className patch — merge Tailwind classes into props.className via twMerge
   if (classNamePatch) {
@@ -179,6 +187,7 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
 }
 
 const PATCH_BODY_KEYS = [
+  "typePatch",
   "propsPatch",
   "classNamePatch",
   "nodesPatch",
@@ -218,6 +227,93 @@ const UNSUPPORTED_PATCH_FIELD_HINTS = {
     'Field "children" is not supported. Patch each child node by its kit_* id (e.g. Button nodes under ButtonList) using propsPatch for text, icon, and root styles — copy ids from the apply_kit_block reply.',
 };
 
+const VALID_TYPE_PATCH_COMPONENTS = new Set([
+  "Accordion",
+  "Audio",
+  "Automatic",
+  "Background",
+  "Button",
+  "ButtonList",
+  "CartBadge",
+  "CartDrawer",
+  "CartItems",
+  "CartSubtotal",
+  "CheckoutBanner",
+  "Container",
+  "ContainerGroup",
+  "Divider",
+  "Dropdown",
+  "Embed",
+  "Footer",
+  "Form",
+  "FormElement",
+  "Grid",
+  "Header",
+  "Icon",
+  "Image",
+  "ImageList",
+  "Link",
+  "List",
+  "ListItem",
+  "Map",
+  "MapPoint",
+  "Modal",
+  "Nav",
+  "Spacer",
+  "Table",
+  "TableCell",
+  "TableRow",
+  "TableSection",
+  "Tabs",
+  "Text",
+  "Video",
+]);
+
+const CANVAS_TYPE_PATCH_COMPONENTS = new Set([
+  "Accordion",
+  "Automatic",
+  "Background",
+  "CartDrawer",
+  "CheckoutBanner",
+  "Container",
+  "ContainerGroup",
+  "Dropdown",
+  "Footer",
+  "Form",
+  "Grid",
+  "Header",
+  "List",
+  "Modal",
+  "Nav",
+  "Table",
+  "TableRow",
+  "TableSection",
+  "Tabs",
+]);
+
+function normalizeTypePatch(rawTypePatch) {
+  if (rawTypePatch == null) return null;
+  const typeName =
+    typeof rawTypePatch === "string"
+      ? rawTypePatch.trim()
+      : typeof rawTypePatch === "object" && typeof rawTypePatch.resolvedName === "string"
+        ? rawTypePatch.resolvedName.trim()
+        : "";
+  if (!typeName) {
+    throw new Error(
+      "typePatch must be a non-empty string (e.g. \"Button\") or object { resolvedName: \"Button\" }."
+    );
+  }
+  if (!VALID_TYPE_PATCH_COMPONENTS.has(typeName)) {
+    throw new Error(
+      `typePatch "${typeName}" is not a supported component type. Allowed: ${[
+        ...VALID_TYPE_PATCH_COMPONENTS,
+      ].join(", ")}.`
+    );
+  }
+  return typeName;
+}
+
 function assertPatchKeys(obj, allowedSet, label) {
   if (!obj || typeof obj !== "object") return;
   for (const k of Object.keys(obj)) {
@@ -248,6 +344,7 @@ function assertPatchBlockBulkItem(item, index) {
 /** Normalize raw patch args (parse JSON strings). */
 function normalizeNodePatchArgs(raw) {
   return {
+    typePatch: parseMaybeJson(raw.typePatch) ?? raw.typePatch,
     propsPatch: parseMaybeJson(raw.propsPatch) ?? raw.propsPatch,
     classNamePatch: typeof raw.classNamePatch === "string" ? raw.classNamePatch : undefined,
     nodesPatch: raw.nodesPatch,

@@ -51,8 +51,8 @@ Get a free API key by calling the `register` tool with your email, or sign up at
 
 | Export                    | Description                                                                                   |
 | ------------------------- | --------------------------------------------------------------------------------------------- |
-| `getAllTools()`           | All 49 tool schemas (MCP format with `inputSchema`)                                           |
-| `getAgentTools()`         | HTTP-only tool schemas (Claude API format with `input_schema`), excludes auth-sensitive tools |
+| `getAllTools()`           | All 48 tool schemas (MCP format with `inputSchema`)                                           |
+| `getAgentTools()`         | HTTP-only tool schemas (Claude API format with `input_schema`), excludes unsafe/non-public tools |
 | `executeTool(name, args)` | Execute an HTTP-based tool by name within the current context                                 |
 | `executeAgentTool(name, args)` | Execute only tools exposed on the public agent endpoint                                |
 | `handlers`                | Raw handler function map                                                                      |
@@ -70,14 +70,14 @@ Get a free API key by calling the `register` tool with your email, or sign up at
 | Export            | Description                                          |
 | ----------------- | ---------------------------------------------------- |
 | `HTTP_TOOL_NAMES` | Set of tool names with HTTP handlers in this package |
-| `AGENT_EXCLUDED`  | Set of tool names excluded from the agent endpoint   |
+| `AGENT_EXCLUDED`  | Set of tool names excluded from the agent endpoint (auth-sensitive or unsafe for public-agent defaults)   |
 | `AGENT_ALLOWED`   | Set of tool names allowed on the public agent endpoint |
 
-## HTTP Handlers (24 tools)
+## HTTP Handlers (23 tools)
 
 These handlers make API calls to PageHub and are included in this package:
 
-**Sites** — `list_templates`, `pull_template`, `list_sites`, `select_site`, `pull_site`, `save_site`, `delete_site`, `add_nodes`, `suggest_palettes`, `upload_image`, `patch_site_node`, `patch_site_bulk`
+**Sites** — `list_templates`, `pull_template`, `list_sites`, `select_site`, `pull_site`, `delete_site`, `add_nodes`, `suggest_palettes`, `upload_image`, `patch_site_node`, `patch_site_bulk`
 
 **Nodes** — `delete_node`, `insert_node`, `move_node`, `list_site_nodes`, `search_site_nodes`
 
@@ -87,9 +87,9 @@ These handlers make API calls to PageHub and are included in this package:
 
 **Portal** — `set_portal`, `get_portal`, `remove_portal`
 
-## Full Tool Schema (49 tools)
+## Full Tool Schema (48 tools)
 
-The `tools.json` file contains schemas for all 49 PageHub tools. The remaining 25 tools (template building, theming, blocks, AI generation, audits) require filesystem access to the TemplateBuilder and are implemented in the full [`@pagehub/mcp`](https://github.com/nicholasgcoles/pagehub.dev/tree/main/packages/mcp) server package.
+The `tools.json` file contains schemas for all 48 PageHub tools. The remaining 25 tools (template building, theming, blocks, AI generation, audits) require filesystem access to the TemplateBuilder and are implemented in the full [`@pagehub/mcp`](https://github.com/nicholasgcoles/pagehub.dev/tree/main/packages/mcp) server package.
 
 ## Architecture
 

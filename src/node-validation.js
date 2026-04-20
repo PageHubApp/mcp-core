@@ -1,7 +1,7 @@
 /**
  * Node validation & auto-fix for CraftJS flat node maps.
  *
- * Runs before save_site / add_custom_block / add_nodes to catch
+ * Runs before write operations (for example add_nodes) to catch
  * common authoring mistakes that cause silent rendering failures.
  *
  * Returns { warnings: string[], fixes: string[], errors: string[] }.
