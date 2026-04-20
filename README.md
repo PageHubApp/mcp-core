@@ -54,6 +54,7 @@ Get a free API key by calling the `register` tool with your email, or sign up at
 | `getAllTools()`           | All 49 tool schemas (MCP format with `inputSchema`)                                           |
 | `getAgentTools()`         | HTTP-only tool schemas (Claude API format with `input_schema`), excludes auth-sensitive tools |
 | `executeTool(name, args)` | Execute an HTTP-based tool by name within the current context                                 |
+| `executeAgentTool(name, args)` | Execute only tools exposed on the public agent endpoint                                |
 | `handlers`                | Raw handler function map                                                                      |
 
 ### Helpers
@@ -70,6 +71,7 @@ Get a free API key by calling the `register` tool with your email, or sign up at
 | ----------------- | ---------------------------------------------------- |
 | `HTTP_TOOL_NAMES` | Set of tool names with HTTP handlers in this package |
 | `AGENT_EXCLUDED`  | Set of tool names excluded from the agent endpoint   |
+| `AGENT_ALLOWED`   | Set of tool names allowed on the public agent endpoint |
 
 ## HTTP Handlers (24 tools)
 
