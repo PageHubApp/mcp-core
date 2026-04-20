@@ -25,11 +25,10 @@
   "homepage": "https://pagehub.dev/developers/mcp",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nicholasgcoles/pagehub.dev",
-    "directory": "packages/mcp-core"
+    "url": "https://github.com/PageHubApp/mcp-core"
   },
   "bugs": {
-    "url": "https://github.com/nicholasgcoles/pagehub.dev/issues"
+    "url": "https://github.com/PageHubApp/mcp-core/issues"
   },
   "author": "PageHub"
 }

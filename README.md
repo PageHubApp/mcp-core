@@ -89,22 +89,25 @@ These handlers make API calls to PageHub and are included in this package:
 
 ## Full Tool Schema (48 tools)
 
-The `tools.json` file contains schemas for all 48 PageHub tools. The remaining 25 tools (template building, theming, blocks, AI generation, audits) require filesystem access to the TemplateBuilder and are implemented in the full [`@pagehub/mcp`](https://github.com/nicholasgcoles/pagehub.dev/tree/main/packages/mcp) server package.
+The `tools.json` file contains schemas for all PageHub tools. See the full [`@pagehub/mcp`](https://github.com/PageHubApp/mcp) server package for the MCP stdio transport.
 
 ## Architecture
 
 ```
-@pagehub/mcp-core          @pagehub/mcp (full server)
-├── tools.json (all 49)     ├── imports mcp-core
-├── context.js              ├── local handlers (25 tools)
-├── api-fetch.js            │   ├── sections, themes
-├── helpers.js              │   ├── nav, footer
-└── handlers/               │   ├── AI generation
-    ├── remote.js           │   └── audits, patterns
-    ├── nodes.js            └── MCP stdio transport
+@pagehub/mcp-core          @pagehub/mcp (stdio server)
+├── tools.json              ├── imports mcp-core via delegateHandlers
+├── context.js              ├── local-only handlers
+├── api-fetch.js            │   └── accessibility (playwright + axe)
+├── helpers.js              └── MCP stdio transport
+└── handlers/
+    ├── remote.js
+    ├── nodes.js
     ├── components.js
+    ├── kit.js
     ├── pages.js
-    └── portal.js
+    ├── portal.js
+    ├── seo.js
+    └── stock-images.js
 ```
 
 ## License

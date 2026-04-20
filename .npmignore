@@ -1,0 +1,30 @@
+# Belt-and-suspenders with the `files` whitelist in package.json.
+# Anything here is guaranteed out of the published tarball even if
+# a future edit accidentally adds it to `files`.
+
+# Local pack output
+*.tgz
+
+# Tests (not published; kept as project source of truth)
+__tests__/
+*.test.js
+*.test.mjs
+*.spec.js
+*.spec.mjs
+
+# Editor / OS / tool droppings
+.DS_Store
+.vscode/
+.idea/
+*.log
+.env
+.env.*
+
+# Build / dev config (source-tree only)
+tsconfig.json
+.eslintrc*
+.prettierrc*
+
+# CI / git
+.github/
+.gitignore
