@@ -180,7 +180,7 @@
   },
   {
     "name": "set_theme",
-    "description": "Creates or updates the ROOT node theme for the active site — palette colors, styleGuide (spacing, radius, shadows, fonts), Google Fonts, and JSON-LD structured data. If no active site exists, creates one first. Always call this FIRST when building a new site, before adding blocks.\n\nPalette pitfall (DaisyUI 5 outline CTAs): keep Primary and Base Content at clearly different OKLCH lightness on minimal B&W themes. If both are the same near-black, btn-outline + text-base-content can read as dark-on-dark (Daisy uses --btn-color for outline fg/border). Fix palette + styleGuide link/input text if needed; see THEME-SYSTEM.md and scripts/seed/data/templates/acme.json.\n\nIMPORTANT: After set_theme, set company variables on ROOT via patch_site_node with propsPatch: { company: { name, tagline, phone, email, address, location, website, type } }. These populate {{company.name}} etc. throughout the site. Without them, all variable placeholders show defaults (\"Acme Inc.\").\n\nWorkflow: set_theme → patch company vars on ROOT → apply_kit_block(target:\"header\") → apply_kit_block (repeat for page sections) → apply_kit_block(target:\"footer\") → update_page (set pageTitle/pageDescription for SEO)",
+    "description": "Creates or updates the ROOT node theme for the active site — palette colors, styleGuide (spacing, radius, shadows, fonts), Google Fonts, and JSON-LD structured data. If no active site exists, creates one first. Always call this FIRST when building a new site, before adding blocks.\n\nPalette pitfall (DaisyUI 5 outline CTAs): keep Primary and Base Content at clearly different OKLCH lightness on minimal B&W themes. If both are the same near-black, btn-outline + text-base-content can read as dark-on-dark (Daisy uses --btn-color for outline fg/border). Fix palette + styleGuide link/input text if needed; see THEME-SYSTEM.md and scripts/seed/data/templates/acme.json.\n\nIMPORTANT: After set_theme, set company variables on ROOT via patch_site_node with propsPatch: { company: { name, tagline, phone, email, address, location, website, type } }. These populate {{company.name}} etc. throughout the site. Without them, all variable placeholders show defaults (\"Acme Inc.\").\n\nWorkflow: set_theme → patch company vars on ROOT → apply_kit_block(target:\"header\") → apply_kit_block (repeat for page sections) → apply_kit_block(target:\"footer\") → update_page (set seo.title/seo.description for SEO)",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -250,7 +250,7 @@
         },
         "fonts": {
           "type": "object",
-          "description": "Optional hint when `styleGuide` omits families: same shapes (\"url\" or \"families\") — parsed into `headingFontFamily` / `bodyFontFamily` only. Use `font-heading` / `font-body` in className — these resolve via CSS vars and extractGoogleFontsUrl correctly pairs weights. Only use `font-['Name']` for a third accent font not in styleGuide. No `<link>` font tags in `ROOT.props.header`."
+          "description": "Optional hint when `styleGuide` omits families: same shapes (\"url\" or \"families\") — parsed into `headingFontFamily` / `bodyFontFamily` only. Use `font-heading` / `font-body` in className — these resolve via CSS vars and extractGoogleFontsUrl correctly pairs weights. Only use `font-['Name']` for a third accent font not in styleGuide. No `<link>` font tags in `ROOT.props.inject.head`."
         },
         "jsonLd": {
           "type": "object",
@@ -952,7 +952,7 @@
   },
   {
     "name": "patch_site_node",
-    "description": "Edit one node on a live site (GET, patch, PUT). For multiple nodes use patch_site_bulk (atomic, no races). Uses typePatch to change type.resolvedName, classNamePatch for Tailwind classes, propsPatch for non-class props (text, src, href, etc.). Do not send \"children\" or ad-hoc node graphs — patch child Button/Text nodes by their kit_* nodeIds from apply_kit_block. Example: classNamePatch \"py-0\" to override page wrapper padding.\n\nSITE-WIDE CUSTOM CODE (ROOT node): set propsPatch.header (raw HTML into every page's <head> — scripts, styles, link/meta tags) and propsPatch.footer (raw HTML before every page's </body>). Use for third-party scripts, custom CSS, chat widgets, verification tags. For analytics/pixels with structured config prefer set_integrations. For per-page head code use update_page (headCode).\n\nUseful when a node must switch component type (for example Button → Text) without recreating the node.",
+    "description": "Edit one node on a live site (GET, patch, PUT). For multiple nodes use patch_site_bulk (atomic, no races). Uses typePatch to change type.resolvedName, classNamePatch for Tailwind classes, propsPatch for non-class props (text, src, href, etc.). Do not send \"children\" or ad-hoc node graphs — patch child Button/Text nodes by their kit_* nodeIds from apply_kit_block. Example: classNamePatch \"py-0\" to override page wrapper padding.\n\nSITE-WIDE CUSTOM CODE (ROOT node): set propsPatch.inject.head (raw HTML into every page's <head> — scripts, styles, link/meta tags) and propsPatch.inject.footer (raw HTML before every page's </body>). Use for third-party scripts, custom CSS, chat widgets, verification tags. For analytics/pixels with structured config prefer set_integrations. For per-page head code use update_page (headCode).\n\nUseful when a node must switch component type (for example Button → Text) without recreating the node.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1022,7 +1022,7 @@
   },
   {
     "name": "patch_site_bulk",
-    "description": "Same as patch_site_node but one GET and one PUT: apply many node patches atomically (no lost updates from parallel calls). patches MUST be a native JSON array in the tool args (not a stringified JSON string). Each item: { nodeId, typePatch?, classNamePatch?, propsPatch?, nodesPatch?, unsetClasses?, unsetProps? } — never \"children\"; patch Buttons by kit_* id.\n\nSITE-WIDE CUSTOM CODE (ROOT node): include a patch with nodeId \"ROOT\" and propsPatch.header / propsPatch.footer set to raw HTML — injected into every page's <head> / before </body> respectively. Use for scripts, styles, widgets. Analytics/pixels → set_integrations. Per-page head code → update_page (headCode).",
+    "description": "Same as patch_site_node but one GET and one PUT: apply many node patches atomically (no lost updates from parallel calls). patches MUST be a native JSON array in the tool args (not a stringified JSON string). Each item: { nodeId, typePatch?, classNamePatch?, propsPatch?, nodesPatch?, unsetClasses?, unsetProps? } — never \"children\"; patch Buttons by kit_* id.\n\nSITE-WIDE CUSTOM CODE (ROOT node): include a patch with nodeId \"ROOT\" and propsPatch.inject.head / propsPatch.inject.footer set to raw HTML — injected into every page's <head> / before </body> respectively. Use for scripts, styles, widgets. Analytics/pixels → set_integrations. Per-page head code → update_page (headCode).",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1632,17 +1632,17 @@
         },
         "seo": {
           "type": "object",
-          "description": "Per-page SEO metadata.",
+          "description": "Per-page SEO metadata (nested under seo.*).",
           "properties": {
-            "pageTitle": {
+            "title": {
               "type": "string",
               "description": "Page <title> tag. Falls back to displayName."
             },
-            "pageDescription": {
+            "description": {
               "type": "string",
               "description": "Meta description for this page."
             },
-            "pageKeywords": { "type": "string", "description": "Meta keywords (comma-separated)." },
+            "keywords": { "type": "string", "description": "Meta keywords (comma-separated)." },
             "ogTitle": { "type": "string", "description": "Open Graph title." },
             "ogDescription": { "type": "string", "description": "Open Graph description." },
             "ogImage": { "type": "string", "description": "Open Graph image URL." },
@@ -1663,7 +1663,7 @@
   },
   {
     "name": "update_page",
-    "description": "Updates a page's metadata — display name (which changes the URL slug), SEO fields, home page flag, 404 flag, visibility, or per-page custom code (headCode/bodyClass). Use list_pages to find page node IDs first.\n\nIMPORTANT: Always set seo.pageTitle and seo.pageDescription on every page. The browser <title> tag comes from pageTitle (NOT the site-level title field). If not set, it falls back to the page's displayName (e.g. \"Home Page\").\n\nCUSTOM CODE (per page): headCode is raw HTML injected into that page's <head> (scripts, styles, meta tags — scoped to this page only). bodyClass adds extra className(s) to the <body> element on this page. For site-wide custom code use patch_site_node on ROOT (props.header / props.footer). For analytics/pixels prefer set_integrations.",
+    "description": "Updates a page's metadata — display name (which changes the URL slug), SEO fields, home page flag, 404 flag, visibility, or per-page custom code (headCode/bodyClass). Use list_pages to find page node IDs first.\n\nIMPORTANT: Always set seo.title and seo.description on every page. The browser <title> tag comes from seo.title (NOT the site-level title field). If not set, it falls back to the page's displayName (e.g. \"Home Page\").\n\nCUSTOM CODE (per page): headCode is raw HTML injected into that page's <head> (scripts, styles, meta tags — scoped to this page only). bodyClass adds extra className(s) to the <body> element on this page. For site-wide custom code use patch_site_node on ROOT (props.inject.head / props.inject.footer). For analytics/pixels prefer set_integrations.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1693,11 +1693,11 @@
         },
         "seo": {
           "type": "object",
-          "description": "Per-page SEO metadata to set/update.",
+          "description": "Per-page SEO metadata to set/update (nested under seo.*).",
           "properties": {
-            "pageTitle": { "type": "string" },
-            "pageDescription": { "type": "string" },
-            "pageKeywords": { "type": "string" },
+            "title": { "type": "string" },
+            "description": { "type": "string" },
+            "keywords": { "type": "string" },
             "ogTitle": { "type": "string" },
             "ogDescription": { "type": "string" },
             "ogImage": { "type": "string" },
@@ -1708,7 +1708,7 @@
         },
         "headCode": {
           "type": "string",
-          "description": "Raw HTML injected into this page's <head> (scripts, styles, meta tags). Scoped to this page only — for site-wide injection use patch_site_node on ROOT.props.header. Pass an empty string to clear."
+          "description": "Raw HTML injected into this page's <head> (scripts, styles, meta tags). Scoped to this page only — for site-wide injection use patch_site_node on ROOT.props.inject.head. Pass an empty string to clear."
         },
         "bodyClass": {
           "type": "string",
@@ -1808,7 +1808,7 @@
   },
   {
     "name": "set_integrations",
-    "description": "Configure analytics, tracking pixels, and site verification for the active site. Stores structured provider configs on ROOT props — rendered as proper <script> and <meta> tags on published pages.\n\nSupported providers:\n  - googleAnalytics: GA4 measurement ID (G-XXXXXXXXXX)\n  - googleTagManager: GTM container ID (GTM-XXXXXXX)\n  - googleSearchConsole: HTML tag verification code\n  - metaPixel: Facebook/Meta Pixel ID\n\nTip: If using GTM, configure individual tags inside GTM and only pass the container ID here.\n\nFor providers NOT listed above (chat widgets, A/B testing, CRMs, custom scripts), use patch_site_node on ROOT with propsPatch.header / propsPatch.footer (raw HTML injected site-wide). For per-page head code use update_page.headCode.",
+    "description": "Configure analytics, tracking pixels, and site verification for the active site. Stores structured provider configs on ROOT props — rendered as proper <script> and <meta> tags on published pages.\n\nSupported providers:\n  - googleAnalytics: GA4 measurement ID (G-XXXXXXXXXX)\n  - googleTagManager: GTM container ID (GTM-XXXXXXX)\n  - googleSearchConsole: HTML tag verification code\n  - metaPixel: Facebook/Meta Pixel ID\n\nTip: If using GTM, configure individual tags inside GTM and only pass the container ID here.\n\nFor providers NOT listed above (chat widgets, A/B testing, CRMs, custom scripts), use patch_site_node on ROOT with propsPatch.inject.head / propsPatch.inject.footer (raw HTML injected site-wide). For per-page head code use update_page.headCode.",
     "inputSchema": {
       "type": "object",
       "properties": {
