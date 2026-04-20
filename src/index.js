@@ -67,6 +67,9 @@ const AGENT_EXCLUDED = new Set([
   "delete_template",
   "publish_site_as_template",
 ]);
+const AGENT_ALLOWED = new Set(
+  [...HTTP_TOOL_NAMES].filter(name => !AGENT_EXCLUDED.has(name))
+);
 
 /**
  * Get tool schemas for the agent endpoint.
@@ -96,6 +99,16 @@ async function executeTool(name, args) {
   const handler = handlers[name];
   if (!handler) throw new Error(`Unknown tool: ${name}`);
   return handler(args);
+}
+
+/**
+ * Execute a tool only if it is exposed on the public agent endpoint.
+ */
+async function executeAgentTool(name, args) {
+  if (!AGENT_ALLOWED.has(name)) {
+    throw new Error(`Tool "${name}" is not available on this endpoint.`);
+  }
+  return executeTool(name, args);
 }
 
 module.exports = {
@@ -130,9 +143,11 @@ module.exports = {
   getAllTools,
   getAgentTools,
   executeTool,
+  executeAgentTool,
   handlers,
 
   // Constants
   HTTP_TOOL_NAMES,
   AGENT_EXCLUDED,
+  AGENT_ALLOWED,
 };
