@@ -54,31 +54,40 @@ function runDesignValidation(flat, touchedNodeIds, mode) {
   const touchedWarnings = result.warnings.filter(w =>
     touched.some(id => warningMentionsNode(w, id))
   );
+  const touchedColorWarnings = (result.colorWarnings || []).filter(w =>
+    touched.some(id => warningMentionsNode(w, id))
+  );
   const touchedErrors = result.errors.filter(e => touched.some(id => warningMentionsNode(e, id)));
-  if (
-    mode === "strict" &&
-    (touchedErrors.length > 0 || touchedWarnings.some(w => w.startsWith("🎨")))
-  ) {
-    const issues = [...touchedErrors, ...touchedWarnings.filter(w => w.startsWith("🎨"))];
+  if (mode === "strict" && (touchedErrors.length > 0 || touchedColorWarnings.length > 0)) {
+    const issues = [...touchedErrors, ...touchedColorWarnings];
     throw new Error(
       `Design token preflight failed for touched nodes.\n- ${issues.join("\n- ")}\n\n` +
         "Use semantic tokens (bg-base-*, text-base-content, border-base-*) instead of hardcoded color classes."
     );
   }
-  if (touchedWarnings.length === 0 && touchedErrors.length === 0) return null;
+  if (
+    touchedWarnings.length === 0 &&
+    touchedColorWarnings.length === 0 &&
+    touchedErrors.length === 0
+  ) {
+    return null;
+  }
   return {
     mode,
     warnings: touchedWarnings,
+    colorWarnings: touchedColorWarnings,
     errors: touchedErrors,
   };
 }
 
 function formatDesignValidationReport(rec) {
   if (!rec) return "";
+  const colorWarnings = rec.colorWarnings || [];
   const lines = [`Design validation [${rec.mode}]:`];
   if (rec.errors.length > 0) lines.push(`- errors: ${rec.errors.length}`);
   if (rec.warnings.length > 0) lines.push(`- warnings: ${rec.warnings.length}`);
-  const preview = [...rec.errors, ...rec.warnings].slice(0, 6);
+  if (colorWarnings.length > 0) lines.push(`- hardcoded colors: ${colorWarnings.length}`);
+  const preview = [...rec.errors, ...rec.warnings, ...colorWarnings].slice(0, 6);
   for (const item of preview) lines.push(`  ${item}`);
   return lines.join("\n");
 }

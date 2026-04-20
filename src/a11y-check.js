@@ -158,10 +158,9 @@ function quickA11yAudit(nodes, rootId) {
   const serious = issues.filter(i => i.severity === "serious");
   const moderate = issues.filter(i => i.severity === "moderate");
 
-  const lines = ["⚠️ **Accessibility issues detected:**"];
+  const lines = ["**Accessibility issues detected:**"];
   for (const issue of [...critical, ...serious, ...moderate]) {
-    const badge = issue.severity === "critical" ? "🔴" : issue.severity === "serious" ? "🟠" : "🟡";
-    lines.push(`${badge} **${issue.severity}** — ${issue.message}`);
+    lines.push(`**${issue.severity}** — ${issue.message}`);
     lines.push(`  Fix: ${issue.fix}`);
   }
 

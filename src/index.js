@@ -31,7 +31,6 @@ const nodeHandlers = require("./handlers/nodes");
 const siteConfigHandlers = require("./handlers/site-config");
 const discoveryHandlers = require("./handlers/discovery");
 const seoHandlers = require("./handlers/seo");
-const aiHandlers = require("./handlers/ai");
 const stockImageHandlers = require("./handlers/stock-images");
 
 // All HTTP handlers merged into a single dispatch map
@@ -45,7 +44,6 @@ const handlers = {
   ...siteConfigHandlers,
   ...discoveryHandlers,
   ...seoHandlers,
-  ...aiHandlers,
   ...stockImageHandlers,
 };
 
@@ -114,7 +112,7 @@ async function executeAgentTool(name, args) {
 }
 
 module.exports = {
-  // Branding (AI + patch_site_node)
+  // Branding (patch_site_node guardrails)
   isPlaceholderCompanyName,
   userExplicitlyRequestsBrandingChange,
   guardRootCompanyPropsPatch,

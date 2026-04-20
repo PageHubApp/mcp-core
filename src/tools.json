@@ -559,69 +559,6 @@
     }
   },
   {
-    "name": "generate_image",
-    "description": "Generates an AI image, uploads it to CDN, and returns the CDN URL ready to use in nodes.\n\nFull pipeline: prompt optimization (Claude) → image generation (OpenAI GPT Image / DALL-E) → CDN upload (Cloudflare) → returns URL + alt text suggestion.\n\nThe generated image is automatically uploaded — no separate upload_image call needed.\n\nUse patch_site_node to apply: propsPatch: { type: \"cdn\", src: \"<mediaId>\" }",
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Site id (defaults to active site). Required for CDN upload."
-        },
-        "prompt": {
-          "type": "string",
-          "description": "What to generate. Examples: \"A cozy wine bar interior\", \"Professional headshot placeholder\", \"Abstract geometric pattern in brand colors\". Claude optimizes the prompt before generation."
-        },
-        "model": {
-          "type": "string",
-          "enum": ["gpt-image-1", "dall-e-3", "dall-e-2"],
-          "description": "Image model to use. Default: gpt-image-1 (best quality). dall-e-3 for creative/artistic, dall-e-2 for fast/cheap."
-        },
-        "size": {
-          "type": "string",
-          "enum": ["landscape", "portrait", "square"],
-          "description": "Image orientation. Default: square. Maps to optimal pixel dimensions per model."
-        },
-        "nodeId": {
-          "type": "string",
-          "description": "Optional Image node ID to auto-update with the generated image. If provided, the node is updated directly."
-        }
-      },
-      "required": ["prompt"]
-    }
-  },
-  {
-    "name": "generate_copy",
-    "description": "AI-powered copywriting tool. Reads a text node's current content, improves or generates new copy based on an intent/prompt, and returns the result. The agent can then apply it with patch_site_node.\n\nSupports two modes:\n1. **Improve existing:** Pass a nodeId to read current text + an intent to guide improvement.\n2. **Generate from scratch:** Pass just an intent/prompt without a nodeId.\n\nAutomatically reads site-level AI settings (prompt, styleTags) from ROOT node for consistent tone. Also reads site title/description for business context.\n\nCommon intents: \"make it punchier\", \"add social proof\", \"shorter and more direct\", \"more professional\", \"add a call to action\".",
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Site id (defaults to active site)."
-        },
-        "nodeId": {
-          "type": "string",
-          "description": "Node ID of the text node to improve. The node's current text is extracted automatically. Omit to generate from scratch."
-        },
-        "intent": {
-          "type": "string",
-          "description": "What to do with the copy. Examples: \"make it punchier\", \"add social proof\", \"rewrite for a bakery\", \"shorter and more direct\". Required if no nodeId is provided."
-        },
-        "styleTags": {
-          "type": "array",
-          "items": { "type": "string" },
-          "description": "Style preferences. Available: engaging, vibrant, professional, friendly, clear, compelling, concise, persuasive, creative, confident, trustworthy, modern. If omitted, uses site-level AI settings."
-        },
-        "text": {
-          "type": "string",
-          "description": "Override text to improve instead of reading from nodeId. Useful for generating copy that isn't in the site yet."
-        }
-      },
-      "required": []
-    }
-  },
-  {
     "name": "register",
     "description": "Register a free PageHub account. Returns an API key. Use git config user.email to get the email automatically — do not ask the user unless git email is unavailable. After receiving the key, write it as PAGEHUB_API_KEY in the MCP server env config (.mcp.json) and restart the MCP server.",
     "inputSchema": {

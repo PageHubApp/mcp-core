@@ -83,17 +83,18 @@ const STRUCTURAL_NODE_IDS = new Set([
  * @param {object} [opts] - Options
  * @param {boolean} [opts.autoFix=true] - Apply auto-fixes (src→content, tagName defaults, text wrapping)
  * @param {boolean} [opts.warnColors=true] - Warn about hardcoded colors
- * @returns {{ warnings: string[], fixes: string[], errors: string[] }}
+ * @returns {{ warnings: string[], colorWarnings: string[], fixes: string[], errors: string[] }}
  */
 function validateNodes(flatMap, opts = {}) {
   const { autoFix = true, warnColors = true, sectionRootId = null } = opts;
   const warnings = [];
+  const colorWarnings = [];
   const fixes = [];
   const errors = [];
 
   if (!flatMap || typeof flatMap !== "object") {
     errors.push("Node map is empty or invalid.");
-    return { warnings, fixes, errors };
+    return { warnings, colorWarnings, fixes, errors };
   }
 
   const nodeIds = Object.keys(flatMap);
@@ -117,29 +118,29 @@ function validateNodes(flatMap, opts = {}) {
             props.type = "url";
           }
           fixes.push(
-            `🔧 ${nodeId}: Migrated Image prop "content" → "src" (type: "${props.type || "cdn"}")`
+            `${nodeId}: Migrated Image prop "content" → "src" (type: "${props.type || "cdn"}")`
           );
         } else {
           errors.push(
-            `❌ ${nodeId}: Image uses legacy "content" prop — must use "src" (+ type: "url" for external URLs)`
+            `${nodeId}: Image uses legacy "content" prop — must use "src" (+ type: "url" for external URLs)`
           );
         }
       }
       if (!props.src && !props.content) {
-        warnings.push(`⚠️ ${nodeId}: Image has no src — will render empty`);
+        warnings.push(`${nodeId}: Image has no src — will render empty`);
       }
       const imgSrc = props.src ?? props.content;
       if (imgSrc && typeof imgSrc === "string" && imgSrc.startsWith("http") && !props.type) {
         if (autoFix) {
           props.type = "url";
-          fixes.push(`🔧 ${nodeId}: Set Image type to "url" for external URL`);
+          fixes.push(`${nodeId}: Set Image type to "url" for external URL`);
         } else {
-          warnings.push(`⚠️ ${nodeId}: Image has external URL but type is not set to "url"`);
+          warnings.push(`${nodeId}: Image has external URL but type is not set to "url"`);
         }
       }
       if (!props.alt) {
         // Already caught by a11y audit, but flag here too
-        warnings.push(`⚠️ ${nodeId}: Image missing alt text`);
+        warnings.push(`${nodeId}: Image missing alt text`);
       }
     }
 
@@ -167,14 +168,14 @@ function validateNodes(flatMap, opts = {}) {
             props.tagName = "p";
           }
           fixes.push(
-            `🔧 ${nodeId}: Set missing tagName to "${props.tagName}" (inferred from className)`
+            `${nodeId}: Set missing tagName to "${props.tagName}" (inferred from className)`
           );
         } else {
-          errors.push(`❌ ${nodeId}: Text missing required "tagName" prop (h1-h6, p, span, div)`);
+          errors.push(`${nodeId}: Text missing required "tagName" prop (h1-h6, p, span, div)`);
         }
       } else if (!VALID_TAG_NAMES.has(props.tagName)) {
         warnings.push(
-          `⚠️ ${nodeId}: Text has invalid tagName "${props.tagName}" — valid: ${[...VALID_TAG_NAMES].join(", ")}`
+          `${nodeId}: Text has invalid tagName "${props.tagName}" — valid: ${[...VALID_TAG_NAMES].join(", ")}`
         );
       }
 
@@ -200,7 +201,7 @@ function validateNodes(flatMap, opts = {}) {
           if (defaults) {
             // Prepend defaults, keep any existing classes (like m-0)
             props.className = cn ? `${defaults} ${cn}` : defaults;
-            fixes.push(`🔧 ${nodeId}: Applied heading typography defaults for <${props.tagName}>`);
+            fixes.push(`${nodeId}: Applied heading typography defaults for <${props.tagName}>`);
           }
         }
       }
@@ -211,9 +212,9 @@ function validateNodes(flatMap, opts = {}) {
         if (trimmed && !trimmed.startsWith("<")) {
           if (autoFix) {
             props.text = `<p>${trimmed}</p>`;
-            fixes.push(`🔧 ${nodeId}: Wrapped bare text in <p> tags`);
+            fixes.push(`${nodeId}: Wrapped bare text in <p> tags`);
           } else {
-            warnings.push(`⚠️ ${nodeId}: Text value should be wrapped in <p> or inline HTML tags`);
+            warnings.push(`${nodeId}: Text value should be wrapped in <p> or inline HTML tags`);
           }
         }
       }
@@ -234,11 +235,11 @@ function validateNodes(flatMap, opts = {}) {
             props.text = m[3];
             if (!props.richTextMode) props.richTextMode = "inline";
             fixes.push(
-              `🔧 ${nodeId}: Stripped redundant <${m[1]}> wrapper inside tagName="${props.tagName}" (set richTextMode="inline")`
+              `${nodeId}: Stripped redundant <${m[1]}> wrapper inside tagName="${props.tagName}" (set richTextMode="inline")`
             );
           } else {
             errors.push(
-              `❌ ${nodeId}: Text tagName="${props.tagName}" with props.text wrapped in <${m[1]}> — invalid nesting, causes hydration errors`
+              `${nodeId}: Text tagName="${props.tagName}" with props.text wrapped in <${m[1]}> — invalid nesting, causes hydration errors`
             );
           }
         }
@@ -273,11 +274,11 @@ function validateNodes(flatMap, opts = {}) {
             const oldTag = props.tagName;
             props.tagName = "div";
             fixes.push(
-              `🔧 ${nodeId}: Switched tagName "${oldTag}" → "div" — block-level children can't live inside <${oldTag}>`
+              `${nodeId}: Switched tagName "${oldTag}" → "div" — block-level children can't live inside <${oldTag}>`
             );
           } else {
             errors.push(
-              `❌ ${nodeId}: Text tagName="${props.tagName}" has block-level children (Container/Form/etc.) — invalid HTML`
+              `${nodeId}: Text tagName="${props.tagName}" has block-level children (Container/Form/etc.) — invalid HTML`
             );
           }
         }
@@ -297,11 +298,11 @@ function validateNodes(flatMap, opts = {}) {
           }
           delete props.attrs.value;
           fixes.push(
-            `🔧 ${nodeId}: Moved FormElement "attrs.value" → top-level "defaultValue" (React requires defaultValue for uncontrolled inputs)`
+            `${nodeId}: Moved FormElement "attrs.value" → top-level "defaultValue" (React requires defaultValue for uncontrolled inputs)`
           );
         } else {
           errors.push(
-            `❌ ${nodeId}: FormElement has "attrs.value" — use top-level "defaultValue" prop (React warns on value without onChange)`
+            `${nodeId}: FormElement has "attrs.value" — use top-level "defaultValue" prop (React warns on value without onChange)`
           );
         }
       }
@@ -316,7 +317,7 @@ function validateNodes(flatMap, opts = {}) {
           .replace(/_/g, " ")
           .replace(/\b\w/g, c => c.toUpperCase())
           .replace(/\b(H|P|Btn|Cta|Img|Nav|Sec|Ftr|Hdr|Grp)\b/gi, m => m.toUpperCase());
-        fixes.push(`🔧 ${nodeId}: Set displayName to "${node.custom.displayName}"`);
+        fixes.push(`${nodeId}: Set displayName to "${node.custom.displayName}"`);
       }
     }
 
@@ -356,8 +357,8 @@ function validateNodes(flatMap, opts = {}) {
     if (warnColors && props.className) {
       const colorIssues = detectHardcodedColors(props.className);
       for (const issue of colorIssues) {
-        warnings.push(
-          `🎨 ${nodeId}: Hardcoded color "${issue.class}" — consider ${issue.suggestion}`
+        colorWarnings.push(
+          `${nodeId}: Hardcoded color "${issue.class}" — consider ${issue.suggestion}`
         );
       }
     }
@@ -366,7 +367,7 @@ function validateNodes(flatMap, opts = {}) {
     // Skip for the section root node — its parent (e.g. page_home) lives in the site, not the submitted map
     if (node.parent && nodeId !== "ROOT" && nodeId !== sectionRootId) {
       if (!flatMap[node.parent]) {
-        errors.push(`❌ ${nodeId}: Parent "${node.parent}" does not exist in the node map`);
+        errors.push(`${nodeId}: Parent "${node.parent}" does not exist in the node map`);
       }
     }
 
@@ -374,32 +375,37 @@ function validateNodes(flatMap, opts = {}) {
     if (Array.isArray(node.nodes)) {
       for (const childId of node.nodes) {
         if (!flatMap[childId]) {
-          errors.push(`❌ ${nodeId}: Child "${childId}" referenced in nodes[] but does not exist`);
+          errors.push(`${nodeId}: Child "${childId}" referenced in nodes[] but does not exist`);
         }
       }
     }
   }
 
-  return { warnings, fixes, errors };
+  return { warnings, colorWarnings, fixes, errors };
 }
 
 /**
  * Format validation results into a human-readable string for tool output.
  */
 function formatValidationReport(result) {
-  const { warnings, fixes, errors } = result;
-  if (errors.length === 0 && fixes.length === 0 && warnings.length === 0) return "";
+  const { warnings, colorWarnings = [], fixes, errors } = result;
+  if (
+    errors.length === 0 &&
+    fixes.length === 0 &&
+    warnings.length === 0 &&
+    colorWarnings.length === 0
+  )
+    return "";
 
   const lines = [];
 
   if (errors.length > 0) {
-    lines.push(`\n❌ **${errors.length} error(s) — blocking:**`);
+    lines.push(`\n**${errors.length} error(s) — blocking:**`);
     for (const e of errors) lines.push(e);
   }
 
   if (fixes.length > 0) {
-    lines.push(`\n🔧 **${fixes.length} auto-fix(es) applied:**`);
-    // Show first 10, summarize rest
+    lines.push(`\n**${fixes.length} auto-fix(es) applied:**`);
     const show = fixes.slice(0, 10);
     for (const f of show) lines.push(f);
     if (fixes.length > 10) {
@@ -407,27 +413,21 @@ function formatValidationReport(result) {
     }
   }
 
-  // Cap color warnings to avoid flooding
   if (warnings.length > 0) {
-    const colorWarnings = warnings.filter(w => w.startsWith("🎨"));
-    const otherWarnings = warnings.filter(w => !w.startsWith("🎨"));
+    lines.push(`\n**${warnings.length} warning(s):**`);
+    for (const w of warnings) lines.push(w);
+  }
 
-    if (otherWarnings.length > 0) {
-      lines.push(`\n⚠️ **${otherWarnings.length} warning(s):**`);
-      for (const w of otherWarnings) lines.push(w);
-    }
-
-    if (colorWarnings.length > 0) {
+  if (colorWarnings.length > 0) {
+    lines.push(
+      `\n**${colorWarnings.length} hardcoded color(s) detected** — use DaisyUI semantic tokens (bg-base-100, text-base-content, etc.) for theme compatibility:`
+    );
+    const showColors = colorWarnings.slice(0, 5);
+    for (const w of showColors) lines.push(w);
+    if (colorWarnings.length > 5) {
       lines.push(
-        `\n🎨 **${colorWarnings.length} hardcoded color(s) detected** — use DaisyUI semantic tokens (bg-base-100, text-base-content, etc.) for theme compatibility:`
+        `  ...and ${colorWarnings.length - 5} more. Run with DaisyUI tokens for proper theme support.`
       );
-      const showColors = colorWarnings.slice(0, 5);
-      for (const w of showColors) lines.push(w);
-      if (colorWarnings.length > 5) {
-        lines.push(
-          `  ...and ${colorWarnings.length - 5} more. Run with DaisyUI tokens for proper theme support.`
-        );
-      }
     }
   }
 

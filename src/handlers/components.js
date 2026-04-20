@@ -220,7 +220,7 @@ module.exports = {
     const usedSlugs = detectUsedBlockSlugs();
     const usedNote =
       usedSlugs.length > 0
-        ? `\n\n⚠️ Already used on this page: ${usedSlugs.map(s => `\`${s}\``).join(", ")}. Pick a DIFFERENT block for variety.`
+        ? `\n\nAlready used on this page: ${usedSlugs.map(s => `\`${s}\``).join(", ")}. Pick a DIFFERENT block for variety.`
         : "";
 
     return {

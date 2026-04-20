@@ -348,7 +348,7 @@ module.exports = {
         ctx._pendingFlatMap = flat;
       }
       const warnText = overrideWarnings.length
-        ? `\n\n⚠️ Override warnings:\n${overrideWarnings.map(w => `  - ${w}`).join("\n")}`
+        ? `\n\nOverride warnings:\n${overrideWarnings.map(w => `  - ${w}`).join("\n")}`
         : "";
       const summary = `Applied kit block "${component.name}" (\`${resolvedSlug}\`) — ${Object.keys(newNodes).length} nodes.${resolvedSlug !== rawSlug ? ` (resolved from "${rawSlug}")` : ""}${warnText}\n\n${formatKitNodeIdManifest(newNodes, rootId, parentNodeId)}`;
       return {
@@ -361,7 +361,7 @@ module.exports = {
     const result = await saveTarget(target.id, target.type, flat);
     const base = normalizeBaseUrl(ctx.apiBaseUrl) || "https://pagehub.dev";
     const warnText = overrideWarnings.length
-      ? `\n\n⚠️ Override warnings:\n${overrideWarnings.map(w => `  - ${w}`).join("\n")}`
+      ? `\n\nOverride warnings:\n${overrideWarnings.map(w => `  - ${w}`).join("\n")}`
       : "";
     const msg =
       target.type === "template"
