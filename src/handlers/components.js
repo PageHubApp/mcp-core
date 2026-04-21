@@ -176,7 +176,12 @@ module.exports = {
 
     const lines = components.map(c => {
       const catLabel = c.subcategory ? `${c.category}/${c.subcategory}` : c.category;
-      const meta = [catLabel, c.preset && `preset:${c.preset}`, c.style && `style:${c.style}`]
+      const stylesLabel = Array.isArray(c.styles) && c.styles.length
+        ? `styles:${c.styles.join("/")}`
+        : c.style
+          ? `style:${c.style}`
+          : null;
+      const meta = [catLabel, c.preset && `preset:${c.preset}`, stylesLabel]
         .filter(Boolean)
         .join(", ");
       let line = `• \`${c.slug}\` — ${c.name} (${meta})`;

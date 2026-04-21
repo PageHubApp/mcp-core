@@ -256,10 +256,15 @@ module.exports = {
       throw new Error(`Block "${resolvedSlug}" has no structure.`);
     }
 
-    // Track preset/style of applied blocks for cohesion hints in search_blocks
-    if (component.preset || component.style) {
+    // Track preset/styles of applied blocks for cohesion hints in search_blocks
+    const componentStyles = Array.isArray(component.styles)
+      ? component.styles
+      : component.style
+        ? [component.style]
+        : [];
+    if (component.preset || componentStyles.length) {
       if (!ctx._appliedBlockMeta) ctx._appliedBlockMeta = [];
-      ctx._appliedBlockMeta.push({ preset: component.preset, style: component.style });
+      ctx._appliedBlockMeta.push({ preset: component.preset, styles: componentStyles });
     }
 
     // For header/footer slots, keep the block's section wrapper intact (it's the slot's direct child).
@@ -276,7 +281,7 @@ module.exports = {
       type: "block",
       block: resolvedSlug,
       ...(component.preset ? { preset: component.preset } : {}),
-      ...(component.style ? { style: component.style } : {}),
+      ...(componentStyles.length ? { styles: componentStyles } : {}),
       ...(component.version ? { version: component.version } : {}),
       appliedAt: new Date().toISOString(),
     };
