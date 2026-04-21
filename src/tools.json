@@ -412,7 +412,7 @@
   },
   {
     "name": "search_site_nodes",
-    "description": "Search site nodes by displayName text or component type. Returns matching node IDs with displayName, className, parent, and text preview. Use this to find specific nodes without pulling the entire site.",
+    "description": "Search site nodes by displayName text, component type, or className. Returns matching node IDs with displayName, className, parent, and text preview. Use this for site-wide className audits (normalization, token migrations) instead of pulling the full site. When filtering by className/classRegex, the full className string is returned (no 80-char truncation).",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -427,6 +427,14 @@
         "type": {
           "type": "string",
           "description": "Filter by component type: Text, Button, Container, Image, Form, FormElement, Nav, ButtonList, List, ListItem, Table, TableSection, TableRow, TableCell, Footer, Header, Divider."
+        },
+        "className": {
+          "type": "string",
+          "description": "Substring match against props.className (case-insensitive). Use for scanning classes like 'bg-primary', 'py-space-md', 'text-neutral-content' across every section on every page."
+        },
+        "classRegex": {
+          "type": "string",
+          "description": "Regex match against props.className (case-insensitive). Use for patterns like 'py-(8|12|16)' or 'text-(base-content|neutral)'. Escape backslashes in JSON."
         }
       }
     }

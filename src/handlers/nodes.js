@@ -179,23 +179,34 @@ module.exports = {
   },
 
   async search_site_nodes(args) {
-    const { q, type: componentType } = args;
+    const { q, type: componentType, className, classRegex } = args;
     const { flat } = await fetchTarget(args);
 
-    if (!q && !componentType) {
+    if (!q && !componentType && !className && !classRegex) {
       throw new Error(
-        "Provide q (displayName search) and/or type (component type like Text, Button, Container)."
+        "Provide q (displayName/text/id search), type (component type like Text, Button, Container), className (substring match), or classRegex (regex match)."
       );
     }
 
     const qLower = q ? q.toLowerCase() : null;
     const typeLower = componentType ? componentType.toLowerCase() : null;
+    const classLower = className ? className.toLowerCase() : null;
+    let classRe = null;
+    if (classRegex) {
+      try {
+        classRe = new RegExp(classRegex, "i");
+      } catch (e) {
+        throw new Error(`Invalid classRegex: ${e.message}`);
+      }
+    }
+    const classFiltered = Boolean(classLower || classRe);
     const matches = [];
 
     for (const [id, node] of Object.entries(flat)) {
       const nodeType = node.type?.resolvedName || "";
       const displayName = node.custom?.displayName || "";
       const text = node.props?.text || "";
+      const classNameStr = node.props?.className || "";
 
       let match = true;
       if (qLower) {
@@ -207,12 +218,18 @@ module.exports = {
       if (typeLower && match) {
         match = nodeType.toLowerCase() === typeLower;
       }
+      if (classLower && match) {
+        match = classNameStr.toLowerCase().includes(classLower);
+      }
+      if (classRe && match) {
+        match = classRe.test(classNameStr);
+      }
       if (match) {
         matches.push({
           id,
           type: nodeType,
           displayName,
-          className: (node.props?.className || "").substring(0, 80),
+          className: classFiltered ? classNameStr : classNameStr.substring(0, 80),
           parent: node.parent || "",
           text: text.replace(/<[^>]*>/g, "").substring(0, 50),
         });
@@ -220,13 +237,16 @@ module.exports = {
     }
 
     if (matches.length === 0) {
+      const filterStr = [
+        q && `q="${q}"`,
+        componentType && `type="${componentType}"`,
+        className && `className="${className}"`,
+        classRegex && `classRegex="${classRegex}"`,
+      ]
+        .filter(Boolean)
+        .join(" ");
       return {
-        content: [
-          {
-            type: "text",
-            text: `No nodes matched${q ? ` q="${q}"` : ""}${componentType ? ` type="${componentType}"` : ""}.`,
-          },
-        ],
+        content: [{ type: "text", text: `No nodes matched ${filterStr}.` }],
       };
     }
 
