@@ -1,8 +1,43 @@
 const { apiFetch, normalizeBaseUrl } = require("../api-fetch");
 const { getContext } = require("../context");
-const { getActiveTarget, fetchTarget } = require("../helpers");
+const { getActiveTarget, fetchTarget, decodeContentOrThrow } = require("../helpers");
+
+const DEFAULT_BLANK_TEMPLATE = "acme";
 
 module.exports = {
+  async create_site(args = {}) {
+    const slug = args.template || DEFAULT_BLANK_TEMPLATE;
+    const tpl = await apiFetch(`/api/v1/templates/${encodeURIComponent(slug)}`);
+    const content = decodeContentOrThrow(tpl.content, `Template "${slug}" content`);
+
+    const data = await apiFetch("/api/v1/sites", {
+      method: "POST",
+      body: {
+        content,
+        name: args.name,
+        title: args.title,
+        description: args.description,
+        sourceTemplate: { slug, ...(tpl.version ? { version: tpl.version } : {}) },
+      },
+    });
+
+    const ctx = getContext();
+    ctx.activeSite = { id: data.id, name: data.name, draftId: data.draftId };
+    ctx.activeTemplate = null;
+    if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object")
+      ctx._targetRevisions = {};
+
+    const base = normalizeBaseUrl(ctx.apiBaseUrl) || "https://pagehub.dev";
+    return {
+      content: [
+        {
+          type: "text",
+          text: `New site ${data.id} created from "${slug}" (${Object.keys(content).length} nodes).\nActive site set. Editor: ${data.url || `${base}/build/${data.id}`}\nPreview: ${base}/view/${data.id}`,
+        },
+      ],
+    };
+  },
+
   async list_sites() {
     const data = await apiFetch("/api/v1/sites");
     const lines = (data.sites || []).map(

@@ -230,7 +230,7 @@
             },
             "required": ["name", "color"]
           },
-          "description": "Array of exactly 12 color slots defining the design system. Each slot is {name, color}. Order matters — maps to CSS variables.\n\nSlots (in order):\n  0: Primary — main brand color (buttons, links, accents)\n  1: Primary Text — text on primary backgrounds\n  2: Secondary — supporting brand color (cards, badges)\n  3: Secondary Text — text on secondary backgrounds\n  4: Accent — call-to-action color (CTAs, highlights)\n  5: Accent Text — text on accent backgrounds\n  6: Neutral — muted/subtle color (borders, disabled states)\n  7: Neutral Text — text on neutral backgrounds\n  8: Background — page background color\n  9: Text — default body text color\n  10: Alternate Background — alternate section backgrounds, cards\n  11: Alternate Text — text on alternate backgrounds\n\nExample: [{\"name\":\"Primary\",\"color\":\"#2d4a3e\"},{\"name\":\"Primary Text\",\"color\":\"#ffffff\"}, ...]"
+          "description": "Full theme palette: array of {name, color}. Each `name` becomes a CSS variable via `toPaletteCSSVarName` (e.g. \"Base Content\" → `--base-content` → Tailwind `text-base-content`).\n\n**Use DaisyUI 5 / PageHub canonical names** (see `packages/sdk/src/utils/defaults.ts` → `DEFAULT_PALETTE`): Primary, Primary Content, Secondary, Secondary Content, Accent, Accent Content, Neutral, Neutral Content, Base 100, Base 200, Base 300, Base Content, Error, Error Content, Info, Info Content, Success, Success Content, Warning, Warning Content, Ring.\n\n**Do not** use shadcn-style labels like \"Background\", \"Foreground\", or \"Primary Text\" — `text-base-content` / `bg-base-100` will not bind and ink can default to near-black on dark heroes.\n\nPass the **complete** list when replacing the palette (the handler overwrites `ROOT.props.theme.palette`). Colors may be hex, rgb, hsl, or oklch()."
         },
         "darkPalette": {
           "type": "array",
@@ -831,35 +831,28 @@
     }
   },
   {
-    "name": "save_site",
-    "description": "PUT full decoded node map to an existing site (active or id), or POST to create. Pass content (inline JSON). Prefer patch_site_node for small edits.",
+    "name": "create_site",
+    "description": "Create a new site seeded from a template and set it as the active site. Use when the user asks for a blank site or a new site from a template — never try to save a full node map; use the granular editing tools (apply_kit_block, add_nodes, patch_site_node, patch_site_bulk, set_theme, etc.) on the returned site id. Defaults to the \"acme\" blank template when no template is provided.",
     "inputSchema": {
       "type": "object",
       "properties": {
-        "content": {
-          "type": "object",
-          "description": "REQUIRED. Full flat CraftJS node map as a JSON object. Must include ALL existing nodes plus any new ones. Get the current map from pull_site first."
+        "template": {
+          "type": "string",
+          "description": "Template slug to seed from. Defaults to \"acme\" (the canonical blank starter). Pass list_templates output to pick another."
         },
         "name": {
           "type": "string",
-          "description": "Site name (for new sites or rename)"
+          "description": "Site slug (becomes the short name). Optional."
         },
         "title": {
-          "type": "string"
+          "type": "string",
+          "description": "Site <title>. Optional."
         },
         "description": {
-          "type": "string"
-        },
-        "id": {
           "type": "string",
-          "description": "Explicit site id to update (overrides active site)"
-        },
-        "createNew": {
-          "type": "boolean",
-          "description": "Force create a new site even if an active site exists. Ignores id and activeSite."
+          "description": "Site meta description. Optional."
         }
-      },
-      "required": ["content"]
+      }
     }
   },
   {
