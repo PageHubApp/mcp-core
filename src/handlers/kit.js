@@ -16,22 +16,74 @@ const { collectSubtree } = require("../node-utils");
 const { resolveToolDefaultPageNodeId } = require("../active-page");
 
 /** Lists real Craft ids so the model does not guess (random prefixes used to break patches). */
+/**
+ * Normalize a label / semantic fragment for lookup:
+ *   "Primary CTA"  → "primarycta"
+ *   "primary_cta"  → "primarycta"
+ *   "Primary-CTA"  → "primarycta"
+ * So the model can refer to a node by ANY reasonable variation of its label.
+ */
+function normalizeLabelKey(s) {
+  return String(s || "")
+    .toLowerCase()
+    .replace(/[\s\-_]+/g, "")
+    .replace(/[^a-z0-9]/g, "");
+}
+
+/**
+ * Persist a { normalizedLabel → realId } map for each applied kit slug on the
+ * per-request context, so patch_site_bulk can resolve semantic ids the model
+ * invents (e.g. `kit_cta_simple_heading` → `kit_cta_simple_82028ff0_n2`).
+ */
+function stashKitLabelMap(ctx, slug, newNodes) {
+  if (!ctx || !slug || !newNodes) return;
+  if (!ctx._kitLabelMaps) ctx._kitLabelMaps = {};
+  const byLabel = {};
+  const byType = {};
+  for (const [id, n] of Object.entries(newNodes)) {
+    const label = n?.custom?.displayName;
+    if (label) {
+      const k = normalizeLabelKey(label);
+      if (k && !byLabel[k]) byLabel[k] = id;
+    }
+    const t = n?.type?.resolvedName;
+    if (t) {
+      const k = normalizeLabelKey(t);
+      if (k && !byType[k]) byType[k] = id;
+    }
+  }
+  ctx._kitLabelMaps[slug] = { byLabel, byType, firstNodeId: Object.keys(newNodes)[0] || null };
+}
+
 function formatKitNodeIdManifest(newNodes, rootId, sectionContainerId, maxLines = 80) {
   const ids = Object.keys(newNodes).sort();
   const head = ids.slice(0, maxLines);
-  const lines = head.map(id => {
+
+  // Label → id map. Models tend to invent ids like `kit_cta_simple_heading`
+  // by pattern-matching labels; giving them a copy-pasteable JSON map removes
+  // any need to guess. Keys are the exact labels; values are the real ids.
+  const labelMap = {};
+  for (const id of head) {
     const n = newNodes[id];
-    const rn = n?.type?.resolvedName || "?";
-    const label = n?.custom?.displayName ? ` label="${n.custom.displayName}"` : "";
-    return `  ${id} | ${rn}${label}`;
-  });
+    const label = n?.custom?.displayName || n?.type?.resolvedName || id;
+    if (labelMap[label]) {
+      // duplicate labels (e.g. repeated "Title") — keep array of ids
+      if (!Array.isArray(labelMap[label])) labelMap[label] = [labelMap[label]];
+      labelMap[label].push(id);
+    } else {
+      labelMap[label] = id;
+    }
+  }
   const tail =
     ids.length > maxLines ? `\n  …and ${ids.length - maxLines} more (same \`kit_…\` prefix)` : "";
   return (
     `Section container: \`${sectionContainerId}\`\n` +
     `Kit root id: \`${rootId}\`\n` +
-    `Use ONLY these node ids in patch_site_node / patch_site_bulk (copy exactly; never ids from get_component_schema alone):\n` +
-    `${lines.join("\n")}${tail}`
+    `LABEL→ID MAP (copy ids EXACTLY from the right-hand side — do NOT invent semantic ids like \`kit_<slug>_heading\`; those do not exist):\n` +
+    "```json\n" +
+    JSON.stringify(labelMap, null, 2) +
+    "\n```" +
+    tail
   );
 }
 
@@ -82,6 +134,18 @@ module.exports = {
     if (ctx.fillMode && ctx._fillStructureLocked) {
       throw new Error(
         "This fill already applied a kit or add_nodes. Use patch_site_node / patch_site_bulk only — do not stack a second apply_kit_block."
+      );
+    }
+    // Per-turn dedupe: block the same slug being applied twice in one agent
+    // turn. Agents sometimes retry apply_kit_block after an unrelated tool
+    // error (e.g. a rejected patch with a hallucinated id) without noticing
+    // the first apply already landed, which appends a duplicate section.
+    if (!ctx._appliedKitSlugs) ctx._appliedKitSlugs = new Set();
+    if (ctx._appliedKitSlugs.has(slug)) {
+      throw new Error(
+        `Kit block "${slug}" was already applied in this turn — the first apply succeeded. ` +
+          `Use its returned kit_* node ids to patch content, or apply a DIFFERENT slug if you want a second section. ` +
+          `Do not re-apply the same slug: it creates a duplicate section.`
       );
     }
     let sectionContainerId = argSectionId || ctx.sectionNodeId;
@@ -356,6 +420,10 @@ module.exports = {
         ? `\n\nOverride warnings:\n${overrideWarnings.map(w => `  - ${w}`).join("\n")}`
         : "";
       const summary = `Applied kit block "${component.name}" (\`${resolvedSlug}\`) — ${Object.keys(newNodes).length} nodes.${resolvedSlug !== rawSlug ? ` (resolved from "${rawSlug}")` : ""}${warnText}\n\n${formatKitNodeIdManifest(newNodes, rootId, parentNodeId)}`;
+      ctx._appliedKitSlugs.add(slug);
+      if (resolvedSlug && resolvedSlug !== slug) ctx._appliedKitSlugs.add(resolvedSlug);
+      stashKitLabelMap(ctx, resolvedSlug, newNodes);
+      if (slug !== resolvedSlug) stashKitLabelMap(ctx, slug, newNodes);
       return {
         content: [{ type: "text", text: summary }],
         pendingContent: ctx.fillMode ? ctx._pendingFlatMap : flat,
@@ -372,6 +440,10 @@ module.exports = {
       target.type === "template"
         ? `Applied kit block "${resolvedSlug}" to template "${result.id}".${warnText}`
         : `Applied kit block "${resolvedSlug}".${warnText}\nEditor: ${base}/build/${result.id}`;
+    ctx._appliedKitSlugs.add(slug);
+    if (resolvedSlug && resolvedSlug !== slug) ctx._appliedKitSlugs.add(resolvedSlug);
+    stashKitLabelMap(ctx, resolvedSlug, newNodes);
+    if (slug !== resolvedSlug) stashKitLabelMap(ctx, slug, newNodes);
     return { content: [{ type: "text", text: msg }], changedNodes };
   },
 };

@@ -28,8 +28,13 @@ function assertFillModePatchAllowed(flat, nodeId, ctx) {
   const allowed = collectSubtreeNodeIds(flat, rootId);
   if (!allowed.has(nodeId)) {
     const label = ctx.footerFill && rootId === "ftr_root" ? "footer (ftr_root)" : rootId;
+    const profile = ctx?.fillProfile === "components" ? "components" : "blocks";
+    const tail =
+      profile === "components"
+        ? ` This id doesn't exist yet — build the whole section with ONE place_section_tree call, then patch the ids it returns.`
+        : ` Only nodes inside your section "${label}" are editable.`;
     throw new Error(
-      `Parallel fill: cannot edit node "${nodeId}" — only nodes inside your section "${label}" are editable. Do not patch other sections.`
+      `Parallel fill: cannot edit node "${nodeId}" — not inside your section "${label}".${tail}`
     );
   }
 }
@@ -51,9 +56,14 @@ function assertFillModeBulkPatchesAllowed(flat, patchList, ctx) {
   if (bad.length === 0) return;
   const uniq = [...new Set(bad)];
   const secLabel = ctx.footerFill && rootId === "ftr_root" ? "footer (ftr_root)" : rootId;
+  const profile = ctx?.fillProfile === "components" ? "components" : "blocks";
+  const hint =
+    profile === "components"
+      ? `These node ids don't exist in your section yet. In components mode, build the section with ONE place_section_tree call (complete nested hierarchy, root Container) — patch_site_bulk is for refinements AFTER place_section_tree succeeds, using the ids it returned. Re-issue these nodes inside place_section_tree.hierarchy.children.`
+      : `Remove those entries — only kit_* ids from your apply_kit_block reply under "${secLabel}". Never include sibling sec_* containers (e.g. sec_hero fill must not patch sec_features).`;
   throw new Error(
     `Parallel fill: patch_site_bulk lists node(s) outside your section "${secLabel}": ${uniq.join(", ")}. ` +
-      `Remove those entries — only kit_* ids from your apply_kit_block reply under "${secLabel}". Never include sibling sec_* containers (e.g. sec_hero fill must not patch sec_features).`
+      hint
   );
 }
 

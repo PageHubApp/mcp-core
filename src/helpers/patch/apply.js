@@ -7,11 +7,81 @@
 const { twMerge } = require("tailwind-merge");
 const { parseMaybeJson, isSameChildIdMultiset, removeClasses } = require("../args");
 const { normalizeTypePatch, CANVAS_TYPE_PATCH_COMPONENTS } = require("./schema");
+const { getContext } = require("../../context");
+
+const INVALID_ID_HARD_STOP_THRESHOLD = 3;
+
+function nth(n) {
+  const s = ["th", "st", "nd", "rd"];
+  const v = n % 100;
+  return s[(v - 20) % 10] || s[v] || s[0];
+}
+
+/**
+ * Resolve semantic / hallucinated node ids to real ids using the kit label
+ * map stashed on the request context by apply_kit_block.
+ *
+ * Accepts:
+ *   kit_<slug>_<label>            → looked up by label (e.g. "heading", "primary_cta")
+ *   kit_<slug>_<semanticTail>     → also tried against component type ("text")
+ *   anything starting with the kit slug prefix
+ *
+ * Returns the real id if found, or null.
+ */
+function resolveSemanticKitId(flatMap, nodeId) {
+  if (!String(nodeId).startsWith("kit_")) return null;
+  let ctx;
+  try {
+    ctx = getContext();
+  } catch {
+    return null;
+  }
+  const maps = ctx?._kitLabelMaps;
+  if (!maps || typeof maps !== "object") return null;
+  // Find the longest matching slug prefix (handles slugs with underscores).
+  let bestSlug = null;
+  for (const slug of Object.keys(maps)) {
+    const prefix = `kit_${String(slug).replace(/-/g, "_")}_`;
+    const prefixDash = `kit_${slug}_`;
+    if (nodeId.startsWith(prefix) || nodeId.startsWith(prefixDash)) {
+      if (!bestSlug || slug.length > bestSlug.length) bestSlug = slug;
+    }
+  }
+  if (!bestSlug) return null;
+  const entry = maps[bestSlug];
+  if (!entry) return null;
+  const prefix = nodeId.startsWith(`kit_${String(bestSlug).replace(/-/g, "_")}_`)
+    ? `kit_${String(bestSlug).replace(/-/g, "_")}_`
+    : `kit_${bestSlug}_`;
+  const tail = nodeId.slice(prefix.length);
+  // Real ids end in `_nN` — never try to resolve those here; they should be
+  // direct hits in flatMap.
+  if (/^n\d+$/.test(tail) || /_n\d+$/.test(tail) || /^[0-9a-f]{6,}_n\d+$/.test(tail)) return null;
+  const key = tail
+    .toLowerCase()
+    .replace(/[\s\-_]+/g, "")
+    .replace(/[^a-z0-9]/g, "");
+  if (!key) return null;
+  const byLabelHit = entry.byLabel?.[key];
+  if (byLabelHit && flatMap[byLabelHit]) return byLabelHit;
+  const byTypeHit = entry.byType?.[key];
+  if (byTypeHit && flatMap[byTypeHit]) return byTypeHit;
+  return null;
+}
 
 /** Shallow-merge patch objects into a flat node map entry. */
 function applyNodePatches(flatMap, nodeId, patchArgs) {
   const { typePatch, propsPatch, classNamePatch, nodesPatch, unsetProps, unsetClasses } =
     patchArgs;
+  // If the model invented a semantic kit id (kit_cta_simple_heading) or
+  // otherwise misquoted, try to resolve it from the label map stashed by
+  // apply_kit_block. Turns hallucination into a valid shortcut.
+  if (!flatMap[nodeId]) {
+    const resolved = resolveSemanticKitId(flatMap, nodeId);
+    if (resolved) {
+      nodeId = resolved;
+    }
+  }
   if (!flatMap[nodeId]) {
     let hint = "";
     if (String(nodeId).startsWith("kit_")) {
@@ -26,6 +96,30 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
       hint =
         " Use node ids from list_block_nodes for this block slug (copy exactly). Ids are deterministic from the slug.";
     }
+
+    // Per-turn hard stop: agents sometimes get stuck hallucinating semantic
+    // ids (kit_cta_simple_heading, kit_cta_simple_text) and retry forever.
+    // After N consecutive "Node not found" failures in one turn, throw a
+    // terminal error so the agent stops instead of burning credits.
+    try {
+      const ctx = getContext();
+      if (ctx) {
+        ctx._invalidIdFailureCount = (ctx._invalidIdFailureCount || 0) + 1;
+        if (ctx._invalidIdFailureCount >= INVALID_ID_HARD_STOP_THRESHOLD) {
+          throw new Error(
+            `Node ${nodeId} not found — and this is the ${ctx._invalidIdFailureCount}${nth(ctx._invalidIdFailureCount)} invalid-id patch this turn. ` +
+              `STOP inventing ids. The kit_* ids are only valid when copied EXACTLY from the most recent apply_kit_block reply ` +
+              `(format: \`kit_<slug>_<hash>_n<number>\`, e.g. \`kit_cta_simple_82028ff0_n2\`). ` +
+              `Semantic ids like \`kit_cta_simple_heading\` do NOT exist. ` +
+              `End this turn and tell the user what went wrong.${hint}`
+          );
+        }
+      }
+    } catch (inner) {
+      if (inner && inner.message && inner.message.startsWith("Node ")) throw inner;
+      // getContext missing in some test harnesses — fall through to normal throw.
+    }
+
     throw new Error(`Node ${nodeId} not found.${hint}`);
   }
   const entry = flatMap[nodeId];
@@ -67,6 +161,27 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
     const t = propsPatch.tagName.split(/[,\s]/)[0].toLowerCase();
     if (/^[a-z][a-z0-6]*$/.test(t)) propsPatch.tagName = t;
     else delete propsPatch.tagName;
+  }
+  // Guard: `type: "cdn" | "url" | "svg" | "r2"` is the Image-node source
+  // discriminator. If the model aims at a Text / Button / anything else, the
+  // patch would silently set a meaningless prop and the model believes the
+  // swap worked. Reject loudly with the exact fix.
+  if (propsPatch && typeof propsPatch.type === "string") {
+    const IMAGE_SOURCE_TYPES = new Set(["cdn", "url", "svg", "r2"]);
+    const sourceType = propsPatch.type;
+    const currentResolved =
+      entry?.type?.resolvedName || (normalizedTypePatch ? normalizedTypePatch : null);
+    if (IMAGE_SOURCE_TYPES.has(sourceType) && currentResolved !== "Image") {
+      throw new Error(
+        `propsPatch.type: "${sourceType}" is the Image-node source discriminator, ` +
+          `but node "${nodeId}" is a ${currentResolved || "unknown"}. ` +
+          `To replace this node with an Image, pass \`typePatch: "Image"\` in the SAME patch ` +
+          `(alongside propsPatch: { type: "${sourceType}", src: "<mediaId>", alt: "..." } — ` +
+          `use \`src\`, NOT the legacy \`content\` prop). ` +
+          `If you want to keep the existing node and add an image elsewhere, use \`add_nodes\` or ` +
+          `\`insert_node\` with a new Image child — do not patch a non-Image node's props.type.`
+      );
+    }
   }
   if (propsPatch) {
     // Deep-merge the typed nested namespaces so targeted updates

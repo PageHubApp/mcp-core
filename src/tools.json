@@ -28,7 +28,7 @@
   },
   {
     "name": "get_component_schema",
-    "description": "Returns full schemas for CraftJS components — types, props, valid values, and responsive patterns. Pass one or more component names to get exactly what you need in a single call.\n\nAvailable: Accordion, Background, Button, ButtonList, Container, ContainerGroup, Divider, Dropdown, Embed, Footer, Form, FormElement, Header, Image, ImageList, List, ListItem, Map, MapPoint, Spacer, Table, TableCell, TableRow, TableSection, Tabs, Text, Video, Audio.\n\nParallel section fill: responses are compact (truncated props). Omitting `components` is rejected in fill — always pass a comma list. Prefer search_blocks + apply_kit_block over schema dumps.",
+    "description": "Returns full schemas for CraftJS components — types, props, valid values, and responsive patterns. Pass one or more component names to get exactly what you need in a single call.\n\nSource of truth: component names come from runtime schema files in `lib/schemas` (exposed by `/api/v1/schemas`).\n\nParallel section fill: responses are compact (truncated props). Omitting `components` is rejected in fill — always pass a comma list.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -926,7 +926,7 @@
   },
   {
     "name": "find_image",
-    "description": "Search for stock photos with verified, working URLs. Use this instead of guessing Unsplash URLs (which 404). Searches a local image bank first, falls back to Unsplash API and caches results. Returns multiple options with ready-to-use URLs for Image nodes.",
+    "description": "Search for stock photos with verified, working URLs. Uses a unified provider-factory pipeline: local image bank first, then provider adapters (Unsplash/Pexels) with normalized output. Returns ready-to-use URLs for Image nodes.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -944,9 +944,49 @@
           "enum": ["landscape", "portrait", "square"],
           "description": "Image orientation. Default: landscape."
         },
+        "provider": {
+          "type": "string",
+          "enum": ["unsplash", "pexels"],
+          "description": "Optional provider key for factory fallback. Default: pexels."
+        },
         "count": {
           "type": "number",
           "description": "Number of images to return (default 3, max 6)"
+        }
+      }
+    }
+  },
+  {
+    "name": "find_video",
+    "description": "Search for stock videos with ready-to-use direct MP4 URLs. Uses the unified provider-factory pipeline (currently Pexels adapter) and returns normalized results suitable for Video nodes.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "q": {
+          "type": "string",
+          "description": "Search keywords (e.g. 'city timelapse', 'coffee pouring', 'team meeting')"
+        },
+        "orientation": {
+          "type": "string",
+          "enum": ["landscape", "portrait", "square"],
+          "description": "Optional orientation filter."
+        },
+        "minDuration": {
+          "type": "number",
+          "description": "Optional minimum duration in seconds."
+        },
+        "maxDuration": {
+          "type": "number",
+          "description": "Optional maximum duration in seconds."
+        },
+        "provider": {
+          "type": "string",
+          "enum": ["pexels"],
+          "description": "Video provider. Currently only pexels is supported."
+        },
+        "count": {
+          "type": "number",
+          "description": "Number of videos to return (default 3, max 6)"
         }
       }
     }
@@ -1281,7 +1321,7 @@
   },
   {
     "name": "apply_kit_block",
-    "description": "Apply a library block (from search_blocks) to a site. The block is a complete section.\n\n**Page sections (default):** apply_kit_block(slug, id) adds the block to page_home. Use pageId for other pages, position to control order.\n\n**Header / Footer:** use target: \"header\" or target: \"footer\" to replace the site's header or footer with a library nav/footer block. This clears the existing header/footer content and inserts the block. Use contentOverrides to customize logo, links, copyright text.\n\n**Parallel section fill workers only:** omit sectionContainerId — the server pins to the assigned section automatically.",
+    "description": "Apply a library block (from search_blocks) to a site. The block is a complete section.\n\n**ALWAYS pass your final copy via `contentOverrides` in this SAME call** — keyed by node label (e.g. `{ \"Heading\": { \"text\": \"...\" }, \"Description\": { \"text\": \"...\" }, \"Primary CTA\": { \"text\": \"...\" } }`). Do NOT call apply_kit_block without contentOverrides and then follow up with patch_site_bulk to set text — that leads to id-hallucination loops. The one-shot path is correct.\n\n**Page sections (default):** apply_kit_block(slug, contentOverrides) adds the block to page_home. Use pageId for other pages, position to control order.\n\n**Header / Footer:** use target: \"header\" or target: \"footer\" to replace the site's header or footer with a library nav/footer block. This clears the existing header/footer content and inserts the block. Use contentOverrides to customize logo, links, copyright text.\n\n**Parallel section fill workers only:** omit sectionContainerId — the server pins to the assigned section automatically.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1765,6 +1805,39 @@
         }
       },
       "required": ["nodes", "rootNodeId"]
+    }
+  },
+  {
+    "name": "place_section_tree",
+    "description": "Atomic section fill for the clone pipeline. Submit the COMPLETE nested hierarchy for your assigned section in ONE call — root Container plus all children.\n\nThe server reads sectionNodeId from the fill context (you cannot target another section) and generates stable ids during flatten. If called twice, the second call REPLACES the first — safe for retries.\n\nShape:\n{\n  reason: \"hero split with form card\",\n  hierarchy: {\n    type: \"Container\",\n    props: { className: \"flex flex-col w-full py-space-lg px-container-x bg-base-100\" },\n    children: [\n      { type: \"Text\",   props: { tagName: \"h1\", text: \"Source heading verbatim\", className: \"text-4xl font-heading font-bold\" } },\n      { type: \"Text\",   props: { tagName: \"p\",  text: \"Source subhead verbatim\",  className: \"text-base-content/80\" } },\n      { type: \"Button\", props: { text: \"Get started\", action: { type: \"link-url\", url: \"https://example.com\" } } },\n      { type: \"Container\", props: { className: \"grid grid-cols-3 gap-space-md\" }, children: [ ... ] }\n    ]\n  }\n}\n\nRules:\n- hierarchy MUST be an object (not a string, not an array)\n- root type MUST be Container (or Grid / ContainerGroup)\n- every node has `type` (string) + `props` (object). Containers have `children` (array of nodes).\n- NEVER send a flat map here — use nested children arrays\n- NEVER invent Image.src — use deliveryURLs from the media map in your prompt\n- Buttons: short label in props.text, URL in props.action.url (NEVER put a URL in props.text)\n- After this succeeds, only use patch_site_bulk for className / text refinements on the returned ids.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "reason": {
+          "type": "string",
+          "description": "One-line summary of what this tree represents (for observability). Example: \"hero split, form card right\"."
+        },
+        "hierarchy": {
+          "type": "object",
+          "description": "The complete nested tree for the section. Root must be a Container (or Grid / ContainerGroup). Each node: { type, props, children? }.",
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "Component type. Root must be \"Container\", \"Grid\", or \"ContainerGroup\"."
+            },
+            "props": {
+              "type": "object",
+              "description": "Component props (className, text, src, action, etc.)."
+            },
+            "children": {
+              "type": "array",
+              "description": "Nested child nodes (same shape). Only canvas components (Container/Grid/etc.) may have children."
+            }
+          },
+          "required": ["type"]
+        }
+      },
+      "required": ["reason", "hierarchy"]
     }
   },
   {

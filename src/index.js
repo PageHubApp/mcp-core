@@ -32,6 +32,8 @@ const siteConfigHandlers = require("./handlers/site-config");
 const discoveryHandlers = require("./handlers/discovery");
 const seoHandlers = require("./handlers/seo");
 const stockImageHandlers = require("./handlers/stock-images");
+const stockVideoHandlers = require("./handlers/stock-videos");
+const sectionTreeHandlers = require("./handlers/section-tree");
 
 // All HTTP handlers merged into a single dispatch map
 const handlers = {
@@ -45,6 +47,8 @@ const handlers = {
   ...discoveryHandlers,
   ...seoHandlers,
   ...stockImageHandlers,
+  ...stockVideoHandlers,
+  ...sectionTreeHandlers,
 };
 
 // Tools that are HTTP-only (no filesystem / TemplateBuilder needed)

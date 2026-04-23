@@ -49,7 +49,12 @@ function warningMentionsNode(warning, nodeId) {
 
 function runDesignValidation(flat, touchedNodeIds, mode) {
   if (mode === "off") return null;
-  const result = validateNodes(flat, { autoFix: false, warnColors: true });
+  // In components-fill mode (clone pipeline), auto-fix cheap things like
+  // wrapping bare Text in <p> — the model routinely re-emits plain text on
+  // patches, and re-warning on that adds noise without fixing the render.
+  const ctx = getContext();
+  const autoFix = !!(ctx?.fillMode && ctx?.fillProfile === "components");
+  const result = validateNodes(flat, { autoFix, warnColors: true });
   const touched = Array.isArray(touchedNodeIds) ? touchedNodeIds : [];
   const touchedWarnings = result.warnings.filter(w =>
     touched.some(id => warningMentionsNode(w, id))

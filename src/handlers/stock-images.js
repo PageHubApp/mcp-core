@@ -1,12 +1,18 @@
 const { apiFetch } = require("../api-fetch");
+const { IMAGE_PROVIDER_NAMES } = require("../../../../utils/stockProviders/types");
 
 module.exports = {
   /**
    * Search for stock photos. Returns verified, working image URLs.
-   * Searches local image bank first, falls back to Unsplash API.
+   * Searches local image bank first, falls back to external providers.
    */
   async find_image(args) {
-    const { q, category, orientation, count: rawCount } = args;
+    const { q, category, orientation, provider: rawProvider, count: rawCount } = args;
+    const provider =
+      typeof rawProvider === "string" &&
+      IMAGE_PROVIDER_NAMES.includes(rawProvider.toLowerCase())
+        ? rawProvider.toLowerCase()
+        : "pexels";
     const count = Math.min(6, Math.max(1, Number(rawCount) || 3));
 
     if (!q && !category) {
@@ -20,6 +26,7 @@ module.exports = {
     if (q) params.set("q", q);
     if (category) params.set("category", category);
     if (orientation) params.set("orientation", orientation);
+    if (provider) params.set("source", provider);
     params.set("limit", String(count));
 
     let localImages = [];
@@ -35,13 +42,13 @@ module.exports = {
       return { content: [{ type: "text", text: formatResults(localImages.slice(0, count)) }] };
     }
 
-    // 3. Fallback: search Unsplash API (caches results into local bank)
+    // 3. Fallback: search external API (caches results into local bank)
     const needed = count - localImages.length;
     let externalImages = [];
     try {
       const extRes = await apiFetch("/api/v1/stock-images/search-external", {
         method: "POST",
-        body: { q: q || category, count: needed, orientation },
+        body: { q: q || category, count: needed, orientation, provider },
       });
       externalImages = extRes.images || [];
       if (extRes.note) {
@@ -66,7 +73,7 @@ module.exports = {
         content: [
           {
             type: "text",
-            text: `No stock images found for "${q || category}". Use a direct Unsplash URL with a known photo ID, or try different search terms.`,
+            text: `No stock images found for "${q || category}". Try different search terms or switch provider (unsplash/pexels).`,
           },
         ],
       };
@@ -84,10 +91,13 @@ function formatResults(images) {
         : "";
     const tags = (img.tags || []).slice(0, 5).join(", ");
     // Build a usable URL with standard sizing params
-    const baseUrl = img.url.split("?")[0];
-    const usableUrl = `${baseUrl}?w=800&h=600&fit=crop&q=80`;
-    const heroUrl = `${baseUrl}?w=1600&h=900&fit=crop&q=80`;
-    const avatarUrl = `${baseUrl}?w=400&h=400&fit=crop&crop=faces&q=80`;
+    const baseUrl = (img.url || "").split("?")[0];
+    const supportsUnsplashParams = img.source === "unsplash";
+    const usableUrl = supportsUnsplashParams ? `${baseUrl}?w=800&h=600&fit=crop&q=80` : baseUrl;
+    const heroUrl = supportsUnsplashParams ? `${baseUrl}?w=1600&h=900&fit=crop&q=80` : baseUrl;
+    const avatarUrl = supportsUnsplashParams
+      ? `${baseUrl}?w=400&h=400&fit=crop&crop=faces&q=80`
+      : baseUrl;
 
     let urlBlock = `  URL: ${usableUrl}`;
     if (img.category === "hero" || img.category === "background") {

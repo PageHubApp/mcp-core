@@ -99,7 +99,10 @@ async function fetchTarget(args) {
       data,
     };
   }
-  const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`);
+  // Always read the latest WIP. Draft-only saves (the editor's Accept path)
+  // don't update sharedContent, so defaulting to content gives the agent
+  // stale state and the next turn silently rebuilds from scratch.
+  const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}?field=draft`);
   if (!data.content || typeof data.content !== "object") {
     throw new Error("Site has no decoded content (empty or corrupt).");
   }
@@ -129,14 +132,15 @@ async function fetchSite(args) {
 async function saveTarget(targetId, targetType, flat, extra = {}) {
   const ctx = getContext();
   const revisionKey = getTargetRevisionKey(targetType, targetId);
-  const knownRevision =
-    ctx?._targetRevisions && typeof ctx._targetRevisions === "object"
-      ? ctx._targetRevisions[revisionKey]
-      : null;
+  // MCP/agent writes intentionally skip optimistic concurrency — the AI agent
+  // does rapid back-to-back writes in a single turn and surfacing STALE_REVISION
+  // to the model led to strategy pivots (delete → reapply_kit_block loops) and
+  // silent failure. Last-write-wins is fine for AI edits; editor UI still sends
+  // expectedUpdatedAt on its own paths.
   const body =
     targetType === "template"
-      ? { content: compressJsonToBase64Lz(flat), ...knownRevision, ...extra }
-      : { content: flat, ...knownRevision, ...extra };
+      ? { content: compressJsonToBase64Lz(flat), ...extra }
+      : { content: flat, ...extra };
 
   if (targetType === "template") {
     const put = await apiFetch(`/api/v1/templates/${encodeURIComponent(targetId)}`, {

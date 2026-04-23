@@ -26,18 +26,49 @@ async function apiFetch(pathStr, opts = {}) {
     "Content-Type": "application/json",
     ...(opts.headers || {}),
   };
-  const resp = await fetch(url, {
-    ...opts,
-    headers,
-    body: opts.body ? JSON.stringify(opts.body) : undefined,
-  });
-  const text = await resp.text();
-  let json = null;
-  try {
-    json = text ? JSON.parse(text) : {};
-  } catch {
-    json = { error: text || `API ${resp.status}: ${resp.statusText}` };
+
+  // Single silent retry on STALE_REVISION: swap in the server's current
+  // updatedAt/version and replay. Most races inside an agent turn come from
+  // rapid back-to-back tool calls where the caller's stored expectedUpdatedAt
+  // just missed the previous write — retrying is strictly safer than surfacing
+  // the error and letting the model pivot strategy (see AI-LOGS pattern
+  // where STALE errors triggered delete+reapply loops).
+  async function doFetch(bodyObj) {
+    const resp = await fetch(url, {
+      ...opts,
+      headers,
+      body: bodyObj !== undefined ? JSON.stringify(bodyObj) : undefined,
+    });
+    const text = await resp.text();
+    let json = null;
+    try {
+      json = text ? JSON.parse(text) : {};
+    } catch {
+      json = { error: text || `API ${resp.status}: ${resp.statusText}` };
+    }
+    return { resp, json };
   }
+
+  let bodyObj = opts.body;
+  let { resp, json } = await doFetch(bodyObj);
+
+  if (
+    !resp.ok &&
+    json?.code === "STALE_REVISION" &&
+    bodyObj &&
+    typeof bodyObj === "object" &&
+    (json.currentUpdatedAt || json.currentVersion)
+  ) {
+    const retryBody = { ...bodyObj };
+    if (json.currentUpdatedAt && "expectedUpdatedAt" in retryBody) {
+      retryBody.expectedUpdatedAt = json.currentUpdatedAt;
+    }
+    if (json.currentVersion && "expectedVersion" in retryBody) {
+      retryBody.expectedVersion = json.currentVersion;
+    }
+    ({ resp, json } = await doFetch(retryBody));
+  }
+
   if (!resp.ok) {
     const code = json?.code ? `[${json.code}] ` : "";
     const detail =

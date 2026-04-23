@@ -6,6 +6,8 @@ const {
   validateImageUrls,
 } = require("../helpers");
 const { getContext } = require("../context");
+const { assertFillModePatchAllowed } = require("../helpers/fill-mode");
+const { collectSubtree } = require("../node-utils");
 
 const PROTECTED_IDS = ["ROOT", "page_home"];
 
@@ -17,6 +19,7 @@ module.exports = {
     const ctx = getContext();
     const { targetId, targetType, flat } = await fetchTarget(args);
     if (!flat[nodeId]) throw new Error(`Node "${nodeId}" not found.`);
+    assertFillModePatchAllowed(flat, nodeId, ctx);
     const parentId = flat[nodeId].parent;
     if (parentId && flat[parentId]) {
       flat[parentId].nodes = (flat[parentId].nodes || []).filter(id => id !== nodeId);
@@ -42,9 +45,11 @@ module.exports = {
 
   async insert_node(args) {
     const { nodeId, parentId, position, node } = args;
+    const ctx = getContext();
     const { targetId, targetType, flat } = await fetchTarget(args);
     if (flat[nodeId]) throw new Error(`Node ID "${nodeId}" already exists. Use a unique ID.`);
     if (!flat[parentId]) throw new Error(`Parent node "${parentId}" not found.`);
+    assertFillModePatchAllowed(flat, parentId, ctx);
     const nodeDef = parseMaybeJson(node) || node;
     nodeDef.parent = parentId;
     if (!nodeDef.linkedNodes) nodeDef.linkedNodes = {};
@@ -67,11 +72,15 @@ module.exports = {
     const pos = position != null ? position : list.length;
     list.splice(pos, 0, nodeId);
     const result = await saveTarget(targetId, targetType, flat);
+    // collectSubtree(flat, parentId) includes the parent (with its updated
+    // `nodes` list) plus the new subtree — matches the shape add_nodes /
+    // patch_site_bulk return so the editor stream can hot-merge it.
+    const changedNodes = collectSubtree(flat, parentId);
     const label =
       targetType === "template"
         ? `Node "${nodeId}" inserted into "${parentId}" at position ${pos} in template "${targetId}".`
         : `Node "${nodeId}" inserted into "${parentId}" at position ${pos}.\nEditor: ${result.url}`;
-    return { content: [{ type: "text", text: label }] };
+    return { content: [{ type: "text", text: label }], changedNodes };
   },
 
   /**
@@ -125,6 +134,8 @@ module.exports = {
     const { targetId, targetType, flat } = await fetchTarget(args);
     if (!flat[nodeId]) throw new Error(`Node "${nodeId}" not found.`);
     if (!flat[newParentId]) throw new Error(`New parent "${newParentId}" not found.`);
+    assertFillModePatchAllowed(flat, nodeId, ctx);
+    assertFillModePatchAllowed(flat, newParentId, ctx);
 
     const oldParentId = flat[nodeId].parent;
     if (!oldParentId || !flat[oldParentId])
