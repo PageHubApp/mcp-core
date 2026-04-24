@@ -1,6 +1,10 @@
 /**
  * Merge a block's `modifiers` object into the site's ROOT.props.modifiers.
  *
+ * **Contract mirror:** Keep in lockstep with `mergeBlockModifiersIntoRootProps` in
+ * `packages/sdk/src/utils/modifierUtils.ts` (editor + preview). If upsert rules change,
+ * update both implementations — no shared package by design.
+ *
  * Shape:
  *   blockModifiers = { Text: [{ name, classes, requires }, ...], Container: [...] }
  *
