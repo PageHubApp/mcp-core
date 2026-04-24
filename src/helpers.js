@@ -7,6 +7,7 @@ const { parseMaybeJson, mergeStrList } = require("./helpers/args");
 const {
   applyNodePatches,
   normalizeNodePatchArgs,
+  stripLockedStyling,
   normalizeBulkPatchesFromArgs,
   assertPatchSiteNodeArgs,
   assertPatchBulkItem,
@@ -43,6 +44,7 @@ module.exports = {
   mergeStrList,
   applyNodePatches,
   normalizeNodePatchArgs,
+  stripLockedStyling,
   normalizeBulkPatchesFromArgs,
   compressJsonToBase64Lz,
   decompressBase64LzToJson,

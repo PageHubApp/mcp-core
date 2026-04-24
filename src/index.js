@@ -1,4 +1,21 @@
-const tools = require("./tools.json");
+const rawTools = require("./tools.json");
+const { VIBE_CODENAMES } = require("./vibes");
+
+// Resolve the `"$VIBES"` sentinel wherever it appears (schema `enum` fields) with
+// the live VIBE_CODENAMES array. Keeps tools.json human-readable while making the
+// vibes list authoritative in one file. Safe — no existing value in tools.json
+// starts with "$".
+function resolveVibes(node) {
+  if (node === "$VIBES") return [...VIBE_CODENAMES];
+  if (Array.isArray(node)) return node.map(resolveVibes);
+  if (node && typeof node === "object") {
+    const out = {};
+    for (const k of Object.keys(node)) out[k] = resolveVibes(node[k]);
+    return out;
+  }
+  return node;
+}
+const tools = resolveVibes(rawTools);
 const {
   isPlaceholderCompanyName,
   userExplicitlyRequestsBrandingChange,
@@ -154,4 +171,5 @@ module.exports = {
   HTTP_TOOL_NAMES,
   AGENT_EXCLUDED,
   AGENT_ALLOWED,
+  VIBE_CODENAMES,
 };

@@ -13,7 +13,7 @@ const {
   assertPatchBlockNodeArgs,
   assertPatchBlockBulkItem,
 } = require("./patch/schema");
-const { applyNodePatches, normalizeNodePatchArgs } = require("./patch/apply");
+const { applyNodePatches, normalizeNodePatchArgs, stripLockedStyling } = require("./patch/apply");
 const {
   parseBulkPatchesJsonString,
   splitTopLevelCommaSeparatedJsonValues,
@@ -25,6 +25,7 @@ module.exports = {
   applyNodePatches,
   normalizeTypePatch,
   normalizeNodePatchArgs,
+  stripLockedStyling,
   normalizeBulkPatchesFromArgs,
   parseBulkPatchesJsonString,
   splitTopLevelCommaSeparatedJsonValues,

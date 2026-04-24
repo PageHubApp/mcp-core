@@ -240,7 +240,38 @@ function normalizeNodePatchArgs(raw) {
   };
 }
 
+/**
+ * When ctx.stylingLocked is true (weak / auto-tier models), strip all className
+ * mutations from a normalized patch. Blocks are pre-styled; these models
+ * consistently break styling (kill accent bg, mix component classes, hardcode
+ * sizes). Returns { patch, dropped } where `dropped` lists the fields removed
+ * so the tool reply can surface a soft warning to the model.
+ */
+function stripLockedStyling(patch, ctx) {
+  if (!ctx?.stylingLocked || !patch) return { patch, dropped: [] };
+  const dropped = [];
+  const out = { ...patch };
+  if (out.classNamePatch) {
+    dropped.push("classNamePatch");
+    out.classNamePatch = undefined;
+  }
+  if (Array.isArray(out.unsetClasses) && out.unsetClasses.length > 0) {
+    dropped.push("unsetClasses");
+    out.unsetClasses = undefined;
+  }
+  if (out.propsPatch && typeof out.propsPatch === "object") {
+    const p = { ...out.propsPatch };
+    if (Object.prototype.hasOwnProperty.call(p, "className")) {
+      dropped.push("propsPatch.className");
+      delete p.className;
+    }
+    out.propsPatch = p;
+  }
+  return { patch: out, dropped };
+}
+
 module.exports = {
   applyNodePatches,
   normalizeNodePatchArgs,
+  stripLockedStyling,
 };

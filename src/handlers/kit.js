@@ -502,8 +502,26 @@ module.exports = {
 
     if (ctx.draftMode) {
       if (ctx.fillMode) {
+        // Snapshot the REAL parent whose `.nodes` now references the new kit children.
+        // For slot targets (target: "footer" / "header") that's ftr_root / hdr_root; for
+        // normal section fills it's sectionContainerId. Previously we always snapshotted
+        // sectionContainerId, so footer fills dropped the kit under ftr_root but saved the
+        // untouched sec_footer — the kit nodes ended up orphaned when the client merged
+        // aiDraftPatches back onto the base site and the footer rendered as empty.
         const patch = { ...newNodes };
-        patch[sectionContainerId] = flat[sectionContainerId];
+        if (parentNodeId && flat[parentNodeId]) {
+          patch[parentNodeId] = flat[parentNodeId];
+        }
+        // Keep sectionContainerId in the patch too so the planner's empty skeleton slot
+        // stays consistent (idempotent — if parentNodeId === sectionContainerId the above
+        // already covered it).
+        if (
+          sectionContainerId &&
+          sectionContainerId !== parentNodeId &&
+          flat[sectionContainerId]
+        ) {
+          patch[sectionContainerId] = flat[sectionContainerId];
+        }
         if (!ctx._fillPatch) ctx._fillPatch = {};
         Object.assign(ctx._fillPatch, patch);
         ctx._pendingFlatMap = flat;

@@ -16,12 +16,13 @@
         },
         "style": {
           "type": "string",
-          "description": "Optional: filter by one block-library style codename. Merged with styles. Auto-injected from build context (ROOT.props.buildStyle) when no style filter is set. Valid values are template/block codenames like 'airy', 'archival', 'bakehouse', 'bloom', 'brutalist', 'canvas', 'clinical', 'counsel', 'forged', 'grid-lock', 'impact', 'late-night', 'north-star', 'organic-reach', 'parchment', 'prose', 'quiet', 'raw', 'segmented', 'signal', 'stark', 'studio-cut', 'terminal', 'thrust', 'tide', 'waitlist', 'workshop', 'worksite', 'workspace'. Do NOT pass abstract codes like 'warm', 'minimal', 'bold', 'editorial' — they will not match anything."
+          "enum": "$VIBES",
+          "description": "Optional: filter by one vibe. Auto-injected from ROOT.props.buildStyle when unset — you usually don't need to pass this. Merged with `styles`."
         },
         "styles": {
           "type": "array",
-          "items": { "type": "string" },
-          "description": "Optional: OR-filter by any of these block-library style codenames. Same vocabulary as `style` (airy/archival/bakehouse/bloom/brutalist/canvas/clinical/counsel/forged/grid-lock/impact/late-night/north-star/organic-reach/parchment/prose/quiet/raw/segmented/signal/stark/studio-cut/terminal/thrust/tide/waitlist/workshop/worksite/workspace)."
+          "items": { "type": "string", "enum": "$VIBES" },
+          "description": "Optional: OR-filter by any of these vibes. Merged with `style`."
         }
       }
     }
@@ -202,7 +203,8 @@
         },
         "buildStyle": {
           "type": "string",
-          "description": "OPTIONAL block-library style codename override. Almost never needed — the preset auto-derives this. If the user explicitly asks to lock blocks to a specific visual family (e.g. 'use only brutalist blocks'), pass that codename here. Otherwise omit. NOTE: this is NOT a preset slug — preset slugs go on the `preset` field. The two vocabularies are separate; mixing them up will fail."
+          "enum": "$VIBES",
+          "description": "OPTIONAL vibe override. Almost never needed — `preset` auto-derives this. Pass only if the user explicitly asks to lock the block library to one vibe (e.g. \"use only brutalist blocks\"). Not a preset slug — preset slugs go on `preset`."
         },
         "title": {
           "type": "string",
@@ -1272,12 +1274,13 @@
         },
         "style": {
           "type": "string",
-          "description": "Filter by one visual style family. Merged with styles. Blocks with the same style mix well together. Examples: \"minimal\", \"bold\", \"editorial\", \"corporate\", \"playful\", \"brutalist\"."
+          "enum": "$VIBES",
+          "description": "Optional: filter by one vibe. Auto-injected from ROOT.props.buildStyle when unset — you usually don't need to pass this. Merged with `styles`."
         },
         "styles": {
           "type": "array",
-          "items": { "type": "string" },
-          "description": "OR-filter: any of these style families. Merged with style."
+          "items": { "type": "string", "enum": "$VIBES" },
+          "description": "Optional: OR-filter by any of these vibes. Merged with `style`."
         },
         "blockType": {
           "type": "string",
@@ -1425,7 +1428,8 @@
         },
         "style": {
           "type": "string",
-          "description": "Visual style family. Blocks with the same style mix well together. Examples: \"minimal\", \"bold\", \"editorial\", \"corporate\", \"playful\", \"brutalist\"."
+          "enum": "$VIBES",
+          "description": "Vibe this block belongs to. Blocks with the same vibe mix well together; the site's `buildStyle` filters the library to this value."
         },
         "structure": {
           "type": "object",
@@ -1498,7 +1502,8 @@
         },
         "style": {
           "type": "string",
-          "description": "Update visual style family (e.g. \"minimal\", \"bold\", \"editorial\")."
+          "enum": "$VIBES",
+          "description": "Update the block's vibe."
         },
         "structure": {
           "type": "object",

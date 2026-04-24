@@ -4,6 +4,7 @@ const {
   parseMaybeJson,
   applyNodePatches,
   normalizeNodePatchArgs,
+  stripLockedStyling,
   normalizeBulkPatchesFromArgs,
   assertPatchSiteNodeArgs,
   assertPatchBulkItem,
@@ -356,6 +357,13 @@ module.exports = {
         propsPatch: guardRootCompanyPropsPatch(flat, patchArgs.propsPatch, ctx),
       };
     }
+    // Weak/auto-tier models aren't trusted to freestyle className — strip any
+    // styling mutations when ctx.stylingLocked is set by the fill caller.
+    const stripped = stripLockedStyling(patchArgs, ctx);
+    patchArgs = stripped.patch;
+    const stylingDropNote = stripped.dropped.length
+      ? `\n\n[styling locked] Dropped: ${stripped.dropped.join(", ")}. Blocks are pre-styled in auto mode — patch text/images/icons only.`
+      : "";
     {
       const hits = collectUnsplashSrcViolations(patchArgs, nodeId);
       if (hits.length) {
@@ -381,7 +389,8 @@ module.exports = {
             text:
               `Node ${nodeId} updated successfully.` +
               `${buttonReport ? `\n\n${formatButtonPreflightReport([buttonReport])}` : ""}` +
-              `${designReport ? `\n\n${formatDesignValidationReport(designReport)}` : ""}`,
+              `${designReport ? `\n\n${formatDesignValidationReport(designReport)}` : ""}` +
+              stylingDropNote,
           },
         ],
         pendingContent: flat,
@@ -453,6 +462,7 @@ module.exports = {
     }
     const touched = [];
     const buttonReports = [];
+    const droppedByNode = [];
     for (let i = 0; i < list.length; i++) {
       const item = list[i];
       if (!item || typeof item.nodeId !== "string") {
@@ -476,6 +486,10 @@ module.exports = {
           propsPatch: guardRootCompanyPropsPatch(flat, bulkPatch.propsPatch, ctx),
         };
       }
+      const stripped = stripLockedStyling(bulkPatch, ctx);
+      bulkPatch = stripped.patch;
+      if (stripped.dropped.length)
+        droppedByNode.push(`${nid}: ${stripped.dropped.join(", ")}`);
       applyNodePatches(flat, nid, bulkPatch);
       const report = maybePreflightButton(flat, nid, buttonValidationMode);
       if (report) buttonReports.push(report);
@@ -489,6 +503,9 @@ module.exports = {
 
     // Surface anything from a recent kit's punch list the agent didn't include.
     const missedTail = consumePunchListAndFormatMissed(ctx, touched);
+    const stylingTail = droppedByNode.length
+      ? `\n\n[styling locked] Dropped className mutations on: ${droppedByNode.join("; ")}. Blocks are pre-styled in auto mode — patch text/images/icons only.`
+      : "";
 
     // Dry run: return proposed changes without saving
     if (ctx.draftMode) {
@@ -505,7 +522,8 @@ module.exports = {
               `${touched.length} nodes updated successfully: ${touched.join(", ")}.` +
               `${buttonReports.length ? `\n\n${formatButtonPreflightReport(buttonReports)}` : ""}` +
               `${designReport ? `\n\n${formatDesignValidationReport(designReport)}` : ""}` +
-              missedTail,
+              missedTail +
+              stylingTail,
           },
         ],
         pendingContent: flat,
@@ -527,7 +545,8 @@ module.exports = {
             `${resultMsg(result.id, target.type, `Updated (${touched.length} nodes: ${touched.join(", ")}).`)}` +
             `${buttonReports.length ? `\n\n${formatButtonPreflightReport(buttonReports)}` : ""}` +
             `${designReport ? `\n\n${formatDesignValidationReport(designReport)}` : ""}` +
-            missedTail,
+            missedTail +
+            stylingTail,
         },
       ],
       changedNodes,

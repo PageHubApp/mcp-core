@@ -8,25 +8,15 @@ const { parseMaybeJson, getActiveTarget, fetchTarget, saveTarget } = require("..
 const { ensurePaletteOklch } = require("../color-utils");
 const { resultMsg } = require("./remote-shared");
 const { stampPresetDesignIntent } = require("../root-design-intent");
+const { VIBE_CODENAMES } = require("../vibes");
 
 // ── Build-style validation ───────────────────────────────────────────────────
-// The block library indexes by codename styles ("airy", "bakehouse",
-// "organic-reach", ...). Some legacy presets and the original tools.json
-// schema advertise abstract codes ("warm", "minimal", "bold", ...) that the
-// block index does NOT know — stamping those onto ROOT.props.buildStyle made
-// search_blocks filter against an unknown style and the +Blocks panel show a
-// chip that matches nothing.
-//
-// We cache the live list of valid block-style codenames once per process from
-// the discovery API. If the fetch fails we fall back to the known seed list
-// (regenerate via: node -e "see audit script in remote-theme.js comments").
-const FALLBACK_VALID_BUILD_STYLES = [
-  "airy", "archival", "bakehouse", "bloom", "brutalist", "canvas",
-  "clinical", "counsel", "forged", "grid-lock", "impact", "late-night",
-  "north-star", "organic-reach", "parchment", "prose", "quiet", "raw",
-  "segmented", "signal", "stark", "studio-cut", "terminal", "thrust",
-  "tide", "waitlist", "workshop", "worksite", "workspace",
-];
+// `buildStyle` on ROOT.props must be one of the 6 canonical vibes
+// (packages/mcp-core/src/vibes.js) or `search_blocks` will filter against a
+// codename the block index doesn't know. We try the live `/api/v1/components/styles`
+// distinct() first so vibe additions made in vibes.js but not yet synced to Mongo
+// still narrow to what's actually in the library; fall back to the vibes.js list
+// if the fetch fails.
 let _validStylesCache = null;
 let _validStylesFetchedAt = 0;
 const VALID_STYLES_TTL_MS = 5 * 60 * 1000;
@@ -47,7 +37,7 @@ async function getValidBuildStyles() {
   } catch {
     /* fall through to seed fallback */
   }
-  _validStylesCache = new Set(FALLBACK_VALID_BUILD_STYLES);
+  _validStylesCache = new Set(VIBE_CODENAMES);
   _validStylesFetchedAt = now;
   return _validStylesCache;
 }
