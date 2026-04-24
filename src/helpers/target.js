@@ -75,6 +75,17 @@ async function fetchTarget(args) {
 
   // Draft/fill mode: use pending flat map if available
   if (ctx._pendingFlatMap && typeof ctx._pendingFlatMap === "object") {
+    if (process.env.DEBUG_SLOT_KITS === "1") {
+      const m = ctx._pendingFlatMap;
+      const hdrNodes = m.hdr_root?.nodes || [];
+      const ftrNodes = m.ftr_root?.nodes || [];
+      const kitHdr = Object.keys(m).filter(k => k.startsWith("kit_") && m[k]?.parent === "hdr_root").length;
+      const kitFtr = Object.keys(m).filter(k => k.startsWith("kit_") && m[k]?.parent === "ftr_root").length;
+      const totalKits = Object.keys(m).filter(k => k.startsWith("kit_")).length;
+      console.log(
+        `[slot-kits] fetchTarget BEFORE: hdr_root.nodes=${JSON.stringify(hdrNodes)} (kits under hdr_root=${kitHdr}) | ftr_root.nodes=${JSON.stringify(ftrNodes)} (kits under ftr_root=${kitFtr}) | totalKitsInMap=${totalKits}`
+      );
+    }
     return {
       targetId: target.id,
       targetType: target.type,

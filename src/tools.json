@@ -1351,7 +1351,7 @@
         "target": {
           "type": "string",
           "enum": ["page", "header", "footer"],
-          "description": "Where to place the block. \"page\" (default): add as a section in the page. \"header\": replace the site header (hdr_root). \"footer\": replace the site footer (ftr_root)."
+          "description": "Where to place the block. \"page\" (default): add as a section on the page — use this for heroes, features, pricing, testimonials, CTAs, galleries, everything that lives IN the page. \"header\": ONLY for header blocks (navbar / menu bar) — replaces hdr_root. \"footer\": ONLY for footer blocks — replaces ftr_root. Do NOT use \"header\" for heroes/features/CTAs just because they're visually at the top — those are page sections."
         },
         "sectionContainerId": {
           "type": "string",

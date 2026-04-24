@@ -240,6 +240,32 @@ module.exports = {
     const slotTarget = args.target; // "header", "footer", or undefined (page)
     const SLOT_MAP = { header: "hdr_root", footer: "ftr_root" };
 
+    // Slot-target guardrail: qwen (and friends) read "header" as "top of page" and route
+    // heroes / features / CTAs into hdr_root, which clears real header chrome and buries
+    // the section inside a layout slot that downstream code assembles differently (the
+    // kit also then tends to drop before final save — see AiLog 2026-04-24T15:48 for the
+    // "wills balls" case where the hero was applied under hdr_root and vanished from
+    // sharedDraft). Only accept slot targets for slugs that are actually header/footer
+    // blocks. Everything else must go on a page (the default, `target: "page"`).
+    if (slotTarget && SLOT_MAP[slotTarget]) {
+      const slugLower = String(slug).toLowerCase();
+      const isHeaderSlug = /(^|[-_])(header|nav(bar)?|top[-_]?bar|menu[-_]?bar)(-|$)/.test(slugLower);
+      const isFooterSlug = /(^|[-_])footer(-|$)/.test(slugLower);
+      if (slotTarget === "header" && !isHeaderSlug) {
+        throw new Error(
+          `apply_kit_block: target "header" is reserved for header blocks (navbars / menu bars). ` +
+            `Slug "${slug}" doesn't look like a header block — its kit will be placed inside hdr_root (the global header slot), which is NOT where page sections live. ` +
+            `Use target: "page" (or omit target) to add this block as a section on the current page.`
+        );
+      }
+      if (slotTarget === "footer" && !isFooterSlug) {
+        throw new Error(
+          `apply_kit_block: target "footer" is reserved for footer blocks. ` +
+            `Slug "${slug}" doesn't look like a footer block — use target: "page" (or omit target) to add it as a page section instead.`
+        );
+      }
+    }
+
     const ctx = getContext();
     if (ctx.fillMode && ctx._fillStructureLocked) {
       throw new Error(
@@ -500,6 +526,11 @@ module.exports = {
     }
     Object.assign(changedNodes, collectSubtree(flat, parentNodeId));
 
+    if (process.env.DEBUG_SLOT_KITS === "1" && slotTarget) {
+      console.log(
+        `[slot-kits] apply_kit_block target="${slotTarget}" → parent=${parentNodeId} | added ${Object.keys(newNodes).length} nodes | flat[${parentNodeId}].nodes after insert = ${JSON.stringify(flat[parentNodeId]?.nodes)}`
+      );
+    }
     if (ctx.draftMode) {
       if (ctx.fillMode) {
         // Snapshot the REAL parent whose `.nodes` now references the new kit children.
