@@ -1,6 +1,7 @@
 const { getContext } = require("../context");
 const { parseMaybeJson, getActiveTarget, fetchTarget, saveTarget } = require("../helpers");
 const { normalizeBaseUrl } = require("../api-fetch");
+const { buildPatch } = require("../helpers/patch/build");
 
 /** Find all page nodes — direct ROOT children with props.type === 'page'. */
 function findPages(flat) {
@@ -67,6 +68,9 @@ module.exports = {
     const root = flat.ROOT;
     if (!root) throw new Error("No ROOT node found.");
 
+    const prevRootChildren = Array.isArray(root.nodes) ? root.nodes.slice() : [];
+    const touched = new Set();
+
     const pages = findPages(flat);
     const slug = toSlug(name);
     const pageId = `page_${slug.replace(/-/g, "_")}`;
@@ -102,6 +106,7 @@ module.exports = {
       for (const p of pages) {
         if (p.node.props?.isHomePage) {
           p.node.props.isHomePage = false;
+          touched.add(p.id);
         }
       }
     }
@@ -141,8 +146,11 @@ module.exports = {
       insertPos = lastPageIdx >= 0 ? lastPageIdx + 1 : rootNodes.length;
     }
     rootNodes.splice(insertPos, 0, pageId);
+    touched.add(pageId);
 
     const ctx = getContext();
+
+    const patch = buildPatch(flat, touched, prevRootChildren);
 
     // Support batched mode (agent endpoint)
     if (ctx._batchMode) {
@@ -155,6 +163,7 @@ module.exports = {
           },
         ],
         pendingContent: flat,
+        patch,
       };
     }
 
@@ -168,6 +177,7 @@ module.exports = {
             text: `Page "${name}" created as ${pageId} (/${slug}) in template "${target.id}".${homeMsg} To add blocks: apply_kit_block(slug, pageId: "${pageId}") — do NOT pass sectionContainerId.`,
           },
         ],
+        patch,
       };
     }
     const base = normalizeBaseUrl(ctx.apiBaseUrl) || "https://pagehub.dev";
@@ -178,6 +188,7 @@ module.exports = {
           text: `Page "${name}" created as ${pageId} (/${slug}).${homeMsg} To add blocks: apply_kit_block(slug, pageId: "${pageId}") — do NOT pass sectionContainerId.\nEditor: ${base}/build/${result.id}`,
         },
       ],
+      patch,
     };
   },
 
@@ -195,6 +206,7 @@ module.exports = {
     if (page.props?.type !== "page")
       throw new Error(`Node "${pageId}" is not a page (type: ${page.props?.type || "unknown"}).`);
 
+    const touched = new Set();
     const changes = [];
 
     if (name != null) {
@@ -206,7 +218,10 @@ module.exports = {
     if (isHomePage === true) {
       const pages = findPages(flat);
       for (const p of pages) {
-        if (p.node.props?.isHomePage) p.node.props.isHomePage = false;
+        if (p.node.props?.isHomePage) {
+          p.node.props.isHomePage = false;
+          touched.add(p.id);
+        }
       }
       page.props.isHomePage = true;
       changes.push("isHomePage → true");
@@ -265,11 +280,15 @@ module.exports = {
       return { content: [{ type: "text", text: "No changes specified." }] };
     }
 
+    touched.add(pageId);
+    const patch = buildPatch(flat, touched);
+
     // Draft mode: persist into _pendingFlatMap so signal_sections picks up SEO changes
     if (ctx.draftMode) {
       ctx._pendingFlatMap = flat;
       return {
         content: [{ type: "text", text: `Page ${pageId} updated:\n  ${changes.join("\n  ")}` }],
+        patch,
       };
     }
 
@@ -286,6 +305,7 @@ module.exports = {
           text: `Page ${pageId} updated in ${label}:\n  ${changes.join("\n  ")}${editorLine}`,
         },
       ],
+      patch,
     };
   },
 
@@ -309,26 +329,33 @@ module.exports = {
     const pageName = page.custom?.displayName || page.displayName || pageId;
 
     const root = flat.ROOT;
+    const prevRootChildren = root && Array.isArray(root.nodes) ? root.nodes.slice() : [];
     if (root) {
       root.nodes = (root.nodes || []).filter(id => id !== pageId);
     }
 
+    const deletedIds = [];
     const deleteSubtree = id => {
       const n = flat[id];
       if (!n) return;
       for (const child of [...(n.nodes || [])]) deleteSubtree(child);
       delete flat[id];
+      deletedIds.push(id);
     };
     deleteSubtree(pageId);
 
+    const touched = new Set();
     let promotedPage = null;
     if (wasHomePage) {
       const remaining = findPages(flat);
       if (remaining.length > 0) {
         remaining[0].node.props.isHomePage = true;
         promotedPage = remaining[0].id;
+        touched.add(promotedPage);
       }
     }
+
+    const patch = buildPatch(flat, touched, prevRootChildren, deletedIds);
 
     const result = await saveTarget(target.id, target.type, flat);
     const promoMsg = promotedPage ? ` ${promotedPage} promoted to home page.` : "";
@@ -340,6 +367,7 @@ module.exports = {
             text: `Page "${pageName}" (${pageId}) deleted from template "${target.id}".${promoMsg}`,
           },
         ],
+        patch,
       };
     }
     const base = normalizeBaseUrl(getContext().apiBaseUrl) || "https://pagehub.dev";
@@ -350,6 +378,7 @@ module.exports = {
           text: `Page "${pageName}" (${pageId}) deleted.${promoMsg}\nEditor: ${base}/build/${result.id}`,
         },
       ],
+      patch,
     };
   },
 };
