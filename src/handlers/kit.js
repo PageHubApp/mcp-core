@@ -509,14 +509,77 @@ module.exports = {
     }
     const overrideWarnings = walkApplyKitOverrides(newNodes, rootId, co, po) || [];
 
+    // ─── Collapse the kit's outer Container into an empty section skeleton ────
+    // signal_sections / fresh page sections create an empty `type: "section"`
+    // Container as a placeholder. Without collapse, apply_kit_block nests the
+    // kit's section wrapper as a CHILD of that placeholder — two Containers
+    // where there should be one, which makes the skeleton render as a thin
+    // wrapper and its inner kit_*_n0 carry the real section styling. The
+    // editor's section affordances hang off the skeleton; the visuals hang off
+    // the inner node — they decouple. Collapsing merges the kit wrapper's
+    // visual props (className, dataSource, attrs, root, custom.source) onto
+    // the skeleton and re-parents the kit's children directly under it, so
+    // the result matches a hand-dragged Block: one section node carrying the
+    // kit's styling.
+    const parentNode = flat[parentNodeId];
+    const wrapperNode = newNodes[rootId];
+    const canCollapseIntoSkeleton =
+      !slotTarget &&
+      !directToPage &&
+      parentNode &&
+      parentNode.props?.type === "section" &&
+      (!Array.isArray(parentNode.nodes) || parentNode.nodes.length === 0) &&
+      wrapperNode &&
+      wrapperNode.type?.resolvedName === "Container";
+
+    if (canCollapseIntoSkeleton) {
+      const wrapperProps = wrapperNode.props || {};
+      const parentProps = parentNode.props || {};
+      // Take wrapper's visuals; preserve skeleton identity (`type:"section"`,
+      // user-facing displayName, page-section flags).
+      parentNode.props = {
+        ...wrapperProps,
+        ...parentProps,
+        className:
+          typeof wrapperProps.className === "string" && wrapperProps.className.trim()
+            ? wrapperProps.className
+            : parentProps.className,
+        ...(wrapperProps.dataSource ? { dataSource: wrapperProps.dataSource } : {}),
+        ...(wrapperProps.attrs ? { attrs: wrapperProps.attrs } : {}),
+        ...(wrapperProps.root
+          ? { root: { ...(parentProps.root || {}), ...wrapperProps.root } }
+          : {}),
+      };
+      // Merge custom: wrapper carries `source` (block provenance); skeleton
+      // carries `displayName` ("Hero" set by the planner). Parent wins overall.
+      parentNode.custom = {
+        ...(wrapperNode.custom || {}),
+        ...(parentNode.custom || {}),
+        ...(wrapperNode.custom?.source ? { source: wrapperNode.custom.source } : {}),
+      };
+      // Re-parent the wrapper's children directly under the skeleton.
+      const wrapperChildIds = Array.isArray(wrapperNode.nodes) ? [...wrapperNode.nodes] : [];
+      for (const childId of wrapperChildIds) {
+        if (newNodes[childId]) newNodes[childId].parent = parentNodeId;
+      }
+      parentNode.nodes = wrapperChildIds;
+      // Drop the wrapper — its visuals + children already moved onto the parent.
+      delete newNodes[rootId];
+      // Downstream logic (changedNodes, fillPatch, debug log) still snapshots
+      // by id; rootId now points at the skeleton itself.
+      rootId = parentNodeId;
+    }
+
     for (const [id, node] of Object.entries(newNodes)) {
       flat[id] = node;
     }
 
-    const parentNodes = flat[parentNodeId].nodes || [];
-    const position = args.position != null ? args.position : parentNodes.length;
-    parentNodes.splice(position, 0, rootId);
-    flat[parentNodeId].nodes = parentNodes;
+    if (!canCollapseIntoSkeleton) {
+      const parentNodes = flat[parentNodeId].nodes || [];
+      const position = args.position != null ? args.position : parentNodes.length;
+      parentNodes.splice(position, 0, rootId);
+      flat[parentNodeId].nodes = parentNodes;
+    }
 
     mergeBlockModifiersIntoRoot(flat, component.modifiers);
 

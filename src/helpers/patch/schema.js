@@ -147,12 +147,37 @@ function assertPatchKeys(obj, allowedSet, label) {
   }
 }
 
+// Real PageHub node IDs are slug-shaped: alphanumerics, _, -, .
+// Anything with quotes / brackets / colons / commas / spaces is almost
+// certainly the model serializing the entire tool args as one string and
+// shoving them into the nodeId field (e.g. `"ROOT','propsPatch({"`).
+// Catching that here gives a directly-actionable error instead of a confusing
+// "Node <garbage> not found" downstream.
+const MALFORMED_NODEID_CHARS = /["'(){}\[\]:,;=\s]/;
+function assertNodeIdShape(nodeId, label) {
+  if (nodeId == null) return; // upstream "Node ... not found" handles missing
+  if (typeof nodeId !== "string") {
+    throw new Error(
+      `${label}: nodeId must be a string, got ${typeof nodeId}. Pass {nodeId, propsPatch, ...} as separate JSON fields.`
+    );
+  }
+  if (MALFORMED_NODEID_CHARS.test(nodeId)) {
+    const preview = nodeId.length > 60 ? `${nodeId.slice(0, 57)}...` : nodeId;
+    throw new Error(
+      `${label}: nodeId looks malformed (got "${preview}"). Likely your tool args were serialized as one string instead of separate JSON fields. Re-emit with {"nodeId": "<id>", "propsPatch": {...}} as distinct keys.`
+    );
+  }
+}
+
 function assertPatchSiteNodeArgs(args) {
   assertPatchKeys(args, PATCH_SITE_NODE_ARG_KEYS, "patch_site_node");
+  if (args && typeof args === "object") assertNodeIdShape(args.nodeId, "patch_site_node");
 }
 
 function assertPatchBulkItem(item, index) {
   assertPatchKeys(item, PATCH_BULK_ITEM_KEYS, `patch_site_bulk patches[${index}]`);
+  if (item && typeof item === "object")
+    assertNodeIdShape(item.nodeId, `patch_site_bulk patches[${index}]`);
 }
 
 function assertPatchBlockNodeArgs(args) {

@@ -46,6 +46,18 @@ module.exports = {
 
   async insert_node(args) {
     const { nodeId, parentId, position, node } = args;
+    if (typeof nodeId !== "string" || !nodeId.trim()) {
+      // Models occasionally drop nodeId from the call; without this check we'd
+      // write `flat[undefined] = ...` and push `undefined` into parent.nodes,
+      // leaving a dangling child ref that crashes the editor with
+      // "Cannot read properties of undefined (reading 'children')".
+      throw new Error(
+        'insert_node requires a non-empty string `nodeId` (e.g. "ftr_brand", "kit_my_block_n0"). Pass it explicitly.'
+      );
+    }
+    if (typeof parentId !== "string" || !parentId.trim()) {
+      throw new Error("insert_node requires a non-empty string `parentId`.");
+    }
     const ctx = getContext();
     const { targetId, targetType, flat } = await fetchTarget(args);
     if (flat[nodeId]) throw new Error(`Node ID "${nodeId}" already exists. Use a unique ID.`);
