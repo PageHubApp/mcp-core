@@ -13,12 +13,14 @@ const {
   assertFillModePatchAllowed,
   assertFillModeBulkPatchesAllowed,
   guardRootCompanyPropsPatch,
+  mergeBlockModifiersIntoRoot,
 } = require("../helpers");
 const { collectSubtree, sanitizeNodes, findSectionRoot } = require("../node-utils");
 const { resultMsg } = require("./remote-shared");
 const { resolveToolDefaultPageNodeId } = require("../active-page");
 const { validateNodes, formatValidationReport } = require("../node-validation");
 const { validateButtonClasses } = require("../button-system");
+const { consumePunchListAndFormatMissed } = require("./_punch-list-state");
 
 function normalizeButtonValidationMode(value) {
   if (value == null) return "warn";
@@ -36,6 +38,43 @@ function normalizeDesignValidationMode(value) {
   const raw = String(value).trim().toLowerCase();
   if (["off", "warn", "strict"].includes(raw)) return raw;
   return "warn";
+}
+
+// Reject hand-typed Unsplash photo URLs in patches. The agent has find_image
+// for verified URLs, but it routinely guesses photo IDs from training data
+// and ships 404s. Better to fail loudly than render a broken hero.
+const HAND_TYPED_UNSPLASH_RE = /https?:\/\/images\.unsplash\.com\/photo-[a-z0-9-]+/i;
+
+function collectUnsplashSrcViolations(patch, nodeId) {
+  const hits = [];
+  const visit = (val, path) => {
+    if (val == null) return;
+    if (typeof val === "string") {
+      if (HAND_TYPED_UNSPLASH_RE.test(val)) hits.push({ nodeId, path, value: val });
+      return;
+    }
+    if (Array.isArray(val)) {
+      val.forEach((v, i) => visit(v, `${path}[${i}]`));
+      return;
+    }
+    if (typeof val === "object") {
+      for (const k of Object.keys(val)) visit(val[k], path ? `${path}.${k}` : k);
+    }
+  };
+  if (patch?.propsPatch) visit(patch.propsPatch, "propsPatch");
+  return hits;
+}
+
+function unsplashViolationMessage(hits) {
+  const lines = hits
+    .slice(0, 8)
+    .map(h => `  - ${h.nodeId}.${h.path}: ${h.value.slice(0, 100)}`);
+  return (
+    `Error: hand-typed images.unsplash.com URL(s) rejected — these IDs are usually invented and 404 in production.\n` +
+    `${lines.join("\n")}\n\n` +
+    `Call find_image({ q: "<descriptive query>", category: "<hero|product|background|avatar|...>" }) and use the URL it returns. ` +
+    `Do NOT guess Unsplash photo-<id>s; only URLs returned by find_image are verified.`
+  );
 }
 
 function warningMentionsNode(warning, nodeId) {
@@ -247,6 +286,8 @@ module.exports = {
     flat[rootNodeId].parent = parentId;
     flat[parentId].nodes = parentNodes;
 
+    mergeBlockModifiersIntoRoot(flat, parseMaybeJson(args.modifiers) || args.modifiers);
+
     const changedNodes = {};
     for (const id of Object.keys(cleanNodes)) {
       Object.assign(changedNodes, collectSubtree(flat, id));
@@ -314,6 +355,12 @@ module.exports = {
         ...patchArgs,
         propsPatch: guardRootCompanyPropsPatch(flat, patchArgs.propsPatch, ctx),
       };
+    }
+    {
+      const hits = collectUnsplashSrcViolations(patchArgs, nodeId);
+      if (hits.length) {
+        return { content: [{ type: "text", text: unsplashViolationMessage(hits) }] };
+      }
     }
     applyNodePatches(flat, nodeId, patchArgs);
     const buttonReport = maybePreflightButton(flat, nodeId, buttonValidationMode);
@@ -390,6 +437,20 @@ module.exports = {
     const ctx = getContext();
     const { flat } = await fetchTarget(args);
     assertFillModeBulkPatchesAllowed(flat, list, ctx);
+    // Pre-scan for hand-typed Unsplash URLs across ALL patches so we reject
+    // before any partial write — keeps the bulk semantics clean.
+    {
+      const allHits = [];
+      for (const item of list) {
+        if (!item || typeof item.nodeId !== "string") continue;
+        const tmp = normalizeNodePatchArgs({ ...item });
+        const hits = collectUnsplashSrcViolations(tmp, item.nodeId);
+        if (hits.length) allHits.push(...hits);
+      }
+      if (allHits.length) {
+        return { content: [{ type: "text", text: unsplashViolationMessage(allHits) }] };
+      }
+    }
     const touched = [];
     const buttonReports = [];
     for (let i = 0; i < list.length; i++) {
@@ -426,6 +487,9 @@ module.exports = {
       ...touched.map(id => collectSubtree(flat, findSectionRoot(flat, id)))
     );
 
+    // Surface anything from a recent kit's punch list the agent didn't include.
+    const missedTail = consumePunchListAndFormatMissed(ctx, touched);
+
     // Dry run: return proposed changes without saving
     if (ctx.draftMode) {
       ctx._pendingFlatMap = flat;
@@ -440,7 +504,8 @@ module.exports = {
             text:
               `${touched.length} nodes updated successfully: ${touched.join(", ")}.` +
               `${buttonReports.length ? `\n\n${formatButtonPreflightReport(buttonReports)}` : ""}` +
-              `${designReport ? `\n\n${formatDesignValidationReport(designReport)}` : ""}`,
+              `${designReport ? `\n\n${formatDesignValidationReport(designReport)}` : ""}` +
+              missedTail,
           },
         ],
         pendingContent: flat,
@@ -461,7 +526,8 @@ module.exports = {
           text:
             `${resultMsg(result.id, target.type, `Updated (${touched.length} nodes: ${touched.join(", ")}).`)}` +
             `${buttonReports.length ? `\n\n${formatButtonPreflightReport(buttonReports)}` : ""}` +
-            `${designReport ? `\n\n${formatDesignValidationReport(designReport)}` : ""}`,
+            `${designReport ? `\n\n${formatDesignValidationReport(designReport)}` : ""}` +
+            missedTail,
         },
       ],
       changedNodes,

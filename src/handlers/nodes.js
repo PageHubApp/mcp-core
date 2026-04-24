@@ -4,6 +4,7 @@ const {
   saveTarget,
   extractImageUrls,
   validateImageUrls,
+  mergeBlockModifiersIntoRoot,
 } = require("../helpers");
 const { getContext } = require("../context");
 const { assertFillModePatchAllowed } = require("../helpers/fill-mode");
@@ -71,6 +72,7 @@ module.exports = {
     const list = flat[parentId].nodes || (flat[parentId].nodes = []);
     const pos = position != null ? position : list.length;
     list.splice(pos, 0, nodeId);
+    mergeBlockModifiersIntoRoot(flat, parseMaybeJson(args.modifiers) || args.modifiers);
     const result = await saveTarget(targetId, targetType, flat);
     // collectSubtree(flat, parentId) includes the parent (with its updated
     // `nodes` list) plus the new subtree — matches the shape add_nodes /

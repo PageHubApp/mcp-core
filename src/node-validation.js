@@ -206,16 +206,17 @@ function validateNodes(flatMap, opts = {}) {
         }
       }
 
-      // Wrap bare text in <p> tags
+      // Wrap bare text in <p> tags — but ONLY when there's no block-level
+      // tagName. If tagName is "h1"/"h2"/.../"p", the renderer already wraps
+      // the text in that tag, and adding <p>...</p> here produces invalid
+      // <h1><p>…</p></h1> nesting (the next check would error on it). Auto-fix
+      // is silent so the model doesn't see noisy non-actionable warnings.
       if (props.text && typeof props.text === "string") {
         const trimmed = props.text.trim();
-        if (trimmed && !trimmed.startsWith("<")) {
-          if (autoFix) {
-            props.text = `<p>${trimmed}</p>`;
-            fixes.push(`${nodeId}: Wrapped bare text in <p> tags`);
-          } else {
-            warnings.push(`${nodeId}: Text value should be wrapped in <p> or inline HTML tags`);
-          }
+        const isBlockTag = props.tagName && /^(?:p|h[1-6])$/.test(props.tagName);
+        if (trimmed && !trimmed.startsWith("<") && !isBlockTag) {
+          props.text = `<p>${trimmed}</p>`;
+          fixes.push(`${nodeId}: Wrapped bare text in <p> tags`);
         }
       }
 
@@ -223,6 +224,8 @@ function validateNodes(flatMap, opts = {}) {
       // <p><p>…</p></p> or <h1><p>…</p></h1> breaks hydration — especially when an
       // action wraps text in <a>, since the no-action render path already strips
       // the wrapper via unwrapP but the link path does not.
+      // Always auto-fix silently — surfacing this as an error makes the agent
+      // loop trying to "remove the HTML tags" and re-trigger our wrap.
       if (
         props.tagName &&
         /^(?:p|h[1-6])$/.test(props.tagName) &&
@@ -231,18 +234,12 @@ function validateNodes(flatMap, opts = {}) {
         const BLOCK_WRAP_RE = /^\s*<(p|h[1-6]|div)(\s[^>]*)?>([\s\S]*)<\/\1>\s*$/;
         const m = props.text.match(BLOCK_WRAP_RE);
         if (m) {
-          if (autoFix) {
-            props.text = m[3];
-            if (!props.richText) props.richText = {};
-            if (!props.richText.mode) props.richText.mode = "inline";
-            fixes.push(
-              `${nodeId}: Stripped redundant <${m[1]}> wrapper inside tagName="${props.tagName}" (set richText.mode="inline")`
-            );
-          } else {
-            errors.push(
-              `${nodeId}: Text tagName="${props.tagName}" with props.text wrapped in <${m[1]}> — invalid nesting, causes hydration errors`
-            );
-          }
+          props.text = m[3];
+          if (!props.richText) props.richText = {};
+          if (!props.richText.mode) props.richText.mode = "inline";
+          fixes.push(
+            `${nodeId}: Stripped redundant <${m[1]}> wrapper inside tagName="${props.tagName}" (set richText.mode="inline")`
+          );
         }
       }
 

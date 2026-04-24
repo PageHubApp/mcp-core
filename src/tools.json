@@ -16,12 +16,12 @@
         },
         "style": {
           "type": "string",
-          "description": "Optional: filter by one visual style family. Merged with styles. Auto-injected from build context when no style filter is set. Values: minimal, bold, editorial, corporate, playful, soft, warm."
+          "description": "Optional: filter by one block-library style codename. Merged with styles. Auto-injected from build context (ROOT.props.buildStyle) when no style filter is set. Valid values are template/block codenames like 'airy', 'archival', 'bakehouse', 'bloom', 'brutalist', 'canvas', 'clinical', 'counsel', 'forged', 'grid-lock', 'impact', 'late-night', 'north-star', 'organic-reach', 'parchment', 'prose', 'quiet', 'raw', 'segmented', 'signal', 'stark', 'studio-cut', 'terminal', 'thrust', 'tide', 'waitlist', 'workshop', 'worksite', 'workspace'. Do NOT pass abstract codes like 'warm', 'minimal', 'bold', 'editorial' — they will not match anything."
         },
         "styles": {
           "type": "array",
           "items": { "type": "string" },
-          "description": "Optional: OR-filter by any of these style families in one request. Merged with style."
+          "description": "Optional: OR-filter by any of these block-library style codenames. Same vocabulary as `style` (airy/archival/bakehouse/bloom/brutalist/canvas/clinical/counsel/forged/grid-lock/impact/late-night/north-star/organic-reach/parchment/prose/quiet/raw/segmented/signal/stark/studio-cut/terminal/thrust/tide/waitlist/workshop/worksite/workspace)."
         }
       }
     }
@@ -190,11 +190,19 @@
         },
         "preset": {
           "type": "string",
-          "description": "Optional preset ID from list_presets. Loads palette, fonts, and styleGuide from the preset as defaults. Individual palette/fonts/styleGuide params override preset values. Example: \"warm-editorial\", \"modern-minimal\", \"luxury-dark\"."
+          "enum": [
+            "warm-editorial", "modern-minimal", "notion", "luxury-dark",
+            "bold-startup", "corporate-blue", "pastel-soft", "nature-green",
+            "ocean-blue", "sunset-warm", "industrial", "retro", "medical",
+            "restaurant-warm", "creative-studio", "monochrome", "playful",
+            "elegant-serif", "rustic", "deep-navy", "cyber-neon", "terracotta",
+            "slate-pro", "forest-deep", "dusty-rose"
+          ],
+          "description": "Preset slug. MUST be one of the enum values above. Loads palette, fonts, and styleGuide as defaults; individual palette/fonts/styleGuide params override. Pick by fit: bakery/restaurant → \"restaurant-warm\" / \"warm-editorial\" / \"rustic\"; SaaS → \"modern-minimal\" / \"notion\"; luxury → \"luxury-dark\"."
         },
         "buildStyle": {
           "type": "string",
-          "description": "Visual style family override. Usually auto-derived from preset — only pass this to override the preset's default style. Locks block search to this style for visual cohesion across all sections. Values: minimal, bold, editorial, corporate, playful, soft, warm."
+          "description": "OPTIONAL block-library style codename override. Almost never needed — the preset auto-derives this. If the user explicitly asks to lock blocks to a specific visual family (e.g. 'use only brutalist blocks'), pass that codename here. Otherwise omit. NOTE: this is NOT a preset slug — preset slugs go on the `preset` field. The two vocabularies are separate; mixing them up will fail."
         },
         "title": {
           "type": "string",
@@ -392,6 +400,10 @@
         "node": {
           "type": "object",
           "description": "Node definition. Must include:\n  type: { resolvedName: \"Text\" | \"Container\" | \"Image\" | \"Button\" | \"ButtonList\" | \"List\" | \"ListItem\" | etc }\n  isCanvas: true (containers) or false (leaf elements)\n  props: { canDelete: true, canEditName: true, className: \"flex flex-col gap-4 ...\", text/src/etc, custom: { displayName: \"...\" } }\n\nparent and linkedNodes are set automatically — do not include them."
+        },
+        "modifiers": {
+          "type": "object",
+          "description": "Optional block modifiers object (shape: { Text: [{name, classes, requires}], Container: [...] }). Required if the inserted node's className references shortcut modifier names (section-heading, body-text, eyebrow, subhead, section-wrapper, card-surface, icon-row, content-col, hero-content-centered). Upserted into ROOT.props.modifiers. Prefer apply_kit_block over hand-inlining a library block — this arg is for genuine one-offs that need a shared class shortcut."
         }
       },
       "required": ["nodeId", "parentId", "node"]
@@ -1802,6 +1814,10 @@
         "position": {
           "type": "number",
           "description": "Insert position in parent nodes array. Default: append to end."
+        },
+        "modifiers": {
+          "type": "object",
+          "description": "Optional block modifiers object (shape: { Text: [{name, classes, requires}], Container: [...] }). Required if any node's className references shortcut modifier names (section-heading, body-text, eyebrow, subhead, section-wrapper, card-surface, icon-row, content-col, hero-content-centered). Upserted into ROOT.props.modifiers. Prefer apply_kit_block over hand-inlining a library block — this arg is for genuine one-offs that need a shared class shortcut."
         }
       },
       "required": ["nodes", "rootNodeId"]

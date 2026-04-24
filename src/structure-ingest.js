@@ -196,7 +196,138 @@ function hierarchicalStructureToFlat(structure, sectionContainerId, slug, source
  *   { "Heading": { "text": "What We Do" } }              — single override
  *   { "Title": [{ "text": "SEO" }, { "text": "PPC" }] }  — array for repeated nodes
  */
+// Fuzzy-match override keys to displayNames. Agents often pass close-but-not-exact
+// labels ("Description" for "Subhead", "Brand Name" for "Brand", "Tagline" for
+// "About blurb", "Feature 1 Title" for "Title"). Without aliasing, every miss
+// silently no-ops and the agent has to follow up with a corrective patch_site_bulk.
+const OVERRIDE_ALIAS_GROUPS = [
+  ["heading", "title", "headline", "head"],
+  ["subhead", "subheading", "subtitle", "description", "desc", "body", "blurb", "tagline", "intro", "lede"],
+  ["eyebrow", "kicker", "label", "badge", "pill"],
+  ["primarycta", "ctaprimary", "primarybutton", "buttonprimary", "ctaone", "cta1", "cta"],
+  ["secondarycta", "ctasecondary", "secondarybutton", "buttonsecondary", "ctatwo", "cta2"],
+  ["brand", "brandname", "logo", "logotext", "company", "companyname"],
+  ["copyright", "copyrighttext", "legaltext", "footnote"],
+  ["image", "img", "photo", "picture", "hero image", "heroimage"],
+];
+
+function normalizeLabel(s) {
+  return String(s || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "");
+}
+
+function stripIndexSuffix(s) {
+  // "Feature 1 Title" -> "Feature Title", "Title 2" -> "Title", "Pillar 3 Body" -> "Pillar Body"
+  return String(s || "")
+    .replace(/\b\d+\b/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function buildAliasIndex() {
+  const map = new Map(); // normalized -> Set(synonyms normalized)
+  for (const group of OVERRIDE_ALIAS_GROUPS) {
+    const normGroup = group.map(normalizeLabel);
+    const set = new Set(normGroup);
+    for (const n of normGroup) {
+      const existing = map.get(n) || new Set();
+      for (const s of set) existing.add(s);
+      map.set(n, existing);
+    }
+  }
+  return map;
+}
+
+const ALIAS_INDEX = buildAliasIndex();
+
+/**
+ * Resolve an override key to an actual node displayName.
+ * Returns the matched displayName, or null if no candidate is good enough.
+ * Strategy (highest precedence first):
+ *   1. Exact match
+ *   2. Normalized exact (case + non-alnum stripped)
+ *   3. Normalized exact after stripping numeric suffixes ("Feature 1 Title" → "Feature Title")
+ *   4. Synonym-expanded normalized match
+ *   5. Substring match on normalized form (only if unambiguous)
+ */
+function resolveOverrideKey(key, allLabels) {
+  if (allLabels.has(key)) return key;
+  const labelArr = [...allLabels];
+  const normToLabel = new Map();
+  for (const l of labelArr) {
+    const n = normalizeLabel(l);
+    if (!normToLabel.has(n)) normToLabel.set(n, l);
+  }
+  const keyNorm = normalizeLabel(key);
+  if (normToLabel.has(keyNorm)) return normToLabel.get(keyNorm);
+
+  const keyNormStripped = normalizeLabel(stripIndexSuffix(key));
+  if (keyNormStripped !== keyNorm && normToLabel.has(keyNormStripped)) {
+    return normToLabel.get(keyNormStripped);
+  }
+
+  const synonyms = ALIAS_INDEX.get(keyNorm) || ALIAS_INDEX.get(keyNormStripped);
+  if (synonyms) {
+    for (const syn of synonyms) {
+      if (normToLabel.has(syn)) return normToLabel.get(syn);
+    }
+    // Try labels whose normalized form contains a synonym (e.g. "About blurb" → "aboutblurb" contains "blurb")
+    for (const syn of synonyms) {
+      const hits = labelArr.filter(l => normalizeLabel(l).includes(syn));
+      if (hits.length === 1) return hits[0];
+    }
+  }
+
+  // Last resort: unambiguous substring match
+  const subHits = labelArr.filter(l => {
+    const n = normalizeLabel(l);
+    return n.includes(keyNorm) || keyNorm.includes(n);
+  });
+  if (subHits.length === 1) return subHits[0];
+  return null;
+}
+
 function walkApplyKitOverrides(nodes, rootId, contentOverrides, propOverrides) {
+  // Collect all displayNames first so we can resolve override keys to actual labels.
+  const allLabels = new Set();
+  const visitLabels = id => {
+    const node = nodes[id];
+    if (!node) return;
+    if (node.custom?.displayName) allLabels.add(node.custom.displayName);
+    for (const c of node.nodes || []) visitLabels(c);
+  };
+  visitLabels(rootId);
+
+  // Pre-resolve override keys to actual displayNames via fuzzy match.
+  // Multiple keys may resolve to the same label — last wins (warn).
+  const aliasWarnings = [];
+  const resolveOverrides = overrides => {
+    if (!overrides) return { resolved: null, hits: [] };
+    const resolved = {};
+    const hits = [];
+    for (const [key, value] of Object.entries(overrides)) {
+      const matched = resolveOverrideKey(key, allLabels);
+      if (matched) {
+        if (resolved[matched] != null && key !== matched) {
+          aliasWarnings.push(
+            `override "${key}" resolved to "${matched}" but "${matched}" already had a value — last write wins`
+          );
+        }
+        resolved[matched] = value;
+        if (key !== matched) hits.push({ from: key, to: matched });
+      } else {
+        resolved[key] = value; // keep original so the unmatched-key warning fires below
+      }
+    }
+    return { resolved, hits };
+  };
+
+  const co = resolveOverrides(contentOverrides);
+  const po = resolveOverrides(propOverrides);
+  const resolvedContent = co.resolved;
+  const resolvedProps = po.resolved;
+
   // Track consumption index for array-valued overrides
   const coIndex = {};
   const poIndex = {};
@@ -206,8 +337,8 @@ function walkApplyKitOverrides(nodes, rootId, contentOverrides, propOverrides) {
     if (!node) return;
     const label = node.custom?.displayName;
 
-    if (label && contentOverrides && contentOverrides[label] != null) {
-      const raw = contentOverrides[label];
+    if (label && resolvedContent && resolvedContent[label] != null) {
+      const raw = resolvedContent[label];
       if (Array.isArray(raw)) {
         const idx = coIndex[label] || 0;
         if (idx < raw.length) {
@@ -219,8 +350,8 @@ function walkApplyKitOverrides(nodes, rootId, contentOverrides, propOverrides) {
       }
     }
 
-    if (label && propOverrides && propOverrides[label] != null) {
-      const raw = propOverrides[label];
+    if (label && resolvedProps && resolvedProps[label] != null) {
+      const raw = resolvedProps[label];
       if (Array.isArray(raw)) {
         const idx = poIndex[label] || 0;
         if (idx < raw.length) {
@@ -236,20 +367,10 @@ function walkApplyKitOverrides(nodes, rootId, contentOverrides, propOverrides) {
   };
   visit(rootId);
 
-  // Collect all displayNames present in the node tree
-  const allLabels = new Set();
-  const visitLabels = id => {
-    const node = nodes[id];
-    if (!node) return;
-    if (node.custom?.displayName) allLabels.add(node.custom.displayName);
-    for (const c of node.nodes || []) visitLabels(c);
-  };
-  visitLabels(rootId);
-
   // Report unmatched override keys — these silently fail otherwise
   const warnings = [];
-  if (contentOverrides) {
-    for (const key of Object.keys(contentOverrides)) {
+  if (resolvedContent) {
+    for (const key of Object.keys(resolvedContent)) {
       if (!allLabels.has(key)) {
         warnings.push(
           `contentOverride "${key}" did not match any node (available: ${[...allLabels].join(", ") || "none — block has no displayName labels"})`
@@ -257,13 +378,21 @@ function walkApplyKitOverrides(nodes, rootId, contentOverrides, propOverrides) {
       }
     }
   }
-  if (propOverrides) {
-    for (const key of Object.keys(propOverrides)) {
+  if (resolvedProps) {
+    for (const key of Object.keys(resolvedProps)) {
       if (!allLabels.has(key)) {
         warnings.push(`propOverride "${key}" did not match any node`);
       }
     }
   }
+  // Surface alias hits as informational notes — helps the agent learn the actual labels.
+  if (co.hits.length || po.hits.length) {
+    const all = [...co.hits, ...po.hits];
+    warnings.push(
+      `override key aliases applied: ${all.map(h => `"${h.from}"→"${h.to}"`).join(", ")}`
+    );
+  }
+  for (const w of aliasWarnings) warnings.push(w);
   return warnings;
 }
 

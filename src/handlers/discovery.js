@@ -261,11 +261,15 @@ module.exports = {
       }
     }
 
+    const noStyleWarn =
+      !ctx.buildStyle && !ctx.fillMode
+        ? `\n\n*(No buildStyle on context — call \`set_theme({ preset })\` BEFORE list_blocks so results are filtered to the theme's visual family. Picking blocks now means defaults instead of style-matched picks.)*`
+        : "";
     return {
       content: [
         {
           type: "text",
-          text: `# Available Block Templates\n\nUse these slugs with apply_kit_block(slug).\n${result.join("\n")}`,
+          text: `# Available Block Templates\n\nUse these slugs with apply_kit_block(slug).${noStyleWarn}\n${result.join("\n")}`,
         },
       ],
     };

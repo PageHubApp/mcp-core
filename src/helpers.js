@@ -34,6 +34,7 @@ const {
   assertFillModePatchAllowed,
   assertFillModeBulkPatchesAllowed,
 } = require("./helpers/fill-mode");
+const { mergeBlockModifiersIntoRoot } = require("./helpers/modifiers");
 const { compressJsonToBase64Lz, decompressBase64LzToJson } = require("./lz");
 const { guardRootCompanyPropsPatch } = require("./branding-guard");
 
@@ -65,4 +66,5 @@ module.exports = {
   assertFillModePatchAllowed,
   assertFillModeBulkPatchesAllowed,
   guardRootCompanyPropsPatch,
+  mergeBlockModifiersIntoRoot,
 };

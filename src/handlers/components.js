@@ -66,9 +66,86 @@ function detectUsedBlockSlugs() {
   }
 }
 
+// Whitelist of valid args. Reject hallucinated keys (we've seen agents pass
+// invented filters like `group: "acme-homepage-cards"` and then waste a tool
+// call on the empty fallback). Better to fail fast with a "did you mean…"
+// hint so the agent corrects on the next try.
+const VALID_SEARCH_BLOCKS_KEYS = new Set([
+  "q",
+  "category",
+  "categories",
+  "subcategory",
+  "tag",
+  "preset",
+  "source",
+  "group",
+  "style",
+  "styles",
+  "blockType",
+  "featured",
+  "sort",
+  "page",
+  "limit",
+  // routing/internal opts the wrapper accepts but doesn't forward as filters
+  "siteId",
+  "templateSlug",
+  "active",
+]);
+
+function nearestKey(invalid, valid) {
+  const lower = String(invalid).toLowerCase();
+  let best = null;
+  let bestScore = Infinity;
+  for (const v of valid) {
+    const a = lower;
+    const b = v.toLowerCase();
+    // cheap edit-distance — Levenshtein
+    const dp = Array.from({ length: a.length + 1 }, () => new Array(b.length + 1).fill(0));
+    for (let i = 0; i <= a.length; i++) dp[i][0] = i;
+    for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+    for (let i = 1; i <= a.length; i++) {
+      for (let j = 1; j <= b.length; j++) {
+        dp[i][j] = Math.min(
+          dp[i - 1][j] + 1,
+          dp[i][j - 1] + 1,
+          dp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
+        );
+      }
+    }
+    if (dp[a.length][b.length] < bestScore) {
+      bestScore = dp[a.length][b.length];
+      best = v;
+    }
+  }
+  return bestScore <= Math.max(2, Math.floor(invalid.length / 3)) ? best : null;
+}
+
 module.exports = {
   async search_blocks(args) {
     const ctx = getContext();
+
+    if (args && typeof args === "object" && !Array.isArray(args)) {
+      const invalid = Object.keys(args).filter(k => !VALID_SEARCH_BLOCKS_KEYS.has(k));
+      if (invalid.length) {
+        const hints = invalid
+          .map(k => {
+            const near = nearestKey(k, [...VALID_SEARCH_BLOCKS_KEYS]);
+            return near ? `"${k}" — did you mean "${near}"?` : `"${k}"`;
+          })
+          .join("; ");
+        return {
+          content: [
+            {
+              type: "text",
+              text:
+                `Error: search_blocks received unknown filter key(s): ${hints}.\n\n` +
+                `Valid keys: ${[...VALID_SEARCH_BLOCKS_KEYS].sort().join(", ")}.\n` +
+                `Drop the unknown key(s) and retry — do NOT add a fake group/tag/preset just to narrow results.`,
+            },
+          ],
+        };
+      }
+    }
 
     let categories = mergeStrList(args.category, args.categories);
     let styles = mergeStrList(args.style, args.styles);
@@ -215,7 +292,15 @@ module.exports = {
       widenedNote = `*(Search widened: dropped text query \`q\` because it returned no hits — prefer category/tag alone next time.)*\n\n`;
     }
 
-    const head = `# Blocks (${totalCount} total, page ${pageNum}/${pageCount})${ctx.buildStyle ? ` [style: ${ctx.buildStyle}]` : ""}\n\n${widenedNote}${paginationNote}`;
+    // Warn when no buildStyle is set — the agent is picking blocks before the
+    // theme has been locked, so style filter does nothing and results skew to
+    // generic defaults. Only warn in chat-build mode (not fill — fills receive
+    // ctx.buildStyle from the parent planner).
+    const noStyleWarn =
+      !ctx.buildStyle && !ctx.fillMode
+        ? `*(No buildStyle on context — call \`set_theme({ preset })\` BEFORE search_blocks so results are filtered to the theme's visual family. Picking blocks now means defaults instead of style-matched picks.)*\n\n`
+        : "";
+    const head = `# Blocks (${totalCount} total, page ${pageNum}/${pageCount})${ctx.buildStyle ? ` [style: ${ctx.buildStyle}]` : ""}\n\n${noStyleWarn}${widenedNote}${paginationNote}`;
 
     // Recommend the most-used block to help the model pick
     const topBlock = [...components].sort((a, b) => (b.uses || 0) - (a.uses || 0))[0];

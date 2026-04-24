@@ -9,6 +9,79 @@ const { ensurePaletteOklch } = require("../color-utils");
 const { resultMsg } = require("./remote-shared");
 const { stampPresetDesignIntent } = require("../root-design-intent");
 
+// ── Build-style validation ───────────────────────────────────────────────────
+// The block library indexes by codename styles ("airy", "bakehouse",
+// "organic-reach", ...). Some legacy presets and the original tools.json
+// schema advertise abstract codes ("warm", "minimal", "bold", ...) that the
+// block index does NOT know — stamping those onto ROOT.props.buildStyle made
+// search_blocks filter against an unknown style and the +Blocks panel show a
+// chip that matches nothing.
+//
+// We cache the live list of valid block-style codenames once per process from
+// the discovery API. If the fetch fails we fall back to the known seed list
+// (regenerate via: node -e "see audit script in remote-theme.js comments").
+const FALLBACK_VALID_BUILD_STYLES = [
+  "airy", "archival", "bakehouse", "bloom", "brutalist", "canvas",
+  "clinical", "counsel", "forged", "grid-lock", "impact", "late-night",
+  "north-star", "organic-reach", "parchment", "prose", "quiet", "raw",
+  "segmented", "signal", "stark", "studio-cut", "terminal", "thrust",
+  "tide", "waitlist", "workshop", "worksite", "workspace",
+];
+let _validStylesCache = null;
+let _validStylesFetchedAt = 0;
+const VALID_STYLES_TTL_MS = 5 * 60 * 1000;
+
+async function getValidBuildStyles() {
+  const now = Date.now();
+  if (_validStylesCache && now - _validStylesFetchedAt < VALID_STYLES_TTL_MS) {
+    return _validStylesCache;
+  }
+  try {
+    const data = await apiFetch(`/api/v1/components/styles`);
+    const list = Array.isArray(data?.styles) ? data.styles : null;
+    if (list && list.length) {
+      _validStylesCache = new Set(list.map(String));
+      _validStylesFetchedAt = now;
+      return _validStylesCache;
+    }
+  } catch {
+    /* fall through to seed fallback */
+  }
+  _validStylesCache = new Set(FALLBACK_VALID_BUILD_STYLES);
+  _validStylesFetchedAt = now;
+  return _validStylesCache;
+}
+
+function levenshtein(a, b) {
+  const dp = Array.from({ length: a.length + 1 }, () => new Array(b.length + 1).fill(0));
+  for (let i = 0; i <= a.length; i++) dp[i][0] = i;
+  for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+  for (let i = 1; i <= a.length; i++) {
+    for (let j = 1; j <= b.length; j++) {
+      dp[i][j] = Math.min(
+        dp[i - 1][j] + 1,
+        dp[i][j - 1] + 1,
+        dp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
+      );
+    }
+  }
+  return dp[a.length][b.length];
+}
+
+function suggestStyle(invalid, validSet) {
+  const lower = String(invalid).toLowerCase();
+  let best = null;
+  let bestScore = Infinity;
+  for (const v of validSet) {
+    const d = levenshtein(lower, String(v).toLowerCase());
+    if (d < bestScore) {
+      bestScore = d;
+      best = v;
+    }
+  }
+  return bestScore <= Math.max(2, Math.floor(lower.length / 2)) ? best : null;
+}
+
 module.exports = {
   async suggest_palettes(args) {
     // The model generates palette options as structured data in the args
@@ -83,8 +156,24 @@ module.exports = {
     if (preset) {
       const presetData = await apiFetch(`/api/v1/presets/${encodeURIComponent(preset)}`);
       presetRecord = presetData.preset;
-      if (!presetRecord)
-        throw new Error(`Preset "${preset}" not found. Use list_presets to see available presets.`);
+      if (!presetRecord) {
+        // Common cock-up: agent passed a block-library style codename
+        // (bakehouse, archival, ...) instead of a preset slug. Differentiate
+        // and tell it where each vocabulary belongs so the next call lands.
+        let suggestion = "";
+        try {
+          const validStyles = await getValidBuildStyles();
+          if (validStyles.has(String(preset))) {
+            suggestion =
+              ` "${preset}" is a block-library STYLE codename, not a preset slug — those vocabularies are different. Style codenames belong on \`search_blocks({ style: "..." })\`. For set_theme, pass a preset slug like "warm-editorial", "modern-minimal", "luxury-dark", "restaurant-warm", "medical", "corporate-blue", etc.`;
+          }
+        } catch {
+          /* ignore */
+        }
+        throw new Error(
+          `Preset "${preset}" not found.${suggestion} Use list_presets to see all available preset slugs.`
+        );
+      }
       if (!resolvedPalette) resolvedPalette = presetRecord.palette;
       if (!resolvedDarkPalette && presetRecord.darkPalette)
         resolvedDarkPalette = presetRecord.darkPalette;
@@ -92,14 +181,36 @@ module.exports = {
       if (!resolvedFonts) resolvedFonts = presetRecord.fonts;
     }
 
-    // Propagate buildStyle to context for downstream search_blocks auto-filtering
+    // Propagate buildStyle to context for downstream search_blocks auto-filtering.
+    // Validate against the live block library — stamping an unknown codename
+    // (e.g. legacy "warm" / "minimal" from old presets) makes the +Blocks
+    // panel filter chip match nothing for the user.
+    const validStyles = await getValidBuildStyles();
+    const styleWarnings = [];
+    let candidateBuildStyle = null;
     if (explicitBuildStyle) {
-      ctx.buildStyle = explicitBuildStyle;
+      candidateBuildStyle = String(explicitBuildStyle);
     } else if (presetRecord?.style) {
-      ctx.buildStyle = presetRecord.style;
+      candidateBuildStyle = String(presetRecord.style);
     }
-    if (ctx.buildStyle) {
-      rootProps.buildStyle = ctx.buildStyle;
+    if (candidateBuildStyle) {
+      if (validStyles.has(candidateBuildStyle)) {
+        ctx.buildStyle = candidateBuildStyle;
+        rootProps.buildStyle = candidateBuildStyle;
+      } else {
+        const suggestion = suggestStyle(candidateBuildStyle, validStyles);
+        const source = explicitBuildStyle ? "explicit buildStyle arg" : `preset "${preset}" .style`;
+        styleWarnings.push(
+          `buildStyle "${candidateBuildStyle}" from ${source} is not a valid block-library style and was NOT stamped.${
+            suggestion ? ` Closest match: "${suggestion}".` : ""
+          } Pass an explicit buildStyle from: ${[...validStyles].sort().join(", ")}.`
+        );
+        // Clear any stale buildStyle on the site so block search isn't filtered by garbage
+        if (rootProps.buildStyle && !validStyles.has(rootProps.buildStyle)) {
+          delete rootProps.buildStyle;
+          ctx.buildStyle = null;
+        }
+      }
     }
 
     if (presetRecord) {
@@ -170,12 +281,15 @@ module.exports = {
 
     const changedNodes = { ROOT: flat.ROOT };
     const presetMsg = preset ? ` (preset: ${preset})` : "";
+    const warnSuffix = styleWarnings.length
+      ? `\n\nbuildStyle warnings:\n${styleWarnings.map(w => `  - ${w}`).join("\n")}`
+      : "";
 
     // Draft mode: store in pending flat map for aiDraft save
     if (ctx.draftMode) {
       ctx._pendingFlatMap = flat;
       return {
-        content: [{ type: "text", text: `Theme updated${presetMsg}.` }],
+        content: [{ type: "text", text: `Theme updated${presetMsg}.${warnSuffix}` }],
         pendingContent: flat,
         changedNodes,
       };
@@ -184,7 +298,10 @@ module.exports = {
     const result = await saveTarget(target.id, target.type, flat);
     return {
       content: [
-        { type: "text", text: resultMsg(result.id, target.type, `Theme updated${presetMsg}.`) },
+        {
+          type: "text",
+          text: resultMsg(result.id, target.type, `Theme updated${presetMsg}.${warnSuffix}`),
+        },
       ],
       changedNodes,
     };

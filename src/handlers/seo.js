@@ -1,5 +1,5 @@
 const { apiFetch } = require("../api-fetch");
-const { getActiveTarget, decodeContentOrThrow } = require("../helpers");
+const { getActiveTarget, decodeContentOrThrow, fetchTarget } = require("../helpers");
 const {
   collectNodes,
   resolveRootId,
@@ -266,9 +266,22 @@ module.exports = {
         label = `template:${slug}`;
       } else {
         const target = getActiveTarget(args);
-        data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`);
-        if (!data.content) throw new Error("Site has no content.");
-        nodes = data.content;
+        // Use fetchTarget so we read the live in-progress draft
+        // (ctx._pendingFlatMap) rather than stale DB content. Without this,
+        // audits run mid-turn miss writes from update_page / set_theme /
+        // patch_site_node and report fixed issues as still broken.
+        const fetched = await fetchTarget(args);
+        nodes = fetched.flat;
+        if (!nodes || typeof nodes !== "object") throw new Error("Site has no content.");
+        // Site-level title/description fall back to API metadata when not in
+        // the node tree.
+        let siteMeta = {};
+        try {
+          siteMeta = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`);
+        } catch {
+          siteMeta = {};
+        }
+        data = { title: siteMeta.title, description: siteMeta.description, name: siteMeta.name };
         label = target.id;
       }
     } catch (err) {
@@ -301,7 +314,17 @@ module.exports = {
     if (!nodes[pageId])
       throw new Error(`Page "${pageId}" not found. Use list_pages to see available pages.`);
 
-    const results = runChecks(data, nodes, pageId);
+    // Page-level SEO (set via update_page) and ROOT title win over site-level
+    // metadata. Without this merge, runChecks reads only siteData.title and
+    // reports a freshly-set page title as missing.
+    const pageSeo = nodes[pageId]?.props?.seo || {};
+    const rootProps = nodes.ROOT?.props || {};
+    const mergedData = {
+      ...data,
+      title: pageSeo.title || rootProps.title || data.title || data.name || "",
+      description: pageSeo.description || rootProps.description || data.description || "",
+    };
+    const results = runChecks(mergedData, nodes, pageId);
     const fails = results.filter(r => r.status === "fail");
     const warns = results.filter(r => r.status === "warn");
     const passes = results.filter(r => r.status === "pass");
@@ -358,9 +381,10 @@ module.exports = {
         label = `template:${slug}`;
       } else {
         const target = getActiveTarget(args);
-        const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`);
-        if (!data.content) throw new Error("Site has no content.");
-        nodes = data.content;
+        // fetchTarget reads ctx._pendingFlatMap first so audits see in-progress draft writes.
+        const fetched = await fetchTarget(args);
+        nodes = fetched.flat;
+        if (!nodes || typeof nodes !== "object") throw new Error("Site has no content.");
         label = target.id;
       }
     } catch (err) {
