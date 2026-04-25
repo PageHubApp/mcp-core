@@ -149,7 +149,7 @@ function formatUnrewrittenCopyPunchList(items) {
     return `  - ${i.nodeId} (${i.type} "${i.label}"): "${cur}"`;
   });
   return (
-    `\n\nSTILL-GENERIC COPY (kit placeholders the user will see as filler — rewrite to match the business in ONE patch_site_bulk call):\n` +
+    `\n\nSTILL-GENERIC COPY (kit placeholders the user will see as filler — rewrite all of these to match the business):\n` +
     rows.join("\n") +
     `\n\nDo NOT skip this. Footer links, nav items, and secondary CTAs above are visible to visitors and obviously generic when not customized.`
   );
@@ -161,7 +161,10 @@ function formatUnreplacedImagesPunchList(items) {
   return (
     `\n\nIMAGES TO REPLACE (kit ships with stock seed images — they will look wrong for the user's business):\n` +
     rows.join("\n") +
-    `\n\nFor EACH Image above: call find_image({ q: "<descriptive query for THIS section's role>", category: "<hero|product|background|avatar|...>" }) and patch the node with { src: "<returned url>", type: "url", alt: "<descriptive>" }. Do NOT skip and do NOT hand-type images.unsplash.com URLs (server rejects them).`
+    `\n\nDO THIS IN ORDER:\n` +
+    `  STEP 1 — Call find_image({ q: "<descriptive query for THIS image's role>", category: "<hero|product|background|avatar|...>" }) ONCE PER Image above. The URL returned is the ONLY verified source.\n` +
+    `  STEP 2 — Issue patch_site_bulk to set { src: "<url returned by find_image>", type: "url", alt: "<descriptive>" } on each Image node. Bundle these into the SAME patch_site_bulk as any copy patches from the punch list above.\n` +
+    `NEVER hand-type images.unsplash.com URLs — invented photo IDs 404 in production and the server rejects the patch (wasted tool call). Only URLs returned by find_image are valid.`
   );
 }
 
