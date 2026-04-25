@@ -72,15 +72,22 @@ function suggestStyle(invalid, validSet) {
   return bestScore <= Math.max(2, Math.floor(lower.length / 2)) ? best : null;
 }
 
+function designPickerOptionsResult(kind, args) {
+  const options = parseMaybeJson(args.options) || [];
+  return {
+    content: [{ type: "text", text: `Generated ${options.length} ${kind}.` }],
+    paletteOptions: options,
+  };
+}
+
 module.exports = {
   async suggest_palettes(args) {
-    // The model generates palette options as structured data in the args
-    // We just pass them through for the frontend to render as clickable swatches
-    const options = parseMaybeJson(args.options) || [];
-    return {
-      content: [{ type: "text", text: `Generated ${options.length} palette options.` }],
-      paletteOptions: options,
-    };
+    return designPickerOptionsResult("palette options", args);
+  },
+
+  /** Font-only design picker — same client pipeline as suggest_palettes (`paletteOptions`). */
+  async suggest_font_pairings(args) {
+    return designPickerOptionsResult("font pairing options", args);
   },
 
   async upload_image(args) {

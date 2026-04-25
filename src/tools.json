@@ -181,7 +181,7 @@
   },
   {
     "name": "set_theme",
-    "description": "Creates or updates the ROOT node theme for the active site — palette colors, styleGuide (spacing, radius, shadows, fonts), Google Fonts, and JSON-LD structured data. If no active site exists, creates one first. Always call this FIRST when building a new site, before adding blocks.\n\nPalette pitfall (DaisyUI 5 outline CTAs): keep Primary and Base Content at clearly different OKLCH lightness on minimal B&W themes. If both are the same near-black, btn-outline + text-base-content can read as dark-on-dark (Daisy uses --btn-color for outline fg/border). Fix palette + styleGuide link/input text if needed; see THEME-SYSTEM.md and scripts/seed/data/templates/acme.json.\n\nIMPORTANT: After set_theme, set company variables on ROOT via patch_site_node with propsPatch: { company: { name, tagline, phone, email, address, location, website, type } }. These populate {{company.name}} etc. throughout the site. Without them, all variable placeholders show defaults (\"Acme Inc.\").\n\nWorkflow: set_theme → patch company vars on ROOT → apply_kit_block(target:\"header\") → apply_kit_block (repeat for page sections) → apply_kit_block(target:\"footer\") → update_page (set seo.title/seo.description for SEO)",
+    "description": "Creates or updates the ROOT node theme for the active site — palette colors, styleGuide (spacing, radius, shadows, fonts), Google Fonts, and JSON-LD structured data. If no active site exists, creates one first. Always call this FIRST when building a new site, before adding blocks.\n\nWhen the user only asked to **suggest** or **compare** palette options (e.g. \"Suggest 3 color palettes and let me pick\") — do **not** use this tool; use **suggest_palettes** only. When they only asked for **font pairing** suggestions (\"change fonts\", \"pick fonts\", \"font pairings\") — use **suggest_font_pairings** only, not set_theme. set_theme overwrites the live theme immediately; the suggest_* tools show choices the user applies in the UI.\n\nPalette pitfall (DaisyUI 5 outline CTAs): keep Primary and Base Content at clearly different OKLCH lightness on minimal B&W themes. If both are the same near-black, btn-outline + text-base-content can read as dark-on-dark (Daisy uses --btn-color for outline fg/border). Fix palette + styleGuide link/input text if needed; see THEME-SYSTEM.md and scripts/seed/data/templates/acme.json.\n\nIMPORTANT: After set_theme, set company variables on ROOT via patch_site_node with propsPatch: { company: { name, tagline, phone, email, address, location, website, type } }. These populate {{company.name}} etc. throughout the site. Without them, all variable placeholders show defaults (\"Acme Inc.\").\n\nWorkflow: set_theme → patch company vars on ROOT → apply_kit_block(target:\"header\") → apply_kit_block (repeat for page sections) → apply_kit_block(target:\"footer\") → update_page (set seo.title/seo.description for SEO)",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1235,13 +1235,13 @@
   },
   {
     "name": "search_blocks",
-    "description": "Search the block library — returns **one page** of matches with names, slugs, descriptions, tags, uses/likes (no full structure — use get_block for JSON).\n\n**Pagination:** Header shows **total N** and **page X of Y**. The server does **not** auto-fetch page 2. If **Y === 1** and the listed rows match N, that is the **complete** result set for those filters (common when the library fits one page). If **Y > 1**, call again with `page: 2` (same filters) or raise `limit` (max 100); in planner, `list_blocks({ category })` can list many slugs at once.\n\n**Multi-filter:** Pass **categories** and/or **styles** as arrays to OR-match several values in one call (same as GET `?category=hero,features&style=minimal`). Prefer this over firing parallel search_blocks per category.\n\n**Picking a block:** Compare 2–4 finalists using description + tags vs the user request; use the slug **exactly** as shown in backticks. Prefer category or tag filters; optional `q` can over-narrow (server may widen).\n\n**Style cohesion:** When building a site, filter by `preset` and/or `style` to keep blocks visually consistent. Results show `preset:X` and `style:Y` labels — pick blocks that match what's already on the page. If a cohesion hint appears at the bottom of results, follow it.\n\n**Server fallbacks:** If filters match nothing, the server may drop `subcategory`, then return **popular** blocks library-wide so you always get candidates. If the response says **Fallback — not an exact match**, pick the closest slug for the section type and adapt copy in patches — do **not** loop search_blocks.",
+    "description": "Search the block library — returns **one page** of matches with names, slugs, descriptions, tags, uses/likes (no full structure — use get_block for JSON).\n\n**Pagination:** Header shows **total N** and **page X of Y**. The server does **not** auto-fetch page 2. If **Y === 1** and the listed rows match N, that is the **complete** result set for those filters (common when the library fits one page). If **Y > 1**, call again with `page: 2` (same filters) or raise `limit` (max 100); in planner, `list_blocks({ category })` can list many slugs at once.\n\n**Multi-filter:** Pass **categories** and/or **styles** as arrays to OR-match several values in one call (same as GET `?category=hero,features&style=minimal`). Prefer this over firing parallel search_blocks per category.\n\n**Picking a block:** Compare finalists using **description + visual + tags** vs the layout you need (e.g. split + image, full-bleed photo, centered stack). Use the slug **exactly** as shown in backticks. For layout intent, pass **`q`** with short keywords (\"split hero\", \"form card\", \"photo backdrop\") — when `q` is set, results sort by **text relevance**, not popularity. Category-only searches default to **newest** (not most-used) so the same hero does not always win; pass `sort: \"popular\"` if you explicitly want usage rank.\n\n**Style cohesion:** When building a site, filter by `preset` and/or `style` to keep blocks visually consistent. Results show `preset:X` and `style:Y` labels — pick blocks that match what's already on the page. If a cohesion hint appears at the bottom of results, follow it.\n\n**Server fallbacks:** If filters match nothing, the server may drop `subcategory`, then return **recent** blocks library-wide so you always get candidates. If the response says **Fallback — not an exact match**, pick the closest slug for the section type and adapt copy in patches — do **not** loop search_blocks.",
     "inputSchema": {
       "type": "object",
       "properties": {
         "q": {
           "type": "string",
-          "description": "Optional full-text search. Prefer category or tag alone first — combining q with category often returns zero hits; the server will retry without q if needed."
+          "description": "Optional full-text search over name, description, visual, tags. Use short layout phrases (e.g. \"split cta\", \"photo hero\", \"marquee logos\") so stronger matches float up (relevance sort). If zero hits, the server may retry without q."
         },
         "category": {
           "type": "string",
@@ -1293,7 +1293,7 @@
         },
         "sort": {
           "type": "string",
-          "description": "Sort order: \"popular\" (default, by uses), \"newest\", \"name\"."
+          "description": "Sort: \"popular\" (uses/likes), \"newest\", \"name\", \"relevance\" (only with `q` — Mongo textScore). If you omit `sort`, the server picks **relevance** when `q` is set, else **newest** (avoids always returning the same top-used block)."
         },
         "page": {
           "type": "number",
@@ -1863,7 +1863,7 @@
   },
   {
     "name": "suggest_palettes",
-    "description": "Present color palette options for the user to choose from. Generate 3 palette options based on the style/mood, each with 12 color slots matching the PageHub palette system. The frontend renders these as clickable swatches the user can apply directly.",
+    "description": "Present color palette options for the user to choose from — **does not change the live site**. Generate 3 palette options based on the style/mood, each with 12 color slots matching the PageHub palette system. The editor shows clickable swatches; the user applies one. **Do not call set_theme in the same assistant turn** when the request is palette-suggestion / pick-one UX (that would apply a preset before the user chooses).",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1895,6 +1895,50 @@
               }
             },
             "required": ["name", "palette"]
+          }
+        }
+      },
+      "required": ["options"]
+    }
+  },
+  {
+    "name": "suggest_font_pairings",
+    "description": "Present **font pairing** options (heading + body Google Font names and optional styleGuide tweaks) for the user to choose from — **does not change the live site**. Pass 3 options; the editor shows clickable cards and the user applies one. **Do not call set_theme in the same assistant turn** for pick-one UX (that would swap the whole preset before the user chooses). Use when the user asks to change fonts, compare typefaces, or pick font pairings — not for full theme swaps (use set_theme when they want a named preset applied immediately).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "options": {
+          "type": "array",
+          "description": "Array of 3 font pairing options. Each option: name (string), description (optional string), styleGuide (object with headingFontFamily + bodyFontFamily as Google Font family names; optional accentFontFamily, radiusBox, shadowStyle). Optional palette if you also want swatches — omit palette for type-only cards.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "description": { "type": "string" },
+              "styleGuide": {
+                "type": "object",
+                "description": "Font + token overrides applied with the pairing.",
+                "properties": {
+                  "headingFontFamily": { "type": "string" },
+                  "bodyFontFamily": { "type": "string" },
+                  "accentFontFamily": { "type": "string" },
+                  "radiusBox": { "type": "string" },
+                  "shadowStyle": { "type": "string" }
+                },
+                "required": ["headingFontFamily", "bodyFontFamily"]
+              },
+              "palette": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": { "type": "string" },
+                    "color": { "type": "string" }
+                  }
+                }
+              }
+            },
+            "required": ["name", "styleGuide"]
           }
         }
       },

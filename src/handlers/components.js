@@ -167,7 +167,15 @@ module.exports = {
     else if (styles.length > 1) params.set("style", styles.join(","));
     if (args.blockType) params.set("blockType", args.blockType);
     if (args.featured) params.set("featured", "true");
-    if (args.sort) params.set("sort", args.sort);
+    if (args.sort) {
+      params.set("sort", args.sort);
+    } else if (args.q) {
+      // Match layout intent (split, photo, form card, …) via Mongo textScore — not usage rank.
+      params.set("sort", "relevance");
+    } else {
+      // Category-only browse: avoid defaulting every hero to the same top-uses slug.
+      params.set("sort", "newest");
+    }
     if (args.page) params.set("page", String(args.page));
     if (args.limit) params.set("limit", String(args.limit));
 
@@ -224,11 +232,11 @@ module.exports = {
       }
     }
 
-    // Fallback 4: last resort — top popular public blocks library-wide (never leave the agent empty-handed)
+    // Fallback 4: last resort — recent public blocks library-wide (never leave the agent empty-handed)
     if (!components.length) {
       const last = new URLSearchParams();
       last.set("limit", "24");
-      last.set("sort", "popular");
+      last.set("sort", "newest");
       const data2 = await fetchComponents(last);
       if (data2.components?.length) {
         data = data2;
@@ -283,7 +291,7 @@ module.exports = {
 
     let widenedNote = "";
     if (genericFallback) {
-      widenedNote = `**Fallback — not an exact match:** Nothing matched the previous filters (text search, category, style, or subcategory may be too narrow or the index has no hits for those terms). Below are **top popular** blocks from the **whole library**. Pick the closest \`slug\` for the section type you need (e.g. any hero for a “baker” site) and **rewrite copy** in patches for the user’s topic — do not keep searching in a loop.\n\n`;
+      widenedNote = `**Fallback — not an exact match:** Nothing matched the previous filters (text search, category, style, or subcategory may be too narrow or the index has no hits for those terms). Below are **recent** public blocks from the **whole library** (not usage-ranked). Pick the closest \`slug\` for the section type you need and **rewrite copy** in patches for the user’s topic — do not keep searching in a loop.\n\n`;
     } else if (subcategoryDropped) {
       widenedNote = `*(Subcategory widened: no blocks under that subcategory — showing the rest of this category.)*\n\n`;
     } else if (styleWidened) {
@@ -302,10 +310,6 @@ module.exports = {
         : "";
     const head = `# Blocks (${totalCount} total, page ${pageNum}/${pageCount})${ctx.buildStyle ? ` [style: ${ctx.buildStyle}]` : ""}\n\n${noStyleWarn}${widenedNote}${paginationNote}`;
 
-    // Recommend the most-used block to help the model pick
-    const topBlock = [...components].sort((a, b) => (b.uses || 0) - (a.uses || 0))[0];
-    const recommendation = topBlock ? `\nRecommended: \`${topBlock.slug}\` (most used).` : "";
-
     // Warn about blocks already used on this page to encourage variety
     const usedSlugs = detectUsedBlockSlugs();
     const usedNote =
@@ -317,7 +321,7 @@ module.exports = {
       content: [
         {
           type: "text",
-          text: `${head}${lines.join("\n\n")}\n\nPass a \`slug\` to apply_kit_block. Do NOT modify or invent slugs.${recommendation}${usedNote}`,
+          text: `${head}${lines.join("\n\n")}\n\nPass a \`slug\` to apply_kit_block. Do NOT modify or invent slugs.${usedNote}`,
         },
       ],
     };
