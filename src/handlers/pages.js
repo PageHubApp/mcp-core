@@ -1,5 +1,11 @@
 const { getContext } = require("../context");
-const { parseMaybeJson, getActiveTarget, fetchTarget, saveTarget } = require("../helpers");
+const {
+  parseMaybeJson,
+  getActiveTarget,
+  fetchTarget,
+  saveTarget,
+  assertInjectHtml,
+} = require("../helpers");
 const { normalizeBaseUrl } = require("../api-fetch");
 const { buildPatch } = require("../helpers/patch/build");
 
@@ -269,6 +275,9 @@ module.exports = {
           delete page.props[key];
           changes.push(`${key} → (cleared)`);
         } else {
+          if (key === "headCode") {
+            assertInjectHtml(val, `update_page.headCode for page "${page.props?.name || pageId}"`);
+          }
           page.props[key] = val;
           const preview = val.length > 40 ? val.slice(0, 40) + "…" : val;
           changes.push(`${key} → "${preview}"`);

@@ -3,7 +3,7 @@
  * Do not add logic here; if you need a new helper, pick the right
  * file (args, node-patch, target, images, fill-mode) or make a new one.
  */
-const { parseMaybeJson, mergeStrList } = require("./helpers/args");
+const { parseMaybeJson, mergeStrList, assertInjectHtml } = require("./helpers/args");
 const {
   applyNodePatches,
   normalizeNodePatchArgs,
@@ -42,6 +42,7 @@ const { guardRootCompanyPropsPatch } = require("./branding-guard");
 module.exports = {
   parseMaybeJson,
   mergeStrList,
+  assertInjectHtml,
   applyNodePatches,
   normalizeNodePatchArgs,
   stripLockedStyling,

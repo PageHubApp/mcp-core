@@ -5,7 +5,12 @@
  */
 
 const { twMerge } = require("tailwind-merge");
-const { parseMaybeJson, isSameChildIdMultiset, removeClasses } = require("../args");
+const {
+  parseMaybeJson,
+  isSameChildIdMultiset,
+  removeClasses,
+  assertInjectHtml,
+} = require("../args");
 const { normalizeTypePatch, CANVAS_TYPE_PATCH_COMPONENTS } = require("./schema");
 const { getContext } = require("../../context");
 
@@ -184,6 +189,19 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
     }
   }
   if (propsPatch) {
+    // Reject raw CSS/JS dropped into inject.head / inject.footer without a
+    // <style>/<script> wrapper — the browser ignores it silently and every
+    // dependent class breaks. See assertInjectHtml.
+    if (propsPatch.inject && typeof propsPatch.inject === "object") {
+      assertInjectHtml(
+        propsPatch.inject.head,
+        `propsPatch.inject.head for node "${nodeId}"`
+      );
+      assertInjectHtml(
+        propsPatch.inject.footer,
+        `propsPatch.inject.footer for node "${nodeId}"`
+      );
+    }
     // Deep-merge the typed nested namespaces so targeted updates
     // (e.g. propsPatch: { seo: { title: "X" } }) preserve sibling fields
     // on the existing object. Shallow-merge is fine for flat props.

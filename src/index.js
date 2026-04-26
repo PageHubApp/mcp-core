@@ -50,6 +50,7 @@ const discoveryHandlers = require("./handlers/discovery");
 const seoHandlers = require("./handlers/seo");
 const stockImageHandlers = require("./handlers/stock-images");
 const stockVideoHandlers = require("./handlers/stock-videos");
+const iconHandlers = require("./handlers/icons");
 const sectionTreeHandlers = require("./handlers/section-tree");
 
 // All HTTP handlers merged into a single dispatch map
@@ -65,6 +66,7 @@ const handlers = {
   ...seoHandlers,
   ...stockImageHandlers,
   ...stockVideoHandlers,
+  ...iconHandlers,
   ...sectionTreeHandlers,
 };
 

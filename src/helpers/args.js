@@ -73,6 +73,41 @@ function isSameChildIdMultiset(prev, next) {
  * Remove specific Tailwind classes from a className string.
  * Supports exact matches and prefix matches (e.g. "gap-" removes "gap-4", "md:gap-8").
  */
+/**
+ * Reject raw CSS / JS shoved into a "raw HTML" inject slot without the
+ * required `<style>` or `<script>` wrapper. Models routinely drop pure CSS
+ * into `ROOT.props.inject.head` (or per-page `headCode`), the browser ignores
+ * it, and every dependent class/script silently breaks. Catch it at the patch
+ * boundary with a directly-actionable error.
+ */
+function assertInjectHtml(value, location) {
+  if (value == null) return;
+  if (typeof value !== "string") {
+    throw new Error(
+      `${location} must be a string of raw HTML, got ${typeof value}.`
+    );
+  }
+  const trimmed = value.trim();
+  if (trimmed === "") return;
+  // Strip legitimate wrappers — anything left over with CSS/JS shape is unwrapped.
+  const stripped = trimmed
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, "")
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "")
+    .replace(/<!--[\s\S]*?-->/g, "");
+  // CSS rule shape: `selector { prop: value }` outside any wrapper.
+  const looksLikeCss = /\{[\s\S]*?[a-z-]+\s*:[\s\S]*?\}/i.test(stripped);
+  if (looksLikeCss) {
+    const preview = trimmed.length > 200 ? trimmed.slice(0, 200) + "…" : trimmed;
+    throw new Error(
+      `${location} looks like raw CSS that is NOT wrapped in a <style> tag. ` +
+        `inject slots are RAW HTML — the browser will ignore unwrapped CSS and every dependent class will break. ` +
+        `Wrap CSS in <style>...</style> (and JS in <script>...</script>). ` +
+        `Example:\n<style>\n  .my-class { color: red; }\n</style>\n` +
+        `Received (preview): ${preview}`
+    );
+  }
+}
+
 function removeClasses(className, toRemove) {
   if (!className || !Array.isArray(toRemove) || toRemove.length === 0) return className;
   const parts = String(className).split(/\s+/).filter(Boolean);
@@ -95,4 +130,5 @@ module.exports = {
   mergeStrList,
   isSameChildIdMultiset,
   removeClasses,
+  assertInjectHtml,
 };

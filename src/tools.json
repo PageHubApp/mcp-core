@@ -1006,6 +1006,33 @@
     }
   },
   {
+    "name": "find_icon",
+    "description": "Search every registered react-icons set for icons matching a keyword. Returns ranked, copy-paste-ready ref-icon:<set>/<Name> strings the SDK resolver accepts directly on Icon nodes and Button.icon.value / Link.icon.value. Use BEFORE assuming a specific set has an icon — Tabler (tb) is preferred for UI but does NOT carry every brand (no TbBrandYelp, no TbBrandAirbnb, etc.). When Tabler has no match this tool tells you, so the agent can fall back to fa / fa6 / bi / bs / im / si / lia (e.g. fa/FaYelp). Examples: q=\"yelp\" → 7 brand sets list FaYelp / SiYelp / etc; q=\"phone\" → tb/TbPhone tops the list; q=\"shopping cart\" → tb/TbShoppingCart, tb/TbShoppingCartFilled, etc. Lazy-built in-memory index — first call ~50ms, then free.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "q": {
+          "type": "string",
+          "description": "Search keyword. Single word works best (\"yelp\", \"phone\", \"calendar\"). Multi-word also works — spaces / underscores / hyphens are normalized (\"shopping cart\" → matches TbShoppingCart). Case-insensitive."
+        },
+        "set": {
+          "type": "string",
+          "description": "Optional — restrict to a single icon set code (e.g. \"tb\", \"fa\", \"fa6\", \"bi\", \"bs\", \"si\", \"im\", \"lia\", \"md\", \"hi\", \"hi2\", \"lu\", \"ri\", \"go\", \"vsc\"). Omit to search every set ranked by match quality. Useful when you specifically want a Tabler icon (set=\"tb\") or a brand mark from Simple Icons (set=\"si\")."
+        },
+        "kind": {
+          "type": "string",
+          "enum": ["brand", "ui"],
+          "description": "Optional intent hint. \"brand\" restricts to brand-heavy sets (fa/fa6/si/bi/bs/im/lia) — use for company/product logos. \"ui\" restricts to Tabler — use when you want canonical UI iconography. Omit to search everything; the result is still ranked, this is just a coarse filter."
+        },
+        "limit": {
+          "type": "number",
+          "description": "Max results to return (default 12, max 50). The list is ranked best-match first; raise the limit only if the top results don't include what you want."
+        }
+      },
+      "required": ["q"]
+    }
+  },
+  {
     "name": "patch_site_node",
     "description": "Edit one node on a live site (GET, patch, PUT). For multiple nodes use patch_site_bulk (atomic, no races). Uses typePatch to change type.resolvedName, classNamePatch for Tailwind classes, propsPatch for non-class props (text, src, href, etc.). Do not send \"children\" or ad-hoc node graphs — patch child Button/Text nodes by their kit_* nodeIds from apply_kit_block. Example: classNamePatch \"py-0\" to override page wrapper padding.\n\nSITE-WIDE CUSTOM CODE (ROOT node): set propsPatch.inject.head (raw HTML into every page's <head> — scripts, styles, link/meta tags) and propsPatch.inject.footer (raw HTML before every page's </body>). Use for third-party scripts, custom CSS, chat widgets, verification tags. For analytics/pixels with structured config prefer set_integrations. For per-page head code use update_page (headCode).\n\nUseful when a node must switch component type (for example Button → Text) without recreating the node.",
     "inputSchema": {
