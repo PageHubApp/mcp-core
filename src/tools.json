@@ -7,22 +7,33 @@
       "properties": {
         "category": {
           "type": "string",
-          "description": "Optional: filter by one category (hero, header, footer, pricing, services, imageText, optin, texts, team, cta, video). Merged with categories. Omit for all."
+          "description": "Optional: filter by one category (hero, header, footer, pricing, services, imageText, optin, texts, team, cta, video). Merged with categories. Omit for all.",
+          "maxLength": 128
         },
         "categories": {
           "type": "array",
-          "items": { "type": "string" },
-          "description": "Optional: OR-filter by any of these categories in one request (e.g. hero + features + cta). Merged with category."
+          "items": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "description": "Optional: OR-filter by any of these categories in one request (e.g. hero + features + cta). Merged with category.",
+          "maxItems": 30
         },
         "style": {
           "type": "string",
           "enum": "$VIBES",
-          "description": "Optional: filter by one vibe. Auto-injected from ROOT.props.buildStyle when unset — you usually don't need to pass this. Merged with `styles`."
+          "description": "Optional: filter by one vibe. Auto-injected from ROOT.props.buildStyle when unset — you usually don't need to pass this. Merged with `styles`.",
+          "maxLength": 128
         },
         "styles": {
           "type": "array",
-          "items": { "type": "string", "enum": "$VIBES" },
-          "description": "Optional: OR-filter by any of these vibes. Merged with `style`."
+          "items": {
+            "type": "string",
+            "enum": "$VIBES",
+            "maxLength": 128
+          },
+          "description": "Optional: OR-filter by any of these vibes. Merged with `style`.",
+          "maxItems": 30
         }
       }
     }
@@ -35,7 +46,8 @@
       "properties": {
         "components": {
           "type": "string",
-          "description": "Comma-separated component names (e.g. \"Container,Text,Button,Image\"). Omit for all (non-fill only)."
+          "description": "Comma-separated component names (e.g. \"Container,Text,Button,Image\"). Omit for all (non-fill only).",
+          "maxLength": 2048
         }
       }
     }
@@ -56,15 +68,18 @@
       "properties": {
         "variant": {
           "type": "string",
-          "description": "Button variant intent. Values: primary, outline, ghost. Default: primary."
+          "description": "Button variant intent. Values: primary, outline, ghost. Default: primary.",
+          "maxLength": 128
         },
         "shape": {
           "type": "string",
-          "description": "Corner style class to apply. Typical: rounded-box or rounded-full. Default: rounded-box."
+          "description": "Corner style class to apply. Typical: rounded-box or rounded-full. Default: rounded-box.",
+          "maxLength": 128
         },
         "size": {
           "type": "string",
-          "description": "Size hint. Values: sm, md, lg. Default: md."
+          "description": "Size hint. Values: sm, md, lg. Default: md.",
+          "maxLength": 128
         },
         "cta": {
           "type": "boolean",
@@ -76,7 +91,8 @@
         },
         "emphasis": {
           "type": "string",
-          "description": "Primary-only visual emphasis. Values: default, neon. Default: default."
+          "description": "Primary-only visual emphasis. Values: default, neon. Default: default.",
+          "maxLength": 128
         },
         "includeModifiers": {
           "type": "boolean",
@@ -84,7 +100,8 @@
         },
         "extraClasses": {
           "type": "string",
-          "description": "Optional additional Tailwind classes to append."
+          "description": "Optional additional Tailwind classes to append.",
+          "maxLength": 4096
         }
       }
     }
@@ -97,16 +114,22 @@
       "properties": {
         "className": {
           "type": "string",
-          "description": "Button className to validate."
+          "description": "Button className to validate.",
+          "maxLength": 4096
         },
         "activeModifiers": {
           "type": "array",
-          "items": { "type": "string" },
-          "description": "Optional current active modifiers for the button (e.g. [\"btn-neon\"])."
+          "items": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "description": "Optional current active modifiers for the button (e.g. [\"btn-neon\"]).",
+          "maxItems": 100
         },
         "intentVariant": {
           "type": "string",
-          "description": "Optional intent guard. Values: primary, outline, ghost."
+          "description": "Optional intent guard. Values: primary, outline, ghost.",
+          "maxLength": 128
         },
         "autoFix": {
           "type": "boolean",
@@ -117,7 +140,9 @@
           "description": "If false, hardcoded color classes are treated as errors; otherwise warnings. Default: true."
         }
       },
-      "required": ["className"]
+      "required": [
+        "className"
+      ]
     }
   },
   {
@@ -128,7 +153,8 @@
       "properties": {
         "mood": {
           "type": "string",
-          "description": "Filter by mood keyword (e.g. \"warm\", \"modern\", \"dark\", \"restaurant\", \"medical\"). Omit for all presets."
+          "description": "Filter by mood keyword (e.g. \"warm\", \"modern\", \"dark\", \"restaurant\", \"medical\"). Omit for all presets.",
+          "maxLength": 128
         },
         "compact": {
           "type": "boolean",
@@ -149,19 +175,23 @@
       "properties": {
         "slug": {
           "type": "string",
-          "description": "URL-safe name for the site (e.g. \"bookstore-jazz\", \"my-portfolio\"). Used as internal reference."
+          "description": "URL-safe name for the site (e.g. \"bookstore-jazz\", \"my-portfolio\"). Used as internal reference.",
+          "maxLength": 256
         },
         "title": {
           "type": "string",
-          "description": "Human-readable title (e.g. \"Jazz Bookstore\")."
+          "description": "Human-readable title (e.g. \"Jazz Bookstore\").",
+          "maxLength": 512
         },
         "description": {
           "type": "string",
-          "description": "Short description ≤75 chars (e.g. \"Cozy bookstore with jazz lounge vibes\")."
+          "description": "Short description ≤75 chars (e.g. \"Cozy bookstore with jazz lounge vibes\").",
+          "maxLength": 16384
         },
         "image": {
           "type": "string",
-          "description": "Preview image URL."
+          "description": "Preview image URL.",
+          "maxLength": 2048
         },
         "hidden": {
           "type": "boolean",
@@ -169,12 +199,17 @@
         },
         "category": {
           "type": "string",
-          "description": "Template category (e.g. \"landing-page\", \"portfolio\", \"ecommerce\", \"blog\")."
+          "description": "Template category (e.g. \"landing-page\", \"portfolio\", \"ecommerce\", \"blog\").",
+          "maxLength": 128
         },
         "tags": {
           "type": "array",
-          "items": { "type": "string" },
-          "description": "Tags for discovery (e.g. [\"modern\", \"dark\", \"restaurant\"]). Max 30."
+          "items": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "description": "Tags for discovery (e.g. [\"modern\", \"dark\", \"restaurant\"]). Max 30.",
+          "maxItems": 30
         }
       }
     }
@@ -187,40 +222,66 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site)."
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
         },
         "preset": {
           "type": "string",
           "enum": [
-            "warm-editorial", "modern-minimal", "notion", "luxury-dark",
-            "bold-startup", "corporate-blue", "pastel-soft", "nature-green",
-            "ocean-blue", "sunset-warm", "industrial", "retro", "medical",
-            "restaurant-warm", "creative-studio", "monochrome", "playful",
-            "elegant-serif", "rustic", "deep-navy", "cyber-neon", "terracotta",
-            "slate-pro", "forest-deep", "dusty-rose"
+            "warm-editorial",
+            "modern-minimal",
+            "notion",
+            "luxury-dark",
+            "bold-startup",
+            "corporate-blue",
+            "pastel-soft",
+            "nature-green",
+            "ocean-blue",
+            "sunset-warm",
+            "industrial",
+            "retro",
+            "medical",
+            "restaurant-warm",
+            "creative-studio",
+            "monochrome",
+            "playful",
+            "elegant-serif",
+            "rustic",
+            "deep-navy",
+            "cyber-neon",
+            "terracotta",
+            "slate-pro",
+            "forest-deep",
+            "dusty-rose"
           ],
-          "description": "Preset slug. MUST be one of the enum values above. Loads palette, fonts, and styleGuide as defaults; individual palette/fonts/styleGuide params override. Pick by fit: bakery/restaurant → \"restaurant-warm\" / \"warm-editorial\" / \"rustic\"; SaaS → \"modern-minimal\" / \"notion\"; luxury → \"luxury-dark\"."
+          "description": "Preset slug. MUST be one of the enum values above. Loads palette, fonts, and styleGuide as defaults; individual palette/fonts/styleGuide params override. Pick by fit: bakery/restaurant → \"restaurant-warm\" / \"warm-editorial\" / \"rustic\"; SaaS → \"modern-minimal\" / \"notion\"; luxury → \"luxury-dark\".",
+          "maxLength": 128
         },
         "buildStyle": {
           "type": "string",
           "enum": "$VIBES",
-          "description": "OPTIONAL vibe override. Almost never needed — `preset` auto-derives this. Pass only if the user explicitly asks to lock the block library to one vibe (e.g. \"use only brutalist blocks\"). Not a preset slug — preset slugs go on `preset`."
+          "description": "OPTIONAL vibe override. Almost never needed — `preset` auto-derives this. Pass only if the user explicitly asks to lock the block library to one vibe (e.g. \"use only brutalist blocks\"). Not a preset slug — preset slugs go on `preset`.",
+          "maxLength": 128
         },
         "title": {
           "type": "string",
-          "description": "Human-readable title."
+          "description": "Human-readable title.",
+          "maxLength": 512
         },
         "description": {
           "type": "string",
-          "description": "Short description (≤75 chars)."
+          "description": "Short description (≤75 chars).",
+          "maxLength": 16384
         },
         "image": {
           "type": "string",
-          "description": "Preview image URL."
+          "description": "Preview image URL.",
+          "maxLength": 2048
         },
         "demo": {
           "type": "string",
-          "description": "Demo site URL."
+          "description": "Demo site URL.",
+          "maxLength": 2048
         },
         "homePage": {
           "type": "boolean",
@@ -235,24 +296,44 @@
           "items": {
             "type": "object",
             "properties": {
-              "name": { "type": "string" },
-              "color": { "type": "string" }
+              "name": {
+                "type": "string",
+                "maxLength": 512
+              },
+              "color": {
+                "type": "string",
+                "maxLength": 128
+              }
             },
-            "required": ["name", "color"]
+            "required": [
+              "name",
+              "color"
+            ]
           },
-          "description": "Full theme palette: array of {name, color}. Each `name` becomes a CSS variable via `toPaletteCSSVarName` (e.g. \"Base Content\" → `--base-content` → Tailwind `text-base-content`).\n\n**Use DaisyUI 5 / PageHub canonical names** (see `packages/sdk/src/utils/defaults.ts` → `DEFAULT_PALETTE`): Primary, Primary Content, Secondary, Secondary Content, Accent, Accent Content, Neutral, Neutral Content, Base 100, Base 200, Base 300, Base Content, Error, Error Content, Info, Info Content, Success, Success Content, Warning, Warning Content, Ring.\n\n**Do not** use shadcn-style labels like \"Background\", \"Foreground\", or \"Primary Text\" — `text-base-content` / `bg-base-100` will not bind and ink can default to near-black on dark heroes.\n\nPass the **complete** list when replacing the palette (the handler overwrites `ROOT.props.theme.palette`). Colors may be hex, rgb, hsl, or oklch()."
+          "description": "Full theme palette: array of {name, color}. Each `name` becomes a CSS variable via `toPaletteCSSVarName` (e.g. \"Base Content\" → `--base-content` → Tailwind `text-base-content`).\n\n**Use DaisyUI 5 / PageHub canonical names** (see `packages/sdk/src/utils/defaults.ts` → `DEFAULT_PALETTE`): Primary, Primary Content, Secondary, Secondary Content, Accent, Accent Content, Neutral, Neutral Content, Base 100, Base 200, Base 300, Base Content, Error, Error Content, Info, Info Content, Success, Success Content, Warning, Warning Content, Ring.\n\n**Do not** use shadcn-style labels like \"Background\", \"Foreground\", or \"Primary Text\" — `text-base-content` / `bg-base-100` will not bind and ink can default to near-black on dark heroes.\n\nPass the **complete** list when replacing the palette (the handler overwrites `ROOT.props.theme.palette`). Colors may be hex, rgb, hsl, or oklch().",
+          "maxItems": 30
         },
         "darkPalette": {
           "type": "array",
           "items": {
             "type": "object",
             "properties": {
-              "name": { "type": "string" },
-              "color": { "type": "string" }
+              "name": {
+                "type": "string",
+                "maxLength": 512
+              },
+              "color": {
+                "type": "string",
+                "maxLength": 128
+              }
             },
-            "required": ["name", "color"]
+            "required": [
+              "name",
+              "color"
+            ]
           },
-          "description": "Optional dark mode palette. Same shape as palette — same slot names, dark-appropriate colors. When provided, dark mode is automatically enabled and colors are applied via @media (prefers-color-scheme: dark). Omit to keep only light mode."
+          "description": "Optional dark mode palette. Same shape as palette — same slot names, dark-appropriate colors. When provided, dark mode is automatically enabled and colors are applied via @media (prefers-color-scheme: dark). Omit to keep only light mode.",
+          "maxItems": 30
         },
         "styleGuide": {
           "type": "object",
@@ -277,11 +358,13 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site)."
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
         },
         "templateId": {
           "type": "string",
-          "description": "Block template ID. Use list_blocks to see all available IDs. Examples: \"hero-1\", \"hero-2\", \"header-1\", \"footer-1\", \"pricing-1\", \"services-1\", \"imagetext-1\", \"optin-1\", \"texts-1\", \"team-1\"."
+          "description": "Block template ID. Use list_blocks to see all available IDs. Examples: \"hero-1\", \"hero-2\", \"header-1\", \"footer-1\", \"pricing-1\", \"services-1\", \"imagetext-1\", \"optin-1\", \"texts-1\", \"team-1\".",
+          "maxLength": 256
         },
         "contentOverrides": {
           "type": "object",
@@ -293,14 +376,17 @@
         },
         "pageId": {
           "type": "string",
-          "description": "Target page node ID to add the block to (e.g. \"page_about\"). Default: \"page_home\". Use list_pages to see available pages."
+          "description": "Target page node ID to add the block to (e.g. \"page_about\"). Default: \"page_home\". Use list_pages to see available pages.",
+          "maxLength": 256
         },
         "position": {
           "type": "number",
           "description": "Insert index in page's nodes. 0 = first section. Default: append to end."
         }
       },
-      "required": ["templateId"]
+      "required": [
+        "templateId"
+      ]
     }
   },
   {
@@ -311,11 +397,13 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site)."
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
         },
         "sectionRootId": {
           "type": "string",
-          "description": "Node ID of the block root in your nodes map. This gets attached to page_home. Use descriptive IDs like \"sec_testimonials\", \"sec_gallery\"."
+          "description": "Node ID of the block root in your nodes map. This gets attached to page_home. Use descriptive IDs like \"sec_testimonials\", \"sec_gallery\".",
+          "maxLength": 256
         },
         "nodes": {
           "type": "object",
@@ -323,14 +411,18 @@
         },
         "parentNodeId": {
           "type": "string",
-          "description": "Parent node to attach to. Default: \"page_home\". For multi-page sites, pass the target page ID (e.g. \"page_about\") to add sections to a specific page."
+          "description": "Parent node to attach to. Default: \"page_home\". For multi-page sites, pass the target page ID (e.g. \"page_about\") to add sections to a specific page.",
+          "maxLength": 256
         },
         "position": {
           "type": "number",
           "description": "Insert index in parent's nodes array. Default: append to end."
         }
       },
-      "required": ["sectionRootId", "nodes"]
+      "required": [
+        "sectionRootId",
+        "nodes"
+      ]
     }
   },
   {
@@ -341,14 +433,18 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site)."
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
         },
         "nodeId": {
           "type": "string",
-          "description": "Node ID to delete. Use pull_site to find IDs."
+          "description": "Node ID to delete. Use pull_site to find IDs.",
+          "maxLength": 256
         }
       },
-      "required": ["nodeId"]
+      "required": [
+        "nodeId"
+      ]
     }
   },
   {
@@ -359,22 +455,28 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site)."
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
         },
         "nodeId": {
           "type": "string",
-          "description": "ID of the node to move."
+          "description": "ID of the node to move.",
+          "maxLength": 256
         },
         "newParentId": {
           "type": "string",
-          "description": "ID of the new parent node."
+          "description": "ID of the new parent node.",
+          "maxLength": 256
         },
         "position": {
           "type": "number",
           "description": "Index in new parent's nodes array. Default: append to end."
         }
       },
-      "required": ["nodeId", "newParentId"]
+      "required": [
+        "nodeId",
+        "newParentId"
+      ]
     }
   },
   {
@@ -385,15 +487,18 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site)."
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
         },
         "nodeId": {
           "type": "string",
-          "description": "Unique ID for the new node. Use descriptive names like \"ftr_brand\", \"ftr_links\"."
+          "description": "Unique ID for the new node. Use descriptive names like \"ftr_brand\", \"ftr_links\".",
+          "maxLength": 256
         },
         "parentId": {
           "type": "string",
-          "description": "ID of the parent node to insert into."
+          "description": "ID of the parent node to insert into.",
+          "maxLength": 256
         },
         "position": {
           "type": "number",
@@ -408,7 +513,11 @@
           "description": "Optional block modifiers object (shape: { Text: [{name, classes, requires}], Container: [...] }). Required if the inserted node's className references shortcut modifier names (section-heading, body-text, eyebrow, subhead, section-wrapper, card-surface, icon-row, content-col, hero-content-centered). Upserted into ROOT.props.modifiers. Prefer apply_kit_block over hand-inlining a library block — this arg is for genuine one-offs that need a shared class shortcut."
         }
       },
-      "required": ["nodeId", "parentId", "node"]
+      "required": [
+        "nodeId",
+        "parentId",
+        "node"
+      ]
     }
   },
   {
@@ -419,7 +528,8 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site)."
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
         }
       }
     }
@@ -432,23 +542,28 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site)."
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
         },
         "q": {
           "type": "string",
-          "description": "Search query — matches against displayName, text content, and node ID. Case-insensitive."
+          "description": "Search query — matches against displayName, text content, and node ID. Case-insensitive.",
+          "maxLength": 1024
         },
         "type": {
           "type": "string",
-          "description": "Filter by component type: Text, Button, Container, Image, Form, FormElement, Nav, ButtonList, List, ListItem, Table, TableSection, TableRow, TableCell, Footer, Header, Divider."
+          "description": "Filter by component type: Text, Button, Container, Image, Form, FormElement, Nav, ButtonList, List, ListItem, Table, TableSection, TableRow, TableCell, Footer, Header, Divider.",
+          "maxLength": 128
         },
         "className": {
           "type": "string",
-          "description": "Substring match against props.className (case-insensitive). Use for scanning classes like 'bg-primary', 'py-space-md', 'text-neutral-content' across every section on every page."
+          "description": "Substring match against props.className (case-insensitive). Use for scanning classes like 'bg-primary', 'py-space-md', 'text-neutral-content' across every section on every page.",
+          "maxLength": 4096
         },
         "classRegex": {
           "type": "string",
-          "description": "Regex match against props.className (case-insensitive). Use for patterns like 'py-(8|12|16)' or 'text-(base-content|neutral)'. Escape backslashes in JSON."
+          "description": "Regex match against props.className (case-insensitive). Use for patterns like 'py-(8|12|16)' or 'text-(base-content|neutral)'. Escape backslashes in JSON.",
+          "maxLength": 4096
         }
       }
     }
@@ -461,11 +576,13 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site)."
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
         },
         "pageId": {
           "type": "string",
-          "description": "Target page node ID (e.g. \"page_about\"). Default: page_home or first page found. Use list_pages to see available pages."
+          "description": "Target page node ID (e.g. \"page_about\"). Default: page_home or first page found. Use list_pages to see available pages.",
+          "maxLength": 256
         }
       }
     }
@@ -478,18 +595,22 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site)."
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
         },
         "sectionRootId": {
           "type": "string",
-          "description": "Node ID of the block root. Get this from list_example_blocks."
+          "description": "Node ID of the block root. Get this from list_example_blocks.",
+          "maxLength": 256
         },
         "templatize": {
           "type": "boolean",
           "description": "If true, attempt to replace hardcoded years with {{year}} and flag hardcoded colors for manual palette mapping. Default: false."
         }
       },
-      "required": ["sectionRootId"]
+      "required": [
+        "sectionRootId"
+      ]
     }
   },
   {
@@ -500,37 +621,49 @@
       "properties": {
         "category": {
           "type": "string",
-          "description": "Category ID (e.g. \"hero\", \"testimonials\", \"gallery\", \"contact\", \"cta\"). Maps to data/section-templates/{category}.json."
+          "description": "Category ID (e.g. \"hero\", \"testimonials\", \"gallery\", \"contact\", \"cta\"). Maps to data/section-templates/{category}.json.",
+          "maxLength": 128
         },
         "categoryName": {
           "type": "string",
-          "description": "Human-readable category name. Only needed when creating a new category file (e.g. \"Testimonials\", \"Contact Sections\")."
+          "description": "Human-readable category name. Only needed when creating a new category file (e.g. \"Testimonials\", \"Contact Sections\").",
+          "maxLength": 512
         },
         "templateId": {
           "type": "string",
-          "description": "Unique template ID (e.g. \"testimonials-1\", \"gallery-2\"). Must be globally unique across all categories."
+          "description": "Unique template ID (e.g. \"testimonials-1\", \"gallery-2\"). Must be globally unique across all categories.",
+          "maxLength": 256
         },
         "name": {
           "type": "string",
-          "description": "Human-readable template name (e.g. \"Three-Card Testimonials Grid\")."
+          "description": "Human-readable template name (e.g. \"Three-Card Testimonials Grid\").",
+          "maxLength": 512
         },
         "visual": {
           "type": "string",
-          "description": "Prose description of what the rendered section looks like. Helps AI agents pick the right template."
+          "description": "Prose description of what the rendered section looks like. Helps AI agents pick the right template.",
+          "maxLength": 16384
         },
         "tags": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 128
           },
-          "description": "Search/filter tags (e.g. [\"testimonials\", \"cards\", \"three-column\", \"grid\"])."
+          "description": "Search/filter tags (e.g. [\"testimonials\", \"cards\", \"three-column\", \"grid\"]).",
+          "maxItems": 30
         },
         "structure": {
           "type": "object",
           "description": "Hierarchical section structure {type, props, children}. Output from extract_section or hand-crafted."
         }
       },
-      "required": ["category", "templateId", "name", "structure"]
+      "required": [
+        "category",
+        "templateId",
+        "name",
+        "structure"
+      ]
     }
   },
   {
@@ -541,22 +674,28 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site)."
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
         },
         "sectionRootId": {
           "type": "string",
-          "description": "Node ID of the block root to replace. Get this from list_example_blocks."
+          "description": "Node ID of the block root to replace. Get this from list_example_blocks.",
+          "maxLength": 256
         },
         "targetTemplateId": {
           "type": "string",
-          "description": "Specific template ID to swap to (e.g. \"hero-3\"). If omitted, picks a random alternative from the same category."
+          "description": "Specific template ID to swap to (e.g. \"hero-3\"). If omitted, picks a random alternative from the same category.",
+          "maxLength": 256
         },
         "pageId": {
           "type": "string",
-          "description": "Page node ID the section lives on. Default: page_home."
+          "description": "Page node ID the section lives on. Default: page_home.",
+          "maxLength": 256
         }
       },
-      "required": ["sectionRootId"]
+      "required": [
+        "sectionRootId"
+      ]
     }
   },
   {
@@ -567,15 +706,18 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site). Mutually exclusive with templateSlug."
+          "description": "Site id (defaults to active site). Mutually exclusive with templateSlug.",
+          "maxLength": 256
         },
         "templateSlug": {
           "type": "string",
-          "description": "Template slug to audit (e.g. \"artist\"). Mutually exclusive with id."
+          "description": "Template slug to audit (e.g. \"artist\"). Mutually exclusive with id.",
+          "maxLength": 256
         },
         "pageId": {
           "type": "string",
-          "description": "Page to audit. Default: page_home. Use list_pages to see available pages."
+          "description": "Page to audit. Default: page_home. Use list_pages to see available pages.",
+          "maxLength": 256
         }
       }
     }
@@ -588,14 +730,18 @@
       "properties": {
         "email": {
           "type": "string",
-          "description": "Email address"
+          "description": "Email address",
+          "maxLength": 320
         },
         "name": {
           "type": "string",
-          "description": "Display name (optional, derived from email if omitted)"
+          "description": "Display name (optional, derived from email if omitted)",
+          "maxLength": 512
         }
       },
-      "required": ["email"]
+      "required": [
+        "email"
+      ]
     }
   },
   {
@@ -606,15 +752,18 @@
       "properties": {
         "category": {
           "type": "string",
-          "description": "Filter by category (e.g. \"landing-page\", \"portfolio\")."
+          "description": "Filter by category (e.g. \"landing-page\", \"portfolio\").",
+          "maxLength": 128
         },
         "tag": {
           "type": "string",
-          "description": "Filter by tag (e.g. \"modern\", \"dark\")."
+          "description": "Filter by tag (e.g. \"modern\", \"dark\").",
+          "maxLength": 128
         },
         "q": {
           "type": "string",
-          "description": "Full-text search query."
+          "description": "Full-text search query.",
+          "maxLength": 1024
         }
       }
     }
@@ -627,10 +776,13 @@
       "properties": {
         "slug": {
           "type": "string",
-          "description": "Template slug to pull"
+          "description": "Template slug to pull",
+          "maxLength": 256
         }
       },
-      "required": ["slug"]
+      "required": [
+        "slug"
+      ]
     }
   },
   {
@@ -641,19 +793,23 @@
       "properties": {
         "slug": {
           "type": "string",
-          "description": "URL-safe unique slug (e.g. \"bakery-modern\")"
+          "description": "URL-safe unique slug (e.g. \"bakery-modern\")",
+          "maxLength": 256
         },
         "title": {
           "type": "string",
-          "description": "Human-readable title"
+          "description": "Human-readable title",
+          "maxLength": 512
         },
         "description": {
           "type": "string",
-          "description": "Short description"
+          "description": "Short description",
+          "maxLength": 16384
         },
         "image": {
           "type": "string",
-          "description": "Preview image URL"
+          "description": "Preview image URL",
+          "maxLength": 2048
         },
         "content": {
           "type": "object",
@@ -673,15 +829,24 @@
         },
         "category": {
           "type": "string",
-          "description": "Template category (e.g. \"landing-page\", \"portfolio\", \"ecommerce\", \"blog\")"
+          "description": "Template category (e.g. \"landing-page\", \"portfolio\", \"ecommerce\", \"blog\")",
+          "maxLength": 128
         },
         "tags": {
           "type": "array",
-          "items": { "type": "string" },
-          "description": "Tags for discovery (e.g. [\"modern\", \"dark\", \"restaurant\"]). Max 30."
+          "items": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "description": "Tags for discovery (e.g. [\"modern\", \"dark\", \"restaurant\"]). Max 30.",
+          "maxItems": 30
         }
       },
-      "required": ["slug", "title", "content"]
+      "required": [
+        "slug",
+        "title",
+        "content"
+      ]
     }
   },
   {
@@ -692,28 +857,37 @@
       "properties": {
         "slug": {
           "type": "string",
-          "description": "URL-safe unique slug for the template (defaults to site slug)"
+          "description": "URL-safe unique slug for the template (defaults to site slug)",
+          "maxLength": 256
         },
         "title": {
           "type": "string",
-          "description": "Human-readable title (defaults to site name)"
+          "description": "Human-readable title (defaults to site name)",
+          "maxLength": 512
         },
         "description": {
           "type": "string",
-          "description": "Short description"
+          "description": "Short description",
+          "maxLength": 16384
         },
         "image": {
           "type": "string",
-          "description": "Preview image URL (CDN or external)"
+          "description": "Preview image URL (CDN or external)",
+          "maxLength": 2048
         },
         "category": {
           "type": "string",
-          "description": "Template category (e.g. \"landing-page\", \"portfolio\")"
+          "description": "Template category (e.g. \"landing-page\", \"portfolio\")",
+          "maxLength": 128
         },
         "tags": {
           "type": "array",
-          "items": { "type": "string" },
-          "description": "Tags for discovery. Max 30."
+          "items": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "description": "Tags for discovery. Max 30.",
+          "maxItems": 30
         },
         "hidden": {
           "type": "boolean",
@@ -729,7 +903,8 @@
         },
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site)"
+          "description": "Site id (defaults to active site)",
+          "maxLength": 256
         }
       }
     }
@@ -742,19 +917,23 @@
       "properties": {
         "slug": {
           "type": "string",
-          "description": "Slug of the template to update"
+          "description": "Slug of the template to update",
+          "maxLength": 256
         },
         "title": {
           "type": "string",
-          "description": "New title"
+          "description": "New title",
+          "maxLength": 512
         },
         "description": {
           "type": "string",
-          "description": "New description"
+          "description": "New description",
+          "maxLength": 16384
         },
         "image": {
           "type": "string",
-          "description": "New preview image URL"
+          "description": "New preview image URL",
+          "maxLength": 2048
         },
         "content": {
           "type": "object",
@@ -770,15 +949,22 @@
         },
         "category": {
           "type": "string",
-          "description": "New category"
+          "description": "New category",
+          "maxLength": 128
         },
         "tags": {
           "type": "array",
-          "items": { "type": "string" },
-          "description": "New tags array. Max 30."
+          "items": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "description": "New tags array. Max 30.",
+          "maxItems": 30
         }
       },
-      "required": ["slug"]
+      "required": [
+        "slug"
+      ]
     }
   },
   {
@@ -789,10 +975,13 @@
       "properties": {
         "slug": {
           "type": "string",
-          "description": "Template slug to delete"
+          "description": "Template slug to delete",
+          "maxLength": 256
         }
       },
-      "required": ["slug"]
+      "required": [
+        "slug"
+      ]
     }
   },
   {
@@ -811,10 +1000,13 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Page _id to set as active"
+          "description": "Page _id to set as active",
+          "maxLength": 256
         }
       },
-      "required": ["id"]
+      "required": [
+        "id"
+      ]
     }
   },
   {
@@ -825,10 +1017,13 @@
       "properties": {
         "slug": {
           "type": "string",
-          "description": "Template slug to set as active"
+          "description": "Template slug to set as active",
+          "maxLength": 256
         }
       },
-      "required": ["slug"]
+      "required": [
+        "slug"
+      ]
     }
   },
   {
@@ -839,7 +1034,8 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site if omitted)"
+          "description": "Site id (defaults to active site if omitted)",
+          "maxLength": 256
         }
       }
     }
@@ -852,19 +1048,23 @@
       "properties": {
         "template": {
           "type": "string",
-          "description": "Template slug to seed from. Defaults to \"acme\" (the canonical blank starter). Pass list_templates output to pick another."
+          "description": "Template slug to seed from. Defaults to \"acme\" (the canonical blank starter). Pass list_templates output to pick another.",
+          "maxLength": 512
         },
         "name": {
           "type": "string",
-          "description": "Site slug (becomes the short name). Optional."
+          "description": "Site slug (becomes the short name). Optional.",
+          "maxLength": 512
         },
         "title": {
           "type": "string",
-          "description": "Site <title>. Optional."
+          "description": "Site <title>. Optional.",
+          "maxLength": 512
         },
         "description": {
           "type": "string",
-          "description": "Site meta description. Optional."
+          "description": "Site meta description. Optional.",
+          "maxLength": 16384
         }
       }
     }
@@ -877,7 +1077,8 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site)."
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
         }
       }
     }
@@ -890,7 +1091,8 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site)."
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
         }
       }
     }
@@ -903,10 +1105,13 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Page _id to delete"
+          "description": "Page _id to delete",
+          "maxLength": 256
         }
       },
-      "required": ["id"]
+      "required": [
+        "id"
+      ]
     }
   },
   {
@@ -917,23 +1122,28 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site from select_site)"
+          "description": "Site id (defaults to active site from select_site)",
+          "maxLength": 256
         },
         "imageUrl": {
           "type": "string",
-          "description": "Public http(s) URL to fetch and upload"
+          "description": "Public http(s) URL to fetch and upload",
+          "maxLength": 2048
         },
         "dataBase64": {
           "type": "string",
-          "description": "Raw base64 or data URL (data:image/...;base64,...). Max ~12MB decoded."
+          "description": "Raw base64 or data URL (data:image/...;base64,...). Max ~12MB decoded.",
+          "maxLength": 16777216
         },
         "mimeType": {
           "type": "string",
-          "description": "With dataBase64, e.g. image/png (default image/jpeg)"
+          "description": "With dataBase64, e.g. image/png (default image/jpeg)",
+          "maxLength": 128
         },
         "filename": {
           "type": "string",
-          "description": "Optional filename hint when using dataBase64"
+          "description": "Optional filename hint when using dataBase64",
+          "maxLength": 512
         }
       }
     }
@@ -946,22 +1156,40 @@
       "properties": {
         "q": {
           "type": "string",
-          "description": "Search keywords (e.g. 'modern office', 'bakery interior', 'headshot woman', 'mountain landscape')"
+          "description": "Search keywords (e.g. 'modern office', 'bakery interior', 'headshot woman', 'mountain landscape')",
+          "maxLength": 1024
         },
         "category": {
           "type": "string",
-          "enum": ["hero", "avatar", "product", "background", "team", "general"],
-          "description": "Image category. hero/background = wide landscape shots. avatar = headshots/faces. product = items/objects. team = people/groups."
+          "enum": [
+            "hero",
+            "avatar",
+            "product",
+            "background",
+            "team",
+            "general"
+          ],
+          "description": "Image category. hero/background = wide landscape shots. avatar = headshots/faces. product = items/objects. team = people/groups.",
+          "maxLength": 128
         },
         "orientation": {
           "type": "string",
-          "enum": ["landscape", "portrait", "square"],
-          "description": "Image orientation. Default: landscape."
+          "enum": [
+            "landscape",
+            "portrait",
+            "square"
+          ],
+          "description": "Image orientation. Default: landscape.",
+          "maxLength": 128
         },
         "provider": {
           "type": "string",
-          "enum": ["unsplash", "pexels"],
-          "description": "Optional provider key for factory fallback. Default: pexels."
+          "enum": [
+            "unsplash",
+            "pexels"
+          ],
+          "description": "Optional provider key for factory fallback. Default: pexels.",
+          "maxLength": 128
         },
         "count": {
           "type": "number",
@@ -978,12 +1206,18 @@
       "properties": {
         "q": {
           "type": "string",
-          "description": "Search keywords (e.g. 'city timelapse', 'coffee pouring', 'team meeting')"
+          "description": "Search keywords (e.g. 'city timelapse', 'coffee pouring', 'team meeting')",
+          "maxLength": 1024
         },
         "orientation": {
           "type": "string",
-          "enum": ["landscape", "portrait", "square"],
-          "description": "Optional orientation filter."
+          "enum": [
+            "landscape",
+            "portrait",
+            "square"
+          ],
+          "description": "Optional orientation filter.",
+          "maxLength": 128
         },
         "minDuration": {
           "type": "number",
@@ -995,8 +1229,11 @@
         },
         "provider": {
           "type": "string",
-          "enum": ["pexels"],
-          "description": "Video provider. Currently only pexels is supported."
+          "enum": [
+            "pexels"
+          ],
+          "description": "Video provider. Currently only pexels is supported.",
+          "maxLength": 128
         },
         "count": {
           "type": "number",
@@ -1013,23 +1250,31 @@
       "properties": {
         "q": {
           "type": "string",
-          "description": "Search keyword. Single word works best (\"yelp\", \"phone\", \"calendar\"). Multi-word also works — spaces / underscores / hyphens are normalized (\"shopping cart\" → matches TbShoppingCart). Case-insensitive."
+          "description": "Search keyword. Single word works best (\"yelp\", \"phone\", \"calendar\"). Multi-word also works — spaces / underscores / hyphens are normalized (\"shopping cart\" → matches TbShoppingCart). Case-insensitive.",
+          "maxLength": 1024
         },
         "set": {
           "type": "string",
-          "description": "Optional — restrict to a single icon set code (e.g. \"tb\", \"fa\", \"fa6\", \"bi\", \"bs\", \"si\", \"im\", \"lia\", \"md\", \"hi\", \"hi2\", \"lu\", \"ri\", \"go\", \"vsc\"). Omit to search every set ranked by match quality. Useful when you specifically want a Tabler icon (set=\"tb\") or a brand mark from Simple Icons (set=\"si\")."
+          "description": "Optional — restrict to a single icon set code (e.g. \"tb\", \"fa\", \"fa6\", \"bi\", \"bs\", \"si\", \"im\", \"lia\", \"md\", \"hi\", \"hi2\", \"lu\", \"ri\", \"go\", \"vsc\"). Omit to search every set ranked by match quality. Useful when you specifically want a Tabler icon (set=\"tb\") or a brand mark from Simple Icons (set=\"si\").",
+          "maxLength": 128
         },
         "kind": {
           "type": "string",
-          "enum": ["brand", "ui"],
-          "description": "Optional intent hint. \"brand\" restricts to brand-heavy sets (fa/fa6/si/bi/bs/im/lia) — use for company/product logos. \"ui\" restricts to Tabler — use when you want canonical UI iconography. Omit to search everything; the result is still ranked, this is just a coarse filter."
+          "enum": [
+            "brand",
+            "ui"
+          ],
+          "description": "Optional intent hint. \"brand\" restricts to brand-heavy sets (fa/fa6/si/bi/bs/im/lia) — use for company/product logos. \"ui\" restricts to Tabler — use when you want canonical UI iconography. Omit to search everything; the result is still ranked, this is just a coarse filter.",
+          "maxLength": 128
         },
         "limit": {
           "type": "number",
           "description": "Max results to return (default 12, max 50). The list is ranked best-match first; raise the limit only if the top results don't include what you want."
         }
       },
-      "required": ["q"]
+      "required": [
+        "q"
+      ]
     }
   },
   {
@@ -1040,19 +1285,23 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site)"
+          "description": "Site id (defaults to active site)",
+          "maxLength": 256
         },
         "nodeId": {
           "type": "string",
-          "description": "Craft node id e.g. page_home, ROOT"
+          "description": "Craft node id e.g. page_home, ROOT",
+          "maxLength": 256
         },
         "typePatch": {
           "type": "string",
-          "description": "Optional component type replacement for node.type.resolvedName (e.g. \"Button\", \"Text\", \"Image\"). Keeps node.isCanvas aligned automatically."
+          "description": "Optional component type replacement for node.type.resolvedName (e.g. \"Button\", \"Text\", \"Image\"). Keeps node.isCanvas aligned automatically.",
+          "maxLength": 128
         },
         "classNamePatch": {
           "type": "string",
-          "description": "Tailwind classes to merge into props.className via twMerge. Mobile-first: unprefixed = base/mobile, md: = desktop, sm: = tablet. Examples: \"flex flex-col gap-4 md:flex-row md:gap-8 bg-primary text-primary-content\"."
+          "description": "Tailwind classes to merge into props.className via twMerge. Mobile-first: unprefixed = base/mobile, md: = desktop, sm: = tablet. Examples: \"flex flex-col gap-4 md:flex-row md:gap-8 bg-primary text-primary-content\".",
+          "maxLength": 4096
         },
         "propsPatch": {
           "type": "object",
@@ -1061,45 +1310,67 @@
         "nodesPatch": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 256
           },
-          "description": "REORDER ONLY: must list exactly the same child node ids the parent already has (same multiset, any order). Wrong or partial lists blank the canvas — omit nodesPatch unless truly reordering; use classNamePatch/propsPatch for design."
+          "description": "REORDER ONLY: must list exactly the same child node ids the parent already has (same multiset, any order). Wrong or partial lists blank the canvas — omit nodesPatch unless truly reordering; use classNamePatch/propsPatch for design.",
+          "maxItems": 1000
         },
         "unsetClasses": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 128
           },
-          "description": "Classes or prefixes to remove from className. [\"gap-\"] removes gap-4, md:gap-8, etc."
+          "description": "Classes or prefixes to remove from className. [\"gap-\"] removes gap-4, md:gap-8, etc.",
+          "maxItems": 200
         },
         "unsetProps": {
           "type": "array",
           "items": {
-            "type": "string"
-          }
+            "type": "string",
+            "maxLength": 128
+          },
+          "maxItems": 200
         },
         "name": {
           "type": "string",
-          "description": "Optional site rename on PUT"
+          "description": "Optional site rename on PUT",
+          "maxLength": 512
         },
         "title": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 512
         },
         "description": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 16384
         },
         "buttonValidation": {
           "type": "string",
-          "enum": ["off", "warn", "fix", "strict"],
-          "description": "Optional button class preflight mode for touched Button nodes. Values: off, warn, fix, strict. Default: warn. `fix` auto-corrects common class/modifier conflicts; `strict` rejects invalid button classes before save."
+          "enum": [
+            "off",
+            "warn",
+            "fix",
+            "strict"
+          ],
+          "description": "Optional button class preflight mode for touched Button nodes. Values: off, warn, fix, strict. Default: warn. `fix` auto-corrects common class/modifier conflicts; `strict` rejects invalid button classes before save.",
+          "maxLength": 128
         },
         "designValidation": {
           "type": "string",
-          "enum": ["off", "warn", "strict"],
-          "description": "Optional design-token preflight mode for touched nodes. Values: off, warn, strict. Default: warn. Flags hardcoded color classes and other node-validation issues relevant to edited nodes."
+          "enum": [
+            "off",
+            "warn",
+            "strict"
+          ],
+          "description": "Optional design-token preflight mode for touched nodes. Values: off, warn, strict. Default: warn. Flags hardcoded color classes and other node-validation issues relevant to edited nodes.",
+          "maxLength": 128
         }
       },
-      "required": ["nodeId"]
+      "required": [
+        "nodeId"
+      ]
     }
   },
   {
@@ -1110,7 +1381,8 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site)"
+          "description": "Site id (defaults to active site)",
+          "maxLength": 256
         },
         "patches": {
           "type": "array",
@@ -1119,15 +1391,18 @@
             "properties": {
               "nodeId": {
                 "type": "string",
-                "description": "Craft node id e.g. page_home, ROOT"
+                "description": "Craft node id e.g. page_home, ROOT",
+                "maxLength": 256
               },
               "typePatch": {
                 "type": "string",
-                "description": "Optional component type replacement for node.type.resolvedName."
+                "description": "Optional component type replacement for node.type.resolvedName.",
+                "maxLength": 128
               },
               "classNamePatch": {
                 "type": "string",
-                "description": "Tailwind classes to merge into props.className. Mobile-first: unprefixed = base, md: = desktop."
+                "description": "Tailwind classes to merge into props.className. Mobile-first: unprefixed = base, md: = desktop.",
+                "maxLength": 4096
               },
               "propsPatch": {
                 "type": "object",
@@ -1136,50 +1411,75 @@
               "nodesPatch": {
                 "type": "array",
                 "items": {
-                  "type": "string"
+                  "type": "string",
+                  "maxLength": 256
                 },
-                "description": "REORDER ONLY: exact same child ids as the parent already has. Omit for design changes."
+                "description": "REORDER ONLY: exact same child ids as the parent already has. Omit for design changes.",
+                "maxItems": 1000
               },
               "unsetClasses": {
                 "type": "array",
                 "items": {
-                  "type": "string"
+                  "type": "string",
+                  "maxLength": 128
                 },
-                "description": "Classes/prefixes to remove from className."
+                "description": "Classes/prefixes to remove from className.",
+                "maxItems": 200
               },
               "unsetProps": {
                 "type": "array",
                 "items": {
-                  "type": "string"
-                }
+                  "type": "string",
+                  "maxLength": 128
+                },
+                "maxItems": 200
               }
             },
-            "required": ["nodeId"]
+            "required": [
+              "nodeId"
+            ]
           },
-          "description": "Ordered list of patches; all applied to the same fetched document before save. Pass as a real array, not a string."
+          "description": "Ordered list of patches; all applied to the same fetched document before save. Pass as a real array, not a string.",
+          "maxItems": 1000
         },
         "name": {
           "type": "string",
-          "description": "Optional site rename on PUT"
+          "description": "Optional site rename on PUT",
+          "maxLength": 512
         },
         "title": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 512
         },
         "description": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 16384
         },
         "buttonValidation": {
           "type": "string",
-          "enum": ["off", "warn", "fix", "strict"],
-          "description": "Optional button class preflight mode applied to touched Button nodes. Values: off, warn, fix, strict. Default: warn."
+          "enum": [
+            "off",
+            "warn",
+            "fix",
+            "strict"
+          ],
+          "description": "Optional button class preflight mode applied to touched Button nodes. Values: off, warn, fix, strict. Default: warn.",
+          "maxLength": 128
         },
         "designValidation": {
           "type": "string",
-          "enum": ["off", "warn", "strict"],
-          "description": "Optional design-token preflight mode for touched nodes. Values: off, warn, strict. Default: warn."
+          "enum": [
+            "off",
+            "warn",
+            "strict"
+          ],
+          "description": "Optional design-token preflight mode for touched nodes. Values: off, warn, strict. Default: warn.",
+          "maxLength": 128
         }
       },
-      "required": ["patches"]
+      "required": [
+        "patches"
+      ]
     }
   },
   {
@@ -1190,22 +1490,27 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site)"
+          "description": "Site id (defaults to active site)",
+          "maxLength": 256
         },
         "type": {
           "type": "string",
-          "description": "Portal type: \"sales\", \"review\", \"demo\", etc."
+          "description": "Portal type: \"sales\", \"review\", \"demo\", etc.",
+          "maxLength": 128
         },
         "status": {
           "type": "string",
-          "description": "Portal status e.g. \"unclaimed\", \"claimed\". Default: \"unclaimed\""
+          "description": "Portal status e.g. \"unclaimed\", \"claimed\". Default: \"unclaimed\"",
+          "maxLength": 128
         },
         "config": {
           "type": "object",
           "description": "Additional portal-specific config (merged into portal object)"
         }
       },
-      "required": ["type"]
+      "required": [
+        "type"
+      ]
     }
   },
   {
@@ -1216,7 +1521,8 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site)"
+          "description": "Site id (defaults to active site)",
+          "maxLength": 256
         }
       }
     }
@@ -1229,7 +1535,8 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site)"
+          "description": "Site id (defaults to active site)",
+          "maxLength": 256
         }
       }
     }
@@ -1242,20 +1549,28 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site). Mutually exclusive with templateSlug."
+          "description": "Site id (defaults to active site). Mutually exclusive with templateSlug.",
+          "maxLength": 256
         },
         "templateSlug": {
           "type": "string",
-          "description": "Template slug to audit (e.g. \"artist\"). Mutually exclusive with id."
+          "description": "Template slug to audit (e.g. \"artist\"). Mutually exclusive with id.",
+          "maxLength": 256
         },
         "pageId": {
           "type": "string",
-          "description": "Page to audit. Default: page_home. Use list_pages to see available pages."
+          "description": "Page to audit. Default: page_home. Use list_pages to see available pages.",
+          "maxLength": 256
         },
         "level": {
           "type": "string",
-          "enum": ["A", "AA", "AAA"],
-          "description": "WCAG conformance level. Default: \"AA\"."
+          "enum": [
+            "A",
+            "AA",
+            "AAA"
+          ],
+          "description": "WCAG conformance level. Default: \"AA\".",
+          "maxLength": 128
         }
       }
     }
@@ -1268,51 +1583,72 @@
       "properties": {
         "q": {
           "type": "string",
-          "description": "Optional full-text search over name, description, visual, tags. Use short layout phrases (e.g. \"split cta\", \"photo hero\", \"marquee logos\") so stronger matches float up (relevance sort). If zero hits, the server may retry without q."
+          "description": "Optional full-text search over name, description, visual, tags. Use short layout phrases (e.g. \"split cta\", \"photo hero\", \"marquee logos\") so stronger matches float up (relevance sort). If zero hits, the server may retry without q.",
+          "maxLength": 1024
         },
         "category": {
           "type": "string",
-          "description": "Filter by one category. Merged with categories. Available: \"hero\", \"features\", \"content\", \"cta\", \"testimonials\", \"team\", \"pricing\", \"contact\", \"faq\", \"commerce\", \"navigation\", \"social\"."
+          "description": "Filter by one category. Merged with categories. Available: \"hero\", \"features\", \"content\", \"cta\", \"testimonials\", \"team\", \"pricing\", \"contact\", \"faq\", \"commerce\", \"navigation\", \"social\".",
+          "maxLength": 128
         },
         "categories": {
           "type": "array",
-          "items": { "type": "string" },
-          "description": "OR-filter: any of these categories (e.g. [\"hero\",\"features\",\"cta\"]). Merged with category."
+          "items": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "description": "OR-filter: any of these categories (e.g. [\"hero\",\"features\",\"cta\"]). Merged with category.",
+          "maxItems": 30
         },
         "subcategory": {
           "type": "string",
-          "description": "Filter by subcategory within a category (e.g. \"payment-forms\", \"product-cards\", \"testimonials\")."
+          "description": "Filter by subcategory within a category (e.g. \"payment-forms\", \"product-cards\", \"testimonials\").",
+          "maxLength": 128
         },
         "tag": {
           "type": "string",
-          "description": "Filter by a specific tag (e.g. \"testimonial\", \"pricing\", \"avatar\")."
+          "description": "Filter by a specific tag (e.g. \"testimonial\", \"pricing\", \"avatar\").",
+          "maxLength": 128
         },
         "preset": {
           "type": "string",
-          "description": "Filter by starter / bundle id (e.g. \"acme\", \"pagehub-library\")."
+          "description": "Filter by starter / bundle id (e.g. \"acme\", \"pagehub-library\").",
+          "maxLength": 128
         },
         "source": {
           "type": "string",
-          "description": "Filter by legacy `source` field only. Prefer `preset` for new data."
+          "description": "Filter by legacy `source` field only. Prefer `preset` for new data.",
+          "maxLength": 128
         },
         "group": {
           "type": "string",
-          "description": "Filter by logical group (e.g. \"acme-homepage-cards\")."
+          "description": "Filter by logical group (e.g. \"acme-homepage-cards\").",
+          "maxLength": 128
         },
         "style": {
           "type": "string",
           "enum": "$VIBES",
-          "description": "Optional: filter by one vibe. Auto-injected from ROOT.props.buildStyle when unset — you usually don't need to pass this. Merged with `styles`."
+          "description": "Optional: filter by one vibe. Auto-injected from ROOT.props.buildStyle when unset — you usually don't need to pass this. Merged with `styles`.",
+          "maxLength": 128
         },
         "styles": {
           "type": "array",
-          "items": { "type": "string", "enum": "$VIBES" },
-          "description": "Optional: OR-filter by any of these vibes. Merged with `style`."
+          "items": {
+            "type": "string",
+            "enum": "$VIBES",
+            "maxLength": 128
+          },
+          "description": "Optional: OR-filter by any of these vibes. Merged with `style`.",
+          "maxItems": 30
         },
         "blockType": {
           "type": "string",
-          "enum": ["section", "component"],
-          "description": "Filter by block scope. \"section\" (default): full page sections (hero, footer, etc.). \"component\": reusable patterns (dropdown, card, accordion) that go inside sections."
+          "enum": [
+            "section",
+            "component"
+          ],
+          "description": "Filter by block scope. \"section\" (default): full page sections (hero, footer, etc.). \"component\": reusable patterns (dropdown, card, accordion) that go inside sections.",
+          "maxLength": 128
         },
         "featured": {
           "type": "boolean",
@@ -1320,7 +1656,8 @@
         },
         "sort": {
           "type": "string",
-          "description": "Sort: \"popular\" (uses/likes), \"newest\", \"name\", \"relevance\" (only with `q` — Mongo textScore). If you omit `sort`, the server picks **relevance** when `q` is set, else **newest** (avoids always returning the same top-used block)."
+          "description": "Sort: \"popular\" (uses/likes), \"newest\", \"name\", \"relevance\" (only with `q` — Mongo textScore). If you omit `sort`, the server picks **relevance** when `q` is set, else **newest** (avoids always returning the same top-used block).",
+          "maxLength": 128
         },
         "page": {
           "type": "number",
@@ -1341,10 +1678,13 @@
       "properties": {
         "slug": {
           "type": "string",
-          "description": "Block slug (from search_blocks results)."
+          "description": "Block slug (from search_blocks results).",
+          "maxLength": 256
         }
       },
-      "required": ["slug"]
+      "required": [
+        "slug"
+      ]
     }
   },
   {
@@ -1355,10 +1695,13 @@
       "properties": {
         "slug": {
           "type": "string",
-          "description": "Block slug (from search_blocks)."
+          "description": "Block slug (from search_blocks).",
+          "maxLength": 256
         }
       },
-      "required": ["slug"]
+      "required": [
+        "slug"
+      ]
     }
   },
   {
@@ -1369,39 +1712,52 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site). Pass explicitly for stateless usage."
+          "description": "Site id (defaults to active site). Pass explicitly for stateless usage.",
+          "maxLength": 256
         },
         "slug": {
           "type": "string",
-          "description": "Block slug from search_blocks (e.g. \"hero-split\", \"navbar\", \"footer-multi-column\")."
+          "description": "Block slug from search_blocks (e.g. \"hero-split\", \"navbar\", \"footer-multi-column\").",
+          "maxLength": 256
         },
         "target": {
           "type": "string",
-          "enum": ["page", "header", "footer"],
-          "description": "Where to place the block. \"page\" (default): add as a section on the page — use this for heroes, features, pricing, testimonials, CTAs, galleries, everything that lives IN the page. \"header\": ONLY for header blocks (navbar / menu bar) — replaces hdr_root. \"footer\": ONLY for footer blocks — replaces ftr_root. Do NOT use \"header\" for heroes/features/CTAs just because they're visually at the top — those are page sections."
+          "enum": [
+            "page",
+            "header",
+            "footer"
+          ],
+          "description": "Where to place the block. \"page\" (default): add as a section on the page — use this for heroes, features, pricing, testimonials, CTAs, galleries, everything that lives IN the page. \"header\": ONLY for header blocks (navbar / menu bar) — replaces hdr_root. \"footer\": ONLY for footer blocks — replaces ftr_root. Do NOT use \"header\" for heroes/features/CTAs just because they're visually at the top — those are page sections.",
+          "maxLength": 128
         },
         "sectionContainerId": {
           "type": "string",
-          "description": "Optional: id of an existing empty section container to install into (e.g. sec_cta for skeleton fills). Omit to add the block directly to the page. Not used with target: header/footer."
+          "description": "Optional: id of an existing empty section container to install into (e.g. sec_cta for skeleton fills). Omit to add the block directly to the page. Not used with target: header/footer.",
+          "maxLength": 256
         },
         "pageId": {
           "type": "string",
-          "description": "Target page node ID (default: page_home). Only used when target is \"page\" and sectionContainerId is omitted."
+          "description": "Target page node ID (default: page_home). Only used when target is \"page\" and sectionContainerId is omitted.",
+          "maxLength": 256
         },
         "contentOverrides": {
           "type": "string",
-          "description": "Optional JSON object: keys are custom.displayName from the block (use list_block_nodes to see them). Values are { text, url, alt, src, ... } per node type. **For repeated nodes** (e.g. 3 \"Title\" nodes in a 3-pillar grid), pass an **array** of overrides — each matching node consumes the next element in DFS order. Example: { \"Heading\": { \"text\": \"Our Services\" }, \"Title\": [{ \"text\": \"SEO\" }, { \"text\": \"PPC\" }, { \"text\": \"Content\" }], \"Body\": [{ \"text\": \"...\" }, { \"text\": \"...\" }, { \"text\": \"...\" }] }"
+          "description": "Optional JSON object: keys are custom.displayName from the block (use list_block_nodes to see them). Values are { text, url, alt, src, ... } per node type. **For repeated nodes** (e.g. 3 \"Title\" nodes in a 3-pillar grid), pass an **array** of overrides — each matching node consumes the next element in DFS order. Example: { \"Heading\": { \"text\": \"Our Services\" }, \"Title\": [{ \"text\": \"SEO\" }, { \"text\": \"PPC\" }, { \"text\": \"Content\" }], \"Body\": [{ \"text\": \"...\" }, { \"text\": \"...\" }, { \"text\": \"...\" }] }",
+          "maxLength": 65536
         },
         "propOverrides": {
           "type": "string",
-          "description": "Optional JSON object: keys are custom.displayName, values are { className, replaceClassName?, props } partial patches. className is merged via tailwind-merge by default. Set **replaceClassName: true** to REPLACE instead of merge — use when block defaults conflict with your design (e.g. btn-ghost vs btn-circle). **For repeated nodes**, pass an **array** — each match consumes the next element. Example: { \"Icon isolation\": { \"className\": \"btn btn-circle bg-accent/10 text-accent\", \"replaceClassName\": true } }"
+          "description": "Optional JSON object: keys are custom.displayName, values are { className, replaceClassName?, props } partial patches. className is merged via tailwind-merge by default. Set **replaceClassName: true** to REPLACE instead of merge — use when block defaults conflict with your design (e.g. btn-ghost vs btn-circle). **For repeated nodes**, pass an **array** — each match consumes the next element. Example: { \"Icon isolation\": { \"className\": \"btn btn-circle bg-accent/10 text-accent\", \"replaceClassName\": true } }",
+          "maxLength": 65536
         },
         "position": {
           "type": "number",
           "description": "Insert position in the parent's children array. 0 = first child, 1 = after first child, etc. Use pull_site to see page_home.nodes order. Default: append to end."
         }
       },
-      "required": ["slug"]
+      "required": [
+        "slug"
+      ]
     }
   },
   {
@@ -1412,51 +1768,63 @@
       "properties": {
         "name": {
           "type": "string",
-          "description": "Human-readable name (e.g. \"Testimonial Card with Stars\")."
+          "description": "Human-readable name (e.g. \"Testimonial Card with Stars\").",
+          "maxLength": 512
         },
         "slug": {
           "type": "string",
-          "description": "URL-safe unique slug (e.g. \"testimonial-card-stars\"). Lowercase, hyphens only."
+          "description": "URL-safe unique slug (e.g. \"testimonial-card-stars\"). Lowercase, hyphens only.",
+          "maxLength": 256
         },
         "description": {
           "type": "string",
-          "description": "Short description of what the component is and when to use it."
+          "description": "Short description of what the component is and when to use it.",
+          "maxLength": 16384
         },
         "visual": {
           "type": "string",
-          "description": "Detailed visual description for AI search — what it looks like when rendered."
+          "description": "Detailed visual description for AI search — what it looks like when rendered.",
+          "maxLength": 16384
         },
         "category": {
           "type": "string",
-          "description": "Top-level category (any string). Common: \"hero\", \"features\", \"content\", \"cta\", \"testimonials\", \"team\", \"pricing\", \"contact\", \"faq\", \"commerce\", \"navigation\", \"social\"."
+          "description": "Top-level category (any string). Common: \"hero\", \"features\", \"content\", \"cta\", \"testimonials\", \"team\", \"pricing\", \"contact\", \"faq\", \"commerce\", \"navigation\", \"social\".",
+          "maxLength": 128
         },
         "subcategory": {
           "type": "string",
-          "description": "Subcategory within the category (e.g. \"testimonials\", \"payment-forms\", \"product-cards\"). Creates browsable groups."
+          "description": "Subcategory within the category (e.g. \"testimonials\", \"payment-forms\", \"product-cards\"). Creates browsable groups.",
+          "maxLength": 128
         },
         "tags": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 128
           },
-          "description": "Search tags (e.g. [\"testimonial\", \"review\", \"stars\", \"avatar\"])."
+          "description": "Search tags (e.g. [\"testimonial\", \"review\", \"stars\", \"avatar\"]).",
+          "maxItems": 30
         },
         "preset": {
           "type": "string",
-          "description": "Starter / bundle id this block belongs to (e.g. \"acme\", \"pagehub-library\"). Use for attribution when extracting from a template or preset."
+          "description": "Starter / bundle id this block belongs to (e.g. \"acme\", \"pagehub-library\"). Use for attribution when extracting from a template or preset.",
+          "maxLength": 128
         },
         "source": {
           "type": "string",
-          "description": "Legacy field; prefer `preset`. Still accepted for older tooling."
+          "description": "Legacy field; prefer `preset`. Still accepted for older tooling.",
+          "maxLength": 128
         },
         "group": {
           "type": "string",
-          "description": "Logical grouping name (e.g. \"acme-homepage-cards\"). Use to batch related components."
+          "description": "Logical grouping name (e.g. \"acme-homepage-cards\"). Use to batch related components.",
+          "maxLength": 128
         },
         "style": {
           "type": "string",
           "enum": "$VIBES",
-          "description": "Vibe this block belongs to. Blocks with the same vibe mix well together; the site's `buildStyle` filters the library to this value."
+          "description": "Vibe this block belongs to. Blocks with the same vibe mix well together; the site's `buildStyle` filters the library to this value.",
+          "maxLength": 128
         },
         "structure": {
           "type": "object",
@@ -1471,7 +1839,12 @@
           "description": "Use this block as the representative preview/thumbnail for its category. Default: false."
         }
       },
-      "required": ["name", "slug", "category", "structure"]
+      "required": [
+        "name",
+        "slug",
+        "category",
+        "structure"
+      ]
     }
   },
   {
@@ -1482,55 +1855,68 @@
       "properties": {
         "slug": {
           "type": "string",
-          "description": "Current slug of the block to update."
+          "description": "Current slug of the block to update.",
+          "maxLength": 256
         },
         "name": {
           "type": "string",
-          "description": "New name."
+          "description": "New name.",
+          "maxLength": 512
         },
         "newSlug": {
           "type": "string",
-          "description": "New slug (rename). Must be unique."
+          "description": "New slug (rename). Must be unique.",
+          "maxLength": 256
         },
         "description": {
           "type": "string",
-          "description": "New description."
+          "description": "New description.",
+          "maxLength": 16384
         },
         "visual": {
           "type": "string",
-          "description": "New visual description for AI search."
+          "description": "New visual description for AI search.",
+          "maxLength": 16384
         },
         "category": {
           "type": "string",
-          "description": "Move to a different category (any string, no restrictions)."
+          "description": "Move to a different category (any string, no restrictions).",
+          "maxLength": 128
         },
         "subcategory": {
           "type": "string",
-          "description": "Set or change subcategory (e.g. \"testimonials\", \"payment-forms\")."
+          "description": "Set or change subcategory (e.g. \"testimonials\", \"payment-forms\").",
+          "maxLength": 128
         },
         "tags": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 128
           },
-          "description": "Replace tags array."
+          "description": "Replace tags array.",
+          "maxItems": 30
         },
         "preset": {
           "type": "string",
-          "description": "Update starter / bundle id (e.g. \"acme\", \"pagehub-library\")."
+          "description": "Update starter / bundle id (e.g. \"acme\", \"pagehub-library\").",
+          "maxLength": 128
         },
         "source": {
           "type": "string",
-          "description": "Update legacy `source` field; prefer `preset` for new values."
+          "description": "Update legacy `source` field; prefer `preset` for new values.",
+          "maxLength": 128
         },
         "group": {
           "type": "string",
-          "description": "Update logical group."
+          "description": "Update logical group.",
+          "maxLength": 128
         },
         "style": {
           "type": "string",
           "enum": "$VIBES",
-          "description": "Update the block's vibe."
+          "description": "Update the block's vibe.",
+          "maxLength": 128
         },
         "structure": {
           "type": "object",
@@ -1549,7 +1935,9 @@
           "description": "Toggle category preview thumbnail."
         }
       },
-      "required": ["slug"]
+      "required": [
+        "slug"
+      ]
     }
   },
   {
@@ -1560,19 +1948,23 @@
       "properties": {
         "slug": {
           "type": "string",
-          "description": "Block slug (same string used in list_block_nodes)."
+          "description": "Block slug (same string used in list_block_nodes).",
+          "maxLength": 256
         },
         "nodeId": {
           "type": "string",
-          "description": "Flat node id from list_block_nodes (lib_*)."
+          "description": "Flat node id from list_block_nodes (lib_*).",
+          "maxLength": 256
         },
         "typePatch": {
           "type": "string",
-          "description": "Optional component type replacement for node.type.resolvedName (e.g. \"Button\", \"Text\", \"Image\"). Keeps node.isCanvas aligned automatically."
+          "description": "Optional component type replacement for node.type.resolvedName (e.g. \"Button\", \"Text\", \"Image\"). Keeps node.isCanvas aligned automatically.",
+          "maxLength": 128
         },
         "classNamePatch": {
           "type": "string",
-          "description": "Tailwind classes to merge into props.className. Mobile-first: unprefixed = base, md: = desktop."
+          "description": "Tailwind classes to merge into props.className. Mobile-first: unprefixed = base, md: = desktop.",
+          "maxLength": 4096
         },
         "propsPatch": {
           "type": "object",
@@ -1581,25 +1973,34 @@
         "nodesPatch": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 256
           },
-          "description": "REORDER ONLY: exact same child ids as the node already has. Omit unless reordering."
+          "description": "REORDER ONLY: exact same child ids as the node already has. Omit unless reordering.",
+          "maxItems": 1000
         },
         "unsetClasses": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": "string",
+            "maxLength": 128
           },
-          "description": "Classes/prefixes to remove from className."
+          "description": "Classes/prefixes to remove from className.",
+          "maxItems": 200
         },
         "unsetProps": {
           "type": "array",
           "items": {
-            "type": "string"
-          }
+            "type": "string",
+            "maxLength": 128
+          },
+          "maxItems": 200
         }
       },
-      "required": ["slug", "nodeId"]
+      "required": [
+        "slug",
+        "nodeId"
+      ]
     }
   },
   {
@@ -1610,7 +2011,8 @@
       "properties": {
         "slug": {
           "type": "string",
-          "description": "Block slug (same string used in list_block_nodes)."
+          "description": "Block slug (same string used in list_block_nodes).",
+          "maxLength": 256
         },
         "patches": {
           "type": "array",
@@ -1619,15 +2021,18 @@
             "properties": {
               "nodeId": {
                 "type": "string",
-                "description": "lib_* id from list_block_nodes"
+                "description": "lib_* id from list_block_nodes",
+                "maxLength": 256
               },
               "typePatch": {
                 "type": "string",
-                "description": "Optional component type replacement for node.type.resolvedName."
+                "description": "Optional component type replacement for node.type.resolvedName.",
+                "maxLength": 128
               },
               "classNamePatch": {
                 "type": "string",
-                "description": "Tailwind classes to merge into props.className."
+                "description": "Tailwind classes to merge into props.className.",
+                "maxLength": 4096
               },
               "propsPatch": {
                 "type": "object",
@@ -1636,30 +2041,42 @@
               "nodesPatch": {
                 "type": "array",
                 "items": {
-                  "type": "string"
+                  "type": "string",
+                  "maxLength": 256
                 },
-                "description": "REORDER ONLY: exact same child ids as the parent already has."
+                "description": "REORDER ONLY: exact same child ids as the parent already has.",
+                "maxItems": 1000
               },
               "unsetClasses": {
                 "type": "array",
                 "items": {
-                  "type": "string"
+                  "type": "string",
+                  "maxLength": 128
                 },
-                "description": "Classes/prefixes to remove from className."
+                "description": "Classes/prefixes to remove from className.",
+                "maxItems": 200
               },
               "unsetProps": {
                 "type": "array",
                 "items": {
-                  "type": "string"
-                }
+                  "type": "string",
+                  "maxLength": 128
+                },
+                "maxItems": 200
               }
             },
-            "required": ["nodeId"]
+            "required": [
+              "nodeId"
+            ]
           },
-          "description": "Non-empty array of per-node patches (same keys as patch_block)."
+          "description": "Non-empty array of per-node patches (same keys as patch_block).",
+          "maxItems": 1000
         }
       },
-      "required": ["slug", "patches"]
+      "required": [
+        "slug",
+        "patches"
+      ]
     }
   },
   {
@@ -1670,10 +2087,13 @@
       "properties": {
         "slug": {
           "type": "string",
-          "description": "Block slug to delete."
+          "description": "Block slug to delete.",
+          "maxLength": 256
         }
       },
-      "required": ["slug"]
+      "required": [
+        "slug"
+      ]
     }
   },
   {
@@ -1684,7 +2104,8 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site)."
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
         }
       }
     }
@@ -1697,11 +2118,13 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site)."
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
         },
         "name": {
           "type": "string",
-          "description": "Page display name (e.g. \"About\", \"Contact\", \"Shop\"). This becomes the URL slug: \"About\" → /about, \"Our Services\" → /our-services."
+          "description": "Page display name (e.g. \"About\", \"Contact\", \"Shop\"). This becomes the URL slug: \"About\" → /about, \"Our Services\" → /our-services.",
+          "maxLength": 512
         },
         "isHomePage": {
           "type": "boolean",
@@ -1721,29 +2144,55 @@
           "properties": {
             "title": {
               "type": "string",
-              "description": "Page <title> tag. Falls back to displayName."
+              "description": "Page <title> tag. Falls back to displayName.",
+              "maxLength": 512
             },
             "description": {
               "type": "string",
-              "description": "Meta description for this page."
+              "description": "Meta description for this page.",
+              "maxLength": 16384
             },
-            "keywords": { "type": "string", "description": "Meta keywords (comma-separated)." },
-            "ogTitle": { "type": "string", "description": "Open Graph title." },
-            "ogDescription": { "type": "string", "description": "Open Graph description." },
-            "ogImage": { "type": "string", "description": "Open Graph image URL." },
+            "keywords": {
+              "type": "string",
+              "description": "Meta keywords (comma-separated).",
+              "maxLength": 16384
+            },
+            "ogTitle": {
+              "type": "string",
+              "description": "Open Graph title.",
+              "maxLength": 512
+            },
+            "ogDescription": {
+              "type": "string",
+              "description": "Open Graph description.",
+              "maxLength": 1024
+            },
+            "ogImage": {
+              "type": "string",
+              "description": "Open Graph image URL.",
+              "maxLength": 2048
+            },
             "ogType": {
               "type": "string",
-              "description": "Open Graph type (default: \"website\")."
+              "description": "Open Graph type (default: \"website\").",
+              "maxLength": 128
             },
-            "canonicalUrl": { "type": "string", "description": "Canonical URL for this page." },
+            "canonicalUrl": {
+              "type": "string",
+              "description": "Canonical URL for this page.",
+              "maxLength": 2048
+            },
             "robots": {
               "type": "string",
-              "description": "Robots meta tag (e.g. \"noindex, nofollow\")."
+              "description": "Robots meta tag (e.g. \"noindex, nofollow\").",
+              "maxLength": 128
             }
           }
         }
       },
-      "required": ["name"]
+      "required": [
+        "name"
+      ]
     }
   },
   {
@@ -1754,15 +2203,18 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site)."
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
         },
         "pageId": {
           "type": "string",
-          "description": "Node ID of the page to update (e.g. \"page_home\", \"page_about\"). Get from list_pages."
+          "description": "Node ID of the page to update (e.g. \"page_home\", \"page_about\"). Get from list_pages.",
+          "maxLength": 256
         },
         "name": {
           "type": "string",
-          "description": "New display name for the page. Changes the URL slug."
+          "description": "New display name for the page. Changes the URL slug.",
+          "maxLength": 512
         },
         "isHomePage": {
           "type": "boolean",
@@ -1780,27 +2232,58 @@
           "type": "object",
           "description": "Per-page SEO metadata to set/update (nested under seo.*).",
           "properties": {
-            "title": { "type": "string" },
-            "description": { "type": "string" },
-            "keywords": { "type": "string" },
-            "ogTitle": { "type": "string" },
-            "ogDescription": { "type": "string" },
-            "ogImage": { "type": "string" },
-            "ogType": { "type": "string" },
-            "canonicalUrl": { "type": "string" },
-            "robots": { "type": "string" }
+            "title": {
+              "type": "string",
+              "maxLength": 512
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 16384
+            },
+            "keywords": {
+              "type": "string",
+              "maxLength": 16384
+            },
+            "ogTitle": {
+              "type": "string",
+              "maxLength": 512
+            },
+            "ogDescription": {
+              "type": "string",
+              "maxLength": 1024
+            },
+            "ogImage": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "ogType": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "canonicalUrl": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "robots": {
+              "type": "string",
+              "maxLength": 128
+            }
           }
         },
         "headCode": {
           "type": "string",
-          "description": "Raw HTML injected into this page's <head> (scripts, styles, meta tags). Scoped to this page only — for site-wide injection use patch_site_node on ROOT.props.inject.head. Pass an empty string to clear."
+          "description": "Raw HTML injected into this page's <head> (scripts, styles, meta tags). Scoped to this page only — for site-wide injection use patch_site_node on ROOT.props.inject.head. Pass an empty string to clear.",
+          "maxLength": 65536
         },
         "bodyClass": {
           "type": "string",
-          "description": "Extra className(s) applied to <body> on this page (space-separated). Pass an empty string to clear."
+          "description": "Extra className(s) applied to <body> on this page (space-separated). Pass an empty string to clear.",
+          "maxLength": 4096
         }
       },
-      "required": ["pageId"]
+      "required": [
+        "pageId"
+      ]
     }
   },
   {
@@ -1811,14 +2294,18 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site)."
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
         },
         "pageId": {
           "type": "string",
-          "description": "Node ID of the page to delete (e.g. \"page_about\"). Get from list_pages."
+          "description": "Node ID of the page to delete (e.g. \"page_about\"). Get from list_pages.",
+          "maxLength": 256
         }
       },
-      "required": ["pageId"]
+      "required": [
+        "pageId"
+      ]
     }
   },
   {
@@ -1829,7 +2316,8 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site)."
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
         },
         "nodes": {
           "type": "object",
@@ -1837,11 +2325,13 @@
         },
         "rootNodeId": {
           "type": "string",
-          "description": "The top-level node ID to attach to the parent. This ID must exist in the nodes map."
+          "description": "The top-level node ID to attach to the parent. This ID must exist in the nodes map.",
+          "maxLength": 256
         },
         "parentId": {
           "type": "string",
-          "description": "Parent node to attach rootNodeId to. Default: page_home. For multi-page sites, pass the target page ID (e.g. \"page_about\")."
+          "description": "Parent node to attach rootNodeId to. Default: page_home. For multi-page sites, pass the target page ID (e.g. \"page_about\").",
+          "maxLength": 256
         },
         "position": {
           "type": "number",
@@ -1852,7 +2342,10 @@
           "description": "Optional block modifiers object (shape: { Text: [{name, classes, requires}], Container: [...] }). Required if any node's className references shortcut modifier names (section-heading, body-text, eyebrow, subhead, section-wrapper, card-surface, icon-row, content-col, hero-content-centered). Upserted into ROOT.props.modifiers. Prefer apply_kit_block over hand-inlining a library block — this arg is for genuine one-offs that need a shared class shortcut."
         }
       },
-      "required": ["nodes", "rootNodeId"]
+      "required": [
+        "nodes",
+        "rootNodeId"
+      ]
     }
   },
   {
@@ -1863,7 +2356,8 @@
       "properties": {
         "reason": {
           "type": "string",
-          "description": "One-line summary of what this tree represents (for observability). Example: \"hero split, form card right\"."
+          "description": "One-line summary of what this tree represents (for observability). Example: \"hero split, form card right\".",
+          "maxLength": 1024
         },
         "hierarchy": {
           "type": "object",
@@ -1871,7 +2365,8 @@
           "properties": {
             "type": {
               "type": "string",
-              "description": "Component type. Root must be \"Container\", \"Grid\", or \"ContainerGroup\"."
+              "description": "Component type. Root must be \"Container\", \"Grid\", or \"ContainerGroup\".",
+              "maxLength": 128
             },
             "props": {
               "type": "object",
@@ -1882,10 +2377,15 @@
               "description": "Nested child nodes (same shape). Only canvas components (Container/Grid/etc.) may have children."
             }
           },
-          "required": ["type"]
+          "required": [
+            "type"
+          ]
         }
       },
-      "required": ["reason", "hierarchy"]
+      "required": [
+        "reason",
+        "hierarchy"
+      ]
     }
   },
   {
@@ -1901,10 +2401,12 @@
             "type": "object",
             "properties": {
               "name": {
-                "type": "string"
+                "type": "string",
+                "maxLength": 512
               },
               "description": {
-                "type": "string"
+                "type": "string",
+                "maxLength": 16384
               },
               "palette": {
                 "type": "array",
@@ -1912,20 +2414,29 @@
                   "type": "object",
                   "properties": {
                     "name": {
-                      "type": "string"
+                      "type": "string",
+                      "maxLength": 512
                     },
                     "color": {
-                      "type": "string"
+                      "type": "string",
+                      "maxLength": 128
                     }
                   }
-                }
+                },
+                "maxItems": 30
               }
             },
-            "required": ["name", "palette"]
-          }
+            "required": [
+              "name",
+              "palette"
+            ]
+          },
+          "maxItems": 10
         }
       },
-      "required": ["options"]
+      "required": [
+        "options"
+      ]
     }
   },
   {
@@ -1940,36 +2451,73 @@
           "items": {
             "type": "object",
             "properties": {
-              "name": { "type": "string" },
-              "description": { "type": "string" },
+              "name": {
+                "type": "string",
+                "maxLength": 512
+              },
+              "description": {
+                "type": "string",
+                "maxLength": 16384
+              },
               "styleGuide": {
                 "type": "object",
                 "description": "Font + token overrides applied with the pairing.",
                 "properties": {
-                  "headingFontFamily": { "type": "string" },
-                  "bodyFontFamily": { "type": "string" },
-                  "accentFontFamily": { "type": "string" },
-                  "radiusBox": { "type": "string" },
-                  "shadowStyle": { "type": "string" }
+                  "headingFontFamily": {
+                    "type": "string",
+                    "maxLength": 512
+                  },
+                  "bodyFontFamily": {
+                    "type": "string",
+                    "maxLength": 512
+                  },
+                  "accentFontFamily": {
+                    "type": "string",
+                    "maxLength": 512
+                  },
+                  "radiusBox": {
+                    "type": "string",
+                    "maxLength": 512
+                  },
+                  "shadowStyle": {
+                    "type": "string",
+                    "maxLength": 512
+                  }
                 },
-                "required": ["headingFontFamily", "bodyFontFamily"]
+                "required": [
+                  "headingFontFamily",
+                  "bodyFontFamily"
+                ]
               },
               "palette": {
                 "type": "array",
                 "items": {
                   "type": "object",
                   "properties": {
-                    "name": { "type": "string" },
-                    "color": { "type": "string" }
+                    "name": {
+                      "type": "string",
+                      "maxLength": 512
+                    },
+                    "color": {
+                      "type": "string",
+                      "maxLength": 128
+                    }
                   }
-                }
+                },
+                "maxItems": 30
               }
             },
-            "required": ["name", "styleGuide"]
-          }
+            "required": [
+              "name",
+              "styleGuide"
+            ]
+          },
+          "maxItems": 10
         }
       },
-      "required": ["options"]
+      "required": [
+        "options"
+      ]
     }
   },
   {
@@ -1980,23 +2528,28 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site)."
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
         },
         "googleAnalytics": {
           "type": "string",
-          "description": "GA4 Measurement ID, e.g. \"G-XXXXXXXXXX\". Find in Google Analytics > Admin > Data Streams."
+          "description": "GA4 Measurement ID, e.g. \"G-XXXXXXXXXX\". Find in Google Analytics > Admin > Data Streams.",
+          "maxLength": 128
         },
         "googleTagManager": {
           "type": "string",
-          "description": "GTM Container ID, e.g. \"GTM-XXXXXXX\". Covers GA, Meta Pixel, and most tags in one shot."
+          "description": "GTM Container ID, e.g. \"GTM-XXXXXXX\". Covers GA, Meta Pixel, and most tags in one shot.",
+          "maxLength": 128
         },
         "googleSearchConsole": {
           "type": "string",
-          "description": "Google Search Console HTML tag verification code (just the content value, not the full meta tag)."
+          "description": "Google Search Console HTML tag verification code (just the content value, not the full meta tag).",
+          "maxLength": 1024
         },
         "metaPixel": {
           "type": "string",
-          "description": "Facebook/Meta Pixel ID for conversion tracking."
+          "description": "Facebook/Meta Pixel ID for conversion tracking.",
+          "maxLength": 128
         }
       }
     }
@@ -2009,7 +2562,8 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Site id (defaults to active site)."
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
         },
         "redirects": {
           "type": "array",
@@ -2019,22 +2573,30 @@
             "properties": {
               "from": {
                 "type": "string",
-                "description": "Source path (site-relative, e.g. \"/old-page\")"
+                "description": "Source path (site-relative, e.g. \"/old-page\")",
+                "maxLength": 2048
               },
               "to": {
                 "type": "string",
-                "description": "Destination path or URL (e.g. \"/new-page\" or \"https://example.com\")"
+                "description": "Destination path or URL (e.g. \"/new-page\" or \"https://example.com\")",
+                "maxLength": 2048
               },
               "permanent": {
                 "type": "boolean",
                 "description": "true = 301 permanent (default), false = 302 temporary"
               }
             },
-            "required": ["from", "to"]
-          }
+            "required": [
+              "from",
+              "to"
+            ]
+          },
+          "maxItems": 500
         }
       },
-      "required": ["redirects"]
+      "required": [
+        "redirects"
+      ]
     }
   },
   {
@@ -2045,11 +2607,13 @@
       "properties": {
         "query": {
           "type": "string",
-          "description": "Free-text query. Matches against product name and description (fuzzy). Optional — omit to list all products."
+          "description": "Free-text query. Matches against product name and description (fuzzy). Optional — omit to list all products.",
+          "maxLength": 1024
         },
         "category": {
           "type": "string",
-          "description": "Filter by metadata.category exact-match (e.g. 'candles')."
+          "description": "Filter by metadata.category exact-match (e.g. 'candles').",
+          "maxLength": 128
         },
         "limit": {
           "type": "number",
@@ -2057,7 +2621,8 @@
         },
         "sort": {
           "type": "string",
-          "description": "Sort order: alpha | price_asc | price_desc | newest | oldest. Note: Stripe Search has no native sort, so sort applies client-side to the fetched hit set."
+          "description": "Sort order: alpha | price_asc | price_desc | newest | oldest. Note: Stripe Search has no native sort, so sort applies client-side to the fetched hit set.",
+          "maxLength": 128
         }
       }
     }
@@ -2078,11 +2643,13 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Stripe product id (prod_...). Takes precedence over slug."
+          "description": "Stripe product id (prod_...). Takes precedence over slug.",
+          "maxLength": 256
         },
         "slug": {
           "type": "string",
-          "description": "URL-safe slug stored on the product as metadata.slug."
+          "description": "URL-safe slug stored on the product as metadata.slug.",
+          "maxLength": 256
         }
       }
     }

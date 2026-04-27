@@ -4,6 +4,8 @@
  * helpers that reject unknown fields with actionable hints.
  */
 
+const { VALID_COMPONENTS, CANVAS_COMPONENTS } = require("../../component-registry");
+
 const PATCH_BODY_KEYS = [
   "typePatch",
   "propsPatch",
@@ -45,73 +47,10 @@ const UNSUPPORTED_PATCH_FIELD_HINTS = {
     'Field "children" is not supported. Patch each child node by its kit_* id (e.g. Button nodes under ButtonList) using propsPatch for text, icon, and root styles — copy ids from the apply_kit_block reply.',
 };
 
-const VALID_TYPE_PATCH_COMPONENTS = new Set([
-  "Accordion",
-  "Audio",
-  "Automatic",
-  "Background",
-  "Button",
-  "ButtonList",
-  "CartBadge",
-  "CartDrawer",
-  "CartItems",
-  "CartSubtotal",
-  "CheckoutBanner",
-  "Container",
-  "ContainerGroup",
-  "Data",
-  "Divider",
-  "Dropdown",
-  "Embed",
-  "Footer",
-  "Form",
-  "FormElement",
-  "Grid",
-  "Header",
-  "Icon",
-  "Image",
-  "ImageList",
-  "Link",
-  "List",
-  "ListItem",
-  "Map",
-  "MapPoint",
-  "Modal",
-  "Nav",
-  "ProductDisplay",
-  "Spacer",
-  "Table",
-  "TableCell",
-  "TableRow",
-  "TableSection",
-  "Tabs",
-  "Text",
-  "Video",
-]);
-
-const CANVAS_TYPE_PATCH_COMPONENTS = new Set([
-  "Accordion",
-  "Automatic",
-  "Background",
-  "CartDrawer",
-  "CheckoutBanner",
-  "Container",
-  "ContainerGroup",
-  "Data",
-  "Dropdown",
-  "Footer",
-  "Form",
-  "Grid",
-  "Header",
-  "List",
-  "Modal",
-  "Nav",
-  "ProductDisplay",
-  "Table",
-  "TableRow",
-  "TableSection",
-  "Tabs",
-]);
+// Single source of truth lives in ../../node-utils. Re-exported under the
+// patch-specific names so existing imports keep working.
+const VALID_TYPE_PATCH_COMPONENTS = VALID_COMPONENTS;
+const CANVAS_TYPE_PATCH_COMPONENTS = CANVAS_COMPONENTS;
 
 function normalizeTypePatch(rawTypePatch) {
   if (rawTypePatch == null) return null;
