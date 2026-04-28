@@ -15,7 +15,6 @@
  */
 
 const VALID_COMPONENTS = new Set([
-  "Accordion",
   "Audio",
   "Automatic",
   "Background",
@@ -45,7 +44,6 @@ const VALID_COMPONENTS = new Set([
   "ListItem",
   "Map",
   "MapPoint",
-  "Modal",
   "Nav",
   "ProductDisplay",
   "Spacer",
@@ -53,13 +51,11 @@ const VALID_COMPONENTS = new Set([
   "TableCell",
   "TableRow",
   "TableSection",
-  "Tabs",
   "Text",
   "Video",
 ]);
 
 const CANVAS_COMPONENTS = new Set([
-  "Accordion",
   "Automatic",
   "Background",
   "CartDrawer",
@@ -73,13 +69,11 @@ const CANVAS_COMPONENTS = new Set([
   "Grid",
   "Header",
   "List",
-  "Modal",
   "Nav",
   "ProductDisplay",
   "Table",
   "TableRow",
   "TableSection",
-  "Tabs",
 ]);
 
 module.exports = {
