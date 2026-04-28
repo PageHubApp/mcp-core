@@ -44,7 +44,7 @@ const PATCH_BLOCK_BULK_ITEM_KEYS = new Set(["nodeId", ...PATCH_BODY_KEYS]);
 
 const UNSUPPORTED_PATCH_FIELD_HINTS = {
   children:
-    'Field "children" is not supported. Patch each child node by its kit_* id (e.g. Button nodes under ButtonList) using propsPatch for text, icon, and root styles — copy ids from the apply_kit_block reply.',
+    'Field "children" is not supported. Patch each child node by its kit_* id (e.g. Button nodes under a Container button group) using propsPatch for text, icon, and root styles — copy ids from the apply_kit_block reply.',
 };
 
 // Single source of truth lives in ../../node-utils. Re-exported under the

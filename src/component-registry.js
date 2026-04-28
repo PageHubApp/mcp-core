@@ -19,7 +19,6 @@ const VALID_COMPONENTS = new Set([
   "Automatic",
   "Background",
   "Button",
-  "ButtonList",
   "CartBadge",
   "CartDrawer",
   "CartItems",
