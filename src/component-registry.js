@@ -35,7 +35,6 @@ const VALID_COMPONENTS = new Set([
   "Header",
   "Icon",
   "Image",
-  "ImageList",
   "Link",
   "List",
   "ListItem",

@@ -511,16 +511,14 @@ module.exports = {
 
     // Nav landmark
     const hasNav = Object.values(nodes).some(
-      n =>
-        n.type?.resolvedName === "Nav" ||
-        (n.type?.resolvedName === "Container" && n.props?.custom?.isNav)
+      n => n.type?.resolvedName === "Container" && n.props?.custom?.isNav
     );
     if (!hasNav) {
       results.push({
         id: "nav-landmark",
         severity: "minor",
         message: "No navigation landmark detected",
-        fix: 'Ensure the header nav uses the Nav component or has role="navigation".',
+        fix: 'Ensure the header nav container has role="navigation" or custom.isNav set.',
       });
     }
 

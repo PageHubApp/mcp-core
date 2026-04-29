@@ -255,7 +255,6 @@ function validateNodes(flatMap, opts = {}) {
           "Container",
           "Form",
           "FormElement",
-          "Divider",
           "Image",
           "VideoEmbed",
           "Embed",
