@@ -18,12 +18,36 @@
  */
 
 const VIBES = [
-  { codename: "aurora",    label: "Aurora",    description: "Dark bg, gradient orbs, glassmorphism, glow" },
-  { codename: "brutalist", label: "Brutalist", description: "Hard edges, heavy type, B&W + accent" },
-  { codename: "corporate", label: "Corporate", description: "Clean, photo-heavy, professional, trustworthy" },
-  { codename: "editorial", label: "Editorial", description: "Serif, paper/warm, content-first, archive feel" },
-  { codename: "minimal",   label: "Minimal",   description: "Spacious, type-led, restrained, mostly light" },
-  { codename: "organic",   label: "Organic",   description: "Warm palette, soft shapes, approachable, handmade" },
+  {
+    codename: "aurora",
+    label: "Aurora",
+    description: "Dark bg, gradient orbs, glassmorphism, glow",
+  },
+  {
+    codename: "brutalist",
+    label: "Brutalist",
+    description: "Hard edges, heavy type, B&W + accent",
+  },
+  {
+    codename: "corporate",
+    label: "Corporate",
+    description: "Clean, photo-heavy, professional, trustworthy",
+  },
+  {
+    codename: "editorial",
+    label: "Editorial",
+    description: "Serif, paper/warm, content-first, archive feel",
+  },
+  {
+    codename: "minimal",
+    label: "Minimal",
+    description: "Spacious, type-led, restrained, mostly light",
+  },
+  {
+    codename: "organic",
+    label: "Organic",
+    description: "Warm palette, soft shapes, approachable, handmade",
+  },
 ];
 
 const VIBE_CODENAMES = VIBES.map(v => v.codename);

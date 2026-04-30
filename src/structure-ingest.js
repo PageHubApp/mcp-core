@@ -202,7 +202,18 @@ function hierarchicalStructureToFlat(structure, sectionContainerId, slug, source
 // silently no-ops and the agent has to follow up with a corrective patch_site_bulk.
 const OVERRIDE_ALIAS_GROUPS = [
   ["heading", "title", "headline", "head"],
-  ["subhead", "subheading", "subtitle", "description", "desc", "body", "blurb", "tagline", "intro", "lede"],
+  [
+    "subhead",
+    "subheading",
+    "subtitle",
+    "description",
+    "desc",
+    "body",
+    "blurb",
+    "tagline",
+    "intro",
+    "lede",
+  ],
   ["eyebrow", "kicker", "label", "badge", "pill"],
   ["primarycta", "ctaprimary", "primarybutton", "buttonprimary", "ctaone", "cta1", "cta"],
   ["secondarycta", "ctasecondary", "secondarybutton", "buttonsecondary", "ctatwo", "cta2"],

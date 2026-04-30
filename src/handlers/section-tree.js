@@ -10,18 +10,15 @@
  */
 
 const { getContext } = require("../context");
-const {
-  parseMaybeJson,
-  getActiveTarget,
-  fetchTarget,
-  saveTarget,
-} = require("../helpers");
+const { parseMaybeJson, getActiveTarget, fetchTarget, saveTarget } = require("../helpers");
 const { VALID_COMPONENTS, CANVAS_COMPONENTS, collectSubtree } = require("../node-utils");
 const { validateNodes } = require("../node-validation");
 const { resultMsg } = require("./remote-shared");
 
 function slugifyTypeForId(type) {
-  return String(type || "node").toLowerCase().replace(/[^a-z0-9]+/g, "");
+  return String(type || "node")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "");
 }
 
 /**
@@ -40,7 +37,7 @@ function parseHierarchyString(input) {
   }
   // Repair pass: insert missing `{` after `}},` when the next char starts a key.
   // This matches the exact qwen3 failure mode seen on long hierarchies.
-  const repaired = raw.replace(/(\}\s*\}\s*,\s*)("[A-Za-z_])/g, '$1{$2');
+  const repaired = raw.replace(/(\}\s*\}\s*,\s*)("[A-Za-z_])/g, "$1{$2");
   if (repaired !== raw) {
     try {
       return JSON.parse(repaired);
@@ -68,10 +65,11 @@ function flattenHierarchy(hierarchy, sectionNodeId) {
   const flat = {};
   const idsInOrder = [];
   const counters = {};
-  const sectionStem = String(sectionNodeId || "section")
-    .replace(/^sec_/, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "") || "section";
+  const sectionStem =
+    String(sectionNodeId || "section")
+      .replace(/^sec_/, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "") || "section";
 
   function genId(type) {
     const stem = slugifyTypeForId(type);
@@ -80,11 +78,10 @@ function flattenHierarchy(hierarchy, sectionNodeId) {
   }
 
   function walk(rawNode, parentId) {
-    const node =
-      typeof rawNode === "string" ? parseMaybeJson(rawNode) : rawNode;
+    const node = typeof rawNode === "string" ? parseMaybeJson(rawNode) : rawNode;
     if (!node || typeof node !== "object" || Array.isArray(node)) {
       throw new Error(
-        `place_section_tree: every node in hierarchy must be an object; got ${typeof rawNode}.`,
+        `place_section_tree: every node in hierarchy must be an object; got ${typeof rawNode}.`
       );
     }
     const rawType = node.type;
@@ -97,15 +94,15 @@ function flattenHierarchy(hierarchy, sectionNodeId) {
     if (!type) {
       throw new Error(
         `place_section_tree: every node needs a "type" string (e.g. "Container", "Text", "Button"). Received: ${JSON.stringify(
-          rawType,
-        ).slice(0, 120)}`,
+          rawType
+        ).slice(0, 120)}`
       );
     }
     if (!VALID_COMPONENTS.has(type)) {
       throw new Error(
         `place_section_tree: unknown component type "${type}". Allowed: ${[...VALID_COMPONENTS]
           .sort()
-          .join(", ")}.`,
+          .join(", ")}.`
       );
     }
 
@@ -122,11 +119,7 @@ function flattenHierarchy(hierarchy, sectionNodeId) {
     // Model (qwen3) occasionally double-wraps: props: { className, props: { background, … } }.
     // Flatten one level of nested `props.props` so background / action / etc. land where
     // the renderer reads them. Outer keys win on collision — the inner is usually a typo.
-    if (
-      rawProps.props &&
-      typeof rawProps.props === "object" &&
-      !Array.isArray(rawProps.props)
-    ) {
+    if (rawProps.props && typeof rawProps.props === "object" && !Array.isArray(rawProps.props)) {
       const inner = rawProps.props;
       delete rawProps.props;
       for (const [k, v] of Object.entries(inner)) {
@@ -136,11 +129,7 @@ function flattenHierarchy(hierarchy, sectionNodeId) {
     // Canonical id on props for editor bookkeeping (matches existing nodes).
     rawProps.id = id;
     if (rawProps.className == null) rawProps.className = "";
-    if (
-      !rawProps.custom ||
-      typeof rawProps.custom !== "object" ||
-      Array.isArray(rawProps.custom)
-    ) {
+    if (!rawProps.custom || typeof rawProps.custom !== "object" || Array.isArray(rawProps.custom)) {
       rawProps.custom = {};
     }
     if (typeof rawProps.custom.displayName !== "string" || !rawProps.custom.displayName.trim()) {
@@ -178,7 +167,7 @@ module.exports = {
     const ctx = getContext();
     if (!ctx?.fillMode || !ctx.sectionNodeId) {
       throw new Error(
-        "place_section_tree is only available in section-fill mode. The server sets sectionNodeId from the fill context — this tool cannot be called outside the clone pipeline.",
+        "place_section_tree is only available in section-fill mode. The server sets sectionNodeId from the fill context — this tool cannot be called outside the clone pipeline."
       );
     }
     // Block after a kit has been stamped — otherwise this tool's idempotent
@@ -187,7 +176,7 @@ module.exports = {
     // chosen differently up front.
     if (ctx._componentStructureReady) {
       throw new Error(
-        "place_section_tree is disabled after structure has already been placed in this section (apply_kit_block or a prior place_section_tree succeeded). If the kit is missing elements, use add_nodes to append children — do NOT call place_section_tree again, it would wipe everything that's there.",
+        "place_section_tree is disabled after structure has already been placed in this section (apply_kit_block or a prior place_section_tree succeeded). If the kit is missing elements, use add_nodes to append children — do NOT call place_section_tree again, it would wipe everything that's there."
       );
     }
     const sectionNodeId = String(ctx.sectionNodeId);
@@ -207,37 +196,43 @@ module.exports = {
             "Send hierarchy as a NATIVE JSON OBJECT in the tool call — do NOT wrap it in quotes, do NOT stringify it. " +
             "The AI SDK encodes the tool arguments for you. Example: " +
             '{ "reason": "hero", "hierarchy": { "type": "Container", "props": {...}, "children": [...] } }  ' +
-            "— note hierarchy is an object literal, not a quoted string.",
+            "— note hierarchy is an object literal, not a quoted string."
         );
       }
     }
     if (!hierarchy || typeof hierarchy !== "object" || Array.isArray(hierarchy)) {
       throw new Error(
-        "place_section_tree: `hierarchy` must be an object — the root Container for your section with nested `children`. Do not send a flat map, array, or string.",
+        "place_section_tree: `hierarchy` must be an object — the root Container for your section with nested `children`. Do not send a flat map, array, or string."
       );
     }
     const rootTypeRaw = hierarchy.type;
     const rootType =
       typeof rootTypeRaw === "string"
         ? rootTypeRaw
-        : rootTypeRaw && typeof rootTypeRaw === "object" && typeof rootTypeRaw.resolvedName === "string"
+        : rootTypeRaw &&
+            typeof rootTypeRaw === "object" &&
+            typeof rootTypeRaw.resolvedName === "string"
           ? rootTypeRaw.resolvedName
           : null;
     if (rootType !== "Container" && rootType !== "Grid" && rootType !== "ContainerGroup") {
       throw new Error(
-        `place_section_tree: hierarchy root must be a Container (or Grid/ContainerGroup). Got "${rootType || "missing"}".`,
+        `place_section_tree: hierarchy root must be a Container (or Grid/ContainerGroup). Got "${rootType || "missing"}".`
       );
     }
 
     const target = getActiveTarget(args);
     // Fill mode for sites: reload merged draft so sec_* exists on flat.
-    if (!ctx._pendingFlatMap && target.type === "site" && typeof ctx._reloadMergedDraft === "function") {
+    if (
+      !ctx._pendingFlatMap &&
+      target.type === "site" &&
+      typeof ctx._reloadMergedDraft === "function"
+    ) {
       await ctx._reloadMergedDraft();
     }
     const { flat } = await fetchTarget(args);
     if (!flat[sectionNodeId]) {
       throw new Error(
-        `place_section_tree: section "${sectionNodeId}" not found in the current draft. The planner skeleton may not be synced — retry in a moment.`,
+        `place_section_tree: section "${sectionNodeId}" not found in the current draft. The planner skeleton may not be synced — retry in a moment.`
       );
     }
 
@@ -300,7 +295,7 @@ module.exports = {
           text: resultMsg(
             result.id,
             target.type,
-            `Section "${sectionNodeId}" placed: ${idsInOrder.length} nodes (root ${rootId}).`,
+            `Section "${sectionNodeId}" placed: ${idsInOrder.length} nodes (root ${rootId}).`
           ),
         },
       ],

@@ -132,7 +132,10 @@ module.exports = {
       throw new Error("q (search keyword) is required, e.g. 'yelp', 'phone', 'shopping cart'");
     }
     const limit = Math.min(50, Math.max(1, Number(rawLimit) || 12));
-    const ql = q.trim().toLowerCase().replace(/[\s_-]+/g, "");
+    const ql = q
+      .trim()
+      .toLowerCase()
+      .replace(/[\s_-]+/g, "");
     if (!ql) throw new Error("q must contain at least one non-whitespace character");
 
     const { entries, setCounts } = buildIndex();
@@ -141,7 +144,7 @@ module.exports = {
     if (setFilter) {
       if (!setCounts[setFilter]) {
         throw new Error(
-          `Unknown icon set "${setFilter}". Known: ${Object.keys(setCounts).sort().join(", ")}.`,
+          `Unknown icon set "${setFilter}". Known: ${Object.keys(setCounts).sort().join(", ")}.`
         );
       }
       candidatePool = entries.filter(e => e.set === setFilter);
@@ -169,7 +172,7 @@ module.exports = {
         b.score - a.score ||
         setRank(a.set) - setRank(b.set) ||
         a.name.length - b.name.length ||
-        a.name.localeCompare(b.name),
+        a.name.localeCompare(b.name)
     );
 
     const top = matches.slice(0, limit);
@@ -212,7 +215,9 @@ function format({ q, top, totalMatches, limit, setFilter, kind, tabSearched, tab
   const PRIORITY = ["tb", "fa", "fa6", "si", "bi", "bs", "im", "lia"];
   const orderedSets = [
     ...PRIORITY.filter(s => bySet[s]),
-    ...Object.keys(bySet).filter(s => !PRIORITY.includes(s)).sort(),
+    ...Object.keys(bySet)
+      .filter(s => !PRIORITY.includes(s))
+      .sort(),
   ];
 
   const header =
@@ -232,7 +237,7 @@ function format({ q, top, totalMatches, limit, setFilter, kind, tabSearched, tab
   // assume "I just didn't search Tabler" when the truth is "Tabler doesn't have it".
   if (tabSearched && !tabHit && !setFilter) {
     lines.push(
-      `Note: no Tabler (tb) match. For UI icons Tabler is preferred — for brand/product logos use the sets above. See .claude/known-issues/tabler-missing-brand-icons.md.`,
+      `Note: no Tabler (tb) match. For UI icons Tabler is preferred — for brand/product logos use the sets above. See .claude/known-issues/tabler-missing-brand-icons.md.`
     );
   }
   if (top[0].score === 100 && top.length > 1) {

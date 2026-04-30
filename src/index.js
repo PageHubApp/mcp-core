@@ -90,9 +90,7 @@ const AGENT_EXCLUDED = new Set([
   "delete_template",
   "publish_site_as_template",
 ]);
-const AGENT_ALLOWED = new Set(
-  [...HTTP_TOOL_NAMES].filter(name => !AGENT_EXCLUDED.has(name))
-);
+const AGENT_ALLOWED = new Set([...HTTP_TOOL_NAMES].filter(name => !AGENT_EXCLUDED.has(name)));
 
 /**
  * Get tool schemas for the agent endpoint.

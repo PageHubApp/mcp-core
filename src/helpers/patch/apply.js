@@ -76,8 +76,7 @@ function resolveSemanticKitId(flatMap, nodeId) {
 
 /** Shallow-merge patch objects into a flat node map entry. */
 function applyNodePatches(flatMap, nodeId, patchArgs) {
-  const { typePatch, propsPatch, classNamePatch, nodesPatch, unsetProps, unsetClasses } =
-    patchArgs;
+  const { typePatch, propsPatch, classNamePatch, nodesPatch, unsetProps, unsetClasses } = patchArgs;
   // If the model invented a semantic kit id (kit_cta_simple_heading) or
   // otherwise misquoted, try to resolve it from the label map stashed by
   // apply_kit_block. Turns hallucination into a valid shortcut.
@@ -193,14 +192,8 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
     // <style>/<script> wrapper — the browser ignores it silently and every
     // dependent class breaks. See assertInjectHtml.
     if (propsPatch.inject && typeof propsPatch.inject === "object") {
-      assertInjectHtml(
-        propsPatch.inject.head,
-        `propsPatch.inject.head for node "${nodeId}"`
-      );
-      assertInjectHtml(
-        propsPatch.inject.footer,
-        `propsPatch.inject.footer for node "${nodeId}"`
-      );
+      assertInjectHtml(propsPatch.inject.head, `propsPatch.inject.head for node "${nodeId}"`);
+      assertInjectHtml(propsPatch.inject.footer, `propsPatch.inject.footer for node "${nodeId}"`);
     }
     // Deep-merge the typed nested namespaces so targeted updates
     // (e.g. propsPatch: { seo: { title: "X" } }) preserve sibling fields

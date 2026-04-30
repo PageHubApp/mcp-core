@@ -161,8 +161,7 @@ module.exports = {
         try {
           const validStyles = await getValidBuildStyles();
           if (validStyles.has(String(preset))) {
-            suggestion =
-              ` "${preset}" is a block-library STYLE codename, not a preset slug — those vocabularies are different. Style codenames belong on \`search_blocks({ style: "..." })\`. For set_theme, pass a preset slug like "warm-editorial", "modern-minimal", "luxury-dark", "restaurant-warm", "medical", "corporate-blue", etc.`;
+            suggestion = ` "${preset}" is a block-library STYLE codename, not a preset slug — those vocabularies are different. Style codenames belong on \`search_blocks({ style: "..." })\`. For set_theme, pass a preset slug like "warm-editorial", "modern-minimal", "luxury-dark", "restaurant-warm", "medical", "corporate-blue", etc.`;
           }
         } catch {
           /* ignore */

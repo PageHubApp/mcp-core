@@ -62,7 +62,7 @@ function normalizeTypePatch(rawTypePatch) {
         : "";
   if (!typeName) {
     throw new Error(
-      "typePatch must be a non-empty string (e.g. \"Button\") or object { resolvedName: \"Button\" }."
+      'typePatch must be a non-empty string (e.g. "Button") or object { resolvedName: "Button" }.'
     );
   }
   if (!VALID_TYPE_PATCH_COMPONENTS.has(typeName)) {

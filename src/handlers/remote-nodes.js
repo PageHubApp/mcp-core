@@ -67,9 +67,7 @@ function collectUnsplashSrcViolations(patch, nodeId) {
 }
 
 function unsplashViolationMessage(hits) {
-  const lines = hits
-    .slice(0, 8)
-    .map(h => `  - ${h.nodeId}.${h.path}: ${h.value.slice(0, 100)}`);
+  const lines = hits.slice(0, 8).map(h => `  - ${h.nodeId}.${h.path}: ${h.value.slice(0, 100)}`);
   return (
     `Error: hand-typed images.unsplash.com URL(s) rejected — these IDs are usually invented and 404 in production.\n` +
     `${lines.join("\n")}\n\n` +
@@ -488,8 +486,7 @@ module.exports = {
       }
       const stripped = stripLockedStyling(bulkPatch, ctx);
       bulkPatch = stripped.patch;
-      if (stripped.dropped.length)
-        droppedByNode.push(`${nid}: ${stripped.dropped.join(", ")}`);
+      if (stripped.dropped.length) droppedByNode.push(`${nid}: ${stripped.dropped.join(", ")}`);
       applyNodePatches(flat, nid, bulkPatch);
       const report = maybePreflightButton(flat, nid, buttonValidationMode);
       if (report) buttonReports.push(report);

@@ -83,9 +83,7 @@ function isSameChildIdMultiset(prev, next) {
 function assertInjectHtml(value, location) {
   if (value == null) return;
   if (typeof value !== "string") {
-    throw new Error(
-      `${location} must be a string of raw HTML, got ${typeof value}.`
-    );
+    throw new Error(`${location} must be a string of raw HTML, got ${typeof value}.`);
   }
   const trimmed = value.trim();
   if (trimmed === "") return;

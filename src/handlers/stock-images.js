@@ -9,8 +9,7 @@ module.exports = {
   async find_image(args) {
     const { q, category, orientation, provider: rawProvider, count: rawCount } = args;
     const provider =
-      typeof rawProvider === "string" &&
-      IMAGE_PROVIDER_NAMES.includes(rawProvider.toLowerCase())
+      typeof rawProvider === "string" && IMAGE_PROVIDER_NAMES.includes(rawProvider.toLowerCase())
         ? rawProvider.toLowerCase()
         : "pexels";
     const count = Math.min(6, Math.max(1, Number(rawCount) || 3));

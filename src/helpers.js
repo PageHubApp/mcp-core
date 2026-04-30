@@ -25,11 +25,7 @@ const {
   saveTarget,
   saveSite,
 } = require("./helpers/target");
-const {
-  extractImageUrls,
-  validateImageUrls,
-  collectAllImageUrls,
-} = require("./helpers/images");
+const { extractImageUrls, validateImageUrls, collectAllImageUrls } = require("./helpers/images");
 const {
   collectSubtreeNodeIds,
   assertFillModePatchAllowed,

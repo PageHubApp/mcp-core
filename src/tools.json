@@ -140,9 +140,7 @@
           "description": "If false, hardcoded color classes are treated as errors; otherwise warnings. Default: true."
         }
       },
-      "required": [
-        "className"
-      ]
+      "required": ["className"]
     }
   },
   {
@@ -305,10 +303,7 @@
                 "maxLength": 128
               }
             },
-            "required": [
-              "name",
-              "color"
-            ]
+            "required": ["name", "color"]
           },
           "description": "Full theme palette: array of {name, color}. Each `name` becomes a CSS variable via `toPaletteCSSVarName` (e.g. \"Base Content\" → `--base-content` → Tailwind `text-base-content`).\n\n**Use DaisyUI 5 / PageHub canonical names** (see `packages/sdk/src/utils/defaults.ts` → `DEFAULT_PALETTE`): Primary, Primary Content, Secondary, Secondary Content, Accent, Accent Content, Neutral, Neutral Content, Base 100, Base 200, Base 300, Base Content, Error, Error Content, Info, Info Content, Success, Success Content, Warning, Warning Content, Ring.\n\n**Do not** use shadcn-style labels like \"Background\", \"Foreground\", or \"Primary Text\" — `text-base-content` / `bg-base-100` will not bind and ink can default to near-black on dark heroes.\n\nPass the **complete** list when replacing the palette (the handler overwrites `ROOT.props.theme.palette`). Colors may be hex, rgb, hsl, or oklch().",
           "maxItems": 30
@@ -327,10 +322,7 @@
                 "maxLength": 128
               }
             },
-            "required": [
-              "name",
-              "color"
-            ]
+            "required": ["name", "color"]
           },
           "description": "Optional dark mode palette. Same shape as palette — same slot names, dark-appropriate colors. When provided, dark mode is automatically enabled and colors are applied via @media (prefers-color-scheme: dark). Omit to keep only light mode.",
           "maxItems": 30
@@ -384,9 +376,7 @@
           "description": "Insert index in page's nodes. 0 = first section. Default: append to end."
         }
       },
-      "required": [
-        "templateId"
-      ]
+      "required": ["templateId"]
     }
   },
   {
@@ -419,10 +409,7 @@
           "description": "Insert index in parent's nodes array. Default: append to end."
         }
       },
-      "required": [
-        "sectionRootId",
-        "nodes"
-      ]
+      "required": ["sectionRootId", "nodes"]
     }
   },
   {
@@ -442,9 +429,7 @@
           "maxLength": 256
         }
       },
-      "required": [
-        "nodeId"
-      ]
+      "required": ["nodeId"]
     }
   },
   {
@@ -473,10 +458,7 @@
           "description": "Index in new parent's nodes array. Default: append to end."
         }
       },
-      "required": [
-        "nodeId",
-        "newParentId"
-      ]
+      "required": ["nodeId", "newParentId"]
     }
   },
   {
@@ -513,11 +495,7 @@
           "description": "Optional block modifiers object (shape: { Text: [{name, classes, requires}], Container: [...] }). Required if the inserted node's className references shortcut modifier names (section-heading, body-text, eyebrow, subhead, section-wrapper, card-surface, icon-row, content-col, hero-content-centered). Upserted into ROOT.props.modifiers. Prefer apply_kit_block over hand-inlining a library block — this arg is for genuine one-offs that need a shared class shortcut."
         }
       },
-      "required": [
-        "nodeId",
-        "parentId",
-        "node"
-      ]
+      "required": ["nodeId", "parentId", "node"]
     }
   },
   {
@@ -608,9 +586,7 @@
           "description": "If true, attempt to replace hardcoded years with {{year}} and flag hardcoded colors for manual palette mapping. Default: false."
         }
       },
-      "required": [
-        "sectionRootId"
-      ]
+      "required": ["sectionRootId"]
     }
   },
   {
@@ -658,12 +634,7 @@
           "description": "Hierarchical section structure {type, props, children}. Output from extract_section or hand-crafted."
         }
       },
-      "required": [
-        "category",
-        "templateId",
-        "name",
-        "structure"
-      ]
+      "required": ["category", "templateId", "name", "structure"]
     }
   },
   {
@@ -693,9 +664,7 @@
           "maxLength": 256
         }
       },
-      "required": [
-        "sectionRootId"
-      ]
+      "required": ["sectionRootId"]
     }
   },
   {
@@ -739,9 +708,7 @@
           "maxLength": 512
         }
       },
-      "required": [
-        "email"
-      ]
+      "required": ["email"]
     }
   },
   {
@@ -780,9 +747,7 @@
           "maxLength": 256
         }
       },
-      "required": [
-        "slug"
-      ]
+      "required": ["slug"]
     }
   },
   {
@@ -842,11 +807,7 @@
           "maxItems": 30
         }
       },
-      "required": [
-        "slug",
-        "title",
-        "content"
-      ]
+      "required": ["slug", "title", "content"]
     }
   },
   {
@@ -962,9 +923,7 @@
           "maxItems": 30
         }
       },
-      "required": [
-        "slug"
-      ]
+      "required": ["slug"]
     }
   },
   {
@@ -979,9 +938,7 @@
           "maxLength": 256
         }
       },
-      "required": [
-        "slug"
-      ]
+      "required": ["slug"]
     }
   },
   {
@@ -1004,9 +961,7 @@
           "maxLength": 256
         }
       },
-      "required": [
-        "id"
-      ]
+      "required": ["id"]
     }
   },
   {
@@ -1021,9 +976,7 @@
           "maxLength": 256
         }
       },
-      "required": [
-        "slug"
-      ]
+      "required": ["slug"]
     }
   },
   {
@@ -1109,9 +1062,7 @@
           "maxLength": 256
         }
       },
-      "required": [
-        "id"
-      ]
+      "required": ["id"]
     }
   },
   {
@@ -1161,33 +1112,19 @@
         },
         "category": {
           "type": "string",
-          "enum": [
-            "hero",
-            "avatar",
-            "product",
-            "background",
-            "team",
-            "general"
-          ],
+          "enum": ["hero", "avatar", "product", "background", "team", "general"],
           "description": "Image category. hero/background = wide landscape shots. avatar = headshots/faces. product = items/objects. team = people/groups.",
           "maxLength": 128
         },
         "orientation": {
           "type": "string",
-          "enum": [
-            "landscape",
-            "portrait",
-            "square"
-          ],
+          "enum": ["landscape", "portrait", "square"],
           "description": "Image orientation. Default: landscape.",
           "maxLength": 128
         },
         "provider": {
           "type": "string",
-          "enum": [
-            "unsplash",
-            "pexels"
-          ],
+          "enum": ["unsplash", "pexels"],
           "description": "Optional provider key for factory fallback. Default: pexels.",
           "maxLength": 128
         },
@@ -1211,11 +1148,7 @@
         },
         "orientation": {
           "type": "string",
-          "enum": [
-            "landscape",
-            "portrait",
-            "square"
-          ],
+          "enum": ["landscape", "portrait", "square"],
           "description": "Optional orientation filter.",
           "maxLength": 128
         },
@@ -1229,9 +1162,7 @@
         },
         "provider": {
           "type": "string",
-          "enum": [
-            "pexels"
-          ],
+          "enum": ["pexels"],
           "description": "Video provider. Currently only pexels is supported.",
           "maxLength": 128
         },
@@ -1260,10 +1191,7 @@
         },
         "kind": {
           "type": "string",
-          "enum": [
-            "brand",
-            "ui"
-          ],
+          "enum": ["brand", "ui"],
           "description": "Optional intent hint. \"brand\" restricts to brand-heavy sets (fa/fa6/si/bi/bs/im/lia) — use for company/product logos. \"ui\" restricts to Tabler — use when you want canonical UI iconography. Omit to search everything; the result is still ranked, this is just a coarse filter.",
           "maxLength": 128
         },
@@ -1272,9 +1200,7 @@
           "description": "Max results to return (default 12, max 50). The list is ranked best-match first; raise the limit only if the top results don't include what you want."
         }
       },
-      "required": [
-        "q"
-      ]
+      "required": ["q"]
     }
   },
   {
@@ -1348,29 +1274,18 @@
         },
         "buttonValidation": {
           "type": "string",
-          "enum": [
-            "off",
-            "warn",
-            "fix",
-            "strict"
-          ],
+          "enum": ["off", "warn", "fix", "strict"],
           "description": "Optional button class preflight mode for touched Button nodes. Values: off, warn, fix, strict. Default: warn. `fix` auto-corrects common class/modifier conflicts; `strict` rejects invalid button classes before save.",
           "maxLength": 128
         },
         "designValidation": {
           "type": "string",
-          "enum": [
-            "off",
-            "warn",
-            "strict"
-          ],
+          "enum": ["off", "warn", "strict"],
           "description": "Optional design-token preflight mode for touched nodes. Values: off, warn, strict. Default: warn. Flags hardcoded color classes and other node-validation issues relevant to edited nodes.",
           "maxLength": 128
         }
       },
-      "required": [
-        "nodeId"
-      ]
+      "required": ["nodeId"]
     }
   },
   {
@@ -1435,9 +1350,7 @@
                 "maxItems": 200
               }
             },
-            "required": [
-              "nodeId"
-            ]
+            "required": ["nodeId"]
           },
           "description": "Ordered list of patches; all applied to the same fetched document before save. Pass as a real array, not a string.",
           "maxItems": 1000
@@ -1457,29 +1370,18 @@
         },
         "buttonValidation": {
           "type": "string",
-          "enum": [
-            "off",
-            "warn",
-            "fix",
-            "strict"
-          ],
+          "enum": ["off", "warn", "fix", "strict"],
           "description": "Optional button class preflight mode applied to touched Button nodes. Values: off, warn, fix, strict. Default: warn.",
           "maxLength": 128
         },
         "designValidation": {
           "type": "string",
-          "enum": [
-            "off",
-            "warn",
-            "strict"
-          ],
+          "enum": ["off", "warn", "strict"],
           "description": "Optional design-token preflight mode for touched nodes. Values: off, warn, strict. Default: warn.",
           "maxLength": 128
         }
       },
-      "required": [
-        "patches"
-      ]
+      "required": ["patches"]
     }
   },
   {
@@ -1508,9 +1410,7 @@
           "description": "Additional portal-specific config (merged into portal object)"
         }
       },
-      "required": [
-        "type"
-      ]
+      "required": ["type"]
     }
   },
   {
@@ -1564,11 +1464,7 @@
         },
         "level": {
           "type": "string",
-          "enum": [
-            "A",
-            "AA",
-            "AAA"
-          ],
+          "enum": ["A", "AA", "AAA"],
           "description": "WCAG conformance level. Default: \"AA\".",
           "maxLength": 128
         }
@@ -1643,10 +1539,7 @@
         },
         "blockType": {
           "type": "string",
-          "enum": [
-            "section",
-            "component"
-          ],
+          "enum": ["section", "component"],
           "description": "Filter by block scope. \"section\" (default): full page sections (hero, footer, etc.). \"component\": reusable patterns (dropdown, card, accordion) that go inside sections.",
           "maxLength": 128
         },
@@ -1682,9 +1575,7 @@
           "maxLength": 256
         }
       },
-      "required": [
-        "slug"
-      ]
+      "required": ["slug"]
     }
   },
   {
@@ -1699,9 +1590,7 @@
           "maxLength": 256
         }
       },
-      "required": [
-        "slug"
-      ]
+      "required": ["slug"]
     }
   },
   {
@@ -1722,11 +1611,7 @@
         },
         "target": {
           "type": "string",
-          "enum": [
-            "page",
-            "header",
-            "footer"
-          ],
+          "enum": ["page", "header", "footer"],
           "description": "Where to place the block. \"page\" (default): add as a section on the page — use this for heroes, features, pricing, testimonials, CTAs, galleries, everything that lives IN the page. \"header\": ONLY for header blocks (navbar / menu bar) — replaces hdr_root. \"footer\": ONLY for footer blocks — replaces ftr_root. Do NOT use \"header\" for heroes/features/CTAs just because they're visually at the top — those are page sections.",
           "maxLength": 128
         },
@@ -1755,9 +1640,7 @@
           "description": "Insert position in the parent's children array. 0 = first child, 1 = after first child, etc. Use pull_site to see page_home.nodes order. Default: append to end."
         }
       },
-      "required": [
-        "slug"
-      ]
+      "required": ["slug"]
     }
   },
   {
@@ -1839,12 +1722,7 @@
           "description": "Use this block as the representative preview/thumbnail for its category. Default: false."
         }
       },
-      "required": [
-        "name",
-        "slug",
-        "category",
-        "structure"
-      ]
+      "required": ["name", "slug", "category", "structure"]
     }
   },
   {
@@ -1935,9 +1813,7 @@
           "description": "Toggle category preview thumbnail."
         }
       },
-      "required": [
-        "slug"
-      ]
+      "required": ["slug"]
     }
   },
   {
@@ -1997,10 +1873,7 @@
           "maxItems": 200
         }
       },
-      "required": [
-        "slug",
-        "nodeId"
-      ]
+      "required": ["slug", "nodeId"]
     }
   },
   {
@@ -2065,18 +1938,13 @@
                 "maxItems": 200
               }
             },
-            "required": [
-              "nodeId"
-            ]
+            "required": ["nodeId"]
           },
           "description": "Non-empty array of per-node patches (same keys as patch_block).",
           "maxItems": 1000
         }
       },
-      "required": [
-        "slug",
-        "patches"
-      ]
+      "required": ["slug", "patches"]
     }
   },
   {
@@ -2091,9 +1959,7 @@
           "maxLength": 256
         }
       },
-      "required": [
-        "slug"
-      ]
+      "required": ["slug"]
     }
   },
   {
@@ -2190,9 +2056,7 @@
           }
         }
       },
-      "required": [
-        "name"
-      ]
+      "required": ["name"]
     }
   },
   {
@@ -2281,9 +2145,7 @@
           "maxLength": 4096
         }
       },
-      "required": [
-        "pageId"
-      ]
+      "required": ["pageId"]
     }
   },
   {
@@ -2303,9 +2165,7 @@
           "maxLength": 256
         }
       },
-      "required": [
-        "pageId"
-      ]
+      "required": ["pageId"]
     }
   },
   {
@@ -2342,10 +2202,7 @@
           "description": "Optional block modifiers object (shape: { Text: [{name, classes, requires}], Container: [...] }). Required if any node's className references shortcut modifier names (section-heading, body-text, eyebrow, subhead, section-wrapper, card-surface, icon-row, content-col, hero-content-centered). Upserted into ROOT.props.modifiers. Prefer apply_kit_block over hand-inlining a library block — this arg is for genuine one-offs that need a shared class shortcut."
         }
       },
-      "required": [
-        "nodes",
-        "rootNodeId"
-      ]
+      "required": ["nodes", "rootNodeId"]
     }
   },
   {
@@ -2377,15 +2234,10 @@
               "description": "Nested child nodes (same shape). Only canvas components (Container/Grid/etc.) may have children."
             }
           },
-          "required": [
-            "type"
-          ]
+          "required": ["type"]
         }
       },
-      "required": [
-        "reason",
-        "hierarchy"
-      ]
+      "required": ["reason", "hierarchy"]
     }
   },
   {
@@ -2426,17 +2278,12 @@
                 "maxItems": 30
               }
             },
-            "required": [
-              "name",
-              "palette"
-            ]
+            "required": ["name", "palette"]
           },
           "maxItems": 10
         }
       },
-      "required": [
-        "options"
-      ]
+      "required": ["options"]
     }
   },
   {
@@ -2484,10 +2331,7 @@
                     "maxLength": 512
                   }
                 },
-                "required": [
-                  "headingFontFamily",
-                  "bodyFontFamily"
-                ]
+                "required": ["headingFontFamily", "bodyFontFamily"]
               },
               "palette": {
                 "type": "array",
@@ -2507,17 +2351,12 @@
                 "maxItems": 30
               }
             },
-            "required": [
-              "name",
-              "styleGuide"
-            ]
+            "required": ["name", "styleGuide"]
           },
           "maxItems": 10
         }
       },
-      "required": [
-        "options"
-      ]
+      "required": ["options"]
     }
   },
   {
@@ -2586,17 +2425,12 @@
                 "description": "true = 301 permanent (default), false = 302 temporary"
               }
             },
-            "required": [
-              "from",
-              "to"
-            ]
+            "required": ["from", "to"]
           },
           "maxItems": 500
         }
       },
-      "required": [
-        "redirects"
-      ]
+      "required": ["redirects"]
     }
   },
   {

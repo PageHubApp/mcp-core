@@ -97,7 +97,8 @@ function findUnrewrittenCopy(newNodes, contentOverrides, limit = 40) {
     if (!COPY_BEARING_TYPES.has(t)) continue;
     const label = node?.custom?.displayName || "";
     if (label && overrideKeys.has(normalizeLabelKey(label))) continue;
-    const raw = t === "Text" ? stripTextHtml(node?.props?.text) : String(node?.props?.text || "").trim();
+    const raw =
+      t === "Text" ? stripTextHtml(node?.props?.text) : String(node?.props?.text || "").trim();
     if (!raw) continue;
     out.push({ nodeId: id, type: t, label: label || "(unnamed)", current: raw });
     if (out.length >= limit) break;
@@ -252,7 +253,9 @@ module.exports = {
     // blocks. Everything else must go on a page (the default, `target: "page"`).
     if (slotTarget && SLOT_MAP[slotTarget]) {
       const slugLower = String(slug).toLowerCase();
-      const isHeaderSlug = /(^|[-_])(header|nav(bar)?|top[-_]?bar|menu[-_]?bar)(-|$)/.test(slugLower);
+      const isHeaderSlug = /(^|[-_])(header|nav(bar)?|top[-_]?bar|menu[-_]?bar)(-|$)/.test(
+        slugLower
+      );
       const isFooterSlug = /(^|[-_])footer(-|$)/.test(slugLower);
       if (slotTarget === "header" && !isHeaderSlug) {
         throw new Error(
@@ -612,11 +615,7 @@ module.exports = {
         // Keep sectionContainerId in the patch too so the planner's empty skeleton slot
         // stays consistent (idempotent — if parentNodeId === sectionContainerId the above
         // already covered it).
-        if (
-          sectionContainerId &&
-          sectionContainerId !== parentNodeId &&
-          flat[sectionContainerId]
-        ) {
+        if (sectionContainerId && sectionContainerId !== parentNodeId && flat[sectionContainerId]) {
           patch[sectionContainerId] = flat[sectionContainerId];
         }
         if (!ctx._fillPatch) ctx._fillPatch = {};

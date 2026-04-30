@@ -226,11 +226,7 @@ function validateNodes(flatMap, opts = {}) {
       // the wrapper via unwrapP but the link path does not.
       // Always auto-fix silently — surfacing this as an error makes the agent
       // loop trying to "remove the HTML tags" and re-trigger our wrap.
-      if (
-        props.tagName &&
-        /^(?:p|h[1-6])$/.test(props.tagName) &&
-        typeof props.text === "string"
-      ) {
+      if (props.tagName && /^(?:p|h[1-6])$/.test(props.tagName) && typeof props.text === "string") {
         const BLOCK_WRAP_RE = /^\s*<(p|h[1-6]|div)(\s[^>]*)?>([\s\S]*)<\/\1>\s*$/;
         const m = props.text.match(BLOCK_WRAP_RE);
         if (m) {

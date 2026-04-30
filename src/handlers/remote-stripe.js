@@ -34,9 +34,7 @@ module.exports = {
       `/api/v1/sites/${encodeURIComponent(siteId)}/stripe?${qs.toString()}`
     );
     const items = data.items || [];
-    const lines = items.length
-      ? items.slice(0, 50).map(formatItem)
-      : ["No products matched."];
+    const lines = items.length ? items.slice(0, 50).map(formatItem) : ["No products matched."];
     return {
       content: [
         {
@@ -98,9 +96,7 @@ module.exports = {
             `  Title: ${item.title}`,
             `  Slug: ${item.slug || "(none)"}`,
             `  Price: ${item.price?.formatted || "(unset)"}`,
-            item.priceRange
-              ? `  Range: ${item.priceRange.formatted}`
-              : null,
+            item.priceRange ? `  Range: ${item.priceRange.formatted}` : null,
             item.description ? `  Description: ${item.description.slice(0, 200)}` : null,
             item.metadata?.category ? `  Category: ${item.metadata.category}` : null,
           ]
