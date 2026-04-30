@@ -214,9 +214,9 @@ module.exports = {
             typeof rootTypeRaw.resolvedName === "string"
           ? rootTypeRaw.resolvedName
           : null;
-    if (rootType !== "Container" && rootType !== "Grid" && rootType !== "ContainerGroup") {
+    if (rootType !== "Container") {
       throw new Error(
-        `place_section_tree: hierarchy root must be a Container (or Grid/ContainerGroup). Got "${rootType || "missing"}".`
+        `place_section_tree: hierarchy root must be a Container. Got "${rootType || "missing"}".`
       );
     }
 
