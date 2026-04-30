@@ -397,7 +397,7 @@
         },
         "nodes": {
           "type": "object",
-          "description": "Flat CraftJS node map: { nodeId: nodeDefinition, ... }. Each node definition must include:\n\n  {\n    \"type\": { \"resolvedName\": \"Container\" },  // Component type\n    \"isCanvas\": true,                          // true if it can have children\n    \"props\": {\n      \"canDelete\": true,\n      \"canEditName\": true,\n      \"type\": \"section\",                       // \"section\" for root, omit for children\n      \"className\": \"flex flex-col w-full py-space-lg px-container-x bg-primary\",\n      \"custom\": { \"displayName\": \"My Block\" }\n    },\n    \"parent\": \"page_home\",                     // parent node ID\n    \"nodes\": [\"child_id_1\", \"child_id_2\"],     // ordered child IDs\n    \"linkedNodes\": {}\n  }\n\nAll styling uses props.className — a single Tailwind class string. Mobile-first: unprefixed = base/mobile, md: = desktop, sm: = tablet.\n\nAvailable component types: Container, Text, Image, Button, List, ListItem, Table, TableSection, TableRow, TableCell, Form, FormElement, Video, Audio, Embed.\nUse get_component_schema for full prop details."
+          "description": "Flat CraftJS node map: { nodeId: nodeDefinition, ... }. Each node definition must include:\n\n  {\n    \"type\": { \"resolvedName\": \"Container\" },  // Component type\n    \"isCanvas\": true,                          // true if it can have children\n    \"props\": {\n      \"canDelete\": true,\n      \"canEditName\": true,\n      \"type\": \"section\",                       // \"section\" for root, omit for children\n      \"className\": \"flex flex-col w-full py-space-lg px-container-x bg-primary\",\n      \"custom\": { \"displayName\": \"My Block\" }\n    },\n    \"parent\": \"page_home\",                     // parent node ID\n    \"nodes\": [\"child_id_1\", \"child_id_2\"],     // ordered child IDs\n    \"linkedNodes\": {}\n  }\n\nAll styling uses props.className — a single Tailwind class string. Mobile-first: unprefixed = base/mobile, md: = desktop, sm: = tablet.\n\nAvailable component types: Container, Text, Image, Button, Form, FormElement, Video, Audio, Embed, Map, MapPoint, Icon, Link, Grid, Header, Footer, Data.\nFor semantic lists / tables use Container with props.type set to the HTML tag — \"ul\" / \"ol\" / \"li\" / \"table\" / \"thead\" / \"tbody\" / \"tfoot\" / \"tr\" / \"td\" / \"th\". Cell colSpan/rowSpan/scope go in props.attrs.\nUse get_component_schema for full prop details."
         },
         "parentNodeId": {
           "type": "string",
@@ -463,7 +463,7 @@
   },
   {
     "name": "insert_node",
-    "description": "Inserts a new node into the active site as a child of an existing parent node. The node definition must include type.resolvedName, isCanvas, props (with className for Tailwind classes, custom.displayName), and an empty nodes array.\n\nUse this to add individual elements (Text, Image, Button, Container, List, ListItem, Table, TableSection, TableRow, TableCell, etc.) into existing sections or containers.",
+    "description": "Inserts a new node into the active site as a child of an existing parent node. The node definition must include type.resolvedName, isCanvas, props (with className for Tailwind classes, custom.displayName), and an empty nodes array.\n\nUse this to add individual elements (Text, Image, Button, Container, Icon, Link, Form, FormElement, etc.) into existing sections or containers. For lists / tables, drop a Container with props.type = \"ul\" | \"ol\" | \"li\" | \"table\" | \"thead\" | \"tbody\" | \"tfoot\" | \"tr\" | \"td\" | \"th\".",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -488,7 +488,7 @@
         },
         "node": {
           "type": "object",
-          "description": "Node definition. Must include:\n  type: { resolvedName: \"Text\" | \"Container\" | \"Image\" | \"Button\" | \"List\" | \"ListItem\" | etc }\n  isCanvas: true (containers) or false (leaf elements)\n  props: { canDelete: true, canEditName: true, className: \"flex flex-col gap-4 ...\", text/src/etc, custom: { displayName: \"...\" } }\n\nparent and linkedNodes are set automatically — do not include them."
+          "description": "Node definition. Must include:\n  type: { resolvedName: \"Text\" | \"Container\" | \"Image\" | \"Button\" | \"Icon\" | \"Link\" | etc }\n  isCanvas: true (containers) or false (leaf elements)\n  props: { canDelete: true, canEditName: true, className: \"flex flex-col gap-4 ...\", text/src/etc, custom: { displayName: \"...\" } }\nFor semantic list / table elements, use Container with props.type set to the HTML tag (\"ul\", \"li\", \"table\", \"tr\", \"td\", \"th\", \"thead\", \"tbody\", \"tfoot\").\n\nparent and linkedNodes are set automatically — do not include them."
         },
         "modifiers": {
           "type": "object",
@@ -530,7 +530,7 @@
         },
         "type": {
           "type": "string",
-          "description": "Filter by component type: Text, Button, Container, Image, Form, FormElement, List, ListItem, Table, TableSection, TableRow, TableCell, Footer, Header.",
+          "description": "Filter by component type: Text, Button, Container, Image, Form, FormElement, Footer, Header, Icon, Link, Data, Grid.",
           "maxLength": 128
         },
         "className": {

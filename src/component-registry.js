@@ -36,15 +36,9 @@ const VALID_COMPONENTS = new Set([
   "Icon",
   "Image",
   "Link",
-  "List",
-  "ListItem",
   "Map",
   "MapPoint",
   "ProductDisplay",
-  "Table",
-  "TableCell",
-  "TableRow",
-  "TableSection",
   "Text",
   "Video",
 ]);
@@ -61,11 +55,7 @@ const CANVAS_COMPONENTS = new Set([
   "Form",
   "Grid",
   "Header",
-  "List",
   "ProductDisplay",
-  "Table",
-  "TableRow",
-  "TableSection",
 ]);
 
 module.exports = {
