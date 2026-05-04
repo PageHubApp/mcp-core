@@ -1,21 +1,23 @@
 const rawTools = require("./tools.json");
 const { VIBE_CODENAMES } = require("./vibes");
+const { CATEGORIES } = require("./categories");
 
-// Resolve the `"$VIBES"` sentinel wherever it appears (schema `enum` fields) with
-// the live VIBE_CODENAMES array. Keeps tools.json human-readable while making the
-// vibes list authoritative in one file. Safe — no existing value in tools.json
-// starts with "$".
-function resolveVibes(node) {
+// Resolve schema sentinels (`"$VIBES"`, `"$CATEGORIES"`) wherever they appear in
+// `enum` fields with the live arrays. Keeps tools.json human-readable while
+// making each list authoritative in one place. Safe — no existing value in
+// tools.json starts with "$".
+function resolveSentinels(node) {
   if (node === "$VIBES") return [...VIBE_CODENAMES];
-  if (Array.isArray(node)) return node.map(resolveVibes);
+  if (node === "$CATEGORIES") return [...CATEGORIES];
+  if (Array.isArray(node)) return node.map(resolveSentinels);
   if (node && typeof node === "object") {
     const out = {};
-    for (const k of Object.keys(node)) out[k] = resolveVibes(node[k]);
+    for (const k of Object.keys(node)) out[k] = resolveSentinels(node[k]);
     return out;
   }
   return node;
 }
-const tools = resolveVibes(rawTools);
+const tools = resolveSentinels(rawTools);
 const {
   isPlaceholderCompanyName,
   userExplicitlyRequestsBrandingChange,
@@ -172,4 +174,5 @@ module.exports = {
   AGENT_EXCLUDED,
   AGENT_ALLOWED,
   VIBE_CODENAMES,
+  CATEGORIES,
 };

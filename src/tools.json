@@ -7,16 +7,18 @@
       "properties": {
         "category": {
           "type": "string",
-          "description": "Optional: filter by one category (hero, header, footer, pricing, services, imageText, optin, texts, team, cta, video). Merged with categories. Omit for all.",
+          "enum": "$CATEGORIES",
+          "description": "Optional: filter by one canonical category. Merged with categories. Omit for all.",
           "maxLength": 128
         },
         "categories": {
           "type": "array",
           "items": {
             "type": "string",
+            "enum": "$CATEGORIES",
             "maxLength": 128
           },
-          "description": "Optional: OR-filter by any of these categories in one request (e.g. hero + features + cta). Merged with category.",
+          "description": "Optional: OR-filter by any of these canonical categories in one request (e.g. hero + features + cta). Merged with category.",
           "maxItems": 30
         },
         "style": {
@@ -1484,16 +1486,18 @@
         },
         "category": {
           "type": "string",
-          "description": "Filter by one category. Merged with categories. Available: \"hero\", \"features\", \"content\", \"cta\", \"testimonials\", \"team\", \"pricing\", \"contact\", \"faq\", \"commerce\", \"navigation\", \"social\".",
+          "enum": "$CATEGORIES",
+          "description": "Filter by one canonical category. Merged with categories.",
           "maxLength": 128
         },
         "categories": {
           "type": "array",
           "items": {
             "type": "string",
+            "enum": "$CATEGORIES",
             "maxLength": 128
           },
-          "description": "OR-filter: any of these categories (e.g. [\"hero\",\"features\",\"cta\"]). Merged with category.",
+          "description": "OR-filter: any of these canonical categories (e.g. [\"hero\",\"features\",\"cta\"]). Merged with category.",
           "maxItems": 30
         },
         "subcategory": {
