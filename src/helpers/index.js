@@ -1,9 +1,9 @@
 /**
- * Barrel export — real implementations live in ./helpers/*.
- * Do not add logic here; if you need a new helper, pick the right
- * file (args, node-patch, target, images, fill-mode) or make a new one.
+ * Barrel export — real implementations live alongside this file in ./helpers/*.
+ * Lives at `helpers/index.js` (not a sibling `helpers.js`) so Vercel NFT can't
+ * tree-shake away the file via the directory-vs-file naming collision.
  */
-const { parseMaybeJson, mergeStrList, assertInjectHtml } = require("./helpers/args");
+const { parseMaybeJson, mergeStrList, assertInjectHtml } = require("./args");
 const {
   applyNodePatches,
   normalizeNodePatchArgs,
@@ -13,7 +13,7 @@ const {
   assertPatchBulkItem,
   assertPatchBlockNodeArgs,
   assertPatchBlockBulkItem,
-} = require("./helpers/node-patch");
+} = require("./node-patch");
 const {
   decodeContentOrThrow,
   getActiveTarget,
@@ -24,16 +24,16 @@ const {
   fetchSite,
   saveTarget,
   saveSite,
-} = require("./helpers/target");
-const { extractImageUrls, validateImageUrls, collectAllImageUrls } = require("./helpers/images");
+} = require("./target");
+const { extractImageUrls, validateImageUrls, collectAllImageUrls } = require("./images");
 const {
   collectSubtreeNodeIds,
   assertFillModePatchAllowed,
   assertFillModeBulkPatchesAllowed,
-} = require("./helpers/fill-mode");
-const { mergeBlockModifiersIntoRoot } = require("./helpers/modifiers");
-const { compressJsonToBase64Lz, decompressBase64LzToJson } = require("./lz");
-const { guardRootCompanyPropsPatch } = require("./branding-guard");
+} = require("./fill-mode");
+const { mergeBlockModifiersIntoRoot } = require("./modifiers");
+const { compressJsonToBase64Lz, decompressBase64LzToJson } = require("../lz");
+const { guardRootCompanyPropsPatch } = require("../branding-guard");
 
 module.exports = {
   parseMaybeJson,
