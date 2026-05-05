@@ -1,5 +1,5 @@
 const { apiFetch } = require("../api-fetch");
-const { getActiveTarget } = require("../helpers");
+const { getActiveTarget } = require("../helpers/index.js");
 
 function requireSiteTarget(args) {
   const target = getActiveTarget(args);

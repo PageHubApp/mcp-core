@@ -1,5 +1,5 @@
 const { apiFetch } = require("../api-fetch");
-const { getActiveTarget, decodeContentOrThrow, fetchTarget } = require("../helpers");
+const { getActiveTarget, decodeContentOrThrow, fetchTarget } = require("../helpers/index.js");
 const {
   collectNodes,
   resolveRootId,

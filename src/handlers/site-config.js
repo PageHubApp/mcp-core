@@ -1,4 +1,4 @@
-const { fetchTarget, saveTarget } = require("../helpers");
+const { fetchTarget, saveTarget } = require("../helpers/index.js");
 
 module.exports = {
   async set_integrations(args) {

@@ -1,6 +1,6 @@
 const { apiFetch } = require("../api-fetch");
 const { getContext } = require("../context");
-const { parseMaybeJson, mergeStrList } = require("../helpers");
+const { parseMaybeJson, mergeStrList } = require("../helpers/index.js");
 const { buildButtonClassFramework, validateButtonClasses } = require("../button-system");
 
 // Limits for compactComponentSchemaForFill — keeps schema payloads small for

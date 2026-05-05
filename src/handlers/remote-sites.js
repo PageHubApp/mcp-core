@@ -1,6 +1,6 @@
 const { apiFetch, normalizeBaseUrl } = require("../api-fetch");
 const { getContext } = require("../context");
-const { getActiveTarget, fetchTarget, decodeContentOrThrow } = require("../helpers");
+const { getActiveTarget, fetchTarget, decodeContentOrThrow } = require("../helpers/index.js");
 
 const DEFAULT_BLANK_TEMPLATE = "acme";
 

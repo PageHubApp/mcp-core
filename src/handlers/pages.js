@@ -5,7 +5,7 @@ const {
   fetchTarget,
   saveTarget,
   assertInjectHtml,
-} = require("../helpers");
+} = require("../helpers/index.js");
 const { normalizeBaseUrl } = require("../api-fetch");
 const { buildPatch } = require("../helpers/patch/build");
 

@@ -5,7 +5,7 @@ const {
   extractImageUrls,
   validateImageUrls,
   mergeBlockModifiersIntoRoot,
-} = require("../helpers");
+} = require("../helpers/index.js");
 const { getContext } = require("../context");
 const { assertFillModePatchAllowed } = require("../helpers/fill-mode");
 const { collectSubtree } = require("../node-utils");

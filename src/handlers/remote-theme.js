@@ -4,7 +4,7 @@ const {
   stripGoogleFontLinksFromHeader,
   finalizeRootThemeFonts,
 } = require("../../../../scripts/lib/theme-fonts.js");
-const { parseMaybeJson, getActiveTarget, fetchTarget, saveTarget } = require("../helpers");
+const { parseMaybeJson, getActiveTarget, fetchTarget, saveTarget } = require("../helpers/index.js");
 const { ensurePaletteOklch } = require("../color-utils");
 const { resultMsg } = require("./remote-shared");
 const { stampPresetDesignIntent } = require("../root-design-intent");

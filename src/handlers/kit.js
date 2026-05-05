@@ -9,7 +9,7 @@ const {
   fetchTarget,
   decodeContentOrThrow,
   mergeBlockModifiersIntoRoot,
-} = require("../helpers");
+} = require("../helpers/index.js");
 const { normalizeBaseUrl } = require("../api-fetch");
 const { hierarchicalStructureToFlat, walkApplyKitOverrides } = require("../structure-ingest");
 

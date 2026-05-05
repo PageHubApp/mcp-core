@@ -25,10 +25,9 @@ const {
 } = require("./branding-guard");
 const { runWithContext, getContext } = require("./context");
 const { apiFetch, normalizeBaseUrl } = require("./api-fetch");
+const { parseMaybeJson } = require("./helpers/args");
+const { applyNodePatches, normalizeNodePatchArgs } = require("./helpers/node-patch");
 const {
-  parseMaybeJson,
-  applyNodePatches,
-  normalizeNodePatchArgs,
   getActiveTarget,
   getActiveSiteId,
   isTemplateTarget,
@@ -37,10 +36,12 @@ const {
   fetchSite,
   saveTarget,
   saveSite,
+} = require("./helpers/target");
+const {
   extractImageUrls,
   validateImageUrls,
   collectAllImageUrls,
-} = require("./helpers");
+} = require("./helpers/images");
 const remoteHandlers = require("./handlers/remote");
 const kitHandlers = require("./handlers/kit");
 const componentHandlers = require("./handlers/components");

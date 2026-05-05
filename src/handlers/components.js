@@ -9,7 +9,7 @@ const {
   mergeStrList,
   compressJsonToBase64Lz,
   decodeContentOrThrow,
-} = require("../helpers");
+} = require("../helpers/index.js");
 const {
   hierarchicalLibraryToFlat,
   flatLibraryToHierarchical,

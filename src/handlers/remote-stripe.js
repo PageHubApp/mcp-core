@@ -1,5 +1,5 @@
 const { apiFetch } = require("../api-fetch");
-const { getActiveTarget } = require("../helpers");
+const { getActiveTarget } = require("../helpers/index.js");
 
 /**
  * Resolve the active site for Stripe tools. These only apply to sites

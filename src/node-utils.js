@@ -1,4 +1,4 @@
-const { parseMaybeJson } = require("./helpers");
+const { parseMaybeJson } = require("./helpers/args");
 // Component allowlist + canvas list live in a leaf module so they can be
 // shared with helpers/patch/schema.js without creating a circular import.
 const { VALID_COMPONENTS, CANVAS_COMPONENTS } = require("./component-registry");

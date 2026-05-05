@@ -10,7 +10,7 @@
  */
 
 const { getContext } = require("../context");
-const { parseMaybeJson, getActiveTarget, fetchTarget, saveTarget } = require("../helpers");
+const { parseMaybeJson, getActiveTarget, fetchTarget, saveTarget } = require("../helpers/index.js");
 const { VALID_COMPONENTS, CANVAS_COMPONENTS, collectSubtree } = require("../node-utils");
 const { validateNodes } = require("../node-validation");
 const { resultMsg } = require("./remote-shared");

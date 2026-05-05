@@ -5,7 +5,7 @@ const {
   getActiveTarget,
   compressJsonToBase64Lz,
   decodeContentOrThrow,
-} = require("../helpers");
+} = require("../helpers/index.js");
 const { quickA11yAudit } = require("../a11y-check");
 
 module.exports = {

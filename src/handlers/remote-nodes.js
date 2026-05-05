@@ -15,7 +15,7 @@ const {
   assertFillModeBulkPatchesAllowed,
   guardRootCompanyPropsPatch,
   mergeBlockModifiersIntoRoot,
-} = require("../helpers");
+} = require("../helpers/index.js");
 const { collectSubtree, sanitizeNodes, findSectionRoot } = require("../node-utils");
 const { resultMsg } = require("./remote-shared");
 const { resolveToolDefaultPageNodeId } = require("../active-page");
