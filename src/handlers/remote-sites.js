@@ -113,6 +113,39 @@ module.exports = {
     return { content: [{ type: "text", text: `Site ${target.id} unpublished.` }] };
   },
 
+  async duplicate_site(args = {}) {
+    const ctx = getContext();
+    const sourceId = args.id || ctx.activeSite?.id;
+    if (!sourceId) throw new Error("No site id provided and no active site set.");
+
+    const data = await apiFetch(
+      `/api/v1/sites/${encodeURIComponent(sourceId)}/duplicate`,
+      {
+        method: "POST",
+        body: {
+          name: args.name,
+          title: args.title,
+          description: args.description,
+        },
+      }
+    );
+
+    ctx.activeSite = { id: data.id, name: data.name, draftId: data.draftId };
+    ctx.activeTemplate = null;
+    if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object")
+      ctx._targetRevisions = {};
+
+    const base = normalizeBaseUrl(ctx.apiBaseUrl) || "https://pagehub.dev";
+    return {
+      content: [
+        {
+          type: "text",
+          text: `Site ${data.id} duplicated from ${data.sourceId}.\nActive site set. Editor: ${data.url || `${base}/build/${data.id}`}\nPreview: ${base}/view/${data.id}`,
+        },
+      ],
+    };
+  },
+
   async delete_site(args) {
     const { id } = args;
     await apiFetch(`/api/v1/sites/${encodeURIComponent(id)}`, { method: "DELETE" });

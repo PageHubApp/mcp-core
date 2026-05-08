@@ -1053,6 +1053,35 @@
     }
   },
   {
+    "name": "duplicate_site",
+    "description": "Duplicate an existing site you have access to into a new site owned by you (or your tenant). Copies the full content, title, description, portal, and crawlPolicy. Does NOT copy domain or published state — the new site starts unpublished and unclaimed of any custom domain. Sets the new site as active. Auth-gated: you can only duplicate sites where you are a member (or tenant owner).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Source site id to duplicate (defaults to active site).",
+          "maxLength": 256
+        },
+        "name": {
+          "type": "string",
+          "description": "Slug for the new site. Optional.",
+          "maxLength": 512
+        },
+        "title": {
+          "type": "string",
+          "description": "Override <title> for the new site. Defaults to the source's title.",
+          "maxLength": 512
+        },
+        "description": {
+          "type": "string",
+          "description": "Override meta description for the new site. Defaults to the source's description.",
+          "maxLength": 16384
+        }
+      }
+    }
+  },
+  {
     "name": "delete_site",
     "description": "Delete a site by id from the API. Requires explicit id for safety.",
     "inputSchema": {
