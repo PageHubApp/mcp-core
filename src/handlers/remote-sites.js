@@ -146,6 +146,107 @@ module.exports = {
     };
   },
 
+  async get_domain_status(args = {}) {
+    const target = getActiveTarget(args);
+    if (target.type !== "site")
+      throw new Error("get_domain_status only works on sites, not templates.");
+    const qs = args.check ? `?check=${encodeURIComponent(args.check)}` : "";
+    const data = await apiFetch(
+      `/api/v1/sites/${encodeURIComponent(target.id)}/domain${qs}`
+    );
+    const lines = [];
+    if (data.domain)
+      lines.push(`Current domain: ${data.domain} (redirect: ${data.domainRedirectMode})`);
+    else lines.push("No custom domain set.");
+    if (data.checked && data.checked !== data.domain)
+      lines.push(`Checked: ${data.checked}`);
+    if (data.variants?.length) {
+      lines.push("");
+      for (const v of data.variants) {
+        if (v.attachedToPagehub) {
+          const r = v.redirect ? ` → redirects to ${v.redirect} (${v.redirectStatusCode})` : "";
+          lines.push(`  ${v.name}: attached to pagehub${r}`);
+        } else if (v.available) {
+          lines.push(`  ${v.name}: available (or on another team)`);
+        } else {
+          lines.push(`  ${v.name}: ${v.error?.code || "unknown"} — ${v.error?.message || ""}`);
+        }
+      }
+    }
+    return { content: [{ type: "text", text: lines.join("\n") }] };
+  },
+
+  async check_domain(args = {}) {
+    if (!args.domain) throw new Error("domain is required");
+    return module.exports.get_domain_status({ ...args, check: args.domain });
+  },
+
+  async set_domain(args = {}) {
+    const target = getActiveTarget(args);
+    if (target.type !== "site")
+      throw new Error("set_domain only works on sites, not templates.");
+    if (!args.domain) throw new Error("domain is required (use clear_domain to remove)");
+    const body = { domain: args.domain };
+    if (args.redirectMode) body.domainRedirectMode = args.redirectMode;
+    const data = await apiFetch(
+      `/api/v1/sites/${encodeURIComponent(target.id)}/domain`,
+      { method: "PATCH", body }
+    );
+    if (data?.ok === false || data?.error) {
+      const lines = [`Domain change failed: ${data.error || "unknown"}`];
+      if (data.message) lines.push(data.message);
+      if (Array.isArray(data.conflicts)) {
+        for (const c of data.conflicts) {
+          lines.push(
+            `  - ${c.domain}: ${c.reason}${c.message ? ` (${c.message})` : ""}`
+          );
+        }
+        lines.push("");
+        lines.push(
+          "Fix: open the conflicting Vercel project → Settings → Domains → remove the listed names, then retry."
+        );
+      }
+      return { content: [{ type: "text", text: lines.join("\n") }], isError: true };
+    }
+    return {
+      content: [
+        {
+          type: "text",
+          text: `Domain set: ${data.domain} (redirect: ${data.domainRedirectMode}).\nDNS: point apex (A → 76.76.21.21) and www (CNAME → cname.vercel-dns.com) at Vercel.`,
+        },
+      ],
+    };
+  },
+
+  async clear_domain(args = {}) {
+    const target = getActiveTarget(args);
+    if (target.type !== "site")
+      throw new Error("clear_domain only works on sites, not templates.");
+    await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}/domain`, {
+      method: "DELETE",
+    });
+    return { content: [{ type: "text", text: `Domain cleared from site ${target.id}.` }] };
+  },
+
+  async set_domain_redirect_mode(args = {}) {
+    const target = getActiveTarget(args);
+    if (target.type !== "site")
+      throw new Error("set_domain_redirect_mode only works on sites.");
+    if (!args.redirectMode) throw new Error("redirectMode is required");
+    const data = await apiFetch(
+      `/api/v1/sites/${encodeURIComponent(target.id)}/domain`,
+      { method: "PATCH", body: { domainRedirectMode: args.redirectMode } }
+    );
+    return {
+      content: [
+        {
+          type: "text",
+          text: `Redirect mode: ${data.domainRedirectMode} on ${data.domain || "(no domain)"}.`,
+        },
+      ],
+    };
+  },
+
   async delete_site(args) {
     const { id } = args;
     await apiFetch(`/api/v1/sites/${encodeURIComponent(id)}`, { method: "DELETE" });

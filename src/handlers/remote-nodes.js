@@ -66,6 +66,32 @@ function collectUnsplashSrcViolations(patch, nodeId) {
   return hits;
 }
 
+// Image has both `props.src` and `props.content`; the renderer resolves
+// `src ?? content`, so a patch that updates only one while the other carries a
+// different non-empty value silently no-ops. Reject loudly after applying the
+// patch so the agent sees the conflict instead of debugging a stale render.
+function assertNoImageSrcContentConflict(flat, nodeIds) {
+  const ids = Array.isArray(nodeIds) ? nodeIds : [nodeIds];
+  for (const id of ids) {
+    if (!id) continue;
+    const node = flat?.[id];
+    if (!node || node.type?.resolvedName !== "Image") continue;
+    const props = node.props || {};
+    const src = props.src;
+    const content = props.content;
+    if (typeof src !== "string" || typeof content !== "string") continue;
+    const s = src.trim();
+    const c = content.trim();
+    if (!s || !c) continue;
+    if (s === c) continue;
+    throw new Error(
+      `Image node "${id}" has conflicting src + content (src="${s}", content="${c}"). ` +
+        `The renderer uses src ?? content, so content is shadowed. ` +
+        `Set both fields to the same value, or pass \`unsetProps: ["content"]\` (or \`["src"]\`).`
+    );
+  }
+}
+
 function unsplashViolationMessage(hits) {
   const lines = hits.slice(0, 8).map(h => `  - ${h.nodeId}.${h.path}: ${h.value.slice(0, 100)}`);
   return (
@@ -369,6 +395,7 @@ module.exports = {
       }
     }
     applyNodePatches(flat, nodeId, patchArgs);
+    assertNoImageSrcContentConflict(flat, nodeId);
     const buttonReport = maybePreflightButton(flat, nodeId, buttonValidationMode);
     const designReport = runDesignValidation(flat, [nodeId], designValidationMode);
     const changedNodes = collectSubtree(flat, findSectionRoot(flat, nodeId));
@@ -488,6 +515,7 @@ module.exports = {
       bulkPatch = stripped.patch;
       if (stripped.dropped.length) droppedByNode.push(`${nid}: ${stripped.dropped.join(", ")}`);
       applyNodePatches(flat, nid, bulkPatch);
+      assertNoImageSrcContentConflict(flat, nid);
       const report = maybePreflightButton(flat, nid, buttonValidationMode);
       if (report) buttonReports.push(report);
       touched.push(nid);

@@ -1082,6 +1082,72 @@
     }
   },
   {
+    "name": "get_domain_status",
+    "description": "Read the current custom domain on the active site, plus per-variant Vercel attachment state (apex + www). Pass `check` to preflight a different candidate without mutating anything. Use this before set_domain to diagnose conflicts (e.g. domain already attached to another Vercel project).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Site id (defaults to active site).", "maxLength": 256 },
+        "check": { "type": "string", "description": "Optional candidate domain to preflight against Vercel without changing the site.", "maxLength": 253 }
+      }
+    }
+  },
+  {
+    "name": "check_domain",
+    "description": "Preflight a candidate custom domain against Vercel. Returns per-variant state (apex + www) — whether each is free, already attached to the pagehub project, or producing a Vercel error. Non-mutating. Equivalent to get_domain_status with `check`.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Site id (defaults to active site).", "maxLength": 256 },
+        "domain": { "type": "string", "description": "Candidate domain to inspect (apex or www form, e.g. \"asked.io\").", "maxLength": 253 }
+      },
+      "required": ["domain"]
+    }
+  },
+  {
+    "name": "set_domain",
+    "description": "Attach a custom domain to the active site. Registers BOTH the apex (`example.com`) and `www.example.com` on Vercel and wires the redirect per `redirectMode`. Default is `to-apex` (www → apex 308). On conflict (variant already on another Vercel project) returns a 409 with per-variant details — instruct the user to detach in the Vercel dashboard, then retry. Triggers a redeploy if the site is published. Plan-gated: free plans cannot add custom domains.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Site id (defaults to active site).", "maxLength": 256 },
+        "domain": { "type": "string", "description": "Domain to attach (apex or www form). Both variants are registered automatically.", "maxLength": 253 },
+        "redirectMode": {
+          "type": "string",
+          "enum": ["none", "to-apex", "to-www"],
+          "description": "Redirect pairing. `to-apex` (recommended): www → apex 308. `to-www`: apex → www 308. `none`: both serve content."
+        }
+      },
+      "required": ["domain"]
+    }
+  },
+  {
+    "name": "clear_domain",
+    "description": "Remove the custom domain from the active site. Detaches both apex and www variants from Vercel and resets redirectMode to none.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Site id (defaults to active site).", "maxLength": 256 }
+      }
+    }
+  },
+  {
+    "name": "set_domain_redirect_mode",
+    "description": "Change the apex/www redirect pairing on an already-attached domain (no domain change). Use when switching the canonical from www to apex or vice versa.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Site id (defaults to active site).", "maxLength": 256 },
+        "redirectMode": {
+          "type": "string",
+          "enum": ["none", "to-apex", "to-www"],
+          "description": "New redirect pairing."
+        }
+      },
+      "required": ["redirectMode"]
+    }
+  },
+  {
     "name": "delete_site",
     "description": "Delete a site by id from the API. Requires explicit id for safety.",
     "inputSchema": {
