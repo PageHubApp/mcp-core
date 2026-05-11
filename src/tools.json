@@ -2151,6 +2151,15 @@
               "type": "string",
               "description": "Robots meta tag (e.g. \"noindex, nofollow\").",
               "maxLength": 128
+            },
+            "jsonLd": {
+              "type": "object",
+              "description": "Per-page JSON-LD structured data (single object). Use for FAQPage, Article, BreadcrumbList, etc. — renders as <script type=\"application/ld+json\"> in <head>. For multiple entries use `schema` (array)."
+            },
+            "schema": {
+              "type": "array",
+              "description": "Per-page structured data entries (array of schema.org objects). Each entry renders as its own <script type=\"application/ld+json\"> in <head>. Use for multiple schemas on one page (FAQ + Article + Breadcrumb).",
+              "items": { "type": "object" }
             }
           }
         }
@@ -2230,6 +2239,15 @@
             "robots": {
               "type": "string",
               "maxLength": 128
+            },
+            "jsonLd": {
+              "type": "object",
+              "description": "Per-page JSON-LD structured data (single object). Use for FAQPage, Article, BreadcrumbList, etc."
+            },
+            "schema": {
+              "type": "array",
+              "description": "Per-page structured data entries (array of schema.org objects). Each entry renders as its own <script type=\"application/ld+json\">.",
+              "items": { "type": "object" }
             }
           }
         },

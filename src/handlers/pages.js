@@ -102,6 +102,8 @@ module.exports = {
       const value = seo[flatKey] != null ? seo[flatKey] : seo[nestedKey];
       if (value != null) seoNested[nestedKey] = value;
     }
+    if (seo.jsonLd != null) seoNested.jsonLd = parseMaybeJson(seo.jsonLd);
+    if (seo.schema != null) seoNested.schema = parseMaybeJson(seo.schema);
     const seoProps = Object.keys(seoNested).length ? { seo: seoNested } : {};
 
     // Determine home page flag
@@ -265,6 +267,15 @@ module.exports = {
         if (!page.props.seo) page.props.seo = {};
         page.props.seo[nestedKey] = value;
         changes.push(`seo.${nestedKey} → "${value}"`);
+      }
+    }
+    for (const key of ["jsonLd", "schema"]) {
+      if (seo[key] != null) {
+        if (!page.props.seo) page.props.seo = {};
+        const parsed = parseMaybeJson(seo[key]);
+        page.props.seo[key] = parsed;
+        const preview = JSON.stringify(parsed);
+        changes.push(`seo.${key} → ${preview.length > 80 ? preview.slice(0, 80) + "…" : preview}`);
       }
     }
 
