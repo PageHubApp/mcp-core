@@ -2586,5 +2586,127 @@
         }
       }
     }
+  },
+  {
+    "name": "list_collections",
+    "description": "List custom collections (per-site headless CMS) defined on a site. Returns id, name, slug, row count, field count, and public flag per collection. Defaults to active site.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "site_id": { "type": "string", "description": "Site id (defaults to active site).", "maxLength": 256 }
+      }
+    }
+  },
+  {
+    "name": "get_collection",
+    "description": "Read one collection's full definition (schema fields, source config, isPublic). Returns JSON. Use before update_collection_schema to inspect existing fields.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "site_id": { "type": "string", "maxLength": 256 },
+        "slug": { "type": "string", "description": "Collection slug (unique per site).", "maxLength": 60 }
+      },
+      "required": ["slug"]
+    }
+  },
+  {
+    "name": "create_collection",
+    "description": "Create a new collection on the active (or specified) site. Schema is an array of typed fields (text, number, boolean, date, select, image, url, email, color, richText, media, json). Source defaults to {type:'manual'} — pass {type:'airtable',baseId,tableId,columnMap} (Pro+) or other supported source to enable sync. Plan-gated: maxCollections per plan.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "site_id": { "type": "string", "maxLength": 256 },
+        "name": { "type": "string", "maxLength": 256 },
+        "slug": { "type": "string", "description": "Lowercased slug, [a-z][a-z0-9-]*", "maxLength": 60 },
+        "description": { "type": "string", "maxLength": 1024 },
+        "schema": {
+          "type": "array",
+          "description": "Array of {key,label,type,required?,default?,help?,...typeConfig}. See docs/features/collections.md §5.",
+          "items": { "type": "object" }
+        },
+        "source": { "type": "object", "description": "Source config. {type:'manual'} | airtable | csv-upload | google-sheet | webhook-feed | external-db" },
+        "isPublic": { "type": "boolean" }
+      },
+      "required": ["name", "slug"]
+    }
+  },
+  {
+    "name": "update_collection_schema",
+    "description": "Replace the schema (field list) of an existing collection. Adds/removes/retypes fields. Existing row data keeps stale keys until edited (no implicit coercion). Use get_collection first to inspect the current schema.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "site_id": { "type": "string", "maxLength": 256 },
+        "slug": { "type": "string", "maxLength": 60 },
+        "schema": { "type": "array", "items": { "type": "object" } }
+      },
+      "required": ["slug", "schema"]
+    }
+  },
+  {
+    "name": "delete_collection",
+    "description": "Delete a collection and all its rows. Hard delete — no undo.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "site_id": { "type": "string", "maxLength": 256 },
+        "slug": { "type": "string", "maxLength": 60 }
+      },
+      "required": ["slug"]
+    }
+  },
+  {
+    "name": "list_collection_rows",
+    "description": "Paginated read of rows in a collection. Returns rows array, nextCursor, hasMore, totalCount. Default limit 50, max 200.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "site_id": { "type": "string", "maxLength": 256 },
+        "slug": { "type": "string", "maxLength": 60 },
+        "limit": { "type": "number", "minimum": 1, "maximum": 200 },
+        "cursor": { "type": "string", "description": "Opaque cursor from a previous response's nextCursor." }
+      },
+      "required": ["slug"]
+    }
+  },
+  {
+    "name": "create_collection_row",
+    "description": "Create a single row in a collection. `data` is an object keyed by field key — coerced and validated against the collection schema. Plan-gated by maxRowsPerCollection.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "site_id": { "type": "string", "maxLength": 256 },
+        "slug": { "type": "string", "maxLength": 60 },
+        "data": { "type": "object", "description": "field key → value. Validated against schema." }
+      },
+      "required": ["slug", "data"]
+    }
+  },
+  {
+    "name": "update_collection_row",
+    "description": "Update one row's data by row_id. Partial update — provided fields are coerced/validated; omitted fields keep existing values.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "site_id": { "type": "string", "maxLength": 256 },
+        "slug": { "type": "string", "maxLength": 60 },
+        "row_id": { "type": "string", "description": "Mongo _id of the row.", "maxLength": 24 },
+        "data": { "type": "object" }
+      },
+      "required": ["slug", "row_id", "data"]
+    }
+  },
+  {
+    "name": "delete_collection_row",
+    "description": "Delete one row from a collection by row_id.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "site_id": { "type": "string", "maxLength": 256 },
+        "slug": { "type": "string", "maxLength": 60 },
+        "row_id": { "type": "string", "maxLength": 24 }
+      },
+      "required": ["slug", "row_id"]
+    }
   }
 ]

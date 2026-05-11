@@ -55,6 +55,7 @@ const stockImageHandlers = require("./handlers/stock-images");
 const stockVideoHandlers = require("./handlers/stock-videos");
 const iconHandlers = require("./handlers/icons");
 const sectionTreeHandlers = require("./handlers/section-tree");
+const collectionsHandlers = require("./handlers/remote-collections");
 
 // All HTTP handlers merged into a single dispatch map
 const handlers = {
@@ -71,6 +72,7 @@ const handlers = {
   ...stockVideoHandlers,
   ...iconHandlers,
   ...sectionTreeHandlers,
+  ...collectionsHandlers,
 };
 
 // Tools that are HTTP-only (no filesystem / TemplateBuilder needed)
