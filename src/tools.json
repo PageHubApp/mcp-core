@@ -1302,7 +1302,7 @@
   },
   {
     "name": "patch_site_node",
-    "description": "Edit one node on a live site (GET, patch, PUT). For multiple nodes use patch_site_bulk (atomic, no races). Uses typePatch to change type.resolvedName, classNamePatch for Tailwind classes, propsPatch for non-class props (text, src, href, etc.). Do not send \"children\" or ad-hoc node graphs — patch child Button/Text nodes by their kit_* nodeIds from apply_kit_block. Example: classNamePatch \"py-0\" to override page wrapper padding.\n\nSITE-WIDE CUSTOM CODE (ROOT node): set propsPatch.inject.head (raw HTML into every page's <head> — scripts, styles, link/meta tags) and propsPatch.inject.footer (raw HTML before every page's </body>). Use for third-party scripts, custom CSS, chat widgets, verification tags. For analytics/pixels with structured config prefer set_integrations. For per-page head code use update_page (headCode).\n\nUseful when a node must switch component type (for example Button → Text) without recreating the node.",
+    "description": "Edit one node on a live site (GET, patch, PUT). For multiple nodes use patch_site_bulk (atomic, no races). Uses typePatch to change type.resolvedName, classNamePatch for Tailwind classes, propsPatch for non-class props (text, src, href, etc.). Do not send \"children\" or ad-hoc node graphs — patch child Button/Text nodes by their kit_* nodeIds from apply_kit_block. Example: classNamePatch \"py-0\" to override page wrapper padding.\n\nMERGE SEMANTICS: propsPatch shallow-merges flat props (text, src, …) and RECURSIVELY deep-merges the namespaced nested objects: seo, root, background, overflow, design, inject, relation, richText. So propsPatch: { seo: { jsonLd: { image: X } } } preserves every other key under seo and under seo.jsonLd — it does NOT replace the whole branch. Arrays and primitives still replace (you need a way to swap a list). To intentionally drop a nested branch, use unsetProps with dotted paths, e.g. unsetProps: [\"seo.jsonLd\"] or [\"seo.favicon\"].\n\nSITE-WIDE CUSTOM CODE (ROOT node): set propsPatch.inject.head (raw HTML into every page's <head> — scripts, styles, link/meta tags) and propsPatch.inject.footer (raw HTML before every page's </body>). Use for third-party scripts, custom CSS, chat widgets, verification tags. For analytics/pixels with structured config prefer set_integrations. For per-page head code use update_page (headCode).\n\nUseful when a node must switch component type (for example Button → Text) without recreating the node.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1387,7 +1387,7 @@
   },
   {
     "name": "patch_site_bulk",
-    "description": "Same as patch_site_node but one GET and one PUT: apply many node patches atomically (no lost updates from parallel calls). patches MUST be a native JSON array in the tool args (not a stringified JSON string). Each item: { nodeId, typePatch?, classNamePatch?, propsPatch?, nodesPatch?, unsetClasses?, unsetProps? } — never \"children\"; patch Buttons by kit_* id.\n\nSITE-WIDE CUSTOM CODE (ROOT node): include a patch with nodeId \"ROOT\" and propsPatch.inject.head / propsPatch.inject.footer set to raw HTML — injected into every page's <head> / before </body> respectively. Use for scripts, styles, widgets. Analytics/pixels → set_integrations. Per-page head code → update_page (headCode).",
+    "description": "Same as patch_site_node but one GET and one PUT: apply many node patches atomically (no lost updates from parallel calls). patches MUST be a native JSON array in the tool args (not a stringified JSON string). Each item: { nodeId, typePatch?, classNamePatch?, propsPatch?, nodesPatch?, unsetClasses?, unsetProps? } — never \"children\"; patch Buttons by kit_* id.\n\nMERGE SEMANTICS (same as patch_site_node): propsPatch recursively deep-merges the namespaced nested objects (seo, root, background, overflow, design, inject, relation, richText) — sibling fields at every depth are preserved. Arrays / primitives replace. To drop a nested branch use unsetProps with dotted paths, e.g. unsetProps: [\"seo.jsonLd\"].\n\nSITE-WIDE CUSTOM CODE (ROOT node): include a patch with nodeId \"ROOT\" and propsPatch.inject.head / propsPatch.inject.footer set to raw HTML — injected into every page's <head> / before </body> respectively. Use for scripts, styles, widgets. Analytics/pixels → set_integrations. Per-page head code → update_page (headCode).",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2474,6 +2474,59 @@
         }
       },
       "required": ["options"]
+    }
+  },
+  {
+    "name": "set_favicon",
+    "description": "Set or clear the site favicon (browser-tab icon). Writes to ROOT.props.seo.favicon and is served by /api/favicon for all routes (subdomain, custom domain, white-label tenant).\n\nProvide exactly ONE source — listed by preference:\n  - filePath: local file path on the machine running the MCP server (.png/.jpg/.webp/.gif/.svg/.ico). EASIEST option — server reads + base64-encodes for you. Use this when the user pasted/dropped a file or referenced one in chat.\n  - mediaId: existing media library id (already uploaded). Stored as { href, type: \"cdn\" }.\n  - imageUrl: public http(s) URL to fetch and upload to CDN.\n  - dataBase64: raw base64 or data URL. Pair with mimeType (defaults to image/png).\n  - svgContent: raw inline SVG markup the USER explicitly supplied. Stored inline — no upload. DO NOT INVENT SVG MARKUP HERE; if the user didn't hand you SVG text, prefer filePath or imageUrl.\n  - clear: true — remove the favicon entirely.\n\nRecommended formats: 32x32 or 64x64 PNG, or a small SVG. Browsers cache favicons aggressively; users may need a hard reload to see changes. Not supported on templates.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id (defaults to active site from select_site).",
+          "maxLength": 256
+        },
+        "filePath": {
+          "type": "string",
+          "description": "Local file path on the MCP host. Absolute path preferred (relative paths resolve from the MCP server's CWD). Extension determines MIME (.png/.jpg/.jpeg/.webp/.gif/.svg/.ico).",
+          "maxLength": 2048
+        },
+        "mediaId": {
+          "type": "string",
+          "description": "Existing media library id (skip upload).",
+          "maxLength": 256
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "Public http(s) URL to fetch and upload as the favicon.",
+          "maxLength": 2048
+        },
+        "dataBase64": {
+          "type": "string",
+          "description": "Raw base64 or data URL (data:image/png;base64,...). Max ~12MB decoded.",
+          "maxLength": 16777216
+        },
+        "mimeType": {
+          "type": "string",
+          "description": "MIME type for dataBase64 uploads, e.g. image/png, image/svg+xml. Default image/png.",
+          "maxLength": 128
+        },
+        "svgContent": {
+          "type": "string",
+          "description": "Raw inline SVG markup supplied by the user. Stored inline (no upload). Must start with <svg or <?xml. DO NOT fabricate this — use filePath or imageUrl instead.",
+          "maxLength": 65536
+        },
+        "filename": {
+          "type": "string",
+          "description": "Optional filename hint for uploads. Defaults to the source filename or \"favicon\".",
+          "maxLength": 512
+        },
+        "clear": {
+          "type": "boolean",
+          "description": "Set true to remove the favicon entirely. Ignores all other source fields."
+        }
+      }
     }
   },
   {

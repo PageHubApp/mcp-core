@@ -16,6 +16,27 @@ const { getContext } = require("../../context");
 
 const INVALID_ID_HARD_STOP_THRESHOLD = 3;
 
+/**
+ * Recursive deep-merge for namespaced prop objects (seo, root, design, …).
+ * Plain objects recurse; arrays / primitives / null replace. Used so a patch
+ * like { seo: { jsonLd: { image: X } } } doesn't nuke siblings of `image`
+ * under `seo.jsonLd` (every key not in the patch would otherwise vanish).
+ */
+function isPlainObject(v) {
+  return !!v && typeof v === "object" && !Array.isArray(v);
+}
+function deepMergeProp(existing, patch) {
+  if (!isPlainObject(existing) || !isPlainObject(patch)) return patch;
+  const out = { ...existing };
+  for (const k of Object.keys(patch)) {
+    const next = patch[k];
+    const prev = existing[k];
+    if (isPlainObject(prev) && isPlainObject(next)) out[k] = deepMergeProp(prev, next);
+    else out[k] = next;
+  }
+  return out;
+}
+
 function nth(n) {
   const s = ["th", "st", "nd", "rd"];
   const v = n % 100;
@@ -195,9 +216,12 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
       assertInjectHtml(propsPatch.inject.head, `propsPatch.inject.head for node "${nodeId}"`);
       assertInjectHtml(propsPatch.inject.footer, `propsPatch.inject.footer for node "${nodeId}"`);
     }
-    // Deep-merge the typed nested namespaces so targeted updates
-    // (e.g. propsPatch: { seo: { title: "X" } }) preserve sibling fields
-    // on the existing object. Shallow-merge is fine for flat props.
+    // Recursive deep-merge for the typed nested namespaces so targeted
+    // updates preserve sibling fields at every depth. Without this,
+    // propsPatch: { seo: { jsonLd: { image: X } } } would nuke @context,
+    // @type, name, address, etc. under seo.jsonLd. Arrays / primitives /
+    // null still replace (you need a way to clear or swap a list).
+    // Use `unsetProps: ["seo.jsonLd"]` (dotted) to explicitly drop a branch.
     const DEEP_MERGE_KEYS = [
       "root",
       "background",
@@ -210,11 +234,11 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
     ];
     const rest = { ...propsPatch };
     for (const key of DEEP_MERGE_KEYS) {
-      if (rest[key] && typeof rest[key] === "object" && !Array.isArray(rest[key])) {
-        flatMap[nodeId].props[key] = {
-          ...(flatMap[nodeId].props[key] || {}),
-          ...rest[key],
-        };
+      if (isPlainObject(rest[key])) {
+        flatMap[nodeId].props[key] = deepMergeProp(
+          flatMap[nodeId].props[key] || {},
+          rest[key]
+        );
         delete rest[key];
       }
     }
@@ -235,7 +259,24 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
     flatMap[nodeId].nodes = nodesPatch;
   }
   if (Array.isArray(unsetProps)) {
-    for (const k of unsetProps) delete flatMap[nodeId].props[k];
+    for (const k of unsetProps) {
+      // Dotted paths drop a nested branch ("seo.jsonLd" → delete props.seo.jsonLd).
+      // Plain keys behave as before.
+      if (typeof k === "string" && k.includes(".")) {
+        const parts = k.split(".");
+        let cur = flatMap[nodeId].props;
+        for (let i = 0; i < parts.length - 1; i++) {
+          if (!isPlainObject(cur[parts[i]])) {
+            cur = null;
+            break;
+          }
+          cur = cur[parts[i]];
+        }
+        if (cur) delete cur[parts[parts.length - 1]];
+      } else {
+        delete flatMap[nodeId].props[k];
+      }
+    }
   }
 }
 
