@@ -203,6 +203,37 @@ module.exports = {
     return { content: [{ type: "text", text: label }] };
   },
 
+  /**
+   * Read one node's full payload (type, props, className, nodes, parent, custom).
+   * Use this to inspect `props.inject.head` / `props.inject.footer` on ROOT, or any
+   * other field that doesn't surface in `list_site_nodes` / `search_site_nodes`.
+   * Required before patching a string-valued nested prop you don't want to overwrite.
+   */
+  async get_site_node(args) {
+    const { nodeId } = args;
+    if (!nodeId) throw new Error("nodeId is required.");
+    const { flat } = await fetchTarget(args);
+    const node = flat[nodeId];
+    if (!node) throw new Error(`Node "${nodeId}" not found.`);
+    const payload = {
+      id: nodeId,
+      type: node.type,
+      isCanvas: node.isCanvas,
+      parent: node.parent,
+      nodes: node.nodes || [],
+      custom: node.custom || {},
+      props: node.props || {},
+    };
+    return {
+      content: [
+        {
+          type: "text",
+          text: JSON.stringify(payload, null, 2),
+        },
+      ],
+    };
+  },
+
   async search_site_nodes(args) {
     const { q, type: componentType, className, classRegex } = args;
     const { flat } = await fetchTarget(args);

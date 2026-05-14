@@ -501,6 +501,26 @@
     }
   },
   {
+    "name": "get_site_node",
+    "description": "Read one node's full payload (type, props, className, nodes, parent, custom). Returns the raw JSON. Use this to inspect ROOT.props.inject.head / inject.footer or any other string-valued nested prop you need to modify without overwriting. patch_site_node's propsPatch deep-merges objects but REPLACES strings, so you must read the current string first if you want to preserve unrelated content.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
+        },
+        "nodeId": {
+          "type": "string",
+          "description": "Craft node id e.g. ROOT, page_home, hr_title.",
+          "maxLength": 256
+        }
+      },
+      "required": ["nodeId"]
+    }
+  },
+  {
     "name": "list_site_nodes",
     "description": "Lightweight site node tree — returns ID, displayName, component type, and child count for every node in DFS order. ~2KB output vs 100KB+ from pull_site. Use this instead of pull_site when you need to find node IDs, understand structure, or check section order.",
     "inputSchema": {
