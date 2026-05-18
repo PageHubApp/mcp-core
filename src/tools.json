@@ -2563,7 +2563,7 @@
   },
   {
     "name": "set_integrations",
-    "description": "Configure analytics, tracking pixels, and site verification for the active site. Stores structured provider configs on ROOT props — rendered as proper <script> and <meta> tags on published pages.\n\nSupported providers:\n  - googleAnalytics: GA4 measurement ID (G-XXXXXXXXXX)\n  - googleTagManager: GTM container ID (GTM-XXXXXXX)\n  - googleSearchConsole: HTML tag verification code\n  - metaPixel: Facebook/Meta Pixel ID\n\nTip: If using GTM, configure individual tags inside GTM and only pass the container ID here.\n\nFor providers NOT listed above (chat widgets, A/B testing, CRMs, custom scripts), use patch_site_node on ROOT with propsPatch.inject.head / propsPatch.inject.footer (raw HTML injected site-wide). For per-page head code use update_page.headCode.",
+    "description": "Configure analytics, tracking pixels, and site verification for the active site. Stores structured provider configs on ROOT props — rendered as proper <script> and <meta> tags on published pages.\n\nSupported providers:\n  - googleAnalytics: GA4 measurement ID (G-XXXXXXXXXX)\n  - googleTagManager: GTM container ID (GTM-XXXXXXX)\n  - googleSearchConsole: HTML tag verification code\n  - metaPixel: Facebook/Meta Pixel ID\n  - googleAds: Google Ads Conversion ID (AW-XXXXXXXXXX) — required for per-action 'google-ads' conversion firing.\n\nTip: If using GTM, configure individual tags inside GTM and only pass the container ID here.\n\nPer-action conversion tracking: pair googleAds here with each Button/Link action's `conversion: { provider: \"google-ads\", eventName: \"conversion\", sendTo: \"AW-XXX/YYY\" }`. GA4 / Meta also wire automatically once their IDs are set.\n\nFor providers NOT listed above (chat widgets, A/B testing, CRMs, custom scripts), use patch_site_node on ROOT with propsPatch.inject.head / propsPatch.inject.footer (raw HTML injected site-wide). For per-page head code use update_page.headCode.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2590,6 +2590,11 @@
         "metaPixel": {
           "type": "string",
           "description": "Facebook/Meta Pixel ID for conversion tracking.",
+          "maxLength": 128
+        },
+        "googleAds": {
+          "type": "string",
+          "description": "Google Ads Conversion ID, e.g. \"AW-1234567890\". Required for per-action 'google-ads' conversion firing on Button/Link/Form. Shares the gtag.js loader with GA4 — emitted once, configured per id.",
           "maxLength": 128
         }
       }

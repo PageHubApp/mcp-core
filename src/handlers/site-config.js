@@ -48,6 +48,7 @@ module.exports = {
     if (args.googleSearchConsole)
       integrations.googleSearchConsole = { verificationCode: args.googleSearchConsole };
     if (args.metaPixel) integrations.metaPixel = { pixelId: args.metaPixel };
+    if (args.googleAds) integrations.googleAds = { conversionId: args.googleAds };
     flat.ROOT.props.integrations = { ...(flat.ROOT.props.integrations || {}), ...integrations };
     const result = await saveTarget(targetId, targetType, flat);
     const providers = Object.keys(integrations).join(", ") || "none";
