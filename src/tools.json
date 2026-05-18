@@ -2189,7 +2189,7 @@
   },
   {
     "name": "update_page",
-    "description": "Updates a page's metadata — display name (which changes the URL slug), SEO fields, home page flag, 404 flag, visibility, or per-page custom code (headCode/bodyClass). Use list_pages to find page node IDs first.\n\nIMPORTANT: Always set seo.title and seo.description on every page. The browser <title> tag comes from seo.title (NOT the site-level title field). If not set, it falls back to the page's displayName (e.g. \"Home Page\").\n\nCUSTOM CODE (per page): headCode is raw HTML injected into that page's <head> (scripts, styles, meta tags — scoped to this page only). bodyClass adds extra className(s) to the <body> element on this page. For site-wide custom code use patch_site_node on ROOT (props.inject.head / props.inject.footer). For analytics/pixels prefer set_integrations.",
+    "description": "Updates a page's metadata — display name (which changes the URL slug), SEO fields, home page flag, 404 flag, visibility, per-page custom code (headCode/bodyClass), or chrome suppression (hideHeader/hideFooter/hideChrome for landing pages). Use list_pages to find page node IDs first.\n\nIMPORTANT: Always set seo.title and seo.description on every page. The browser <title> tag comes from seo.title (NOT the site-level title field). If not set, it falls back to the page's displayName (e.g. \"Home Page\").\n\nCUSTOM CODE (per page): headCode is raw HTML injected into that page's <head> (scripts, styles, meta tags — scoped to this page only). bodyClass adds extra className(s) to the <body> element on this page. For site-wide custom code use patch_site_node on ROOT (props.inject.head / props.inject.footer). For analytics/pixels prefer set_integrations.\n\nCHROME (per page): hideHeader / hideFooter suppress the site's global header / footer. hideChrome strips ALL non-page chrome (header, footer, sticky bars, floating CTAs, mobile drawers) — the right switch for Google Ads landing pages. All three default to false.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2280,6 +2280,18 @@
           "type": "string",
           "description": "Extra className(s) applied to <body> on this page (space-separated). Pass an empty string to clear.",
           "maxLength": 4096
+        },
+        "hideHeader": {
+          "type": "boolean",
+          "description": "Hide the site's global header on this page. Use for ad landing pages where the standard nav would distract from the conversion goal."
+        },
+        "hideFooter": {
+          "type": "boolean",
+          "description": "Hide the site's global footer on this page. Use for ad landing pages or conversion-focused funnels."
+        },
+        "hideChrome": {
+          "type": "boolean",
+          "description": "Strip ALL non-page chrome on this page — header, footer, AND any other ROOT-level siblings (sticky CTA bars, floating action buttons, mobile drawers, etc). Use for Google Ads landing pages where only the page itself should render. Supersedes hideHeader / hideFooter."
         }
       },
       "required": ["pageId"]

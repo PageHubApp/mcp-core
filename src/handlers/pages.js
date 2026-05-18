@@ -201,7 +201,7 @@ module.exports = {
   },
 
   async update_page(args) {
-    const { pageId, name, isHomePage, is404Page, isHidden } = args;
+    const { pageId, name, isHomePage, is404Page, isHidden, hideHeader, hideFooter, hideChrome } = args;
     if (!pageId) throw new Error("pageId is required.");
 
     const target = getActiveTarget(args);
@@ -247,6 +247,24 @@ module.exports = {
       page.props.isHidden = isHidden;
       page.hidden = isHidden;
       changes.push(`isHidden → ${isHidden}`);
+    }
+
+    if (hideHeader != null) {
+      if (hideHeader) page.props.hideHeader = true;
+      else delete page.props.hideHeader;
+      changes.push(`hideHeader → ${!!hideHeader}`);
+    }
+
+    if (hideFooter != null) {
+      if (hideFooter) page.props.hideFooter = true;
+      else delete page.props.hideFooter;
+      changes.push(`hideFooter → ${!!hideFooter}`);
+    }
+
+    if (hideChrome != null) {
+      if (hideChrome) page.props.hideChrome = true;
+      else delete page.props.hideChrome;
+      changes.push(`hideChrome → ${!!hideChrome}`);
     }
 
     const seo = parseMaybeJson(args.seo) || {};
