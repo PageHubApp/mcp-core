@@ -66,10 +66,16 @@ function collectUnsplashSrcViolations(patch, nodeId) {
   return hits;
 }
 
-// Image has both `props.src` and `props.content`; the renderer resolves
-// `src ?? content`, so a patch that updates only one while the other carries a
-// different non-empty value silently no-ops. Reject loudly after applying the
-// patch so the agent sees the conflict instead of debugging a stale render.
+// `content` is the deprecated alias for `src` on Image nodes. Reject any patch
+// that writes a non-empty `content` value — the canonical field is `src`. The
+// renderer still falls back `src ?? content` so legacy saved data keeps
+// rendering, but no new write should land on `content`.
+//
+// History: `Image` used to ship both `props.src` and `props.content`, and the
+// dual-field shadow caused recurring "I patched the image and nothing
+// changed" bugs (see
+// `.claude/known-issues/image-src-content-shadowing.md`). The fix collapses
+// to `src`; this guard prevents regressions.
 function assertNoImageSrcContentConflict(flat, nodeIds) {
   const ids = Array.isArray(nodeIds) ? nodeIds : [nodeIds];
   for (const id of ids) {
@@ -77,17 +83,14 @@ function assertNoImageSrcContentConflict(flat, nodeIds) {
     const node = flat?.[id];
     if (!node || node.type?.resolvedName !== "Image") continue;
     const props = node.props || {};
-    const src = props.src;
     const content = props.content;
-    if (typeof src !== "string" || typeof content !== "string") continue;
-    const s = src.trim();
-    const c = content.trim();
-    if (!s || !c) continue;
-    if (s === c) continue;
+    if (content == null) continue;
+    if (typeof content === "string" && content.trim() === "") continue;
     throw new Error(
-      `Image node "${id}" has conflicting src + content (src="${s}", content="${c}"). ` +
-        `The renderer uses src ?? content, so content is shadowed. ` +
-        `Set both fields to the same value, or pass \`unsetProps: ["content"]\` (or \`["src"]\`).`
+      `Image node "${id}" was written with deprecated prop "content" — ` +
+        `use "src" instead. The renderer falls back to "content" only for ` +
+        `unmigrated saved data. Update the patch to write \`src\` and pass ` +
+        `\`unsetProps: ["content"]\` to clear any legacy value.`
     );
   }
 }
