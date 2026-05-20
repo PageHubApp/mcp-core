@@ -1045,6 +1045,35 @@
     }
   },
   {
+    "name": "update_site",
+    "description": "Update site metadata (name/title/description) on an existing site. Use to rename a site after creation — `name` is the URL slug (subdomain), `title` is the human-readable name shown on dashboard cards and the browser tab, `description` is the meta description. At least one of name/title/description is required. Passing an empty string clears the field.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
+        },
+        "name": {
+          "type": "string",
+          "description": "URL slug (subdomain prefix). Lowercase alphanumerics + hyphens. Pass an empty string to clear.",
+          "maxLength": 50
+        },
+        "title": {
+          "type": "string",
+          "description": "Human-readable site name (dashboard card title, browser tab). Pass an empty string to clear.",
+          "maxLength": 200
+        },
+        "description": {
+          "type": "string",
+          "description": "Meta description for the site. Pass an empty string to clear.",
+          "maxLength": 2000
+        }
+      }
+    }
+  },
+  {
     "name": "publish_site",
     "description": "Publish the active site so it's live on its domain. Sets published=true and publishedAt.",
     "inputSchema": {

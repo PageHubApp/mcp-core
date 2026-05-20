@@ -92,6 +92,33 @@ module.exports = {
     };
   },
 
+  async update_site(args = {}) {
+    const target = getActiveTarget(args);
+    if (target.type !== "site") throw new Error("update_site only works on sites, not templates.");
+    const body = {};
+    if (typeof args.name === "string") body.name = args.name.trim() || null;
+    if (typeof args.title === "string") body.title = args.title.trim() || null;
+    if (typeof args.description === "string") body.description = args.description.trim() || null;
+    if (Object.keys(body).length === 0) {
+      throw new Error("update_site requires at least one of: name, title, description.");
+    }
+    const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`, {
+      method: "PUT",
+      body,
+    });
+    const changed = Object.entries(body)
+      .map(([k, v]) => `${k}=${v === null ? "(cleared)" : JSON.stringify(v)}`)
+      .join(", ");
+    return {
+      content: [
+        {
+          type: "text",
+          text: `Site ${target.id} updated (${changed}). Current name=${data?.name ?? "(none)"}, title=${data?.title ?? "(none)"}.`,
+        },
+      ],
+    };
+  },
+
   async publish_site(args) {
     const target = getActiveTarget(args);
     if (target.type !== "site") throw new Error("publish_site only works on sites, not templates.");
