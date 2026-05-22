@@ -57,4 +57,52 @@ function ensurePaletteOklch(palette) {
   return palette.map(p => ({ ...p, color: colorToOklch(p.color) }));
 }
 
-module.exports = { colorToOklch, ensurePaletteOklch };
+/** Parse `oklch(L% C H)` → L as 0..1, or null if not parseable. */
+function oklchLightness(color) {
+  if (typeof color !== "string") return null;
+  const m = color.match(/oklch\(\s*([\d.]+)%/i);
+  return m ? parseFloat(m[1]) / 100 : null;
+}
+
+/**
+ * Validate a palette for the lightness collisions that produce "invisible" UI:
+ *   • Primary ≈ Base Content → `text-primary` icons / accents disappear into body text
+ *     (e.g. kit-block accent icons all read as plain dark glyphs).
+ *   • Primary ≈ Base 100      → `btn-primary` fill blends with the page background.
+ *
+ * Returns an array of human-readable warning strings (empty when palette is fine).
+ * Caller is expected to surface these so the AI can self-correct.
+ *
+ * MIN_DELTA_L = 0.15 matches the CLAUDE.md "if Primary ≈ Base 100 … invisible" rule
+ * and gives roughly the perceptual gap needed for monochrome icons to read as accents.
+ */
+function validatePaletteContrast(palette, { minDeltaL = 0.15 } = {}) {
+  if (!Array.isArray(palette)) return [];
+  const byName = Object.fromEntries(palette.map(p => [p.name, p.color]));
+  const warnings = [];
+  const primary = oklchLightness(byName["Primary"]);
+  const baseContent = oklchLightness(byName["Base Content"]);
+  const base100 = oklchLightness(byName["Base 100"]);
+  if (primary != null && baseContent != null) {
+    const d = Math.abs(primary - baseContent);
+    if (d < minDeltaL) {
+      warnings.push(
+        `Primary ≈ Base Content (ΔL=${d.toFixed(2)} < ${minDeltaL}). ` +
+          `Icons / accents using "text-primary" will look identical to body text. ` +
+          `Shift Primary's lightness or hue so it reads as a distinct accent.`
+      );
+    }
+  }
+  if (primary != null && base100 != null) {
+    const d = Math.abs(primary - base100);
+    if (d < minDeltaL) {
+      warnings.push(
+        `Primary ≈ Base 100 (ΔL=${d.toFixed(2)} < ${minDeltaL}). ` +
+          `"btn-primary" fills will blend into the page background.`
+      );
+    }
+  }
+  return warnings;
+}
+
+module.exports = { colorToOklch, ensurePaletteOklch, oklchLightness, validatePaletteContrast };

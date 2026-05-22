@@ -11,7 +11,11 @@ const {
   mergeBlockModifiersIntoRoot,
 } = require("../helpers/index.js");
 const { normalizeBaseUrl } = require("../api-fetch");
-const { hierarchicalStructureToFlat, walkApplyKitOverrides } = require("../structure-ingest");
+const {
+  hierarchicalStructureToFlat,
+  walkApplyKitOverrides,
+  flatLibraryToHierarchical,
+} = require("../structure-ingest");
 
 const { collectSubtree } = require("../node-utils");
 const { resolveToolDefaultPageNodeId } = require("../active-page");
@@ -237,11 +241,33 @@ module.exports = {
    * Prefer this in fill mode over hand-built graphs: search_blocks → apply_kit_block.
    */
   async apply_kit_block(args) {
-    const { slug, sectionContainerId: argSectionId, contentOverrides, propOverrides } = args;
-    if (!slug || typeof slug !== "string")
-      throw new Error("slug is required (from search_blocks).");
+    const {
+      slug,
+      sourceNodeId,
+      sectionContainerId: argSectionId,
+      contentOverrides,
+      propOverrides,
+    } = args;
+    const hasSlug = typeof slug === "string" && slug.trim().length > 0;
+    const hasSourceNodeId = typeof sourceNodeId === "string" && sourceNodeId.trim().length > 0;
+    if (!hasSlug && !hasSourceNodeId) {
+      throw new Error(
+        "Pass either `slug` (from search_blocks) to stamp a library block, or `sourceNodeId` to adapt an existing site section (also shown by search_blocks under 'Reusable from this site')."
+      );
+    }
+    if (hasSlug && hasSourceNodeId) {
+      throw new Error(
+        "Pass `slug` OR `sourceNodeId`, not both. Use `slug` for a fresh library block; use `sourceNodeId` to clone a section already on this site."
+      );
+    }
+    const cloneMode = hasSourceNodeId && !hasSlug;
 
     const slotTarget = args.target; // "header", "footer", or undefined (page)
+    if (cloneMode && slotTarget) {
+      throw new Error(
+        "sourceNodeId clones a PAGE SECTION; the header/footer slots take a fresh `slug` for a navbar / footer block."
+      );
+    }
     const SLOT_MAP = { header: "hdr_root", footer: "ftr_root" };
 
     // Slot-target guardrail: qwen (and friends) read "header" as "top of page" and route
@@ -282,8 +308,10 @@ module.exports = {
     // turn. Agents sometimes retry apply_kit_block after an unrelated tool
     // error (e.g. a rejected patch with a hallucinated id) without noticing
     // the first apply already landed, which appends a duplicate section.
+    // Clone path (sourceNodeId) bypasses this — cloning the same on-site
+    // pattern into multiple sections is a legitimate use case.
     if (!ctx._appliedKitSlugs) ctx._appliedKitSlugs = new Set();
-    if (ctx._appliedKitSlugs.has(slug)) {
+    if (!cloneMode && ctx._appliedKitSlugs.has(slug)) {
       throw new Error(
         `Kit block "${slug}" was already applied in this turn — the first apply succeeded. ` +
           `Use its returned kit_* node ids to patch content, or apply a DIFFERENT slug if you want a second section. ` +
@@ -306,6 +334,7 @@ module.exports = {
     // Strip block-specific params so getActiveTarget doesn't interpret slug as a template slug
     const {
       slug: _blockSlug,
+      sourceNodeId: _srcNodeId,
       sectionContainerId: _sec,
       contentOverrides: _co,
       propOverrides: _po,
@@ -387,110 +416,185 @@ module.exports = {
       }
     }
 
-    const rawSlug = String(slug).trim();
-    let resolvedSlug = rawSlug;
-    let componentRes;
+    let rawSlug;
+    let resolvedSlug;
+    let component;
+    let componentStyles = [];
+    let structure;
+    let sourceMeta;
 
-    try {
-      componentRes = await apiFetch(`/api/v1/components/${encodeURIComponent(resolvedSlug)}`);
-    } catch (err) {
-      const msg = err?.message || String(err);
-      const isNotFound = /not found|404/i.test(msg);
-      if (!isNotFound) throw err;
-
-      // Model often invents plausible slugs; try library text search and fuzzy matching.
-      const searchTerms = rawSlug.replace(/[-_]+/g, " ");
-      const searchRes = await apiFetch(
-        `/api/v1/components?q=${encodeURIComponent(searchTerms)}&limit=25`
-      );
-      const hits = searchRes.components || [];
-      const lower = rawSlug.toLowerCase();
-      const exact = hits.find(c => c.slug === rawSlug || c.slug === lower);
-      const ci = hits.find(c => String(c.slug).toLowerCase() === lower);
-      // Name-to-slug: model sees "Testimonial Card" and invents "testimonial-card"
-      const slugFromName = name =>
-        String(name || "")
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/^-|-$/g, "");
-      const nameMatch = hits.find(c => slugFromName(c.name) === lower);
-      const lone = hits.length === 1 ? hits[0] : null;
-
-      // Fuzzy: score by word overlap between invented slug and real slugs
-      let fuzzy = null;
-      if (!exact && !ci && !nameMatch && !lone && hits.length > 0) {
-        const words = lower.replace(/[-_]+/g, " ").split(/\s+/).filter(Boolean);
-        let bestScore = 0;
-        for (const c of hits) {
-          const slugWords = c.slug.replace(/[-_]+/g, " ").split(/\s+/);
-          const nameWords = String(c.name || "")
-            .toLowerCase()
-            .replace(/[^a-z0-9]+/g, " ")
-            .split(/\s+/);
-          const allWords = new Set([...slugWords, ...nameWords]);
-          const score = words.filter(w => allWords.has(w)).length;
-          if (score > bestScore) {
-            bestScore = score;
-            fuzzy = c;
-          }
-        }
-        // Require at least 2 word matches to avoid random picks
-        if (bestScore < 2) fuzzy = null;
-      }
-
-      const pick = exact || ci || nameMatch || lone || fuzzy;
-
-      if (!pick) {
-        const available = hits
-          .slice(0, 8)
-          .map(c => `\`${c.slug}\``)
-          .join(", ");
+    if (cloneMode) {
+      // ── Adapt path: clone an existing section subtree from this site ──────
+      const srcId = String(sourceNodeId).trim();
+      const sourceNode = flat[srcId];
+      if (!sourceNode) {
         throw new Error(
-          `No kit block "${rawSlug}" (404). Do not invent slugs — copy exactly from search_blocks results.${
-            available
-              ? ` Available from search: ${available}.`
-              : " Call search_blocks(category) first."
-          }`
+          `sourceNodeId "${srcId}" not found on this site. Pick one from the "Reusable from this site" list in search_blocks results.`
         );
       }
-      resolvedSlug = pick.slug;
-      componentRes = await apiFetch(`/api/v1/components/${encodeURIComponent(resolvedSlug)}`);
-    }
+      if (sourceNode.props?.type !== "section") {
+        throw new Error(
+          `sourceNodeId "${srcId}" is not a page section (props.type must be "section"). Only full sections can be adapted; for smaller pieces use add_nodes.`
+        );
+      }
+      if (srcId === parentNodeId) {
+        throw new Error(
+          `sourceNodeId and target section are the same node ("${srcId}") — cannot clone a section into itself.`
+        );
+      }
+      const originSource = sourceNode.custom?.source || null;
+      const originBlockSlug =
+        originSource?.type === "block" && typeof originSource.block === "string"
+          ? originSource.block
+          : null;
+      componentStyles = Array.isArray(originSource?.styles)
+        ? originSource.styles
+        : originSource?.style
+          ? [originSource.style]
+          : [];
 
-    const { component } = componentRes;
-    if (!component?.structure) {
-      throw new Error(`Block "${resolvedSlug}" has no structure.`);
+      // Convert the live subtree to the {type, props, children} shape the
+      // flattener expects, then scrub identifiers + source stamps so the
+      // clone re-stamps with fresh ids and its own provenance.
+      const hierarchical = flatLibraryToHierarchical(flat, srcId);
+      (function scrub(n) {
+        if (n?.props && typeof n.props === "object") {
+          delete n.props.id;
+          if (n.props.custom && typeof n.props.custom === "object") {
+            delete n.props.custom.source;
+          }
+        }
+        if (Array.isArray(n.children)) n.children.forEach(scrub);
+      })(hierarchical);
+
+      structure = hierarchical;
+      resolvedSlug = originBlockSlug
+        ? `${originBlockSlug}-clone`
+        : `clone-${srcId.replace(/[^a-zA-Z0-9]+/g, "")}`;
+      rawSlug = resolvedSlug;
+      component = {
+        name: sourceNode.custom?.displayName || "Adapted section",
+        preset: originSource?.preset || null,
+        styles: componentStyles,
+        modifiers: null,
+      };
+      sourceMeta = {
+        type: "site-clone",
+        fromNodeId: srcId,
+        ...(originBlockSlug ? { originalBlock: originBlockSlug } : {}),
+        ...(originSource?.preset ? { preset: originSource.preset } : {}),
+        ...(componentStyles.length ? { styles: componentStyles } : {}),
+        appliedAt: new Date().toISOString(),
+      };
+    } else {
+      // ── Library path: fetch the published block by slug ───────────────────
+      rawSlug = String(slug).trim();
+      resolvedSlug = rawSlug;
+      let componentRes;
+
+      try {
+        componentRes = await apiFetch(`/api/v1/components/${encodeURIComponent(resolvedSlug)}`);
+      } catch (err) {
+        const msg = err?.message || String(err);
+        const isNotFound = /not found|404/i.test(msg);
+        if (!isNotFound) throw err;
+
+        // Model often invents plausible slugs; try library text search and fuzzy matching.
+        const searchTerms = rawSlug.replace(/[-_]+/g, " ");
+        const searchRes = await apiFetch(
+          `/api/v1/components?q=${encodeURIComponent(searchTerms)}&limit=25`
+        );
+        const hits = searchRes.components || [];
+        const lower = rawSlug.toLowerCase();
+        const exact = hits.find(c => c.slug === rawSlug || c.slug === lower);
+        const ci = hits.find(c => String(c.slug).toLowerCase() === lower);
+        // Name-to-slug: model sees "Testimonial Card" and invents "testimonial-card"
+        const slugFromName = name =>
+          String(name || "")
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-|-$/g, "");
+        const nameMatch = hits.find(c => slugFromName(c.name) === lower);
+        const lone = hits.length === 1 ? hits[0] : null;
+
+        // Fuzzy: score by word overlap between invented slug and real slugs
+        let fuzzy = null;
+        if (!exact && !ci && !nameMatch && !lone && hits.length > 0) {
+          const words = lower.replace(/[-_]+/g, " ").split(/\s+/).filter(Boolean);
+          let bestScore = 0;
+          for (const c of hits) {
+            const slugWords = c.slug.replace(/[-_]+/g, " ").split(/\s+/);
+            const nameWords = String(c.name || "")
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, " ")
+              .split(/\s+/);
+            const allWords = new Set([...slugWords, ...nameWords]);
+            const score = words.filter(w => allWords.has(w)).length;
+            if (score > bestScore) {
+              bestScore = score;
+              fuzzy = c;
+            }
+          }
+          // Require at least 2 word matches to avoid random picks
+          if (bestScore < 2) fuzzy = null;
+        }
+
+        const pick = exact || ci || nameMatch || lone || fuzzy;
+
+        if (!pick) {
+          const available = hits
+            .slice(0, 8)
+            .map(c => `\`${c.slug}\``)
+            .join(", ");
+          throw new Error(
+            `No kit block "${rawSlug}" (404). Do not invent slugs — copy exactly from search_blocks results.${
+              available
+                ? ` Available from search: ${available}.`
+                : " Call search_blocks(category) first."
+            }`
+          );
+        }
+        resolvedSlug = pick.slug;
+        componentRes = await apiFetch(`/api/v1/components/${encodeURIComponent(resolvedSlug)}`);
+      }
+
+      component = componentRes.component;
+      if (!component?.structure) {
+        throw new Error(`Block "${resolvedSlug}" has no structure.`);
+      }
+
+      componentStyles = Array.isArray(component.styles)
+        ? component.styles
+        : component.style
+          ? [component.style]
+          : [];
+
+      // For header/footer slots, keep the block's section wrapper intact (it's the slot's direct child).
+      // For page sections, unwrap to avoid nesting two section shells.
+      const decodedStructure = decodeContentOrThrow(
+        component.structure,
+        `Component "${resolvedSlug}" structure`
+      );
+      structure = slotTarget ? decodedStructure : unwrapBlockStructure(decodedStructure);
+
+      sourceMeta = {
+        type: "block",
+        block: resolvedSlug,
+        ...(component.preset ? { preset: component.preset } : {}),
+        ...(componentStyles.length ? { styles: componentStyles } : {}),
+        ...(component.version ? { version: component.version } : {}),
+        appliedAt: new Date().toISOString(),
+      };
     }
 
     // Track preset/styles of applied blocks for cohesion hints in search_blocks
-    const componentStyles = Array.isArray(component.styles)
-      ? component.styles
-      : component.style
-        ? [component.style]
-        : [];
     if (component.preset || componentStyles.length) {
       if (!ctx._appliedBlockMeta) ctx._appliedBlockMeta = [];
       ctx._appliedBlockMeta.push({ preset: component.preset, styles: componentStyles });
     }
 
-    // For header/footer slots, keep the block's section wrapper intact (it's the slot's direct child).
-    // For page sections, unwrap to avoid nesting two section shells.
-    const decodedStructure = decodeContentOrThrow(
-      component.structure,
-      `Component "${resolvedSlug}" structure`
-    );
-    const structure = slotTarget ? decodedStructure : unwrapBlockStructure(decodedStructure);
     const co = parseMaybeJson(contentOverrides) || contentOverrides || {};
     const po = parseMaybeJson(propOverrides) || propOverrides || {};
-
-    const sourceMeta = {
-      type: "block",
-      block: resolvedSlug,
-      ...(component.preset ? { preset: component.preset } : {}),
-      ...(componentStyles.length ? { styles: componentStyles } : {}),
-      ...(component.version ? { version: component.version } : {}),
-      appliedAt: new Date().toISOString(),
-    };
     let newNodes;
     let rootId;
     let idSalt = "";
@@ -634,11 +738,20 @@ module.exports = {
       stashPendingPunchList(ctx, [...punchItems, ...imageItems]);
       const punchList = formatUnrewrittenCopyPunchList(punchItems);
       const imagePunchList = formatUnreplacedImagesPunchList(imageItems);
-      const summary = `Applied kit block "${component.name}" (\`${resolvedSlug}\`) — ${Object.keys(newNodes).length} nodes.${resolvedSlug !== rawSlug ? ` (resolved from "${rawSlug}")` : ""}${warnText}${punchList}${imagePunchList}\n\n${formatKitNodeIdManifest(newNodes, rootId, parentNodeId)}`;
-      ctx._appliedKitSlugs.add(slug);
-      if (resolvedSlug && resolvedSlug !== slug) ctx._appliedKitSlugs.add(resolvedSlug);
-      stashKitLabelMap(ctx, resolvedSlug, newNodes);
-      if (slug !== resolvedSlug) stashKitLabelMap(ctx, slug, newNodes);
+      const verb = cloneMode
+        ? `Adapted section "${component.name}" from \`${sourceNodeId}\``
+        : `Applied kit block "${component.name}" (\`${resolvedSlug}\`)`;
+      const resolvedNote =
+        !cloneMode && resolvedSlug !== rawSlug ? ` (resolved from "${rawSlug}")` : "";
+      const summary = `${verb} — ${Object.keys(newNodes).length} nodes.${resolvedNote}${warnText}${punchList}${imagePunchList}\n\n${formatKitNodeIdManifest(newNodes, rootId, parentNodeId)}`;
+      if (!cloneMode) {
+        ctx._appliedKitSlugs.add(slug);
+        if (resolvedSlug && resolvedSlug !== slug) ctx._appliedKitSlugs.add(resolvedSlug);
+        stashKitLabelMap(ctx, resolvedSlug, newNodes);
+        if (slug !== resolvedSlug) stashKitLabelMap(ctx, slug, newNodes);
+      } else {
+        stashKitLabelMap(ctx, resolvedSlug, newNodes);
+      }
       return {
         content: [{ type: "text", text: summary }],
         pendingContent: ctx.fillMode ? ctx._pendingFlatMap : flat,
@@ -656,14 +769,21 @@ module.exports = {
     stashPendingPunchList(ctx, [...punchItemsSaved, ...imageItemsSaved]);
     const punchList = formatUnrewrittenCopyPunchList(punchItemsSaved);
     const imagePunchList = formatUnreplacedImagesPunchList(imageItemsSaved);
+    const verb = cloneMode
+      ? `Adapted section "${component.name}" from \`${sourceNodeId}\``
+      : `Applied kit block "${resolvedSlug}"`;
     const msg =
       target.type === "template"
-        ? `Applied kit block "${resolvedSlug}" to template "${result.id}".${warnText}${punchList}${imagePunchList}`
-        : `Applied kit block "${resolvedSlug}".${warnText}${punchList}${imagePunchList}\nEditor: ${base}/build/${result.id}`;
-    ctx._appliedKitSlugs.add(slug);
-    if (resolvedSlug && resolvedSlug !== slug) ctx._appliedKitSlugs.add(resolvedSlug);
-    stashKitLabelMap(ctx, resolvedSlug, newNodes);
-    if (slug !== resolvedSlug) stashKitLabelMap(ctx, slug, newNodes);
+        ? `${verb} to template "${result.id}".${warnText}${punchList}${imagePunchList}`
+        : `${verb}.${warnText}${punchList}${imagePunchList}\nEditor: ${base}/build/${result.id}`;
+    if (!cloneMode) {
+      ctx._appliedKitSlugs.add(slug);
+      if (resolvedSlug && resolvedSlug !== slug) ctx._appliedKitSlugs.add(resolvedSlug);
+      stashKitLabelMap(ctx, resolvedSlug, newNodes);
+      if (slug !== resolvedSlug) stashKitLabelMap(ctx, slug, newNodes);
+    } else {
+      stashKitLabelMap(ctx, resolvedSlug, newNodes);
+    }
     return { content: [{ type: "text", text: msg }], changedNodes };
   },
 };

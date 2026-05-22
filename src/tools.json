@@ -1743,7 +1743,7 @@
   },
   {
     "name": "apply_kit_block",
-    "description": "Apply a library block (from search_blocks) to a site. The block is a complete section.\n\n**ALWAYS pass your final copy via `contentOverrides` in this SAME call** — keyed by node label (e.g. `{ \"Heading\": { \"text\": \"...\" }, \"Description\": { \"text\": \"...\" }, \"Primary CTA\": { \"text\": \"...\" } }`). Do NOT call apply_kit_block without contentOverrides and then follow up with patch_site_bulk to set text — that leads to id-hallucination loops. The one-shot path is correct.\n\n**Page sections (default):** apply_kit_block(slug, contentOverrides) adds the block to page_home. Use pageId for other pages, position to control order.\n\n**Header / Footer:** use target: \"header\" or target: \"footer\" to replace the site's header or footer with a library nav/footer block. This clears the existing header/footer content and inserts the block. Use contentOverrides to customize logo, links, copyright text.\n\n**Parallel section fill workers only:** omit sectionContainerId — the server pins to the assigned section automatically.",
+    "description": "Apply a library block (from search_blocks) to a site, OR adapt an existing on-site section. The result is a complete section in the target slot.\n\n**Two source modes — pass EXACTLY one:**\n- `slug`: stamp a fresh library block (the default — search_blocks results have library hits).\n- `sourceNodeId`: clone a section that already exists on this site (from the 'Reusable from this site' list in search_blocks). The subtree is deep-copied with fresh ids; the original is untouched. Prefer this when the site already has the pattern you need — faster than searching the library, keeps the site visually coherent, and inherits the page's existing voice.\n\n**ALWAYS pass your final copy via `contentOverrides` in this SAME call** — keyed by node label (e.g. `{ \"Heading\": { \"text\": \"...\" }, \"Description\": { \"text\": \"...\" }, \"Primary CTA\": { \"text\": \"...\" } }`). Do NOT call apply_kit_block without contentOverrides and then follow up with patch_site_bulk to set text — that leads to id-hallucination loops. The one-shot path is correct.\n\n**Page sections (default):** apply_kit_block(slug, contentOverrides) adds the block to page_home. Use pageId for other pages, position to control order.\n\n**Header / Footer:** use target: \"header\" or target: \"footer\" to replace the site's header or footer with a library nav/footer block. This clears the existing header/footer content and inserts the block. Use contentOverrides to customize logo, links, copyright text. `sourceNodeId` is for page sections only — header/footer slots require a fresh `slug`.\n\n**Parallel section fill workers only:** omit sectionContainerId — the server pins to the assigned section automatically.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1754,7 +1754,12 @@
         },
         "slug": {
           "type": "string",
-          "description": "Block slug from search_blocks (e.g. \"hero-split\", \"navbar\", \"footer-multi-column\").",
+          "description": "Block slug from search_blocks (e.g. \"hero-split\", \"navbar\", \"footer-multi-column\"). Mutually exclusive with sourceNodeId.",
+          "maxLength": 256
+        },
+        "sourceNodeId": {
+          "type": "string",
+          "description": "Node id of an existing PAGE SECTION on this site to clone (must have props.type === \"section\"). Surfaced by search_blocks under 'Reusable from this site'. The subtree is deep-cloned with fresh ids and stamped with custom.source = { type: \"site-clone\", fromNodeId }. Mutually exclusive with slug. Not valid with target: \"header\" / \"footer\".",
           "maxLength": 256
         },
         "target": {
@@ -1787,8 +1792,7 @@
           "type": "number",
           "description": "Insert position in the parent's children array. 0 = first child, 1 = after first child, etc. Use pull_site to see page_home.nodes order. Default: append to end."
         }
-      },
-      "required": ["slug"]
+      }
     }
   },
   {

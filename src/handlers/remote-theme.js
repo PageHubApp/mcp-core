@@ -5,7 +5,7 @@ const {
   finalizeRootThemeFonts,
 } = require("../../../../scripts/lib/theme-fonts.js");
 const { parseMaybeJson, getActiveTarget, fetchTarget, saveTarget } = require("../helpers/index.js");
-const { ensurePaletteOklch } = require("../color-utils");
+const { ensurePaletteOklch, validatePaletteContrast } = require("../color-utils");
 const { resultMsg } = require("./remote-shared");
 const { stampPresetDesignIntent } = require("../root-design-intent");
 const { VIBE_CODENAMES } = require("../vibes");
@@ -80,9 +80,36 @@ function designPickerOptionsResult(kind, args) {
   };
 }
 
+/**
+ * Append contrast warnings (Primary ≈ Base Content / Base 100) to a
+ * suggest_palettes result so the AI sees the issue in its tool output and can
+ * re-roll with shifted lightness/hue. Pure additive — the editor still receives
+ * `paletteOptions` unchanged, so the user can still pick a flagged palette
+ * if they want; the warning is for the agent, not a hard block.
+ */
+function annotatePaletteWarnings(result, options) {
+  const warnLines = [];
+  for (const opt of options) {
+    if (!opt || !Array.isArray(opt.palette)) continue;
+    const issues = validatePaletteContrast(opt.palette);
+    if (issues.length) {
+      const label = opt.name || "(unnamed)";
+      warnLines.push(`  • "${label}":`);
+      for (const w of issues) warnLines.push(`      - ${w}`);
+    }
+  }
+  if (warnLines.length) {
+    const head = result.content?.[0];
+    head.text += `\n\nContrast warnings:\n${warnLines.join("\n")}`;
+  }
+  return result;
+}
+
 module.exports = {
   async suggest_palettes(args) {
-    return designPickerOptionsResult("palette options", args);
+    const options = parseMaybeJson(args.options) || [];
+    const result = designPickerOptionsResult("palette options", args);
+    return annotatePaletteWarnings(result, options);
   },
 
   /** Font-only design picker — same client pipeline as suggest_palettes (`paletteOptions`). */

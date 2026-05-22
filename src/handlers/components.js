@@ -9,6 +9,7 @@ const {
   mergeStrList,
   compressJsonToBase64Lz,
   decodeContentOrThrow,
+  fetchTarget,
 } = require("../helpers/index.js");
 const {
   hierarchicalLibraryToFlat,
@@ -61,6 +62,55 @@ function detectUsedBlockSlugs() {
       }
     }
     return [...slugSet];
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Walk a flat node map and surface page sections that are rich enough to adapt
+ * (≥5 descendants, ≥2 distinct child component types). Skips the section the
+ * current fill worker is filling — adapting itself is a no-op.
+ *
+ * Result is consumed by search_blocks to suggest `apply_kit_block({ sourceNodeId })`
+ * as an alternative to stamping a fresh library block.
+ */
+function detectAdaptableSections(flat, currentSection) {
+  try {
+    if (!flat || typeof flat !== "object") return [];
+
+    const candidates = [];
+    for (const [id, node] of Object.entries(flat)) {
+      if (!node || typeof node !== "object") continue;
+      if (node.props?.type !== "section") continue;
+      if (id === "hdr_root" || id === "ftr_root") continue;
+      if (currentSection && id === currentSection) continue;
+      const parent = node.parent ? flat[node.parent] : null;
+      if (!parent || parent.props?.type !== "page") continue;
+
+      let descendantCount = 0;
+      const childTypes = new Set();
+      const stack = [...(node.nodes || [])];
+      while (stack.length) {
+        const child = flat[stack.pop()];
+        if (!child) continue;
+        descendantCount++;
+        const t = child.type?.resolvedName;
+        if (t) childTypes.add(t);
+        if (Array.isArray(child.nodes)) stack.push(...child.nodes);
+      }
+      if (descendantCount < 5 || childTypes.size < 2) continue;
+
+      candidates.push({
+        nodeId: id,
+        displayName: node.custom?.displayName || "Section",
+        blockSlug: node.custom?.source?.type === "block" ? node.custom.source.block : null,
+        descendantCount,
+        childTypes: [...childTypes].sort(),
+      });
+    }
+    candidates.sort((a, b) => b.descendantCount - a.descendantCount);
+    return candidates.slice(0, 8);
   } catch {
     return [];
   }
@@ -318,11 +368,43 @@ module.exports = {
         ? `\n\nAlready used on this page: ${usedSlugs.map(s => `\`${s}\``).join(", ")}. Pick a DIFFERENT block for variety.`
         : "";
 
+    // Surface rich existing sections as adaptable alternatives. The agent can
+    // pass sourceNodeId to apply_kit_block to clone an on-site section instead
+    // of stamping a fresh library block — cheaper and keeps the page coherent.
+    // Auto-load the site if the agent hasn't touched it yet — logs show
+    // fill workers + chat-mode "add a section" calls hit search_blocks cold,
+    // so without this the adaptable list would always be empty on the first
+    // tool call. Failures are swallowed (no target id, missing draft, etc.) —
+    // search_blocks must still return library results in those cases.
+    let siteFlat = ctx?._pendingFlatMap;
+    if (!siteFlat) {
+      try {
+        if (ctx?.fillMode && typeof ctx._reloadMergedDraft === "function") {
+          await ctx._reloadMergedDraft();
+          siteFlat = ctx?._pendingFlatMap;
+        } else {
+          const fetched = await fetchTarget(args);
+          siteFlat = fetched?.flat;
+        }
+      } catch {
+        siteFlat = null;
+      }
+    }
+    const adaptable = detectAdaptableSections(siteFlat, ctx?.sectionNodeId);
+    const adaptableNote = adaptable.length
+      ? `\n\n## Reusable from this site\nAdapt an existing section — pass \`sourceNodeId\` to apply_kit_block (instead of \`slug\`). The subtree is cloned with fresh ids; use contentOverrides to rewrite copy in one shot.\n\n${adaptable
+          .map(
+            a =>
+              `• \`${a.nodeId}\` — ${a.displayName}${a.blockSlug ? ` (from \`${a.blockSlug}\`)` : ""}, ${a.descendantCount} nodes [${a.childTypes.slice(0, 6).join(", ")}]`
+          )
+          .join("\n")}`
+      : "";
+
     return {
       content: [
         {
           type: "text",
-          text: `${head}${lines.join("\n\n")}\n\nPass a \`slug\` to apply_kit_block. Do NOT modify or invent slugs.${usedNote}`,
+          text: `${head}${lines.join("\n\n")}\n\nPass a \`slug\` to apply_kit_block. Do NOT modify or invent slugs.${usedNote}${adaptableNote}`,
         },
       ],
     };
