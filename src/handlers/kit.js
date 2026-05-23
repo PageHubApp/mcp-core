@@ -1,7 +1,7 @@
 const crypto = require("crypto");
 const { twMerge } = require("tailwind-merge");
 const { apiFetch } = require("../api-fetch");
-const { getContext } = require("../context");
+const { getContext, withPendingMapLock } = require("../context");
 const {
   getActiveTarget,
   parseMaybeJson,
@@ -239,8 +239,18 @@ module.exports = {
   /**
    * Apply a published library block (by slug) into an existing section container.
    * Prefer this in fill mode over hand-built graphs: search_blocks → apply_kit_block.
+   *
+   * Wrapped in `withPendingMapLock` because AI SDK runs the model's tool calls
+   * in parallel: without serialization, parallel apply_kit_block calls each
+   * snapshot the same empty pending map, fetch components for ~200-3400ms,
+   * then last-write-wins their snapshots back — earlier kits vanish.
    */
   async apply_kit_block(args) {
+    return withPendingMapLock(() => applyKitBlockBody(args));
+  },
+};
+
+async function applyKitBlockBody(args) {
     const {
       slug,
       sourceNodeId,
@@ -262,7 +272,8 @@ module.exports = {
     }
     const cloneMode = hasSourceNodeId && !hasSlug;
 
-    const slotTarget = args.target; // "header", "footer", or undefined (page)
+    let slotTarget = args.target; // "header", "footer", or undefined (page)
+    let slotMismatchWarning = null;
     if (cloneMode && slotTarget) {
       throw new Error(
         "sourceNodeId clones a PAGE SECTION; the header/footer slots take a fresh `slug` for a navbar / footer block."
@@ -275,8 +286,11 @@ module.exports = {
     // the section inside a layout slot that downstream code assembles differently (the
     // kit also then tends to drop before final save — see AiLog 2026-04-24T15:48 for the
     // "wills balls" case where the hero was applied under hdr_root and vanished from
-    // sharedDraft). Only accept slot targets for slugs that are actually header/footer
-    // blocks. Everything else must go on a page (the default, `target: "page"`).
+    // sharedDraft). Auto-recover by routing to `target: "page"` and surfacing a warning
+    // in the response so the kit lands somewhere visible instead of throwing — the agent
+    // then sees the warning in the tool reply and can correct future calls (see Yury's
+    // 2026-05-22 restaurant demo where hero-split → target="header" was rejected and the
+    // hero never got placed at all).
     if (slotTarget && SLOT_MAP[slotTarget]) {
       const slugLower = String(slug).toLowerCase();
       const isHeaderSlug = /(^|[-_])(header|nav(bar)?|top[-_]?bar|menu[-_]?bar)(-|$)/.test(
@@ -284,17 +298,17 @@ module.exports = {
       );
       const isFooterSlug = /(^|[-_])footer(-|$)/.test(slugLower);
       if (slotTarget === "header" && !isHeaderSlug) {
-        throw new Error(
-          `apply_kit_block: target "header" is reserved for header blocks (navbars / menu bars). ` +
-            `Slug "${slug}" doesn't look like a header block — its kit will be placed inside hdr_root (the global header slot), which is NOT where page sections live. ` +
-            `Use target: "page" (or omit target) to add this block as a section on the current page.`
-        );
-      }
-      if (slotTarget === "footer" && !isFooterSlug) {
-        throw new Error(
-          `apply_kit_block: target "footer" is reserved for footer blocks. ` +
-            `Slug "${slug}" doesn't look like a footer block — use target: "page" (or omit target) to add it as a page section instead.`
-        );
+        slotMismatchWarning =
+          `Note: requested target "header" but slug "${slug}" doesn't look like a header block (navbars / menu bars). ` +
+          `Routed to target: "page" so the kit appears as a page section. ` +
+          `For future calls: only use target: "header" for navbar/menu/topbar slugs; everything else should use target: "page" (or omit target).`;
+        slotTarget = undefined;
+      } else if (slotTarget === "footer" && !isFooterSlug) {
+        slotMismatchWarning =
+          `Note: requested target "footer" but slug "${slug}" doesn't look like a footer block. ` +
+          `Routed to target: "page" so the kit appears as a page section. ` +
+          `For future calls: only use target: "footer" for footer-* slugs; everything else should use target: "page" (or omit target).`;
+        slotTarget = undefined;
       }
     }
 
@@ -743,7 +757,8 @@ module.exports = {
         : `Applied kit block "${component.name}" (\`${resolvedSlug}\`)`;
       const resolvedNote =
         !cloneMode && resolvedSlug !== rawSlug ? ` (resolved from "${rawSlug}")` : "";
-      const summary = `${verb} — ${Object.keys(newNodes).length} nodes.${resolvedNote}${warnText}${punchList}${imagePunchList}\n\n${formatKitNodeIdManifest(newNodes, rootId, parentNodeId)}`;
+      const slotMismatchTail = slotMismatchWarning ? `\n\n${slotMismatchWarning}` : "";
+      const summary = `${verb} — ${Object.keys(newNodes).length} nodes.${resolvedNote}${slotMismatchTail}${warnText}${punchList}${imagePunchList}\n\n${formatKitNodeIdManifest(newNodes, rootId, parentNodeId)}`;
       if (!cloneMode) {
         ctx._appliedKitSlugs.add(slug);
         if (resolvedSlug && resolvedSlug !== slug) ctx._appliedKitSlugs.add(resolvedSlug);
@@ -772,10 +787,11 @@ module.exports = {
     const verb = cloneMode
       ? `Adapted section "${component.name}" from \`${sourceNodeId}\``
       : `Applied kit block "${resolvedSlug}"`;
+    const slotMismatchTail = slotMismatchWarning ? `\n\n${slotMismatchWarning}` : "";
     const msg =
       target.type === "template"
-        ? `${verb} to template "${result.id}".${warnText}${punchList}${imagePunchList}`
-        : `${verb}.${warnText}${punchList}${imagePunchList}\nEditor: ${base}/build/${result.id}`;
+        ? `${verb} to template "${result.id}".${slotMismatchTail}${warnText}${punchList}${imagePunchList}`
+        : `${verb}.${slotMismatchTail}${warnText}${punchList}${imagePunchList}\nEditor: ${base}/build/${result.id}`;
     if (!cloneMode) {
       ctx._appliedKitSlugs.add(slug);
       if (resolvedSlug && resolvedSlug !== slug) ctx._appliedKitSlugs.add(resolvedSlug);
@@ -785,5 +801,4 @@ module.exports = {
       stashKitLabelMap(ctx, resolvedSlug, newNodes);
     }
     return { content: [{ type: "text", text: msg }], changedNodes };
-  },
-};
+}

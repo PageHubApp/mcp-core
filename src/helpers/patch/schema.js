@@ -93,30 +93,62 @@ function assertPatchKeys(obj, allowedSet, label) {
 // Catching that here gives a directly-actionable error instead of a confusing
 // "Node <garbage> not found" downstream.
 const MALFORMED_NODEID_CHARS = /["'(){}\[\]:,;=\s]/;
-function assertNodeIdShape(nodeId, label) {
-  if (nodeId == null) return; // upstream "Node ... not found" handles missing
+const VALID_NODEID_SHAPE = /^[A-Za-z0-9._-]+$/;
+
+/**
+ * Strip the most common qwen / small-model mis-serialization artifacts from a
+ * nodeId: trailing quotes/commas, leading quotes, surrounding whitespace.
+ * Returns the cleaned id if it ends up matching the valid slug shape, or null
+ * if it's still garbage after cleaning.
+ *
+ * This recovers cases like `"ROOT',"` (model emitted a quote-comma instead of
+ * closing the JSON string) without weakening the validator for truly bad input.
+ */
+function tryRecoverNodeId(raw) {
+  if (typeof raw !== "string") return null;
+  const cleaned = raw
+    .trim()
+    .replace(/^["']+/, "")
+    .replace(/[,;'"\s]+$/, "")
+    .trim();
+  if (!cleaned) return null;
+  return VALID_NODEID_SHAPE.test(cleaned) ? cleaned : null;
+}
+
+function assertNodeIdShape(nodeId, label, args) {
+  if (nodeId == null) return nodeId; // upstream "Node ... not found" handles missing
   if (typeof nodeId !== "string") {
     throw new Error(
       `${label}: nodeId must be a string, got ${typeof nodeId}. Pass {nodeId, propsPatch, ...} as separate JSON fields.`
     );
   }
   if (MALFORMED_NODEID_CHARS.test(nodeId)) {
+    // qwen3-coder regularly emits patch_site_node({nodeId:"ROOT',"}) — the
+    // closing string quote got swallowed by a comma. If we can rescue the id
+    // by stripping trailing junk, do so and mutate args in place so downstream
+    // code sees the clean value. Otherwise fall through to the hard error.
+    const recovered = tryRecoverNodeId(nodeId);
+    if (recovered && args && typeof args === "object") {
+      args.nodeId = recovered;
+      return recovered;
+    }
     const preview = nodeId.length > 60 ? `${nodeId.slice(0, 57)}...` : nodeId;
     throw new Error(
       `${label}: nodeId looks malformed (got "${preview}"). Likely your tool args were serialized as one string instead of separate JSON fields. Re-emit with {"nodeId": "<id>", "propsPatch": {...}} as distinct keys.`
     );
   }
+  return nodeId;
 }
 
 function assertPatchSiteNodeArgs(args) {
   assertPatchKeys(args, PATCH_SITE_NODE_ARG_KEYS, "patch_site_node");
-  if (args && typeof args === "object") assertNodeIdShape(args.nodeId, "patch_site_node");
+  if (args && typeof args === "object") assertNodeIdShape(args.nodeId, "patch_site_node", args);
 }
 
 function assertPatchBulkItem(item, index) {
   assertPatchKeys(item, PATCH_BULK_ITEM_KEYS, `patch_site_bulk patches[${index}]`);
   if (item && typeof item === "object")
-    assertNodeIdShape(item.nodeId, `patch_site_bulk patches[${index}]`);
+    assertNodeIdShape(item.nodeId, `patch_site_bulk patches[${index}]`, item);
 }
 
 function assertPatchBlockNodeArgs(args) {

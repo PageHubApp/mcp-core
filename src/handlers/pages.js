@@ -1,4 +1,4 @@
-const { getContext } = require("../context");
+const { getContext, withPendingMapLock } = require("../context");
 const {
   parseMaybeJson,
   getActiveTarget,
@@ -66,6 +66,17 @@ module.exports = {
   },
 
   async add_page(args) {
+    return withPendingMapLock(() => addPageBody(args));
+  },
+  async update_page(args) {
+    return withPendingMapLock(() => updatePageBody(args));
+  },
+  async delete_page(args) {
+    return withPendingMapLock(() => deletePageBody(args));
+  },
+};
+
+async function addPageBody(args) {
     const { name, isHomePage, is404Page, position } = args;
     if (!name) throw new Error("Page name is required.");
 
@@ -198,9 +209,9 @@ module.exports = {
       ],
       patch,
     };
-  },
+}
 
-  async update_page(args) {
+async function updatePageBody(args) {
     const { pageId, name, isHomePage, is404Page, isHidden, hideHeader, hideFooter, hideChrome } = args;
     if (!pageId) throw new Error("pageId is required.");
 
@@ -345,9 +356,9 @@ module.exports = {
       ],
       patch,
     };
-  },
+}
 
-  async delete_page(args) {
+async function deletePageBody(args) {
     const { pageId } = args;
     if (!pageId) throw new Error("pageId is required.");
 
@@ -418,5 +429,4 @@ module.exports = {
       ],
       patch,
     };
-  },
-};
+}

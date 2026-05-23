@@ -6,7 +6,7 @@ const {
   validateImageUrls,
   mergeBlockModifiersIntoRoot,
 } = require("../helpers/index.js");
-const { getContext } = require("../context");
+const { getContext, withPendingMapLock } = require("../context");
 const { assertFillModePatchAllowed } = require("../helpers/fill-mode");
 const { collectSubtree } = require("../node-utils");
 
@@ -14,6 +14,21 @@ const PROTECTED_IDS = ["ROOT", "page_home"];
 
 module.exports = {
   async delete_node(args) {
+    return withPendingMapLock(() => deleteNodeBody(args));
+  },
+  async insert_node(args) {
+    return withPendingMapLock(() => insertNodeBody(args));
+  },
+  async move_node(args) {
+    return withPendingMapLock(() => moveNodeBody(args));
+  },
+  // read-only handlers below are unwrapped — they don't touch ctx._pendingFlatMap
+  list_site_nodes: listSiteNodesMethod,
+  get_site_node: getSiteNodeMethod,
+  search_site_nodes: searchSiteNodesMethod,
+};
+
+async function deleteNodeBody(args) {
     const { nodeId } = args;
     if (PROTECTED_IDS.includes(nodeId))
       throw new Error(`Cannot delete structural node: ${nodeId}.`);
@@ -42,9 +57,9 @@ module.exports = {
         ? `Node "${nodeId}" and descendants deleted from template "${targetId}".`
         : `Node "${nodeId}" and descendants deleted.\nEditor: ${result.url}`;
     return { content: [{ type: "text", text: label }] };
-  },
+}
 
-  async insert_node(args) {
+async function insertNodeBody(args) {
     const { nodeId, parentId, position, node } = args;
     if (typeof nodeId !== "string" || !nodeId.trim()) {
       // Models occasionally drop nodeId from the call; without this check we'd
@@ -95,13 +110,13 @@ module.exports = {
         ? `Node "${nodeId}" inserted into "${parentId}" at position ${pos} in template "${targetId}".`
         : `Node "${nodeId}" inserted into "${parentId}" at position ${pos}.\nEditor: ${result.url}`;
     return { content: [{ type: "text", text: label }], changedNodes };
-  },
+}
 
-  /**
-   * Lightweight node summary — returns ID, displayName, component type, parent, children count.
-   * ~2KB instead of 100KB+ from pull_site. Use this instead of pull_site for navigation/inspection.
-   */
-  async list_site_nodes(args) {
+/**
+ * Lightweight node summary — returns ID, displayName, component type, parent, children count.
+ * ~2KB instead of 100KB+ from pull_site. Use this instead of pull_site for navigation/inspection.
+ */
+async function listSiteNodesMethod(args) {
     const { flat } = await fetchTarget(args);
 
     // Build DFS tree from ROOT
@@ -135,13 +150,13 @@ module.exports = {
         },
       ],
     };
-  },
+}
 
-  /**
-   * Search site nodes by displayName pattern or component type.
-   * Returns matching node IDs with their displayName, type, className, and parent.
-   */
-  async move_node(args) {
+/**
+ * Search site nodes by displayName pattern or component type.
+ * Returns matching node IDs with their displayName, type, className, and parent.
+ */
+async function moveNodeBody(args) {
     const { nodeId, newParentId, position } = args;
     if (PROTECTED_IDS.includes(nodeId)) throw new Error(`Cannot move structural node: ${nodeId}.`);
     const ctx = getContext();
@@ -201,15 +216,15 @@ module.exports = {
         ? `Node "${nodeId}" moved from "${oldParentId}" to "${newParentId}" at position ${pos} in template "${targetId}".`
         : `Node "${nodeId}" moved from "${oldParentId}" to "${newParentId}" at position ${pos}.\nEditor: ${result.url}`;
     return { content: [{ type: "text", text: label }] };
-  },
+}
 
-  /**
-   * Read one node's full payload (type, props, className, nodes, parent, custom).
-   * Use this to inspect `props.inject.head` / `props.inject.footer` on ROOT, or any
-   * other field that doesn't surface in `list_site_nodes` / `search_site_nodes`.
-   * Required before patching a string-valued nested prop you don't want to overwrite.
-   */
-  async get_site_node(args) {
+/**
+ * Read one node's full payload (type, props, className, nodes, parent, custom).
+ * Use this to inspect `props.inject.head` / `props.inject.footer` on ROOT, or any
+ * other field that doesn't surface in `list_site_nodes` / `search_site_nodes`.
+ * Required before patching a string-valued nested prop you don't want to overwrite.
+ */
+async function getSiteNodeMethod(args) {
     const { nodeId } = args;
     if (!nodeId) throw new Error("nodeId is required.");
     const { flat } = await fetchTarget(args);
@@ -232,9 +247,9 @@ module.exports = {
         },
       ],
     };
-  },
+}
 
-  async search_site_nodes(args) {
+async function searchSiteNodesMethod(args) {
     const { q, type: componentType, className, classRegex } = args;
     const { flat } = await fetchTarget(args);
 
@@ -319,5 +334,4 @@ module.exports = {
         },
       ],
     };
-  },
-};
+}

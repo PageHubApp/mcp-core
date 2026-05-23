@@ -9,7 +9,7 @@
  * call replaces the first (idempotent).
  */
 
-const { getContext } = require("../context");
+const { getContext, withPendingMapLock } = require("../context");
 const { parseMaybeJson, getActiveTarget, fetchTarget, saveTarget } = require("../helpers/index.js");
 const { VALID_COMPONENTS, CANVAS_COMPONENTS, collectSubtree } = require("../node-utils");
 const { validateNodes } = require("../node-validation");
@@ -164,6 +164,11 @@ function flattenHierarchy(hierarchy, sectionNodeId) {
 
 module.exports = {
   async place_section_tree(args) {
+    return withPendingMapLock(() => placeSectionTreeBody(args));
+  },
+};
+
+async function placeSectionTreeBody(args) {
     const ctx = getContext();
     if (!ctx?.fillMode || !ctx.sectionNodeId) {
       throw new Error(
@@ -301,5 +306,4 @@ module.exports = {
       ],
       changedNodes,
     };
-  },
-};
+}

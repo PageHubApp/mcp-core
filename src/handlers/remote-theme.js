@@ -1,5 +1,5 @@
 const { apiFetch } = require("../api-fetch");
-const { getContext } = require("../context");
+const { getContext, withPendingMapLock } = require("../context");
 const {
   stripGoogleFontLinksFromHeader,
   finalizeRootThemeFonts,
@@ -155,6 +155,11 @@ module.exports = {
   },
 
   async set_theme(args) {
+    return withPendingMapLock(() => setThemeBody(args));
+  },
+};
+
+async function setThemeBody(args) {
     const {
       preset,
       palette,
@@ -328,5 +333,4 @@ module.exports = {
       ],
       changedNodes,
     };
-  },
-};
+}

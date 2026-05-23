@@ -1,5 +1,5 @@
 const { apiFetch } = require("../api-fetch");
-const { getContext } = require("../context");
+const { getContext, withPendingMapLock } = require("../context");
 const {
   parseMaybeJson,
   applyNodePatches,
@@ -222,6 +222,17 @@ function formatButtonPreflightReport(records) {
 
 module.exports = {
   async add_nodes(args) {
+    return withPendingMapLock(() => addNodesBody(args));
+  },
+  async patch_site_node(args) {
+    return withPendingMapLock(() => patchSiteNodeBody(args));
+  },
+  async patch_site_bulk(args) {
+    return withPendingMapLock(() => patchSiteBulkBody(args));
+  },
+};
+
+async function addNodesBody(args) {
     const target = getActiveTarget(args);
     const ctx = getContext();
     if (ctx.fillMode && ctx._fillStructureLocked) {
@@ -358,9 +369,9 @@ module.exports = {
       ],
       changedNodes,
     };
-  },
+}
 
-  async patch_site_node(args) {
+async function patchSiteNodeBody(args) {
     const target = getActiveTarget(args);
     assertPatchSiteNodeArgs(args);
     const {
@@ -443,9 +454,9 @@ module.exports = {
       ],
       changedNodes,
     };
-  },
+}
 
-  async patch_site_bulk(args) {
+async function patchSiteBulkBody(args) {
     const target = getActiveTarget(args);
     const buttonValidationMode = normalizeButtonValidationMode(args.buttonValidation);
     const designValidationMode = normalizeDesignValidationMode(args.designValidation);
@@ -579,5 +590,4 @@ module.exports = {
       ],
       changedNodes,
     };
-  },
-};
+}
