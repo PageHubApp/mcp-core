@@ -48,6 +48,8 @@ console.log(result.content[0].text);
 
 Get a free API key by signing up at [pagehub.dev](https://pagehub.dev) or calling the `register` tool with an email.
 
+See [`examples/`](examples/) for runnable scripts (list tools, execute a tool, full Claude Agent SDK loop).
+
 ## Use with Claude Agent SDK
 
 ```js
