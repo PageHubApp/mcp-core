@@ -1,14 +1,27 @@
+/**
+ * Template lifecycle tools — select / list / pull / save / update / delete /
+ * publish-site-as-template. Wraps `/api/v1/templates/*` and keeps
+ * `getContext().activeTemplate` in sync.
+ */
+
 const { apiFetch } = require("../core/api-fetch");
 const { getContext } = require("../core/context");
+
 const {
   parseMaybeJson,
   getActiveTarget,
   compressJsonToBase64Lz,
   decodeContentOrThrow,
 } = require("../helpers/index.js");
+
 const { quickA11yAudit } = require("../validation/a11y-check");
 
 module.exports = {
+  /**
+   * Mark a template as the active target for subsequent tool calls.
+   * @param {object} args - { slug }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async select_template(args) {
     const { slug } = args;
     if (!slug) throw new Error("slug is required.");
@@ -32,6 +45,11 @@ module.exports = {
     };
   },
 
+  /**
+   * Browse the template catalog with optional filters.
+   * @param {object} args - { category?, tag?, q? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async list_templates(args = {}) {
     const params = new URLSearchParams();
     if (args.category) params.set("category", args.category);
@@ -51,6 +69,11 @@ module.exports = {
     };
   },
 
+  /**
+   * Fetch a template's full decoded node map by slug.
+   * @param {object} args - { slug }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async pull_template(args) {
     const { slug } = args;
     const data = await apiFetch(`/api/v1/templates/${encodeURIComponent(slug)}`);
@@ -72,6 +95,11 @@ module.exports = {
     };
   },
 
+  /**
+   * Create a new template from a raw or compressed content payload.
+   * @param {object} args - { slug, title, description?, image?, category?, tags?, content, hidden?, isPublic?, sortOrder? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async save_template(args) {
     const {
       slug,
@@ -86,7 +114,7 @@ module.exports = {
       sortOrder,
     } = args;
     if (!slug || !title || !content) {
-      throw new Error("slug, title, and content are required");
+      throw new Error("slug, title, and content are required.");
     }
     const resolvedContent = parseMaybeJson(content) || content;
     const encodedContent =
@@ -120,6 +148,11 @@ module.exports = {
     };
   },
 
+  /**
+   * Snapshot the active site into a new template entry.
+   * @param {object} args - { slug?, title?, description?, image?, category?, tags?, hidden?, isPublic?, sortOrder? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async publish_site_as_template(args) {
     const { slug, title, description, image, category, tags, hidden, isPublic, sortOrder } = args;
     const target = getActiveTarget(args);
@@ -154,9 +187,14 @@ module.exports = {
     };
   },
 
+  /**
+   * Patch an existing template (optimistic-concurrency on `version`).
+   * @param {object} args - { slug, title?, description?, image?, category?, tags?, content?, hidden?, sortOrder? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async update_template(args) {
     const { slug } = args;
-    if (!slug) throw new Error("slug is required");
+    if (!slug) throw new Error("slug is required.");
     const current = await apiFetch(`/api/v1/templates/${encodeURIComponent(slug)}`);
     const expectedVersion = Number(current?.version || 1);
     const body = {};
@@ -202,9 +240,14 @@ module.exports = {
     };
   },
 
+  /**
+   * Delete a template by slug.
+   * @param {object} args - { slug }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async delete_template(args) {
     const { slug } = args;
-    if (!slug) throw new Error("slug is required");
+    if (!slug) throw new Error("slug is required.");
     await apiFetch(`/api/v1/templates/${encodeURIComponent(slug)}`, { method: "DELETE" });
     return { content: [{ type: "text", text: `Template "${slug}" deleted.` }] };
   },

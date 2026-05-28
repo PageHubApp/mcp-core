@@ -1,6 +1,15 @@
+/**
+ * Site-level configuration tools — analytics integrations, favicons,
+ * redirect rules. All operate on `ROOT.props.*` of the active site/template
+ * (favicon uploads also call the `/sites/:id/media` endpoint).
+ */
+
 const fs = require("fs");
 const path = require("path");
+
 const { apiFetch } = require("../core/api-fetch");
+const { ROOT_NODE_ID } = require("../core/constants");
+
 const { fetchTarget, saveTarget, getActiveTarget } = require("../helpers/index.js");
 
 const FAVICON_MIME = ["image/png", "image/jpeg", "image/webp", "image/gif", "image/svg+xml"];
@@ -37,9 +46,14 @@ function readLocalFavicon(filePath) {
 }
 
 module.exports = {
+  /**
+   * Set analytics / pixel / GSC integration IDs on `ROOT.props.integrations`.
+   * @param {object} args - { googleAnalytics?, googleTagManager?, googleSearchConsole?, metaPixel?, googleAds? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async set_integrations(args) {
     const { targetId, targetType, flat } = await fetchTarget(args);
-    if (!flat.ROOT?.props) throw new Error("No ROOT node found.");
+    if (!flat[ROOT_NODE_ID]?.props) throw new Error("ROOT node not found.");
     const integrations = {};
     if (args.googleAnalytics)
       integrations.googleAnalytics = { measurementId: args.googleAnalytics };
@@ -49,7 +63,10 @@ module.exports = {
       integrations.googleSearchConsole = { verificationCode: args.googleSearchConsole };
     if (args.metaPixel) integrations.metaPixel = { pixelId: args.metaPixel };
     if (args.googleAds) integrations.googleAds = { conversionId: args.googleAds };
-    flat.ROOT.props.integrations = { ...(flat.ROOT.props.integrations || {}), ...integrations };
+    flat[ROOT_NODE_ID].props.integrations = {
+      ...(flat[ROOT_NODE_ID].props.integrations || {}),
+      ...integrations,
+    };
     const result = await saveTarget(targetId, targetType, flat);
     const providers = Object.keys(integrations).join(", ") || "none";
     const label =
@@ -59,18 +76,24 @@ module.exports = {
     return { content: [{ type: "text", text: label }] };
   },
 
+  /**
+   * Set or clear the site favicon (accepts filePath / mediaId / imageUrl /
+   * dataBase64 / svgContent, or `clear: true`).
+   * @param {object} args - { filePath?, mediaId?, imageUrl?, dataBase64?, svgContent?, mimeType?, filename?, clear? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async set_favicon(args) {
     const target = getActiveTarget(args);
     if (target.type === "template") {
       throw new Error("set_favicon is not supported for templates — favicons are per-site only.");
     }
     const { targetId, targetType, flat } = await fetchTarget(args);
-    if (!flat.ROOT?.props) throw new Error("No ROOT node found.");
+    if (!flat[ROOT_NODE_ID]?.props) throw new Error("ROOT node not found.");
 
     if (args.clear) {
-      if (flat.ROOT.props.seo?.favicon) {
-        const { favicon, ...rest } = flat.ROOT.props.seo;
-        flat.ROOT.props.seo = rest;
+      if (flat[ROOT_NODE_ID].props.seo?.favicon) {
+        const { favicon, ...rest } = flat[ROOT_NODE_ID].props.seo;
+        flat[ROOT_NODE_ID].props.seo = rest;
       }
       const result = await saveTarget(targetId, targetType, flat);
       return { content: [{ type: "text", text: `Favicon cleared.\nEditor: ${result.url}` }] };
@@ -81,7 +104,7 @@ module.exports = {
     );
     if (provided.length === 0) {
       throw new Error(
-        "Provide one of: filePath (local file — easiest), mediaId, imageUrl, dataBase64, svgContent — or clear: true. Do NOT invent SVG markup."
+        "A favicon source is required. Provide one of: filePath (local file — easiest), mediaId, imageUrl, dataBase64, svgContent — or `clear: true`. Do NOT invent SVG markup."
       );
     }
     if (provided.length > 1) {
@@ -89,7 +112,7 @@ module.exports = {
     }
     if (args.mimeType && !FAVICON_MIME.includes(args.mimeType)) {
       throw new Error(
-        `Unsupported mimeType "${args.mimeType}". Allowed: ${FAVICON_MIME.join(", ")}`
+        `Unsupported mimeType "${args.mimeType}". Allowed: ${FAVICON_MIME.join(", ")}.`
       );
     }
 
@@ -131,7 +154,7 @@ module.exports = {
         : `uploaded mediaId ${data.mediaId} (${data.url})`;
     }
 
-    flat.ROOT.props.seo = { ...(flat.ROOT.props.seo || {}), favicon };
+    flat[ROOT_NODE_ID].props.seo = { ...(flat[ROOT_NODE_ID].props.seo || {}), favicon };
     const result = await saveTarget(targetId, targetType, flat);
     return {
       content: [
@@ -143,15 +166,20 @@ module.exports = {
     };
   },
 
+  /**
+   * Replace the site's redirect rules at `ROOT.props.redirects`.
+   * @param {object} args - { redirects: Array<{from, to, permanent?}> }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async set_redirects(args) {
     const { targetId, targetType, flat } = await fetchTarget(args);
-    if (!flat.ROOT?.props) throw new Error("No ROOT node found.");
+    if (!flat[ROOT_NODE_ID]?.props) throw new Error("ROOT node not found.");
     const redirects = (args.redirects || []).map(r => ({
       from: r.from,
       to: r.to,
       permanent: r.permanent !== false,
     }));
-    flat.ROOT.props.redirects = redirects.length ? redirects : undefined;
+    flat[ROOT_NODE_ID].props.redirects = redirects.length ? redirects : undefined;
     const result = await saveTarget(targetId, targetType, flat);
     const label =
       targetType === "template"

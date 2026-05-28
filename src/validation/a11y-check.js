@@ -3,6 +3,8 @@
  * Shared by save/update handlers (auto-check) and audit_accessibility (full report).
  */
 
+const { ROOT_NODE_ID, HOME_PAGE_ID } = require("../core/constants");
+
 const GENERIC_LINK_TEXT =
   /^(click here|read more|learn more|here|link|more|submit|button|download)$/i;
 const PLACEHOLDER_ALT = /^(image|photo|picture|img|untitled|placeholder|alt text|screenshot)$/i;
@@ -51,12 +53,12 @@ function collectNodes(nodes, rootId) {
  */
 function resolveRootId(nodes, rootId) {
   if (rootId && nodes[rootId]) return rootId;
-  if (nodes["page_home"]) return "page_home";
+  if (nodes[HOME_PAGE_ID]) return HOME_PAGE_ID;
   for (const [id, node] of Object.entries(nodes)) {
     if (node?.props?.isHomePage && node?.props?.type === "page") return id;
   }
-  if (nodes.ROOT?.nodes?.[0]) return nodes.ROOT.nodes[0];
-  if (nodes.ROOT) return "ROOT";
+  if (nodes[ROOT_NODE_ID]?.nodes?.[0]) return nodes[ROOT_NODE_ID].nodes[0];
+  if (nodes[ROOT_NODE_ID]) return ROOT_NODE_ID;
   return Object.keys(nodes)[0] || null;
 }
 

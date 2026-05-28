@@ -1,5 +1,23 @@
+/**
+ * `apply_kit_block` core body — stamps a library block (by slug) or clones
+ * an existing on-site section (by sourceNodeId) into a target slot, with
+ * full override / unwrap / punch-list / fill-mode integration. Exported as
+ * `applyKitBlockBody` for `handlers/kit.js` to wrap with the pending-map
+ * lock.
+ */
+
 const crypto = require("crypto");
+
+const { resolveToolDefaultPageNodeId } = require("../../core/active-page");
+const { normalizeBaseUrl } = require("../../core/api-fetch");
 const { getContext } = require("../../core/context");
+
+const {
+  hierarchicalStructureToFlat,
+  walkApplyKitOverrides,
+  flatLibraryToHierarchical,
+} = require("../../codec/structure-ingest");
+
 const {
   getActiveTarget,
   parseMaybeJson,
@@ -8,18 +26,11 @@ const {
   decodeContentOrThrow,
   mergeBlockModifiersIntoRoot,
 } = require("../../helpers/index.js");
-const { normalizeBaseUrl } = require("../../core/api-fetch");
-const {
-  hierarchicalStructureToFlat,
-  walkApplyKitOverrides,
-  flatLibraryToHierarchical,
-} = require("../../codec/structure-ingest");
+const { recordFillPatch } = require("../../helpers/fill-patch-merge");
 
 const { collectSubtree } = require("../../utils/node-utils");
-const { recordFillPatch } = require("../../helpers/fill-patch-merge");
-const { resolveToolDefaultPageNodeId } = require("../../core/active-page");
-const { stashPendingPunchList } = require("./punch-list-state");
 
+const { formatKitNodeIdManifest } = require("./manifest");
 const {
   stashKitLabelMap,
   findUnrewrittenCopy,
@@ -27,11 +38,19 @@ const {
   formatUnrewrittenCopyPunchList,
   formatUnreplacedImagesPunchList,
 } = require("./punch-list");
-const { formatKitNodeIdManifest } = require("./manifest");
-const { unwrapBlockStructure } = require("./unwrap");
+const { stashPendingPunchList } = require("./punch-list-state");
 const { SLOT_MAP, resolveSlotTarget } = require("./slot-guard");
 const { fetchComponentBySlugWithFallback } = require("./slug-resolver");
+const { unwrapBlockStructure } = require("./unwrap");
 
+/**
+ * Apply one library block (by `slug`) or clone one on-site section (by
+ * `sourceNodeId`) into the target slot/section/page. Supports content +
+ * prop overrides, slot rewrites, fill-mode punch-list, and dry-run draft
+ * recording. Caller must wrap with `withPendingMapLock`.
+ * @param {object} args - { slug? | sourceNodeId?, sectionContainerId?, contentOverrides?, propOverrides?, target?, position?, pageId?, copyContext?, modifiers? }
+ * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+ */
 async function applyKitBlockBody(args) {
   const {
     slug,

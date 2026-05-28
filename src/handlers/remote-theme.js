@@ -1,11 +1,17 @@
 const { apiFetch } = require("../core/api-fetch");
 const { getContext, withPendingMapLock } = require("../core/context");
-const { stripGoogleFontLinksFromHeader, finalizeRootThemeFonts } = require("../lib/theme-fonts.js");
-const { parseMaybeJson, getActiveTarget, fetchTarget, saveTarget } = require("../helpers/index.js");
-const { ensurePaletteOklch, validatePaletteContrast } = require("../utils/color-utils");
-const { resultMsg } = require("./remote-shared");
+
 const { stampPresetDesignIntent } = require("../data/root-design-intent");
 const { VIBE_CODENAMES } = require("../data/vibes");
+
+const { parseMaybeJson, getActiveTarget, fetchTarget, saveTarget } = require("../helpers/index.js");
+
+const { ensurePaletteOklch, validatePaletteContrast } = require("../utils/color-utils");
+const { editDistance } = require("../utils/levenshtein");
+
+const { resultMsg } = require("./remote-shared");
+
+const { stripGoogleFontLinksFromHeader, finalizeRootThemeFonts } = require("../lib/theme-fonts.js");
 
 // ── Build-style validation ───────────────────────────────────────────────────
 // `buildStyle` on ROOT.props must be one of the 6 canonical vibes
@@ -38,8 +44,6 @@ async function getValidBuildStyles() {
   _validStylesFetchedAt = now;
   return _validStylesCache;
 }
-
-const { editDistance } = require("../utils/levenshtein");
 
 function suggestStyle(invalid, validSet) {
   const lower = String(invalid).toLowerCase();
@@ -109,12 +113,12 @@ module.exports = {
     }
     const siteId = target.id;
     if (!args.imageUrl && !args.dataBase64) {
-      throw new Error("Provide imageUrl or dataBase64.");
+      throw new Error("imageUrl or dataBase64 is required.");
     }
     const ALLOWED_MIME = ["image/png", "image/jpeg", "image/webp", "image/gif", "image/svg+xml"];
     if (args.mimeType && !ALLOWED_MIME.includes(args.mimeType)) {
       throw new Error(
-        `Unsupported mimeType "${args.mimeType}". Allowed: ${ALLOWED_MIME.join(", ")}`
+        `Unsupported mimeType "${args.mimeType}". Allowed: ${ALLOWED_MIME.join(", ")}.`
       );
     }
     const body = {

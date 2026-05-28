@@ -10,6 +10,8 @@
  * - errors: blocking issues that prevent save (broken parent refs, etc.)
  */
 
+const { ROOT_NODE_ID, HOME_PAGE_ID } = require("../core/constants");
+
 // ── Hardcoded color detection ──
 
 const HARDCODED_COLOR_RE =
@@ -66,8 +68,8 @@ const VALID_TAG_NAMES = new Set([
 // ── Structural nodes that should never be auto-fixed ──
 
 const STRUCTURAL_NODE_IDS = new Set([
-  "ROOT",
-  "page_home",
+  ROOT_NODE_ID,
+  HOME_PAGE_ID,
   "hdr_root",
   "hdr_section",
   "hdr_inner",
@@ -358,7 +360,7 @@ function validateNodes(flatMap, opts = {}) {
 
     // ─── Parent reference validation ───
     // Skip for the section root node — its parent (e.g. page_home) lives in the site, not the submitted map
-    if (node.parent && nodeId !== "ROOT" && nodeId !== sectionRootId) {
+    if (node.parent && nodeId !== ROOT_NODE_ID && nodeId !== sectionRootId) {
       if (!flatMap[node.parent]) {
         errors.push(`${nodeId}: Parent "${node.parent}" does not exist in the node map`);
       }

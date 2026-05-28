@@ -1,4 +1,7 @@
+const { normalizeBaseUrl } = require("../core/api-fetch");
+const { ROOT_NODE_ID } = require("../core/constants");
 const { getContext, withPendingMapLock } = require("../core/context");
+
 const {
   parseMaybeJson,
   getActiveTarget,
@@ -6,12 +9,11 @@ const {
   saveTarget,
   assertInjectHtml,
 } = require("../helpers/index.js");
-const { normalizeBaseUrl } = require("../core/api-fetch");
 const { buildPatch } = require("../helpers/patch/build");
 
 /** Find all page nodes — direct ROOT children with props.type === 'page'. */
 function findPages(flat) {
-  const root = flat.ROOT;
+  const root = flat[ROOT_NODE_ID];
   if (!root) return [];
   const pages = [];
   for (const childId of root.nodes || []) {
@@ -82,8 +84,8 @@ async function addPageBody(args) {
 
   const target = getActiveTarget(args);
   const { flat } = await fetchTarget(args);
-  const root = flat.ROOT;
-  if (!root) throw new Error("No ROOT node found.");
+  const root = flat[ROOT_NODE_ID];
+  if (!root) throw new Error("ROOT node not found.");
 
   const prevRootChildren = Array.isArray(root.nodes) ? root.nodes.slice() : [];
   const touched = new Set();
@@ -145,7 +147,7 @@ async function addPageBody(args) {
     },
     displayName: "Container",
     custom: { displayName: name },
-    parent: "ROOT",
+    parent: ROOT_NODE_ID,
     hidden: false,
     nodes: [],
     linkedNodes: {},
@@ -378,7 +380,7 @@ async function deletePageBody(args) {
   const wasHomePage = page.props?.isHomePage === true;
   const pageName = page.custom?.displayName || page.displayName || pageId;
 
-  const root = flat.ROOT;
+  const root = flat[ROOT_NODE_ID];
   const prevRootChildren = root && Array.isArray(root.nodes) ? root.nodes.slice() : [];
   if (root) {
     root.nodes = (root.nodes || []).filter(id => id !== pageId);

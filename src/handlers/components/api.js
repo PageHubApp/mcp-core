@@ -1,4 +1,11 @@
+/**
+ * Thin REST wrappers around `/api/v1/components/*` plus structure
+ * encode/decode helpers. Shared by `search_blocks`, block CRUD, and the
+ * kit-apply pipeline.
+ */
+
 const { apiFetch } = require("../../core/api-fetch");
+
 const { compressJsonToBase64Lz, decodeContentOrThrow } = require("../../helpers/index.js");
 
 async function fetchComponents(params) {

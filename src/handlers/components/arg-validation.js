@@ -1,3 +1,9 @@
+/**
+ * Argument whitelist + nearest-key suggestion for `search_blocks`. Rejects
+ * hallucinated filter keys with a Levenshtein-based "did you mean…" hint
+ * so agents self-correct instead of looping on empty fallbacks.
+ */
+
 // Whitelist of valid args. Reject hallucinated keys (we've seen agents pass
 // invented filters like `group: "acme-homepage-cards"` and then waste a tool
 // call on the empty fallback). Better to fail fast with a "did you mean…"

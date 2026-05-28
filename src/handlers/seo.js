@@ -1,10 +1,26 @@
+/**
+ * SEO + accessibility audit tools. `audit_seo` runs heuristic SEO checks
+ * (title length, meta description, heading hierarchy, alt text, etc.) and
+ * `audit_accessibility` runs a static WCAG-style node-tree audit. Both
+ * tools return a markdown report grouped by severity.
+ */
+
 const { apiFetch } = require("../core/api-fetch");
+const { ROOT_NODE_ID } = require("../core/constants");
+
 const { resolveRootId } = require("../validation/a11y-check");
-const { loadAuditTarget } = require("./seo/target-loader");
-const { runChecks } = require("./seo/seo-checks");
+
 const { runA11yChecks } = require("./seo/a11y-checks");
+const { runChecks } = require("./seo/seo-checks");
+const { loadAuditTarget } = require("./seo/target-loader");
 
 module.exports = {
+  /**
+   * Run heuristic SEO checks against the active site/template's home page
+   * (or a specific `pageId`) and return a markdown score report.
+   * @param {object} args - { siteId?, templateSlug?, pageId? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async audit_seo(args) {
     let data, nodes, label;
 
@@ -54,7 +70,7 @@ module.exports = {
             break;
           }
         }
-        if (!pageId) pageId = nodes.ROOT?.nodes?.[0] || "ROOT";
+        if (!pageId) pageId = nodes[ROOT_NODE_ID]?.nodes?.[0] || ROOT_NODE_ID;
       }
     }
     if (!nodes[pageId])
@@ -103,6 +119,12 @@ module.exports = {
     return { content: [{ type: "text", text: lines.join("\n") }] };
   },
 
+  /**
+   * Run a static WCAG-style node-tree audit and return a markdown report
+   * grouped by severity (critical / serious / moderate / minor / pass).
+   * @param {object} args - { siteId?, templateSlug?, pageId? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async audit_accessibility(args) {
     // Node-based WCAG AA audit — checks the active site's node tree
     // (axe-core / URL auditing is not supported in build mode)

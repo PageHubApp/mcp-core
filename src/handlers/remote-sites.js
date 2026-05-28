@@ -1,11 +1,24 @@
+/**
+ * Site lifecycle tools — create / list / select / pull / update / publish /
+ * unpublish / duplicate / delete sites, plus custom domain CRUD. All tools
+ * proxy `/api/v1/sites/*` and keep `getContext().activeSite` in sync.
+ */
+
 const { apiFetch, normalizeBaseUrl } = require("../core/api-fetch");
 const { getContext } = require("../core/context");
+
 const { getActiveTarget, fetchTarget, decodeContentOrThrow } = require("../helpers/index.js");
 const { pickSiteMetaArgs, pickSiteMetaUpdates } = require("../helpers/extra-meta-args");
 
 const DEFAULT_BLANK_TEMPLATE = "acme";
 
 module.exports = {
+  /**
+   * Create a new site from a template (defaults to "acme" blank template)
+   * and set it as the active target.
+   * @param {object} args - { template?, name?, title?, description? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async create_site(args = {}) {
     const slug = args.template || DEFAULT_BLANK_TEMPLATE;
     const tpl = await apiFetch(`/api/v1/templates/${encodeURIComponent(slug)}`);
@@ -37,6 +50,11 @@ module.exports = {
     };
   },
 
+  /**
+   * List all sites owned by the authenticated user.
+   * @param {object} _args - (none)
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async list_sites() {
     const data = await apiFetch("/api/v1/sites");
     const lines = (data.sites || []).map(
@@ -48,6 +66,11 @@ module.exports = {
     };
   },
 
+  /**
+   * Mark a site as the active target for subsequent tool calls.
+   * @param {object} args - { id }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async select_site(args) {
     const { id } = args;
     const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(id)}`);
@@ -67,6 +90,11 @@ module.exports = {
     };
   },
 
+  /**
+   * Dump the full CraftJS flat node map for the active site/template.
+   * @param {object} args - { siteId?, templateSlug? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async pull_site(args) {
     const ctx = getContext();
     const target = getActiveTarget(args);
@@ -91,6 +119,11 @@ module.exports = {
     };
   },
 
+  /**
+   * Patch site-level metadata (name / title / description).
+   * @param {object} args - { name?, title?, description?, siteId? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async update_site(args = {}) {
     const target = getActiveTarget(args);
     if (target.type !== "site") throw new Error("update_site only works on sites, not templates.");
@@ -115,6 +148,11 @@ module.exports = {
     };
   },
 
+  /**
+   * Mark the active site as published.
+   * @param {object} args - { siteId? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async publish_site(args) {
     const target = getActiveTarget(args);
     if (target.type !== "site") throw new Error("publish_site only works on sites, not templates.");
@@ -125,6 +163,11 @@ module.exports = {
     return { content: [{ type: "text", text: `Site ${target.id} published.` }] };
   },
 
+  /**
+   * Unpublish the active site.
+   * @param {object} args - { siteId? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async unpublish_site(args) {
     const target = getActiveTarget(args);
     if (target.type !== "site")
@@ -136,10 +179,16 @@ module.exports = {
     return { content: [{ type: "text", text: `Site ${target.id} unpublished.` }] };
   },
 
+  /**
+   * Duplicate an existing site (defaults to the active one) and set the copy
+   * as active.
+   * @param {object} args - { id?, name?, title?, description? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async duplicate_site(args = {}) {
     const ctx = getContext();
     const sourceId = args.id || ctx.activeSite?.id;
-    if (!sourceId) throw new Error("No site id provided and no active site set.");
+    if (!sourceId) throw new Error("Site id is required (none provided and no active site set).");
 
     const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(sourceId)}/duplicate`, {
       method: "POST",
@@ -162,6 +211,11 @@ module.exports = {
     };
   },
 
+  /**
+   * Inspect the current custom-domain status (current + variants).
+   * @param {object} args - { siteId?, check? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async get_domain_status(args = {}) {
     const target = getActiveTarget(args);
     if (target.type !== "site")
@@ -189,15 +243,25 @@ module.exports = {
     return { content: [{ type: "text", text: lines.join("\n") }] };
   },
 
+  /**
+   * Probe a candidate domain without binding it (shortcut for get_domain_status).
+   * @param {object} args - { domain, siteId? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async check_domain(args = {}) {
-    if (!args.domain) throw new Error("domain is required");
+    if (!args.domain) throw new Error("domain is required.");
     return module.exports.get_domain_status({ ...args, check: args.domain });
   },
 
+  /**
+   * Bind a custom domain to the active site.
+   * @param {object} args - { domain, redirectMode?, siteId? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async set_domain(args = {}) {
     const target = getActiveTarget(args);
     if (target.type !== "site") throw new Error("set_domain only works on sites, not templates.");
-    if (!args.domain) throw new Error("domain is required (use clear_domain to remove)");
+    if (!args.domain) throw new Error("domain is required. Use clear_domain to remove.");
     const body = { domain: args.domain };
     if (args.redirectMode) body.domainRedirectMode = args.redirectMode;
     const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}/domain`, {
@@ -228,6 +292,11 @@ module.exports = {
     };
   },
 
+  /**
+   * Remove the active site's custom domain binding.
+   * @param {object} args - { siteId? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async clear_domain(args = {}) {
     const target = getActiveTarget(args);
     if (target.type !== "site") throw new Error("clear_domain only works on sites, not templates.");
@@ -237,10 +306,15 @@ module.exports = {
     return { content: [{ type: "text", text: `Domain cleared from site ${target.id}.` }] };
   },
 
+  /**
+   * Change the apex ↔ www redirect mode without touching the domain itself.
+   * @param {object} args - { redirectMode, siteId? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async set_domain_redirect_mode(args = {}) {
     const target = getActiveTarget(args);
     if (target.type !== "site") throw new Error("set_domain_redirect_mode only works on sites.");
-    if (!args.redirectMode) throw new Error("redirectMode is required");
+    if (!args.redirectMode) throw new Error("redirectMode is required.");
     const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}/domain`, {
       method: "PATCH",
       body: { domainRedirectMode: args.redirectMode },
@@ -255,6 +329,11 @@ module.exports = {
     };
   },
 
+  /**
+   * Permanently delete a site by id.
+   * @param {object} args - { id }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async delete_site(args) {
     const { id } = args;
     await apiFetch(`/api/v1/sites/${encodeURIComponent(id)}`, { method: "DELETE" });

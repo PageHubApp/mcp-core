@@ -1,4 +1,14 @@
+/**
+ * Remote node mutators — `add_nodes`, `patch_site_node`, `patch_site_bulk`.
+ * The public surface for AI agents to bulk-create or modify CraftJS nodes
+ * on the active site/template. Handles fill-mode locking, Unsplash guard,
+ * button preflight, and design validation on top of the raw patch helpers.
+ */
+
+const { resolveToolDefaultPageNodeId } = require("../core/active-page");
+const { ROOT_NODE_ID } = require("../core/constants");
 const { getContext, withPendingMapLock } = require("../core/context");
+
 const {
   parseMaybeJson,
   applyNodePatches,
@@ -16,11 +26,16 @@ const {
   mergeBlockModifiersIntoRoot,
 } = require("../helpers/index.js");
 const { recordFillPatch } = require("../helpers/fill-patch-merge");
-const { collectSubtree, sanitizeNodes, findSectionRoot } = require("../utils/node-utils");
-const { resultMsg } = require("./remote-shared");
-const { resolveToolDefaultPageNodeId } = require("../core/active-page");
+
 const { validateNodes, formatValidationReport } = require("../validation/node-validation");
+const { collectSubtree, sanitizeNodes, findSectionRoot } = require("../utils/node-utils");
+
 const { consumePunchListAndFormatMissed } = require("./kit/punch-list-state");
+const {
+  collectUnsplashSrcViolations,
+  unsplashViolationMessage,
+  assertNoImageSrcContentConflict,
+} = require("./remote-nodes/unsplash-guard");
 const {
   normalizeButtonValidationMode,
   normalizeDesignValidationMode,
@@ -29,11 +44,7 @@ const {
   maybePreflightButton,
   formatButtonPreflightReport,
 } = require("./remote-nodes/validation");
-const {
-  collectUnsplashSrcViolations,
-  unsplashViolationMessage,
-  assertNoImageSrcContentConflict,
-} = require("./remote-nodes/unsplash-guard");
+const { resultMsg } = require("./remote-shared");
 
 module.exports = {
   async add_nodes(args) {
@@ -195,7 +206,7 @@ async function patchSiteNodeBody(args) {
   const { flat } = await fetchTarget(args);
   assertFillModePatchAllowed(flat, nodeId, ctx);
   let patchArgs = normalizeNodePatchArgs({ ...args, nodesPatch, unsetProps, unsetClasses });
-  if (String(nodeId) === "ROOT" && patchArgs.propsPatch) {
+  if (String(nodeId) === ROOT_NODE_ID && patchArgs.propsPatch) {
     patchArgs = {
       ...patchArgs,
       propsPatch: guardRootCompanyPropsPatch(flat, patchArgs.propsPatch, ctx),
@@ -310,7 +321,7 @@ async function patchSiteBulkBody(args) {
   for (let i = 0; i < list.length; i++) {
     const item = list[i];
     if (!item || typeof item.nodeId !== "string") {
-      throw new Error(`patches[${i}]: missing nodeId`);
+      throw new Error(`patches[${i}]: nodeId is required.`);
     }
     assertPatchBulkItem(item, i);
     const {
@@ -324,7 +335,7 @@ async function patchSiteBulkBody(args) {
     } = item;
     assertFillModePatchAllowed(flat, nid, ctx);
     let bulkPatch = normalizeNodePatchArgs(rest);
-    if (String(nid) === "ROOT" && bulkPatch.propsPatch) {
+    if (String(nid) === ROOT_NODE_ID && bulkPatch.propsPatch) {
       bulkPatch = {
         ...bulkPatch,
         propsPatch: guardRootCompanyPropsPatch(flat, bulkPatch.propsPatch, ctx),

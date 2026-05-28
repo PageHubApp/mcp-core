@@ -1,7 +1,9 @@
-const { parseMaybeJson } = require("../helpers/args");
 // Component allowlist + canvas list live in a leaf module so they can be
 // shared with helpers/patch/schema.js without creating a circular import.
 const { VALID_COMPONENTS, CANVAS_COMPONENTS } = require("../core/component-registry");
+const { ROOT_NODE_ID, HOME_PAGE_ID } = require("../core/constants");
+
+const { parseMaybeJson } = require("../helpers/args");
 
 /** Collect a node and all its descendants from a flat map */
 function collectSubtree(flat, nodeId) {
@@ -114,7 +116,8 @@ function findSectionRoot(flat, nodeId) {
   while (cur) {
     const n = flat[cur];
     if (!n) break;
-    if (n.props?.type === "section" || n.parent === "page_home" || n.parent === "ROOT") return cur;
+    if (n.props?.type === "section" || n.parent === HOME_PAGE_ID || n.parent === ROOT_NODE_ID)
+      return cur;
     if (!n.parent) break;
     cur = n.parent;
   }

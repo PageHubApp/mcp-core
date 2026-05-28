@@ -1,10 +1,18 @@
+/**
+ * Stock video discovery tool — `find_video`. Wraps the Pexels-backed
+ * external search endpoint with consistent argument validation.
+ */
+
 const { apiFetch } = require("../core/api-fetch");
 
 const VIDEO_PROVIDER_NAMES = ["pexels"];
 
 module.exports = {
   /**
-   * Search stock videos from Pexels.
+   * Search stock videos by query / orientation / duration. Currently only
+   * the Pexels provider is supported.
+   * @param {object} args - { q, orientation?, minDuration?, maxDuration?, provider?, count? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async find_video(args) {
     const {
@@ -19,11 +27,11 @@ module.exports = {
     const count = Math.min(6, Math.max(1, Number(rawCount) || 3));
 
     if (!q || typeof q !== "string") {
-      throw new Error("Provide q (search keywords) for video search.");
+      throw new Error("q (search keywords) is required.");
     }
 
     if (!VIDEO_PROVIDER_NAMES.includes(provider)) {
-      throw new Error(`provider must be one of: ${VIDEO_PROVIDER_NAMES.join(", ")}`);
+      throw new Error(`provider must be one of: ${VIDEO_PROVIDER_NAMES.join(", ")}.`);
     }
 
     try {

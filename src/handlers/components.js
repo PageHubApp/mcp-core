@@ -1,10 +1,26 @@
+/**
+ * Block discovery tool — `search_blocks` queries the public component
+ * library with style/category filters, auto-fallbacks when filters narrow
+ * to zero, and surfaces reusable on-site sections. Also re-exports the
+ * block CRUD handlers from `./components/block-crud`.
+ */
+
 const { getContext } = require("../core/context");
+
 const { mergeStrList, fetchTarget } = require("../helpers/index.js");
+
 const { fetchComponents } = require("./components/api");
-const { detectUsedBlockSlugs, detectAdaptableSections } = require("./components/discovery");
 const { VALID_SEARCH_BLOCKS_KEYS, nearestKey } = require("./components/arg-validation");
 const blockCrud = require("./components/block-crud");
+const { detectUsedBlockSlugs, detectAdaptableSections } = require("./components/discovery");
 
+/**
+ * Search the public block library by query / category / style / preset, with
+ * automatic fallbacks (drop q, drop style, drop subcategory, library-wide)
+ * and a note of reusable sections already on the active site.
+ * @param {object} args - { q?, category?, categories?, style?, styles?, preset?, subcategory?, tag?, source?, group?, blockType?, sort?, page?, limit?, featured? }
+ * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+ */
 async function search_blocks(args) {
   const ctx = getContext();
 

@@ -1,3 +1,6 @@
+const { getContext, withPendingMapLock } = require("../core/context");
+const { ROOT_NODE_ID, PROTECTED_NODE_IDS } = require("../core/constants");
+
 const {
   parseMaybeJson,
   fetchTarget,
@@ -6,12 +9,12 @@ const {
   validateImageUrls,
   mergeBlockModifiersIntoRoot,
 } = require("../helpers/index.js");
-const { getContext, withPendingMapLock } = require("../core/context");
 const { assertFillModePatchAllowed } = require("../helpers/fill-mode");
 const { withTargetSaveOrDraft } = require("../helpers/load-mutate-save");
+
 const { collectSubtree } = require("../utils/node-utils");
 
-const PROTECTED_IDS = ["ROOT", "page_home"];
+const PROTECTED_IDS = PROTECTED_NODE_IDS;
 
 module.exports = {
   async delete_node(args) {
@@ -143,7 +146,7 @@ async function listSiteNodesMethod(args) {
   };
 
   // Start from ROOT → hdr_root, page_home, ftr_root
-  visit("ROOT", 0);
+  visit(ROOT_NODE_ID, 0);
 
   return {
     content: [
@@ -258,7 +261,7 @@ async function searchSiteNodesMethod(args) {
 
   if (!q && !componentType && !className && !classRegex) {
     throw new Error(
-      "Provide q (displayName/text/id search), type (component type like Text, Button, Container), className (substring match), or classRegex (regex match)."
+      "At least one of q, type, className, or classRegex is required. e.g. q (displayName/text/id substring), type (component type like Text/Button/Container), className (substring match), or classRegex (regex match)."
     );
   }
 
@@ -270,7 +273,7 @@ async function searchSiteNodesMethod(args) {
     try {
       classRe = new RegExp(classRegex, "i");
     } catch (e) {
-      throw new Error(`Invalid classRegex: ${e.message}`);
+      throw new Error(`Invalid classRegex: ${e.message}.`);
     }
   }
   const classFiltered = Boolean(classLower || classRe);
