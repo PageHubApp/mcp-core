@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const { apiFetch } = require("../api-fetch");
+const { apiFetch } = require("../core/api-fetch");
 const { fetchTarget, saveTarget, getActiveTarget } = require("../helpers/index.js");
 
 const FAVICON_MIME = ["image/png", "image/jpeg", "image/webp", "image/gif", "image/svg+xml"];

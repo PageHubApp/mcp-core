@@ -1,14 +1,14 @@
-const { apiFetch } = require("../api-fetch");
-const { getContext, withPendingMapLock } = require("../context");
+const { apiFetch } = require("../core/api-fetch");
+const { getContext, withPendingMapLock } = require("../core/context");
 const {
   stripGoogleFontLinksFromHeader,
   finalizeRootThemeFonts,
-} = require("../../../../scripts/lib/theme-fonts.js");
+} = require("../lib/theme-fonts.js");
 const { parseMaybeJson, getActiveTarget, fetchTarget, saveTarget } = require("../helpers/index.js");
-const { ensurePaletteOklch, validatePaletteContrast } = require("../color-utils");
+const { ensurePaletteOklch, validatePaletteContrast } = require("../utils/color-utils");
 const { resultMsg } = require("./remote-shared");
-const { stampPresetDesignIntent } = require("../root-design-intent");
-const { VIBE_CODENAMES } = require("../vibes");
+const { stampPresetDesignIntent } = require("../data/root-design-intent");
+const { VIBE_CODENAMES } = require("../data/vibes");
 
 // ── Build-style validation ───────────────────────────────────────────────────
 // `buildStyle` on ROOT.props must be one of the 6 canonical vibes
@@ -42,28 +42,14 @@ async function getValidBuildStyles() {
   return _validStylesCache;
 }
 
-function levenshtein(a, b) {
-  const dp = Array.from({ length: a.length + 1 }, () => new Array(b.length + 1).fill(0));
-  for (let i = 0; i <= a.length; i++) dp[i][0] = i;
-  for (let j = 0; j <= b.length; j++) dp[0][j] = j;
-  for (let i = 1; i <= a.length; i++) {
-    for (let j = 1; j <= b.length; j++) {
-      dp[i][j] = Math.min(
-        dp[i - 1][j] + 1,
-        dp[i][j - 1] + 1,
-        dp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
-      );
-    }
-  }
-  return dp[a.length][b.length];
-}
+const { editDistance } = require("../utils/levenshtein");
 
 function suggestStyle(invalid, validSet) {
   const lower = String(invalid).toLowerCase();
   let best = null;
   let bestScore = Infinity;
   for (const v of validSet) {
-    const d = levenshtein(lower, String(v).toLowerCase());
+    const d = editDistance(lower, String(v).toLowerCase());
     if (d < bestScore) {
       bestScore = d;
       best = v;

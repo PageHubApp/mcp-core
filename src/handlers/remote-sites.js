@@ -1,6 +1,7 @@
-const { apiFetch, normalizeBaseUrl } = require("../api-fetch");
-const { getContext } = require("../context");
+const { apiFetch, normalizeBaseUrl } = require("../core/api-fetch");
+const { getContext } = require("../core/context");
 const { getActiveTarget, fetchTarget, decodeContentOrThrow } = require("../helpers/index.js");
+const { pickSiteMetaArgs, pickSiteMetaUpdates } = require("../helpers/extra-meta-args");
 
 const DEFAULT_BLANK_TEMPLATE = "acme";
 
@@ -14,9 +15,7 @@ module.exports = {
       method: "POST",
       body: {
         content,
-        name: args.name,
-        title: args.title,
-        description: args.description,
+        ...pickSiteMetaArgs(args),
         sourceTemplate: { slug, ...(tpl.version ? { version: tpl.version } : {}) },
       },
     });
@@ -95,10 +94,7 @@ module.exports = {
   async update_site(args = {}) {
     const target = getActiveTarget(args);
     if (target.type !== "site") throw new Error("update_site only works on sites, not templates.");
-    const body = {};
-    if (typeof args.name === "string") body.name = args.name.trim() || null;
-    if (typeof args.title === "string") body.title = args.title.trim() || null;
-    if (typeof args.description === "string") body.description = args.description.trim() || null;
+    const body = pickSiteMetaUpdates(args);
     if (Object.keys(body).length === 0) {
       throw new Error("update_site requires at least one of: name, title, description.");
     }
@@ -149,11 +145,7 @@ module.exports = {
       `/api/v1/sites/${encodeURIComponent(sourceId)}/duplicate`,
       {
         method: "POST",
-        body: {
-          name: args.name,
-          title: args.title,
-          description: args.description,
-        },
+        body: pickSiteMetaArgs(args),
       }
     );
 

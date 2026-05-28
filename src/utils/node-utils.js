@@ -1,7 +1,7 @@
-const { parseMaybeJson } = require("./helpers/args");
+const { parseMaybeJson } = require("../helpers/args");
 // Component allowlist + canvas list live in a leaf module so they can be
 // shared with helpers/patch/schema.js without creating a circular import.
-const { VALID_COMPONENTS, CANVAS_COMPONENTS } = require("./component-registry");
+const { VALID_COMPONENTS, CANVAS_COMPONENTS } = require("../core/component-registry");
 
 /** Collect a node and all its descendants from a flat map */
 function collectSubtree(flat, nodeId) {

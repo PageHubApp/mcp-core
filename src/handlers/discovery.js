@@ -1,7 +1,7 @@
-const { apiFetch } = require("../api-fetch");
-const { getContext } = require("../context");
+const { apiFetch } = require("../core/api-fetch");
+const { getContext } = require("../core/context");
 const { parseMaybeJson, mergeStrList } = require("../helpers/index.js");
-const { buildButtonClassFramework, validateButtonClasses } = require("../button-system");
+const { buildButtonClassFramework, validateButtonClasses } = require("../validation/button-system");
 
 // Limits for compactComponentSchemaForFill — keeps schema payloads small for
 // parallel fill context windows without losing essential prop information.

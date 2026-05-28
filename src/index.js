@@ -1,6 +1,32 @@
-const rawTools = require("./tools.json");
-const { VIBE_CODENAMES } = require("./vibes");
-const { CATEGORIES } = require("./categories");
+/**
+ * @file Public entry for `@pagehub/mcp-core`. Exports the tool dispatch surface,
+ * per-request context helpers, and a curated set of shared helpers consumed by
+ * the HTTP server and in-app agent.
+ *
+ * @typedef {object} ToolResult
+ * Standard shape returned by every tool handler. `content` is the MCP-spec
+ * payload (a list of text blocks); the optional fields are PageHub extensions
+ * used by the in-app agent to forward streaming UI state.
+ * @property {Array<{ type: 'text', text: string }>} content - Human/agent-readable result blocks.
+ * @property {boolean} [isError] - True when the handler short-circuited with a recoverable error.
+ * @property {Array<string>} [changedNodes] - Node IDs the handler mutated (for editor highlighting).
+ * @property {object} [pendingContent] - In-flight flat node map / theme state for draft mode.
+ *
+ * @typedef {object} McpContext
+ * Per-request context seeded by {@link runWithContext}. See `core/context.js`
+ * for the live shape; the most commonly read fields are listed here.
+ * @property {string} apiKey - PageHub API key used by `apiFetch`.
+ * @property {string} apiBaseUrl - Normalized base URL for HTTP-backed handlers.
+ * @property {{ id: string }} [activeSite] - Site selected for this request.
+ * @property {{ slug: string }} [activeTemplate] - Template selected for this request.
+ * @property {string} [activePageNodeId] - Active page node (in-app agent only).
+ * @property {boolean} [draftMode] - When true, mutations accumulate in `_pendingFlatMap` instead of persisting.
+ * @property {boolean} [fillMode] - When true, certain handlers route through the fill-mode patch merge.
+ */
+
+const rawTools = require("./data/tools.json");
+const { VIBE_CODENAMES } = require("./data/vibes");
+const { CATEGORIES } = require("./data/categories");
 
 // Resolve schema sentinels (`"$VIBES"`, `"$CATEGORIES"`) wherever they appear in
 // `enum` fields with the live arrays. Keeps tools.json human-readable while
@@ -22,9 +48,9 @@ const {
   isPlaceholderCompanyName,
   userExplicitlyRequestsBrandingChange,
   guardRootCompanyPropsPatch,
-} = require("./branding-guard");
-const { runWithContext, getContext } = require("./context");
-const { apiFetch, normalizeBaseUrl } = require("./api-fetch");
+} = require("./validation/branding-guard");
+const { runWithContext, getContext } = require("./core/context");
+const { apiFetch, normalizeBaseUrl } = require("./core/api-fetch");
 const { parseMaybeJson } = require("./helpers/args");
 const { applyNodePatches, normalizeNodePatchArgs } = require("./helpers/node-patch");
 const {
@@ -98,9 +124,11 @@ const AGENT_EXCLUDED = new Set([
 const AGENT_ALLOWED = new Set([...HTTP_TOOL_NAMES].filter(name => !AGENT_EXCLUDED.has(name)));
 
 /**
- * Get tool schemas for the agent endpoint.
- * Filters to HTTP-only tools and excludes auth tools.
- * Returns Claude API format (input_schema, not inputSchema).
+ * Get tool schemas for the public agent endpoint.
+ * Filters to HTTP-only tools and excludes auth/admin tools (see `AGENT_EXCLUDED`).
+ * Output uses Claude API shape (`input_schema`), NOT the MCP shape (`inputSchema`).
+ *
+ * @returns {Array<{ name: string, description: string, input_schema: object }>}
  */
 function getAgentTools() {
   return tools
@@ -109,17 +137,25 @@ function getAgentTools() {
 }
 
 /**
- * Get all tool schemas (MCP format with inputSchema).
+ * Get all tool schemas in MCP format (`inputSchema`).
+ * Includes both HTTP and admin tools — use {@link getAgentTools} for the
+ * filtered public surface.
+ *
+ * @returns {Array<{ name: string, description: string, inputSchema: object }>}
  */
 function getAllTools() {
   return tools;
 }
 
 /**
- * Execute a tool by name within the current context.
- * @param {string} name - Tool name
- * @param {object} args - Tool arguments
- * @returns {Promise<{ content: Array<{ type: string, text: string }>, isError?: boolean }>}
+ * Execute a tool by name within the current request context. Must be called
+ * inside a {@link runWithContext} scope so handlers can read auth + active
+ * site from AsyncLocalStorage.
+ *
+ * @param {string} name - Registered tool name (must match a key in `handlers`).
+ * @param {object} args - Tool arguments matching the schema in `tools.json`.
+ * @returns {Promise<ToolResult>} Standard handler result.
+ * @throws {Error} If `name` is not a registered handler.
  */
 async function executeTool(name, args) {
   const handler = handlers[name];
@@ -129,6 +165,12 @@ async function executeTool(name, args) {
 
 /**
  * Execute a tool only if it is exposed on the public agent endpoint.
+ * Same contract as {@link executeTool} but rejects admin / restricted tools.
+ *
+ * @param {string} name - Registered tool name.
+ * @param {object} args - Tool arguments.
+ * @returns {Promise<ToolResult>} Standard handler result.
+ * @throws {Error} If the tool is not in `AGENT_ALLOWED`.
  */
 async function executeAgentTool(name, args) {
   if (!AGENT_ALLOWED.has(name)) {

@@ -9,10 +9,11 @@
  * call replaces the first (idempotent).
  */
 
-const { getContext, withPendingMapLock } = require("../context");
+const { getContext, withPendingMapLock } = require("../core/context");
 const { parseMaybeJson, getActiveTarget, fetchTarget, saveTarget } = require("../helpers/index.js");
-const { VALID_COMPONENTS, CANVAS_COMPONENTS, collectSubtree } = require("../node-utils");
-const { validateNodes } = require("../node-validation");
+const { recordFillPatch } = require("../helpers/fill-patch-merge");
+const { VALID_COMPONENTS, CANVAS_COMPONENTS, collectSubtree } = require("../utils/node-utils");
+const { validateNodes } = require("../validation/node-validation");
 const { resultMsg } = require("./remote-shared");
 
 function slugifyTypeForId(type) {
@@ -271,12 +272,13 @@ async function placeSectionTreeBody(args) {
 
     // Draft mode path (clone pipeline runs here): stash into fill patch for persistence.
     if (ctx.draftMode) {
-      if (!ctx._fillPatch) ctx._fillPatch = {};
       // Strip EVERY stale id from the patch so shard-sync doesn't resurrect them.
-      for (const staleId of staleIds) {
-        delete ctx._fillPatch[staleId];
+      if (ctx._fillPatch) {
+        for (const staleId of staleIds) {
+          delete ctx._fillPatch[staleId];
+        }
       }
-      Object.assign(ctx._fillPatch, changedNodes);
+      recordFillPatch(ctx, changedNodes);
       ctx._pendingFlatMap = flat;
       return {
         content: [

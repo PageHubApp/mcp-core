@@ -87,7 +87,7 @@ These handlers make API calls to PageHub and are included in this package:
 
 **Portal** — `set_portal`, `get_portal`, `remove_portal`
 
-## Full Tool Schema (48 tools)
+## Full Tool Schema (85 tools)
 
 The `tools.json` file contains schemas for all PageHub tools. See the full [`@pagehub/mcp`](https://github.com/PageHubApp/mcp) server package for the MCP stdio transport.
 

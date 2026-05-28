@@ -1,5 +1,5 @@
-const { apiFetch } = require("../api-fetch");
-const { getContext } = require("../context");
+const { apiFetch } = require("../core/api-fetch");
+const { getContext } = require("../core/context");
 
 function activeSiteId(args) {
   const ctx = getContext();

@@ -1,5 +1,4 @@
-const { apiFetch } = require("../api-fetch");
-const { getContext, withPendingMapLock } = require("../context");
+const { getContext, withPendingMapLock } = require("../core/context");
 const {
   parseMaybeJson,
   applyNodePatches,
@@ -16,209 +15,25 @@ const {
   guardRootCompanyPropsPatch,
   mergeBlockModifiersIntoRoot,
 } = require("../helpers/index.js");
-const { collectSubtree, sanitizeNodes, findSectionRoot } = require("../node-utils");
+const { recordFillPatch } = require("../helpers/fill-patch-merge");
+const { collectSubtree, sanitizeNodes, findSectionRoot } = require("../utils/node-utils");
 const { resultMsg } = require("./remote-shared");
-const { resolveToolDefaultPageNodeId } = require("../active-page");
-const { validateNodes, formatValidationReport } = require("../node-validation");
-const { validateButtonClasses } = require("../button-system");
-const { consumePunchListAndFormatMissed } = require("./_punch-list-state");
-
-function normalizeButtonValidationMode(value) {
-  if (value == null) return "warn";
-  if (value === true) return "warn";
-  if (value === false) return "off";
-  const raw = String(value).trim().toLowerCase();
-  if (["off", "warn", "fix", "strict"].includes(raw)) return raw;
-  return "warn";
-}
-
-function normalizeDesignValidationMode(value) {
-  if (value == null) return "warn";
-  if (value === true) return "warn";
-  if (value === false) return "off";
-  const raw = String(value).trim().toLowerCase();
-  if (["off", "warn", "strict"].includes(raw)) return raw;
-  return "warn";
-}
-
-// Reject hand-typed Unsplash photo URLs in patches. The agent has find_image
-// for verified URLs, but it routinely guesses photo IDs from training data
-// and ships 404s. Better to fail loudly than render a broken hero.
-const HAND_TYPED_UNSPLASH_RE = /https?:\/\/images\.unsplash\.com\/photo-[a-z0-9-]+/i;
-
-function collectUnsplashSrcViolations(patch, nodeId) {
-  const hits = [];
-  const visit = (val, path) => {
-    if (val == null) return;
-    if (typeof val === "string") {
-      if (HAND_TYPED_UNSPLASH_RE.test(val)) hits.push({ nodeId, path, value: val });
-      return;
-    }
-    if (Array.isArray(val)) {
-      val.forEach((v, i) => visit(v, `${path}[${i}]`));
-      return;
-    }
-    if (typeof val === "object") {
-      for (const k of Object.keys(val)) visit(val[k], path ? `${path}.${k}` : k);
-    }
-  };
-  if (patch?.propsPatch) visit(patch.propsPatch, "propsPatch");
-  return hits;
-}
-
-// `content` is the deprecated alias for `src` on Image nodes. Reject any patch
-// that writes a non-empty `content` value — the canonical field is `src`. The
-// renderer still falls back `src ?? content` so legacy saved data keeps
-// rendering, but no new write should land on `content`.
-//
-// History: `Image` used to ship both `props.src` and `props.content`, and the
-// dual-field shadow caused recurring "I patched the image and nothing
-// changed" bugs (see
-// `.claude/known-issues/image-src-content-shadowing.md`). The fix collapses
-// to `src`; this guard prevents regressions.
-function assertNoImageSrcContentConflict(flat, nodeIds) {
-  const ids = Array.isArray(nodeIds) ? nodeIds : [nodeIds];
-  for (const id of ids) {
-    if (!id) continue;
-    const node = flat?.[id];
-    if (!node || node.type?.resolvedName !== "Image") continue;
-    const props = node.props || {};
-    const content = props.content;
-    if (content == null) continue;
-    if (typeof content === "string" && content.trim() === "") continue;
-    throw new Error(
-      `Image node "${id}" was written with deprecated prop "content" — ` +
-        `use "src" instead. The renderer falls back to "content" only for ` +
-        `unmigrated saved data. Update the patch to write \`src\` and pass ` +
-        `\`unsetProps: ["content"]\` to clear any legacy value.`
-    );
-  }
-}
-
-function unsplashViolationMessage(hits) {
-  const lines = hits.slice(0, 8).map(h => `  - ${h.nodeId}.${h.path}: ${h.value.slice(0, 100)}`);
-  return (
-    `Error: hand-typed images.unsplash.com URL(s) rejected — these IDs are usually invented and 404 in production.\n` +
-    `${lines.join("\n")}\n\n` +
-    `Call find_image({ q: "<descriptive query>", category: "<hero|product|background|avatar|...>" }) and use the URL it returns. ` +
-    `Do NOT guess Unsplash photo-<id>s; only URLs returned by find_image are verified.`
-  );
-}
-
-function warningMentionsNode(warning, nodeId) {
-  if (!warning || !nodeId) return false;
-  return (
-    warning.includes(`${nodeId}:`) ||
-    warning.includes(` ${nodeId} `) ||
-    warning.includes(`"${nodeId}"`)
-  );
-}
-
-function runDesignValidation(flat, touchedNodeIds, mode) {
-  if (mode === "off") return null;
-  // In components-fill mode (clone pipeline), auto-fix cheap things like
-  // wrapping bare Text in <p> — the model routinely re-emits plain text on
-  // patches, and re-warning on that adds noise without fixing the render.
-  const ctx = getContext();
-  const autoFix = !!(ctx?.fillMode && ctx?.fillProfile === "components");
-  const result = validateNodes(flat, { autoFix, warnColors: true });
-  const touched = Array.isArray(touchedNodeIds) ? touchedNodeIds : [];
-  const touchedWarnings = result.warnings.filter(w =>
-    touched.some(id => warningMentionsNode(w, id))
-  );
-  const touchedColorWarnings = (result.colorWarnings || []).filter(w =>
-    touched.some(id => warningMentionsNode(w, id))
-  );
-  const touchedErrors = result.errors.filter(e => touched.some(id => warningMentionsNode(e, id)));
-  if (mode === "strict" && (touchedErrors.length > 0 || touchedColorWarnings.length > 0)) {
-    const issues = [...touchedErrors, ...touchedColorWarnings];
-    throw new Error(
-      `Design token preflight failed for touched nodes.\n- ${issues.join("\n- ")}\n\n` +
-        "Use semantic tokens (bg-base-*, text-base-content, border-base-*) instead of hardcoded color classes."
-    );
-  }
-  if (
-    touchedWarnings.length === 0 &&
-    touchedColorWarnings.length === 0 &&
-    touchedErrors.length === 0
-  ) {
-    return null;
-  }
-  return {
-    mode,
-    warnings: touchedWarnings,
-    colorWarnings: touchedColorWarnings,
-    errors: touchedErrors,
-  };
-}
-
-function formatDesignValidationReport(rec) {
-  if (!rec) return "";
-  const colorWarnings = rec.colorWarnings || [];
-  const lines = [`Design validation [${rec.mode}]:`];
-  if (rec.errors.length > 0) lines.push(`- errors: ${rec.errors.length}`);
-  if (rec.warnings.length > 0) lines.push(`- warnings: ${rec.warnings.length}`);
-  if (colorWarnings.length > 0) lines.push(`- hardcoded colors: ${colorWarnings.length}`);
-  const preview = [...rec.errors, ...rec.warnings, ...colorWarnings].slice(0, 6);
-  for (const item of preview) lines.push(`  ${item}`);
-  return lines.join("\n");
-}
-
-function maybePreflightButton(flat, nodeId, mode) {
-  if (mode === "off") return null;
-  const node = flat[nodeId];
-  if (!node || node.type?.resolvedName !== "Button") return null;
-
-  const props = node.props || {};
-  const result = validateButtonClasses({
-    className: props.className || "",
-    activeModifiers: props?.root?.activeModifiers || [],
-    autoFix: mode === "fix",
-    allowCustomClasses: true,
-  });
-
-  const currentModifiers = Array.isArray(props?.root?.activeModifiers)
-    ? props.root.activeModifiers
-    : [];
-  const modifiersChanged =
-    result.activeModifiers.length !== currentModifiers.length ||
-    result.activeModifiers.some((m, i) => m !== currentModifiers[i]);
-  if (mode === "fix" && (result.className !== (props.className || "") || modifiersChanged)) {
-    if (!node.props) node.props = {};
-    node.props.className = result.className;
-    node.props.root = { ...(node.props.root || {}), activeModifiers: result.activeModifiers };
-  }
-
-  if (mode === "strict" && !result.ok) {
-    const critical = result.issues.map(i => `${i.code}: ${i.message}`).join("\n- ");
-    throw new Error(
-      `Button class preflight failed for node "${nodeId}".\n- ${critical}\n\n` +
-        'Tip: use buttonValidation: "fix" to auto-correct common button class conflicts.'
-    );
-  }
-
-  if (result.issues.length === 0 && result.appliedFixes.length === 0) return null;
-  return {
-    nodeId,
-    mode,
-    ok: result.ok,
-    issues: result.issues,
-    appliedFixes: result.appliedFixes,
-    className: result.className,
-    activeModifiers: result.activeModifiers,
-  };
-}
-
-function formatButtonPreflightReport(records) {
-  if (!records || records.length === 0) return "";
-  const lines = ["Button class preflight:"];
-  for (const rec of records) {
-    const issueSummary = rec.issues.length > 0 ? rec.issues.map(i => i.code).join(", ") : "none";
-    const fixSummary = rec.appliedFixes.length > 0 ? rec.appliedFixes.join(" | ") : "none";
-    lines.push(`- ${rec.nodeId} [${rec.mode}] issues: ${issueSummary}; fixes: ${fixSummary}`);
-  }
-  return lines.join("\n");
-}
+const { resolveToolDefaultPageNodeId } = require("../core/active-page");
+const { validateNodes, formatValidationReport } = require("../validation/node-validation");
+const { consumePunchListAndFormatMissed } = require("./kit/punch-list-state");
+const {
+  normalizeButtonValidationMode,
+  normalizeDesignValidationMode,
+  runDesignValidation,
+  formatDesignValidationReport,
+  maybePreflightButton,
+  formatButtonPreflightReport,
+} = require("./remote-nodes/validation");
+const {
+  collectUnsplashSrcViolations,
+  unsplashViolationMessage,
+  assertNoImageSrcContentConflict,
+} = require("./remote-nodes/unsplash-guard");
 
 module.exports = {
   async add_nodes(args) {
@@ -338,8 +153,7 @@ async function addNodesBody(args) {
         // Build a minimal patch: only new nodes + the updated section container
         const patch = { ...cleanNodes };
         patch[parentId] = flat[parentId];
-        if (!ctx._fillPatch) ctx._fillPatch = {};
-        Object.assign(ctx._fillPatch, patch);
+        recordFillPatch(ctx, patch);
         ctx._pendingFlatMap = flat;
       } else {
         ctx._pendingFlatMap = flat;
@@ -418,8 +232,7 @@ async function patchSiteNodeBody(args) {
     if (ctx.draftMode) {
       ctx._pendingFlatMap = flat;
       if (ctx.fillMode && changedNodes) {
-        if (!ctx._fillPatch) ctx._fillPatch = {};
-        Object.assign(ctx._fillPatch, changedNodes);
+        recordFillPatch(ctx, changedNodes);
       }
       return {
         content: [
@@ -550,8 +363,7 @@ async function patchSiteBulkBody(args) {
     if (ctx.draftMode) {
       ctx._pendingFlatMap = flat;
       if (ctx.fillMode && changedNodes) {
-        if (!ctx._fillPatch) ctx._fillPatch = {};
-        Object.assign(ctx._fillPatch, changedNodes);
+        recordFillPatch(ctx, changedNodes);
       }
       return {
         content: [

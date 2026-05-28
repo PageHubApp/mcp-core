@@ -1,4 +1,4 @@
-const { getContext, withPendingMapLock } = require("../context");
+const { getContext, withPendingMapLock } = require("../core/context");
 const {
   parseMaybeJson,
   getActiveTarget,
@@ -6,7 +6,7 @@ const {
   saveTarget,
   assertInjectHtml,
 } = require("../helpers/index.js");
-const { normalizeBaseUrl } = require("../api-fetch");
+const { normalizeBaseUrl } = require("../core/api-fetch");
 const { buildPatch } = require("../helpers/patch/build");
 
 /** Find all page nodes — direct ROOT children with props.type === 'page'. */

@@ -4,7 +4,7 @@
  */
 
 const crypto = require("crypto");
-const { VALID_COMPONENTS, CANVAS_COMPONENTS } = require("./node-utils");
+const { VALID_COMPONENTS, CANVAS_COMPONENTS } = require("../utils/node-utils");
 
 function deepClone(o) {
   return JSON.parse(JSON.stringify(o));

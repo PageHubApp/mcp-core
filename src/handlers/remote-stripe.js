@@ -1,4 +1,4 @@
-const { apiFetch } = require("../api-fetch");
+const { apiFetch } = require("../core/api-fetch");
 const { getActiveTarget } = require("../helpers/index.js");
 
 /**

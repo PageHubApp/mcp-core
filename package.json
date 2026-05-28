@@ -4,6 +4,23 @@
   "description": "Shared tool schemas and HTTP handlers for PageHub MCP + AI agent",
   "license": "MIT",
   "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./src/ai-models.mjs": "./src/ai-models.mjs",
+    "./src/handlers/components": "./src/handlers/components.js",
+    "./src/handlers/discovery": "./src/handlers/discovery.js",
+    "./src/handlers/kit": "./src/handlers/kit.js",
+    "./src/handlers/nodes": "./src/handlers/nodes.js",
+    "./src/handlers/pages": "./src/handlers/pages.js",
+    "./src/handlers/portal": "./src/handlers/portal.js",
+    "./src/handlers/remote": "./src/handlers/remote.js",
+    "./src/handlers/seo": "./src/handlers/seo.js",
+    "./src/handlers/site-config": "./src/handlers/site-config.js",
+    "./src/handlers/stock-images": "./src/handlers/stock-images.js",
+    "./src/handlers/stock-videos": "./src/handlers/stock-videos.js",
+    "./src/*": "./src/*.js",
+    "./*": "./*"
+  },
   "files": [
     "src/"
   ],

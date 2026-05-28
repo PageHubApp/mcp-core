@@ -6,9 +6,10 @@ const {
   validateImageUrls,
   mergeBlockModifiersIntoRoot,
 } = require("../helpers/index.js");
-const { getContext, withPendingMapLock } = require("../context");
+const { getContext, withPendingMapLock } = require("../core/context");
 const { assertFillModePatchAllowed } = require("../helpers/fill-mode");
-const { collectSubtree } = require("../node-utils");
+const { withTargetSaveOrDraft } = require("../helpers/load-mutate-save");
+const { collectSubtree } = require("../utils/node-utils");
 
 const PROTECTED_IDS = ["ROOT", "page_home"];
 
@@ -32,31 +33,34 @@ async function deleteNodeBody(args) {
     const { nodeId } = args;
     if (PROTECTED_IDS.includes(nodeId))
       throw new Error(`Cannot delete structural node: ${nodeId}.`);
-    const ctx = getContext();
-    const { targetId, targetType, flat } = await fetchTarget(args);
-    if (!flat[nodeId]) throw new Error(`Node "${nodeId}" not found.`);
-    assertFillModePatchAllowed(flat, nodeId, ctx);
-    const parentId = flat[nodeId].parent;
-    if (parentId && flat[parentId]) {
-      flat[parentId].nodes = (flat[parentId].nodes || []).filter(id => id !== nodeId);
-    }
-    const deleteSubtree = id => {
-      const node = flat[id];
-      if (!node) return;
-      for (const child of [...(node.nodes || [])]) deleteSubtree(child);
-      delete flat[id];
-    };
-    deleteSubtree(nodeId);
-    if (ctx.draftMode) {
-      ctx._pendingFlatMap = flat;
-      return { content: [{ type: "text", text: `Node "${nodeId}" and descendants deleted.` }] };
-    }
-    const result = await saveTarget(targetId, targetType, flat);
-    const label =
-      targetType === "template"
-        ? `Node "${nodeId}" and descendants deleted from template "${targetId}".`
-        : `Node "${nodeId}" and descendants deleted.\nEditor: ${result.url}`;
-    return { content: [{ type: "text", text: label }] };
+    return withTargetSaveOrDraft(
+      args,
+      async (flat, _target, ctx) => {
+        if (!flat[nodeId]) throw new Error(`Node "${nodeId}" not found.`);
+        assertFillModePatchAllowed(flat, nodeId, ctx);
+        const parentId = flat[nodeId].parent;
+        if (parentId && flat[parentId]) {
+          flat[parentId].nodes = (flat[parentId].nodes || []).filter(id => id !== nodeId);
+        }
+        const deleteSubtree = id => {
+          const node = flat[id];
+          if (!node) return;
+          for (const child of [...(node.nodes || [])]) deleteSubtree(child);
+          delete flat[id];
+        };
+        deleteSubtree(nodeId);
+      },
+      (_mut, { draftMode, saveResult, target }) => {
+        if (draftMode) {
+          return { content: [{ type: "text", text: `Node "${nodeId}" and descendants deleted.` }] };
+        }
+        const label =
+          target.type === "template"
+            ? `Node "${nodeId}" and descendants deleted from template "${target.id}".`
+            : `Node "${nodeId}" and descendants deleted.\nEditor: ${saveResult.url}`;
+        return { content: [{ type: "text", text: label }] };
+      }
+    );
 }
 
 async function insertNodeBody(args) {

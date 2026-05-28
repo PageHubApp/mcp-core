@@ -1,12 +1,12 @@
-const { apiFetch } = require("../api-fetch");
-const { getContext } = require("../context");
+const { apiFetch } = require("../core/api-fetch");
+const { getContext } = require("../core/context");
 const {
   parseMaybeJson,
   getActiveTarget,
   compressJsonToBase64Lz,
   decodeContentOrThrow,
 } = require("../helpers/index.js");
-const { quickA11yAudit } = require("../a11y-check");
+const { quickA11yAudit } = require("../validation/a11y-check");
 
 module.exports = {
   async select_template(args) {

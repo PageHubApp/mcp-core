@@ -12,7 +12,7 @@ const {
   assertInjectHtml,
 } = require("../args");
 const { normalizeTypePatch, CANVAS_TYPE_PATCH_COMPONENTS } = require("./schema");
-const { getContext } = require("../../context");
+const { getContext } = require("../../core/context");
 
 const INVALID_ID_HARD_STOP_THRESHOLD = 3;
 

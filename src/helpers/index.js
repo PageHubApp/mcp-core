@@ -32,8 +32,8 @@ const {
   assertFillModeBulkPatchesAllowed,
 } = require("./fill-mode");
 const { mergeBlockModifiersIntoRoot } = require("./modifiers");
-const { compressJsonToBase64Lz, decompressBase64LzToJson } = require("../lz");
-const { guardRootCompanyPropsPatch } = require("../branding-guard");
+const { compressJsonToBase64Lz, decompressBase64LzToJson } = require("../codec/lz");
+const { guardRootCompanyPropsPatch } = require("../validation/branding-guard");
 
 module.exports = {
   parseMaybeJson,

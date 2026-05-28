@@ -4,7 +4,7 @@
  * helpers that reject unknown fields with actionable hints.
  */
 
-const { VALID_COMPONENTS, CANVAS_COMPONENTS } = require("../../component-registry");
+const { VALID_COMPONENTS, CANVAS_COMPONENTS } = require("../../core/component-registry");
 
 const PATCH_BODY_KEYS = [
   "typePatch",

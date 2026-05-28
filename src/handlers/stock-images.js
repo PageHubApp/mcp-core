@@ -1,5 +1,6 @@
-const { apiFetch } = require("../api-fetch");
-const { IMAGE_PROVIDER_NAMES } = require("../../../../utils/stockProviders/types");
+const { apiFetch } = require("../core/api-fetch");
+
+const IMAGE_PROVIDER_NAMES = ["unsplash", "pexels"];
 
 module.exports = {
   /**

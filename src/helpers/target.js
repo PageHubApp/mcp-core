@@ -1,6 +1,6 @@
-const { apiFetch, normalizeBaseUrl } = require("../api-fetch");
-const { getContext } = require("../context");
-const { compressJsonToBase64Lz, tryDecompressBase64LzToJson } = require("../lz");
+const { apiFetch, normalizeBaseUrl } = require("../core/api-fetch");
+const { getContext } = require("../core/context");
+const { compressJsonToBase64Lz, tryDecompressBase64LzToJson } = require("../codec/lz");
 
 function decodeContentOrThrow(content, label = "content") {
   const decoded = tryDecompressBase64LzToJson(content);
