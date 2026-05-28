@@ -1,26 +1,40 @@
 # @pagehub/mcp-core
 
-Shared tool schemas and HTTP handlers for [PageHub](https://pagehub.dev) MCP and AI agent integrations.
+[![npm version](https://img.shields.io/npm/v/@pagehub/mcp-core.svg)](https://www.npmjs.com/package/@pagehub/mcp-core)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Node.js: 18+](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](https://nodejs.org/)
 
-This package provides the core building blocks — tool definitions, API client, request context, and HTTP-based handlers — used by the PageHub MCP server and AI agent endpoint.
+The toolset that powers PageHub's AI integrations — 85 typed tools for building, editing, and publishing websites programmatically.
 
-## Installation
+This is the shared core: tool schemas (MCP-compatible), HTTP handlers against the PageHub API, request context, and validation helpers. It's consumed by:
+
+- [`@pagehub/mcp`](https://github.com/PageHubApp/mcp) — stdio MCP server (use with Claude Desktop, Cursor, etc.)
+- PageHub's in-app AI agent (chat-driven editor)
+- Your own [Claude Agent SDK](https://docs.claude.com/en/docs/claude-code/sdk) / OpenAI / Vercel AI scripts
+
+## What's PageHub?
+
+A visual + AI website builder. The MCP tools let an LLM create sites, place blocks, patch nodes, set themes, manage pages, run accessibility/SEO audits, search stock media, and publish — all against [pagehub.dev](https://pagehub.dev) via authenticated HTTP.
+
+## Install
 
 ```bash
 npm install @pagehub/mcp-core
+# or
+pnpm add @pagehub/mcp-core
 ```
 
-Requires Node.js 18+.
+Node.js 18+.
 
-## Quick Start
+## Quick start
 
 ```js
 const { runWithContext, executeTool, getAllTools } = require("@pagehub/mcp-core");
 
-// Get all tool schemas (MCP format)
-const tools = getAllTools();
+// 1. Inspect available tools (MCP schema)
+const tools = getAllTools(); // 85 tools
 
-// Execute a tool within an authenticated context
+// 2. Run a tool inside a request context
 const result = await runWithContext(
   {
     apiKey: process.env.PAGEHUB_API_KEY,
@@ -32,83 +46,120 @@ const result = await runWithContext(
 console.log(result.content[0].text);
 ```
 
-## API Key
+Get a free API key by signing up at [pagehub.dev](https://pagehub.dev) or calling the `register` tool with an email.
 
-Get a free API key by calling the `register` tool with your email, or sign up at [pagehub.dev](https://pagehub.dev). Set it as the `PAGEHUB_API_KEY` environment variable or pass it via `runWithContext`.
+## Use with Claude Agent SDK
 
-## Exports
+```js
+const { generateText, tool } = require("ai");
+const { gateway } = require("ai");
+const { getAgentTools, runWithContext, executeAgentTool } = require("@pagehub/mcp-core");
 
-### Core
+const schemas = getAgentTools(); // 67 tools safe for public agents
 
-| Export                    | Description                                                              |
-| ------------------------- | ------------------------------------------------------------------------ |
-| `runWithContext(ctx, fn)` | Run a function with per-request context (apiKey, apiBaseUrl, activeSite) |
-| `getContext()`            | Get the current request context                                          |
-| `apiFetch(path, opts)`    | Authenticated fetch against the PageHub API                              |
-| `normalizeBaseUrl(url)`   | Strip trailing slashes from URLs                                         |
+const aiTools = Object.fromEntries(
+  schemas.map(s => [
+    s.name,
+    tool({
+      description: s.description,
+      parameters: s.input_schema,
+      execute: args => executeAgentTool(s.name, args),
+    }),
+  ])
+);
 
-### Tools
+await runWithContext({ apiKey: process.env.PAGEHUB_API_KEY }, () =>
+  generateText({
+    model: gateway("anthropic/claude-sonnet-4-6"),
+    tools: aiTools,
+    prompt: "Create a landing page for a coffee shop.",
+  })
+);
+```
 
-| Export                         | Description                                                                                      |
-| ------------------------------ | ------------------------------------------------------------------------------------------------ |
-| `getAllTools()`                | All 48 tool schemas (MCP format with `inputSchema`)                                              |
-| `getAgentTools()`              | HTTP-only tool schemas (Claude API format with `input_schema`), excludes unsafe/non-public tools |
-| `executeTool(name, args)`      | Execute an HTTP-based tool by name within the current context                                    |
-| `executeAgentTool(name, args)` | Execute only tools exposed on the public agent endpoint                                          |
-| `handlers`                     | Raw handler function map                                                                         |
+## Tool catalog
 
-### Helpers
+85 tools across 11 domains. The full schemas live in [`src/data/tools.json`](src/data/tools.json).
 
-| Export                                       | Description                                              |
-| -------------------------------------------- | -------------------------------------------------------- |
-| `parseMaybeJson(v)`                          | Safely parse a JSON string, return as-is on failure      |
-| `applyNodePatches(flatMap, nodeId, patches)` | Shallow-merge patch objects into a CraftJS flat node map |
-| `normalizeNodePatchArgs(raw)`                | Parse and normalize raw patch arguments                  |
+| Domain         | Examples                                                                      |
+| -------------- | ----------------------------------------------------------------------------- |
+| Sites          | `list_sites`, `create_site`, `pull_site`, `publish_site`, `unpublish_site`    |
+| Templates      | `list_templates`, `pull_template`, `select_template`                          |
+| Pages          | `list_pages`, `add_page`, `update_page`, `delete_page`                        |
+| Nodes          | `add_nodes`, `patch_site_node`, `patch_site_bulk`, `move_node`, `delete_node` |
+| Blocks         | `search_blocks`, `get_block`, `save_block`, `apply_kit_block`                 |
+| Theme & Design | `set_theme`, `suggest_palettes`, `suggest_font_pairings`, `set_favicon`       |
+| Stripe         | `set_integrations` (Stripe Connect), connector-aware product/category lookups |
+| Media          | `upload_image`, `find_image`, `find_video` (Pexels / Unsplash)                |
+| SEO            | `audit_seo`, `audit_accessibility`                                            |
+| Portal         | `set_portal`, `get_portal`, `remove_portal`                                   |
+| Site Config    | `set_integrations`, `set_redirects`                                           |
 
-### Constants
+## Public API
 
-| Export            | Description                                                                                             |
-| ----------------- | ------------------------------------------------------------------------------------------------------- |
-| `HTTP_TOOL_NAMES` | Set of tool names with HTTP handlers in this package                                                    |
-| `AGENT_EXCLUDED`  | Set of tool names excluded from the agent endpoint (auth-sensitive or unsafe for public-agent defaults) |
-| `AGENT_ALLOWED`   | Set of tool names allowed on the public agent endpoint                                                  |
+```js
+const {
+  // Tool execution
+  runWithContext, // (ctx, fn) — seed request context (AsyncLocalStorage)
+  getContext, // () — read current context
+  executeTool, // (name, args) — execute any HTTP tool
+  executeAgentTool, // (name, args) — execute only agent-allowed tools
+  handlers, // raw handler map
 
-## HTTP Handlers (23 tools)
+  // Schemas
+  getAllTools, // 85 tools, MCP format ({inputSchema})
+  getAgentTools, // 67 tools, Claude API format ({input_schema}), public-agent safe
 
-These handlers make API calls to PageHub and are included in this package:
+  // Sets
+  HTTP_TOOL_NAMES,
+  AGENT_ALLOWED,
+  AGENT_EXCLUDED,
 
-**Sites** — `list_templates`, `pull_template`, `list_sites`, `select_site`, `pull_site`, `delete_site`, `add_nodes`, `suggest_palettes`, `upload_image`, `patch_site_node`, `patch_site_bulk`
+  // Helpers
+  apiFetch,
+  parseMaybeJson,
+  applyNodePatches,
+  normalizeNodePatchArgs,
+} = require("@pagehub/mcp-core");
+```
 
-**Nodes** — `delete_node`, `insert_node`, `move_node`, `list_site_nodes`, `search_site_nodes`
+## Subpath imports
 
-**Pages** — `list_pages`, `add_page`, `update_page`, `delete_page`
+For handler delegation patterns (e.g. wrapping individual tools), import handlers directly:
 
-**Blocks** — `search_blocks`, `get_block`, `list_block_nodes`, `patch_block`, `patch_block_bulk`, `save_block`, `update_block`, `delete_block`
+```js
+const kit = require("@pagehub/mcp-core/handlers/kit"); // { apply_kit_block }
+const seo = require("@pagehub/mcp-core/handlers/seo"); // { audit_seo, audit_accessibility }
+const ai = require("@pagehub/mcp-core/ai-models"); // ESM — AI model defaults
+```
 
-**Portal** — `set_portal`, `get_portal`, `remove_portal`
+Available subpaths: `handlers/{components,discovery,kit,nodes,pages,portal,remote,seo,site-config,stock-images,stock-videos}`, `ai-models`. Internals (`core/`, `helpers/`, `utils/`, `validation/`, `data/`, `codec/`, `lib/`) are not part of the public API.
 
-## Full Tool Schema (85 tools)
-
-The `tools.json` file contains schemas for all PageHub tools. See the full [`@pagehub/mcp`](https://github.com/PageHubApp/mcp) server package for the MCP stdio transport.
-
-## Architecture
+## Source layout
 
 ```
-@pagehub/mcp-core          @pagehub/mcp (stdio server)
-├── tools.json              ├── imports mcp-core via delegateHandlers
-├── context.js              ├── local-only handlers
-├── api-fetch.js            │   └── accessibility (playwright + axe)
-├── helpers.js              └── MCP stdio transport
-└── handlers/
-    ├── remote.js
-    ├── nodes.js
-    ├── components.js
-    ├── kit.js
-    ├── pages.js
-    ├── portal.js
-    ├── seo.js
-    └── stock-images.js
+src/
+├── index.js              ← public entry
+├── ai-models.mjs         ← ESM: AI model defaults
+├── core/                 ← context, api-fetch, constants, component registry
+├── handlers/             ← HTTP tool implementations (one file per domain)
+│   ├── kit/              ← split sub-modules for apply_kit_block
+│   ├── components/       ← block CRUD + search
+│   ├── remote-nodes/     ← node patch validation
+│   └── seo/              ← SEO + a11y audit
+├── helpers/              ← shared handler utilities (load/mutate/save, patch parsing)
+├── validation/           ← node, button, branding, a11y validators
+├── utils/                ← pure utilities (color, levenshtein, node walk)
+├── data/                 ← static data: tools.json, vibes, categories
+├── codec/                ← lzutf8 wrapper, structure ingest
+└── lib/                  ← third-party-adjacent helpers (theme-fonts)
 ```
+
+See [`src/README.md`](src/README.md) for a per-folder breakdown.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the handler contract, context system, and how to add a new tool.
 
 ## License
 
