@@ -1,13 +1,13 @@
-const { apiFetch, normalizeBaseUrl } = require('../api-fetch');
-const { getContext } = require('../context');
-const { parseMaybeJson } = require('../helpers');
-
-function getActiveSiteId(args) {
-  const ctx = getContext();
-  const id = args.id || ctx.activeSite?.id;
-  if (!id) throw new Error('No site id provided and no active site set.');
-  return id;
-}
+const { getContext, withPendingMapLock } = require("../core/context");
+const {
+  parseMaybeJson,
+  getActiveTarget,
+  fetchTarget,
+  saveTarget,
+  assertInjectHtml,
+} = require("../helpers/index.js");
+const { normalizeBaseUrl } = require("../core/api-fetch");
+const { buildPatch } = require("../helpers/patch/build");
 
 /** Find all page nodes — direct ROOT children with props.type === 'page'. */
 function findPages(flat) {
@@ -16,7 +16,7 @@ function findPages(flat) {
   const pages = [];
   for (const childId of root.nodes || []) {
     const node = flat[childId];
-    if (node && node.props?.type === 'page') {
+    if (node && node.props?.type === "page") {
       pages.push({ id: childId, node });
     }
   }
@@ -25,68 +25,97 @@ function findPages(flat) {
 
 /** Slugify a display name to a URL path (simple lowercase + hyphens). */
 function toSlug(name) {
-  return (name || '')
+  return (name || "")
     .toLowerCase()
     .trim()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 }
 
 module.exports = {
   async list_pages(args) {
-    const siteId = getActiveSiteId(args);
-    const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`);
-    if (!data.content) throw new Error('Site has no content.');
-    const flat = data.content;
+    const { targetId, targetType, flat } = await fetchTarget(args);
     const pages = findPages(flat);
 
     if (pages.length === 0) {
-      return { content: [{ type: 'text', text: 'No pages found in this site.' }] };
+      return { content: [{ type: "text", text: `No pages found in this ${targetType}.` }] };
     }
 
     const lines = pages.map((p, i) => {
       const props = p.node.props || {};
-      const name = p.node.custom?.displayName || p.node.displayName || '(unnamed)';
+      const name = p.node.custom?.displayName || p.node.displayName || "(unnamed)";
       const slug = toSlug(name);
       const flags = [];
-      if (props.isHomePage) flags.push('HOME');
-      if (props.is404Page) flags.push('404');
-      if (props.isHidden || p.node.hidden) flags.push('HIDDEN');
+      if (props.isHomePage) flags.push("HOME");
+      if (props.is404Page) flags.push("404");
+      if (props.isHidden || p.node.hidden) flags.push("HIDDEN");
       const sectionCount = (p.node.nodes || []).length;
-      const flagStr = flags.length ? ` [${flags.join(', ')}]` : '';
+      const flagStr = flags.length ? ` [${flags.join(", ")}]` : "";
       return `${i + 1}. **${p.id}** — "${name}" (/${slug}, ${sectionCount} sections)${flagStr}`;
     });
 
+    const label = targetType === "template" ? `template "${targetId}"` : `site ${targetId}`;
     return {
-      content: [{
-        type: 'text',
-        text: `# Pages in site ${siteId}\n\n${lines.join('\n')}\n\nUse pageId with add_section, add_custom_section, or update_page.`,
-      }],
+      content: [
+        {
+          type: "text",
+          text: `# Pages in ${label}\n\n${lines.join("\n")}\n\nUse pageId with add_section, add_custom_section, or update_page.`,
+        },
+      ],
     };
   },
 
   async add_page(args) {
-    const { name, isHomePage, is404Page, position } = args;
-    if (!name) throw new Error('Page name is required.');
+    return withPendingMapLock(() => addPageBody(args));
+  },
+  async update_page(args) {
+    return withPendingMapLock(() => updatePageBody(args));
+  },
+  async delete_page(args) {
+    return withPendingMapLock(() => deletePageBody(args));
+  },
+};
 
-    const siteId = getActiveSiteId(args);
-    const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`);
-    if (!data.content) throw new Error('Site has no content.');
-    const flat = JSON.parse(JSON.stringify(data.content));
+async function addPageBody(args) {
+    const { name, isHomePage, is404Page, position } = args;
+    if (!name) throw new Error("Page name is required.");
+
+    const target = getActiveTarget(args);
+    const { flat } = await fetchTarget(args);
     const root = flat.ROOT;
-    if (!root) throw new Error('Site has no ROOT node.');
+    if (!root) throw new Error("No ROOT node found.");
+
+    const prevRootChildren = Array.isArray(root.nodes) ? root.nodes.slice() : [];
+    const touched = new Set();
 
     const pages = findPages(flat);
     const slug = toSlug(name);
-    const pageId = `page_${slug.replace(/-/g, '_')}`;
-    if (flat[pageId]) throw new Error(`Node ID "${pageId}" already exists. Choose a different page name.`);
+    const pageId = `page_${slug.replace(/-/g, "_")}`;
+    if (flat[pageId])
+      throw new Error(`Node ID "${pageId}" already exists. Choose a different page name.`);
 
-    // Build SEO props from args
+    // Build SEO props from args. Accept the legacy flat keys (pageTitle, pageDescription, …)
+    // on the `seo` arg for back-compat, but store under the canonical seo.* shape on the node.
     const seo = parseMaybeJson(args.seo) || {};
-    const seoProps = {};
-    for (const key of ['pageTitle', 'pageDescription', 'pageKeywords', 'ogTitle', 'ogDescription', 'ogImage', 'ogType', 'canonicalUrl', 'robots']) {
-      if (seo[key] != null) seoProps[key] = seo[key];
+    const keyMap = {
+      pageTitle: "title",
+      pageDescription: "description",
+      pageKeywords: "keywords",
+      ogTitle: "ogTitle",
+      ogDescription: "ogDescription",
+      ogImage: "ogImage",
+      ogType: "ogType",
+      canonicalUrl: "canonicalUrl",
+      robots: "robots",
+    };
+    const seoNested = {};
+    for (const [flatKey, nestedKey] of Object.entries(keyMap)) {
+      const value = seo[flatKey] != null ? seo[flatKey] : seo[nestedKey];
+      if (value != null) seoNested[nestedKey] = value;
     }
+    if (seo.jsonLd != null) seoNested.jsonLd = parseMaybeJson(seo.jsonLd);
+    if (seo.schema != null) seoNested.schema = parseMaybeJson(seo.schema);
+    const seoProps = Object.keys(seoNested).length ? { seo: seoNested } : {};
 
     // Determine home page flag
     const shouldBeHome = isHomePage === true || pages.length === 0;
@@ -96,28 +125,27 @@ module.exports = {
       for (const p of pages) {
         if (p.node.props?.isHomePage) {
           p.node.props.isHomePage = false;
+          touched.add(p.id);
         }
       }
     }
 
     // Create the page node
     flat[pageId] = {
-      type: { resolvedName: 'Container' },
+      type: { resolvedName: "Container" },
       isCanvas: true,
       props: {
         canDelete: true,
         canEditName: true,
-        type: 'page',
-        root: {},
-        mobile: { display: 'flex', flexDirection: 'flex-col', width: 'w-full' },
-        desktop: {},
+        type: "page",
+        className: "flex flex-col w-full",
         ...(shouldBeHome ? { isHomePage: true } : {}),
         ...(is404Page === true ? { is404Page: true } : {}),
         ...seoProps,
       },
-      displayName: 'Container',
+      displayName: "Container",
       custom: { displayName: name },
-      parent: 'ROOT',
+      parent: "ROOT",
       hidden: false,
       nodes: [],
       linkedNodes: {},
@@ -129,162 +157,276 @@ module.exports = {
     if (position != null) {
       insertPos = position;
     } else {
-      // Find the last page node index, insert after it
       let lastPageIdx = -1;
       for (let i = 0; i < rootNodes.length; i++) {
         const n = flat[rootNodes[i]];
-        if (n && n.props?.type === 'page') lastPageIdx = i;
+        if (n && n.props?.type === "page") lastPageIdx = i;
       }
       insertPos = lastPageIdx >= 0 ? lastPageIdx + 1 : rootNodes.length;
     }
     rootNodes.splice(insertPos, 0, pageId);
+    touched.add(pageId);
 
     const ctx = getContext();
+
+    const patch = buildPatch(flat, touched, prevRootChildren);
 
     // Support batched mode (agent endpoint)
     if (ctx._batchMode) {
       ctx._pendingFlatMap = flat;
       return {
-        content: [{ type: 'text', text: `Page "${name}" created as ${pageId} (/${slug}).` }],
+        content: [
+          {
+            type: "text",
+            text: `Page "${name}" created as ${pageId} (/${slug}). To add blocks: apply_kit_block(slug, pageId: "${pageId}") — do NOT pass sectionContainerId.`,
+          },
+        ],
         pendingContent: flat,
+        patch,
       };
     }
 
-    const put = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`, { method: 'PUT', body: { content: flat } });
-    const base = normalizeBaseUrl(ctx.apiBaseUrl) || 'https://pagehub.dev';
+    const result = await saveTarget(target.id, target.type, flat);
+    const homeMsg = shouldBeHome ? " Marked as home page." : "";
+    if (target.type === "template") {
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Page "${name}" created as ${pageId} (/${slug}) in template "${target.id}".${homeMsg} To add blocks: apply_kit_block(slug, pageId: "${pageId}") — do NOT pass sectionContainerId.`,
+          },
+        ],
+        patch,
+      };
+    }
+    const base = normalizeBaseUrl(ctx.apiBaseUrl) || "https://pagehub.dev";
     return {
-      content: [{
-        type: 'text',
-        text: `Page "${name}" created as ${pageId} (/${slug}).${shouldBeHome ? ' Marked as home page.' : ''}\nEditor: ${base}/build/${put.id}`,
-      }],
+      content: [
+        {
+          type: "text",
+          text: `Page "${name}" created as ${pageId} (/${slug}).${homeMsg} To add blocks: apply_kit_block(slug, pageId: "${pageId}") — do NOT pass sectionContainerId.\nEditor: ${base}/build/${result.id}`,
+        },
+      ],
+      patch,
     };
-  },
+}
 
-  async update_page(args) {
-    const { pageId, name, isHomePage, is404Page, isHidden } = args;
-    if (!pageId) throw new Error('pageId is required.');
+async function updatePageBody(args) {
+    const { pageId, name, isHomePage, is404Page, isHidden, hideHeader, hideFooter, hideChrome } = args;
+    if (!pageId) throw new Error("pageId is required.");
 
-    const siteId = getActiveSiteId(args);
-    const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`);
-    if (!data.content) throw new Error('Site has no content.');
-    const flat = JSON.parse(JSON.stringify(data.content));
+    const target = getActiveTarget(args);
+    const ctx = getContext();
+
+    const { flat } = await fetchTarget(args);
 
     const page = flat[pageId];
     if (!page) throw new Error(`Page node "${pageId}" not found.`);
-    if (page.props?.type !== 'page') throw new Error(`Node "${pageId}" is not a page (type: ${page.props?.type || 'unknown'}).`);
+    if (page.props?.type !== "page")
+      throw new Error(`Node "${pageId}" is not a page (type: ${page.props?.type || "unknown"}).`);
 
+    const touched = new Set();
     const changes = [];
 
-    // Update display name
     if (name != null) {
       if (!page.custom) page.custom = {};
       page.custom.displayName = name;
       changes.push(`name → "${name}" (/${toSlug(name)})`);
     }
 
-    // Update home page flag
     if (isHomePage === true) {
       const pages = findPages(flat);
       for (const p of pages) {
-        if (p.node.props?.isHomePage) p.node.props.isHomePage = false;
+        if (p.node.props?.isHomePage) {
+          p.node.props.isHomePage = false;
+          touched.add(p.id);
+        }
       }
       page.props.isHomePage = true;
-      changes.push('isHomePage → true');
+      changes.push("isHomePage → true");
     } else if (isHomePage === false) {
       page.props.isHomePage = false;
-      changes.push('isHomePage → false');
+      changes.push("isHomePage → false");
     }
 
-    // Update 404 flag
     if (is404Page != null) {
       page.props.is404Page = is404Page;
       changes.push(`is404Page → ${is404Page}`);
     }
 
-    // Update visibility
     if (isHidden != null) {
       page.props.isHidden = isHidden;
       page.hidden = isHidden;
       changes.push(`isHidden → ${isHidden}`);
     }
 
-    // Update SEO
+    if (hideHeader != null) {
+      if (hideHeader) page.props.hideHeader = true;
+      else delete page.props.hideHeader;
+      changes.push(`hideHeader → ${!!hideHeader}`);
+    }
+
+    if (hideFooter != null) {
+      if (hideFooter) page.props.hideFooter = true;
+      else delete page.props.hideFooter;
+      changes.push(`hideFooter → ${!!hideFooter}`);
+    }
+
+    if (hideChrome != null) {
+      if (hideChrome) page.props.hideChrome = true;
+      else delete page.props.hideChrome;
+      changes.push(`hideChrome → ${!!hideChrome}`);
+    }
+
     const seo = parseMaybeJson(args.seo) || {};
-    for (const key of ['pageTitle', 'pageDescription', 'pageKeywords', 'ogTitle', 'ogDescription', 'ogImage', 'ogType', 'canonicalUrl', 'robots']) {
+    const seoKeyMap = {
+      pageTitle: "title",
+      pageDescription: "description",
+      pageKeywords: "keywords",
+      ogTitle: "ogTitle",
+      ogDescription: "ogDescription",
+      ogImage: "ogImage",
+      ogType: "ogType",
+      canonicalUrl: "canonicalUrl",
+      robots: "robots",
+    };
+    for (const [flatKey, nestedKey] of Object.entries(seoKeyMap)) {
+      const value = seo[flatKey] != null ? seo[flatKey] : seo[nestedKey];
+      if (value != null) {
+        if (!page.props.seo) page.props.seo = {};
+        page.props.seo[nestedKey] = value;
+        changes.push(`seo.${nestedKey} → "${value}"`);
+      }
+    }
+    for (const key of ["jsonLd", "schema"]) {
       if (seo[key] != null) {
-        page.props[key] = seo[key];
-        changes.push(`${key} → "${seo[key]}"`);
+        if (!page.props.seo) page.props.seo = {};
+        const parsed = parseMaybeJson(seo[key]);
+        page.props.seo[key] = parsed;
+        const preview = JSON.stringify(parsed);
+        changes.push(`seo.${key} → ${preview.length > 80 ? preview.slice(0, 80) + "…" : preview}`);
+      }
+    }
+
+    for (const key of ["headCode", "bodyClass"]) {
+      if (args[key] != null) {
+        const val = String(args[key]);
+        if (val === "") {
+          delete page.props[key];
+          changes.push(`${key} → (cleared)`);
+        } else {
+          if (key === "headCode") {
+            assertInjectHtml(val, `update_page.headCode for page "${page.props?.name || pageId}"`);
+          }
+          page.props[key] = val;
+          const preview = val.length > 40 ? val.slice(0, 40) + "…" : val;
+          changes.push(`${key} → "${preview}"`);
+        }
       }
     }
 
     if (changes.length === 0) {
-      return { content: [{ type: 'text', text: 'No changes specified.' }] };
+      return { content: [{ type: "text", text: "No changes specified." }] };
     }
 
-    const ctx = getContext();
-    const put = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`, { method: 'PUT', body: { content: flat } });
-    const base = normalizeBaseUrl(ctx.apiBaseUrl) || 'https://pagehub.dev';
+    touched.add(pageId);
+    const patch = buildPatch(flat, touched);
+
+    // Draft mode: persist into _pendingFlatMap so signal_sections picks up SEO changes
+    if (ctx.draftMode) {
+      ctx._pendingFlatMap = flat;
+      return {
+        content: [{ type: "text", text: `Page ${pageId} updated:\n  ${changes.join("\n  ")}` }],
+        patch,
+      };
+    }
+
+    const result = await saveTarget(target.id, target.type, flat);
+    const label = target.type === "template" ? `template "${target.id}"` : `site`;
+    const editorLine =
+      target.type === "site"
+        ? `\nEditor: ${normalizeBaseUrl(getContext().apiBaseUrl) || "https://pagehub.dev"}/build/${result.id}`
+        : "";
     return {
-      content: [{
-        type: 'text',
-        text: `Page ${pageId} updated:\n  ${changes.join('\n  ')}\nEditor: ${base}/build/${put.id}`,
-      }],
+      content: [
+        {
+          type: "text",
+          text: `Page ${pageId} updated in ${label}:\n  ${changes.join("\n  ")}${editorLine}`,
+        },
+      ],
+      patch,
     };
-  },
+}
 
-  async delete_page(args) {
+async function deletePageBody(args) {
     const { pageId } = args;
-    if (!pageId) throw new Error('pageId is required.');
+    if (!pageId) throw new Error("pageId is required.");
 
-    const siteId = getActiveSiteId(args);
-    const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`);
-    if (!data.content) throw new Error('Site has no content.');
-    const flat = JSON.parse(JSON.stringify(data.content));
+    const target = getActiveTarget(args);
+    const { flat } = await fetchTarget(args);
 
     const page = flat[pageId];
     if (!page) throw new Error(`Page node "${pageId}" not found.`);
-    if (page.props?.type !== 'page') throw new Error(`Node "${pageId}" is not a page (type: ${page.props?.type || 'unknown'}).`);
+    if (page.props?.type !== "page")
+      throw new Error(`Node "${pageId}" is not a page (type: ${page.props?.type || "unknown"}).`);
 
     const pages = findPages(flat);
-    if (pages.length <= 1) throw new Error('Cannot delete the last page. A site must have at least one page.');
+    if (pages.length <= 1)
+      throw new Error(`Cannot delete the last page. A ${target.type} must have at least one page.`);
 
     const wasHomePage = page.props?.isHomePage === true;
     const pageName = page.custom?.displayName || page.displayName || pageId;
 
-    // Remove from ROOT.nodes
     const root = flat.ROOT;
+    const prevRootChildren = root && Array.isArray(root.nodes) ? root.nodes.slice() : [];
     if (root) {
       root.nodes = (root.nodes || []).filter(id => id !== pageId);
     }
 
-    // Delete the page and all descendants
-    const deleteSubtree = (id) => {
+    const deletedIds = [];
+    const deleteSubtree = id => {
       const n = flat[id];
       if (!n) return;
       for (const child of [...(n.nodes || [])]) deleteSubtree(child);
       delete flat[id];
+      deletedIds.push(id);
     };
     deleteSubtree(pageId);
 
-    // If we deleted the home page, promote the first remaining page
+    const touched = new Set();
     let promotedPage = null;
     if (wasHomePage) {
       const remaining = findPages(flat);
       if (remaining.length > 0) {
         remaining[0].node.props.isHomePage = true;
         promotedPage = remaining[0].id;
+        touched.add(promotedPage);
       }
     }
 
-    const ctx = getContext();
-    const put = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`, { method: 'PUT', body: { content: flat } });
-    const base = normalizeBaseUrl(ctx.apiBaseUrl) || 'https://pagehub.dev';
-    const promoMsg = promotedPage ? ` ${promotedPage} promoted to home page.` : '';
+    const patch = buildPatch(flat, touched, prevRootChildren, deletedIds);
+
+    const result = await saveTarget(target.id, target.type, flat);
+    const promoMsg = promotedPage ? ` ${promotedPage} promoted to home page.` : "";
+    if (target.type === "template") {
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Page "${pageName}" (${pageId}) deleted from template "${target.id}".${promoMsg}`,
+          },
+        ],
+        patch,
+      };
+    }
+    const base = normalizeBaseUrl(getContext().apiBaseUrl) || "https://pagehub.dev";
     return {
-      content: [{
-        type: 'text',
-        text: `Page "${pageName}" (${pageId}) deleted.${promoMsg}\nEditor: ${base}/build/${put.id}`,
-      }],
+      content: [
+        {
+          type: "text",
+          text: `Page "${pageName}" (${pageId}) deleted.${promoMsg}\nEditor: ${base}/build/${result.id}`,
+        },
+      ],
+      patch,
     };
-  },
-};
+}
