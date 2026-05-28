@@ -141,13 +141,10 @@ module.exports = {
     const sourceId = args.id || ctx.activeSite?.id;
     if (!sourceId) throw new Error("No site id provided and no active site set.");
 
-    const data = await apiFetch(
-      `/api/v1/sites/${encodeURIComponent(sourceId)}/duplicate`,
-      {
-        method: "POST",
-        body: pickSiteMetaArgs(args),
-      }
-    );
+    const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(sourceId)}/duplicate`, {
+      method: "POST",
+      body: pickSiteMetaArgs(args),
+    });
 
     ctx.activeSite = { id: data.id, name: data.name, draftId: data.draftId };
     ctx.activeTemplate = null;
@@ -170,15 +167,12 @@ module.exports = {
     if (target.type !== "site")
       throw new Error("get_domain_status only works on sites, not templates.");
     const qs = args.check ? `?check=${encodeURIComponent(args.check)}` : "";
-    const data = await apiFetch(
-      `/api/v1/sites/${encodeURIComponent(target.id)}/domain${qs}`
-    );
+    const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}/domain${qs}`);
     const lines = [];
     if (data.domain)
       lines.push(`Current domain: ${data.domain} (redirect: ${data.domainRedirectMode})`);
     else lines.push("No custom domain set.");
-    if (data.checked && data.checked !== data.domain)
-      lines.push(`Checked: ${data.checked}`);
+    if (data.checked && data.checked !== data.domain) lines.push(`Checked: ${data.checked}`);
     if (data.variants?.length) {
       lines.push("");
       for (const v of data.variants) {
@@ -202,23 +196,20 @@ module.exports = {
 
   async set_domain(args = {}) {
     const target = getActiveTarget(args);
-    if (target.type !== "site")
-      throw new Error("set_domain only works on sites, not templates.");
+    if (target.type !== "site") throw new Error("set_domain only works on sites, not templates.");
     if (!args.domain) throw new Error("domain is required (use clear_domain to remove)");
     const body = { domain: args.domain };
     if (args.redirectMode) body.domainRedirectMode = args.redirectMode;
-    const data = await apiFetch(
-      `/api/v1/sites/${encodeURIComponent(target.id)}/domain`,
-      { method: "PATCH", body }
-    );
+    const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}/domain`, {
+      method: "PATCH",
+      body,
+    });
     if (data?.ok === false || data?.error) {
       const lines = [`Domain change failed: ${data.error || "unknown"}`];
       if (data.message) lines.push(data.message);
       if (Array.isArray(data.conflicts)) {
         for (const c of data.conflicts) {
-          lines.push(
-            `  - ${c.domain}: ${c.reason}${c.message ? ` (${c.message})` : ""}`
-          );
+          lines.push(`  - ${c.domain}: ${c.reason}${c.message ? ` (${c.message})` : ""}`);
         }
         lines.push("");
         lines.push(
@@ -239,8 +230,7 @@ module.exports = {
 
   async clear_domain(args = {}) {
     const target = getActiveTarget(args);
-    if (target.type !== "site")
-      throw new Error("clear_domain only works on sites, not templates.");
+    if (target.type !== "site") throw new Error("clear_domain only works on sites, not templates.");
     await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}/domain`, {
       method: "DELETE",
     });
@@ -249,13 +239,12 @@ module.exports = {
 
   async set_domain_redirect_mode(args = {}) {
     const target = getActiveTarget(args);
-    if (target.type !== "site")
-      throw new Error("set_domain_redirect_mode only works on sites.");
+    if (target.type !== "site") throw new Error("set_domain_redirect_mode only works on sites.");
     if (!args.redirectMode) throw new Error("redirectMode is required");
-    const data = await apiFetch(
-      `/api/v1/sites/${encodeURIComponent(target.id)}/domain`,
-      { method: "PATCH", body: { domainRedirectMode: args.redirectMode } }
-    );
+    const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}/domain`, {
+      method: "PATCH",
+      body: { domainRedirectMode: args.redirectMode },
+    });
     return {
       content: [
         {

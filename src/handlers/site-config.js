@@ -62,9 +62,7 @@ module.exports = {
   async set_favicon(args) {
     const target = getActiveTarget(args);
     if (target.type === "template") {
-      throw new Error(
-        "set_favicon is not supported for templates — favicons are per-site only."
-      );
+      throw new Error("set_favicon is not supported for templates — favicons are per-site only.");
     }
     const { targetId, targetType, flat } = await fetchTarget(args);
     if (!flat.ROOT?.props) throw new Error("No ROOT node found.");

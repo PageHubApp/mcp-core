@@ -17,22 +17,16 @@ function fmtCollection(c) {
 module.exports = {
   async list_collections(args = {}) {
     const siteId = activeSiteId(args);
-    const data = await apiFetch(
-      `/api/v1/sites/${encodeURIComponent(siteId)}/collections`
-    );
+    const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}/collections`);
     const cols = data.collections || [];
-    const lines = cols.length
-      ? cols.map(fmtCollection).join("\n")
-      : "No collections on this site.";
+    const lines = cols.length ? cols.map(fmtCollection).join("\n") : "No collections on this site.";
     return { content: [{ type: "text", text: lines }] };
   },
 
   async get_collection(args = {}) {
     const siteId = activeSiteId(args);
     if (!args.slug) throw new Error("slug is required");
-    const list = await apiFetch(
-      `/api/v1/sites/${encodeURIComponent(siteId)}/collections`
-    );
+    const list = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}/collections`);
     const col = (list.collections || []).find(c => c.slug === args.slug);
     if (!col) throw new Error(`Collection "${args.slug}" not found.`);
     const data = await apiFetch(
@@ -40,7 +34,10 @@ module.exports = {
     );
     return {
       content: [
-        { type: "text", text: `\`\`\`json\n${JSON.stringify(data.collection || data, null, 2)}\n\`\`\`` },
+        {
+          type: "text",
+          text: `\`\`\`json\n${JSON.stringify(data.collection || data, null, 2)}\n\`\`\``,
+        },
       ],
     };
   },
@@ -57,10 +54,10 @@ module.exports = {
       source: args.source,
       isPublic: !!args.isPublic,
     };
-    const data = await apiFetch(
-      `/api/v1/sites/${encodeURIComponent(siteId)}/collections`,
-      { method: "POST", body }
-    );
+    const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}/collections`, {
+      method: "POST",
+      body,
+    });
     return {
       content: [
         {
@@ -75,9 +72,7 @@ module.exports = {
     const siteId = activeSiteId(args);
     if (!args.slug) throw new Error("slug is required");
     if (!Array.isArray(args.schema)) throw new Error("schema must be an array");
-    const list = await apiFetch(
-      `/api/v1/sites/${encodeURIComponent(siteId)}/collections`
-    );
+    const list = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}/collections`);
     const col = (list.collections || []).find(c => c.slug === args.slug);
     if (!col) throw new Error(`Collection "${args.slug}" not found.`);
     const data = await apiFetch(
@@ -97,9 +92,7 @@ module.exports = {
   async delete_collection(args = {}) {
     const siteId = activeSiteId(args);
     if (!args.slug) throw new Error("slug is required");
-    const list = await apiFetch(
-      `/api/v1/sites/${encodeURIComponent(siteId)}/collections`
-    );
+    const list = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}/collections`);
     const col = (list.collections || []).find(c => c.slug === args.slug);
     if (!col) throw new Error(`Collection "${args.slug}" not found.`);
     await apiFetch(
@@ -136,8 +129,7 @@ module.exports = {
   async create_collection_row(args = {}) {
     const siteId = activeSiteId(args);
     if (!args.slug) throw new Error("slug is required");
-    if (!args.data || typeof args.data !== "object")
-      throw new Error("data is required (object)");
+    if (!args.data || typeof args.data !== "object") throw new Error("data is required (object)");
     const data = await apiFetch(
       `/api/v1/sites/${encodeURIComponent(siteId)}/collections/${encodeURIComponent(
         args.slug
@@ -159,8 +151,7 @@ module.exports = {
     const siteId = activeSiteId(args);
     if (!args.slug) throw new Error("slug is required");
     if (!args.row_id) throw new Error("row_id is required");
-    if (!args.data || typeof args.data !== "object")
-      throw new Error("data is required (object)");
+    if (!args.data || typeof args.data !== "object") throw new Error("data is required (object)");
     await apiFetch(
       `/api/v1/sites/${encodeURIComponent(siteId)}/collections/${encodeURIComponent(
         args.slug
@@ -168,9 +159,7 @@ module.exports = {
       { method: "PATCH", body: { data: args.data } }
     );
     return {
-      content: [
-        { type: "text", text: `Row ${args.row_id} updated in "${args.slug}".` },
-      ],
+      content: [{ type: "text", text: `Row ${args.row_id} updated in "${args.slug}".` }],
     };
   },
 
@@ -185,9 +174,7 @@ module.exports = {
       { method: "DELETE" }
     );
     return {
-      content: [
-        { type: "text", text: `Row ${args.row_id} deleted from "${args.slug}".` },
-      ],
+      content: [{ type: "text", text: `Row ${args.row_id} deleted from "${args.slug}".` }],
     };
   },
 };

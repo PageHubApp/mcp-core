@@ -170,142 +170,142 @@ module.exports = {
 };
 
 async function placeSectionTreeBody(args) {
-    const ctx = getContext();
-    if (!ctx?.fillMode || !ctx.sectionNodeId) {
-      throw new Error(
-        "place_section_tree is only available in section-fill mode. The server sets sectionNodeId from the fill context — this tool cannot be called outside the clone pipeline."
-      );
-    }
-    // Block after a kit has been stamped — otherwise this tool's idempotent
-    // replace wipes the kit. If the model needs more children than the kit
-    // provides, use add_nodes; if it picked the wrong kit, it should have
-    // chosen differently up front.
-    if (ctx._componentStructureReady) {
-      throw new Error(
-        "place_section_tree is disabled after structure has already been placed in this section (apply_kit_block or a prior place_section_tree succeeded). If the kit is missing elements, use add_nodes to append children — do NOT call place_section_tree again, it would wipe everything that's there."
-      );
-    }
-    const sectionNodeId = String(ctx.sectionNodeId);
-    const reason = typeof args?.reason === "string" ? args.reason.slice(0, 500) : "";
+  const ctx = getContext();
+  if (!ctx?.fillMode || !ctx.sectionNodeId) {
+    throw new Error(
+      "place_section_tree is only available in section-fill mode. The server sets sectionNodeId from the fill context — this tool cannot be called outside the clone pipeline."
+    );
+  }
+  // Block after a kit has been stamped — otherwise this tool's idempotent
+  // replace wipes the kit. If the model needs more children than the kit
+  // provides, use add_nodes; if it picked the wrong kit, it should have
+  // chosen differently up front.
+  if (ctx._componentStructureReady) {
+    throw new Error(
+      "place_section_tree is disabled after structure has already been placed in this section (apply_kit_block or a prior place_section_tree succeeded). If the kit is missing elements, use add_nodes to append children — do NOT call place_section_tree again, it would wipe everything that's there."
+    );
+  }
+  const sectionNodeId = String(ctx.sectionNodeId);
+  const reason = typeof args?.reason === "string" ? args.reason.slice(0, 500) : "";
 
-    let hierarchy = args?.hierarchy;
-    // Model (qwen3-coder) sometimes stringifies `hierarchy`, and sometimes with
-    // malformed JSON inside. Try strict parse, then a targeted repair, then a
-    // clear error telling the model to send a native object.
-    if (typeof hierarchy === "string") {
-      const recovered = parseHierarchyString(hierarchy);
-      if (recovered && typeof recovered === "object" && !Array.isArray(recovered)) {
-        hierarchy = recovered;
-      } else {
-        throw new Error(
-          "place_section_tree: hierarchy was sent as a STRING and failed to parse as JSON. " +
-            "Send hierarchy as a NATIVE JSON OBJECT in the tool call — do NOT wrap it in quotes, do NOT stringify it. " +
-            "The AI SDK encodes the tool arguments for you. Example: " +
-            '{ "reason": "hero", "hierarchy": { "type": "Container", "props": {...}, "children": [...] } }  ' +
-            "— note hierarchy is an object literal, not a quoted string."
-        );
+  let hierarchy = args?.hierarchy;
+  // Model (qwen3-coder) sometimes stringifies `hierarchy`, and sometimes with
+  // malformed JSON inside. Try strict parse, then a targeted repair, then a
+  // clear error telling the model to send a native object.
+  if (typeof hierarchy === "string") {
+    const recovered = parseHierarchyString(hierarchy);
+    if (recovered && typeof recovered === "object" && !Array.isArray(recovered)) {
+      hierarchy = recovered;
+    } else {
+      throw new Error(
+        "place_section_tree: hierarchy was sent as a STRING and failed to parse as JSON. " +
+          "Send hierarchy as a NATIVE JSON OBJECT in the tool call — do NOT wrap it in quotes, do NOT stringify it. " +
+          "The AI SDK encodes the tool arguments for you. Example: " +
+          '{ "reason": "hero", "hierarchy": { "type": "Container", "props": {...}, "children": [...] } }  ' +
+          "— note hierarchy is an object literal, not a quoted string."
+      );
+    }
+  }
+  if (!hierarchy || typeof hierarchy !== "object" || Array.isArray(hierarchy)) {
+    throw new Error(
+      "place_section_tree: `hierarchy` must be an object — the root Container for your section with nested `children`. Do not send a flat map, array, or string."
+    );
+  }
+  const rootTypeRaw = hierarchy.type;
+  const rootType =
+    typeof rootTypeRaw === "string"
+      ? rootTypeRaw
+      : rootTypeRaw &&
+          typeof rootTypeRaw === "object" &&
+          typeof rootTypeRaw.resolvedName === "string"
+        ? rootTypeRaw.resolvedName
+        : null;
+  if (rootType !== "Container") {
+    throw new Error(
+      `place_section_tree: hierarchy root must be a Container. Got "${rootType || "missing"}".`
+    );
+  }
+
+  const target = getActiveTarget(args);
+  // Fill mode for sites: reload merged draft so sec_* exists on flat.
+  if (
+    !ctx._pendingFlatMap &&
+    target.type === "site" &&
+    typeof ctx._reloadMergedDraft === "function"
+  ) {
+    await ctx._reloadMergedDraft();
+  }
+  const { flat } = await fetchTarget(args);
+  if (!flat[sectionNodeId]) {
+    throw new Error(
+      `place_section_tree: section "${sectionNodeId}" not found in the current draft. The planner skeleton may not be synced — retry in a moment.`
+    );
+  }
+
+  // Flatten hierarchy (throws on malformed nodes or unknown types).
+  const { flat: newNodes, rootId, idsInOrder } = flattenHierarchy(hierarchy, sectionNodeId);
+
+  // Auto-fix: wrap bare Text in <p>, apply heading tag defaults, dedupe tokens.
+  // Same pass add_nodes runs (remote-nodes.js:206) — keeps rendered output clean
+  // without forcing the model to micromanage HTML wrapping.
+  validateNodes(newNodes, { autoFix: true, warnColors: true });
+
+  // Idempotent replace: drop any existing subtrees under the section (including
+  // from a previous place_section_tree call) before attaching the new root.
+  // Collect stale ids first, then delete so _fillPatch can be scrubbed below.
+  const staleIds = new Set();
+  for (const childId of flat[sectionNodeId].nodes || []) {
+    const subtree = collectSubtree(flat, childId);
+    for (const id of Object.keys(subtree)) staleIds.add(id);
+  }
+  for (const id of staleIds) delete flat[id];
+
+  // Merge new nodes into flat.
+  for (const [id, node] of Object.entries(newNodes)) {
+    flat[id] = node;
+  }
+  flat[sectionNodeId].nodes = [rootId];
+  flat[rootId].parent = sectionNodeId;
+
+  const changedNodes = {};
+  Object.assign(changedNodes, collectSubtree(flat, sectionNodeId));
+
+  // Draft mode path (clone pipeline runs here): stash into fill patch for persistence.
+  if (ctx.draftMode) {
+    // Strip EVERY stale id from the patch so shard-sync doesn't resurrect them.
+    if (ctx._fillPatch) {
+      for (const staleId of staleIds) {
+        delete ctx._fillPatch[staleId];
       }
     }
-    if (!hierarchy || typeof hierarchy !== "object" || Array.isArray(hierarchy)) {
-      throw new Error(
-        "place_section_tree: `hierarchy` must be an object — the root Container for your section with nested `children`. Do not send a flat map, array, or string."
-      );
-    }
-    const rootTypeRaw = hierarchy.type;
-    const rootType =
-      typeof rootTypeRaw === "string"
-        ? rootTypeRaw
-        : rootTypeRaw &&
-            typeof rootTypeRaw === "object" &&
-            typeof rootTypeRaw.resolvedName === "string"
-          ? rootTypeRaw.resolvedName
-          : null;
-    if (rootType !== "Container") {
-      throw new Error(
-        `place_section_tree: hierarchy root must be a Container. Got "${rootType || "missing"}".`
-      );
-    }
-
-    const target = getActiveTarget(args);
-    // Fill mode for sites: reload merged draft so sec_* exists on flat.
-    if (
-      !ctx._pendingFlatMap &&
-      target.type === "site" &&
-      typeof ctx._reloadMergedDraft === "function"
-    ) {
-      await ctx._reloadMergedDraft();
-    }
-    const { flat } = await fetchTarget(args);
-    if (!flat[sectionNodeId]) {
-      throw new Error(
-        `place_section_tree: section "${sectionNodeId}" not found in the current draft. The planner skeleton may not be synced — retry in a moment.`
-      );
-    }
-
-    // Flatten hierarchy (throws on malformed nodes or unknown types).
-    const { flat: newNodes, rootId, idsInOrder } = flattenHierarchy(hierarchy, sectionNodeId);
-
-    // Auto-fix: wrap bare Text in <p>, apply heading tag defaults, dedupe tokens.
-    // Same pass add_nodes runs (remote-nodes.js:206) — keeps rendered output clean
-    // without forcing the model to micromanage HTML wrapping.
-    validateNodes(newNodes, { autoFix: true, warnColors: true });
-
-    // Idempotent replace: drop any existing subtrees under the section (including
-    // from a previous place_section_tree call) before attaching the new root.
-    // Collect stale ids first, then delete so _fillPatch can be scrubbed below.
-    const staleIds = new Set();
-    for (const childId of flat[sectionNodeId].nodes || []) {
-      const subtree = collectSubtree(flat, childId);
-      for (const id of Object.keys(subtree)) staleIds.add(id);
-    }
-    for (const id of staleIds) delete flat[id];
-
-    // Merge new nodes into flat.
-    for (const [id, node] of Object.entries(newNodes)) {
-      flat[id] = node;
-    }
-    flat[sectionNodeId].nodes = [rootId];
-    flat[rootId].parent = sectionNodeId;
-
-    const changedNodes = {};
-    Object.assign(changedNodes, collectSubtree(flat, sectionNodeId));
-
-    // Draft mode path (clone pipeline runs here): stash into fill patch for persistence.
-    if (ctx.draftMode) {
-      // Strip EVERY stale id from the patch so shard-sync doesn't resurrect them.
-      if (ctx._fillPatch) {
-        for (const staleId of staleIds) {
-          delete ctx._fillPatch[staleId];
-        }
-      }
-      recordFillPatch(ctx, changedNodes);
-      ctx._pendingFlatMap = flat;
-      return {
-        content: [
-          {
-            type: "text",
-            text:
-              `Section "${sectionNodeId}" placed: ${idsInOrder.length} nodes (root ${rootId}).` +
-              (reason ? ` — ${reason}` : ""),
-          },
-        ],
-        pendingContent: flat,
-        changedNodes,
-      };
-    }
-
-    const result = await saveTarget(target.id, target.type, flat);
+    recordFillPatch(ctx, changedNodes);
+    ctx._pendingFlatMap = flat;
     return {
       content: [
         {
           type: "text",
-          text: resultMsg(
-            result.id,
-            target.type,
-            `Section "${sectionNodeId}" placed: ${idsInOrder.length} nodes (root ${rootId}).`
-          ),
+          text:
+            `Section "${sectionNodeId}" placed: ${idsInOrder.length} nodes (root ${rootId}).` +
+            (reason ? ` — ${reason}` : ""),
         },
       ],
+      pendingContent: flat,
       changedNodes,
     };
+  }
+
+  const result = await saveTarget(target.id, target.type, flat);
+  return {
+    content: [
+      {
+        type: "text",
+        text: resultMsg(
+          result.id,
+          target.type,
+          `Section "${sectionNodeId}" placed: ${idsInOrder.length} nodes (root ${rootId}).`
+        ),
+      },
+    ],
+    changedNodes,
+  };
 }

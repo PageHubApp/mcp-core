@@ -19,9 +19,7 @@ function resolveSlotTarget(slotTarget, slug) {
   let slotMismatchWarning = null;
   if (slotTarget && SLOT_MAP[slotTarget]) {
     const slugLower = String(slug).toLowerCase();
-    const isHeaderSlug = /(^|[-_])(header|nav(bar)?|top[-_]?bar|menu[-_]?bar)(-|$)/.test(
-      slugLower
-    );
+    const isHeaderSlug = /(^|[-_])(header|nav(bar)?|top[-_]?bar|menu[-_]?bar)(-|$)/.test(slugLower);
     const isFooterSlug = /(^|[-_])footer(-|$)/.test(slugLower);
     if (slotTarget === "header" && !isHeaderSlug) {
       slotMismatchWarning =

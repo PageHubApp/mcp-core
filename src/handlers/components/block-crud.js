@@ -12,11 +12,7 @@ const {
   formatBlockNodeManifest,
 } = require("../../codec/structure-ingest");
 const { quickA11yAudit } = require("../../validation/a11y-check");
-const {
-  fetchComponent,
-  decodeComponentStructure,
-  encodeStructurePayload,
-} = require("./api");
+const { fetchComponent, decodeComponentStructure, encodeStructurePayload } = require("./api");
 
 async function get_block(args) {
   const { slug } = args;

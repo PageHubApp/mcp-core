@@ -1136,8 +1136,16 @@
     "inputSchema": {
       "type": "object",
       "properties": {
-        "id": { "type": "string", "description": "Site id (defaults to active site).", "maxLength": 256 },
-        "check": { "type": "string", "description": "Optional candidate domain to preflight against Vercel without changing the site.", "maxLength": 253 }
+        "id": {
+          "type": "string",
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
+        },
+        "check": {
+          "type": "string",
+          "description": "Optional candidate domain to preflight against Vercel without changing the site.",
+          "maxLength": 253
+        }
       }
     }
   },
@@ -1147,8 +1155,16 @@
     "inputSchema": {
       "type": "object",
       "properties": {
-        "id": { "type": "string", "description": "Site id (defaults to active site).", "maxLength": 256 },
-        "domain": { "type": "string", "description": "Candidate domain to inspect (apex or www form, e.g. \"asked.io\").", "maxLength": 253 }
+        "id": {
+          "type": "string",
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
+        },
+        "domain": {
+          "type": "string",
+          "description": "Candidate domain to inspect (apex or www form, e.g. \"asked.io\").",
+          "maxLength": 253
+        }
       },
       "required": ["domain"]
     }
@@ -1159,8 +1175,16 @@
     "inputSchema": {
       "type": "object",
       "properties": {
-        "id": { "type": "string", "description": "Site id (defaults to active site).", "maxLength": 256 },
-        "domain": { "type": "string", "description": "Domain to attach (apex or www form). Both variants are registered automatically.", "maxLength": 253 },
+        "id": {
+          "type": "string",
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
+        },
+        "domain": {
+          "type": "string",
+          "description": "Domain to attach (apex or www form). Both variants are registered automatically.",
+          "maxLength": 253
+        },
         "redirectMode": {
           "type": "string",
           "enum": ["none", "to-apex", "to-www"],
@@ -1176,7 +1200,11 @@
     "inputSchema": {
       "type": "object",
       "properties": {
-        "id": { "type": "string", "description": "Site id (defaults to active site).", "maxLength": 256 }
+        "id": {
+          "type": "string",
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
+        }
       }
     }
   },
@@ -1186,7 +1214,11 @@
     "inputSchema": {
       "type": "object",
       "properties": {
-        "id": { "type": "string", "description": "Site id (defaults to active site).", "maxLength": 256 },
+        "id": {
+          "type": "string",
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
+        },
         "redirectMode": {
           "type": "string",
           "enum": ["none", "to-apex", "to-www"],
@@ -2734,7 +2766,11 @@
     "inputSchema": {
       "type": "object",
       "properties": {
-        "site_id": { "type": "string", "description": "Site id (defaults to active site).", "maxLength": 256 }
+        "site_id": {
+          "type": "string",
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
+        }
       }
     }
   },
@@ -2745,7 +2781,11 @@
       "type": "object",
       "properties": {
         "site_id": { "type": "string", "maxLength": 256 },
-        "slug": { "type": "string", "description": "Collection slug (unique per site).", "maxLength": 60 }
+        "slug": {
+          "type": "string",
+          "description": "Collection slug (unique per site).",
+          "maxLength": 60
+        }
       },
       "required": ["slug"]
     }
@@ -2758,14 +2798,21 @@
       "properties": {
         "site_id": { "type": "string", "maxLength": 256 },
         "name": { "type": "string", "maxLength": 256 },
-        "slug": { "type": "string", "description": "Lowercased slug, [a-z][a-z0-9-]*", "maxLength": 60 },
+        "slug": {
+          "type": "string",
+          "description": "Lowercased slug, [a-z][a-z0-9-]*",
+          "maxLength": 60
+        },
         "description": { "type": "string", "maxLength": 1024 },
         "schema": {
           "type": "array",
           "description": "Array of {key,label,type,required?,default?,help?,...typeConfig}. See docs/features/collections.md §5.",
           "items": { "type": "object" }
         },
-        "source": { "type": "object", "description": "Source config. {type:'manual'} | airtable | csv-upload | google-sheet | webhook-feed | external-db" },
+        "source": {
+          "type": "object",
+          "description": "Source config. {type:'manual'} | airtable | csv-upload | google-sheet | webhook-feed | external-db"
+        },
         "isPublic": { "type": "boolean" }
       },
       "required": ["name", "slug"]
@@ -2805,7 +2852,10 @@
         "site_id": { "type": "string", "maxLength": 256 },
         "slug": { "type": "string", "maxLength": 60 },
         "limit": { "type": "number", "minimum": 1, "maximum": 200 },
-        "cursor": { "type": "string", "description": "Opaque cursor from a previous response's nextCursor." }
+        "cursor": {
+          "type": "string",
+          "description": "Opaque cursor from a previous response's nextCursor."
+        }
       },
       "required": ["slug"]
     }

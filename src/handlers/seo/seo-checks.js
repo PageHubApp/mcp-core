@@ -1,8 +1,4 @@
-const {
-  collectNodes,
-  GENERIC_LINK_TEXT,
-  PLACEHOLDER_ALT,
-} = require("../../validation/a11y-check");
+const { collectNodes, GENERIC_LINK_TEXT, PLACEHOLDER_ALT } = require("../../validation/a11y-check");
 
 const TEMPLATE_VAR = /\{\{.+?\}\}/;
 

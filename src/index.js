@@ -63,11 +63,7 @@ const {
   saveTarget,
   saveSite,
 } = require("./helpers/target");
-const {
-  extractImageUrls,
-  validateImageUrls,
-  collectAllImageUrls,
-} = require("./helpers/images");
+const { extractImageUrls, validateImageUrls, collectAllImageUrls } = require("./helpers/images");
 const remoteHandlers = require("./handlers/remote");
 const kitHandlers = require("./handlers/kit");
 const componentHandlers = require("./handlers/components");
