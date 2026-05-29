@@ -9,7 +9,7 @@ agent — small contract violations break both.
 Every handler is:
 
 ```js
-async (args) => ToolResult
+async args => ToolResult;
 ```
 
 where `ToolResult` is:
@@ -59,9 +59,13 @@ Handlers that mutate flat node maps should go through:
 ```js
 const { withTargetSaveOrDraft } = require("../helpers/load-mutate-save");
 
-return withTargetSaveOrDraft(args, async (flat) => {
-  // mutate `flat` in place
-}, (flat) => ({ content: [{ type: "text", text: "ok" }] }));
+return withTargetSaveOrDraft(
+  args,
+  async flat => {
+    // mutate `flat` in place
+  },
+  flat => ({ content: [{ type: "text", text: "ok" }] })
+);
 ```
 
 This handles draft vs persisted writes, fetches the target, and centralises

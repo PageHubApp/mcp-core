@@ -1,3 +1,9 @@
+/**
+ * Internal: format the "kit node id manifest" that `apply_kit_block`
+ * returns to the agent. Surfaces a label → id JSON map so models stop
+ * inventing ids like `kit_<slug>_heading` and copy real ids instead.
+ */
+
 function formatKitNodeIdManifest(newNodes, rootId, sectionContainerId, maxLines = 80) {
   const ids = Object.keys(newNodes).sort();
   const head = ids.slice(0, maxLines);

@@ -129,14 +129,14 @@ module.exports = {
   async find_icon(args) {
     const { q, set: setFilter, kind, limit: rawLimit } = args || {};
     if (!q || typeof q !== "string") {
-      throw new Error("q (search keyword) is required, e.g. 'yelp', 'phone', 'shopping cart'");
+      throw new Error("q (search keyword) is required. e.g. 'yelp', 'phone', 'shopping cart'.");
     }
     const limit = Math.min(50, Math.max(1, Number(rawLimit) || 12));
     const ql = q
       .trim()
       .toLowerCase()
       .replace(/[\s_-]+/g, "");
-    if (!ql) throw new Error("q must contain at least one non-whitespace character");
+    if (!ql) throw new Error("q must contain at least one non-whitespace character.");
 
     const { entries, setCounts } = buildIndex();
 

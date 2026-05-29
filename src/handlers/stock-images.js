@@ -1,11 +1,19 @@
+/**
+ * Stock photo discovery tool — `find_image`. Searches the local image bank
+ * first, then falls back to external providers (Unsplash / Pexels) when the
+ * local cache is short.
+ */
+
 const { apiFetch } = require("../core/api-fetch");
 
 const IMAGE_PROVIDER_NAMES = ["unsplash", "pexels"];
 
 module.exports = {
   /**
-   * Search for stock photos. Returns verified, working image URLs.
-   * Searches local image bank first, falls back to external providers.
+   * Search for stock photos by query / category / orientation; returns
+   * verified working image URLs from the local bank with external fallback.
+   * @param {object} args - { q?, category?, orientation?, provider?, count? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async find_image(args) {
     const { q, category, orientation, provider: rawProvider, count: rawCount } = args;
@@ -17,7 +25,7 @@ module.exports = {
 
     if (!q && !category) {
       throw new Error(
-        "Provide q (search keywords) and/or category (hero, avatar, product, background, team, general)."
+        "q (search keywords) and/or category is required. e.g. category: hero | avatar | product | background | team | general."
       );
     }
 

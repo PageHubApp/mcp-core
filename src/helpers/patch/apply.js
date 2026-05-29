@@ -235,10 +235,7 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
     const rest = { ...propsPatch };
     for (const key of DEEP_MERGE_KEYS) {
       if (isPlainObject(rest[key])) {
-        flatMap[nodeId].props[key] = deepMergeProp(
-          flatMap[nodeId].props[key] || {},
-          rest[key]
-        );
+        flatMap[nodeId].props[key] = deepMergeProp(flatMap[nodeId].props[key] || {}, rest[key]);
         delete rest[key];
       }
     }

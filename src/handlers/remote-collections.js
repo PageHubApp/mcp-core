@@ -1,10 +1,16 @@
+/**
+ * Site Collections CRUD — schemas + rows on the active site. Wraps the
+ * `/api/v1/sites/:id/collections` REST surface with consistent argument
+ * validation and human-readable response text.
+ */
+
 const { apiFetch } = require("../core/api-fetch");
 const { getContext } = require("../core/context");
 
 function activeSiteId(args) {
   const ctx = getContext();
   const id = args?.site_id || args?.id || ctx.activeSite?.id;
-  if (!id) throw new Error("No site_id provided and no active site set.");
+  if (!id) throw new Error("site_id is required (none provided and no active site set).");
   return id;
 }
 
@@ -15,24 +21,28 @@ function fmtCollection(c) {
 }
 
 module.exports = {
+  /**
+   * List all collections on the active site.
+   * @param {object} args - { site_id? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async list_collections(args = {}) {
     const siteId = activeSiteId(args);
-    const data = await apiFetch(
-      `/api/v1/sites/${encodeURIComponent(siteId)}/collections`
-    );
+    const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}/collections`);
     const cols = data.collections || [];
-    const lines = cols.length
-      ? cols.map(fmtCollection).join("\n")
-      : "No collections on this site.";
+    const lines = cols.length ? cols.map(fmtCollection).join("\n") : "No collections on this site.";
     return { content: [{ type: "text", text: lines }] };
   },
 
+  /**
+   * Fetch one collection (schema + metadata) by slug.
+   * @param {object} args - { slug, site_id? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async get_collection(args = {}) {
     const siteId = activeSiteId(args);
-    if (!args.slug) throw new Error("slug is required");
-    const list = await apiFetch(
-      `/api/v1/sites/${encodeURIComponent(siteId)}/collections`
-    );
+    if (!args.slug) throw new Error("slug is required.");
+    const list = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}/collections`);
     const col = (list.collections || []).find(c => c.slug === args.slug);
     if (!col) throw new Error(`Collection "${args.slug}" not found.`);
     const data = await apiFetch(
@@ -40,15 +50,23 @@ module.exports = {
     );
     return {
       content: [
-        { type: "text", text: `\`\`\`json\n${JSON.stringify(data.collection || data, null, 2)}\n\`\`\`` },
+        {
+          type: "text",
+          text: `\`\`\`json\n${JSON.stringify(data.collection || data, null, 2)}\n\`\`\``,
+        },
       ],
     };
   },
 
+  /**
+   * Create a new collection on the active site.
+   * @param {object} args - { name, slug, description?, schema?, source?, isPublic?, site_id? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async create_collection(args = {}) {
     const siteId = activeSiteId(args);
-    if (!args.name) throw new Error("name is required");
-    if (!args.slug) throw new Error("slug is required");
+    if (!args.name) throw new Error("name is required.");
+    if (!args.slug) throw new Error("slug is required.");
     const body = {
       name: args.name,
       slug: args.slug,
@@ -57,10 +75,10 @@ module.exports = {
       source: args.source,
       isPublic: !!args.isPublic,
     };
-    const data = await apiFetch(
-      `/api/v1/sites/${encodeURIComponent(siteId)}/collections`,
-      { method: "POST", body }
-    );
+    const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}/collections`, {
+      method: "POST",
+      body,
+    });
     return {
       content: [
         {
@@ -71,13 +89,16 @@ module.exports = {
     };
   },
 
+  /**
+   * Replace the schema of a collection.
+   * @param {object} args - { slug, schema, site_id? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async update_collection_schema(args = {}) {
     const siteId = activeSiteId(args);
-    if (!args.slug) throw new Error("slug is required");
-    if (!Array.isArray(args.schema)) throw new Error("schema must be an array");
-    const list = await apiFetch(
-      `/api/v1/sites/${encodeURIComponent(siteId)}/collections`
-    );
+    if (!args.slug) throw new Error("slug is required.");
+    if (!Array.isArray(args.schema)) throw new Error("schema must be an array.");
+    const list = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}/collections`);
     const col = (list.collections || []).find(c => c.slug === args.slug);
     if (!col) throw new Error(`Collection "${args.slug}" not found.`);
     const data = await apiFetch(
@@ -94,12 +115,15 @@ module.exports = {
     };
   },
 
+  /**
+   * Delete a collection (and all its rows) by slug.
+   * @param {object} args - { slug, site_id? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async delete_collection(args = {}) {
     const siteId = activeSiteId(args);
-    if (!args.slug) throw new Error("slug is required");
-    const list = await apiFetch(
-      `/api/v1/sites/${encodeURIComponent(siteId)}/collections`
-    );
+    if (!args.slug) throw new Error("slug is required.");
+    const list = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}/collections`);
     const col = (list.collections || []).find(c => c.slug === args.slug);
     if (!col) throw new Error(`Collection "${args.slug}" not found.`);
     await apiFetch(
@@ -111,9 +135,14 @@ module.exports = {
     };
   },
 
+  /**
+   * List rows for a collection with cursor pagination.
+   * @param {object} args - { slug, limit?, cursor?, site_id? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async list_collection_rows(args = {}) {
     const siteId = activeSiteId(args);
-    if (!args.slug) throw new Error("slug is required");
+    if (!args.slug) throw new Error("slug is required.");
     const qs = new URLSearchParams();
     if (args.limit) qs.set("limit", String(args.limit));
     if (args.cursor) qs.set("cursor", String(args.cursor));
@@ -133,11 +162,16 @@ module.exports = {
     return { content: [{ type: "text", text: lines.join("\n") }] };
   },
 
+  /**
+   * Insert a row into a collection.
+   * @param {object} args - { slug, data, site_id? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async create_collection_row(args = {}) {
     const siteId = activeSiteId(args);
-    if (!args.slug) throw new Error("slug is required");
+    if (!args.slug) throw new Error("slug is required.");
     if (!args.data || typeof args.data !== "object")
-      throw new Error("data is required (object)");
+      throw new Error("data is required (must be an object).");
     const data = await apiFetch(
       `/api/v1/sites/${encodeURIComponent(siteId)}/collections/${encodeURIComponent(
         args.slug
@@ -155,12 +189,17 @@ module.exports = {
     };
   },
 
+  /**
+   * Patch one row's data by id.
+   * @param {object} args - { slug, row_id, data, site_id? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async update_collection_row(args = {}) {
     const siteId = activeSiteId(args);
-    if (!args.slug) throw new Error("slug is required");
-    if (!args.row_id) throw new Error("row_id is required");
+    if (!args.slug) throw new Error("slug is required.");
+    if (!args.row_id) throw new Error("row_id is required.");
     if (!args.data || typeof args.data !== "object")
-      throw new Error("data is required (object)");
+      throw new Error("data is required (must be an object).");
     await apiFetch(
       `/api/v1/sites/${encodeURIComponent(siteId)}/collections/${encodeURIComponent(
         args.slug
@@ -168,16 +207,19 @@ module.exports = {
       { method: "PATCH", body: { data: args.data } }
     );
     return {
-      content: [
-        { type: "text", text: `Row ${args.row_id} updated in "${args.slug}".` },
-      ],
+      content: [{ type: "text", text: `Row ${args.row_id} updated in "${args.slug}".` }],
     };
   },
 
+  /**
+   * Delete one row by id.
+   * @param {object} args - { slug, row_id, site_id? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async delete_collection_row(args = {}) {
     const siteId = activeSiteId(args);
-    if (!args.slug) throw new Error("slug is required");
-    if (!args.row_id) throw new Error("row_id is required");
+    if (!args.slug) throw new Error("slug is required.");
+    if (!args.row_id) throw new Error("row_id is required.");
     await apiFetch(
       `/api/v1/sites/${encodeURIComponent(siteId)}/collections/${encodeURIComponent(
         args.slug
@@ -185,9 +227,7 @@ module.exports = {
       { method: "DELETE" }
     );
     return {
-      content: [
-        { type: "text", text: `Row ${args.row_id} deleted from "${args.slug}".` },
-      ],
+      content: [{ type: "text", text: `Row ${args.row_id} deleted from "${args.slug}".` }],
     };
   },
 };

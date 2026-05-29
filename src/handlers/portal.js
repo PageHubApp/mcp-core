@@ -1,4 +1,11 @@
+/**
+ * Site portal CRUD tools (`set_portal` / `get_portal` / `remove_portal`).
+ * Portals are site-only configuration blobs that drive embeddable portal
+ * surfaces (auth, claim, billing).
+ */
+
 const { apiFetch } = require("../core/api-fetch");
+
 const { getActiveTarget } = require("../helpers/index.js");
 
 function requireSiteTarget(args) {
@@ -9,6 +16,11 @@ function requireSiteTarget(args) {
 }
 
 module.exports = {
+  /**
+   * Enable + configure a portal on the active site.
+   * @param {object} args - { type, status?, config? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async set_portal(args) {
     const siteId = requireSiteTarget(args);
     const portalObj = {
@@ -33,6 +45,11 @@ module.exports = {
     };
   },
 
+  /**
+   * Read the portal configuration on the active site.
+   * @param {object} args - { siteId? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async get_portal(args) {
     const siteId = requireSiteTarget(args);
     const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`);
@@ -51,6 +68,11 @@ module.exports = {
     };
   },
 
+  /**
+   * Remove the portal configuration from the active site.
+   * @param {object} args - { siteId? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
   async remove_portal(args) {
     const siteId = requireSiteTarget(args);
     await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}`, {

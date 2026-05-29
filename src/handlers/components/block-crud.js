@@ -1,4 +1,18 @@
+/**
+ * Block library CRUD — fetch, list nodes, create, update, patch single
+ * block-node, bulk-patch block-nodes, delete. Mirrors the site/template
+ * node mutators but writes into `/api/v1/components/:slug` instead of the
+ * active site. Handlers are re-exported from `handlers/components.js`.
+ */
+
 const { apiFetch } = require("../../core/api-fetch");
+
+const {
+  hierarchicalLibraryToFlat,
+  flatLibraryToHierarchical,
+  formatBlockNodeManifest,
+} = require("../../codec/structure-ingest");
+
 const {
   applyNodePatches,
   normalizeNodePatchArgs,
@@ -6,18 +20,16 @@ const {
   assertPatchBlockNodeArgs,
   assertPatchBlockBulkItem,
 } = require("../../helpers/index.js");
-const {
-  hierarchicalLibraryToFlat,
-  flatLibraryToHierarchical,
-  formatBlockNodeManifest,
-} = require("../../codec/structure-ingest");
-const { quickA11yAudit } = require("../../validation/a11y-check");
-const {
-  fetchComponent,
-  decodeComponentStructure,
-  encodeStructurePayload,
-} = require("./api");
 
+const { quickA11yAudit } = require("../../validation/a11y-check");
+
+const { fetchComponent, decodeComponentStructure, encodeStructurePayload } = require("./api");
+
+/**
+ * Fetch a library block (metadata + decoded structure) by slug.
+ * @param {object} args - { slug }
+ * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+ */
 async function get_block(args) {
   const { slug } = args;
   if (!slug) throw new Error("slug is required.");
@@ -58,6 +70,11 @@ async function list_block_nodes(args) {
   };
 }
 
+/**
+ * Create a new library block.
+ * @param {object} args - { name, slug, category, structure, description?, visual?, subcategory?, tags?, preset?, source?, group?, style?, isPublic?, isCategoryPreview? }
+ * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+ */
 async function save_block(args) {
   const {
     name,
@@ -112,6 +129,11 @@ async function save_block(args) {
   };
 }
 
+/**
+ * Patch a library block's metadata or replace its structure.
+ * @param {object} args - { slug, name?, description?, visual?, category?, subcategory?, tags?, preset?, source?, group?, style?, structure?, isPublic?, isFeatured?, isCategoryPreview?, newSlug? }
+ * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+ */
 async function update_block(args) {
   const { slug } = args;
   if (!slug) throw new Error("slug is required.");
@@ -167,6 +189,11 @@ async function update_block(args) {
   };
 }
 
+/**
+ * Patch a single node inside a library block's structure.
+ * @param {object} args - { slug, nodeId, classNamePatch?, propsPatch?, nodesPatch?, unsetProps?, unsetClasses? }
+ * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+ */
 async function patch_block(args) {
   const { slug, nodeId } = args;
   if (!slug) throw new Error("slug is required.");
@@ -204,6 +231,11 @@ async function patch_block(args) {
   };
 }
 
+/**
+ * Patch many nodes inside a library block's structure in one call.
+ * @param {object} args - { slug, patches: Array<{ nodeId, classNamePatch?, propsPatch?, nodesPatch?, unsetProps?, unsetClasses? }> }
+ * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+ */
 async function patch_block_bulk(args) {
   const { slug } = args;
   if (!slug) throw new Error("slug is required.");
@@ -224,7 +256,7 @@ async function patch_block_bulk(args) {
   for (let i = 0; i < list.length; i++) {
     const item = list[i];
     if (!item || typeof item.nodeId !== "string") {
-      throw new Error(`patches[${i}]: missing nodeId`);
+      throw new Error(`patches[${i}]: nodeId is required.`);
     }
     assertPatchBlockBulkItem(item, i);
     const { nodeId: nid, patches: _patches, ...rest } = item;
@@ -252,6 +284,11 @@ async function patch_block_bulk(args) {
   };
 }
 
+/**
+ * Delete a library block by slug.
+ * @param {object} args - { slug }
+ * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+ */
 async function delete_block(args) {
   const { slug } = args;
   if (!slug) throw new Error("slug is required.");

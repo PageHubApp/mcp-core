@@ -72,7 +72,7 @@ module.exports = {
   async stripe_get_product(args = {}) {
     const siteId = requireActiveSite(args);
     if (!args.id && !args.slug) {
-      throw new Error("Pass either id (Stripe product id) or slug.");
+      throw new Error("id (Stripe product id) or slug is required.");
     }
     const qs = new URLSearchParams({ action: "product" });
     if (args.id) qs.set("id", args.id);

@@ -1,6 +1,14 @@
+/**
+ * Internal validation helpers for `patch_site_node` / `patch_site_bulk` —
+ * normalize the `buttonValidation` / `designValidation` mode strings, run
+ * the design-token + button-class preflight, and format the report block
+ * appended to the tool response.
+ */
+
 const { getContext } = require("../../core/context");
-const { validateNodes } = require("../../validation/node-validation");
+
 const { validateButtonClasses } = require("../../validation/button-system");
+const { validateNodes } = require("../../validation/node-validation");
 
 function normalizeButtonValidationMode(value) {
   if (value == null) return "warn";

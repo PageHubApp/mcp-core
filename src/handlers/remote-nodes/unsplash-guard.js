@@ -1,3 +1,11 @@
+/**
+ * Internal guards for `patch_site_node` / `patch_site_bulk`:
+ *   - reject hand-typed `images.unsplash.com/photo-...` URLs (agents guess
+ *     these IDs from training data and ship 404s)
+ *   - reject writes to the deprecated `Image.props.content` field in favor
+ *     of `src` (see `.claude/known-issues/image-src-content-shadowing.md`).
+ */
+
 // Reject hand-typed Unsplash photo URLs in patches. The agent has find_image
 // for verified URLs, but it routinely guesses photo IDs from training data
 // and ships 404s. Better to fail loudly than render a broken hero.

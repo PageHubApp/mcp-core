@@ -1,8 +1,11 @@
-const {
-  collectNodes,
-  GENERIC_LINK_TEXT,
-  PLACEHOLDER_ALT,
-} = require("../../validation/a11y-check");
+/**
+ * SEO heuristic checks for `audit_seo` — meta title/description length, h1
+ * uniqueness, heading hierarchy, image alt text, generic link text. Returns
+ * a flat list of `{ id, status, message, fix }` records that the handler
+ * groups by severity.
+ */
+
+const { collectNodes, GENERIC_LINK_TEXT, PLACEHOLDER_ALT } = require("../../validation/a11y-check");
 
 const TEMPLATE_VAR = /\{\{.+?\}\}/;
 
