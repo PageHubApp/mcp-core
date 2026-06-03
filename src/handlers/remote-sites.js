@@ -150,17 +150,23 @@ module.exports = {
 
   /**
    * Mark the active site as published.
-   * @param {object} args - { siteId? }
+   * @param {object} args - { siteId?, static? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
-  async publish_site(args) {
+  async publish_site(args = {}) {
     const target = getActiveTarget(args);
     if (target.type !== "site") throw new Error("publish_site only works on sites, not templates.");
+    const body = { published: true };
+    if (args.static !== undefined) body.staticPublish = !!args.static;
     await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`, {
       method: "PUT",
-      body: { published: true },
+      body,
     });
-    return { content: [{ type: "text", text: `Site ${target.id} published.` }] };
+    const mode =
+      args.static === undefined
+        ? ""
+        : ` (turbo/static delivery ${args.static ? "on" : "off"})`;
+    return { content: [{ type: "text", text: `Site ${target.id} published${mode}.` }] };
   },
 
   /**

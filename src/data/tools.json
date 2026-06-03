@@ -1075,7 +1075,7 @@
   },
   {
     "name": "publish_site",
-    "description": "Publish the active site so it's live on its domain. Sets published=true and publishedAt.",
+    "description": "Publish the active site so it's live on its domain. Sets published=true and publishedAt. Optionally toggle turbo/static delivery (the lightweight static-export renderer served at /static/<id>) via the `static` flag — omit to leave it unchanged.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1083,6 +1083,10 @@
           "type": "string",
           "description": "Site id (defaults to active site).",
           "maxLength": 256
+        },
+        "static": {
+          "type": "boolean",
+          "description": "Turbo/static delivery: true serves the static-export renderer (/static/<id>), false serves the React renderer. Omit to leave unchanged."
         }
       }
     }
