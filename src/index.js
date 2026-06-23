@@ -64,6 +64,7 @@ const {
   saveSite,
 } = require("./helpers/target");
 const { extractImageUrls, validateImageUrls, collectAllImageUrls } = require("./helpers/images");
+const { registerPluginComponents } = require("./core/component-registry");
 const remoteHandlers = require("./handlers/remote");
 const kitHandlers = require("./handlers/kit");
 const componentHandlers = require("./handlers/components");
@@ -209,6 +210,9 @@ module.exports = {
   executeTool,
   executeAgentTool,
   handlers,
+
+  // Runtime allowlist (host pushes plugin component names — P3 §4)
+  registerPluginComponents,
 
   // Constants
   HTTP_TOOL_NAMES,

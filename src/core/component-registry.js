@@ -54,7 +54,28 @@ const CANVAS_COMPONENTS = new Set([
   "ProductDisplay",
 ]);
 
+/**
+ * Augment the allowlist with plugin-contributed component names at runtime
+ * (P3 §4 — the MCP half of the component shim). mcp-core is a leaf module with
+ * no SDK import, so the host app PUSHES the active plugin component names in
+ * (each derived from a plugin's `defineComponent`) rather than mcp-core reading
+ * the live resolver. Every validator (`node-utils`, `structure-ingest`,
+ * `section-tree`, `helpers/patch/schema`) holds these exact Sets by reference,
+ * so `.add` propagates to all of them. Idempotent — safe to call per request.
+ *
+ * @param {Array<{ name: string, canvas?: boolean }>} entries
+ */
+function registerPluginComponents(entries) {
+  if (!Array.isArray(entries)) return;
+  for (const e of entries) {
+    if (!e || typeof e.name !== "string" || !e.name) continue;
+    VALID_COMPONENTS.add(e.name);
+    if (e.canvas) CANVAS_COMPONENTS.add(e.name);
+  }
+}
+
 module.exports = {
   VALID_COMPONENTS,
   CANVAS_COMPONENTS,
+  registerPluginComponents,
 };
