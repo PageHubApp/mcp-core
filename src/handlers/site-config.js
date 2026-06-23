@@ -167,24 +167,39 @@ module.exports = {
   },
 
   /**
-   * Replace the site's redirect rules at `ROOT.props.redirects`.
+   * Replace a site's redirect rules. For SITES these live in the page-scoped
+   * `SiteRedirect` model (canon §N — one redirects home, off `ROOT.props`), written
+   * via the redirects plugin's bulk endpoint. For TEMPLATES (starters with no model
+   * home) they stay on `ROOT.props.redirects`.
    * @param {object} args - { redirects: Array<{from, to, permanent?}> }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async set_redirects(args) {
     const { targetId, targetType, flat } = await fetchTarget(args);
-    if (!flat[ROOT_NODE_ID]?.props) throw new Error("ROOT node not found.");
     const redirects = (args.redirects || []).map(r => ({
       from: r.from,
       to: r.to,
       permanent: r.permanent !== false,
     }));
-    flat[ROOT_NODE_ID].props.redirects = redirects.length ? redirects : undefined;
-    const result = await saveTarget(targetId, targetType, flat);
-    const label =
-      targetType === "template"
-        ? `${redirects.length} redirect rule(s) saved in template "${targetId}".`
-        : `${redirects.length} redirect rule(s) saved.\nEditor: ${result.url}`;
-    return { content: [{ type: "text", text: label }] };
+
+    if (targetType === "template") {
+      if (!flat[ROOT_NODE_ID]?.props) throw new Error("ROOT node not found.");
+      flat[ROOT_NODE_ID].props.redirects = redirects.length ? redirects : undefined;
+      await saveTarget(targetId, targetType, flat);
+      return {
+        content: [
+          { type: "text", text: `${redirects.length} redirect rule(s) saved in template "${targetId}".` },
+        ],
+      };
+    }
+
+    // Sites: write the SiteRedirect model via the plugin's bulk-replace endpoint.
+    await apiFetch(`/api/plugins/redirects/rules/replace`, {
+      method: "POST",
+      body: { site: targetId, rules: redirects },
+    });
+    return {
+      content: [{ type: "text", text: `${redirects.length} redirect rule(s) saved.` }],
+    };
   },
 };
