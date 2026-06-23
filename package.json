@@ -13,6 +13,7 @@
     "./handlers/pages": "./src/handlers/pages.js",
     "./handlers/portal": "./src/handlers/portal.js",
     "./handlers/remote": "./src/handlers/remote.js",
+    "./handlers/remote-collections": "./src/handlers/remote-collections.js",
     "./handlers/seo": "./src/handlers/seo.js",
     "./handlers/site-config": "./src/handlers/site-config.js",
     "./handlers/stock-images": "./src/handlers/stock-images.js",
