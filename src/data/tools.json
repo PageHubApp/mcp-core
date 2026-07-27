@@ -1248,6 +1248,65 @@
     }
   },
   {
+    "name": "invite_site_member",
+    "description": "Invite a person to a site by email with a role (owner / editor / viewer). Owner-gated: you can only invite to sites you own. Sends the same invite email as the dashboard Team page — the recipient signs in (or signs up) and joins the site. Idempotent per email; re-inviting refreshes the link. Role defaults to \"editor\" (edit content, cannot manage members/billing).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "Email address to invite.",
+          "maxLength": 254
+        },
+        "role": {
+          "type": "string",
+          "description": "Site role. Defaults to editor.",
+          "enum": ["owner", "editor", "viewer"]
+        },
+        "id": {
+          "type": "string",
+          "description": "Site id (defaults to active site from select_site).",
+          "maxLength": 256
+        }
+      },
+      "required": ["email"]
+    }
+  },
+  {
+    "name": "list_site_members",
+    "description": "List a site's members (with roles) and its pending invites (with invite ids to pass to revoke_site_invite). Owner-gated.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id (defaults to active site from select_site).",
+          "maxLength": 256
+        }
+      }
+    }
+  },
+  {
+    "name": "revoke_site_invite",
+    "description": "Revoke a pending (unused) site invite by its id — get the id from list_site_members. Owner-gated. Does not remove existing members.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "invite_id": {
+          "type": "string",
+          "description": "Pending invite id from list_site_members.",
+          "maxLength": 256
+        },
+        "id": {
+          "type": "string",
+          "description": "Site id (defaults to active site from select_site).",
+          "maxLength": 256
+        }
+      },
+      "required": ["invite_id"]
+    }
+  },
+  {
     "name": "upload_image",
     "description": "Upload an image to the tenant CDN for a site (requires Cloudflare Images on the server). Returns mediaId and url; use type \"cdn\" and src mediaId on Image/Background nodes. Prefer imageUrl for large files.",
     "inputSchema": {
@@ -1271,6 +1330,40 @@
         "mimeType": {
           "type": "string",
           "description": "With dataBase64, e.g. image/png (default image/jpeg)",
+          "maxLength": 128
+        },
+        "filename": {
+          "type": "string",
+          "description": "Optional filename hint when using dataBase64",
+          "maxLength": 512
+        }
+      }
+    }
+  },
+  {
+    "name": "upload_file",
+    "description": "Upload any plan-allowed file to a site. Images go to the Cloudflare Images CDN (returns type \"cdn\"); video / audio / pdf / zip go to R2 (returns type \"r2\" with a public delivery url). Use the returned url for a Link, a collection url/media field, or a Video node (provider \"r2\", videoId = mediaId). For images prefer upload_image. Requires R2 to be configured on the server for non-image types. Plan-gated by per-type size caps + storage quota.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id (defaults to active site from select_site)",
+          "maxLength": 256
+        },
+        "fileUrl": {
+          "type": "string",
+          "description": "Public http(s) URL to fetch and upload (any allowed type)",
+          "maxLength": 2048
+        },
+        "dataBase64": {
+          "type": "string",
+          "description": "Raw base64 or data URL. Pass mimeType for non-image blobs so they route to R2 (a data: URL prefix also works). Large payloads: prefer fileUrl.",
+          "maxLength": 16777216
+        },
+        "mimeType": {
+          "type": "string",
+          "description": "Required with dataBase64 for non-image files, e.g. video/mp4, audio/mpeg, application/pdf, application/zip.",
           "maxLength": 128
         },
         "filename": {
@@ -2878,6 +2971,23 @@
     }
   },
   {
+    "name": "create_collection_rows",
+    "description": "Bulk-insert rows into a collection in one call (server cap 500 rows). `rows` is an array of data objects (each keyed by field key) — every row is coerced and validated against the schema; a validation error reports the offending rowIndex and none are inserted. Plan-gated by maxRowsPerCollection. For big datasets from a CSV, prefer import_collection_csv.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "site_id": { "type": "string", "maxLength": 256 },
+        "slug": { "type": "string", "maxLength": 60 },
+        "rows": {
+          "type": "array",
+          "description": "Array of row-data objects (field key → value). Max 500 per call.",
+          "items": { "type": "object" }
+        }
+      },
+      "required": ["slug", "rows"]
+    }
+  },
+  {
     "name": "update_collection_row",
     "description": "Update one row's data by row_id. Partial update — provided fields are coerced/validated; omitted fields keep existing values.",
     "inputSchema": {
@@ -2902,6 +3012,28 @@
         "row_id": { "type": "string", "maxLength": 24 }
       },
       "required": ["slug", "row_id"]
+    }
+  },
+  {
+    "name": "import_collection_csv",
+    "description": "Import CSV text into a collection. CSV columns are matched to schema field keys by name (unmatched columns are ignored; at least one must match). `mode`: \"append\" adds rows, \"replace\" deletes all existing rows first, \"upsert\" matches on an `externalId` (or `id`) column and updates in place. Body cap ~8MB. Plan-gated by maxRowsPerCollection.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "site_id": { "type": "string", "maxLength": 256 },
+        "slug": { "type": "string", "maxLength": 60 },
+        "csv": {
+          "type": "string",
+          "description": "Raw CSV text including a header row of column names.",
+          "maxLength": 8388608
+        },
+        "mode": {
+          "type": "string",
+          "enum": ["append", "replace", "upsert"],
+          "description": "Merge mode. Default append."
+        }
+      },
+      "required": ["slug", "csv"]
     }
   }
 ]

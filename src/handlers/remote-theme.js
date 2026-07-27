@@ -92,6 +92,56 @@ function annotatePaletteWarnings(result, options) {
   return result;
 }
 
+const ALLOWED_IMAGE_MIME = ["image/png", "image/jpeg", "image/webp", "image/gif", "image/svg+xml"];
+
+/**
+ * Shared upload path for `upload_image` (image-only) and `upload_file` (any
+ * plan-allowed type). POSTs to `/api/v1/sites/:id/media`, which routes images
+ * to Cloudflare Images (`type: "cdn"`) and everything else to R2 (`type: "r2"`).
+ * @param {object} args - { fileUrl?|imageUrl?, dataBase64?, mimeType?, filename?, id?/site_id? }
+ * @param {{restrictToImages: boolean}} opts
+ * @returns {Promise<{mediaId:string, type:string, url:string, contentType?:string}>}
+ */
+async function uploadMediaToSite(args, { restrictToImages }) {
+  const target = getActiveTarget(args);
+  if (target.type === "template") {
+    throw new Error(
+      `${
+        restrictToImages ? "upload_image" : "upload_file"
+      } is not supported for templates. Use hardcoded URLs (type: "url") instead.`
+    );
+  }
+  const srcUrl = args.fileUrl || args.imageUrl;
+  if (!srcUrl && !args.dataBase64) {
+    throw new Error("fileUrl or dataBase64 is required.");
+  }
+  if (restrictToImages && args.mimeType && !ALLOWED_IMAGE_MIME.includes(args.mimeType)) {
+    throw new Error(
+      `Unsupported mimeType "${args.mimeType}". Allowed: ${ALLOWED_IMAGE_MIME.join(", ")}.`
+    );
+  }
+  // A bare base64 blob (no data-URL prefix) carries no type — the server would
+  // default it to image/jpeg. Require mimeType so non-image uploads route to R2.
+  if (!restrictToImages && args.dataBase64 && !args.mimeType) {
+    const hasDataUrlMime = /^data:[\w.+-]+\/[\w.+-]+;base64,/.test(String(args.dataBase64));
+    if (!hasDataUrlMime) {
+      throw new Error(
+        "mimeType is required with dataBase64 for non-image uploads (e.g. video/mp4, application/pdf)."
+      );
+    }
+  }
+  const body = {
+    ...(srcUrl ? { fileUrl: srcUrl } : {}),
+    ...(args.dataBase64 ? { dataBase64: args.dataBase64 } : {}),
+    ...(args.mimeType ? { mimeType: args.mimeType } : {}),
+    ...(args.filename ? { filename: args.filename } : {}),
+  };
+  return apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}/media`, {
+    method: "POST",
+    body,
+  });
+}
+
 module.exports = {
   async suggest_palettes(args) {
     const options = parseMaybeJson(args.options) || [];
@@ -105,37 +155,30 @@ module.exports = {
   },
 
   async upload_image(args) {
-    const target = getActiveTarget(args);
-    if (target.type === "template") {
-      throw new Error(
-        'upload_image is not supported for templates. Use hardcoded image URLs (type: "url") instead.'
-      );
-    }
-    const siteId = target.id;
-    if (!args.imageUrl && !args.dataBase64) {
-      throw new Error("imageUrl or dataBase64 is required.");
-    }
-    const ALLOWED_MIME = ["image/png", "image/jpeg", "image/webp", "image/gif", "image/svg+xml"];
-    if (args.mimeType && !ALLOWED_MIME.includes(args.mimeType)) {
-      throw new Error(
-        `Unsupported mimeType "${args.mimeType}". Allowed: ${ALLOWED_MIME.join(", ")}.`
-      );
-    }
-    const body = {
-      ...(args.imageUrl ? { imageUrl: args.imageUrl } : {}),
-      ...(args.dataBase64 ? { dataBase64: args.dataBase64 } : {}),
-      ...(args.mimeType ? { mimeType: args.mimeType } : {}),
-      ...(args.filename ? { filename: args.filename } : {}),
-    };
-    const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}/media`, {
-      method: "POST",
-      body,
-    });
+    const data = await uploadMediaToSite(args, { restrictToImages: true });
     return {
       content: [
         {
           type: "text",
-          text: `Uploaded.\n  mediaId: ${data.mediaId}\n  type: cdn\n  url: ${data.url}\n\nUse in nodes: { "type": "cdn", "content": "${data.mediaId}" }.`,
+          text: `Uploaded.\n  mediaId: ${data.mediaId}\n  type: ${data.type}\n  url: ${data.url}\n\nUse in nodes: { "type": "cdn", "content": "${data.mediaId}" }.`,
+        },
+      ],
+    };
+  },
+
+  async upload_file(args) {
+    const data = await uploadMediaToSite(args, { restrictToImages: false });
+    const usage =
+      data.type === "r2"
+        ? `Stored on R2 (${data.contentType || "file"}).\n  • Video node: provider "r2", videoId "${data.mediaId}"\n  • Link / collection url field: use the url above\n  • Delete later with delete_node's media or the editor Media Manager`
+        : `Image on CDN. Use in nodes: { "type": "cdn", "content": "${data.mediaId}" }.`;
+    return {
+      content: [
+        {
+          type: "text",
+          text: `Uploaded.\n  mediaId: ${data.mediaId}\n  type: ${data.type}\n  contentType: ${
+            data.contentType || "?"
+          }\n  url: ${data.url}\n\n${usage}`,
         },
       ],
     };

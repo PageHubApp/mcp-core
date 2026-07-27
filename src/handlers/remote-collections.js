@@ -190,6 +190,67 @@ module.exports = {
   },
 
   /**
+   * Bulk-insert rows into a collection (server cap 500 per call). Each entry in
+   * `rows` is a data object keyed by field key (or a `{ data }` wrapper), coerced
+   * and validated against the schema. Plan-gated by maxRowsPerCollection.
+   * @param {object} args - { slug, rows, site_id? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
+  async create_collection_rows(args = {}) {
+    const siteId = activeSiteId(args);
+    if (!args.slug) throw new Error("slug is required.");
+    if (!Array.isArray(args.rows) || args.rows.length === 0)
+      throw new Error("rows is required (must be a non-empty array of row-data objects).");
+    // Normalize: accept plain data objects OR pre-wrapped { data } entries.
+    const rows = args.rows.map(r =>
+      r && typeof r === "object" && r.data && typeof r.data === "object" ? r : { data: r }
+    );
+    const data = await apiFetch(
+      `/api/v1/sites/${encodeURIComponent(siteId)}/collections/${encodeURIComponent(
+        args.slug
+      )}/rows`,
+      { method: "POST", body: { rows } }
+    );
+    const created = data.created ?? data.rows?.length ?? rows.length;
+    return {
+      content: [{ type: "text", text: `Created ${created} rows in "${args.slug}".` }],
+    };
+  },
+
+  /**
+   * Import CSV text into a collection. Columns are matched to schema field keys
+   * by name; `mode` controls merge semantics. `upsert` keys on an `externalId`
+   * (or `id`) CSV column. Plan-gated by maxRowsPerCollection.
+   * @param {object} args - { slug, csv, mode?, site_id? }
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
+  async import_collection_csv(args = {}) {
+    const siteId = activeSiteId(args);
+    if (!args.slug) throw new Error("slug is required.");
+    if (!args.csv || typeof args.csv !== "string" || !args.csv.trim())
+      throw new Error("csv is required (must be a non-empty CSV string).");
+    const mode = String(args.mode || "append").toLowerCase();
+    if (!["append", "replace", "upsert"].includes(mode))
+      throw new Error('mode must be one of "append", "replace", "upsert".');
+    const data = await apiFetch(
+      `/api/v1/sites/${encodeURIComponent(siteId)}/collections/${encodeURIComponent(
+        args.slug
+      )}/import?mode=${mode}`,
+      { method: "POST", body: { csv: args.csv } }
+    );
+    return {
+      content: [
+        {
+          type: "text",
+          text: `CSV import (${mode}) into "${args.slug}": +${data.added ?? 0} added, ${
+            data.updated ?? 0
+          } updated, ${data.deleted ?? 0} deleted. Total rows: ${data.rowCount ?? "?"}.`,
+        },
+      ],
+    };
+  },
+
+  /**
    * Patch one row's data by id.
    * @param {object} args - { slug, row_id, data, site_id? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
