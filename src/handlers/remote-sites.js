@@ -347,4 +347,86 @@ module.exports = {
     if (ctx.activeSite?.id === id) ctx.activeSite = null;
     return { content: [{ type: "text", text: `Site ${id} deleted.` }] };
   },
+
+  /**
+   * Invite a person to a site by email with a role. Owner-gated: you can only
+   * invite to sites you own. Sends the same invite email the dashboard Team
+   * page sends (recipient signs in / signs up, then joins the site).
+   * @param {object} args - { email, role?, id? } — role defaults to "editor".
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
+  async invite_site_member(args = {}) {
+    const ctx = getContext();
+    const siteId = args.id || ctx.activeSite?.id;
+    if (!siteId) throw new Error("Site id is required (none provided and no active site set).");
+    if (!args.email) throw new Error("email is required.");
+    const role = args.role || "editor";
+    const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}/invites`, {
+      method: "POST",
+      body: { email: args.email, role },
+    });
+    if (data?.alreadyMember) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: `${data.email} is already a member of site ${siteId} — no invite sent.`,
+          },
+        ],
+      };
+    }
+    return {
+      content: [
+        {
+          type: "text",
+          text: `Invited ${data.email} to site ${siteId} as ${data.role}. An invite email was sent.`,
+        },
+      ],
+    };
+  },
+
+  /**
+   * List a site's members and pending invites. Owner-gated.
+   * @param {object} args - { id? } — defaults to active site.
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
+  async list_site_members(args = {}) {
+    const ctx = getContext();
+    const siteId = args.id || ctx.activeSite?.id;
+    if (!siteId) throw new Error("Site id is required (none provided and no active site set).");
+    const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}/invites`);
+    const members = (data.members || []).map(m => `  • ${String(m.role).padEnd(6)} ${m.email}`);
+    const invites = (data.invites || []).map(
+      i => `  • ${String(i.role).padEnd(6)} ${i.email} — pending (id: ${i.id}, expires ${i.expiresAt})`
+    );
+    const lines = [
+      `Site ${siteId}${data.name ? ` (${data.name})` : ""}`,
+      `Members (${members.length}):`,
+      ...(members.length ? members : ["  (none)"]),
+      `Pending invites (${invites.length}):`,
+      ...(invites.length ? invites : ["  (none)"]),
+    ];
+    return { content: [{ type: "text", text: lines.join("\n") }] };
+  },
+
+  /**
+   * Revoke a pending site invite by its id (from list_site_members). Owner-gated.
+   * @param {object} args - { invite_id, id? } — id defaults to active site.
+   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   */
+  async revoke_site_invite(args = {}) {
+    const ctx = getContext();
+    const siteId = args.id || ctx.activeSite?.id;
+    if (!siteId) throw new Error("Site id is required (none provided and no active site set).");
+    if (!args.invite_id) throw new Error("invite_id is required (get it from list_site_members).");
+    await apiFetch(
+      `/api/v1/sites/${encodeURIComponent(siteId)}/invites?inviteId=${encodeURIComponent(args.invite_id)}`,
+      { method: "DELETE" }
+    );
+    return {
+      content: [
+        { type: "text", text: `Revoked pending invite ${args.invite_id} on site ${siteId}.` },
+      ],
+    };
+  },
 };
