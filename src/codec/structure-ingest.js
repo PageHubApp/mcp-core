@@ -96,6 +96,17 @@ function applyContentOverride(node, resolvedName, override) {
     if (override.content != null && override.src == null) props.src = override.content;
     if (override.alt != null) props.alt = override.alt;
     if (override.type) props.type = override.type;
+    // A bare media-id src (no scheme / slash / data:) is a CDN reference — default
+    // its type to "cdn" so the viewer serves a responsive srcset + format=auto
+    // instead of one full-size file.
+    if (
+      !props.type &&
+      typeof props.src === "string" &&
+      props.src &&
+      !/^(https?:\/\/|\/|data:)/.test(props.src)
+    ) {
+      props.type = "cdn";
+    }
   }
   if (resolvedName === "FormElement") {
     if (override.placeholder != null) props.placeholder = override.placeholder;

@@ -160,7 +160,7 @@ module.exports = {
       content: [
         {
           type: "text",
-          text: `Uploaded.\n  mediaId: ${data.mediaId}\n  type: ${data.type}\n  url: ${data.url}\n\nUse in nodes: { "type": "cdn", "content": "${data.mediaId}" }.`,
+          text: `Uploaded.\n  mediaId: ${data.mediaId}\n  type: ${data.type}\n  url: ${data.url}\n\nUse in an Image node: { "type": "cdn", "src": "${data.mediaId}" } — the mediaId (NOT the url) so the viewer serves a responsive srcset + format=auto. Do NOT bake the full-size url as type:"url".`,
         },
       ],
     };
@@ -171,7 +171,7 @@ module.exports = {
     const usage =
       data.type === "r2"
         ? `Stored on R2 (${data.contentType || "file"}).\n  • Video node: provider "r2", videoId "${data.mediaId}"\n  • Link / collection url field: use the url above\n  • Delete later with delete_node's media or the editor Media Manager`
-        : `Image on CDN. Use in nodes: { "type": "cdn", "content": "${data.mediaId}" }.`;
+        : `Image on CDN. Use in an Image node: { "type": "cdn", "src": "${data.mediaId}" } — the mediaId (NOT the url) so the viewer serves a responsive srcset + format=auto.`;
     return {
       content: [
         {
