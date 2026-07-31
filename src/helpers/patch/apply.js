@@ -231,6 +231,12 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
       "inject",
       "relation",
       "richText",
+      // ROOT-level config bags. `theme` holds palette (array) + styleGuide +
+      // typography as siblings: a patch of { theme: { palette } } used to
+      // replace the whole object and silently drop the site's fonts. Arrays
+      // still replace, so swapping `palette` alone keeps working.
+      "theme",
+      "company",
     ];
     const rest = { ...propsPatch };
     for (const key of DEEP_MERGE_KEYS) {
