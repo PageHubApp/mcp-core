@@ -199,7 +199,7 @@ async function addNodesBody(args) {
 async function patchSiteNodeBody(args) {
   const target = getActiveTarget(args);
   assertPatchSiteNodeArgs(args);
-  const { nodeId, name: siteName, title, description, nodesPatch, unsetProps, unsetClasses } = args;
+  const { nodeId, name: siteName, nodesPatch, unsetProps, unsetClasses } = args;
   const buttonValidationMode = normalizeButtonValidationMode(args.buttonValidation);
   const designValidationMode = normalizeDesignValidationMode(args.designValidation);
   const ctx = getContext();
@@ -253,10 +253,12 @@ async function patchSiteNodeBody(args) {
     };
   }
 
+  // Site title/description are NOT settable here — `update_site` owns them and
+  // documents what they mean. Exposed on a node-patch tool with empty schema
+  // descriptions, the model filled them with its own summary of the edit and
+  // silently overwrote the site's dashboard title/description.
   const extra = {};
   if (siteName !== undefined) extra.name = siteName;
-  if (title !== undefined) extra.title = title;
-  if (description !== undefined) extra.description = description;
   const result = await saveTarget(target.id, target.type, flat, extra);
   return {
     content: [
@@ -385,11 +387,10 @@ async function patchSiteBulkBody(args) {
     };
   }
 
-  const { name: siteName, title, description } = args;
+  // See patch_site_node above — site title/description belong to `update_site`.
+  const { name: siteName } = args;
   const extra = {};
   if (siteName !== undefined) extra.name = siteName;
-  if (title !== undefined) extra.title = title;
-  if (description !== undefined) extra.description = description;
   const result = await saveTarget(target.id, target.type, flat, extra);
   return {
     content: [

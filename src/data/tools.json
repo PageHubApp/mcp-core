@@ -1539,14 +1539,6 @@
           "description": "Optional site rename on PUT",
           "maxLength": 512
         },
-        "title": {
-          "type": "string",
-          "maxLength": 512
-        },
-        "description": {
-          "type": "string",
-          "maxLength": 16384
-        },
         "buttonValidation": {
           "type": "string",
           "enum": ["off", "warn", "fix", "strict"],
@@ -1634,14 +1626,6 @@
           "type": "string",
           "description": "Optional site rename on PUT",
           "maxLength": 512
-        },
-        "title": {
-          "type": "string",
-          "maxLength": 512
-        },
-        "description": {
-          "type": "string",
-          "maxLength": 16384
         },
         "buttonValidation": {
           "type": "string",
