@@ -9,6 +9,65 @@ const GENERIC_LINK_TEXT =
   /^(click here|read more|learn more|here|link|more|submit|button|download)$/i;
 const PLACEHOLDER_ALT = /^(image|photo|picture|img|untitled|placeholder|alt text|screenshot)$/i;
 
+/**
+ * Action types that navigate somewhere and therefore need a destination.
+ * `link` is the unified modern type; the rest are the legacy types the runtime
+ * still shims. Every other action type (show-hide, set-state, add-to-cart,
+ * toggle-theme, copy-to-clipboard, …) is behavioural and correctly has no href
+ * — flagging those as "missing URL" is what made this check useless.
+ */
+const NAVIGATIONAL_ACTIONS = new Set([
+  "link",
+  "link-url",
+  "link-page",
+  "scroll-to",
+  "email",
+  "phone",
+]);
+
+/**
+ * Resolve what a Button actually points at.
+ *
+ * Destinations live in `props.action[].href`. The legacy flat `props.url` is
+ * NOT read by the renderer (`Button.body.tsx` declares it and never uses it),
+ * so reading it reported every button on every modern site as broken.
+ */
+function resolveButtonDestination(props) {
+  const raw = props?.action;
+  const actions = Array.isArray(raw) ? raw : raw ? [raw] : [];
+  // A form submit carries its role on `props.type` (the Button's own type prop);
+  // `attrs.type` is the pass-through escape hatch. Either marks it as a button
+  // whose job is submitting, not navigating.
+  const isSubmit =
+    String(props?.type || "").toLowerCase() === "submit" ||
+    String(props?.attrs?.type || "").toLowerCase() === "submit";
+
+  const nav = actions.filter(a => a && NAVIGATIONAL_ACTIONS.has(a.type));
+  if (nav.length === 0) {
+    // Behavioural actions (or a form submit) legitimately have no destination.
+    // A button with NO action at all and no submit role goes nowhere and does
+    // nothing — that one is a real finding.
+    return { href: "", isNavigational: false, isDead: actions.length === 0 && !isSubmit };
+  }
+  const href = nav.map(a => String(a.href || "").trim()).find(Boolean) || "";
+  return { href, isNavigational: true, isDead: false };
+}
+
+/** The name a screen reader announces: visible text, else `aria-label`. */
+function accessibleName(btn) {
+  return (btn.text || "").trim() || (btn.ariaLabel || "").trim();
+}
+
+/**
+ * An icon-only button's label sits at the TOP level as `props["aria-label"]`
+ * (that is what the Button renderer reads and ships); `attrs["aria-label"]` is
+ * the generic pass-through and is also honoured. Reading only `attrs` reported
+ * correctly-labelled carousel and menu buttons as unnamed.
+ */
+function readAriaLabel(props) {
+  return String(props?.["aria-label"] || props?.attrs?.["aria-label"] || "");
+}
+
 function collectNodes(nodes, rootId) {
   const texts = [];
   const headings = [];
@@ -36,7 +95,12 @@ function collectNodes(nodes, rootId) {
         src: node.props?.content || node.props?.src || "",
       });
     } else if (type === "Button") {
-      buttons.push({ id, text: node.props?.text || "", url: node.props?.url || "" });
+      buttons.push({
+        id,
+        text: node.props?.text || "",
+        ariaLabel: readAriaLabel(node.props),
+        ...resolveButtonDestination(node.props),
+      });
     }
     for (const childId of node.nodes || []) walk(childId);
     if (node.linkedNodes) {
@@ -102,24 +166,25 @@ function quickA11yAudit(nodes, rootId) {
     });
   }
 
-  // Critical: buttons with no text
-  const emptyBtns = buttons.filter(b => !b.text.trim());
+  // Critical: buttons with no accessible name. An icon-only button with an
+  // `aria-label` IS announced correctly — only a button with neither is broken.
+  const emptyBtns = buttons.filter(b => !accessibleName(b));
   if (emptyBtns.length > 0) {
     issues.push({
       id: "button-text",
       severity: "critical",
-      message: `${emptyBtns.length} button(s) have no text — screen readers cannot identify them: ${emptyBtns.map(b => b.id).join(", ")}`,
-      fix: "Add descriptive text to all buttons.",
+      message: `${emptyBtns.length} button(s) have no accessible name — screen readers cannot identify them: ${emptyBtns.map(b => b.id).join(", ")}`,
+      fix: 'Add descriptive text, or an attrs["aria-label"] for icon-only buttons.',
     });
   }
 
   // Moderate: generic link text
-  const genericBtns = buttons.filter(b => GENERIC_LINK_TEXT.test(b.text.trim()));
+  const genericBtns = buttons.filter(b => GENERIC_LINK_TEXT.test(accessibleName(b)));
   if (genericBtns.length > 0) {
     issues.push({
       id: "button-text-quality",
       severity: "moderate",
-      message: `${genericBtns.length} button(s) use generic text: ${genericBtns.map(b => `${b.id} ("${b.text}")`).join(", ")}`,
+      message: `${genericBtns.length} button(s) use generic text: ${genericBtns.map(b => `${b.id} ("${accessibleName(b)}")`).join(", ")}`,
       fix: "Use descriptive link text that makes sense out of context.",
     });
   }
@@ -173,6 +238,10 @@ module.exports = {
   collectNodes,
   resolveRootId,
   quickA11yAudit,
+  resolveButtonDestination,
+  accessibleName,
+  readAriaLabel,
   GENERIC_LINK_TEXT,
   PLACEHOLDER_ALT,
+  NAVIGATIONAL_ACTIONS,
 };

@@ -74,19 +74,41 @@ function runChecks(siteData, nodes, pageId) {
     });
   }
 
-  const jsonLd = nodes.ROOT?.props?.seo?.jsonLd;
-  if (!jsonLd || (typeof jsonLd === "object" && Object.keys(jsonLd).length === 0)) {
+  // Structured data is read from the PAGE being audited, never from ROOT.
+  // `JsonLdScripts` (React routes) and `/api/published` (static) both render
+  // only the page-level seo bag, so `ROOT.props.seo.jsonLd` reaches zero
+  // pages. Reading ROOT reported "structured data present" for pages that
+  // rendered none — masking exactly the gap this check exists to find.
+  const pageSeo = nodes[pageId]?.props?.seo || {};
+  const pageJsonLd = pageSeo.jsonLd;
+  const pageSchema = Array.isArray(pageSeo.schema) ? pageSeo.schema : [];
+  const hasJsonLd =
+    !!pageJsonLd && (typeof pageJsonLd !== "object" || Object.keys(pageJsonLd).length > 0);
+
+  if (!hasJsonLd && pageSchema.length === 0) {
+    const rootOnly = !!nodes.ROOT?.props?.seo?.jsonLd;
     results.push({
       id: "structured-data",
       status: "warn",
-      message: "No structured data (JSON-LD) found",
-      fix: "Add structured data via set_theme(jsonLd: {...}).",
+      message: rootOnly
+        ? "No structured data on this page — ROOT.props.seo.jsonLd is set but renders on no page"
+        : "No structured data (JSON-LD) found on this page",
+      fix: "Add page-level structured data via update_page(seo: { jsonLd: {...} }).",
     });
   } else {
+    const types = []
+      .concat(
+        hasJsonLd
+          ? pageJsonLd["@graph"]
+            ? pageJsonLd["@graph"].map(o => o?.["@type"]).filter(Boolean)
+            : [pageJsonLd["@type"]].filter(Boolean)
+          : []
+      )
+      .concat(pageSchema.map(e => e?.type || e?.kind).filter(Boolean));
     results.push({
       id: "structured-data",
       status: "pass",
-      message: `Structured data present (@type: ${jsonLd["@type"] || "unknown"})`,
+      message: `Structured data present (@type: ${types.length ? types.join(", ") : "unknown"})`,
     });
   }
 
@@ -184,13 +206,24 @@ function runChecks(siteData, nodes, pageId) {
       message: `All ${buttons.length} button(s) have descriptive text`,
     });
   }
-  const emptyUrls = buttons.filter(b => !b.url.trim() || b.url === "#");
-  if (emptyUrls.length > 0) {
+  // Only buttons that actually navigate need a destination. Behavioural
+  // actions (show-hide, set-state, add-to-cart, …) and form submits correctly
+  // have none.
+  const brokenLinks = buttons.filter(
+    b => (b.isNavigational && (!b.href || b.href === "#")) || b.isDead
+  );
+  if (brokenLinks.length > 0) {
     results.push({
       id: "link-url",
       status: "warn",
-      message: `${emptyUrls.length} button(s) with empty or placeholder URLs`,
-      fix: "Set real destination URLs.",
+      message: `${brokenLinks.length} button(s) with empty or placeholder destinations: ${brokenLinks.map(b => b.id).join(", ")}`,
+      fix: 'Set a real destination in props.action[].href, or remove the button.',
+    });
+  } else if (buttons.length > 0) {
+    results.push({
+      id: "link-url",
+      status: "pass",
+      message: `All ${buttons.length} button(s) have valid destinations or are behavioural`,
     });
   }
 

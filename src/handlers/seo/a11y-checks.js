@@ -1,4 +1,4 @@
-const { collectNodes } = require("../../validation/a11y-check");
+const { collectNodes, accessibleName } = require("../../validation/a11y-check");
 
 /**
  * Run a static node-tree WCAG AA-ish audit and return a flat list of results.
@@ -77,55 +77,64 @@ function runA11yChecks(nodes, pageId) {
     }
   }
 
-  // Buttons: empty or generic text
-  const emptyBtns = buttons.filter(b => !b.text.trim());
+  // Buttons: missing or generic accessible name. An icon-only button carrying
+  // an `aria-label` is announced correctly — only one with neither is broken.
+  const emptyBtns = buttons.filter(b => !accessibleName(b));
   if (emptyBtns.length > 0) {
     results.push({
       id: "button-text",
       severity: "critical",
-      message: `${emptyBtns.length} button(s) have no text — screen readers cannot identify them`,
-      fix: "Add descriptive text to all buttons.",
+      message: `${emptyBtns.length} button(s) have no accessible name — screen readers cannot identify them: ${emptyBtns.map(b => b.id).join(", ")}`,
+      fix: 'Add descriptive text, or an attrs["aria-label"] for icon-only buttons.',
     });
   }
   const genericBtns = buttons.filter(b =>
-    /^(click here|read more|learn more|here|link|more|submit|button)$/i.test(b.text.trim())
+    /^(click here|read more|learn more|here|link|more|submit|button)$/i.test(accessibleName(b))
   );
   if (genericBtns.length > 0) {
     results.push({
       id: "button-text-quality",
       severity: "moderate",
-      message: `${genericBtns.length} button(s) use generic text ("${genericBtns[0].text}")`,
+      message: `${genericBtns.length} button(s) use generic text ("${accessibleName(genericBtns[0])}")`,
       fix: "Use descriptive link text that makes sense out of context.",
     });
   } else if (buttons.length > 0 && emptyBtns.length === 0) {
     results.push({
       id: "button-text",
       severity: "pass",
-      message: `All ${buttons.length} button(s) have descriptive text`,
+      message: `All ${buttons.length} button(s) have an accessible name`,
     });
   }
 
-  // Buttons: placeholder URLs
-  const hashBtns = buttons.filter(b => !b.url.trim() || b.url === "#");
+  // Buttons: placeholder destinations. Behavioural actions and form submits
+  // have no href by design and are not findings.
+  const hashBtns = buttons.filter(
+    b => (b.isNavigational && (!b.href || b.href === "#")) || b.isDead
+  );
   if (hashBtns.length > 0) {
     results.push({
       id: "link-purpose",
       severity: "moderate",
-      message: `${hashBtns.length} button(s) link to "#" or have no URL`,
-      fix: "Set real destination URLs.",
+      message: `${hashBtns.length} button(s) navigate nowhere: ${hashBtns.map(b => b.id).join(", ")}`,
+      fix: "Set a real destination in props.action[].href, or remove the button.",
     });
   }
 
-  // Nav landmark
-  const hasNav = Object.values(nodes).some(
-    n => n.type?.resolvedName === "Container" && n.props?.custom?.isNav
-  );
+  // Nav landmark. Detect what actually renders a <nav>: `props.type: "nav"`
+  // (pickContainerTag / Container.toHTML) or an explicit navigation role.
+  // The previous check looked for `props.custom.isNav`, an MCP-only convention
+  // with no SDK reference — it renders nothing, so this always reported a
+  // missing landmark even on sites that had one.
+  const hasNav = Object.values(nodes).some(n => {
+    if (n?.type?.resolvedName !== "Container") return false;
+    return n.props?.type === "nav" || n.props?.attrs?.role === "navigation";
+  });
   if (!hasNav) {
     results.push({
       id: "nav-landmark",
       severity: "minor",
       message: "No navigation landmark detected",
-      fix: 'Ensure the header nav container has role="navigation" or custom.isNav set.',
+      fix: 'Set props.type: "nav" on the header nav container (renders a real <nav>).',
     });
   }
 
