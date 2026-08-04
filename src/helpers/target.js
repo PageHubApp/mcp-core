@@ -180,7 +180,22 @@ async function saveTarget(targetId, targetType, flat, extra = {}) {
       ctx._targetRevisions = {};
     ctx._targetRevisions[revisionKey] = freshRevision;
   }
-  return { id: put.id, url: getEditorUrl(put.id || targetId), type: "site" };
+  // Site writes STAGE into the draft; `publish_site` promotes. Record it so
+  // `resultMsg` can say so on every tool's output — an agent that believes it
+  // already published will not run the step that actually does.
+  const saved = {
+    id: put.id || targetId,
+    url: getEditorUrl(put.id || targetId),
+    type: "site",
+    wroteTo: put.wroteTo || "draft",
+    hasUnpublishedChanges: !!put.hasUnpublishedChanges,
+  };
+  ctx._lastSiteWrite = {
+    id: saved.id,
+    wroteTo: saved.wroteTo,
+    hasUnpublishedChanges: saved.hasUnpublishedChanges,
+  };
+  return saved;
 }
 
 /** Backwards-compat alias. */

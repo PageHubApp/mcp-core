@@ -158,7 +158,7 @@ module.exports = {
     if (target.type !== "site") throw new Error("publish_site only works on sites, not templates.");
     const body = { published: true };
     if (args.static !== undefined) body.staticPublish = !!args.static;
-    await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`, {
+    const put = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`, {
       method: "PUT",
       body,
     });
@@ -166,7 +166,17 @@ module.exports = {
       args.static === undefined
         ? ""
         : ` (turbo/static delivery ${args.static ? "on" : "off"})`;
-    return { content: [{ type: "text", text: `Site ${target.id} published${mode}.` }] };
+    // Edits stage into the draft, so publishing is what promotes them. Say
+    // whether that happened — "published" alone does not distinguish a promotion
+    // from a no-op flag flip on a site that was already live.
+    const promoted = put?.promoted ? " Staged draft promoted to live." : "";
+    const ctx = getContext();
+    if (ctx._lastSiteWrite && String(ctx._lastSiteWrite.id) === String(target.id)) {
+      ctx._lastSiteWrite = null;
+    }
+    return {
+      content: [{ type: "text", text: `Site ${target.id} published${mode}.${promoted}` }],
+    };
   },
 
   /**
