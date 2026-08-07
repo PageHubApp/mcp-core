@@ -1136,7 +1136,7 @@
   },
   {
     "name": "get_domain_status",
-    "description": "Read the current custom domain on the active site, plus per-variant Vercel attachment state (apex + www). Pass `check` to preflight a different candidate without mutating anything. Use this before set_domain to diagnose conflicts (e.g. domain already attached to another Vercel project).",
+    "description": "Read the current custom domain on the active site: redirect mode, per-variant Vercel attachment state (apex + www), and THE DNS RECORDS THE USER MUST CREATE at their registrar. Records are per-project and come straight from Vercel — an apex gets an `A` record at `@`, a subdomain (`www`, `ads`, …) gets a `CNAME` at its label. Never invent these values; report exactly what this returns. Pass `check` to preflight a different candidate without mutating anything. Use this before set_domain to diagnose conflicts (e.g. domain already attached to another Vercel project), and after set_domain to tell the user whether DNS has propagated yet.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1155,7 +1155,7 @@
   },
   {
     "name": "check_domain",
-    "description": "Preflight a candidate custom domain against Vercel. Returns per-variant state (apex + www) — whether each is free, already attached to the pagehub project, or producing a Vercel error. Non-mutating. Equivalent to get_domain_status with `check`.",
+    "description": "Preflight a candidate custom domain against Vercel. Returns per-variant state (apex + www) — whether each is free, already attached to the pagehub project, or producing a Vercel error — plus the DNS records the user would need to create. Non-mutating. Equivalent to get_domain_status with `check`.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1175,7 +1175,7 @@
   },
   {
     "name": "set_domain",
-    "description": "Attach a custom domain to the active site. Registers BOTH the apex (`example.com`) and `www.example.com` on Vercel and wires the redirect per `redirectMode`. Default is `to-apex` (www → apex 308). On conflict (variant already on another Vercel project) returns a 409 with per-variant details — instruct the user to detach in the Vercel dashboard, then retry. Triggers a redeploy if the site is published. Plan-gated: free plans cannot add custom domains.",
+    "description": "Attach a custom domain to the active site and return THE DNS RECORDS THE USER MUST CREATE at their registrar. For an apex+www pair, registers BOTH `example.com` and `www.example.com` on Vercel and wires the redirect per `redirectMode` (default `to-apex`: www → apex 308) — the apex needs an `A` record at `@`, the www variant a `CNAME`. A deeper subdomain (`ads.example.com`) is attached alone and needs a single `CNAME` at its label. Record values are per-project; report exactly what this returns rather than any remembered Vercel default. Attaching does nothing until the user creates those records — always hand them over, then re-check with get_domain_status. On conflict (variant already on another Vercel project) returns a 409 with per-variant details — instruct the user to detach in the Vercel dashboard, then retry. Triggers a redeploy if the site is published. Plan-gated: free plans cannot add custom domains.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1185,8 +1185,8 @@
           "maxLength": 256
         },
         "domain": {
-          "type": "string",
-          "description": "Domain to attach (apex or www form). Both variants are registered automatically.",
+          "type": ["string", "null"],
+          "description": "Domain to attach (apex or www form). Both variants are registered automatically. Pass null to detach the current domain (same as clear_domain).",
           "maxLength": 253
         },
         "redirectMode": {

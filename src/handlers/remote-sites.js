@@ -12,6 +12,59 @@ const { pickSiteMetaArgs, pickSiteMetaUpdates } = require("../helpers/extra-meta
 
 const DEFAULT_BLANK_TEMPLATE = "acme";
 
+/**
+ * Render a `/api/v1/sites/[id]/domain` payload (GET or PATCH — both carry
+ * `variants`) as agent-readable text: attachment state per variant, then the
+ * DNS records the user still has to create.
+ *
+ * The records come from the route, never from here — an apex needs an A record
+ * and a subdomain needs a CNAME, and the values are per-project, so guessing
+ * them client-side hands the user DNS that silently never verifies.
+ */
+function formatDomainReport(data) {
+  const lines = [];
+  if (data.domain) {
+    lines.push(`Current domain: ${data.domain} (redirect: ${data.domainRedirectMode})`);
+  } else {
+    lines.push("No custom domain set.");
+  }
+  if (data.checked && data.checked !== data.domain) lines.push(`Checked: ${data.checked}`);
+
+  const variants = data.variants || [];
+  if (variants.length) {
+    lines.push("");
+    for (const v of variants) {
+      const dns = v.live ? "DNS live" : "DNS not pointing here yet";
+      if (v.attachedToPagehub) {
+        const r = v.redirect ? ` → redirects to ${v.redirect} (${v.redirectStatusCode})` : "";
+        lines.push(`  ${v.name}: attached to pagehub${r} — ${dns}`);
+      } else if (v.available) {
+        lines.push(`  ${v.name}: available (or on another team) — ${dns}`);
+      } else {
+        lines.push(`  ${v.name}: ${v.error?.code || "unknown"} — ${v.error?.message || ""}`);
+      }
+      if (v.configError) {
+        lines.push(`    warning: ${v.configError} — records below are Vercel's generic fallback.`);
+      }
+    }
+  }
+
+  const records = variants.flatMap(v => v.records || []);
+  if (records.length) {
+    lines.push("");
+    lines.push("DNS records to create at the registrar:");
+    for (const r of records) {
+      const scope = r.domain && variants.length > 1 ? `   (for ${r.domain})` : "";
+      lines.push(`  ${String(r.type).padEnd(5)} ${String(r.name).padEnd(6)} → ${r.value}${scope}`);
+    }
+  } else if (variants.length) {
+    lines.push("");
+    lines.push("No DNS changes needed — every variant already resolves here.");
+  }
+
+  return lines.join("\n");
+}
+
 module.exports = {
   /**
    * Create a new site from a template (defaults to "acme" blank template)
@@ -228,7 +281,8 @@ module.exports = {
   },
 
   /**
-   * Inspect the current custom-domain status (current + variants).
+   * Inspect the current custom-domain status — attachment per variant plus the
+   * DNS records still to create.
    * @param {object} args - { siteId?, check? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
@@ -238,25 +292,7 @@ module.exports = {
       throw new Error("get_domain_status only works on sites, not templates.");
     const qs = args.check ? `?check=${encodeURIComponent(args.check)}` : "";
     const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}/domain${qs}`);
-    const lines = [];
-    if (data.domain)
-      lines.push(`Current domain: ${data.domain} (redirect: ${data.domainRedirectMode})`);
-    else lines.push("No custom domain set.");
-    if (data.checked && data.checked !== data.domain) lines.push(`Checked: ${data.checked}`);
-    if (data.variants?.length) {
-      lines.push("");
-      for (const v of data.variants) {
-        if (v.attachedToPagehub) {
-          const r = v.redirect ? ` → redirects to ${v.redirect} (${v.redirectStatusCode})` : "";
-          lines.push(`  ${v.name}: attached to pagehub${r}`);
-        } else if (v.available) {
-          lines.push(`  ${v.name}: available (or on another team)`);
-        } else {
-          lines.push(`  ${v.name}: ${v.error?.code || "unknown"} — ${v.error?.message || ""}`);
-        }
-      }
-    }
-    return { content: [{ type: "text", text: lines.join("\n") }] };
+    return { content: [{ type: "text", text: formatDomainReport(data) }] };
   },
 
   /**
@@ -270,14 +306,16 @@ module.exports = {
   },
 
   /**
-   * Bind a custom domain to the active site.
+   * Bind a custom domain to the active site, and report the DNS records to
+   * create. Pass `domain: null` to detach (same as clear_domain).
    * @param {object} args - { domain, redirectMode?, siteId? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async set_domain(args = {}) {
     const target = getActiveTarget(args);
     if (target.type !== "site") throw new Error("set_domain only works on sites, not templates.");
-    if (!args.domain) throw new Error("domain is required. Use clear_domain to remove.");
+    if (args.domain === null) return module.exports.clear_domain(args);
+    if (!args.domain) throw new Error("domain is required. Pass null (or use clear_domain) to remove.");
     const body = { domain: args.domain };
     if (args.redirectMode) body.domainRedirectMode = args.redirectMode;
     const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}/domain`, {
@@ -298,14 +336,10 @@ module.exports = {
       }
       return { content: [{ type: "text", text: lines.join("\n") }], isError: true };
     }
-    return {
-      content: [
-        {
-          type: "text",
-          text: `Domain set: ${data.domain} (redirect: ${data.domainRedirectMode}).\nDNS: point apex (A → 76.76.21.21) and www (CNAME → cname.vercel-dns.com) at Vercel.`,
-        },
-      ],
-    };
+    const head = data.noop
+      ? `Domain already set on site ${target.id} — nothing changed.`
+      : `Domain set on site ${target.id}.`;
+    return { content: [{ type: "text", text: `${head}\n${formatDomainReport(data)}` }] };
   },
 
   /**
@@ -316,10 +350,18 @@ module.exports = {
   async clear_domain(args = {}) {
     const target = getActiveTarget(args);
     if (target.type !== "site") throw new Error("clear_domain only works on sites, not templates.");
-    await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}/domain`, {
+    const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}/domain`, {
       method: "DELETE",
     });
-    return { content: [{ type: "text", text: `Domain cleared from site ${target.id}.` }] };
+    const lines = [`Domain cleared from site ${target.id}.`];
+    // The site is unbound regardless, but a variant Vercel refused to release
+    // will block re-attaching that domain later — don't report a clean removal.
+    for (const f of data?.detachFailures || []) {
+      lines.push(
+        `  warning: ${f.domain} is still attached to the Vercel project (${f.code || "error"}${f.message ? `: ${f.message}` : ""}). Remove it in the Vercel dashboard before reusing this domain.`
+      );
+    }
+    return { content: [{ type: "text", text: lines.join("\n") }] };
   },
 
   /**
