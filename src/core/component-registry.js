@@ -36,6 +36,7 @@ const VALID_COMPONENTS = new Set([
   "Link",
   "Map",
   "MapPoint",
+  "MapPath",
   "ProductDisplay",
   "Text",
   "Video",
