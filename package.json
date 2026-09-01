@@ -1,6 +1,6 @@
 {
   "name": "@pagehub/mcp-core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Shared tool schemas and HTTP handlers for PageHub MCP + AI agent",
   "license": "MIT",
   "main": "src/index.js",
