@@ -1308,7 +1308,7 @@
   },
   {
     "name": "upload_image",
-    "description": "Upload an image to the tenant CDN for a site (requires Cloudflare Images on the server). Returns mediaId and url; use type \"cdn\" and src mediaId on Image/Background nodes. Prefer imageUrl for large files.",
+    "description": "Upload an image to a site's media library. Returns mediaId and url; use type \"cdn\" + src mediaId on Image/Background nodes (never the raw url). PREFER filePath for anything on disk — it streams the bytes straight to the CDN, full resolution, without passing them through the conversation. Use imageUrl for images already on the web. dataBase64 is a last resort: it is capped near 3MB by the serverless request limit and burns ~1.4 tokens per byte.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1317,14 +1317,21 @@
           "description": "Site id (defaults to active site from select_site)",
           "maxLength": 256
         },
+        "filePath": {
+          "description": "Local file path(s) — absolute, ~/-relative, or relative to the server's cwd. Pass an array to upload many in one call. Best option for local files at any size: bytes go direct to the CDN, EXIF rotation is applied, AVIF/HEIC become JPEG, and anything wider than 2680px is downscaled. Local stdio MCP server only (not the hosted agent).",
+          "oneOf": [
+            { "type": "string", "maxLength": 4096 },
+            { "type": "array", "items": { "type": "string", "maxLength": 4096 }, "maxItems": 100 }
+          ]
+        },
         "imageUrl": {
           "type": "string",
-          "description": "Public http(s) URL to fetch and upload",
+          "description": "Public http(s) URL to fetch and upload. Pass the ORIGINAL full-resolution url — never one with ?w= / &h= / q= resize params, which would store a permanently downscaled image.",
           "maxLength": 2048
         },
         "dataBase64": {
           "type": "string",
-          "description": "Raw base64 or data URL (data:image/...;base64,...). Max ~12MB decoded.",
+          "description": "Raw base64 or data URL (data:image/...;base64,...). Last resort — ~3MB ceiling and very expensive in tokens. Use filePath for local files.",
           "maxLength": 16777216
         },
         "mimeType": {
@@ -1342,7 +1349,7 @@
   },
   {
     "name": "upload_file",
-    "description": "Upload any plan-allowed file to a site. Images go to the Cloudflare Images CDN (returns type \"cdn\"); video / audio / pdf / zip go to R2 (returns type \"r2\" with a public delivery url). Use the returned url for a Link, a collection url/media field, or a Video node (provider \"r2\", videoId = mediaId). For images prefer upload_image. Requires R2 to be configured on the server for non-image types. Plan-gated by per-type size caps + storage quota.",
+    "description": "Upload any plan-allowed file to a site. Images go to the Cloudflare Images CDN (returns type \"cdn\"); video / audio / pdf / zip go to R2 (returns type \"r2\" with a public delivery url). Use the returned url for a Link, a collection url/media field, or a Video node (provider \"r2\", videoId = mediaId). PREFER filePath for anything on disk — it is the only option that handles large files (video especially), since dataBase64 is capped near 3MB by the serverless request limit. Requires R2 to be configured on the server for non-image types. Plan-gated by per-type size caps + storage quota.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1351,14 +1358,21 @@
           "description": "Site id (defaults to active site from select_site)",
           "maxLength": 256
         },
+        "filePath": {
+          "description": "Local file path(s) — absolute, ~/-relative, or relative to the server's cwd. Pass an array to upload many in one call. Type is inferred from the extension. Best option for local files at any size: bytes stream direct to Cloudflare / R2 without passing through the conversation or the 4.5MB request cap. Local stdio MCP server only (not the hosted agent).",
+          "oneOf": [
+            { "type": "string", "maxLength": 4096 },
+            { "type": "array", "items": { "type": "string", "maxLength": 4096 }, "maxItems": 100 }
+          ]
+        },
         "fileUrl": {
           "type": "string",
-          "description": "Public http(s) URL to fetch and upload (any allowed type)",
+          "description": "Public http(s) URL to fetch and upload (any allowed type). Pass the ORIGINAL url, not one carrying resize params.",
           "maxLength": 2048
         },
         "dataBase64": {
           "type": "string",
-          "description": "Raw base64 or data URL. Pass mimeType for non-image blobs so they route to R2 (a data: URL prefix also works). Large payloads: prefer fileUrl.",
+          "description": "Raw base64 or data URL. Pass mimeType for non-image blobs so they route to R2 (a data: URL prefix also works). Last resort — ~3MB ceiling. Use filePath for local files, fileUrl for remote ones.",
           "maxLength": 16777216
         },
         "mimeType": {

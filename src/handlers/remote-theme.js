@@ -5,6 +5,7 @@ const { stampPresetDesignIntent } = require("../data/root-design-intent");
 const { VIBE_CODENAMES } = require("../data/vibes");
 
 const { parseMaybeJson, getActiveTarget, fetchTarget, saveTarget } = require("../helpers/index.js");
+const { formatUploadResult } = require("../helpers/upload-format");
 
 const { ensurePaletteOklch, validatePaletteContrast } = require("../utils/color-utils");
 const { editDistance } = require("../utils/levenshtein");
@@ -111,6 +112,15 @@ async function uploadMediaToSite(args, { restrictToImages }) {
       } is not supported for templates. Use hardcoded URLs (type: "url") instead.`
     );
   }
+  // `filePath` reads the caller's own disk, so it only exists in the local
+  // stdio MCP server. Here — the hosted agent — "the disk" is PageHub's
+  // server, which the caller has no business reading from.
+  if (args.filePath) {
+    throw new Error(
+      "filePath is only available in the local PageHub MCP server (stdio). " +
+        "In the hosted agent, pass fileUrl (a public http(s) URL) or dataBase64 instead."
+    );
+  }
   const srcUrl = args.fileUrl || args.imageUrl;
   if (!srcUrl && !args.dataBase64) {
     throw new Error("fileUrl or dataBase64 is required.");
@@ -156,32 +166,12 @@ module.exports = {
 
   async upload_image(args) {
     const data = await uploadMediaToSite(args, { restrictToImages: true });
-    return {
-      content: [
-        {
-          type: "text",
-          text: `Uploaded.\n  mediaId: ${data.mediaId}\n  type: ${data.type}\n  url: ${data.url}\n\nUse in an Image node: { "type": "cdn", "src": "${data.mediaId}" } — the mediaId (NOT the url) so the viewer serves a responsive srcset + format=auto. Do NOT bake the full-size url as type:"url".`,
-        },
-      ],
-    };
+    return { content: [{ type: "text", text: formatUploadResult(data) }] };
   },
 
   async upload_file(args) {
     const data = await uploadMediaToSite(args, { restrictToImages: false });
-    const usage =
-      data.type === "r2"
-        ? `Stored on R2 (${data.contentType || "file"}).\n  • Video node: provider "r2", videoId "${data.mediaId}"\n  • Link / collection url field: use the url above\n  • Delete later with delete_node's media or the editor Media Manager`
-        : `Image on CDN. Use in an Image node: { "type": "cdn", "src": "${data.mediaId}" } — the mediaId (NOT the url) so the viewer serves a responsive srcset + format=auto.`;
-    return {
-      content: [
-        {
-          type: "text",
-          text: `Uploaded.\n  mediaId: ${data.mediaId}\n  type: ${data.type}\n  contentType: ${
-            data.contentType || "?"
-          }\n  url: ${data.url}\n\n${usage}`,
-        },
-      ],
-    };
+    return { content: [{ type: "text", text: formatUploadResult(data) }] };
   },
 
   async set_theme(args) {

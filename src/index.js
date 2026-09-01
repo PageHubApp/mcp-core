@@ -51,6 +51,8 @@ const {
 } = require("./validation/branding-guard");
 const { runWithContext, getContext } = require("./core/context");
 const { apiFetch, normalizeBaseUrl } = require("./core/api-fetch");
+const { uploadBytesToSite } = require("./core/direct-upload");
+const { formatUploadResult } = require("./helpers/upload-format");
 const { parseMaybeJson } = require("./helpers/args");
 const { applyNodePatches, normalizeNodePatchArgs } = require("./helpers/node-patch");
 const {
@@ -187,6 +189,8 @@ module.exports = {
   getContext,
   apiFetch,
   normalizeBaseUrl,
+  uploadBytesToSite,
+  formatUploadResult,
 
   // Helpers
   parseMaybeJson,

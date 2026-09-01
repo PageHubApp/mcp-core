@@ -98,24 +98,23 @@ function formatResults(images) {
         ? ` (${img.orientation || "landscape"}, ${img.width}x${img.height})`
         : "";
     const tags = (img.tags || []).slice(0, 5).join(", ");
-    // Build a usable URL with standard sizing params
-    const baseUrl = (img.url || "").split("?")[0];
-    const supportsUnsplashParams = img.source === "unsplash";
-    const usableUrl = supportsUnsplashParams ? `${baseUrl}?w=800&h=600&fit=crop&q=80` : baseUrl;
-    const heroUrl = supportsUnsplashParams ? `${baseUrl}?w=1600&h=900&fit=crop&q=80` : baseUrl;
-    const avatarUrl = supportsUnsplashParams
-      ? `${baseUrl}?w=400&h=400&fit=crop&crop=faces&q=80`
-      : baseUrl;
-
-    let urlBlock = `  URL: ${usableUrl}`;
-    if (img.category === "hero" || img.category === "background") {
-      urlBlock = `  Hero: ${heroUrl}\n  Standard: ${usableUrl}`;
-    } else if (img.category === "avatar") {
-      urlBlock = `  Avatar: ${avatarUrl}\n  Standard: ${usableUrl}`;
-    }
-
-    return `• \`${img.photoId}\` — ${tags}${dims}\n${urlBlock}`;
+    // The bank stores the provider's ORIGINAL url, and stripping the query is
+    // what keeps it original. Handing back a `?w=800&q=80` variant instead
+    // pinned every stock photo to a soft, hard-cropped 800px — and if the
+    // caller then uploaded it, stored it at that size permanently.
+    const originalUrl = (img.url || "").split("?")[0];
+    return `• \`${img.photoId}\` — ${tags}${dims}\n  URL: ${originalUrl}`;
   });
 
-  return `Found ${images.length} image${images.length === 1 ? "" : "s"}:\n${lines.join("\n\n")}\n\nUse in Image nodes: propsPatch { "type": "url", "src": "<url>" }. Append ?w=WIDTH&h=HEIGHT&fit=crop&q=80 to resize.`;
+  return (
+    `Found ${images.length} image${images.length === 1 ? "" : "s"} — urls are full-resolution originals:\n` +
+    `${lines.join("\n\n")}\n\n` +
+    `Next step: upload_image({ imageUrl: "<url>" }), then set the Image node to ` +
+    `{ "type": "cdn", "src": "<returned mediaId>" }. On the CDN the viewer serves a ` +
+    `per-viewport srcset with format=auto (AVIF/WebP), sized from the original.\n` +
+    `Do NOT use { "type": "url" } against the provider — it pins one fixed size, skips ` +
+    `the srcset, and leaves the site depending on a third party staying up. Do NOT append ` +
+    `?w= / &h= / q= before uploading: crop and display size are layout concerns the CDN ` +
+    `resolves from the full-resolution original.`
+  );
 }
