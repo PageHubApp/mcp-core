@@ -36,21 +36,33 @@ function collectUnsplashSrcViolations(patch, nodeId) {
 // renderer still falls back `src ?? content` so legacy saved data keeps
 // rendering, but no new write should land on `content`.
 //
+// The test is the patch, not the merged node: an Image that already carries a
+// legacy `content` value must not block edits that never touch it. Reading the
+// stored node instead makes one unmigrated Image reject every bulk patch that
+// happens to include it, alongside every unrelated node in the same call.
+//
 // History: `Image` used to ship both `props.src` and `props.content`, and the
 // dual-field shadow caused recurring "I patched the image and nothing
 // changed" bugs (see
 // `.claude/known-issues/image-src-content-shadowing.md`). The fix collapses
 // to `src`; this guard prevents regressions.
-function assertNoImageSrcContentConflict(flat, nodeIds) {
+function patchWritesContent(patch) {
+  const props = patch?.propsPatch;
+  if (!props || typeof props !== "object") return false;
+  if (!Object.prototype.hasOwnProperty.call(props, "content")) return false;
+  const value = props.content;
+  if (value == null) return false;
+  if (typeof value === "string" && value.trim() === "") return false;
+  return true;
+}
+
+function assertNoImageSrcContentConflict(flat, nodeIds, patch) {
+  if (!patchWritesContent(patch)) return;
   const ids = Array.isArray(nodeIds) ? nodeIds : [nodeIds];
   for (const id of ids) {
     if (!id) continue;
     const node = flat?.[id];
     if (!node || node.type?.resolvedName !== "Image") continue;
-    const props = node.props || {};
-    const content = props.content;
-    if (content == null) continue;
-    if (typeof content === "string" && content.trim() === "") continue;
     throw new Error(
       `Image node "${id}" was written with deprecated prop "content" — ` +
         `use "src" instead. The renderer falls back to "content" only for ` +

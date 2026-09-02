@@ -13,7 +13,7 @@ const { getContext, withPendingMapLock } = require("../core/context");
 const { parseMaybeJson, getActiveTarget, fetchTarget, saveTarget } = require("../helpers/index.js");
 const { recordFillPatch } = require("../helpers/fill-patch-merge");
 const { VALID_COMPONENTS, CANVAS_COMPONENTS, collectSubtree } = require("../utils/node-utils");
-const { validateNodes } = require("../validation/node-validation");
+const { validateNodes, formatValidationReport } = require("../validation/node-validation");
 const { resultMsg } = require("./remote-shared");
 
 function slugifyTypeForId(type) {
@@ -248,7 +248,13 @@ async function placeSectionTreeBody(args) {
   // Auto-fix: wrap bare Text in <p>, apply heading tag defaults, dedupe tokens.
   // Same pass add_nodes runs (remote-nodes.js:206) — keeps rendered output clean
   // without forcing the model to micromanage HTML wrapping.
-  validateNodes(newNodes, { autoFix: true, warnColors: true });
+  //
+  // The report is surfaced on the response for the same reason add_nodes does:
+  // this is the moment the section's colors are chosen, and a warning delivered
+  // any later lands on whoever next patches an unrelated prop on the node.
+  const validation = validateNodes(newNodes, { autoFix: true, warnColors: true });
+  const validationReport = formatValidationReport(validation);
+  const reportSuffix = validationReport ? `\n\n---\n${validationReport}` : "";
 
   // Idempotent replace: drop any existing subtrees under the section (including
   // from a previous place_section_tree call) before attaching the new root.
@@ -286,7 +292,8 @@ async function placeSectionTreeBody(args) {
           type: "text",
           text:
             `Section "${sectionNodeId}" placed: ${idsInOrder.length} nodes (root ${rootId}).` +
-            (reason ? ` — ${reason}` : ""),
+            (reason ? ` — ${reason}` : "") +
+            reportSuffix,
         },
       ],
       pendingContent: flat,
@@ -299,11 +306,12 @@ async function placeSectionTreeBody(args) {
     content: [
       {
         type: "text",
-        text: resultMsg(
-          result.id,
-          target.type,
-          `Section "${sectionNodeId}" placed: ${idsInOrder.length} nodes (root ${rootId}).`
-        ),
+        text:
+          resultMsg(
+            result.id,
+            target.type,
+            `Section "${sectionNodeId}" placed: ${idsInOrder.length} nodes (root ${rootId}).`
+          ) + reportSuffix,
       },
     ],
     changedNodes,

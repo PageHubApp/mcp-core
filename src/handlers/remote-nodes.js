@@ -233,7 +233,7 @@ async function patchSiteNodeBody(args) {
     }
   }
   applyNodePatches(flat, nodeId, patchArgs);
-  assertNoImageSrcContentConflict(flat, nodeId);
+  assertNoImageSrcContentConflict(flat, nodeId, patchArgs);
   const buttonReport = maybePreflightButton(flat, nodeId, buttonValidationMode);
   const designReport = runDesignValidation(flat, [nodeId], designValidationMode, {
     staticPublish: !!siteData?.staticPublish,
@@ -356,7 +356,7 @@ async function patchSiteBulkBody(args) {
     bulkPatch = stripped.patch;
     if (stripped.dropped.length) droppedByNode.push(`${nid}: ${stripped.dropped.join(", ")}`);
     applyNodePatches(flat, nid, bulkPatch);
-    assertNoImageSrcContentConflict(flat, nid);
+    assertNoImageSrcContentConflict(flat, nid, bulkPatch);
     const report = maybePreflightButton(flat, nid, buttonValidationMode);
     if (report) buttonReports.push(report);
     touched.push(nid);
