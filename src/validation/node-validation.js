@@ -26,6 +26,65 @@ const DAISY_TOKEN_MAP = {
   "border-": "border-base-200 / border-base-300 / border-primary / border-neutral",
 };
 
+// ── Inert form validation detection ──
+
+/**
+ * Native constraint validation only runs on form submit. A FormElement carrying
+ * these outside any form renders the attribute and enforces nothing — the
+ * author reads "required" as a guarantee and ships a false affordance.
+ */
+const NATIVE_VALIDATION_ATTRS = [
+  "required",
+  "pattern",
+  "min",
+  "max",
+  "minlength",
+  "minLength",
+  "maxlength",
+  "maxLength",
+  "step",
+];
+
+/** The validation attributes this node would render, from props and `attrs`. */
+function inertValidationAttrs(props) {
+  const found = new Set();
+  if (props.required === true) found.add("required");
+  const a = props.attrs;
+  if (a && typeof a === "object") {
+    for (const k of Object.keys(a)) {
+      if (NATIVE_VALIDATION_ATTRS.includes(k)) found.add(k);
+    }
+  }
+  return [...found];
+}
+
+/**
+ * Walk `parent` links looking for a node that renders a `<form>` — a `Form`, or
+ * a `Container` with `props.type: "form"` (which `Form` itself delegates to).
+ *
+ * Returns `"found"`, `"absent"` (the walk reached the tree root, so the answer
+ * is complete), or `"unknown"` (the chain left the submitted map — a section
+ * fill, where the real ancestors were never sent and a warning would be a
+ * guess).
+ */
+function findFormAncestor(flatMap, nodeId) {
+  const seen = new Set([nodeId]);
+  let current = flatMap[nodeId];
+  while (current) {
+    const parentId = current.parent;
+    if (!parentId) return current === flatMap[ROOT_NODE_ID] ? "absent" : "unknown";
+    if (seen.has(parentId)) return "unknown"; // cycle — don't guess
+    seen.add(parentId);
+    const parent = flatMap[parentId];
+    if (!parent) return parentId === ROOT_NODE_ID ? "absent" : "unknown";
+    const name = parent.type?.resolvedName;
+    if (name === "Form" || parent.props?.type === "form") return "found";
+    if (parentId === ROOT_NODE_ID) return "absent";
+    current = parent;
+  }
+  return "unknown";
+}
+
 function detectHardcodedColors(className) {
   if (!className || typeof className !== "string") return [];
   const matches = [];
@@ -354,6 +413,20 @@ function validateNodes(flatMap, opts = {}) {
       for (const issue of colorIssues) {
         colorWarnings.push(
           `${nodeId}: Hardcoded color "${issue.class}" — consider ${issue.suggestion}`
+        );
+      }
+    }
+
+    // ─── FormElement outside a form: validation attributes are inert ───
+    if (resolvedName === "FormElement") {
+      const inert = inertValidationAttrs(props);
+      if (inert.length > 0 && findFormAncestor(flatMap, nodeId) === "absent") {
+        warnings.push(
+          `${nodeId}: FormElement sets ${inert.join(", ")} but has no Form ancestor — ` +
+            `the browser only runs constraint validation on form submit, so these render ` +
+            `and enforce nothing. Wrap the field and its submit control in a Form (or a ` +
+            `Container with props.type "form"), or drop the attributes and validate in the ` +
+            `button's handler.`
         );
       }
     }

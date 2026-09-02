@@ -213,6 +213,41 @@ async function addPageBody(args) {
   };
 }
 
+/**
+ * `seo.schema` is an array of entries the renderer knows how to emit. Exactly
+ * three shapes qualify: a builder entry (`kind: "builder"` + `type` + `fields`),
+ * a raw entry (`kind: "raw"` + a `json` string), or finished JSON-LD carrying
+ * `@type`. Anything else compiles to nothing — the write succeeds, the publish
+ * reports success, and the page ships with no structured data at all — so
+ * refuse it here where the author can still see why.
+ */
+function assertSchemaEntries(value, pageId) {
+  if (value == null) return;
+  if (!Array.isArray(value)) {
+    throw new Error(
+      `update_page seo.schema for page "${pageId}" must be an array of schema entries, got ${typeof value}.`
+    );
+  }
+  value.forEach((entry, i) => {
+    const ok =
+      entry &&
+      typeof entry === "object" &&
+      !Array.isArray(entry) &&
+      ((entry.kind === "builder" && typeof entry.type === "string") ||
+        (entry.kind === "raw" && typeof entry.json === "string") ||
+        (entry.kind == null && typeof entry["@type"] === "string" && entry["@type"].trim()));
+    if (ok) return;
+    throw new Error(
+      `update_page seo.schema[${i}] for page "${pageId}" is not a schema entry the renderer can emit, ` +
+        `so it would be stored and then silently dropped. Use one of:\n` +
+        `  { "@context": "https://schema.org", "@type": "LocalBusiness", … }   (finished JSON-LD)\n` +
+        `  { "kind": "raw", "id": "<id>", "json": "<JSON-LD string>" }\n` +
+        `  { "kind": "builder", "id": "<id>", "type": "<SchemaTypeKey>", "fields": { … } }\n` +
+        `Received: ${JSON.stringify(entry).slice(0, 200)}`
+    );
+  });
+}
+
 async function updatePageBody(args) {
   const { pageId, name, isHomePage, is404Page, isHidden, hideHeader, hideFooter, hideChrome } =
     args;
@@ -305,6 +340,7 @@ async function updatePageBody(args) {
     if (seo[key] != null) {
       if (!page.props.seo) page.props.seo = {};
       const parsed = parseMaybeJson(seo[key]);
+      if (key === "schema") assertSchemaEntries(parsed, pageId);
       page.props.seo[key] = parsed;
       const preview = JSON.stringify(parsed);
       changes.push(`seo.${key} → ${preview.length > 80 ? preview.slice(0, 80) + "…" : preview}`);

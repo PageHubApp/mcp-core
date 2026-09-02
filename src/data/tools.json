@@ -2349,7 +2349,7 @@
   },
   {
     "name": "update_page",
-    "description": "Updates a page's metadata — display name (which changes the URL slug), SEO fields, home page flag, 404 flag, visibility, per-page custom code (headCode/bodyClass), or chrome suppression (hideHeader/hideFooter/hideChrome for landing pages). Use list_pages to find page node IDs first.\n\nIMPORTANT: Always set seo.title and seo.description on every page. The browser <title> tag comes from seo.title (NOT the site-level title field). If not set, it falls back to the page's displayName (e.g. \"Home Page\").\n\nCUSTOM CODE (per page): headCode is raw HTML injected into that page's <head> (scripts, styles, meta tags — scoped to this page only). bodyClass adds extra className(s) to the <body> element on this page. NOT for page content — build that with add_nodes / apply_kit_block; writes that rebuild the document are rejected. For site-wide custom code use patch_site_node on ROOT (props.inject.head / props.inject.footer). For analytics/pixels prefer set_integrations.\n\nCHROME (per page): hideHeader / hideFooter suppress the site's global header / footer. hideChrome strips ALL non-page chrome (header, footer, sticky bars, floating CTAs, mobile drawers) — the right switch for Google Ads landing pages. All three default to false.",
+    "description": "Updates a page's metadata — display name (which changes the URL slug), SEO fields, home page flag, 404 flag, visibility, per-page custom code (headCode/bodyClass), or chrome suppression (hideHeader/hideFooter/hideChrome for landing pages). Use list_pages to find page node IDs first.\n\nIMPORTANT: Always set seo.title and seo.description on every page. The browser <title> tag comes from seo.title, which outranks the site-level title field. A page that sets no seo.title falls back to the site-level title — never to the page's displayName — so every page on the site ships the same <title> until you set one.\n\nCUSTOM CODE (per page): headCode is raw HTML injected into that page's <head>, emitted server-side so script tags execute at HTML-parse time (scripts, styles, meta tags — scoped to this page only). bodyClass adds extra className(s) to the <body> element on this page. NOT for page content — build that with add_nodes / apply_kit_block; writes that rebuild the document are rejected. For site-wide custom code use patch_site_node on ROOT (props.inject.head / props.inject.footer). For analytics/pixels prefer set_integrations.\n\nCHROME (per page): hideHeader / hideFooter suppress the site's global header / footer. hideChrome strips ALL non-page chrome (header, footer, sticky bars, floating CTAs, mobile drawers) — the right switch for Google Ads landing pages. All three default to false.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2433,7 +2433,7 @@
         },
         "headCode": {
           "type": "string",
-          "description": "Raw HTML injected into this page's <head> (scripts, styles, meta tags). Scoped to this page only — for site-wide injection use patch_site_node on ROOT.props.inject.head. Pass an empty string to clear.",
+          "description": "Raw HTML injected into this page's <head> (scripts, styles, meta tags), emitted server-side — script tags execute at HTML-parse time. Scoped to this page only — for site-wide injection use patch_site_node on ROOT.props.inject.head. Pass an empty string to clear.",
           "maxLength": 65536
         },
         "bodyClass": {
