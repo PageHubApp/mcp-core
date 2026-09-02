@@ -74,6 +74,24 @@ function isSameChildIdMultiset(prev, next) {
  * Supports exact matches and prefix matches (e.g. "gap-" removes "gap-4", "md:gap-8").
  */
 /**
+ * Scripts that rebuild the document from a string. These run after the site
+ * has already rendered, so they delete the real node tree and replace it with
+ * a copy that no editor, walker or static export can see — the page silently
+ * stops reflecting the site.
+ */
+const DESTRUCTIVE_INJECT_JS = [
+  {
+    re: /document\s*\.\s*(?:body|documentElement)\s*\.\s*(?:inner|outer)HTML\s*=/i,
+    what: "assigns to document.body.innerHTML",
+  },
+  {
+    re: /document\s*\.\s*(?:body|documentElement)\s*\.\s*replaceChildren\s*\(/i,
+    what: "calls document.body.replaceChildren()",
+  },
+  { re: /document\s*\.\s*write(?:ln)?\s*\(/i, what: "calls document.write()" },
+];
+
+/**
  * Reject raw CSS / JS shoved into a "raw HTML" inject slot without the
  * required `<style>` or `<script>` wrapper. Models routinely drop pure CSS
  * into `ROOT.props.inject.head` (or per-page `headCode`), the browser ignores
@@ -87,6 +105,16 @@ function assertInjectHtml(value, location) {
   }
   const trimmed = value.trim();
   if (trimmed === "") return;
+  for (const { re, what } of DESTRUCTIVE_INJECT_JS) {
+    if (!re.test(trimmed)) continue;
+    throw new Error(
+      `${location} ${what}, which erases the rendered page on load. ` +
+        `inject slots are for third-party snippets — a tracking tag, a chat widget, one CSS rule. ` +
+        `They are NOT where page content goes: anything written this way is invisible to the editor, ` +
+        `to search engines, and to static export, and it silently overwrites whatever the site actually contains. ` +
+        `Build the page out of nodes instead — add_nodes / apply_kit_block / patch_site_node.`
+    );
+  }
   // Strip legitimate wrappers — anything left over with CSS/JS shape is unwrapped.
   const stripped = trimmed
     .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, "")
