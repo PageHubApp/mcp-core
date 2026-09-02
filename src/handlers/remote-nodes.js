@@ -112,7 +112,14 @@ async function addNodesBody(args) {
   }
 
   // Validate & auto-fix new nodes before sanitizing
-  const validation = validateNodes(rawNodes, { autoFix: true, warnColors: true });
+  // `rawNodes` is only the submitted subtree — its root's parent is a node in
+  // the live site. Hand the validator the site's ids so an existing parent isn't
+  // reported as a blocking error on a call that succeeded.
+  const validation = validateNodes(rawNodes, {
+    autoFix: true,
+    warnColors: true,
+    knownNodeIds: new Set(Object.keys(flat)),
+  });
   const validationReport = formatValidationReport(validation);
 
   // Sanitize: parse strings, validate types, rebuild parent↔children, reparent orphans
@@ -203,7 +210,7 @@ async function patchSiteNodeBody(args) {
   const buttonValidationMode = normalizeButtonValidationMode(args.buttonValidation);
   const designValidationMode = normalizeDesignValidationMode(args.designValidation);
   const ctx = getContext();
-  const { flat } = await fetchTarget(args);
+  const { flat, data: siteData } = await fetchTarget(args);
   assertFillModePatchAllowed(flat, nodeId, ctx);
   let patchArgs = normalizeNodePatchArgs({ ...args, nodesPatch, unsetProps, unsetClasses });
   if (String(nodeId) === ROOT_NODE_ID && patchArgs.propsPatch) {
@@ -228,7 +235,9 @@ async function patchSiteNodeBody(args) {
   applyNodePatches(flat, nodeId, patchArgs);
   assertNoImageSrcContentConflict(flat, nodeId);
   const buttonReport = maybePreflightButton(flat, nodeId, buttonValidationMode);
-  const designReport = runDesignValidation(flat, [nodeId], designValidationMode);
+  const designReport = runDesignValidation(flat, [nodeId], designValidationMode, {
+    staticPublish: !!siteData?.staticPublish,
+  });
   const changedNodes = collectSubtree(flat, findSectionRoot(flat, nodeId));
 
   // Dry run: return proposed changes without saving
@@ -301,7 +310,7 @@ async function patchSiteBulkBody(args) {
     );
   }
   const ctx = getContext();
-  const { flat } = await fetchTarget(args);
+  const { flat, data: siteData } = await fetchTarget(args);
   assertFillModeBulkPatchesAllowed(flat, list, ctx);
   // Pre-scan for hand-typed Unsplash URLs across ALL patches so we reject
   // before any partial write — keeps the bulk semantics clean.
@@ -352,7 +361,9 @@ async function patchSiteBulkBody(args) {
     if (report) buttonReports.push(report);
     touched.push(nid);
   }
-  const designReport = runDesignValidation(flat, touched, designValidationMode);
+  const designReport = runDesignValidation(flat, touched, designValidationMode, {
+    staticPublish: !!siteData?.staticPublish,
+  });
   const changedNodes = Object.assign(
     {},
     ...touched.map(id => collectSubtree(flat, findSectionRoot(flat, id)))

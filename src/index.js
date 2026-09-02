@@ -54,6 +54,7 @@ const { apiFetch, normalizeBaseUrl } = require("./core/api-fetch");
 const { uploadBytesToSite } = require("./core/direct-upload");
 const { formatUploadResult } = require("./helpers/upload-format");
 const { parseMaybeJson } = require("./helpers/args");
+const { runToolWithPublishTrailer } = require("./helpers/publish-state");
 const { applyNodePatches, normalizeNodePatchArgs } = require("./helpers/node-patch");
 const {
   getActiveTarget,
@@ -159,7 +160,7 @@ function getAllTools() {
 async function executeTool(name, args) {
   const handler = handlers[name];
   if (!handler) throw new Error(`Unknown tool: ${name}`);
-  return handler(args);
+  return runToolWithPublishTrailer(handler, args, getContext());
 }
 
 /**
@@ -194,6 +195,7 @@ module.exports = {
 
   // Helpers
   parseMaybeJson,
+  runToolWithPublishTrailer,
   applyNodePatches,
   normalizeNodePatchArgs,
   getActiveTarget,

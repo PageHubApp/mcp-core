@@ -190,10 +190,16 @@ async function saveTarget(targetId, targetType, flat, extra = {}) {
     wroteTo: put.wroteTo || "draft",
     hasUnpublishedChanges: !!put.hasUnpublishedChanges,
   };
+  // `executeTool` reads this after the handler returns and appends the
+  // publish-state trailer, so a tool that builds its own message — most of
+  // them do — cannot ship without it.
   ctx._lastSiteWrite = {
     id: saved.id,
     wroteTo: saved.wroteTo,
+    published: !!put.published,
     hasUnpublishedChanges: saved.hasUnpublishedChanges,
+    unpublishedPages: Array.isArray(put.unpublishedPages) ? put.unpublishedPages : [],
+    lastPublishedAt: put.lastPublishedAt || null,
   };
   return saved;
 }

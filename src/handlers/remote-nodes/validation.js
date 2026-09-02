@@ -9,6 +9,10 @@ const { getContext } = require("../../core/context");
 
 const { validateButtonClasses } = require("../../validation/button-system");
 const { validateNodes } = require("../../validation/node-validation");
+const {
+  checkPropsSupport,
+  formatPropSupportReport,
+} = require("../../validation/prop-support");
 
 function normalizeButtonValidationMode(value) {
   if (value == null) return "warn";
@@ -37,8 +41,35 @@ function warningMentionsNode(warning, nodeId) {
   );
 }
 
-function runDesignValidation(flat, touchedNodeIds, mode) {
-  if (mode === "off") return null;
+/**
+ * Props on the touched nodes that the active render path will not honor.
+ *
+ * Read off the merged tree rather than the patch, so it reports the state the
+ * node is actually left in — a prop that silently does nothing is worth saying
+ * whether this call introduced it or an earlier one did.
+ */
+function collectPropDrops(flat, touchedNodeIds, staticPublish) {
+  const out = [];
+  for (const id of touchedNodeIds || []) {
+    const node = flat?.[id];
+    if (!node) continue;
+    out.push(
+      ...checkPropsSupport({
+        component: node.type?.resolvedName,
+        props: node.props,
+        staticPublish,
+        nodeId: id,
+      })
+    );
+  }
+  return out;
+}
+
+function runDesignValidation(flat, touchedNodeIds, mode, opts = {}) {
+  const propDrops = collectPropDrops(flat, touchedNodeIds, opts.staticPublish);
+  if (mode === "off") {
+    return propDrops.length ? { mode, warnings: [], colorWarnings: [], errors: [], propDrops } : null;
+  }
   // In components-fill mode (clone pipeline), auto-fix cheap things like
   // wrapping bare Text in <p> — the model routinely re-emits plain text on
   // patches, and re-warning on that adds noise without fixing the render.
@@ -63,7 +94,8 @@ function runDesignValidation(flat, touchedNodeIds, mode) {
   if (
     touchedWarnings.length === 0 &&
     touchedColorWarnings.length === 0 &&
-    touchedErrors.length === 0
+    touchedErrors.length === 0 &&
+    propDrops.length === 0
   ) {
     return null;
   }
@@ -72,19 +104,32 @@ function runDesignValidation(flat, touchedNodeIds, mode) {
     warnings: touchedWarnings,
     colorWarnings: touchedColorWarnings,
     errors: touchedErrors,
+    propDrops,
   };
 }
 
 function formatDesignValidationReport(rec) {
   if (!rec) return "";
+  const propDrops = rec.propDrops || [];
+  // Its own block: "this class is off-token" and "this prop renders nothing"
+  // are different asks, and the second is the one that costs a live feature.
+  const dropBlock = formatPropSupportReport(propDrops);
   const colorWarnings = rec.colorWarnings || [];
+  if (
+    (rec.errors || []).length === 0 &&
+    (rec.warnings || []).length === 0 &&
+    colorWarnings.length === 0
+  ) {
+    return dropBlock;
+  }
   const lines = [`Design validation [${rec.mode}]:`];
   if (rec.errors.length > 0) lines.push(`- errors: ${rec.errors.length}`);
   if (rec.warnings.length > 0) lines.push(`- warnings: ${rec.warnings.length}`);
   if (colorWarnings.length > 0) lines.push(`- hardcoded colors: ${colorWarnings.length}`);
   const preview = [...rec.errors, ...rec.warnings, ...colorWarnings].slice(0, 6);
   for (const item of preview) lines.push(`  ${item}`);
-  return lines.join("\n");
+  const body = lines.join("\n");
+  return dropBlock ? `${body}\n\n${dropBlock}` : body;
 }
 
 function maybePreflightButton(flat, nodeId, mode) {

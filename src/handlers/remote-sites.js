@@ -136,10 +136,19 @@ module.exports = {
     }
     // Clear activeTemplate so site takes priority
     ctx.activeTemplate = null;
+    // Echo the document-level title/description. They are the site-wide
+    // fallback every page's <title> and <meta name="description"> resolve to
+    // when that page sets no per-page SEO, and no other tool reads them back —
+    // so an agent correcting stale meta had no way to see what was there.
+    const lines = [
+      `Active site set to ${data.id} (${data.name || "unnamed"})`,
+      `Site title: ${data.title ? JSON.stringify(data.title) : "(unset)"}`,
+      `Site description: ${data.description ? JSON.stringify(data.description) : "(unset)"}`,
+      `Published: ${data.published ? "yes" : "no"}${data.staticPublish ? " (turbo/static delivery)" : ""}`,
+      `Change these two with update_site; per-page overrides go through update_page seo.`,
+    ];
     return {
-      content: [
-        { type: "text", text: `Active site set to ${data.id} (${data.name || "unnamed"})` },
-      ],
+      content: [{ type: "text", text: lines.join("\n") }],
     };
   },
 
@@ -195,7 +204,10 @@ module.exports = {
       content: [
         {
           type: "text",
-          text: `Site ${target.id} updated (${changed}). Current name=${data?.name ?? "(none)"}, title=${data?.title ?? "(none)"}.`,
+          text:
+            `Site ${target.id} updated (${changed}).\n` +
+            `Site title: ${data?.title ? JSON.stringify(data.title) : "(unset)"}\n` +
+            `Site description: ${data?.description ? JSON.stringify(data.description) : "(unset)"}`,
         },
       ],
     };
@@ -223,10 +235,6 @@ module.exports = {
     // whether that happened — "published" alone does not distinguish a promotion
     // from a no-op flag flip on a site that was already live.
     const promoted = put?.promoted ? " Staged draft promoted to live." : "";
-    const ctx = getContext();
-    if (ctx._lastSiteWrite && String(ctx._lastSiteWrite.id) === String(target.id)) {
-      ctx._lastSiteWrite = null;
-    }
     return {
       content: [{ type: "text", text: `Site ${target.id} published${mode}.${promoted}` }],
     };

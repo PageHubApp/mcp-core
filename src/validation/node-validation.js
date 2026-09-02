@@ -144,10 +144,14 @@ const STRUCTURAL_NODE_IDS = new Set([
  * @param {object} [opts] - Options
  * @param {boolean} [opts.autoFix=true] - Apply auto-fixes (src→content, tagName defaults, text wrapping)
  * @param {boolean} [opts.warnColors=true] - Warn about hardcoded colors
+ * @param {Set<string>} [opts.knownNodeIds] - Ids that exist outside `flatMap` (the
+ *   live site tree). `add_nodes` validates only the submitted subtree, whose root
+ *   parent lives in the site — without this the parent check calls a correct write
+ *   a blocking error, which teaches callers to ignore the error block entirely.
  * @returns {{ warnings: string[], colorWarnings: string[], fixes: string[], errors: string[] }}
  */
 function validateNodes(flatMap, opts = {}) {
-  const { autoFix = true, warnColors = true, sectionRootId = null } = opts;
+  const { autoFix = true, warnColors = true, sectionRootId = null, knownNodeIds = null } = opts;
   const warnings = [];
   const colorWarnings = [];
   const fixes = [];
@@ -434,8 +438,11 @@ function validateNodes(flatMap, opts = {}) {
     // ─── Parent reference validation ───
     // Skip for the section root node — its parent (e.g. page_home) lives in the site, not the submitted map
     if (node.parent && nodeId !== ROOT_NODE_ID && nodeId !== sectionRootId) {
-      if (!flatMap[node.parent]) {
-        errors.push(`${nodeId}: Parent "${node.parent}" does not exist in the node map`);
+      const parentExists = !!flatMap[node.parent] || !!knownNodeIds?.has(node.parent);
+      if (!parentExists) {
+        errors.push(
+          `${nodeId}: Parent "${node.parent}" exists in neither the submitted nodes nor the site`
+        );
       }
     }
 

@@ -10,6 +10,10 @@ const {
   assertInjectHtml,
 } = require("../helpers/index.js");
 const { buildPatch } = require("../helpers/patch/build");
+const {
+  checkPropSupport,
+  formatPropSupportReport,
+} = require("../validation/prop-support");
 
 /** Find all page nodes — direct ROOT children with props.type === 'page'. */
 function findPages(flat) {
@@ -256,7 +260,7 @@ async function updatePageBody(args) {
   const target = getActiveTarget(args);
   const ctx = getContext();
 
-  const { flat } = await fetchTarget(args);
+  const { flat, data: siteData } = await fetchTarget(args);
 
   const page = flat[pageId];
   if (!page) throw new Error(`Page node "${pageId}" not found.`);
@@ -347,9 +351,20 @@ async function updatePageBody(args) {
     }
   }
 
+  const dropWarnings = [];
   for (const key of ["headCode", "bodyClass"]) {
     if (args[key] != null) {
       const val = String(args[key]);
+      if (val !== "") {
+        dropWarnings.push(
+          ...checkPropSupport({
+            key,
+            value: val,
+            staticPublish: !!siteData?.staticPublish,
+            nodeId: pageId,
+          })
+        );
+      }
       if (val === "") {
         delete page.props[key];
         changes.push(`${key} → (cleared)`);
@@ -370,12 +385,16 @@ async function updatePageBody(args) {
 
   touched.add(pageId);
   const patch = buildPatch(flat, touched);
+  const dropReport = formatPropSupportReport(dropWarnings);
+  const dropSuffix = dropReport ? `\n\n${dropReport}` : "";
 
   // Draft mode: persist into _pendingFlatMap so signal_sections picks up SEO changes
   if (ctx.draftMode) {
     ctx._pendingFlatMap = flat;
     return {
-      content: [{ type: "text", text: `Page ${pageId} updated:\n  ${changes.join("\n  ")}` }],
+      content: [
+        { type: "text", text: `Page ${pageId} updated:\n  ${changes.join("\n  ")}${dropSuffix}` },
+      ],
       patch,
     };
   }
@@ -390,7 +409,7 @@ async function updatePageBody(args) {
     content: [
       {
         type: "text",
-        text: `Page ${pageId} updated in ${label}:\n  ${changes.join("\n  ")}${editorLine}`,
+        text: `Page ${pageId} updated in ${label}:\n  ${changes.join("\n  ")}${editorLine}${dropSuffix}`,
       },
     ],
     patch,
