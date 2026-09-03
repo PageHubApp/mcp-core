@@ -2670,7 +2670,7 @@
   },
   {
     "name": "set_favicon",
-    "description": "Set or clear the site favicon (browser-tab icon). Writes to ROOT.props.seo.favicon and is served by /api/favicon for all routes (subdomain, custom domain, white-label tenant).\n\nProvide exactly ONE source — listed by preference:\n  - filePath: local file path on the machine running the MCP server (.png/.jpg/.webp/.gif/.svg/.ico). EASIEST option — server reads + base64-encodes for you. Use this when the user pasted/dropped a file or referenced one in chat.\n  - mediaId: existing media library id (already uploaded). Stored as { href, type: \"cdn\" }.\n  - imageUrl: public http(s) URL to fetch and upload to CDN.\n  - dataBase64: raw base64 or data URL. Pair with mimeType (defaults to image/png).\n  - svgContent: raw inline SVG markup the USER explicitly supplied. Stored inline — no upload. DO NOT INVENT SVG MARKUP HERE; if the user didn't hand you SVG text, prefer filePath or imageUrl.\n  - clear: true — remove the favicon entirely.\n\nRecommended formats: 32x32 or 64x64 PNG, or a small SVG. Browsers cache favicons aggressively; users may need a hard reload to see changes. Not supported on templates.",
+    "description": "Set or clear the site favicon (browser-tab icon). Writes to ROOT.props.seo.favicon and is served by /api/favicon for all routes (subdomain, custom domain, white-label tenant).\n\nProvide exactly ONE source — listed by preference:\n  - filePath: local file path on the machine running the MCP server (.png/.jpg/.webp/.gif/.svg). EASIEST option — the bytes go direct to the CDN at any size, EXIF rotation and downscaling included. Use this when the user pasted/dropped a file or referenced one in chat. Local stdio MCP server only (not the hosted agent).\n  - mediaId: existing media library id (already uploaded). Stored as { href, type: \"cdn\" }.\n  - imageUrl: public http(s) URL to fetch and upload to CDN.\n  - dataBase64: raw base64 or data URL, for small icons only — it passes through a serverless function that caps the whole request at 4.5MB (~3MB decoded). Pair with mimeType (defaults to image/png).\n  - svgContent: raw inline SVG markup the USER explicitly supplied. Stored inline — no upload. DO NOT INVENT SVG MARKUP HERE; if the user didn't hand you SVG text, prefer filePath or imageUrl.\n  - clear: true — remove the favicon entirely.\n\nRecommended: a 512px square PNG (each icon slot is resized from it at the CDN edge) or an SVG. Browsers cache favicons aggressively; users may need a hard reload to see changes. Writes stage into the draft like any other edit — run publish_site before checking the live tab. Not supported on templates.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2681,7 +2681,7 @@
         },
         "filePath": {
           "type": "string",
-          "description": "Local file path on the MCP host. Absolute path preferred (relative paths resolve from the MCP server's CWD). Extension determines MIME (.png/.jpg/.jpeg/.webp/.gif/.svg/.ico).",
+          "description": "Local file path — absolute, ~/-relative, or relative to the server's cwd. Extension determines MIME (.png/.jpg/.jpeg/.webp/.gif/.svg); .ico is not storable on the CDN. Bytes go direct to Cloudflare Images without passing through the conversation or the 4.5MB request cap. Local stdio MCP server only (not the hosted agent).",
           "maxLength": 2048
         },
         "mediaId": {
@@ -2696,7 +2696,7 @@
         },
         "dataBase64": {
           "type": "string",
-          "description": "Raw base64 or data URL (data:image/png;base64,...). Max ~12MB decoded.",
+          "description": "Raw base64 or data URL (data:image/png;base64,...). Small icons only — the request body is capped at 4.5MB, so ~3MB decoded. Use filePath or imageUrl for anything larger.",
           "maxLength": 16777216
         },
         "mimeType": {
