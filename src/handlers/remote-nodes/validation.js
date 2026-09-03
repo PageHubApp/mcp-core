@@ -14,8 +14,15 @@ const {
   formatPropSupportReport,
 } = require("../../validation/prop-support");
 
+// `warn` is advisory, and a model that is mid-plan reads an advisory note and
+// keeps going: a `missing-btn` error was reported on every button of a hero and
+// the buttons still shipped with no `btn` class, so they rendered as bare text.
+// `fix` corrects the class list and reports what it changed, which lands the
+// canonical CTA without spending a turn on a round trip the model may ignore.
+// Every fix is additive or a whole-pair swap, never a silent rewrite of a
+// colour the caller chose.
 function normalizeButtonValidationMode(value) {
-  if (value == null) return "warn";
+  if (value == null) return "fix";
   if (value === true) return "warn";
   if (value === false) return "off";
   const raw = String(value).trim().toLowerCase();

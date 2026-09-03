@@ -4,14 +4,18 @@
  * this module is the pure mutator + per-call arg normalization.
  */
 
-const { twMerge } = require("tailwind-merge");
 const {
   parseMaybeJson,
   isSameChildIdMultiset,
   removeClasses,
+  mergeClasses,
   assertInjectHtml,
 } = require("../args");
 const { normalizeTypePatch, CANVAS_TYPE_PATCH_COMPONENTS } = require("./schema");
+const {
+  detectSurfaceTextCollision,
+  detectInvalidCdnMediaId,
+} = require("../../validation/node-validation");
 const { getContext } = require("../../core/context");
 
 const INVALID_ID_HARD_STOP_THRESHOLD = 3;
@@ -159,10 +163,16 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
     entry.isCanvas = CANVAS_TYPE_PATCH_COMPONENTS.has(normalizedTypePatch);
     if (!Array.isArray(entry.nodes)) entry.nodes = [];
   }
-  // className patch — merge Tailwind classes into props.className via twMerge
+  // className patch — merge Tailwind classes into props.className
   if (classNamePatch) {
     const existing = flatMap[nodeId].props.className || "";
-    flatMap[nodeId].props.className = twMerge(existing, classNamePatch);
+    const merged = mergeClasses(existing, classNamePatch);
+    // Reject same-token text-on-surface before it lands. A warning would arrive
+    // after the turn is already paid for, and the agent cannot see the render —
+    // so the correction has to come back as a tool error naming the right token.
+    const collision = detectSurfaceTextCollision(flatMap, nodeId, merged);
+    if (collision) throw new Error(collision);
+    flatMap[nodeId].props.className = merged;
   }
   // Remove specific classes from props.className
   if (Array.isArray(unsetClasses) && unsetClasses.length > 0) {
@@ -206,6 +216,21 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
           `If you want to keep the existing node and add an image elsewhere, use \`add_nodes\` or ` +
           `\`insert_node\` with a new Image child — do not patch a non-Image node's props.type.`
       );
+    }
+  }
+  // Guard: a "cdn" source whose src/content is not a real media id. The patch
+  // would report success and the image would paint nothing. The effective type
+  // is the one being written, else the one already on the node — a patch that
+  // sets only `src` on an existing cdn Image is the common case.
+  if (propsPatch) {
+    const effectiveType =
+      typeof propsPatch.type === "string" ? propsPatch.type : entry?.props?.type;
+    if (effectiveType === "cdn") {
+      for (const key of ["src", "content"]) {
+        if (!(key in propsPatch)) continue;
+        const bad = detectInvalidCdnMediaId(nodeId, `propsPatch.${key}`, propsPatch[key]);
+        if (bad) throw new Error(bad);
+      }
     }
   }
   if (propsPatch) {

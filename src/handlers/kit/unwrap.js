@@ -1,4 +1,4 @@
-const { twMerge } = require("tailwind-merge");
+const { mergeClasses } = require("../../helpers/args");
 
 /**
  * Skeleton sections are already empty section containers. Block library roots are often
@@ -8,7 +8,7 @@ function unwrapBlockStructure(structure) {
   if (!structure || typeof structure !== "object") return structure;
   if (structure.type === "Container" && structure.props?.type === "section") {
     const p = structure.props || {};
-    const shellClass = twMerge(
+    const shellClass = mergeClasses(
       "flex flex-col w-full",
       typeof p.className === "string" ? p.className : ""
     );

@@ -1556,7 +1556,7 @@
         "buttonValidation": {
           "type": "string",
           "enum": ["off", "warn", "fix", "strict"],
-          "description": "Optional button class preflight mode for touched Button nodes. Values: off, warn, fix, strict. Default: warn. `fix` auto-corrects common class/modifier conflicts; `strict` rejects invalid button classes before save.",
+          "description": "Optional button class preflight mode for touched Button nodes. Values: off, warn, fix, strict. Default: fix, which auto-corrects missing `btn` base classes and common class/modifier conflicts; `strict` rejects invalid button classes before save.",
           "maxLength": 128
         },
         "designValidation": {
@@ -1644,7 +1644,7 @@
         "buttonValidation": {
           "type": "string",
           "enum": ["off", "warn", "fix", "strict"],
-          "description": "Optional button class preflight mode applied to touched Button nodes. Values: off, warn, fix, strict. Default: warn.",
+          "description": "Optional button class preflight mode applied to touched Button nodes. Values: off, warn, fix, strict. Default: fix.",
           "maxLength": 128
         },
         "designValidation": {
@@ -2491,6 +2491,12 @@
         "nodes": {
           "type": "object",
           "description": "Flat map of new nodes: { nodeId: nodeDefinition, ... }. Each node must have type, isCanvas, props, parent, nodes, linkedNodes."
+        },
+        "buttonValidation": {
+          "type": "string",
+          "enum": ["off", "warn", "fix", "strict"],
+          "description": "Button class preflight mode for any Button nodes in this payload. Values: off, warn, fix, strict. Default: fix, which auto-corrects missing `btn` base classes and class/modifier conflicts as the nodes are created; `strict` rejects invalid button classes before save.",
+          "maxLength": 128
         },
         "rootNodeId": {
           "type": "string",

@@ -26,6 +26,147 @@ const DAISY_TOKEN_MAP = {
   "border-": "border-base-200 / border-base-300 / border-primary / border-neutral",
 };
 
+// ── Surface / text collision ──
+
+/**
+ * The readable partner for each palette surface. A DaisyUI palette is built in
+ * pairs: every `bg-X` has an `X-content` chosen to sit on it. Setting text to
+ * the SAME token as the surface behind it is always invisible — it is the one
+ * colour mistake with no legitimate use.
+ *
+ * This is not hypothetical. A live hero root carried `bg-base-content`, and an
+ * agent patched `text-base-content` onto the heading inside it — dark on dark.
+ * The user spent seven turns and 4,003 credits restating "make the headline
+ * light" while each attempt re-applied the same token, because nothing in the
+ * patch path ever compared the two.
+ */
+const SURFACE_PARTNER = {
+  "base-100": "base-content",
+  "base-200": "base-content",
+  "base-300": "base-content",
+  "base-content": "base-100",
+  primary: "primary-content",
+  "primary-content": "primary",
+  secondary: "secondary-content",
+  "secondary-content": "secondary",
+  accent: "accent-content",
+  "accent-content": "accent",
+  neutral: "neutral-content",
+  "neutral-content": "neutral",
+  info: "info-content",
+  "info-content": "info",
+  success: "success-content",
+  "success-content": "success",
+  warning: "warning-content",
+  "warning-content": "warning",
+  error: "error-content",
+  "error-content": "error",
+};
+
+/**
+ * Last `<prefix>-<paletteToken>` in a className, ignoring variant-prefixed
+ * (`md:`, `hover:`, `dark:`) and opacity-suffixed forms for the token match but
+ * keeping bare utilities only — a variant-scoped colour is conditional, so it
+ * is not the node's resting surface and must not drive a rejection.
+ */
+function lastPaletteToken(className, prefix) {
+  if (!className || typeof className !== "string") return null;
+  let found = null;
+  for (const cls of className.split(/\s+/).filter(Boolean)) {
+    if (cls.includes(":")) continue; // variant-scoped — conditional, not resting state
+    if (!cls.startsWith(prefix)) continue;
+    const token = cls.slice(prefix.length).split("/")[0];
+    if (Object.prototype.hasOwnProperty.call(SURFACE_PARTNER, token)) found = token;
+  }
+  return found;
+}
+
+/**
+ * Nearest resting surface for a node: its own `bg-*` palette token, else the
+ * closest ancestor's. Returns null when the chain leaves the submitted map (a
+ * section fill, where the real ancestors were never sent) or when the nearest
+ * background is an image / arbitrary value we cannot reason about — in both
+ * cases a rejection would be a guess.
+ */
+function resolveSurfaceToken(flatMap, nodeId) {
+  const seen = new Set();
+  let currentId = nodeId;
+  while (currentId && !seen.has(currentId)) {
+    seen.add(currentId);
+    const node = flatMap[currentId];
+    if (!node) return null;
+    const own = lastPaletteToken(node.props?.className, "bg-");
+    if (own) return own;
+    currentId = node.parent;
+  }
+  return null;
+}
+
+/**
+ * Reject a text colour that resolves to the same palette token as the surface
+ * behind it. Returns a corrective message naming the right token, or null.
+ *
+ * Deliberately narrow: exact same-token only. Near-collisions (`base-200` text
+ * on `base-100`) are legitimate for muted copy and dividers, so widening this
+ * would block real work — the whole point of keeping styling unlocked.
+ */
+function detectSurfaceTextCollision(flatMap, nodeId, mergedClassName) {
+  const textToken = lastPaletteToken(mergedClassName, "text-");
+  if (!textToken) return null;
+  // A node that sets its own background is self-contained — the pairing the
+  // author wrote on this node is the one that renders.
+  const ownBg = lastPaletteToken(mergedClassName, "bg-");
+  if (ownBg) return ownBg === textToken ? collisionMessage(nodeId, textToken, ownBg) : null;
+  const surface = resolveSurfaceToken(flatMap, flatMap[nodeId]?.parent);
+  if (!surface || surface !== textToken) return null;
+  return collisionMessage(nodeId, textToken, surface);
+}
+
+function collisionMessage(nodeId, textToken, surfaceToken) {
+  const partner = SURFACE_PARTNER[surfaceToken];
+  return (
+    `${nodeId}: text-${textToken} is invisible here — the surface behind this node is bg-${surfaceToken}. ` +
+    `Use text-${partner} for readable copy on bg-${surfaceToken}, ` +
+    `or an explicit value (text-[#F7F4EE]) if you need a specific colour. ` +
+    `Re-send the patch with the corrected class.`
+  );
+}
+
+// ── CDN media-id shape ──
+
+/**
+ * Cloudflare Images ids are UUID-shaped. A `type: "cdn"` src that is not one
+ * resolves to nothing: the renderer builds a delivery URL from the string, the
+ * CDN 404s, and the <img> paints empty with no error anywhere. A model that
+ * invents a placeholder — `LOGO_MEDIA_ID` was written straight onto a live
+ * Image node during the model eval — gets a "patched" success and a blank hero.
+ *
+ * Mirrors `looksLikeCdnImageId` in the SDK (packages/sdk/src/utils/media/media.ts);
+ * mcp-core does not depend on the SDK, so the shape is restated here.
+ */
+const CDN_MEDIA_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/**
+ * `null` when the value is a usable cdn media id, otherwise the message telling
+ * the caller what to do instead. Only ever consulted for `type: "cdn"` — a
+ * `url` / `svg` / `r2` source has entirely different value shapes.
+ */
+function detectInvalidCdnMediaId(nodeId, key, value) {
+  if (typeof value !== "string") return null;
+  const s = value.trim();
+  if (!s || CDN_MEDIA_ID.test(s)) return null;
+  const looksLikeUrl = s.startsWith("http") || s.startsWith("/") || s.startsWith("data:");
+  return (
+    `${nodeId}: ${key} "${s.slice(0, 60)}" is not a CDN media id, but type is "cdn". ` +
+    `A cdn source must be the UUID-shaped id of a real upload ` +
+    `(e.g. "0d4fa652-abe1-41b1-9ffd-a1b3d375c400") — anything else renders a blank image with no error. ` +
+    (looksLikeUrl
+      ? `This looks like a URL: pass \`type: "url"\` instead of "cdn" to use it as-is.`
+      : `Do not invent or placeholder a media id. Get a real one from \`upload_image\` ` +
+        `(your own file or a URL) or \`find_image\` (stock), then re-send the patch with the id it returns.`)
+  );
+}
+
 // ── Inert form validation detection ──
 
 /**
@@ -509,4 +650,10 @@ function formatValidationReport(result) {
   return lines.join("\n");
 }
 
-module.exports = { validateNodes, formatValidationReport, detectHardcodedColors };
+module.exports = {
+  validateNodes,
+  formatValidationReport,
+  detectHardcodedColors,
+  detectSurfaceTextCollision,
+  detectInvalidCdnMediaId,
+};

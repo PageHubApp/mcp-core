@@ -1,3 +1,5 @@
+const { twMerge } = require("tailwind-merge");
+
 /** Try to JSON.parse a string, return as-is if it fails or isn't a string. */
 function parseMaybeJson(v) {
   if (v == null) return v;
@@ -151,10 +153,52 @@ function removeClasses(className, toRemove) {
   return filtered.join(" ");
 }
 
+/**
+ * Merge a className patch into an existing className string.
+ *
+ * `twMerge` alone is not enough here. It resolves conflicts only for classes it
+ * recognizes as Tailwind utilities, and PageHub's vocabulary is mostly classes
+ * it does not know: DaisyUI components (`btn`, `btn-primary`, `hero`,
+ * `hero-content`, `rounded-box`), the spatial scale (`px-space-md`,
+ * `gap-space-lg`, `px-container-x`), and our own composites
+ * (`cta-responsive`). Unknown classes are passed through verbatim, duplicates
+ * included — so re-applying the canonical CTA string the system prompt hands
+ * the model appends another full copy every time.
+ *
+ * That is not theoretical: one live button reached 82 classes with 10 unique
+ * (`btn`×13, `btn-primary`×13, `px-space-md`×13), and 62% of every class token
+ * on the section was a literal repeat. It is invisible in the render, so
+ * nothing ever surfaced it.
+ *
+ * Duplicate tokens in a class attribute never carry meaning — CSS precedence
+ * comes from rule order in the stylesheet, not attribute order — so collapsing
+ * them is safe. The LAST occurrence wins to preserve twMerge's own
+ * later-overrides-earlier ordering.
+ */
+function mergeClasses(existing, patch) {
+  return dedupeClasses(twMerge(existing || "", patch || ""));
+}
+
+/** Collapse repeated class tokens, keeping each token's last position. */
+function dedupeClasses(className) {
+  if (!className || typeof className !== "string") return className || "";
+  const parts = className.split(/\s+/).filter(Boolean);
+  const seen = new Set();
+  const out = [];
+  for (let i = parts.length - 1; i >= 0; i--) {
+    if (seen.has(parts[i])) continue;
+    seen.add(parts[i]);
+    out.push(parts[i]);
+  }
+  return out.reverse().join(" ");
+}
+
 module.exports = {
   parseMaybeJson,
   mergeStrList,
   isSameChildIdMultiset,
   removeClasses,
+  mergeClasses,
+  dedupeClasses,
   assertInjectHtml,
 };

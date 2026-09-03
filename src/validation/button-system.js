@@ -162,6 +162,35 @@ function validateButtonClasses(args = {}) {
   const hasPrimary = hasToken(tokens, "btn-primary");
   let inferredVariant = hasOutline ? "outline" : hasPrimary ? "primary" : "custom";
 
+  // `custom` skips every fill and sizing check below, which makes it a silent
+  // escape hatch: a button carrying only generic utilities (`px-8 py-3 rounded
+  // font-semibold` — the vanilla-Tailwind shape models reach for by default)
+  // infers `custom`, so nothing ever tells it that BUTTON_RULES' "background +
+  // text color" MUST is unmet, and it ships with no fill at all.
+  //
+  // A deliberate custom button states a colour. One with no variant and no fill
+  // token is simply unstyled, so name a variant and let the branches below
+  // supply the canonical class set. A border is the one honest signal of
+  // outline intent — the secondary CTA in a primary/outline pair is the sibling
+  // that carries one.
+  if (inferredVariant === "custom" && !variantHint) {
+    const hasFill = tokens.some(t => /^bg-/.test(t) || /^btn-(primary|secondary|accent|neutral)\b/.test(t));
+    if (!hasFill) {
+      const looksOutline = tokens.some(t => /^border(-|$)/.test(t));
+      addIssue(
+        "no-fill",
+        "error",
+        `Button has no background or variant class — it renders unstyled. ` +
+          `Use the canonical ${looksOutline ? "outline" : "primary"} CTA ` +
+          `(generate_button_classes returns it), not bare utilities.`
+      );
+      if (autoFix) {
+        inferredVariant = looksOutline ? "outline" : "primary";
+        fixes.push(`Treated as the canonical ${inferredVariant} CTA (no fill was set).`);
+      }
+    }
+  }
+
   if (hasOutline && hasPrimary) {
     addIssue("variant-conflict", "error", "`btn-outline` and `btn-primary` are both present.");
     if (autoFix && variantHint) {
@@ -288,16 +317,56 @@ function validateButtonClasses(args = {}) {
         fixes.push("Removed `btn-outline` from primary button.");
       }
     }
-    const hasCtaSizing =
-      hasToken(tokens, "px-space-md") &&
-      hasToken(tokens, "py-space-xs") &&
-      (hasToken(tokens, "min-h-12") || hasToken(tokens, "min-h-10"));
-    if (!hasCtaSizing) {
-      addIssue(
-        "cta-sizing-missing",
-        "info",
-        "Consider CTA sizing tokens: `px-space-md py-space-xs min-h-12`."
-      );
+  }
+
+  // Fixed numeric padding does not scale with `spacingDensity`, so a button
+  // sized this way stays put while every section around it grows or shrinks.
+  // The canonical CTAs spend spatial tokens for exactly this reason, and the
+  // vanilla-Tailwind `px-8 py-3` is the single most common thing to arrive
+  // instead. Swapping is safe because the pair is replaced wholesale — mixing a
+  // numeric and a token padding would leave twMerge to pick a winner.
+  const numericPadding = tokens.filter(t => /^(px|py)-\d+(\.\d+)?$/.test(t));
+  if (numericPadding.length > 0) {
+    addIssue(
+      "hardcoded-padding",
+      "warn",
+      `Fixed padding ${numericPadding.join(", ")} does not scale with spacing density. ` +
+        `Use px-space-md / py-space-xs.`
+    );
+    if (autoFix) {
+      tokens = removeTokensByPredicate(tokens, t => /^(px|py)-\d+(\.\d+)?$/.test(t));
+      addToken(tokens, "px-space-md");
+      addToken(tokens, "py-space-xs");
+      fixes.push(`Replaced ${numericPadding.join(", ")} with spatial padding tokens.`);
+    }
+  }
+
+  // CTA geometry, for the two variants that are a matched pair. `min-h-12` is
+  // what keeps a primary and its outline sibling the same height, and a bare
+  // `rounded` is a raw Tailwind radius that ignores the theme's `--radius-box`.
+  // Scoped to primary/outline so a `custom` button — an icon mask, a chip —
+  // keeps whatever geometry it was given.
+  if (inferredVariant === "primary" || inferredVariant === "outline") {
+    if (!tokens.some(t => /^min-h-/.test(t))) {
+      addIssue("cta-sizing-missing", "warn", "CTA is missing `min-h-12` — a primary and its outline sibling will not match height.");
+      if (autoFix) {
+        addToken(tokens, "min-h-12");
+        fixes.push("Added `min-h-12`.");
+      }
+    }
+    if (hasToken(tokens, "rounded")) {
+      addIssue("raw-radius", "warn", "`rounded` is a raw radius — use the `rounded-box` token.");
+      if (autoFix) {
+        tokens = tokens.filter(t => t !== "rounded");
+        addToken(tokens, "rounded-box");
+        fixes.push("Replaced `rounded` with `rounded-box`.");
+      }
+    } else if (!tokens.some(t => /^rounded-/.test(t))) {
+      addIssue("cta-radius-missing", "warn", "CTA is missing a radius token — add `rounded-box`.");
+      if (autoFix) {
+        addToken(tokens, "rounded-box");
+        fixes.push("Added `rounded-box`.");
+      }
     }
   }
 

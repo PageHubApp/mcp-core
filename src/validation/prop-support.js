@@ -46,6 +46,16 @@ const ROWS = [
       "Use set_theme for site-wide tokens, or a scoped `<style>` in ROOT.props.inject.head.",
   },
   {
+    id: "bare-style-prop",
+    dropped: i => i.key === "style",
+    message: i =>
+      `props.style is stored and never rendered — every component reads non-class styling from props.root.style, ` +
+      `and so does the static exporter. Nothing on any delivery path looks at a bare style prop. ` +
+      `Move it to root: { style: … }${i.nodeId ? ` on "${i.nodeId}"` : ""} — it accepts this same object, or a CSS string. ` +
+      `A colour set here is the common case: the text keeps whatever it inherits, which on a dark section is the ` +
+      `light-theme base-content, so the copy renders near-invisible while any inline <span style> inside it still works.`,
+  },
+  {
     id: "container-datasource",
     dropped: i => i.component === "Container" && i.key === "dataSource",
     message: i =>

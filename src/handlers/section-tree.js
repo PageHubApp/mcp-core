@@ -14,6 +14,11 @@ const { parseMaybeJson, getActiveTarget, fetchTarget, saveTarget } = require("..
 const { recordFillPatch } = require("../helpers/fill-patch-merge");
 const { VALID_COMPONENTS, CANVAS_COMPONENTS, collectSubtree } = require("../utils/node-utils");
 const { validateNodes, formatValidationReport } = require("../validation/node-validation");
+const {
+  normalizeButtonValidationMode,
+  maybePreflightButton,
+  formatButtonPreflightReport,
+} = require("./remote-nodes/validation");
 const { resultMsg } = require("./remote-shared");
 
 function slugifyTypeForId(type) {
@@ -270,6 +275,21 @@ async function placeSectionTreeBody(args) {
   for (const [id, node] of Object.entries(newNodes)) {
     flat[id] = node;
   }
+
+  // Buttons created here get the same preflight add_nodes runs, and for the
+  // same reason: this is the only moment a parallel-fill section's CTAs are
+  // written, so a Button that arrives without a `btn` base class is never
+  // looked at again unless the model happens to patch that exact node.
+  const buttonValidationMode = normalizeButtonValidationMode(args.buttonValidation);
+  const buttonReports = [];
+  for (const id of Object.keys(newNodes)) {
+    const report = maybePreflightButton(flat, id, buttonValidationMode);
+    if (report) buttonReports.push(report);
+  }
+  const buttonSuffix = buttonReports.length
+    ? `\n\n${formatButtonPreflightReport(buttonReports)}`
+    : "";
+
   flat[sectionNodeId].nodes = [rootId];
   flat[rootId].parent = sectionNodeId;
 
@@ -293,7 +313,8 @@ async function placeSectionTreeBody(args) {
           text:
             `Section "${sectionNodeId}" placed: ${idsInOrder.length} nodes (root ${rootId}).` +
             (reason ? ` — ${reason}` : "") +
-            reportSuffix,
+            reportSuffix +
+            buttonSuffix,
         },
       ],
       pendingContent: flat,
@@ -311,7 +332,9 @@ async function placeSectionTreeBody(args) {
             result.id,
             target.type,
             `Section "${sectionNodeId}" placed: ${idsInOrder.length} nodes (root ${rootId}).`
-          ) + reportSuffix,
+          ) +
+          reportSuffix +
+          buttonSuffix,
       },
     ],
     changedNodes,

@@ -5,6 +5,7 @@
 
 const crypto = require("crypto");
 const { VALID_COMPONENTS, CANVAS_COMPONENTS } = require("../utils/node-utils");
+const { mergeClasses } = require("../helpers/args");
 
 function deepClone(o) {
   return JSON.parse(JSON.stringify(o));
@@ -130,14 +131,7 @@ function applyPropOverride(node, patch) {
       // Full replacement — use when the block's default classes conflict (e.g. btn-ghost vs btn-circle)
       node.props.className = patch.className;
     } else {
-      // Default: merge via tailwind-merge
-      let twMerge;
-      try {
-        twMerge = require("tailwind-merge").twMerge;
-      } catch {
-        twMerge = (a, b) => `${a} ${b}`.trim();
-      }
-      node.props.className = twMerge(node.props.className || "", patch.className);
+      node.props.className = mergeClasses(node.props.className || "", patch.className);
     }
   }
   // Non-class props

@@ -151,6 +151,22 @@ async function addNodesBody(args) {
     flat[id] = node;
   }
 
+  // Buttons are BORN here, and until now this was the one mutator that never
+  // checked them: the preflight lived only on patch_site_node/patch_site_bulk,
+  // so a Button created by add_nodes and never subsequently patched reached the
+  // page unvalidated. A model that builds a hero in one add_nodes call and then
+  // only patches the surrounding text — the common shape — never triggered it,
+  // and shipped CTAs with no `btn` class at all.
+  // Runs after the merge so it can rewrite `flat[id].props` in place (same
+  // object as cleanNodes[id], so the draftMode patch below picks it up too),
+  // and before changedNodes is collected so the corrected classes propagate.
+  const buttonValidationMode = normalizeButtonValidationMode(args.buttonValidation);
+  const buttonReports = [];
+  for (const id of Object.keys(cleanNodes)) {
+    const report = maybePreflightButton(flat, id, buttonValidationMode);
+    if (report) buttonReports.push(report);
+  }
+
   // Register the requested root as child of the parent container
   const parentNodes = flat[parentId].nodes || [];
   const position = args.position != null ? args.position : parentNodes.length;
@@ -180,7 +196,9 @@ async function addNodesBody(args) {
       content: [
         {
           type: "text",
-          text: `${Object.keys(cleanNodes).length} nodes added to ${parentId} (root: ${rootNodeId}) successfully.`,
+          text:
+            `${Object.keys(cleanNodes).length} nodes added to ${parentId} (root: ${rootNodeId}) successfully.` +
+            (buttonReports.length ? `\n\n${formatButtonPreflightReport(buttonReports)}` : ""),
         },
       ],
       pendingContent: ctx.fillMode ? ctx._pendingFlatMap : flat,
@@ -190,13 +208,17 @@ async function addNodesBody(args) {
 
   const result = await saveTarget(target.id, target.type, flat);
   const reportSuffix = validationReport ? `\n\n---\n${validationReport}` : "";
+  const buttonSuffix = buttonReports.length
+    ? `\n\n${formatButtonPreflightReport(buttonReports)}`
+    : "";
   return {
     content: [
       {
         type: "text",
         text:
           resultMsg(target.id, target.type, `${Object.keys(cleanNodes).length} nodes added.`) +
-          reportSuffix,
+          reportSuffix +
+          buttonSuffix,
       },
     ],
     changedNodes,
