@@ -26,6 +26,7 @@
 
 const rawTools = require("./data/tools.json");
 const { VIBE_CODENAMES } = require("./data/vibes");
+const { SERVER_INSTRUCTIONS } = require("./data/instructions");
 const { CATEGORIES } = require("./data/categories");
 
 // Resolve schema sentinels (`"$VIBES"`, `"$CATEGORIES"`) wherever they appear in
@@ -226,4 +227,5 @@ module.exports = {
   AGENT_ALLOWED,
   VIBE_CODENAMES,
   CATEGORIES,
+  SERVER_INSTRUCTIONS,
 };
