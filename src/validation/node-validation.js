@@ -412,15 +412,17 @@ function validateNodes(flatMap, opts = {}) {
         }
       }
 
-      // Wrap bare text in <p> tags — but ONLY when there's no block-level
-      // tagName. If tagName is "h1"/"h2"/.../"p", the renderer already wraps
-      // the text in that tag, and adding <p>...</p> here produces invalid
-      // <h1><p>…</p></h1> nesting (the next check would error on it). Auto-fix
-      // is silent so the model doesn't see noisy non-actionable warnings.
+      // Wrap bare text in <p> tags — ONLY when the Text renders as a <div>
+      // (no tagName, or "div"), the one element a <p> may sit inside. Any
+      // other tagName already gives the text its element: headings and "p"
+      // would nest to <h1><p>…</p></h1>, and inline tags ("span", "label", …)
+      // to <span><p>…</p></span>. Both are invalid, and the static exporter
+      // then renders a different box than the React viewer. Auto-fix is
+      // silent so the model doesn't see noisy non-actionable warnings.
       if (props.text && typeof props.text === "string") {
         const trimmed = props.text.trim();
-        const isBlockTag = props.tagName && /^(?:p|h[1-6])$/.test(props.tagName);
-        if (trimmed && !trimmed.startsWith("<") && !isBlockTag) {
+        const rendersAsDiv = !props.tagName || props.tagName === "div";
+        if (trimmed && !trimmed.startsWith("<") && rendersAsDiv) {
           props.text = `<p>${trimmed}</p>`;
           fixes.push(`${nodeId}: Wrapped bare text in <p> tags`);
         }
