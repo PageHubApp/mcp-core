@@ -13,7 +13,33 @@ export const AI_MODELS = [
 
 export const DEFAULT_MODEL = "alibaba/qwen3-coder-30b-a3b";
 
-export const ALLOWED_MODEL_VALUES = new Set(AI_MODELS.map(m => m.value));
+/**
+ * Candidates accepted by the agent endpoint but never offered in the picker,
+ * and never outside development.
+ *
+ * The shipped model cannot use prompt caching at all, which is why a chat turn
+ * re-pays for its whole ~30k-token preamble on every step. These are the
+ * cache-capable alternatives being measured against it. They are deliberately
+ * NOT in `AI_MODELS` — that list drives the UI — so a user can never land on an
+ * unevaluated model, and the production guard means a forgotten cleanup cannot
+ * ship one either.
+ */
+const EVAL_MODEL_VALUES =
+  process.env.NODE_ENV === "production"
+    ? []
+    : [
+        "alibaba/qwen3.8-flash",
+        "alibaba/qwen3.8-flash-next",
+        "alibaba/qwen3.7-flash",
+        // The cheapest premium model whose margin survives a flailing session
+        // (+29% even at the shipped model's 7.2M-token / no-cache volume).
+        "anthropic/claude-haiku-4.5",
+      ];
+
+export const ALLOWED_MODEL_VALUES = new Set([
+  ...AI_MODELS.map(m => m.value),
+  ...EVAL_MODEL_VALUES,
+]);
 
 /** Returns the model's `lockStyling` flag (true when className patches must be stripped). */
 export function modelLocksStyling(modelValue) {
