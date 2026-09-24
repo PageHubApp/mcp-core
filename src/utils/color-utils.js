@@ -16,7 +16,7 @@ function _toOklch(r, g, b) {
   // sRGB → LMS (M1 matrix from OKLab spec)
   const l_ = 0.4122214708 * lr + 0.5363325363 * lg + 0.0514459929 * lb;
   const m_ = 0.2119034982 * lr + 0.6806995451 * lg + 0.1073969566 * lb;
-  const s_ = 0.0883024619 * lr + 0.2220049494 * lg + 0.6396926187 * lb;
+  const s_ = 0.0883024619 * lr + 0.2817188376 * lg + 0.6299787005 * lb;
   const l1 = Math.cbrt(l_),
     m1 = Math.cbrt(m_),
     s1 = Math.cbrt(s_);
