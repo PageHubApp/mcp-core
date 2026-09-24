@@ -28,6 +28,13 @@ Call discovery tools before writing anything. Do not guess at props, class names
 - \`list_presets\` / \`suggest_palettes\` — curated themes (palette + fonts + style tokens)
 - \`search_blocks\` — proven section patterns, then \`apply_kit_block\`
 - \`find_icon\` — resolves an icon ref instead of guessing a name
+- Interactive UI (tabs, toggles, quizzes, scores, checklists) is built from state props, not JS — \`get_style_reference\` → "Interactive State"
+
+## Building from an approved design
+
+- Map every element of the design to nodes/props before writing. If something can't be expressed, **stop and tell the user** — never ship a substitute they didn't approve.
+- Use the design's **exact** values at its breakpoint (\`lg:text-[104px] lg:px-[80px] lg:py-[110px]\`), keeping smaller responsive values below it. Never round to the nearest token or Tailwind step — the drift compounds down the page. Tailwind \`leading-normal\` is 1.5; CSS \`normal\` is \`leading-[normal]\`.
+- Verify with \`screenshot_site\` at the design's width, section by section (\`selector\`), plus mobile (390). Compare against the design and fix or report every difference. "It works" is not "it matches".
 
 ## Your writes are STAGED, not live
 

@@ -32,6 +32,20 @@ function hasToken(tokens, token) {
   return tokens.includes(token);
 }
 
+// Non-color utilities that share the text-/border-/bg- prefixes.
+const NON_COLOR = {
+  text: /^text-(xs|sm|base|lg|\d?xl|left|center|right|justify|start|end|balance|pretty|wrap|nowrap|ellipsis|clip|\[\d[^\]]*\])$/,
+  border: /^border(-[xytrblse])?(-(\d+|\[\d[^\]]*\]|solid|dashed|dotted|double|hidden|none))?$/,
+  bg: /^bg-(cover|contain|auto|center|top|bottom|left|right|fixed|local|scroll|repeat|no-repeat|repeat-x|repeat-y|clip-\w+|origin-\w+|none|linear-.*|radial.*|conic.*|gradient-.*)$/,
+};
+
+/** True when an unprefixed (base-breakpoint) `<prefix>-*` color class is present. */
+function hasBaseColorToken(tokens, prefix) {
+  return tokens.some(
+    t => !t.includes(":") && t.startsWith(`${prefix}-`) && !NON_COLOR[prefix].test(t)
+  );
+}
+
 function addToken(tokens, token) {
   if (!tokens.includes(token)) tokens.push(token);
 }
@@ -233,7 +247,10 @@ function validateButtonClasses(args = {}) {
         fixes.push("Added `btn-outline`.");
       }
     }
-    if (!hasToken(tokens, "border-base-content/30")) {
+    // Defaults fill a gap only. An author who already chose an ink/border/fill
+    // (e.g. `text-primary-content` on a dark hero) keeps it — appending the
+    // light-surface default would override it and make the button invisible.
+    if (!hasBaseColorToken(tokens, "border")) {
       addIssue(
         "outline-border-token",
         "warn",
@@ -244,14 +261,14 @@ function validateButtonClasses(args = {}) {
         fixes.push("Added `border-base-content/30`.");
       }
     }
-    if (!hasToken(tokens, "text-base-content")) {
+    if (!hasBaseColorToken(tokens, "text")) {
       addIssue("outline-text-token", "warn", "Outline button should use `text-base-content`.");
       if (autoFix) {
         addToken(tokens, "text-base-content");
         fixes.push("Added `text-base-content`.");
       }
     }
-    if (!hasToken(tokens, "bg-transparent")) {
+    if (!hasBaseColorToken(tokens, "bg")) {
       addIssue("outline-bg", "warn", "Outline button should be transparent by default.");
       if (autoFix) {
         addToken(tokens, "bg-transparent");

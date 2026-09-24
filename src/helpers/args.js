@@ -1,4 +1,20 @@
-const { twMerge } = require("tailwind-merge");
+const { extendTailwindMerge } = require("tailwind-merge");
+
+// The spatial scale (packages/daisyui-spatial) is theme spacing, so `px-space-sm`
+// must conflict with `px-4` / `px-[22px]` like any other padding. Without this
+// twMerge treats the tokens as unknown classes, keeps both, and the token wins
+// on stylesheet order — an agent's spacing patch silently does nothing.
+const twMerge = extendTailwindMerge({
+  extend: {
+    theme: {
+      spacing: [
+        "space-3xs", "space-2xs", "space-xs", "space-sm", "space-md",
+        "space-lg", "space-xl", "space-2xl", "space-3xl", "space-4xl",
+        "container-x",
+      ],
+    },
+  },
+});
 
 /** Try to JSON.parse a string, return as-is if it fails or isn't a string. */
 function parseMaybeJson(v) {

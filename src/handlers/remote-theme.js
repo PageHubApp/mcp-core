@@ -7,7 +7,11 @@ const { VIBE_CODENAMES } = require("../data/vibes");
 const { parseMaybeJson, getActiveTarget, fetchTarget, saveTarget } = require("../helpers/index.js");
 const { formatUploadResult } = require("../helpers/upload-format");
 
-const { ensurePaletteOklch, validatePaletteContrast } = require("../utils/color-utils");
+const {
+  ensurePaletteOklch,
+  validateContentColors,
+  validatePaletteContrast,
+} = require("../utils/color-utils");
 const { editDistance } = require("../utils/levenshtein");
 
 const { resultMsg } = require("./remote-shared");
@@ -329,9 +333,17 @@ async function setThemeBody(args) {
 
   const changedNodes = { ROOT: flat.ROOT };
   const presetMsg = preset ? ` (preset: ${preset})` : "";
-  const warnSuffix = styleWarnings.length
-    ? `\n\nbuildStyle warnings:\n${styleWarnings.map(w => `  - ${w}`).join("\n")}`
-    : "";
+  const contentWarnings = [
+    ...validateContentColors(rootProps.theme.palette),
+    ...validateContentColors(rootProps.theme.darkPalette).map(w => `dark: ${w}`),
+  ];
+  const warnSuffix =
+    (styleWarnings.length
+      ? `\n\nbuildStyle warnings:\n${styleWarnings.map(w => `  - ${w}`).join("\n")}`
+      : "") +
+    (contentWarnings.length
+      ? `\n\nText color warnings:\n${contentWarnings.map(w => `  - ${w}`).join("\n")}`
+      : "");
 
   // Draft mode: store in pending flat map for aiDraft save
   if (ctx.draftMode) {

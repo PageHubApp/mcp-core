@@ -1135,6 +1135,42 @@
     }
   },
   {
+    "name": "screenshot_site",
+    "description": "Screenshot the active site's DRAFT preview in a real browser and return the image. Use it to verify your work: the node tree is not what visitors see — compiled CSS, theme colors, state-driven UI and responsive layout only show up here. After building from a design, shoot each section (`selector`) at the design's width and compare side by side; fix or report every difference. Prefer `selector` over `fullPage` for below-the-fold content — full-page shots can miss sections that paint late. Shoot mobile too (width 390).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
+        },
+        "path": {
+          "type": "string",
+          "description": "Page slug under the site (e.g. \"pricing\"). Omit for the home page.",
+          "maxLength": 512
+        },
+        "selector": {
+          "type": "string",
+          "description": "CSS selector to shoot one element, e.g. \"#check\" (section attrs.id) or \"section:nth-of-type(3)\".",
+          "maxLength": 200
+        },
+        "width": {
+          "type": "number",
+          "description": "Viewport width in px (320–1920, default 1440)."
+        },
+        "height": {
+          "type": "number",
+          "description": "Viewport height in px (480–2400, default 900)."
+        },
+        "fullPage": {
+          "type": "boolean",
+          "description": "Capture the whole scrollable page instead of the first viewport. Ignored with selector."
+        }
+      }
+    }
+  },
+  {
     "name": "get_domain_status",
     "description": "Read the current custom domain on the active site: redirect mode, per-variant Vercel attachment state (apex + www), and THE DNS RECORDS THE USER MUST CREATE at their registrar. Records are per-project and come straight from Vercel — an apex gets an `A` record at `@`, a subdomain (`www`, `ads`, …) gets a `CNAME` at its label. Never invent these values; report exactly what this returns. Pass `check` to preflight a different candidate without mutating anything. Use this before set_domain to diagnose conflicts (e.g. domain already attached to another Vercel project), and after set_domain to tell the user whether DNS has propagated yet.",
     "inputSchema": {

@@ -105,4 +105,68 @@ function validatePaletteContrast(palette, { minDeltaL = 0.15 } = {}) {
   return warnings;
 }
 
-module.exports = { colorToOklch, ensurePaletteOklch, oklchLightness, validatePaletteContrast };
+/** `oklch(L% C H)` → WCAG relative luminance, or null if not parseable. */
+function oklchLuminance(color) {
+  const m = typeof color === "string" && color.match(/oklch\(\s*([\d.]+)%?\s+([\d.]+)\s+([\d.]+)/i);
+  if (!m) return null;
+  let L = parseFloat(m[1]);
+  if (L > 1) L /= 100;
+  const h = (parseFloat(m[3]) * Math.PI) / 180;
+  const a = parseFloat(m[2]) * Math.cos(h);
+  const b = parseFloat(m[2]) * Math.sin(h);
+  const l = (L + 0.3963377774 * a + 0.2158037573 * b) ** 3;
+  const mm = (L - 0.1055613458 * a - 0.0638541728 * b) ** 3;
+  const s = (L - 0.0894841775 * a - 1.291485548 * b) ** 3;
+  const clamp = v => Math.max(0, Math.min(1, v));
+  const r = clamp(4.0767416621 * l - 3.3077115913 * mm + 0.2309699292 * s);
+  const g = clamp(-1.2684380046 * l + 2.6097574011 * mm - 0.3413193965 * s);
+  const bl = clamp(-0.0041960863 * l - 0.7034186147 * mm + 1.707614701 * s);
+  return 0.2126 * r + 0.7152 * g + 0.0722 * bl;
+}
+
+const CONTENT_PAIRS = {
+  Primary: "Primary Content",
+  Secondary: "Secondary Content",
+  Accent: "Accent Content",
+  Neutral: "Neutral Content",
+  "Base 100": "Base Content",
+  Error: "Error Content",
+  Info: "Info Content",
+  Success: "Success Content",
+  Warning: "Warning Content",
+};
+
+/**
+ * The renderer keeps an author's `* Content` color only when it clears WCAG AA
+ * (4.5:1) against its surface, and silently swaps in a derived color otherwise
+ * (SDK `autoGenerateContentColors`). Say so up front, so the agent learns its
+ * brand text color won't ship instead of discovering it in a screenshot.
+ * Expects an oklch palette (run `ensurePaletteOklch` first).
+ */
+function validateContentColors(palette) {
+  if (!Array.isArray(palette)) return [];
+  const byName = Object.fromEntries(palette.map(p => [p.name, p.color]));
+  const warnings = [];
+  for (const [surface, content] of Object.entries(CONTENT_PAIRS)) {
+    const sl = oklchLuminance(byName[surface]);
+    const cl = oklchLuminance(byName[content]);
+    if (sl == null || cl == null) continue;
+    const ratio = (Math.max(sl, cl) + 0.05) / (Math.min(sl, cl) + 0.05);
+    if (ratio < 4.5) {
+      warnings.push(
+        `"${content}" on "${surface}" is ${ratio.toFixed(2)}:1, below WCAG AA 4.5:1 — ` +
+          `the renderer will REPLACE it with an auto-generated readable color. ` +
+          `Pick a darker/lighter "${content}" if you need that exact color to ship.`
+      );
+    }
+  }
+  return warnings;
+}
+
+module.exports = {
+  colorToOklch,
+  ensurePaletteOklch,
+  oklchLightness,
+  validatePaletteContrast,
+  validateContentColors,
+};

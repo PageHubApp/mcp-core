@@ -304,6 +304,28 @@ module.exports = {
   },
 
   /**
+   * Screenshot the active site's draft preview in a real browser, so an agent
+   * can compare what painted against the design it was building.
+   * @param {object} args - { id?, path?, width?, height?, fullPage?, selector? }
+   * @returns {Promise<{content: Array<object>}>}
+   */
+  async screenshot_site(args = {}) {
+    const target = getActiveTarget(args);
+    if (target.type !== "site") throw new Error("screenshot_site only works on sites, not templates.");
+    const { path, width, height, fullPage, selector } = args;
+    const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}/screenshot`, {
+      method: "POST",
+      body: { path, width, height, fullPage, selector },
+    });
+    return {
+      content: [
+        { type: "image", data: data.dataBase64, mimeType: data.contentType },
+        { type: "text", text: `Draft preview: ${data.url}${selector ? ` (element ${selector})` : ""}` },
+      ],
+    };
+  },
+
+  /**
    * Probe a candidate domain without binding it (shortcut for get_domain_status).
    * @param {object} args - { domain, siteId? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}

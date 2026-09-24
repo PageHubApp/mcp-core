@@ -152,6 +152,30 @@ Composites + singles stack: section-wrapper + bg-primary override surface color.
 5. **Palette (outline CTAs):** On minimal monochrome themes, Primary and Base Content must differ in lightness — not both the same near-black OKLCH. DaisyUI 5 btn-outline uses --btn-color for label/border; if primary ≈ base-content, canonical outline + text-base-content can collapse to illegible dark-on-dark. Fix palette (and styleGuide linkColor/inputTextColor if Base Content changes). Reference: scripts/seed/data/templates/acme.json, THEME-SYSTEM.md.
 6. Use descriptive node IDs: "sec_hero", "hero_title", etc.
 7. **All styling uses props.className** — a single Tailwind class string. Mobile-first: unprefixed utilities apply at all widths; **md:** = 768px+; **lg:** = 1024px+. Example: "flex flex-col gap-4 py-8 md:flex-row md:gap-8 bg-primary text-primary-content". Use **classNamePatch** in patch tools to merge classes via twMerge. Use **propsPatch** only for non-class props (text, src, href, style, animation). See **BLOCKS-AI-CONTEXT.md**.
+8. **Content colors:** your "* Content" palette entries ship only when they clear WCAG AA (4.5:1) on their surface; otherwise the renderer swaps in a derived color. set_theme warns when that will happen.
+
+## Interactive State (quizzes, checklists, scores, tabs, toggles)
+
+No custom JS. Everything is a shared key/value store driven by props:
+
+| Piece | Prop | Notes |
+|---|---|---|
+| Write state on click | \`action: [{ type: "set-state", key, value }]\` (Button, Container, Text) | Also \`toggle-state\`, \`clear-state\`, \`increment-state\`, \`decrement-state\`. |
+| Write on page load | same action + \`trigger: "load"\` | Seeds defaults / example answers. Fires once on mount, never on click. |
+| Derive a value | Container \`computedStateBindings: [{ key, from: [keys], compute }]\` | compute \`type\`: \`count\` (\`value?\` = only count keys equal to it), \`all-truthy\`, \`first-truthy\`, \`join\` (\`separator\`). |
+| Show a value | Text \`{{state.<key>}}\` (wrap: \`<span data-variable="state.<key>" class="variable-node">{{state.<key>}}</span>\`) | Also Button text / attrs. |
+| Style by state | \`stateModifiers: [{ conditions, modifiers: [names] }]\` | Modifier names must exist in ROOT.props.modifiers[Component] (\`{ name, classes }\`) — use \`!\`-prefixed classes so they beat base classes. |
+| Show/hide by state | \`conditionGroups\` with \`{ type: "state", key, operator, value }\` | operators: equals, not-equals, contains, not-contains, exists, not-exists. Or use stateModifiers to add \`!hidden\` / \`!flex\` when you need a guaranteed initial state. |
+
+Conditions shape: \`[{ logic: "all" | "any", conditions: [...] }]\`.
+
+**Recipe — scored checklist (e.g. "5 / 9"):**
+1. Each Yes/No Button: \`action: [{ type: "set-state", key: "quiz:q1", value: "Y" }]\` / \`"N"\`, plus \`stateModifiers\` equals Y → an "active" modifier.
+2. The card Container: \`computedStateBindings: [{ key: "quiz:score", from: ["quiz:q1", …], compute: { type: "count", value: "Y" } }]\`, and optional \`trigger: "load"\` set-state actions for example answers.
+3. Score Text: \`{{state.quiz:score}}\`. Progress bar fill: one stateModifier per score value mapping to a width modifier (\`!w-[55.56%]\`).
+4. Verdict blocks: stateModifiers on \`quiz:score\` with \`logic: "any"\` over the score values in each tier.
+
+**Verify it:** state-driven UI only shows in a real browser — call \`screenshot_site\` with a \`selector\` after building, and again after changing values.
 `;
 
 /* ── Design patterns (lazy-loaded) ── */
