@@ -167,7 +167,15 @@ No custom JS. Everything is a shared key/value store driven by props:
 | Style by state | \`stateModifiers: [{ conditions, modifiers: [names] }]\` | Modifier names must exist in ROOT.props.modifiers[Component] (\`{ name, classes }\`) — use \`!\`-prefixed classes so they beat base classes. |
 | Show/hide by state | \`conditionGroups\` with \`{ type: "state", key, operator, value }\` | operators: equals, not-equals, contains, not-contains, exists, not-exists. Or use stateModifiers to add \`!hidden\` / \`!flex\` when you need a guaranteed initial state. |
 
+| Form sending / thank-you | Container \`visibilityStateKey: "form:<formNodeId>:fields" \\| ":loading" \\| ":loaded"\` | The Form writes these on submit (fields → hidden, loading → shown, then loaded → shown). **Required:** MCP-built forms have no confirmation otherwise. |
+
 Conditions shape: \`[{ logic: "all" | "any", conditions: [...] }]\`.
+
+**Recipe — form confirmation (every Form you build):**
+1. Wrap every FormElement + the submit Button in one Container child of the Form: \`visibilityStateKey: "form:<formNodeId>:fields"\`.
+2. Add a sibling Container \`visibilityStateKey: "form:<formNodeId>:loading"\`, \`attrs: { role: "status", "aria-live": "polite" }\`, className starting \`hidden\`, holding "Sending...".
+3. Add a sibling Container \`visibilityStateKey: "form:<formNodeId>:loaded"\`, same attrs, className starting \`hidden\`, holding the thank-you copy (and any next-step links).
+The Form's own \`loading\` / \`success\` / \`view\` props only feed slots the editor creates — they do nothing on a form you built with add_nodes.
 
 **Recipe — scored checklist (e.g. "5 / 9"):**
 1. Each Yes/No Button: \`action: [{ type: "set-state", key: "quiz:q1", value: "Y" }]\` / \`"N"\`, plus \`stateModifiers\` equals Y → an "active" modifier.
