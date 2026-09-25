@@ -1333,7 +1333,7 @@
   },
   {
     "name": "set_domain",
-    "description": "Attach a custom domain to the active site and return THE DNS RECORDS THE USER MUST CREATE at their registrar. For an apex+www pair, registers BOTH `example.com` and `www.example.com` on Vercel and wires the redirect per `redirectMode` (default `to-apex`: www → apex 308) — the apex needs an `A` record at `@`, the www variant a `CNAME`. A deeper subdomain (`ads.example.com`) is attached alone and needs a single `CNAME` at its label. Record values are per-project; report exactly what this returns rather than any remembered Vercel default. Attaching does nothing until the user creates those records — always hand them over, then re-check with get_domain_status. On conflict (variant already on another Vercel project) returns a 409 with per-variant details — instruct the user to detach in the Vercel dashboard, then retry. Triggers a redeploy if the site is published. Plan-gated: free plans cannot add custom domains.",
+    "description": "Attach a custom domain to the active site and return THE DNS RECORDS THE USER MUST CREATE at their registrar. For an apex+www pair, registers BOTH `example.com` and `www.example.com` on Vercel and wires the redirect per `redirectMode` (default `to-apex`: www → apex 308) — the apex needs an `A` record at `@`, the www variant a `CNAME`. A deeper subdomain (`ads.example.com`) is attached alone and needs a single `CNAME` at its label. Record values are per-project; report exactly what this returns rather than any remembered Vercel default. Attaching does nothing until the user creates those records — always hand them over, then re-check with get_domain_status. On conflict (variant already on another Vercel project) returns a 409 with per-variant details — instruct the user to detach in the Vercel dashboard, then retry. Triggers a redeploy if the site is published. Plan-gated by the account's domain count: Free includes 1, Pro includes 1 per site on the subscription, Business and Agency are unlimited. Past the limit it returns a 403 with `upgrade: true`.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3109,7 +3109,7 @@
   },
   {
     "name": "create_collection",
-    "description": "Create a new collection on the active (or specified) site. Schema is an array of typed fields (text, number, boolean, date, select, image, url, email, color, richText, media, json). Source defaults to {type:'manual'} — pass {type:'airtable',baseId,tableId,columnMap} (Pro+) or other supported source to enable sync. Plan-gated: maxCollections per plan.",
+    "description": "Create a new collection on the active (or specified) site. Schema is an array of typed fields (text, number, boolean, date, select, image, url, email, color, richText, media, json). Source defaults to {type:'manual'} — pass {type:'airtable',baseId,tableId,columnMap} (Business and Agency) or other supported source to enable sync. Plan-gated: maxCollections per plan.",
     "inputSchema": {
       "type": "object",
       "properties": {
