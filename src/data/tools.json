@@ -2965,6 +2965,64 @@
     }
   },
   {
+    "name": "stripe_connect",
+    "description": "Connect Stripe to the active site so it can take payments. Returns the current status; when setup isn't finished it creates the site's Stripe Connect account (if needed) and returns a Stripe-hosted onboarding URL. Only the site owner can finish onboarding (identity + bank details on Stripe) — give them the URL, then call stripe_connect again to confirm status is 'ready'. The link is single-use and short-lived; call again for a fresh one. Owner-only: fails for site editors.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "siteId": {
+          "type": "string",
+          "description": "Site id (defaults to the active site).",
+          "maxLength": 128
+        }
+      }
+    }
+  },
+  {
+    "name": "set_checkout",
+    "description": "Make a collection sellable through the site's Stripe connection (or stop selling it with remove: true). After this, add-to-cart / cart-checkout Buttons inside a Data repeater bound to the collection charge through Stripe — no Stripe products needed. Two pricing modes: (1) no price_id_field → each row is charged from its numeric `price` field, in the currency's MINOR units (cents: 2500 = $25.00), named by its `title` field, currency from an optional `currency` field (default usd) — the collection MUST have a number field with key `price`; (2) price_id_field → each row's field holds a Stripe price id (price_...) to charge. Create the collection first (create_collection), and call stripe_connect so the site can actually take payments.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "collection_slug": {
+          "type": "string",
+          "description": "Slug of the collection to sell.",
+          "maxLength": 128
+        },
+        "price_id_field": {
+          "type": "string",
+          "description": "Row field holding a Stripe price id. Omit to charge the numeric `price` field instead.",
+          "maxLength": 128
+        },
+        "price_field": {
+          "type": "string",
+          "description": "Row field holding the display price.",
+          "maxLength": 128
+        },
+        "inventory_field": {
+          "type": "string",
+          "description": "Row field holding stock count.",
+          "maxLength": 128
+        },
+        "variants_field": {
+          "type": "string",
+          "description": "Row field holding a variants array (each entry carries its own priceId).",
+          "maxLength": 128
+        },
+        "remove": {
+          "type": "boolean",
+          "description": "true removes checkout from the collection (rows stay; they just stop being sellable)."
+        },
+        "siteId": {
+          "type": "string",
+          "description": "Site id (defaults to the active site).",
+          "maxLength": 128
+        }
+      },
+      "required": ["collection_slug"]
+    }
+  },
+  {
     "name": "stripe_search_products",
     "description": "Search Stripe products for the active site via the Stripe Search API. Returns up to ~100 normalized product items (id, title, price, image, metadata). Use when picking specific products to feature in a template or when confirming that a category/metadata convention is populated. Results are live from Stripe — no local sync.",
     "inputSchema": {

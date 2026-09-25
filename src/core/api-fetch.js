@@ -75,7 +75,11 @@ async function apiFetch(pathStr, opts = {}) {
       json?.currentUpdatedAt || json?.currentVersion
         ? ` (current: ${json.currentUpdatedAt || json.currentVersion})`
         : "";
-    throw new Error(`${code}${json.error || `API ${resp.status}: ${resp.statusText}`}${detail}`);
+    const err = new Error(
+      `${code}${json.error || `API ${resp.status}: ${resp.statusText}`}${detail}`
+    );
+    err.status = resp.status;
+    throw err;
   }
   return json;
 }
