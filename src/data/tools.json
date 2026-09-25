@@ -1171,6 +1171,128 @@
     }
   },
   {
+    "name": "list_site_emails",
+    "description": "List the emails a site's visitors and buyers get (order receipt, subscription welcome, gift cards, sign-in link, downloads): whether each is customized or the default, and whether it's sent today (and why not). Start here before editing one.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
+        }
+      }
+    }
+  },
+  {
+    "name": "get_site_email",
+    "description": "Read one site email: subject, preheader, its node tree (the default tree when not customized), the variables it may use (as {{variables.<key>}} tokens) and its slots. Slots are EmailSlot nodes (order items, gift code, the main button …) filled in at send time — keep required ones exactly once. Emails use only Container, Text, Button, Image and EmailSlot, and email-safe classes (no btn/card/shadow/gradient/absolute).",
+    "inputSchema": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
+        },
+        "kind": {
+          "type": "string",
+          "description": "Email kind from list_site_emails, e.g. \"order_receipt\" or \"customer_login\".",
+          "enum": [
+            "order_receipt",
+            "subscription_welcome",
+            "gift_card_gifted",
+            "gift_card_self",
+            "customer_login",
+            "download_delivery",
+            "download_update"
+          ]
+        }
+      }
+    }
+  },
+  {
+    "name": "update_site_email",
+    "description": "Save a site email's subject, preheader and/or node tree (a full flat node map, as get_site_email returns it), or reset it to the default with reset: true. The save is validated: unknown {{variables}}, a missing or duplicated required slot, or classes email apps can't show are rejected with the reason. Theme, company, variables and slot data are injected at send time — don't put them in ROOT.props. Call preview_site_email after saving.",
+    "inputSchema": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
+        },
+        "kind": {
+          "type": "string",
+          "description": "Email kind from list_site_emails, e.g. \"order_receipt\" or \"customer_login\".",
+          "enum": [
+            "order_receipt",
+            "subscription_welcome",
+            "gift_card_gifted",
+            "gift_card_self",
+            "customer_login",
+            "download_delivery",
+            "download_update"
+          ]
+        },
+        "subject": {
+          "type": "string",
+          "description": "Subject line, ≤ 200 chars. Empty string = the default.",
+          "maxLength": 200
+        },
+        "preheader": {
+          "type": "string",
+          "description": "Preview text inboxes show after the subject, ≤ 200 chars. Empty string = the default.",
+          "maxLength": 200
+        },
+        "nodes": {
+          "type": "object",
+          "description": "The email's full flat node map (ROOT + every node)."
+        },
+        "reset": {
+          "type": "boolean",
+          "description": "Delete the customization and go back to the default email."
+        }
+      }
+    }
+  },
+  {
+    "name": "preview_site_email",
+    "description": "Render the saved site email with sample data, the way inboxes get it. Returns the subject, any errors (an email with errors sends the default instead) and warnings (classes that are ignored in email), plus the plain-text version.",
+    "inputSchema": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id (defaults to active site).",
+          "maxLength": 256
+        },
+        "kind": {
+          "type": "string",
+          "description": "Email kind from list_site_emails, e.g. \"order_receipt\" or \"customer_login\".",
+          "enum": [
+            "order_receipt",
+            "subscription_welcome",
+            "gift_card_gifted",
+            "gift_card_self",
+            "customer_login",
+            "download_delivery",
+            "download_update"
+          ]
+        }
+      }
+    }
+  },
+  {
     "name": "get_domain_status",
     "description": "Read the current custom domain on the active site: redirect mode, per-variant Vercel attachment state (apex + www), and THE DNS RECORDS THE USER MUST CREATE at their registrar. Records are per-project and come straight from Vercel — an apex gets an `A` record at `@`, a subdomain (`www`, `ads`, …) gets a `CNAME` at its label. Never invent these values; report exactly what this returns. Pass `check` to preflight a different candidate without mutating anything. Use this before set_domain to diagnose conflicts (e.g. domain already attached to another Vercel project), and after set_domain to tell the user whether DNS has propagated yet.",
     "inputSchema": {
