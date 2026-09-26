@@ -2,6 +2,7 @@
   {
     "name": "list_blocks",
     "description": "List library blocks (up to ~200) grouped by category: slug, name, tags. Use for a broad menu; search_blocks ranks and filters. `categories` / `styles` arrays OR-match in one call.",
+    "annotations": { "title": "List blocks", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -43,6 +44,7 @@
   {
     "name": "get_component_schema",
     "description": "Full prop schemas for components (types, props, valid values). Pass a comma list to get only what you need. In parallel fill, responses are compact and `components` is required.",
+    "annotations": { "title": "Get component schema", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -57,6 +59,7 @@
   {
     "name": "get_style_reference",
     "description": "Styling reference: palette variables, styleGuide tokens, spatial scale, modifiers, interactive state, form-confirmation recipe. Pass `topic` for a focused guide (design bar, accessibility, domains, per-tool usage).",
+    "annotations": { "title": "Get style reference", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -82,6 +85,7 @@
   {
     "name": "generate_button_classes",
     "description": "Canonical Button className + activeModifiers from intent (variant, shape, size). A starting point — you may append classes.",
+    "annotations": { "title": "Generate button classes", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -128,6 +132,7 @@
   {
     "name": "validate_button_classes",
     "description": "Check a Button className for variant conflicts and token misuse; optionally auto-fix it.",
+    "annotations": { "title": "Validate button classes", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -165,6 +170,7 @@
   {
     "name": "list_presets",
     "description": "Curated theme presets (palette + fonts + tokens). compact: true returns id + name only. Apply one with set_theme({ preset }).",
+    "annotations": { "title": "List presets", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -234,6 +240,7 @@
   {
     "name": "set_theme",
     "description": "Write the site theme — preset, palette, darkPalette, styleGuide tokens and fonts, JSON-LD — straight into the draft. Call first on a new site, then set ROOT `company` vars with patch_site_node. For \"suggest palettes / pick fonts\" requests use suggest_palettes / suggest_font_pairings instead. Palette names, styleGuide keys, workflow: get_style_reference({ topic: \"theme\" }).",
+    "annotations": { "title": "Set theme", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -434,6 +441,7 @@
   {
     "name": "delete_node",
     "description": "Delete a node and its subtree. ROOT, page_home, hdr_root and ftr_root can't be deleted.",
+    "annotations": { "title": "Delete node", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -454,6 +462,7 @@
   {
     "name": "move_node",
     "description": "Move a node and its subtree to a new parent. Can't move ROOT or page_home, or into its own subtree.",
+    "annotations": { "title": "Move node", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -483,6 +492,7 @@
   {
     "name": "insert_node",
     "description": "Insert one node under an existing parent. `node` = { type: { resolvedName }, isCanvas, props: { className, …, custom: { displayName } }, nodes: [] }; parent and linkedNodes are set for you. Lists/tables: a Container with props.type \"ul\" | \"li\" | \"table\" | \"tr\" | \"td\" ….",
+    "annotations": { "title": "Insert node", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -520,6 +530,7 @@
   {
     "name": "get_site_node",
     "description": "Read one node's raw JSON. propsPatch REPLACES string props, so read a string (e.g. ROOT.props.inject.head) before editing it to keep its other content.",
+    "annotations": { "title": "Get site node", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -540,6 +551,7 @@
   {
     "name": "list_site_nodes",
     "description": "Lightweight node tree (id, displayName, type, child count) in DFS order, ~2KB. Use it to find ids and section order.",
+    "annotations": { "title": "List site nodes", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -554,6 +566,7 @@
   {
     "name": "search_site_nodes",
     "description": "Find nodes by text/displayName/id (`q`), component `type`, or className substring/regex. className filters return the full className — use them for site-wide class audits.",
+    "annotations": { "title": "Search site nodes", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -709,6 +722,7 @@
   {
     "name": "audit_seo",
     "description": "Score a site or template page for SEO: meta, heading hierarchy, alt text, link text, content depth. Returns fixes with node ids.",
+    "annotations": { "title": "Audit SEO", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -753,6 +767,7 @@
   {
     "name": "list_templates",
     "description": "List stock templates. Filter by category, tag or q.",
+    "annotations": { "title": "List templates", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -777,6 +792,7 @@
   {
     "name": "pull_template",
     "description": "Download a stock template's decoded node tree.",
+    "annotations": { "title": "Pull template", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -983,6 +999,7 @@
   {
     "name": "list_sites",
     "description": "List all sites belonging to the authenticated tenant (remote).",
+    "annotations": { "title": "List sites", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {}
@@ -991,6 +1008,7 @@
   {
     "name": "select_site",
     "description": "Set the active site for this session and clear any active template. The hosted server doesn't keep it between calls — still pass `id` on every call.",
+    "annotations": { "title": "Select site", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1006,6 +1024,7 @@
   {
     "name": "select_template",
     "description": "Make a template the edit target for this session; editing tools then act on it (clears the active site). Admin or tenant owner/editor only.",
+    "annotations": { "title": "Select template", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1035,6 +1054,7 @@
   {
     "name": "create_site",
     "description": "Create a site from a template (default \"acme\", the blank starter) and return its id. Build it with the granular tools — never a full node map.",
+    "annotations": { "title": "Create site", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1064,6 +1084,7 @@
   {
     "name": "update_site",
     "description": "Update the site's name (URL slug), title or description. title/description are the fallback <title> and meta description for every page without its own seo — update_page can't reach them. Empty string clears. Read current values with select_site.",
+    "annotations": { "title": "Update site", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1093,6 +1114,7 @@
   {
     "name": "publish_site",
     "description": "Publish the draft so it goes live. Every write is staged until this runs. `static` switches static delivery on/off (omit to leave it).",
+    "annotations": { "title": "Publish site", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1111,6 +1133,7 @@
   {
     "name": "unpublish_site",
     "description": "Take the site offline.",
+    "annotations": { "title": "Unpublish site", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1125,6 +1148,7 @@
   {
     "name": "duplicate_site",
     "description": "Copy a site you're a member of into a new site you own (content, title, description, portal, crawlPolicy). Domain and published state are not copied. The copy becomes active.",
+    "annotations": { "title": "Duplicate site", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1154,6 +1178,7 @@
   {
     "name": "screenshot_site",
     "description": "Screenshot the DRAFT in a real browser — the only way to see compiled CSS, theme, state-driven UI and responsive layout. Shoot sections with `selector` (fullPage can miss late paint), at the design width and at 390.",
+    "annotations": { "title": "Screenshot site", "readOnlyHint": true, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1190,6 +1215,7 @@
   {
     "name": "list_site_emails",
     "description": "List the site's transactional emails (receipt, welcome, gift card, sign-in link, downloads): customized or default, and whether each sends. Start here.",
+    "annotations": { "title": "List site emails", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1204,6 +1230,7 @@
   {
     "name": "get_site_email",
     "description": "Read one site email: subject, preheader, node tree, allowed {{variables.*}} and EmailSlot nodes (keep required slots exactly once). Emails use only Container, Text, Button, Image, EmailSlot and email-safe classes (no btn/card/shadow/gradient/absolute).",
+    "annotations": { "title": "Get site email", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "required": ["kind"],
@@ -1232,6 +1259,7 @@
   {
     "name": "update_site_email",
     "description": "Save a site email's subject, preheader and/or full flat node map, or reset: true. Validated: unknown variables, missing/duplicate required slots and unsupported classes are rejected. Theme and company data are injected at send time. Then call preview_site_email.",
+    "annotations": { "title": "Update site email", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "required": ["kind"],
@@ -1278,6 +1306,7 @@
   {
     "name": "preview_site_email",
     "description": "Render the saved email with sample data: subject, errors (an email with errors sends the default instead), warnings, plain text.",
+    "annotations": { "title": "Preview site email", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "required": ["kind"],
@@ -1306,6 +1335,7 @@
   {
     "name": "get_domain_status",
     "description": "Read the site's custom domain: redirect mode, apex/www Vercel state, and the DNS records the user must create — report them exactly as returned. `check` preflights another domain without changes.",
+    "annotations": { "title": "Get domain status", "readOnlyHint": true, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1325,6 +1355,7 @@
   {
     "name": "check_domain",
     "description": "Preflight a candidate domain (apex + www): free, attached or erroring, plus the DNS records it would need. Changes nothing.",
+    "annotations": { "title": "Check domain", "readOnlyHint": true, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1345,6 +1376,7 @@
   {
     "name": "set_domain",
     "description": "Attach a custom domain (apex + www pair, or one subdomain) and return the DNS records the user must create — hand them over verbatim; values are per-project. Attaching doesn't publish. Detach with clear_domain. 409 = a variant is on another Vercel project; 403 upgrade = plan domain limit. Details: get_style_reference({ topic: \"domains\" }).",
+    "annotations": { "title": "Set domain", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1370,6 +1402,7 @@
   {
     "name": "clear_domain",
     "description": "Remove the custom domain from the active site. Detaches both apex and www variants from Vercel and resets redirectMode to none.",
+    "annotations": { "title": "Clear domain", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1384,6 +1417,7 @@
   {
     "name": "set_domain_redirect_mode",
     "description": "Switch the apex/www redirect pairing on an attached domain.",
+    "annotations": { "title": "Set domain redirect mode", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1404,6 +1438,7 @@
   {
     "name": "delete_site",
     "description": "Delete a site. Requires an explicit id.",
+    "annotations": { "title": "Delete site", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1419,6 +1454,7 @@
   {
     "name": "invite_site_member",
     "description": "Invite someone to a site by email as owner, editor (default) or viewer. Owner-only. Re-inviting refreshes the link.",
+    "annotations": { "title": "Invite site member", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1444,6 +1480,7 @@
   {
     "name": "list_site_members",
     "description": "List a site's members with roles, and pending invites with their ids. Owner-only.",
+    "annotations": { "title": "List site members", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1458,6 +1495,7 @@
   {
     "name": "revoke_site_invite",
     "description": "Revoke a pending invite by id (from list_site_members). Owner-only; existing members stay.",
+    "annotations": { "title": "Revoke site invite", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1478,6 +1516,7 @@
   {
     "name": "upload_image",
     "description": "Upload an image to the site's media library. Returns a mediaId: put it (not the url) in the Image `src` with type \"cdn\" — and in `content` too if set, since src shadows content. Web images: `imageUrl`. `dataBase64` is a last resort (~3MB cap, costly in tokens). More: get_style_reference({ topic: \"media\" }).",
+    "annotations": { "title": "Upload image", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1529,6 +1568,7 @@
   {
     "name": "upload_file",
     "description": "Upload any plan-allowed file. Images go to the CDN (type \"cdn\"); video/audio/pdf/zip go to R2 (type \"r2\" + public url) for a Link, a collection field, or a Video node (provider \"r2\", videoId = mediaId). Web files: `fileUrl`. `dataBase64` is a last resort (~3MB cap; pass mimeType for non-images).",
+    "annotations": { "title": "Upload file", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1580,6 +1620,7 @@
   {
     "name": "find_image",
     "description": "Stock photos with verified, ready-to-use URLs (local bank, then Unsplash/Pexels).",
+    "annotations": { "title": "Find image", "readOnlyHint": true, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1616,6 +1657,7 @@
   {
     "name": "find_video",
     "description": "Stock videos with direct MP4 URLs (Pexels) for Video nodes.",
+    "annotations": { "title": "Find video", "readOnlyHint": true, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1654,6 +1696,7 @@
   {
     "name": "find_icon",
     "description": "Search every icon set; returns ranked `ref-icon:<set>/<Name>` refs for Icon nodes and Button/Link icon.value. Use before assuming an icon exists — Tabler (tb) lacks many brands (use fa / si / … from the results).",
+    "annotations": { "title": "Find icon", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1684,6 +1727,7 @@
   {
     "name": "patch_site_node",
     "description": "Patch one node (several: patch_site_bulk, one atomic write). classNamePatch merges Tailwind classes; propsPatch sets other props; typePatch swaps the component type. propsPatch deep-merges seo/root/background/overflow/design/inject/relation/richText/theme/company, but strings and arrays REPLACE — read with get_site_node first; drop a branch with unsetProps [\"seo.jsonLd\"]. Image: patch src AND content together (src shadows content). ROOT inject.head/footer is for third-party code, never page content. Never send children. More: get_style_reference({ topic: \"editing\" }).",
+    "annotations": { "title": "Patch site node", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1762,6 +1806,7 @@
   {
     "name": "patch_site_bulk",
     "description": "Apply many node patches in one atomic write (parallel single patches lose updates). `patches` is a real JSON array of { nodeId, typePatch?, classNamePatch?, propsPatch?, nodesPatch?, unsetClasses?, unsetProps? }. Same rules as patch_site_node: namespaced objects deep-merge, strings/arrays replace, Image src + content together, no children.",
+    "annotations": { "title": "Patch site bulk", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1851,6 +1896,7 @@
   {
     "name": "set_portal",
     "description": "Enable a portal UI around the published site (sales banner, client review, demo).",
+    "annotations": { "title": "Set portal", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1880,6 +1926,7 @@
   {
     "name": "get_portal",
     "description": "Fetch the current portal configuration for a site.",
+    "annotations": { "title": "Get portal", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1894,6 +1941,7 @@
   {
     "name": "remove_portal",
     "description": "Remove/disable the portal on a site (sets portal to null).",
+    "annotations": { "title": "Remove portal", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1908,6 +1956,7 @@
   {
     "name": "audit_accessibility",
     "description": "WCAG audit of a site or template page: contrast, alt text, headings, ARIA, interactive elements. Returns violations by severity with node ids.",
+    "annotations": { "title": "Audit accessibility", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1938,6 +1987,7 @@
   {
     "name": "search_blocks",
     "description": "Search the block library; returns one page of slugs with descriptions and tags (full structure: get_block), plus sections on this site you can clone. Use `q` with short layout phrases (\"split hero\"), `categories` / `styles` arrays for OR filters, `page` for more. On \"Fallback — not an exact match\", take the closest slug and adapt — don't loop. Guide: get_style_reference({ topic: \"blocks\" }).",
+    "annotations": { "title": "Search blocks", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2032,6 +2082,7 @@
   {
     "name": "get_block",
     "description": "Get a library block's full tree by slug — reference for hand-building with add_nodes. Counts as a use.",
+    "annotations": { "title": "Get block", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2047,6 +2098,7 @@
   {
     "name": "list_block_nodes",
     "description": "List a library block's node ids (lib_*) and displayNames — the keys apply_kit_block's contentOverrides / propOverrides use. Counts as a use.",
+    "annotations": { "title": "List block nodes", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2062,6 +2114,7 @@
   {
     "name": "apply_kit_block",
     "description": "Add a section: stamp a library block (`slug`) or clone a page section already on this site (`sourceNodeId`) — exactly one. Pass final copy in `contentOverrides` in this same call; patching text afterwards leads to id guessing. target \"header\" / \"footer\" replaces the site header/footer with a nav/footer block — heroes are page sections. Guide: get_style_reference({ topic: \"blocks\" }).",
+    "annotations": { "title": "Apply kit block", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2435,6 +2488,7 @@
   {
     "name": "list_pages",
     "description": "List the site's pages: node id, name, slug, home/404 flags. Use it to get page ids.",
+    "annotations": { "title": "List pages", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2449,6 +2503,7 @@
   {
     "name": "add_page",
     "description": "Create a page (a type \"page\" Container under ROOT; the first page is home). Fill it with apply_kit_block / add_nodes using pageId, and set seo.title + seo.description. Guide: get_style_reference({ topic: \"pages\" }).",
+    "annotations": { "title": "Add page", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2539,6 +2594,7 @@
   {
     "name": "update_page",
     "description": "Update a page: name (changes the slug), SEO, home/404/hidden flags, per-page headCode/bodyClass, hideHeader/hideFooter/hideChrome. Set seo.title and seo.description on every page — without them it falls back to the site title (update_site), not its name. headCode is for third-party code, never page content. Guide: get_style_reference({ topic: \"pages\" }).",
+    "annotations": { "title": "Update page", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2651,6 +2707,7 @@
   {
     "name": "delete_page",
     "description": "Delete a page and its content. The last page can't be deleted; deleting home promotes the next page.",
+    "annotations": { "title": "Delete page", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2671,6 +2728,7 @@
   {
     "name": "add_nodes",
     "description": "Add a subtree: a flat map of new nodes plus the `rootNodeId` to attach under `parentId` (default page_home). Each node: type.resolvedName, isCanvas, props (className, custom.displayName), parent, nodes[], linkedNodes: {}. Send only new nodes. Prefer apply_kit_block for standard sections. Contract: get_style_reference({ topic: \"editing\" }).",
+    "annotations": { "title": "Add nodes", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2714,6 +2772,7 @@
   {
     "name": "place_section_tree",
     "description": "Clone-pipeline fill mode only (errors elsewhere). Submit the complete nested tree for your assigned section in one call; a second call replaces the first. `hierarchy` is an object: root Container, each node { type, props, children? }. Never invent Image.src; button URLs go in the action href. Shape: get_style_reference({ topic: \"section-tree\" }).",
+    "annotations": { "title": "Place section tree", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2752,6 +2811,7 @@
   {
     "name": "suggest_palettes",
     "description": "Show 3 palette options for the user to pick — does NOT change the site. Don't call set_theme in the same turn.",
+    "annotations": { "title": "Suggest palettes", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2798,6 +2858,7 @@
   {
     "name": "suggest_font_pairings",
     "description": "Show 3 font pairings (heading + body Google Fonts) for the user to pick — does NOT change the site. Don't call set_theme in the same turn; use set_theme only when they want a preset applied now.",
+    "annotations": { "title": "Suggest font pairings", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2871,6 +2932,7 @@
   {
     "name": "set_favicon",
     "description": "Set or clear the site favicon (ROOT.props.seo.favicon). Give exactly one source: `mediaId`, `imageUrl`, `svgContent` (only SVG the user supplied — never invent it), `dataBase64` (small icons, ~3MB cap), or `clear: true`. Best: a 512px square PNG or an SVG. Staged like any edit — publish to see it live. Sites only. More: get_style_reference({ topic: \"media\" }).",
+    "annotations": { "title": "Set favicon", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2924,6 +2986,7 @@
   {
     "name": "set_integrations",
     "description": "Set analytics and verification ids, rendered as real tags on published pages: GA4, GTM, Search Console, Meta Pixel, Google Ads. Other third-party scripts go in ROOT inject.head/footer via patch_site_node. Per-action conversions: get_style_reference({ topic: \"integrations\" }).",
+    "annotations": { "title": "Set integrations", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2963,6 +3026,7 @@
   {
     "name": "set_redirects",
     "description": "Replace the site's 301/302 redirect rules, evaluated server-side before render. Paths are site-relative; destinations may be absolute URLs.",
+    "annotations": { "title": "Set redirects", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3003,6 +3067,7 @@
   {
     "name": "stripe_connect",
     "description": "Connect Stripe so the site can take payments. Returns the status and, if unfinished, a single-use onboarding URL only the site owner can complete — give it to them, then call again to confirm 'ready'. Owner-only.",
+    "annotations": { "title": "Stripe: connect", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3017,6 +3082,7 @@
   {
     "name": "set_checkout",
     "description": "Make a collection sellable through Stripe (remove: true stops). Cart Buttons in a Data repeater bound to it then charge via Stripe. Without price_id_field each row charges its numeric `price` field in minor units (2500 = $25.00) — the collection needs that number field; with price_id_field each row holds a Stripe price id. Needs stripe_connect.",
+    "annotations": { "title": "Set checkout", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3061,6 +3127,7 @@
   {
     "name": "stripe_search_products",
     "description": "Search the site's live Stripe products (id, title, price, image, metadata).",
+    "annotations": { "title": "Stripe: search products", "readOnlyHint": true, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3094,6 +3161,7 @@
   {
     "name": "stripe_list_categories",
     "description": "Distinct metadata.category values in the site's Stripe catalog, with product counts and an image.",
+    "annotations": { "title": "Stripe: list categories", "readOnlyHint": true, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3108,6 +3176,7 @@
   {
     "name": "stripe_get_product",
     "description": "One Stripe product by id or metadata.slug: title, description, price(s), images, metadata.",
+    "annotations": { "title": "Stripe: get product", "readOnlyHint": true, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3132,6 +3201,7 @@
   {
     "name": "list_collections",
     "description": "List the site's collections (headless CMS): id, name, slug, row and field counts, public flag.",
+    "annotations": { "title": "List collections", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3146,6 +3216,7 @@
   {
     "name": "get_collection",
     "description": "Read one collection's definition (schema fields, source, isPublic).",
+    "annotations": { "title": "Get collection", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3165,6 +3236,7 @@
   {
     "name": "create_collection",
     "description": "Create a collection. schema = [{ key, label, type, required?, default?, help?, … }]; types: text, number, boolean, date, select, image, url, email, color, richText, media, json. Source defaults to manual. Plan-gated.",
+    "annotations": { "title": "Create collection", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3206,6 +3278,7 @@
   {
     "name": "update_collection_schema",
     "description": "Replace a collection's field list. Existing rows keep stale keys until edited. Read it with get_collection first.",
+    "annotations": { "title": "Update collection schema", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3230,6 +3303,7 @@
   {
     "name": "delete_collection",
     "description": "Delete a collection and all its rows. No undo.",
+    "annotations": { "title": "Delete collection", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3248,6 +3322,7 @@
   {
     "name": "list_collection_rows",
     "description": "Page through a collection's rows: rows, nextCursor, hasMore, totalCount. Limit default 50, max 200.",
+    "annotations": { "title": "List collection rows", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3275,6 +3350,7 @@
   {
     "name": "create_collection_row",
     "description": "Create one row. `data` maps field key → value, validated against the schema. Plan-gated.",
+    "annotations": { "title": "Create collection row", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3297,6 +3373,7 @@
   {
     "name": "create_collection_rows",
     "description": "Insert up to 500 rows (field key → value) in one call, validated all-or-nothing (errors name the rowIndex). Plan-gated. Big CSVs: import_collection_csv.",
+    "annotations": { "title": "Create collection rows", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3322,6 +3399,7 @@
   {
     "name": "update_collection_row",
     "description": "Partially update one row by row_id; omitted fields keep their values.",
+    "annotations": { "title": "Update collection row", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3348,6 +3426,7 @@
   {
     "name": "delete_collection_row",
     "description": "Delete one row from a collection by row_id.",
+    "annotations": { "title": "Delete collection row", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3370,6 +3449,7 @@
   {
     "name": "import_collection_csv",
     "description": "Import CSV text; header columns match field keys (unmatched ignored). mode: append (default), replace (deletes existing rows first), upsert (by an externalId or id column). ~8MB cap. Plan-gated.",
+    "annotations": { "title": "Import collection CSV", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {

@@ -128,15 +128,19 @@ const AGENT_ALLOWED = new Set([...HTTP_TOOL_NAMES].filter(name => !AGENT_EXCLUDE
  * Get tool schemas for the public agent endpoint.
  * Filters to HTTP-only tools and excludes auth/admin tools (see `AGENT_EXCLUDED`).
  * Output uses Claude API shape (`input_schema`), NOT the MCP shape (`inputSchema`).
+ * `title` and `annotations` are MCP-only metadata (the MCP route passes them to
+ * clients); callers building Claude API tool definitions must not forward them.
  *
- * @returns {Array<{ name: string, description: string, input_schema: object }>}
+ * @returns {Array<{ name: string, title?: string, description: string, annotations?: object, input_schema: object }>}
  */
 function getAgentTools() {
   return tools
     .filter(t => HTTP_TOOL_NAMES.has(t.name) && !AGENT_EXCLUDED.has(t.name))
     .map(t => ({
       name: t.name,
+      title: t.annotations?.title,
       description: t.description,
+      annotations: t.annotations,
       input_schema: withoutLocalOnlyProps(t.inputSchema),
     }));
 }
