@@ -17,6 +17,7 @@ const {
 const {
   decodeContentOrThrow,
   getActiveTarget,
+  selectionNote,
   getActiveSiteId,
   isTemplateTarget,
   getEditorUrl,
@@ -51,6 +52,7 @@ module.exports = {
   assertPatchBlockNodeArgs,
   assertPatchBlockBulkItem,
   getActiveTarget,
+  selectionNote,
   getActiveSiteId,
   isTemplateTarget,
   getEditorUrl,

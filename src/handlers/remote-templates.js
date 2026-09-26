@@ -10,6 +10,7 @@ const { getContext } = require("../core/context");
 const {
   parseMaybeJson,
   getActiveTarget,
+  selectionNote,
   compressJsonToBase64Lz,
   decodeContentOrThrow,
 } = require("../helpers/index.js");
@@ -39,7 +40,7 @@ module.exports = {
       content: [
         {
           type: "text",
-          text: `Active template set to "${data.slug}" (${data.title || "untitled"})`,
+          text: `Active template set to "${data.slug}" (${data.title || "untitled"})${selectionNote({ type: "template", id: data.slug })}`,
         },
       ],
     };
@@ -155,7 +156,8 @@ module.exports = {
    */
   async publish_site_as_template(args) {
     const { slug, title, description, image, category, tags, hidden, isPublic, sortOrder } = args;
-    const target = getActiveTarget(args);
+    // `slug` here names the NEW template, so it must not select a target.
+    const target = getActiveTarget({ id: args.id });
     if (target.type !== "site")
       throw new Error("Active target must be a site. Use select_site first.");
     const siteData = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`);

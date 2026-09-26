@@ -6,10 +6,17 @@ const { getActiveTarget } = require("../helpers/index.js");
  * (not templates) — templates don't carry credentials.
  */
 function requireActiveSite(args) {
-  const target = getActiveTarget(args.siteId ? { id: args.siteId } : args);
-  if (target.type !== "site") {
+  // Only `siteId` names the site — `id` / `slug` on these tools are Stripe
+  // product fields and must never be read as a target.
+  let target = null;
+  try {
+    target = getActiveTarget(args.siteId ? { id: args.siteId } : {});
+  } catch {
+    // No target at all — same answer as a template target, below.
+  }
+  if (target?.type !== "site") {
     throw new Error(
-      "Stripe tools operate on a site. Select a site first with select_site or pass siteId."
+      "Stripe tools operate on a site. Pass siteId (the local server also accepts a prior select_site)."
     );
   }
   return target.id;

@@ -7,7 +7,12 @@
 const { apiFetch, normalizeBaseUrl } = require("../core/api-fetch");
 const { getContext } = require("../core/context");
 
-const { getActiveTarget, fetchTarget, decodeContentOrThrow } = require("../helpers/index.js");
+const {
+  getActiveTarget,
+  selectionNote,
+  fetchTarget,
+  decodeContentOrThrow,
+} = require("../helpers/index.js");
 const { pickSiteMetaArgs, pickSiteMetaUpdates } = require("../helpers/extra-meta-args");
 
 const DEFAULT_BLANK_TEMPLATE = "acme";
@@ -97,7 +102,7 @@ module.exports = {
       content: [
         {
           type: "text",
-          text: `New site ${data.id} created from "${slug}" (${Object.keys(content).length} nodes).\nActive site set. Editor: ${data.url || `${base}/build/${data.id}`}\nPreview: ${base}/view/${data.id}`,
+          text: `New site ${data.id} created from "${slug}" (${Object.keys(content).length} nodes).\nActive site set. Editor: ${data.url || `${base}/build/${data.id}`}\nPreview: ${base}/view/${data.id}${selectionNote({ type: "site", id: data.id })}`,
         },
       ],
     };
@@ -148,7 +153,7 @@ module.exports = {
       `Change these two with update_site; per-page overrides go through update_page seo.`,
     ];
     return {
-      content: [{ type: "text", text: lines.join("\n") }],
+      content: [{ type: "text", text: lines.join("\n") + selectionNote({ type: "site", id: data.id }) }],
     };
   },
 
@@ -282,7 +287,7 @@ module.exports = {
       content: [
         {
           type: "text",
-          text: `Site ${data.id} duplicated from ${data.sourceId}.\nActive site set. Editor: ${data.url || `${base}/build/${data.id}`}\nPreview: ${base}/view/${data.id}`,
+          text: `Site ${data.id} duplicated from ${data.sourceId}.\nActive site set. Editor: ${data.url || `${base}/build/${data.id}`}\nPreview: ${base}/view/${data.id}${selectionNote({ type: "site", id: data.id })}`,
         },
       ],
     };
@@ -337,15 +342,14 @@ module.exports = {
 
   /**
    * Bind a custom domain to the active site, and report the DNS records to
-   * create. Pass `domain: null` to detach (same as clear_domain).
+   * create. Detaching is clear_domain.
    * @param {object} args - { domain, redirectMode?, siteId? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async set_domain(args = {}) {
     const target = getActiveTarget(args);
     if (target.type !== "site") throw new Error("set_domain only works on sites, not templates.");
-    if (args.domain === null) return module.exports.clear_domain(args);
-    if (!args.domain) throw new Error("domain is required. Pass null (or use clear_domain) to remove.");
+    if (!args.domain) throw new Error("domain is required. To remove a domain, use clear_domain.");
     const body = { domain: args.domain };
     if (args.redirectMode) body.domainRedirectMode = args.redirectMode;
     const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}/domain`, {

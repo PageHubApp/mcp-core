@@ -134,7 +134,28 @@ const AGENT_ALLOWED = new Set([...HTTP_TOOL_NAMES].filter(name => !AGENT_EXCLUDE
 function getAgentTools() {
   return tools
     .filter(t => HTTP_TOOL_NAMES.has(t.name) && !AGENT_EXCLUDED.has(t.name))
-    .map(t => ({ name: t.name, description: t.description, input_schema: t.inputSchema }));
+    .map(t => ({
+      name: t.name,
+      description: t.description,
+      input_schema: withoutLocalOnlyProps(t.inputSchema),
+    }));
+}
+
+// Params that read the caller's own disk. Only the stdio server (which lists
+// tools through `getAllTools`) can honour them; every agent-endpoint handler
+// rejects them, so they are not advertised there.
+const LOCAL_ONLY_PROPS = ["filePath"];
+
+function withoutLocalOnlyProps(schema) {
+  const props = schema?.properties;
+  if (!props || !LOCAL_ONLY_PROPS.some(k => k in props)) return schema;
+  const properties = { ...props };
+  for (const k of LOCAL_ONLY_PROPS) delete properties[k];
+  const next = { ...schema, properties };
+  if (Array.isArray(schema.required)) {
+    next.required = schema.required.filter(k => !LOCAL_ONLY_PROPS.includes(k));
+  }
+  return next;
 }
 
 /**

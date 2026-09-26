@@ -125,6 +125,21 @@ async function addNodesBody(args) {
   // Sanitize: parse strings, validate types, rebuild parent↔children, reparent orphans
   const { nodes: cleanNodes, roots } = sanitizeNodes(rawNodes, flat, parentId);
   if (Object.keys(cleanNodes).length === 0) {
+    // Every submitted id is already on the site: an earlier call (usually one
+    // that timed out after committing) added them. Say so, or the agent reads
+    // "nothing added" as a failure and resends under new ids — a duplicate.
+    const submittedIds = Object.keys(rawNodes);
+    if (submittedIds.every(id => flat[id])) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Already added: these nodes are on the site (${submittedIds.join(", ")}). An earlier call added them — don't resend under new ids.`,
+          },
+        ],
+        changedNodes: {},
+      };
+    }
     return { content: [{ type: "text", text: "No valid nodes to add." }], changedNodes: {} };
   }
   if (!cleanNodes[rootNodeId]) {

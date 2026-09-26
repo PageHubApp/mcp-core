@@ -24,7 +24,24 @@ function getActiveTarget(args = {}) {
   // Context: activeTemplate takes priority when set
   if (ctx.activeTemplate) return { type: "template", id: ctx.activeTemplate.slug };
   if (ctx.activeSite) return { type: "site", id: ctx.activeSite.id };
+  if (ctx.stateless) {
+    throw new Error(
+      "No site given. Pass the site `id` (or a template `slug`) on this call — this server doesn't remember select_site between calls."
+    );
+  }
   throw new Error("No site or template selected. Run select_site or select_template first.");
+}
+
+/**
+ * Trailer for tools that set the active target. On a stateless server
+ * (`ctx.stateless`, the hosted HTTP endpoint) the selection only lasts for the
+ * call that made it, so the agent has to carry the id itself.
+ * @param {{ type: 'site'|'template', id: string }} target
+ */
+function selectionNote(target) {
+  if (!getContext().stateless) return "";
+  const arg = target.type === "template" ? `slug: "${target.id}"` : `id: "${target.id}"`;
+  return `\nPass ${arg} on every later call — this server doesn't remember the selection between calls.`;
 }
 
 /** Backwards-compat: returns the site id or template slug. */
@@ -212,6 +229,7 @@ async function saveSite(siteId, flat, extra = {}) {
 module.exports = {
   decodeContentOrThrow,
   getActiveTarget,
+  selectionNote,
   getActiveSiteId,
   isTemplateTarget,
   getEditorUrl,
