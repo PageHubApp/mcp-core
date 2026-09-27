@@ -1,0 +1,220 @@
+const { extendTailwindMerge } = require("tailwind-merge");
+
+// The spatial scale (packages/daisyui-spatial) is theme spacing, so `px-space-sm`
+// must conflict with `px-4` / `px-[22px]` like any other padding. Without this
+// twMerge treats the tokens as unknown classes, keeps both, and the token wins
+// on stylesheet order — an agent's spacing patch silently does nothing.
+const twMerge = extendTailwindMerge({
+  extend: {
+    theme: {
+      spacing: [
+        "space-3xs", "space-2xs", "space-xs", "space-sm", "space-md",
+        "space-lg", "space-xl", "space-2xl", "space-3xl", "space-4xl",
+        "container-x",
+      ],
+    },
+  },
+});
+
+/** Try to JSON.parse a string, return as-is if it fails or isn't a string. */
+function parseMaybeJson(v) {
+  if (v == null) return v;
+  if (typeof v === "string") {
+    try {
+      return JSON.parse(v);
+    } catch {
+      // Attempt lightweight repairs for common model JSON mistakes:
+      // 1. Swapped ]} → }] (model closes array before object)
+      // 2. Trailing commas before } or ]
+      const repaired = v
+        .replace(/"\s*\]\s*\}/g, (m, offset) => {
+          // Check if there's an unclosed { — the ] and } may be swapped
+          const lastOpen = v.lastIndexOf("{", offset);
+          const lastClose = v.lastIndexOf("}", offset);
+          if (lastOpen > lastClose) {
+            return '"}]';
+          }
+          return m;
+        })
+        .replace(/,\s*([}\]])/g, "$1");
+      if (repaired !== v) {
+        try {
+          return JSON.parse(repaired);
+        } catch {
+          /* fall through */
+        }
+      }
+      return v;
+    }
+  }
+  return v;
+}
+
+/**
+ * Merge singular + list MCP args into deduped trimmed strings (comma-split on strings).
+ * @param {string|string[]|undefined|null} singular e.g. args.category
+ * @param {string|string[]|undefined|null} listish e.g. args.categories
+ * @returns {string[]}
+ */
+function mergeStrList(singular, listish) {
+  const parts = [];
+  const add = v => {
+    if (v == null || v === "") return;
+    if (Array.isArray(v)) {
+      for (const x of v) add(x);
+      return;
+    }
+    for (const piece of String(v).split(",")) {
+      const t = piece.trim();
+      if (t) parts.push(t);
+    }
+  };
+  add(singular);
+  add(listish);
+  return [...new Set(parts)];
+}
+
+/** True if arrays contain the same node ids with the same multiplicities (order ignored). */
+function isSameChildIdMultiset(prev, next) {
+  const a = Array.isArray(prev) ? prev.map(String) : [];
+  const b = Array.isArray(next) ? next.map(String) : [];
+  if (a.length !== b.length) return false;
+  const sa = [...a].sort();
+  const sb = [...b].sort();
+  for (let i = 0; i < sa.length; i++) {
+    if (sa[i] !== sb[i]) return false;
+  }
+  return true;
+}
+
+/**
+ * Remove specific Tailwind classes from a className string.
+ * Supports exact matches and prefix matches (e.g. "gap-" removes "gap-4", "md:gap-8").
+ */
+/**
+ * Scripts that rebuild the document from a string. These run after the site
+ * has already rendered, so they delete the real node tree and replace it with
+ * a copy that no editor, walker or static export can see — the page silently
+ * stops reflecting the site.
+ */
+const DESTRUCTIVE_INJECT_JS = [
+  {
+    re: /document\s*\.\s*(?:body|documentElement)\s*\.\s*(?:inner|outer)HTML\s*=/i,
+    what: "assigns to document.body.innerHTML",
+  },
+  {
+    re: /document\s*\.\s*(?:body|documentElement)\s*\.\s*replaceChildren\s*\(/i,
+    what: "calls document.body.replaceChildren()",
+  },
+  { re: /document\s*\.\s*write(?:ln)?\s*\(/i, what: "calls document.write()" },
+];
+
+/**
+ * Reject raw CSS / JS shoved into a "raw HTML" inject slot without the
+ * required `<style>` or `<script>` wrapper. Models routinely drop pure CSS
+ * into `ROOT.props.inject.head` (or per-page `headCode`), the browser ignores
+ * it, and every dependent class/script silently breaks. Catch it at the patch
+ * boundary with a directly-actionable error.
+ */
+function assertInjectHtml(value, location) {
+  if (value == null) return;
+  if (typeof value !== "string") {
+    throw new Error(`${location} must be a string of raw HTML, got ${typeof value}.`);
+  }
+  const trimmed = value.trim();
+  if (trimmed === "") return;
+  for (const { re, what } of DESTRUCTIVE_INJECT_JS) {
+    if (!re.test(trimmed)) continue;
+    throw new Error(
+      `${location} ${what}, which erases the rendered page on load. ` +
+        `inject slots are for third-party snippets — a tracking tag, a chat widget, one CSS rule. ` +
+        `They are NOT where page content goes: anything written this way is invisible to the editor, ` +
+        `to search engines, and to static export, and it silently overwrites whatever the site actually contains. ` +
+        `Build the page out of nodes instead — add_nodes / apply_kit_block / patch_site_node.`
+    );
+  }
+  // Strip legitimate wrappers — anything left over with CSS/JS shape is unwrapped.
+  const stripped = trimmed
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, "")
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "")
+    .replace(/<!--[\s\S]*?-->/g, "");
+  // CSS rule shape: `selector { prop: value }` outside any wrapper.
+  const looksLikeCss = /\{[\s\S]*?[a-z-]+\s*:[\s\S]*?\}/i.test(stripped);
+  if (looksLikeCss) {
+    const preview = trimmed.length > 200 ? trimmed.slice(0, 200) + "…" : trimmed;
+    throw new Error(
+      `${location} looks like raw CSS that is NOT wrapped in a <style> tag. ` +
+        `inject slots are RAW HTML — the browser will ignore unwrapped CSS and every dependent class will break. ` +
+        `Wrap CSS in <style>...</style> (and JS in <script>...</script>). ` +
+        `Example:\n<style>\n  .my-class { color: red; }\n</style>\n` +
+        `Received (preview): ${preview}`
+    );
+  }
+}
+
+function removeClasses(className, toRemove) {
+  if (!className || !Array.isArray(toRemove) || toRemove.length === 0) return className;
+  const parts = String(className).split(/\s+/).filter(Boolean);
+  const filtered = parts.filter(cls => {
+    // Strip responsive prefix for matching (e.g. "md:gap-4" → "gap-4")
+    const bare = cls.replace(/^(sm:|md:|lg:|xl:|2xl:)/, "");
+    for (const pattern of toRemove) {
+      if (pattern === cls || pattern === bare) return false;
+      // Prefix match: "gap-" removes "gap-4", "gap-8", etc.
+      if (pattern.endsWith("-") && (bare.startsWith(pattern) || cls.startsWith(pattern)))
+        return false;
+    }
+    return true;
+  });
+  return filtered.join(" ");
+}
+
+/**
+ * Merge a className patch into an existing className string.
+ *
+ * `twMerge` alone is not enough here. It resolves conflicts only for classes it
+ * recognizes as Tailwind utilities, and PageHub's vocabulary is mostly classes
+ * it does not know: DaisyUI components (`btn`, `btn-primary`, `hero`,
+ * `hero-content`, `rounded-box`), the spatial scale (`px-space-md`,
+ * `gap-space-lg`, `px-container-x`), and our own composites
+ * (`cta-responsive`). Unknown classes are passed through verbatim, duplicates
+ * included — so re-applying the canonical CTA string the system prompt hands
+ * the model appends another full copy every time.
+ *
+ * That is not theoretical: one live button reached 82 classes with 10 unique
+ * (`btn`×13, `btn-primary`×13, `px-space-md`×13), and 62% of every class token
+ * on the section was a literal repeat. It is invisible in the render, so
+ * nothing ever surfaced it.
+ *
+ * Duplicate tokens in a class attribute never carry meaning — CSS precedence
+ * comes from rule order in the stylesheet, not attribute order — so collapsing
+ * them is safe. The LAST occurrence wins to preserve twMerge's own
+ * later-overrides-earlier ordering.
+ */
+function mergeClasses(existing, patch) {
+  return dedupeClasses(twMerge(existing || "", patch || ""));
+}
+
+/** Collapse repeated class tokens, keeping each token's last position. */
+function dedupeClasses(className) {
+  if (!className || typeof className !== "string") return className || "";
+  const parts = className.split(/\s+/).filter(Boolean);
+  const seen = new Set();
+  const out = [];
+  for (let i = parts.length - 1; i >= 0; i--) {
+    if (seen.has(parts[i])) continue;
+    seen.add(parts[i]);
+    out.push(parts[i]);
+  }
+  return out.reverse().join(" ");
+}
+
+module.exports = {
+  parseMaybeJson,
+  mergeStrList,
+  isSameChildIdMultiset,
+  removeClasses,
+  mergeClasses,
+  dedupeClasses,
+  assertInjectHtml,
+};

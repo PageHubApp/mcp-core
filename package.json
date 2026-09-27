@@ -1,0 +1,51 @@
+{
+  "name": "@pagehub/mcp-core",
+  "version": "0.1.1",
+  "description": "Shared tool schemas and HTTP handlers for PageHub MCP + AI agent",
+  "license": "MIT",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./handlers/components": "./src/handlers/components.js",
+    "./handlers/discovery": "./src/handlers/discovery.js",
+    "./handlers/kit": "./src/handlers/kit.js",
+    "./handlers/nodes": "./src/handlers/nodes.js",
+    "./handlers/pages": "./src/handlers/pages.js",
+    "./handlers/portal": "./src/handlers/portal.js",
+    "./handlers/remote": "./src/handlers/remote.js",
+    "./handlers/remote-collections": "./src/handlers/remote-collections.js",
+    "./handlers/seo": "./src/handlers/seo.js",
+    "./handlers/site-config": "./src/handlers/site-config.js",
+    "./handlers/stock-images": "./src/handlers/stock-images.js",
+    "./handlers/stock-videos": "./src/handlers/stock-videos.js",
+    "./ai-models": "./src/ai-models.mjs",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src/"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "lzutf8": "^0.6.3",
+    "tailwind-merge": "^3.5.0"
+  },
+  "keywords": [
+    "pagehub",
+    "mcp",
+    "tools",
+    "ai",
+    "page-builder",
+    "model-context-protocol"
+  ],
+  "homepage": "https://pagehub.dev/developers/mcp",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PageHubApp/mcp-core"
+  },
+  "bugs": {
+    "url": "https://github.com/PageHubApp/mcp-core/issues"
+  },
+  "author": "PageHub"
+}
