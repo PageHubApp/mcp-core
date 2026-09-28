@@ -11,7 +11,22 @@ const fs = require("fs");
 const path = require("path");
 
 // Set codes resolved from the data dir at boot. Each .json holds {Name → svgEntry}.
-const ICON_DIR = path.resolve(__dirname, "../../../../packages/sdk/src/data/icon-svgs");
+// Same candidate order as the SDK's serverResolve.ts. `__dirname` is right for
+// the stdio server; in a Next/Turbopack bundle it becomes a virtual "/ROOT", so
+// the hosted server finds the traced copy under process.cwd() instead.
+const ICON_DIR_CANDIDATES = [
+  path.resolve(__dirname, "../../../../packages/sdk/src/data/icon-svgs"),
+  path.resolve(process.cwd(), "packages/sdk/src/data/icon-svgs"),
+  path.resolve(process.cwd(), "node_modules/@pagehub/sdk/src/data/icon-svgs"),
+];
+let iconDir;
+function getIconDir() {
+  if (!iconDir) {
+    iconDir = ICON_DIR_CANDIDATES.find(d => fs.existsSync(d));
+    if (!iconDir) throw new Error(`Icon registry not found (tried ${ICON_DIR_CANDIDATES.join(", ")})`);
+  }
+  return iconDir;
+}
 
 // Heuristic: which sets are dominated by brand/product logos. Used purely for
 // the result-formatting hint ("no match in Tabler — brand not in this set").
@@ -62,12 +77,12 @@ const SET_PREFIX = {
 let _index = null;
 function buildIndex() {
   if (_index) return _index;
-  const files = fs.readdirSync(ICON_DIR).filter(f => f.endsWith(".json"));
+  const files = fs.readdirSync(getIconDir()).filter(f => f.endsWith(".json"));
   const entries = []; // { set, name, prefix, lower }
   const setCounts = {};
   for (const f of files) {
     const set = f.replace(/\.json$/, "");
-    const data = JSON.parse(fs.readFileSync(path.join(ICON_DIR, f), "utf8"));
+    const data = JSON.parse(fs.readFileSync(path.join(getIconDir(), f), "utf8"));
     const names = Object.keys(data);
     setCounts[set] = names.length;
     const prefix = SET_PREFIX[set] || "";
