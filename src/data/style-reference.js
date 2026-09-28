@@ -370,7 +370,13 @@ Providers (rendered as real tags on published pages):
 
 Per-action conversions: with \`googleAds\` set, give a Button/Link/Form action \`conversion: { provider: "google-ads", eventName: "conversion", sendTo: "AW-XXX/YYY" }\`. GA4 and Meta wire automatically once their ids are set.
 
-Anything else (chat widgets, A/B testing, CRMs, custom scripts): \`patch_site_node\` on ROOT with \`propsPatch.inject.head\` / \`inject.footer\` — third-party snippets only. Per-page head code: \`update_page\` \`headCode\`.`,
+Anything else (chat widgets, A/B testing, CRMs, custom scripts): \`patch_site_node\` on ROOT with \`propsPatch.inject.head\` / \`inject.footer\` — third-party snippets only. Per-page head code: \`update_page\` \`headCode\`.
+
+## Stripe
+\`stripe_connect\` returns a single-use onboarding URL while setup is unfinished. Only the site owner can complete it: hand them the URL, then call \`stripe_connect\` again once they're done to confirm \`ready\`. \`set_checkout\` and the \`stripe_*\` lookups need that ready connection.
+
+## Site emails
+After \`update_site_email\`, run \`preview_site_email\`: an email with errors sends the default instead, and the preview is where those errors show.`,
 
   "section-tree": `# place_section_tree (clone-pipeline fill mode only)
 
@@ -409,7 +415,7 @@ const STYLE_TOPIC_LABELS = {
   theme: "set_theme palette names, styleGuide keys, fonts, company vars",
   pages: "page SEO, headCode / bodyClass, hiding header/footer",
   media: "upload sources, using mediaIds, favicons",
-  integrations: "analytics ids, per-action conversions",
+  integrations: "analytics ids, per-action conversions, Stripe setup, site emails",
   "section-tree": "place_section_tree shape (clone fill mode)",
 };
 

@@ -1,7 +1,7 @@
 [
   {
     "name": "list_blocks",
-    "description": "List library blocks (up to ~200) grouped by category: slug, name, tags. Use for a broad menu; search_blocks ranks and filters. `categories` / `styles` arrays OR-match in one call.",
+    "description": "List library blocks (up to ~200) grouped by category: slug, name, tags. A broad menu; search_blocks ranks and filters. `categories` / `styles` arrays OR-match in one call.",
     "annotations": { "title": "List blocks", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -43,7 +43,7 @@
   },
   {
     "name": "get_component_schema",
-    "description": "Full prop schemas for components (types, props, valid values). Pass a comma list to get only what you need. In parallel fill, responses are compact and `components` is required.",
+    "description": "Full prop schemas for components (types, props, valid values). A comma list returns only those components. In parallel fill, responses are compact and `components` is required.",
     "annotations": { "title": "Get component schema", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -84,7 +84,7 @@
   },
   {
     "name": "generate_button_classes",
-    "description": "Canonical Button className + activeModifiers from intent (variant, shape, size). A starting point — you may append classes.",
+    "description": "Canonical Button className + activeModifiers from intent (variant, shape, size). A starting point; extra classes can be appended.",
     "annotations": { "title": "Generate button classes", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -169,7 +169,7 @@
   },
   {
     "name": "list_presets",
-    "description": "Curated theme presets (palette + fonts + tokens). compact: true returns id + name only. Apply one with set_theme({ preset }).",
+    "description": "Curated theme presets (palette + fonts + tokens). compact: true returns id + name only. set_theme({ preset }) applies one.",
     "annotations": { "title": "List presets", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -239,7 +239,7 @@
   },
   {
     "name": "set_theme",
-    "description": "Write the site theme — preset, palette, darkPalette, styleGuide tokens and fonts, JSON-LD — straight into the draft. Call first on a new site, then set ROOT `company` vars with patch_site_node. For \"suggest palettes / pick fonts\" requests use suggest_palettes / suggest_font_pairings instead. Palette names, styleGuide keys, workflow: get_style_reference({ topic: \"theme\" }).",
+    "description": "Write the site theme — preset, palette, darkPalette, styleGuide tokens and fonts, JSON-LD — straight into the draft; the change is immediate. suggest_palettes / suggest_font_pairings are the non-writing alternatives that only show options. ROOT `company` vars are set with patch_site_node. Palette names, styleGuide keys, workflow: get_style_reference({ topic: \"theme\" }).",
     "annotations": { "title": "Set theme", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -529,7 +529,7 @@
   },
   {
     "name": "get_site_node",
-    "description": "Read one node's raw JSON. propsPatch REPLACES string props, so read a string (e.g. ROOT.props.inject.head) before editing it to keep its other content.",
+    "description": "Read one node's raw JSON. propsPatch replaces string props whole (e.g. ROOT.props.inject.head), so this is the current value to merge into.",
     "annotations": { "title": "Get site node", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -1053,7 +1053,7 @@
   },
   {
     "name": "create_site",
-    "description": "Create a site from a template (default \"acme\", the blank starter) and return its id. Build it with the granular tools — never a full node map.",
+    "description": "Create a site from a template (default \"acme\", the blank starter) and return its id. Takes no node map; the site is built up afterwards with the section and node tools.",
     "annotations": { "title": "Create site", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -1083,7 +1083,7 @@
   },
   {
     "name": "update_site",
-    "description": "Update the site's name (URL slug), title or description. title/description are the fallback <title> and meta description for every page without its own seo — update_page can't reach them. Empty string clears. Read current values with select_site.",
+    "description": "Update the site's name (URL slug), title or description. title/description are the fallback <title> and meta description for every page without its own seo — update_page can't reach them. Empty string clears. select_site returns the current values.",
     "annotations": { "title": "Update site", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -1258,7 +1258,7 @@
   },
   {
     "name": "update_site_email",
-    "description": "Save a site email's subject, preheader and/or full flat node map, or reset: true. Validated: unknown variables, missing/duplicate required slots and unsupported classes are rejected. Theme and company data are injected at send time. Then call preview_site_email.",
+    "description": "Save a site email's subject, preheader and/or full flat node map, or reset: true. Validated: unknown variables, missing/duplicate required slots and unsupported classes are rejected. Theme and company data are injected at send time. preview_site_email renders the saved result.",
     "annotations": { "title": "Update site email", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -1334,7 +1334,7 @@
   },
   {
     "name": "get_domain_status",
-    "description": "Read the site's custom domain: redirect mode, apex/www Vercel state, and the DNS records the user must create — report them exactly as returned. `check` preflights another domain without changes.",
+    "description": "Read the site's custom domain: redirect mode, apex/www Vercel state, and the exact DNS records the user needs to create. `check` preflights another domain without changes.",
     "annotations": { "title": "Get domain status", "readOnlyHint": true, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
@@ -1375,7 +1375,7 @@
   },
   {
     "name": "set_domain",
-    "description": "Attach a custom domain (apex + www pair, or one subdomain) and return the DNS records the user must create — hand them over verbatim; values are per-project. Attaching doesn't publish. Detach with clear_domain. 409 = a variant is on another Vercel project; 403 upgrade = plan domain limit. Details: get_style_reference({ topic: \"domains\" }).",
+    "description": "Attach a custom domain (apex + www pair, or one subdomain) and return the DNS records the user needs to create; the values are specific to this project. Attaching doesn't publish. clear_domain detaches. 409 = a variant is on another Vercel project; 403 upgrade = plan domain limit. Details: get_style_reference({ topic: \"domains\" }).",
     "annotations": { "title": "Set domain", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
@@ -1515,7 +1515,7 @@
   },
   {
     "name": "upload_image",
-    "description": "Upload an image to the site's media library. Returns a mediaId: put it (not the url) in the Image `src` with type \"cdn\" — and in `content` too if set, since src shadows content. Web images: `imageUrl`. `dataBase64` is a last resort (~3MB cap, costly in tokens). More: get_style_reference({ topic: \"media\" }).",
+    "description": "Upload an image to the site's media library. Returns a mediaId, which goes in an Image's `src` with type \"cdn\" (and in `content` when that is set, since src shadows content). Web images: `imageUrl`. `dataBase64` has a ~3MB cap and is costly in tokens. More: get_style_reference({ topic: \"media\" }).",
     "annotations": { "title": "Upload image", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
@@ -1695,7 +1695,7 @@
   },
   {
     "name": "find_icon",
-    "description": "Search every icon set; returns ranked `ref-icon:<set>/<Name>` refs for Icon nodes and Button/Link icon.value. Use before assuming an icon exists — Tabler (tb) lacks many brands (use fa / si / … from the results).",
+    "description": "Search every icon set; returns ranked `ref-icon:<set>/<Name>` refs for Icon nodes and Button/Link icon.value. Tabler (tb) lacks many brand logos; brands come from fa / si / … and appear in the results.",
     "annotations": { "title": "Find icon", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -1726,7 +1726,7 @@
   },
   {
     "name": "patch_site_node",
-    "description": "Patch one node (several: patch_site_bulk, one atomic write). classNamePatch merges Tailwind classes; propsPatch sets other props; typePatch swaps the component type. propsPatch deep-merges seo/root/background/overflow/design/inject/relation/richText/theme/company, but strings and arrays REPLACE — read with get_site_node first; drop a branch with unsetProps [\"seo.jsonLd\"]. Image: patch src AND content together (src shadows content). ROOT inject.head/footer is for third-party code, never page content. Never send children. More: get_style_reference({ topic: \"editing\" }).",
+    "description": "Patch one node (several: patch_site_bulk, one atomic write). classNamePatch merges Tailwind classes; propsPatch sets other props; typePatch swaps the component type. propsPatch deep-merges seo/root/background/overflow/design/inject/relation/richText/theme/company, but strings and arrays REPLACE (get_site_node returns the current value); unsetProps [\"seo.jsonLd\"] drops a branch. Image: src shadows content, so a new image needs both. ROOT inject.head/footer holds third-party code, not page content. Children are not accepted. More: get_style_reference({ topic: \"editing\" }).",
     "annotations": { "title": "Patch site node", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -1986,7 +1986,7 @@
   },
   {
     "name": "search_blocks",
-    "description": "Search the block library; returns one page of slugs with descriptions and tags (full structure: get_block), plus sections on this site you can clone. Use `q` with short layout phrases (\"split hero\"), `categories` / `styles` arrays for OR filters, `page` for more. On \"Fallback — not an exact match\", take the closest slug and adapt — don't loop. Guide: get_style_reference({ topic: \"blocks\" }).",
+    "description": "Search the block library; returns one page of slugs with descriptions and tags (full structure: get_block), plus sections on this site that can be cloned. `q` takes short layout phrases (\"split hero\"), `categories` / `styles` arrays OR-filter, `page` pages through. \"Fallback — not an exact match\" means the closest slugs are listed. Guide: get_style_reference({ topic: \"blocks\" }).",
     "annotations": { "title": "Search blocks", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -2113,7 +2113,7 @@
   },
   {
     "name": "apply_kit_block",
-    "description": "Add a section: stamp a library block (`slug`) or clone a page section already on this site (`sourceNodeId`) — exactly one. Pass final copy in `contentOverrides` in this same call; patching text afterwards leads to id guessing. target \"header\" / \"footer\" replaces the site header/footer with a nav/footer block — heroes are page sections. Guide: get_style_reference({ topic: \"blocks\" }).",
+    "description": "Add a section: stamp a library block (`slug`) or clone a page section already on this site (`sourceNodeId`) — exactly one. `contentOverrides` sets the final copy in the same call, keyed by the block's lib_* ids. target \"header\" / \"footer\" replaces the site header/footer with a nav/footer block; heroes are page sections. Guide: get_style_reference({ topic: \"blocks\" }).",
     "annotations": { "title": "Apply kit block", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -2502,7 +2502,7 @@
   },
   {
     "name": "add_page",
-    "description": "Create a page (a type \"page\" Container under ROOT; the first page is home). Fill it with apply_kit_block / add_nodes using pageId, and set seo.title + seo.description. Guide: get_style_reference({ topic: \"pages\" }).",
+    "description": "Create a page (a type \"page\" Container under ROOT; the first page is home). Returns the pageId that apply_kit_block and add_nodes take. seo.title + seo.description can be set here. Guide: get_style_reference({ topic: \"pages\" }).",
     "annotations": { "title": "Add page", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -2593,7 +2593,7 @@
   },
   {
     "name": "update_page",
-    "description": "Update a page: name (changes the slug), SEO, home/404/hidden flags, per-page headCode/bodyClass, hideHeader/hideFooter/hideChrome. Set seo.title and seo.description on every page — without them it falls back to the site title (update_site), not its name. headCode is for third-party code, never page content. Guide: get_style_reference({ topic: \"pages\" }).",
+    "description": "Update a page: name (changes the slug), SEO, home/404/hidden flags, per-page headCode/bodyClass, hideHeader/hideFooter/hideChrome. A page without seo.title / seo.description falls back to the site title (update_site), not its name. headCode holds third-party code, not page content. Guide: get_style_reference({ topic: \"pages\" }).",
     "annotations": { "title": "Update page", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -2727,7 +2727,7 @@
   },
   {
     "name": "add_nodes",
-    "description": "Add a subtree: a flat map of new nodes plus the `rootNodeId` to attach under `parentId` (default page_home). Each node: type.resolvedName, isCanvas, props (className, custom.displayName), parent, nodes[], linkedNodes: {}. Send only new nodes. Prefer apply_kit_block for standard sections. Contract: get_style_reference({ topic: \"editing\" }).",
+    "description": "Add a subtree: a flat map of new nodes plus the `rootNodeId` to attach under `parentId` (default page_home). Each node: type.resolvedName, isCanvas, props (className, custom.displayName), parent, nodes[], linkedNodes: {}. The map holds only new nodes; apply_kit_block covers standard sections. Contract: get_style_reference({ topic: \"editing\" }).",
     "annotations": { "title": "Add nodes", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -2810,7 +2810,7 @@
   },
   {
     "name": "suggest_palettes",
-    "description": "Show 3 palette options for the user to pick — does NOT change the site. Don't call set_theme in the same turn.",
+    "description": "Show 3 palette options for the user to pick from. Does NOT change the site; the chosen palette is applied separately with set_theme.",
     "annotations": { "title": "Suggest palettes", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -2857,7 +2857,7 @@
   },
   {
     "name": "suggest_font_pairings",
-    "description": "Show 3 font pairings (heading + body Google Fonts) for the user to pick — does NOT change the site. Don't call set_theme in the same turn; use set_theme only when they want a preset applied now.",
+    "description": "Show 3 font pairings (heading + body Google Fonts) for the user to pick from. Does NOT change the site; the chosen pairing is applied separately with set_theme.",
     "annotations": { "title": "Suggest font pairings", "readOnlyHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -2931,7 +2931,7 @@
   },
   {
     "name": "set_favicon",
-    "description": "Set or clear the site favicon (ROOT.props.seo.favicon). Give exactly one source: `mediaId`, `imageUrl`, `svgContent` (only SVG the user supplied — never invent it), `dataBase64` (small icons, ~3MB cap), or `clear: true`. Best: a 512px square PNG or an SVG. Staged like any edit — publish to see it live. Sites only. More: get_style_reference({ topic: \"media\" }).",
+    "description": "Set or clear the site favicon (ROOT.props.seo.favicon). Give exactly one source: `mediaId`, `imageUrl`, `svgContent` (SVG markup supplied by the user), `dataBase64` (small icons, ~3MB cap), or `clear: true`. Best: a 512px square PNG or an SVG. Staged like any edit — publish to see it live. Sites only. More: get_style_reference({ topic: \"media\" }).",
     "annotations": { "title": "Set favicon", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
@@ -3066,7 +3066,7 @@
   },
   {
     "name": "stripe_connect",
-    "description": "Connect Stripe so the site can take payments. Returns the status and, if unfinished, a single-use onboarding URL only the site owner can complete — give it to them, then call again to confirm 'ready'. Owner-only.",
+    "description": "Connect Stripe so the site can take payments. Returns the connection status and, while unfinished, a single-use onboarding URL that only the site owner can complete; the status reads 'ready' once they have. Owner-only.",
     "annotations": { "title": "Stripe: connect", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
@@ -3277,7 +3277,7 @@
   },
   {
     "name": "update_collection_schema",
-    "description": "Replace a collection's field list. Existing rows keep stale keys until edited. Read it with get_collection first.",
+    "description": "Replace a collection's whole field list (get_collection returns the current one). Existing rows keep stale keys until edited.",
     "annotations": { "title": "Update collection schema", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
