@@ -17,6 +17,11 @@ const { pickSiteMetaArgs, pickSiteMetaUpdates } = require("../helpers/extra-meta
 
 const DEFAULT_BLANK_TEMPLATE = "acme";
 
+/** One status line for a `/api/v1/sites/[id]` payload's `crawlPolicy.blockAi`. */
+function aiCrawlersLine(data) {
+  return `AI crawlers: ${data?.crawlPolicy?.blockAi ? "blocked" : "allowed"} (update_site blockAiCrawlers)`;
+}
+
 /**
  * Render a `/api/v1/sites/[id]/domain` payload (GET or PATCH — both carry
  * `variants`) as agent-readable text: attachment state per variant, then the
@@ -150,6 +155,7 @@ module.exports = {
       `Site title: ${data.title ? JSON.stringify(data.title) : "(unset)"}`,
       `Site description: ${data.description ? JSON.stringify(data.description) : "(unset)"}`,
       `Published: ${data.published ? "yes" : "no"}${data.staticPublish ? " (turbo/static delivery)" : ""}`,
+      aiCrawlersLine(data),
       `Change these two with update_site; per-page overrides go through update_page seo.`,
     ];
     return {
@@ -195,8 +201,15 @@ module.exports = {
     const target = getActiveTarget(args);
     if (target.type !== "site") throw new Error("update_site only works on sites, not templates.");
     const body = pickSiteMetaUpdates(args);
+    // The v1 route keeps crawlPolicy fields that are omitted, so sending only
+    // `blockAi` leaves the site's mode and custom robots.txt untouched.
+    if (typeof args.blockAiCrawlers === "boolean") {
+      body.crawlPolicy = { blockAi: args.blockAiCrawlers };
+    }
     if (Object.keys(body).length === 0) {
-      throw new Error("update_site requires at least one of: name, title, description.");
+      throw new Error(
+        "update_site requires at least one of: name, title, description, blockAiCrawlers."
+      );
     }
     const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`, {
       method: "PUT",
@@ -212,7 +225,8 @@ module.exports = {
           text:
             `Site ${target.id} updated (${changed}).\n` +
             `Site title: ${data?.title ? JSON.stringify(data.title) : "(unset)"}\n` +
-            `Site description: ${data?.description ? JSON.stringify(data.description) : "(unset)"}`,
+            `Site description: ${data?.description ? JSON.stringify(data.description) : "(unset)"}\n` +
+            aiCrawlersLine(data),
         },
       ],
     };
