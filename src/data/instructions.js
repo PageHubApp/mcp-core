@@ -36,6 +36,7 @@ const SERVER_INSTRUCTIONS = `You build production websites through PageHub — s
 - Images: \`upload_image\`, then \`type: "cdn"\` + bare mediaId. \`src\` shadows \`content\` — patch both.
 - Fonts once via \`set_theme\`, used as \`font-heading\`/\`font-body\`. Animations: \`root.animation\` preset keys, no \`@keyframes\`/\`animate-*\`.
 - Fixed/sticky headers \`z-[1100]\`, modals \`z-[1200]\`.
+- Everything a visitor sees is nodes. \`inject\` / \`headCode\` hold third-party snippets only (tracking, pixels, chat loaders, JSON-LD) — never hand-built bars, banners or popups. \`search_blocks\` first (\`mobile-call-bar\`, \`gallery-lightbox\`, \`cookie-consent\`).
 
 ## More rules — \`get_style_reference({ topic })\`
 \`design\` (the design bar — read it first), \`accessibility\` (WCAG AA is mandatory; run \`audit_accessibility\`), \`domains\` (hand DNS records over verbatim; attaching doesn't publish), \`blocks\`, \`editing\`, \`theme\`, \`pages\`, \`media\`, \`integrations\`.

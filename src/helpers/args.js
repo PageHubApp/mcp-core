@@ -133,11 +133,46 @@ function assertInjectHtml(value, location) {
         `Build the page out of nodes instead — add_nodes / apply_kit_block / patch_site_node.`
     );
   }
+  // Scripts that build visible page elements at runtime. Loader snippets only
+  // create <script> / <img> / <iframe> / <link> tags; a script creating a
+  // <div>/<nav>/<a> or writing an HTML string is a hand-built UI in disguise.
+  const scriptBodies = [...trimmed.matchAll(/<script\b(?![^>]*application\/ld\+json)[^>]*>([\s\S]*?)<\/script>/gi)]
+    .map(m => m[1])
+    .join("\n");
+  const builtEl = scriptBodies.match(
+    /createElement\(\s*['"`](?!(?:script|link|style|meta|noscript|img|iframe)['"`])([a-z][\w-]*)/i
+  );
+  const writesHtml = /(?:inner|outer)HTML\s*\+?=\s*[^;]*<[a-z]|insertAdjacentHTML\s*\(/i.test(scriptBodies);
+  if (builtEl || writesHtml) {
+    throw new Error(
+      `${location} has a script that builds visible page elements (${builtEl ? `createElement("${builtEl[1]}")` : "writes an HTML string into the page"}). ` +
+        `That is a hand-built UI hidden in a script: the editor can't see or edit it, theme tokens don't reach it, and static export and SEO miss it. ` +
+        `Build it from nodes instead — search_blocks / apply_kit_block, or add_nodes (sticky mobile call bar: "mobile-call-bar"; ` +
+        `cookie notice: "cookie-consent"; click-to-enlarge photos: "gallery-lightbox"). Keep only tracking/loader code here.`
+    );
+  }
+
   // Strip legitimate wrappers — anything left over with CSS/JS shape is unwrapped.
   const stripped = trimmed
     .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, "")
     .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "")
+    .replace(/<noscript\b[^>]*>[\s\S]*?<\/noscript>/gi, "")
     .replace(/<!--[\s\S]*?-->/g, "");
+  // Visible markup: any element left that isn't a head-only tag. A hand-built
+  // bar / banner / widget here renders outside the node tree — the editor
+  // can't select it, theme tokens don't reach it, static export and SEO miss it.
+  const visible = stripped.match(/<(?!\/?(?:link|meta|base)\b)([a-z][\w-]*)\b/i);
+  if (visible) {
+    throw new Error(
+      `${location} contains a visible <${visible[1].toLowerCase()}> element. ` +
+        `inject slots are for third-party snippets only — <script>, <style>, <link>, <meta>, <noscript>. ` +
+        `Anything a visitor sees (bars, banners, buttons, popups, layout) must be built from nodes ` +
+        `so the editor, theme, SEO and static export all see it: search_blocks / apply_kit_block, or add_nodes. ` +
+        `A sticky mobile call bar is the "mobile-call-bar" block; a click-to-enlarge photo grid is "gallery-lightbox". ` +
+        `A third-party widget that needs a mount element (Calendly inline, fb-root) goes in an Embed node where it should appear. ` +
+        `Move the markup out and resend only the script/style parts.`
+    );
+  }
   // CSS rule shape: `selector { prop: value }` outside any wrapper.
   const looksLikeCss = /\{[\s\S]*?[a-z-]+\s*:[\s\S]*?\}/i.test(stripped);
   if (looksLikeCss) {
