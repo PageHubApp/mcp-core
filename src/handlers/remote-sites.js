@@ -22,6 +22,11 @@ function aiCrawlersLine(data) {
   return `AI crawlers: ${data?.crawlPolicy?.blockAi ? "blocked" : "allowed"} (update_site blockAiCrawlers)`;
 }
 
+/** One status line for a `/api/v1/sites/[id]` payload's `timezone`. */
+function timezoneLine(data) {
+  return `Timezone: ${data?.timezone || "(unset — notification emails show UTC)"} (update_site timezone)`;
+}
+
 /**
  * Render a `/api/v1/sites/[id]/domain` payload (GET or PATCH — both carry
  * `variants`) as agent-readable text: attachment state per variant, then the
@@ -156,6 +161,7 @@ module.exports = {
       `Site description: ${data.description ? JSON.stringify(data.description) : "(unset)"}`,
       `Published: ${data.published ? "yes" : "no"}${data.staticPublish ? " (turbo/static delivery)" : ""}`,
       aiCrawlersLine(data),
+      timezoneLine(data),
       `Change these two with update_site; per-page overrides go through update_page seo.`,
     ];
     return {
@@ -206,9 +212,11 @@ module.exports = {
     if (typeof args.blockAiCrawlers === "boolean") {
       body.crawlPolicy = { blockAi: args.blockAiCrawlers };
     }
+    // "" clears it; the route validates the IANA name.
+    if (typeof args.timezone === "string") body.timezone = args.timezone.trim();
     if (Object.keys(body).length === 0) {
       throw new Error(
-        "update_site requires at least one of: name, title, description, blockAiCrawlers."
+        "update_site requires at least one of: name, title, description, blockAiCrawlers, timezone."
       );
     }
     const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`, {
@@ -226,7 +234,8 @@ module.exports = {
             `Site ${target.id} updated (${changed}).\n` +
             `Site title: ${data?.title ? JSON.stringify(data.title) : "(unset)"}\n` +
             `Site description: ${data?.description ? JSON.stringify(data.description) : "(unset)"}\n` +
-            aiCrawlersLine(data),
+            aiCrawlersLine(data) +
+            `\n${timezoneLine(data)}`,
         },
       ],
     };

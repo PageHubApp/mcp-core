@@ -1083,7 +1083,7 @@
   },
   {
     "name": "update_site",
-    "description": "Update the site's name (URL slug), title, description or AI-crawler blocking. title/description are the fallback <title> and meta description for every page without its own seo — update_page can't reach them. Empty string clears. select_site returns the current values.",
+    "description": "Update the site's name (URL slug), title, description, AI-crawler blocking or timezone. title/description are the fallback <title> and meta description for every page without its own seo — update_page can't reach them. Empty string clears. select_site returns the current values.",
     "annotations": { "title": "Update site", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -1111,6 +1111,11 @@
         "blockAiCrawlers": {
           "type": "boolean",
           "description": "true adds a robots.txt Disallow for known AI crawlers (GPTBot, ClaudeBot, Google-Extended, PerplexityBot, …) and turns off /llms.txt + /llms-full.txt. Search engines are unaffected. Off also means AI assistants can read the site to answer questions or book on the visitor's behalf. Takes effect immediately, no publish needed."
+        },
+        "timezone": {
+          "type": "string",
+          "description": "The business's IANA timezone, e.g. \"America/Los_Angeles\". Times in the site's form notification emails are shown in it; empty string clears it (UTC). Takes effect immediately, no publish needed.",
+          "maxLength": 64
         }
       }
     }
