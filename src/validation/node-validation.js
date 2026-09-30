@@ -64,39 +64,79 @@ const SURFACE_PARTNER = {
 };
 
 /**
- * Last `<prefix>-<paletteToken>` in a className, ignoring variant-prefixed
- * (`md:`, `hover:`, `dark:`) and opacity-suffixed forms for the token match but
- * keeping bare utilities only — a variant-scoped colour is conditional, so it
- * is not the node's resting surface and must not drive a rejection.
+ * Lowest opacity at which a `bg-<token>/NN` fill is still a surface of that
+ * token. From 70% up, text in the same token stays under 3:1 against the fill
+ * whatever sits behind it — white at 70% over pure black is about 2.7:1, black
+ * at 70% over pure white about 2.5:1 — so the fill alone decides the outcome.
+ * Below it the result depends on the backdrop, which is the glass pattern
+ * (`bg-base-100/10 text-base-100` on a dark overlay).
  */
-function lastPaletteToken(className, prefix) {
+const OPAQUE_SURFACE_MIN_ALPHA = 0.7;
+
+/**
+ * Alpha of a colour utility's `/…` modifier as a 0–1 number: 1 when there is
+ * none, `/NN` and `/[NN%]` as percentages, `/[0.NN]` as written. Null for a
+ * modifier that cannot be read statically (`/[var(--a)]`, `/(--a)`).
+ */
+function modifierAlpha(modifier) {
+  if (modifier === undefined) return 1;
+  const arbitrary = /^\[(.+)\]$/.exec(modifier);
+  const raw = arbitrary ? arbitrary[1] : modifier;
+  const percent = raw.endsWith("%") || !arbitrary;
+  const value = Number(percent ? raw.replace(/%$/, "") : raw);
+  if (raw === "" || !Number.isFinite(value) || value < 0) return null;
+  return Math.min(percent ? value / 100 : value, 1);
+}
+
+/**
+ * Last `<prefix>-<paletteToken>` in a className as `{ token, alpha }`, ignoring
+ * variant-prefixed (`md:`, `hover:`, `dark:`) forms — a variant-scoped colour is
+ * conditional, so it is not the node's resting surface and must not drive a
+ * rejection.
+ */
+function lastPaletteUtility(className, prefix) {
   if (!className || typeof className !== "string") return null;
   let found = null;
   for (const cls of className.split(/\s+/).filter(Boolean)) {
     if (cls.includes(":")) continue; // variant-scoped — conditional, not resting state
     if (!cls.startsWith(prefix)) continue;
-    const token = cls.slice(prefix.length).split("/")[0];
-    if (Object.prototype.hasOwnProperty.call(SURFACE_PARTNER, token)) found = token;
+    const [token, modifier] = cls.slice(prefix.length).split("/");
+    if (Object.prototype.hasOwnProperty.call(SURFACE_PARTNER, token)) {
+      found = { token, alpha: modifierAlpha(modifier) };
+    }
   }
   return found;
 }
 
 /**
- * Nearest resting surface for a node: its own `bg-*` palette token, else the
- * closest ancestor's. Returns null when the chain leaves the submitted map (a
- * section fill, where the real ancestors were never sent) or when the nearest
- * background is an image / arbitrary value we cannot reason about — in both
- * cases a rejection would be a guess.
+ * Resting surface behind `textToken` on a node: the nearest opaque `bg-*`
+ * palette fill, starting with the node's own (`ownClassName` stands in for the
+ * stored className, so a patch is judged on the classes it is about to write).
+ *
+ * A translucent fill is not a surface of its token. In the text's own token it
+ * only tints the backdrop towards the text colour, so the walk looks through it
+ * to whatever is behind. In any other token it shifts the backdrop by an amount
+ * that cannot be evaluated here, so the walk stops with no answer.
+ *
+ * Returns null when the chain leaves the submitted map (a section fill, where
+ * the real ancestors were never sent) or reaches a fill we cannot reason about
+ * — in both cases a rejection would be a guess.
  */
-function resolveSurfaceToken(flatMap, nodeId) {
+function resolveSurfaceToken(flatMap, nodeId, textToken, ownClassName) {
   const seen = new Set();
   let currentId = nodeId;
   while (currentId && !seen.has(currentId)) {
     seen.add(currentId);
     const node = flatMap[currentId];
     if (!node) return null;
-    const own = lastPaletteToken(node.props?.className, "bg-");
-    if (own) return own;
+    const fill = lastPaletteUtility(
+      currentId === nodeId ? ownClassName : node.props?.className,
+      "bg-"
+    );
+    if (fill) {
+      if (fill.alpha >= OPAQUE_SURFACE_MIN_ALPHA) return fill.token;
+      if (fill.alpha === null || fill.token !== textToken) return null;
+    }
     currentId = node.parent;
   }
   return null;
@@ -111,14 +151,10 @@ function resolveSurfaceToken(flatMap, nodeId) {
  * would block real work — the whole point of keeping styling unlocked.
  */
 function detectSurfaceTextCollision(flatMap, nodeId, mergedClassName) {
-  const textToken = lastPaletteToken(mergedClassName, "text-");
+  const textToken = lastPaletteUtility(mergedClassName, "text-")?.token;
   if (!textToken) return null;
-  // A node that sets its own background is self-contained — the pairing the
-  // author wrote on this node is the one that renders.
-  const ownBg = lastPaletteToken(mergedClassName, "bg-");
-  if (ownBg) return ownBg === textToken ? collisionMessage(nodeId, textToken, ownBg) : null;
-  const surface = resolveSurfaceToken(flatMap, flatMap[nodeId]?.parent);
-  if (!surface || surface !== textToken) return null;
+  const surface = resolveSurfaceToken(flatMap, nodeId, textToken, mergedClassName);
+  if (surface !== textToken) return null;
   return collisionMessage(nodeId, textToken, surface);
 }
 
