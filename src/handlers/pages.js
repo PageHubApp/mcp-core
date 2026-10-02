@@ -1,3 +1,5 @@
+const sluggit = require("slug");
+
 const { normalizeBaseUrl } = require("../core/api-fetch");
 const { ROOT_NODE_ID } = require("../core/constants");
 const { getContext, withPendingMapLock } = require("../core/context");
@@ -29,13 +31,24 @@ function findPages(flat) {
   return pages;
 }
 
-/** Slugify a display name to a URL path (simple lowercase + hyphens). */
+/**
+ * Display name → URL segment. Same rule as the SDK's `pageSlugFromName`
+ * (packages/sdk/src/utils/page/pageSlug.ts), which every router and link
+ * resolver uses — this package can't import the SDK, so it calls the same
+ * `slug` library directly.
+ */
 function toSlug(name) {
-  return (name || "")
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+  return sluggit(typeof name === "string" ? name : "", "-");
+}
+
+/** The URL segment a page node serves at: explicit `pageSlug`, else its name, else its id. */
+function pageNodeSlug(node, nodeId) {
+  return (
+    node?.props?.pageSlug ||
+    toSlug(node?.custom?.displayName || node?.props?.displayName) ||
+    nodeId ||
+    ""
+  );
 }
 
 module.exports = {
@@ -50,7 +63,7 @@ module.exports = {
     const lines = pages.map((p, i) => {
       const props = p.node.props || {};
       const name = p.node.custom?.displayName || p.node.displayName || "(unnamed)";
-      const slug = toSlug(name);
+      const slug = pageNodeSlug(p.node, p.id);
       const flags = [];
       if (props.isHomePage) flags.push("HOME");
       if (props.is404Page) flags.push("404");
@@ -96,6 +109,7 @@ async function addPageBody(args) {
 
   const pages = findPages(flat);
   const slug = toSlug(name);
+  if (!slug) throw new Error(`Page name "${name}" needs at least one letter or number.`);
   const pageId = `page_${slug.replace(/-/g, "_")}`;
   if (flat[pageId])
     throw new Error(`Node ID "${pageId}" already exists. Choose a different page name.`);
@@ -273,7 +287,7 @@ async function updatePageBody(args) {
   if (name != null) {
     if (!page.custom) page.custom = {};
     page.custom.displayName = name;
-    changes.push(`name → "${name}" (/${toSlug(name)})`);
+    changes.push(`name → "${name}" (/${pageNodeSlug(page, pageId)})`);
   }
 
   if (isHomePage === true) {
