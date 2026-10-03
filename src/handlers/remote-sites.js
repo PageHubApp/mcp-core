@@ -33,6 +33,21 @@ function mountOriginLine(data) {
 }
 
 /**
+ * The mount key line. Only an update_site that issued a key prints its value
+ * (the PUT returns it once); otherwise it says whether one is set.
+ */
+function mountKeyLine(data, issued) {
+  if (issued && data?.mountKey) {
+    return (
+      `Mount key: ${data.mountKey}\n` +
+      `Set it as PAGEHUB_MOUNT_KEY in the host app's environment (then redeploy it) so PageHub sees each visitor's real IP.`
+    );
+  }
+  if (!data?.mountOrigin) return null;
+  return `Mount key: ${data?.mountKey ? "set" : "(none)"} (update_site rotateMountKey: true issues a new one)`;
+}
+
+/**
  * Render a `/api/v1/sites/[id]/domain` payload (GET or PATCH — both carry
  * `variants`) as agent-readable text: attachment state per variant, then the
  * DNS records the user still has to create.
@@ -168,10 +183,11 @@ module.exports = {
       aiCrawlersLine(data),
       timezoneLine(data),
       mountOriginLine(data),
+      mountKeyLine(data, false),
       `Change these two with update_site; per-page overrides go through update_page seo.`,
     ];
     return {
-      content: [{ type: "text", text: lines.join("\n") + selectionNote({ type: "site", id: data.id }) }],
+      content: [{ type: "text", text: lines.filter(Boolean).join("\n") + selectionNote({ type: "site", id: data.id }) }],
     };
   },
 
@@ -207,7 +223,7 @@ module.exports = {
   /**
    * Patch site-level metadata (name / title / description / crawler, timezone
    * and mount-origin settings).
-   * @param {object} args - { name?, title?, description?, blockAiCrawlers?, timezone?, mountOrigin?, siteId? }
+   * @param {object} args - { name?, title?, description?, blockAiCrawlers?, timezone?, mountOrigin?, rotateMountKey?, siteId? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async update_site(args = {}) {
@@ -223,9 +239,10 @@ module.exports = {
     if (typeof args.timezone === "string") body.timezone = args.timezone.trim();
     // "" clears it; the route validates the bare https origin + staticPublish.
     if (typeof args.mountOrigin === "string") body.mountOrigin = args.mountOrigin.trim();
+    if (args.rotateMountKey === true) body.rotateMountKey = true;
     if (Object.keys(body).length === 0) {
       throw new Error(
-        "update_site requires at least one of: name, title, description, blockAiCrawlers, timezone, mountOrigin."
+        "update_site requires at least one of: name, title, description, blockAiCrawlers, timezone, mountOrigin, rotateMountKey."
       );
     }
     const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`, {
@@ -245,7 +262,8 @@ module.exports = {
             `Site description: ${data?.description ? JSON.stringify(data.description) : "(unset)"}\n` +
             aiCrawlersLine(data) +
             `\n${timezoneLine(data)}` +
-            `\n${mountOriginLine(data)}`,
+            `\n${mountOriginLine(data)}` +
+            (data?.mountKey ? `\n${mountKeyLine(data, true)}` : ""),
         },
       ],
     };
