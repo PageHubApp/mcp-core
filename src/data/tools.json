@@ -211,11 +211,6 @@
           "description": "Short description ≤75 chars (e.g. \"Cozy bookstore with jazz lounge vibes\").",
           "maxLength": 16384
         },
-        "image": {
-          "type": "string",
-          "description": "Preview image URL.",
-          "maxLength": 2048
-        },
         "hidden": {
           "type": "boolean",
           "description": "If true, hidden from public gallery. Default: false."
@@ -296,11 +291,6 @@
           "type": "string",
           "description": "Short description (≤75 chars).",
           "maxLength": 16384
-        },
-        "image": {
-          "type": "string",
-          "description": "Preview image URL.",
-          "maxLength": 2048
         },
         "demo": {
           "type": "string",
@@ -826,11 +816,6 @@
           "description": "Short description",
           "maxLength": 16384
         },
-        "image": {
-          "type": "string",
-          "description": "Preview image URL",
-          "maxLength": 2048
-        },
         "content": {
           "type": "object",
           "description": "Full CraftJS flat node map (same format as pull_site output)"
@@ -886,11 +871,6 @@
           "description": "Short description",
           "maxLength": 16384
         },
-        "image": {
-          "type": "string",
-          "description": "Preview image URL (CDN or external)",
-          "maxLength": 2048
-        },
         "category": {
           "type": "string",
           "description": "Template category (e.g. \"landing-page\", \"portfolio\")",
@@ -945,11 +925,6 @@
           "type": "string",
           "description": "New description",
           "maxLength": 16384
-        },
-        "image": {
-          "type": "string",
-          "description": "New preview image URL",
-          "maxLength": 2048
         },
         "content": {
           "type": "object",

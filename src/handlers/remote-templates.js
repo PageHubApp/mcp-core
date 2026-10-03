@@ -98,7 +98,7 @@ module.exports = {
 
   /**
    * Create a new template from a raw or compressed content payload.
-   * @param {object} args - { slug, title, description?, image?, category?, tags?, content, hidden?, isPublic?, sortOrder? }
+   * @param {object} args - { slug, title, description?, category?, tags?, content, hidden?, isPublic?, sortOrder? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async save_template(args) {
@@ -106,7 +106,6 @@ module.exports = {
       slug,
       title,
       description,
-      image,
       category,
       tags,
       content,
@@ -128,7 +127,6 @@ module.exports = {
         slug,
         title,
         description,
-        image,
         category,
         tags,
         content: encodedContent,
@@ -151,11 +149,11 @@ module.exports = {
 
   /**
    * Snapshot the active site into a new template entry.
-   * @param {object} args - { slug?, title?, description?, image?, category?, tags?, hidden?, isPublic?, sortOrder? }
+   * @param {object} args - { slug?, title?, description?, category?, tags?, hidden?, isPublic?, sortOrder? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async publish_site_as_template(args) {
-    const { slug, title, description, image, category, tags, hidden, isPublic, sortOrder } = args;
+    const { slug, title, description, category, tags, hidden, isPublic, sortOrder } = args;
     // `slug` here names the NEW template, so it must not select a target.
     const target = getActiveTarget({ id: args.id });
     if (target.type !== "site")
@@ -169,7 +167,6 @@ module.exports = {
       title: finalTitle,
       content: compressJsonToBase64Lz(siteData.content),
       ...(description && { description }),
-      ...(image && { image }),
       ...(category && { category }),
       ...(tags && { tags }),
       ...(hidden !== undefined && { hidden }),
@@ -183,7 +180,7 @@ module.exports = {
       content: [
         {
           type: "text",
-          text: `Site published as template: **${data.title}** (\`${data.slug}\`)\nPreview: ${data.image || "no image set"}${auditText}`,
+          text: `Site published as template: **${data.title}** (\`${data.slug}\`)${auditText}`,
         },
       ],
     };
@@ -191,7 +188,7 @@ module.exports = {
 
   /**
    * Patch an existing template (optimistic-concurrency on `version`).
-   * @param {object} args - { slug, title?, description?, image?, category?, tags?, content?, hidden?, sortOrder? }
+   * @param {object} args - { slug, title?, description?, category?, tags?, content?, hidden?, sortOrder? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async update_template(args) {
@@ -203,7 +200,6 @@ module.exports = {
     for (const f of [
       "title",
       "description",
-      "image",
       "category",
       "tags",
       "content",
