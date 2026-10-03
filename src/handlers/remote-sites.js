@@ -27,6 +27,11 @@ function timezoneLine(data) {
   return `Timezone: ${data?.timezone || "(unset — notification emails show UTC)"} (update_site timezone)`;
 }
 
+/** One status line for a `/api/v1/sites/[id]` payload's `mountOrigin`. */
+function mountOriginLine(data) {
+  return `Mount origin: ${data?.mountOrigin || "(unset — served on its own PageHub host)"} (update_site mountOrigin)`;
+}
+
 /**
  * Render a `/api/v1/sites/[id]/domain` payload (GET or PATCH — both carry
  * `variants`) as agent-readable text: attachment state per variant, then the
@@ -162,6 +167,7 @@ module.exports = {
       `Published: ${data.published ? "yes" : "no"}${data.staticPublish ? " (turbo/static delivery)" : ""}`,
       aiCrawlersLine(data),
       timezoneLine(data),
+      mountOriginLine(data),
       `Change these two with update_site; per-page overrides go through update_page seo.`,
     ];
     return {
@@ -199,8 +205,9 @@ module.exports = {
   },
 
   /**
-   * Patch site-level metadata (name / title / description).
-   * @param {object} args - { name?, title?, description?, siteId? }
+   * Patch site-level metadata (name / title / description / crawler, timezone
+   * and mount-origin settings).
+   * @param {object} args - { name?, title?, description?, blockAiCrawlers?, timezone?, mountOrigin?, siteId? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async update_site(args = {}) {
@@ -214,9 +221,11 @@ module.exports = {
     }
     // "" clears it; the route validates the IANA name.
     if (typeof args.timezone === "string") body.timezone = args.timezone.trim();
+    // "" clears it; the route validates the bare https origin + staticPublish.
+    if (typeof args.mountOrigin === "string") body.mountOrigin = args.mountOrigin.trim();
     if (Object.keys(body).length === 0) {
       throw new Error(
-        "update_site requires at least one of: name, title, description, blockAiCrawlers, timezone."
+        "update_site requires at least one of: name, title, description, blockAiCrawlers, timezone, mountOrigin."
       );
     }
     const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`, {
@@ -235,7 +244,8 @@ module.exports = {
             `Site title: ${data?.title ? JSON.stringify(data.title) : "(unset)"}\n` +
             `Site description: ${data?.description ? JSON.stringify(data.description) : "(unset)"}\n` +
             aiCrawlersLine(data) +
-            `\n${timezoneLine(data)}`,
+            `\n${timezoneLine(data)}` +
+            `\n${mountOriginLine(data)}`,
         },
       ],
     };

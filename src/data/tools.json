@@ -1058,7 +1058,7 @@
   },
   {
     "name": "update_site",
-    "description": "Update the site's name (URL slug), title, description, AI-crawler blocking or timezone. title/description are the fallback <title> and meta description for every page without its own seo — update_page can't reach them. Empty string clears. select_site returns the current values.",
+    "description": "Update the site's name (URL slug), title, description, AI-crawler blocking, timezone or mount origin. title/description are the fallback <title> and meta description for every page without its own seo — update_page can't reach them. Empty string clears. select_site returns the current values.",
     "annotations": { "title": "Update site", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -1091,6 +1091,11 @@
           "type": "string",
           "description": "The business's IANA timezone, e.g. \"America/Los_Angeles\". Times in the site's form notification emails are shown in it; empty string clears it (UTC). Takes effect immediately, no publish needed.",
           "maxLength": 64
+        },
+        "mountOrigin": {
+          "type": "string",
+          "description": "Origin of your own Next.js app when it serves this site at its root through @pagehub/next, e.g. \"https://app.example.com\" — https, no path or trailing slash. Canonical URLs, og:url and the sitemap then use that origin, and the page's form, analytics and favicon calls go through the app's /_pagehub/ path. The site must have static delivery on (publish_site static: true). Empty string clears it. Takes effect immediately, no publish needed.",
+          "maxLength": 256
         }
       }
     }
