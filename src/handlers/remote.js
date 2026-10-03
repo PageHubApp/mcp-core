@@ -5,4 +5,5 @@ module.exports = {
   ...require("./remote-theme"),
   ...require("./remote-stripe"),
   ...require("./remote-emails"),
+  ...require("./remote-site-chat"),
 };

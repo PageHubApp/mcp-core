@@ -15,6 +15,8 @@
  */
 
 const VALID_COMPONENTS = new Set([
+  "AgentChat",
+  "AgentFloatingBubble",
   "Audio",
   "Automatic",
   "Background",
@@ -43,6 +45,8 @@ const VALID_COMPONENTS = new Set([
 ]);
 
 const CANVAS_COMPONENTS = new Set([
+  "AgentChat",
+  "AgentFloatingBubble",
   "Automatic",
   "Background",
   "CartDrawer",

@@ -3049,6 +3049,47 @@
     }
   },
   {
+    "name": "get_site_chat",
+    "description": "Read the site's chat bot settings: on/off, assistant name, greeting, owner instructions, which details it asks visitors for, where leads go, and whether the owner has AI credits (no credits = bubble hidden).",
+    "annotations": { "title": "Get site chat", "readOnlyHint": true, "openWorldHint": false },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id. Pass it on every call.",
+          "maxLength": 256
+        }
+      }
+    }
+  },
+  {
+    "name": "set_site_chat",
+    "description": "Change the site's chat bot settings; only the fields you pass change. The bot answers from the published pages and public collections and saves leads to Form Submissions as \"Chat\". Visitors see it only where the page has an AgentFloatingBubble (site-wide) or AgentChat node, and only while the owner has AI credits.",
+    "annotations": { "title": "Set site chat", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": true, "openWorldHint": false },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id. Pass it on every call.",
+          "maxLength": 256
+        },
+        "enabled": { "type": "boolean", "description": "Turn chat on or off." },
+        "assistantName": { "type": "string", "description": "Name shown in the chat header.", "maxLength": 60 },
+        "greeting": { "type": "string", "description": "First message visitors see.", "maxLength": 280 },
+        "instructions": { "type": "string", "description": "Owner guidance: tone, what to push, what to avoid. Empty clears.", "maxLength": 2000 },
+        "leadFields": {
+          "type": "array",
+          "description": "Details to collect before saving a lead. Must include email or phone.",
+          "items": { "type": "string", "enum": ["name", "email", "phone", "message"] }
+        },
+        "leadCollectionSlug": { "type": "string", "description": "Also save each lead as a row in this collection. Empty stops.", "maxLength": 128 },
+        "notifyEmail": { "type": "string", "description": "Extra address emailed for each lead. Empty stops.", "maxLength": 200 }
+      }
+    }
+  },
+  {
     "name": "stripe_connect",
     "description": "Connect Stripe so the site can take payments. Returns the connection status and, while unfinished, a single-use onboarding URL that only the site owner can complete; the status reads 'ready' once they have. Owner-only.",
     "annotations": { "title": "Stripe: connect", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": true },
