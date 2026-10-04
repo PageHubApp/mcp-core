@@ -73,6 +73,7 @@
             "editing",
             "theme",
             "pages",
+            "site",
             "media",
             "integrations",
             "animation",
@@ -1097,7 +1098,7 @@
   },
   {
     "name": "update_site",
-    "description": "Update the site's name (URL slug), title, description, AI-crawler blocking, timezone or mount origin/key. title/description are the fallback <title> and meta description for pages without their own seo (update_page can't set them). Empty string clears. select_site returns current values.",
+    "description": "Update the site's name (URL slug), title, description, AI-crawler blocking, timezone or mount origin/key — immediate, no publish. title/description are the fallback <title> and meta description for pages without their own seo. Empty string clears. Details: get_style_reference({ topic: \"site\" }).",
     "annotations": { "title": "Update site", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -1124,21 +1125,21 @@
         },
         "blockAiCrawlers": {
           "type": "boolean",
-          "description": "true adds a robots.txt Disallow for AI crawlers (GPTBot, ClaudeBot, Google-Extended, PerplexityBot, …) and turns off /llms.txt + /llms-full.txt. Search engines unaffected. Off lets AI assistants read the site to answer or book for visitors. Immediate, no publish."
+          "description": "true blocks known AI crawlers in robots.txt and turns off /llms.txt. Search engines unaffected."
         },
         "timezone": {
           "type": "string",
-          "description": "IANA timezone, e.g. \"America/Los_Angeles\", for times in form notification emails; empty string clears (UTC). Immediate, no publish.",
+          "description": "IANA timezone for form notification emails, e.g. \"America/Los_Angeles\". Empty string = UTC.",
           "maxLength": 64
         },
         "mountOrigin": {
           "type": "string",
-          "description": "Origin of your Next.js app serving this site at its root via @pagehub/next, e.g. \"https://app.example.com\" (https, no path). Canonical URLs and the sitemap use it. Needs static delivery (publish_site static: true). Setting it issues a mount key, returned once; empty string clears both. Immediate, no publish.",
+          "description": "Origin of the Next.js app serving this site via @pagehub/next, e.g. \"https://app.example.com\". Needs publish_site static: true.",
           "maxLength": 256
         },
         "rotateMountKey": {
           "type": "boolean",
-          "description": "true issues a new mount key (returned once) and invalidates the old one; needs a mountOrigin. Set it as PAGEHUB_MOUNT_KEY in the host app, or its visitors share one IP for rate limits and analytics."
+          "description": "true issues a new mount key (returned once) and invalidates the old one."
         }
       }
     }
@@ -1758,7 +1759,7 @@
   },
   {
     "name": "patch_site_node",
-    "description": "Patch one node (several: patch_site_bulk, one atomic write). classNamePatch merges Tailwind classes; propsPatch sets other props; typePatch swaps the component type. propsPatch deep-merges seo/root/background/overflow/design/inject/relation/richText/theme/company, but strings and arrays REPLACE (get_site_node returns the current value); unsetProps [\"seo.jsonLd\"] drops a branch. Image: src shadows content, so a new image needs both. ROOT inject.head/footer holds third-party code, not page content. Children are not accepted. More: get_style_reference({ topic: \"editing\" }).",
+    "description": "Patch one node (several: patch_site_bulk, one atomic write). classNamePatch merges Tailwind classes; propsPatch sets other props (namespaced objects deep-merge, strings and arrays replace); typePatch swaps the component type; unsetProps drops a branch. Image: src shadows content, so patch both. No children. Rules: get_style_reference({ topic: \"editing\" }).",
     "annotations": { "title": "Patch site node", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -3154,7 +3155,7 @@
   },
   {
     "name": "set_checkout",
-    "description": "Make a collection sellable through Stripe (remove: true stops). Cart Buttons in a Data repeater bound to it then charge via Stripe. Without price_id_field each row charges its numeric `price` field in minor units (2500 = $25.00) — the collection needs that number field; with price_id_field each row holds a Stripe price id. Needs stripe_connect.",
+    "description": "Make a collection sellable through Stripe (remove: true stops): Cart Buttons in a Data repeater bound to it charge each row's `price` (minor units) or its Stripe price id (price_id_field). Needs stripe_connect. Details: get_style_reference({ topic: \"integrations\" }).",
     "annotations": { "title": "Set checkout", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",

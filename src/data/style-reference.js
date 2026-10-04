@@ -423,6 +423,19 @@ Outline CTA pitfall: on minimal black-and-white themes keep Primary and Base Con
 - Chrome: \`hideHeader\` / \`hideFooter\` suppress the global header / footer. \`hideChrome\` strips ALL ROOT-level chrome (header, footer, sticky bars, floating CTAs, drawers) — the switch for ad landing pages.
 - \`isHidden\` pages are not reachable by URL. You can't delete the last page; deleting home promotes the next page.`,
 
+  site: `# Site settings — update_site
+
+Every field takes effect immediately — no publish needed. Empty string clears. \`select_site\` returns the current values.
+
+- \`name\`: the URL slug (subdomain) — lowercase letters, digits, hyphens.
+- \`title\` / \`description\`: the fallback \`<title>\` and meta description for every page without its own \`seo\`. \`update_page\` can't reach them.
+- \`blockAiCrawlers\`: true adds a robots.txt Disallow for known AI crawlers (GPTBot, ClaudeBot, Google-Extended, PerplexityBot, …) and turns off /llms.txt + /llms-full.txt. Search engines are unaffected. Leaving it off also lets AI assistants read the site to answer questions or book on a visitor's behalf.
+- \`timezone\`: the business's IANA timezone, e.g. "America/Los_Angeles". Times in the site's form notification emails are shown in it; clearing it means UTC.
+
+## Mounting in your own Next.js app (@pagehub/next)
+- \`mountOrigin\`: the origin of the app that serves this site at its root, e.g. "https://app.example.com" — https, no path or trailing slash. Canonical URLs, og:url and the sitemap then use that origin, and the page's form, analytics and favicon calls go through the app's /_pagehub/ path. The site must have static delivery on (\`publish_site\` \`static: true\`). Setting it issues a mount key (returned once) that the app must send so PageHub sees each visitor's real IP; clearing it removes the key.
+- \`rotateMountKey\`: true issues a new mount key and invalidates the old one (the site must have a mountOrigin). The new key is returned once — set it as \`PAGEHUB_MOUNT_KEY\` in the host app, or that app's visitors share one IP for rate limits and analytics until you do.`,
+
   media: `# Media — upload_image, upload_file, set_favicon
 
 Sources, best first:
@@ -451,6 +464,8 @@ Anything else (chat widgets, A/B testing, CRMs, custom scripts): \`patch_site_no
 
 ## Stripe
 \`stripe_connect\` returns a single-use onboarding URL while setup is unfinished. Only the site owner can complete it: hand them the URL, then call \`stripe_connect\` again once they're done to confirm \`ready\`. \`set_checkout\` and the \`stripe_*\` lookups need that ready connection.
+
+\`set_checkout\` makes a collection sellable: Cart Buttons in a Data repeater bound to it then charge through Stripe. Without \`price_id_field\` each row charges its numeric \`price\` field in minor units (2500 = $25.00), so the collection needs that number field; with \`price_id_field\` each row holds a Stripe price id. \`remove: true\` stops selling; the rows stay.
 
 ## Site emails
 After \`update_site_email\`, run \`preview_site_email\`: an email with errors sends the default instead, and the preview is where those errors show.`,
@@ -495,8 +510,9 @@ const STYLE_TOPIC_LABELS = {
   editing: "patch fields, merge semantics, custom code, add_nodes / insert_node shapes",
   theme: "set_theme palette names, styleGuide keys, fonts, company vars",
   pages: "page SEO, headCode / bodyClass, hiding header/footer",
+  site: "update_site fields: slug, fallback SEO, AI crawlers, timezone, Next.js mounts",
   media: "upload sources, using mediaIds, favicons",
-  integrations: "analytics ids, per-action conversions, Stripe setup, site emails",
+  integrations: "analytics ids, per-action conversions, Stripe setup + checkout, site emails",
   animation: "built-in presets, site animations via set_theme, per-node timing",
   "section-tree": "place_section_tree shape (clone fill mode)",
 };
