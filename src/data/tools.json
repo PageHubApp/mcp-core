@@ -1099,7 +1099,7 @@
   {
     "name": "update_site",
     "description": "Update the site's name (URL slug), title, description, AI-crawler blocking, timezone or mount origin/key — immediate, no publish. title/description are the fallback <title> and meta description for pages without their own seo. Empty string clears. Details: get_style_reference({ topic: \"site\" }).",
-    "annotations": { "title": "Update site", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": false },
+    "annotations": { "title": "Update site", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
