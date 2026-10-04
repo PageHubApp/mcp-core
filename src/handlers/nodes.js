@@ -13,6 +13,7 @@ const { assertFillModePatchAllowed } = require("../helpers/fill-mode");
 const { withTargetSaveOrDraft } = require("../helpers/load-mutate-save");
 
 const { collectSubtree } = require("../utils/node-utils");
+const { assertNodeMapAnimations } = require("../validation/site-animations");
 
 const PROTECTED_IDS = PROTECTED_NODE_IDS;
 
@@ -85,6 +86,7 @@ async function insertNodeBody(args) {
   if (!flat[parentId]) throw new Error(`Parent node "${parentId}" not found.`);
   assertFillModePatchAllowed(flat, parentId, ctx);
   const nodeDef = parseMaybeJson(node) || node;
+  const animationWarnings = assertNodeMapAnimations({ [nodeId]: nodeDef }, flat);
   nodeDef.parent = parentId;
   if (!nodeDef.linkedNodes) nodeDef.linkedNodes = {};
   if (!nodeDef.nodes) nodeDef.nodes = [];
@@ -115,7 +117,10 @@ async function insertNodeBody(args) {
     targetType === "template"
       ? `Node "${nodeId}" inserted into "${parentId}" at position ${pos} in template "${targetId}".`
       : `Node "${nodeId}" inserted into "${parentId}" at position ${pos}.\nEditor: ${result.url}`;
-  return { content: [{ type: "text", text: label }], changedNodes };
+  const warnSuffix = animationWarnings.length
+    ? `\n\nWarnings:\n${animationWarnings.map(w => `  - ${w}`).join("\n")}`
+    : "";
+  return { content: [{ type: "text", text: label + warnSuffix }], changedNodes };
 }
 
 /**

@@ -30,6 +30,8 @@
  * @property {string} [nodeId]
  */
 
+const { legacyAnimationMessage } = require("./site-animations");
+
 const ROWS = [
   {
     id: "page-body-class-static",
@@ -86,6 +88,11 @@ const ROWS = [
     message: () =>
       "`ref-google:*` is a dead icon format — no resolver handles it, so the icon renders as nothing on every component. " +
       'Use `ref-icon:<set>/<ExportName>` (Tabler `tb/Tb*` for UI icons; `fa`/`fa6`/`bi`/`bs`/`im`/`si`/`lia` for brand logos) or `ref-image:<mediaId>`.',
+  },
+  {
+    id: "legacy-framer-animation",
+    dropped: i => i.key === "root" && !!legacyAnimationMessage(i.value?.animation),
+    message: i => legacyAnimationMessage(i.value.animation, i.nodeId),
   },
   {
     id: "button-children",

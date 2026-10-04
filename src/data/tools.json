@@ -75,6 +75,7 @@
             "pages",
             "media",
             "integrations",
+            "animation",
             "section-tree"
           ],
           "description": "Return one guide instead of the core reference."
@@ -234,7 +235,7 @@
   },
   {
     "name": "set_theme",
-    "description": "Write the site theme — preset, palette, darkPalette, styleGuide tokens and fonts, JSON-LD — straight into the draft; the change is immediate. suggest_palettes / suggest_font_pairings are the non-writing alternatives that only show options. ROOT `company` vars are set with patch_site_node. Palette names, styleGuide keys, workflow: get_style_reference({ topic: \"theme\" }).",
+    "description": "Write the site theme — preset, palette, darkPalette, styleGuide tokens and fonts, JSON-LD, site animations — straight into the draft; the change is immediate. suggest_palettes / suggest_font_pairings are the non-writing alternatives that only show options. ROOT `company` vars are set with patch_site_node. Palette names, styleGuide keys, workflow: get_style_reference({ topic: \"theme\" }).",
     "annotations": { "title": "Set theme", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -354,6 +355,44 @@
         "jsonLd": {
           "type": "object",
           "description": "Schema.org JSON-LD object; {{company.*}} variables work inside it."
+        },
+        "animations": {
+          "type": "array",
+          "maxItems": 50,
+          "description": "Upserted by key into theme.animations; nodes then use root.animation \"site:<key>\". Only for motion no built-in preset covers. Rules + examples: get_style_reference({ topic: \"animation\" }).",
+          "items": {
+            "type": "object",
+            "properties": {
+              "key": { "type": "string", "description": "Slug /^[a-z][a-z0-9-]{0,39}$/, no \"site:\" prefix.", "maxLength": 40 },
+              "label": { "type": "string", "maxLength": 60 },
+              "trigger": { "type": "string", "enum": ["scroll", "load", "continuous"] },
+              "duration": { "type": "number", "description": "Seconds, 0.05–30." },
+              "easing": { "type": "string", "description": "easeOut | easeIn | easeInOut | linear | spring | cubic-bezier() | steps()", "maxLength": 80 },
+              "iterations": { "type": "string", "description": "\"1\"–\"20\" or \"infinite\".", "maxLength": 8 },
+              "direction": { "type": "string", "enum": ["normal", "reverse", "alternate", "alternate-reverse"] },
+              "keyframes": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 12,
+                "description": "Stops incl. at 0 and at 100.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "at": { "type": "number", "description": "Percent, 0–100." },
+                    "style": { "type": "object", "description": "Kebab-case CSS property → value, e.g. { \"clip-path\": \"inset(0 100% 0 0)\" }." }
+                  },
+                  "required": ["at", "style"]
+                }
+              }
+            },
+            "required": ["key", "label", "trigger", "duration", "easing", "iterations", "keyframes"]
+          }
+        },
+        "removeAnimations": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 45 },
+          "maxItems": 50,
+          "description": "Keys to delete from theme.animations."
         }
       }
     }

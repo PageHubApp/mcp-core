@@ -1,0 +1,188 @@
+[
+  {
+    "key": "cssFadeIn",
+    "label": "Fade In",
+    "group": "Entrance",
+    "trigger": "scroll"
+  },
+  {
+    "key": "cssFadeUp",
+    "label": "Fade Up",
+    "group": "Entrance",
+    "trigger": "scroll"
+  },
+  {
+    "key": "cssFadeDown",
+    "label": "Fade Down",
+    "group": "Entrance",
+    "trigger": "scroll"
+  },
+  {
+    "key": "cssFadeLeft",
+    "label": "Fade Left",
+    "group": "Entrance",
+    "trigger": "scroll"
+  },
+  {
+    "key": "cssFadeRight",
+    "label": "Fade Right",
+    "group": "Entrance",
+    "trigger": "scroll"
+  },
+  {
+    "key": "cssScaleUp",
+    "label": "Scale Up",
+    "group": "Entrance",
+    "trigger": "scroll"
+  },
+  {
+    "key": "cssBlurIn",
+    "label": "Blur In",
+    "group": "Entrance",
+    "trigger": "scroll"
+  },
+  {
+    "key": "cssSlideUp",
+    "label": "Slide Up",
+    "group": "Entrance",
+    "trigger": "scroll"
+  },
+  {
+    "key": "cssFlipIn",
+    "label": "Flip In",
+    "group": "Entrance",
+    "trigger": "scroll"
+  },
+  {
+    "key": "cssSpring",
+    "label": "Spring",
+    "group": "Entrance",
+    "trigger": "scroll"
+  },
+  {
+    "key": "cssBounceIn",
+    "label": "Bounce In",
+    "group": "Entrance",
+    "trigger": "scroll"
+  },
+  {
+    "key": "cssThudIn",
+    "label": "Thud In",
+    "group": "Entrance",
+    "trigger": "load"
+  },
+  {
+    "key": "cssTileFlip",
+    "label": "Tile Flip",
+    "group": "Entrance",
+    "trigger": "load"
+  },
+  {
+    "key": "cssHoverGrow",
+    "label": "Grow on Hover",
+    "group": "Hover",
+    "trigger": "hover"
+  },
+  {
+    "key": "cssHoverLift",
+    "label": "Lift on Hover",
+    "group": "Hover",
+    "trigger": "hover"
+  },
+  {
+    "key": "cssHoverGlow",
+    "label": "Glow on Hover",
+    "group": "Hover",
+    "trigger": "hover"
+  },
+  {
+    "key": "cssHoverPress",
+    "label": "Press",
+    "group": "Hover",
+    "trigger": "hover"
+  },
+  {
+    "key": "cssSpin",
+    "label": "Spin",
+    "group": "Continuous",
+    "trigger": "continuous"
+  },
+  {
+    "key": "cssPulse",
+    "label": "Pulse",
+    "group": "Continuous",
+    "trigger": "continuous"
+  },
+  {
+    "key": "cssWiggle",
+    "label": "Wiggle",
+    "group": "Continuous",
+    "trigger": "continuous"
+  },
+  {
+    "key": "cssMarquee",
+    "label": "Marquee",
+    "group": "Continuous",
+    "trigger": "continuous"
+  },
+  {
+    "key": "cssMarqueeSlow",
+    "label": "Marquee Slow",
+    "group": "Continuous",
+    "trigger": "continuous"
+  },
+  {
+    "key": "cssChainSpotlight1",
+    "label": "Chain spotlight — card 1",
+    "group": "Continuous",
+    "trigger": "continuous"
+  },
+  {
+    "key": "cssChainSpotlight2",
+    "label": "Chain spotlight — card 2",
+    "group": "Continuous",
+    "trigger": "continuous"
+  },
+  {
+    "key": "cssChainSpotlight3",
+    "label": "Chain spotlight — card 3",
+    "group": "Continuous",
+    "trigger": "continuous"
+  },
+  {
+    "key": "cssChainLabel1",
+    "label": "Chain label — with card 2",
+    "group": "Continuous",
+    "trigger": "continuous"
+  },
+  {
+    "key": "cssChainLabel2",
+    "label": "Chain label — with card 3",
+    "group": "Continuous",
+    "trigger": "continuous"
+  },
+  {
+    "key": "cssGridSpotlight1",
+    "label": "Grid spotlight — tile 1",
+    "group": "Continuous",
+    "trigger": "continuous"
+  },
+  {
+    "key": "cssGridSpotlight2",
+    "label": "Grid spotlight — tile 2",
+    "group": "Continuous",
+    "trigger": "continuous"
+  },
+  {
+    "key": "cssGridSpotlight3",
+    "label": "Grid spotlight — tile 3",
+    "group": "Continuous",
+    "trigger": "continuous"
+  },
+  {
+    "key": "cssGridSpotlight4",
+    "label": "Grid spotlight — tile 4",
+    "group": "Continuous",
+    "trigger": "continuous"
+  }
+]

@@ -1,0 +1,20 @@
+[
+  "opacity",
+  "transform",
+  "translate",
+  "scale",
+  "rotate",
+  "filter",
+  "clip-path",
+  "background-position",
+  "background-size",
+  "color",
+  "background-color",
+  "border-color",
+  "box-shadow",
+  "stroke-dashoffset",
+  "stroke-dasharray",
+  "offset-distance",
+  "letter-spacing",
+  "visibility"
+]

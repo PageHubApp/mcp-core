@@ -215,6 +215,83 @@ const TECHNIQUE_TRANSFER_RULES = `
  * `tools/list` and `initialize` payload. Tool descriptions and the server
  * instructions point here with one line each.
  */
+
+/**
+ * The `animation` guide reads the built-in list and the property allowlist
+ * from the SDK's generated JSON at call time, so it can't drift from the
+ * presets the renderer actually ships.
+ */
+function buildAnimationGuide() {
+  const {
+    getBuiltinPresets,
+    getAllowedProperties,
+    SITE_ANIMATION_LIMIT,
+  } = require("../validation/site-animations");
+  let builtins;
+  let allowed;
+  try {
+    const groups = {};
+    for (const p of getBuiltinPresets()) (groups[p.group] ||= []).push(`\`${p.key}\` (${p.label})`);
+    builtins = Object.entries(groups)
+      .map(([group, keys]) => `- **${group}:** ${keys.join(", ")}`)
+      .join("\n");
+    allowed = getAllowedProperties()
+      .map(p => `\`${p}\``)
+      .join(", ");
+  } catch (err) {
+    builtins = `- (preset list unavailable: ${err.message})`;
+    allowed = "(allowlist unavailable)";
+  }
+  return `# Animation — root.animation, site animations
+
+\`root.animation\` on any node takes ONE of:
+1. A **built-in preset key** (below) — every site has these.
+2. **\`site:<key>\`** — an animation this site defines in \`theme.animations\` via \`set_theme({ animations })\`.
+
+Anything else is rejected on write. Never put \`@keyframes\` in \`inject.head\` / \`headCode\`, and never put \`animate-*\` classes in className — they skip the scroll trigger, the per-node controls and reduced-motion handling.
+
+## Built-in presets
+${builtins}
+
+## Per-node controls (on \`root\`, both kinds)
+- \`animationDuration\` / \`animationDelay\`: seconds as strings ("0.6", "0.15").
+- \`animationEasing\`: easeOut | easeIn | easeInOut | linear | spring.
+- \`animationTrigger\`: "scroll" (plays when scrolled into view) | "load" | "continuous" — overrides the preset's default.
+- \`animationLoop\`: "" (once) | "loop" | "2" | "3".
+- **Stagger** a row of cards: same preset on each, \`animationDelay\` "0", "0.1", "0.2", …
+- Reduced motion is automatic — visitors with prefers-reduced-motion get no animation. Don't add your own media query.
+
+## Site animations — when a preset doesn't cover it
+Use one for a motion specific to this site (a line drawing in, dashes marching, a bar filling). A motion every site should have belongs in the built-ins instead. Up to ${SITE_ANIMATION_LIMIT} per site; \`set_theme\` upserts by key, \`removeAnimations: ["key"]\` deletes.
+
+Shape: \`{ key, label, trigger, duration, easing, iterations, direction?, keyframes }\`
+- \`key\`: slug /^[a-z][a-z0-9-]{0,39}$/ — nodes use \`"site:<key>"\`.
+- \`trigger\`: "scroll" | "load" | "continuous". \`duration\`: seconds 0.05–30. \`iterations\`: "1"–"20" or "infinite".
+- \`easing\`: easeOut | easeIn | easeInOut | linear | spring | cubic-bezier(…) | steps(n).
+- \`direction\`: normal | reverse | alternate | alternate-reverse.
+- \`keyframes\`: 2–12 stops \`{ at: 0–100, style: { "<property>": "<value>" } }\`, must include at 0 and at 100.
+- Allowed properties: ${allowed}.
+- **No layout properties** (width, height, top, left, margin, padding): they animate on the main thread and shift the page. A fill is \`transform: scaleX()\` or \`clip-path: inset()\`; growth is \`scale\`.
+- Values: plain CSS; palette vars like \`var(--primary)\` work. Rejected: \`< > { } ; \\ @\`, \`/*\`, \`url(\`, \`image(\`, \`image-set(\`, \`expression(\`.
+
+### Example — line draws in on scroll, dashes march forever
+\`\`\`
+set_theme({ id, animations: [
+  { key: "line-draw", label: "Line draw", trigger: "scroll", duration: 1.2, easing: "easeInOut", iterations: "1",
+    keyframes: [
+      { at: 0,   style: { "clip-path": "inset(0 100% 0 0)" } },
+      { at: 100, style: { "clip-path": "inset(0 0 0 0)" } } ] },
+  { key: "march", label: "Marching dashes", trigger: "continuous", duration: 1, easing: "linear", iterations: "infinite",
+    keyframes: [
+      { at: 0,   style: { "background-position": "0 0" } },
+      { at: 100, style: { "background-position": "24px 0" } } ] }
+] })
+\`\`\`
+The reply lists the keys to use. Then on the nodes:
+- Divider: className \`h-px w-full bg-primary\`, \`root: { animation: "site:line-draw" }\`.
+- Dashed rule: className \`h-0.5 w-full bg-[repeating-linear-gradient(90deg,var(--primary)_0_12px,transparent_12px_24px)] bg-[length:24px_100%]\`, \`root: { animation: "site:march" }\`. The background-position step equals one dash period (24px), so the loop is seamless.`;
+}
+
 const STYLE_TOPICS = {
   design: `# Design bar
 
@@ -378,6 +455,10 @@ Anything else (chat widgets, A/B testing, CRMs, custom scripts): \`patch_site_no
 ## Site emails
 After \`update_site_email\`, run \`preview_site_email\`: an email with errors sends the default instead, and the preview is where those errors show.`,
 
+  get animation() {
+    return buildAnimationGuide();
+  },
+
   "section-tree": `# place_section_tree (clone-pipeline fill mode only)
 
 Submit the COMPLETE nested hierarchy for your assigned section in ONE call. The server reads the section from the fill context and generates stable ids; a second call REPLACES the first, so retries are safe.
@@ -416,6 +497,7 @@ const STYLE_TOPIC_LABELS = {
   pages: "page SEO, headCode / bodyClass, hiding header/footer",
   media: "upload sources, using mediaIds, favicons",
   integrations: "analytics ids, per-action conversions, Stripe setup, site emails",
+  animation: "built-in presets, site animations via set_theme, per-node timing",
   "section-tree": "place_section_tree shape (clone fill mode)",
 };
 

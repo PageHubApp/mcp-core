@@ -34,12 +34,13 @@ const SERVER_INSTRUCTIONS = `You build production websites through PageHub — s
 - Icons: \`ref-icon:<set>/<Name>\` (\`ref-icon:tb/TbPhone\`); \`find_icon\` for brands. No emoji.
 - Text nodes do one job; semantics via \`tagName\`. No \`<p>\`/\`<h1>\`/\`<a>\` or Tailwind classes inside text HTML.
 - Images: \`upload_image\`, then \`type: "cdn"\` + bare mediaId. \`src\` shadows \`content\` — patch both.
-- Fonts once via \`set_theme\`, used as \`font-heading\`/\`font-body\`. Animations: \`root.animation\` preset keys, no \`@keyframes\`/\`animate-*\`.
+- Fonts once via \`set_theme\`, used as \`font-heading\`/\`font-body\`.
+- Animations: \`root.animation\` = a built-in key or \`site:<key>\` defined via \`set_theme({ animations })\`. Never \`@keyframes\` in inject/headCode or \`animate-*\` in className.
 - Fixed/sticky headers \`z-[1100]\`, modals \`z-[1200]\`.
 - Everything a visitor sees is nodes. \`inject\` / \`headCode\` hold third-party snippets only (tracking, pixels, chat loaders, JSON-LD) — never hand-built bars, banners or popups. \`search_blocks\` first (\`mobile-call-bar\`, \`gallery-lightbox\`, \`cookie-consent\`).
 
 ## More rules — \`get_style_reference({ topic })\`
-\`design\` (the design bar — read it first), \`accessibility\` (WCAG AA is mandatory; run \`audit_accessibility\`), \`domains\` (hand DNS records over verbatim; attaching doesn't publish), \`blocks\`, \`editing\`, \`theme\`, \`pages\`, \`media\`, \`integrations\`.
+\`design\` (the design bar — read it first), \`accessibility\` (WCAG AA is mandatory; run \`audit_accessibility\`), \`domains\` (hand DNS records over verbatim; attaching doesn't publish), \`blocks\`, \`editing\`, \`theme\`, \`pages\`, \`media\`, \`integrations\`, \`animation\`.
 
 ## Start here
 Call discovery tools before writing. Do not guess props, class names, block names or palette tokens:

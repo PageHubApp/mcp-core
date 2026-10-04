@@ -17,6 +17,7 @@ const {
   detectInvalidCdnMediaId,
 } = require("../../validation/node-validation");
 const { getContext } = require("../../core/context");
+const { assertNodeAnimation } = require("../../validation/site-animations");
 
 const INVALID_ID_HARD_STOP_THRESHOLD = 3;
 
@@ -232,6 +233,11 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
         if (bad) throw new Error(bad);
       }
     }
+  }
+  // root.animation must name a built-in preset or a site animation defined in
+  // this tree's ROOT theme — any other string merges fine and never animates.
+  if (propsPatch && isPlainObject(propsPatch.root) && "animation" in propsPatch.root) {
+    assertNodeAnimation(propsPatch.root.animation, flatMap, nodeId);
   }
   if (propsPatch) {
     // Reject raw CSS/JS dropped into inject.head / inject.footer without a

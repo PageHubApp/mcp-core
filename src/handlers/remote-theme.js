@@ -15,6 +15,7 @@ const {
 const { editDistance } = require("../utils/levenshtein");
 
 const { resultMsg } = require("./remote-shared");
+const { mergeSiteAnimations } = require("../validation/site-animations");
 
 const { stripGoogleFontLinksFromHeader, finalizeRootThemeFonts } = require("../lib/theme-fonts.js");
 
@@ -191,6 +192,8 @@ async function setThemeBody(args) {
     styleGuide,
     fonts,
     jsonLd,
+    animations,
+    removeAnimations,
     buildStyle: explicitBuildStyle,
   } = args;
   const target = getActiveTarget(args);
@@ -199,6 +202,15 @@ async function setThemeBody(args) {
   const { flat } = await fetchTarget(args);
   if (!flat?.ROOT) throw new Error("Site/template has no ROOT node.");
   const rootProps = flat.ROOT.props;
+
+  // Validate site animations before touching rootProps, so a rejected call
+  // reports every animation problem and changes nothing else either.
+  const animationsArg = parseMaybeJson(animations) ?? animations;
+  const removeAnimationsArg = parseMaybeJson(removeAnimations) ?? removeAnimations;
+  const animationMerge =
+    animationsArg != null || removeAnimationsArg != null
+      ? mergeSiteAnimations(rootProps.theme?.animations, animationsArg, removeAnimationsArg)
+      : null;
 
   // Resolve preset values (explicit args override preset)
   let resolvedPalette = parseMaybeJson(palette);
@@ -315,6 +327,11 @@ async function setThemeBody(args) {
     }
   }
 
+  if (animationMerge) {
+    if (animationMerge.animations.length) rootProps.theme.animations = animationMerge.animations;
+    else delete rootProps.theme.animations;
+  }
+
   finalizeRootThemeFonts(rootProps, resolvedFonts);
 
   if (!rootProps.inject) rootProps.inject = {};
@@ -337,7 +354,18 @@ async function setThemeBody(args) {
     ...validateContentColors(rootProps.theme.palette),
     ...validateContentColors(rootProps.theme.darkPalette).map(w => `dark: ${w}`),
   ];
+  const animationMsg = animationMerge
+    ? [
+        animationMerge.upserted.length
+          ? `\n\nSite animations staged in the draft theme — set root.animation on nodes to: ${animationMerge.upserted.map(k => `"site:${k}"`).join(", ")}.`
+          : "",
+        animationMerge.removed.length
+          ? `\n\nSite animations removed: ${animationMerge.removed.join(", ")}. Nodes still pointing at site:<removed> render unanimated — repoint them.`
+          : "",
+      ].join("")
+    : "";
   const warnSuffix =
+    animationMsg +
     (styleWarnings.length
       ? `\n\nbuildStyle warnings:\n${styleWarnings.map(w => `  - ${w}`).join("\n")}`
       : "") +
