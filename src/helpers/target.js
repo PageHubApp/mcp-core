@@ -169,10 +169,9 @@ async function saveTarget(targetId, targetType, flat, extra = {}) {
   // to the model led to strategy pivots (delete → reapply_kit_block loops) and
   // silent failure. Last-write-wins is fine for AI edits; editor UI still sends
   // expectedUpdatedAt on its own paths.
-  const body =
-    targetType === "template"
-      ? { content: compressJsonToBase64Lz(flat), ...extra }
-      : { content: flat, ...extra };
+  // Compressed for both targets: a raw flat map of a large site exceeds the
+  // route's request body limit long before the site itself is too big.
+  const body = { content: compressJsonToBase64Lz(flat), ...extra };
 
   if (targetType === "template") {
     const put = await apiFetch(`/api/v1/templates/${encodeURIComponent(targetId)}`, {
