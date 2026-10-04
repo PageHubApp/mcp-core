@@ -1147,7 +1147,7 @@
   {
     "name": "publish_site",
     "description": "Publish the draft so it goes live. Every write is staged until this runs. `static` switches static delivery on/off (omit to leave it).",
-    "annotations": { "title": "Publish site", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
+    "annotations": { "title": "Publish site", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1166,7 +1166,7 @@
   {
     "name": "unpublish_site",
     "description": "Take the site offline.",
-    "annotations": { "title": "Unpublish site", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
+    "annotations": { "title": "Unpublish site", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3115,7 +3115,7 @@
   {
     "name": "set_site_chat",
     "description": "Change the site's chat bot settings; only the fields you pass change. The bot answers from the published pages and public collections and saves leads to Form Submissions as \"Chat\". Visitors see it only where the page has an AgentFloatingBubble (site-wide) or AgentChat node, and only while the owner has AI credits.",
-    "annotations": { "title": "Set site chat", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": true, "openWorldHint": false },
+    "annotations": { "title": "Set site chat", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
