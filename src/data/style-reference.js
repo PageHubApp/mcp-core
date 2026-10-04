@@ -421,7 +421,8 @@ Outline CTA pitfall: on minimal black-and-white themes keep Primary and Base Con
 - \`seo.jsonLd\` is one schema.org object (FAQPage, Article, BreadcrumbList); \`seo.schema\` is an array, one \`<script type="application/ld+json">\` each.
 - \`headCode\`: raw HTML in this page's \`<head>\`, emitted server-side so scripts run at parse time. \`bodyClass\`: classes on \`<body>\` for this page. Empty string clears either. Third-party code only, never page content. Site-wide code → ROOT \`inject.head\` / \`inject.footer\`; analytics → \`set_integrations\`.
 - Chrome: \`hideHeader\` / \`hideFooter\` suppress the global header / footer. \`hideChrome\` strips ALL ROOT-level chrome (header, footer, sticky bars, floating CTAs, drawers) — the switch for ad landing pages.
-- \`isHidden\` pages are not reachable by URL. You can't delete the last page; deleting home promotes the next page.`,
+- \`isHidden\` pages are not reachable by URL. You can't delete the last page; deleting home promotes the next page.
+- \`pathPattern\` makes a detail page: the URL tail AFTER the page's slug, literal segments or \`:param\`, no leading slash. Page "Car" + \`:slug\` serves /car/<slug>; page "Shop" + \`products/:handle\` serves /shop/products/<handle>. The segment count must match exactly. Read captures only inside a Data node's \`dataSource\` as \`{{params.<name>}}\` (e.g. \`filter: { slug: "{{params.slug}}" }\`) — Text can't read \`params\` directly; show \`{{item.*}}\` from the matched row. A tail that doesn't fit, or a filter that matches no row, serves the 404 page. Link to it with \`href: "ref:page_car/{{item.slug}}"\`. Empty string clears.`,
 
   site: `# Site settings — update_site
 

@@ -266,6 +266,39 @@ function assertSchemaEntries(value, pageId) {
   });
 }
 
+/**
+ * Same rules as the SDK's `validatePathPattern`
+ * (packages/sdk/src/utils/pathPatternParams.ts) — this package can't import the
+ * SDK. Throws with a fix the caller can act on; returns the trimmed pattern.
+ */
+function assertPathPattern(raw, pageId) {
+  if (typeof raw !== "string") {
+    throw new Error(`update_page pathPattern for page "${pageId}" must be a string, like ":slug".`);
+  }
+  const p = raw.trim();
+  if (!p) return "";
+  const fail = msg => {
+    throw new Error(
+      `update_page pathPattern "${raw}" for page "${pageId}": ${msg} ` +
+        `Segments are literal text or :param, separated by /, e.g. ":slug" or "products/:handle".`
+    );
+  };
+  if (p.startsWith("/")) fail("drop the leading slash — the pattern is the path AFTER the page slug.");
+  if (/\s/.test(p)) fail("no spaces allowed.");
+  if (p.endsWith("/") || p.includes("//")) fail("empty segment.");
+  const seen = new Set();
+  for (const seg of p.split("/")) {
+    if (seg.startsWith(":")) {
+      if (!/^:[A-Za-z_][A-Za-z0-9_]*$/.test(seg)) fail(`"${seg}" is not a valid param name.`);
+      if (seen.has(seg)) fail(`"${seg}" appears twice.`);
+      seen.add(seg);
+    } else if (!/^[A-Za-z0-9._~-]+$/.test(seg)) {
+      fail(`"${seg}" has characters a URL segment can't hold.`);
+    }
+  }
+  return p;
+}
+
 async function updatePageBody(args) {
   const { pageId, name, isHomePage, is404Page, isHidden, hideHeader, hideFooter, hideChrome } =
     args;
@@ -332,6 +365,17 @@ async function updatePageBody(args) {
     if (hideChrome) page.props.hideChrome = true;
     else delete page.props.hideChrome;
     changes.push(`hideChrome → ${!!hideChrome}`);
+  }
+
+  if (args.pathPattern != null) {
+    const pattern = assertPathPattern(args.pathPattern, pageId);
+    if (pattern) {
+      page.props.pathPattern = pattern;
+      changes.push(`pathPattern → "${pattern}" (/${pageNodeSlug(page, pageId)}/${pattern})`);
+    } else {
+      delete page.props.pathPattern;
+      changes.push("pathPattern → (cleared)");
+    }
   }
 
   const seo = parseMaybeJson(args.seo) || {};

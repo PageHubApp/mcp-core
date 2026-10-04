@@ -2626,7 +2626,7 @@
   },
   {
     "name": "update_page",
-    "description": "Update a page: name (changes the slug), SEO, home/404/hidden flags, per-page headCode/bodyClass, hideHeader/hideFooter/hideChrome. A page without seo.title / seo.description falls back to the site title (update_site), not its name. headCode holds third-party code, not page content. Guide: get_style_reference({ topic: \"pages\" }).",
+    "description": "Update a page: name (changes the slug), SEO, home/404/hidden flags, per-page headCode/bodyClass, hideHeader/hideFooter/hideChrome, pathPattern (dynamic detail-page URL). A page without seo.title / seo.description falls back to the site title (update_site), not its name. headCode holds third-party code, not page content. Guide: get_style_reference({ topic: \"pages\" }).",
     "annotations": { "title": "Update page", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -2732,6 +2732,11 @@
         "hideChrome": {
           "type": "boolean",
           "description": "Hide ALL ROOT-level chrome (header, footer, sticky bars, drawers) — for ad landing pages."
+        },
+        "pathPattern": {
+          "type": "string",
+          "description": "URL tail AFTER the page's own slug, for detail pages. Segments are literal or `:param`, no leading slash, no spaces: `:slug` on page \"Car\" serves /car/<slug>; `products/:handle` on \"Shop\" serves /shop/products/<handle>. Read captures in a Data node's dataSource as `{{params.<name>}}` (e.g. filter { slug: \"{{params.slug}}\" }). Empty string clears.",
+          "maxLength": 512
         }
       },
       "required": ["pageId"]
