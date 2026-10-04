@@ -235,7 +235,7 @@
   },
   {
     "name": "set_theme",
-    "description": "Write the site theme — preset, palette, darkPalette, styleGuide tokens and fonts, JSON-LD, site animations — straight into the draft; the change is immediate. suggest_palettes / suggest_font_pairings are the non-writing alternatives that only show options. ROOT `company` vars are set with patch_site_node. Palette names, styleGuide keys, workflow: get_style_reference({ topic: \"theme\" }).",
+    "description": "Write the site theme — preset, palette, darkPalette, styleGuide tokens, fonts, JSON-LD, site animations — into the draft, effective immediately. suggest_palettes / suggest_font_pairings only show options. ROOT `company` vars: patch_site_node. Palette names, styleGuide keys, workflow: get_style_reference({ topic: \"theme\" }).",
     "annotations": { "title": "Set theme", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -1097,7 +1097,7 @@
   },
   {
     "name": "update_site",
-    "description": "Update the site's name (URL slug), title, description, AI-crawler blocking, timezone, mount origin or mount key. title/description are the fallback <title> and meta description for every page without its own seo — update_page can't reach them. Empty string clears. select_site returns the current values.",
+    "description": "Update the site's name (URL slug), title, description, AI-crawler blocking, timezone or mount origin/key. title/description are the fallback <title> and meta description for pages without their own seo (update_page can't set them). Empty string clears. select_site returns current values.",
     "annotations": { "title": "Update site", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -1124,21 +1124,21 @@
         },
         "blockAiCrawlers": {
           "type": "boolean",
-          "description": "true adds a robots.txt Disallow for known AI crawlers (GPTBot, ClaudeBot, Google-Extended, PerplexityBot, …) and turns off /llms.txt + /llms-full.txt. Search engines are unaffected. Off also means AI assistants can read the site to answer questions or book on the visitor's behalf. Takes effect immediately, no publish needed."
+          "description": "true adds a robots.txt Disallow for AI crawlers (GPTBot, ClaudeBot, Google-Extended, PerplexityBot, …) and turns off /llms.txt + /llms-full.txt. Search engines unaffected. Off lets AI assistants read the site to answer or book for visitors. Immediate, no publish."
         },
         "timezone": {
           "type": "string",
-          "description": "The business's IANA timezone, e.g. \"America/Los_Angeles\". Times in the site's form notification emails are shown in it; empty string clears it (UTC). Takes effect immediately, no publish needed.",
+          "description": "IANA timezone, e.g. \"America/Los_Angeles\", for times in form notification emails; empty string clears (UTC). Immediate, no publish.",
           "maxLength": 64
         },
         "mountOrigin": {
           "type": "string",
-          "description": "Origin of your own Next.js app when it serves this site at its root through @pagehub/next, e.g. \"https://app.example.com\" — https, no path or trailing slash. Canonical URLs, og:url and the sitemap then use that origin, and the page's form, analytics and favicon calls go through the app's /_pagehub/ path. The site must have static delivery on (publish_site static: true). Setting it issues a mount key (returned once) that the app must send so PageHub sees each visitor's real IP; clearing it removes the key. Empty string clears it. Takes effect immediately, no publish needed.",
+          "description": "Origin of your Next.js app serving this site at its root via @pagehub/next, e.g. \"https://app.example.com\" (https, no path). Canonical URLs and the sitemap use it. Needs static delivery (publish_site static: true). Setting it issues a mount key, returned once; empty string clears both. Immediate, no publish.",
           "maxLength": 256
         },
         "rotateMountKey": {
           "type": "boolean",
-          "description": "true issues a new mount key and invalidates the old one (the site must have a mountOrigin). The new key is returned once — set it as PAGEHUB_MOUNT_KEY in the host app, or that app's visitors share one IP for rate limits and analytics until you do."
+          "description": "true issues a new mount key (returned once) and invalidates the old one; needs a mountOrigin. Set it as PAGEHUB_MOUNT_KEY in the host app, or its visitors share one IP for rate limits and analytics."
         }
       }
     }
@@ -1407,7 +1407,7 @@
   },
   {
     "name": "set_domain",
-    "description": "Attach a custom domain (apex + www pair, or one subdomain) and return the DNS records the user needs to create; the values are specific to this project. Attaching doesn't publish. clear_domain detaches. 409 = a variant is on another Vercel project; 403 upgrade = plan domain limit. Details: get_style_reference({ topic: \"domains\" }).",
+    "description": "Attach a custom domain (apex + www pair, or one subdomain) and return the DNS records to create, specific to this project. Doesn't publish; clear_domain detaches. 409 = a variant is on another Vercel project; 403 upgrade = plan domain limit. Details: get_style_reference({ topic: \"domains\" }).",
     "annotations": { "title": "Set domain", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
@@ -1837,7 +1837,7 @@
   },
   {
     "name": "patch_site_bulk",
-    "description": "Apply many node patches in one atomic write (parallel single patches lose updates). `patches` is a real JSON array of { nodeId, typePatch?, classNamePatch?, propsPatch?, nodesPatch?, unsetClasses?, unsetProps? }. Same rules as patch_site_node: namespaced objects deep-merge, strings/arrays replace, Image src + content together, no children.",
+    "description": "Apply many node patches in one atomic write (parallel single patches lose updates). `patches` is a real JSON array of { nodeId, typePatch?, classNamePatch?, propsPatch?, nodesPatch?, unsetClasses?, unsetProps? }. Same rules as patch_site_node.",
     "annotations": { "title": "Patch site bulk", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -2018,7 +2018,7 @@
   },
   {
     "name": "search_blocks",
-    "description": "Search the block library; returns one page of slugs with descriptions and tags (full structure: get_block), plus sections on this site that can be cloned. `q` takes short layout phrases (\"split hero\"), `categories` / `styles` arrays OR-filter, `page` pages through. \"Fallback — not an exact match\" means the closest slugs are listed. Guide: get_style_reference({ topic: \"blocks\" }).",
+    "description": "Search the block library; returns one page of slugs with descriptions and tags (full structure: get_block), plus sections on this site that can be cloned. `q` takes short layout phrases (\"split hero\"), `categories` / `styles` arrays OR-filter, `page` pages through. Guide: get_style_reference({ topic: \"blocks\" }).",
     "annotations": { "title": "Search blocks", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -2963,7 +2963,7 @@
   },
   {
     "name": "set_favicon",
-    "description": "Set or clear the site favicon (ROOT.props.seo.favicon). Give exactly one source: `mediaId`, `imageUrl`, `svgContent` (SVG markup supplied by the user), `dataBase64` (small icons, ~3MB cap), or `clear: true`. Best: a 512px square PNG or an SVG. Staged like any edit — publish to see it live. Sites only. More: get_style_reference({ topic: \"media\" }).",
+    "description": "Set or clear the site favicon. Exactly one source: `mediaId`, `imageUrl`, `svgContent` (user-supplied SVG), `dataBase64` (small icons, ~3MB cap), or `clear: true`. Best: a 512px square PNG or an SVG. Staged — publish to see it live. More: get_style_reference({ topic: \"media\" }).",
     "annotations": { "title": "Set favicon", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
