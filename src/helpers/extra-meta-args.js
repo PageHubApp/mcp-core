@@ -7,13 +7,16 @@
  *   description }` triple suitable for spreading into a POST body when the
  *   downstream API accepts undefined fields (create / duplicate site).
  *
- * - `pickSiteMetaUpdates(args)` — strict PATCH semantics. Only includes keys
+ * - `pickSiteMetaUpdates(args)` — strict PATCH semantics, plus `ogImage`
+ *   (the site-wide share image). Only includes keys
  *   present as strings on `args`; trims whitespace; empty strings become
  *   `null` (explicit clear). Returns `{}` if nothing was supplied so callers
  *   can validate "at least one field" themselves.
  */
 
 const META_KEYS = ["name", "title", "description"];
+// Update-only: a site is never created with a share image.
+const UPDATE_KEYS = [...META_KEYS, "ogImage"];
 
 function pickSiteMetaArgs(args = {}) {
   return {
@@ -25,7 +28,7 @@ function pickSiteMetaArgs(args = {}) {
 
 function pickSiteMetaUpdates(args = {}) {
   const body = {};
-  for (const key of META_KEYS) {
+  for (const key of UPDATE_KEYS) {
     if (typeof args[key] === "string") {
       body[key] = args[key].trim() || null;
     }

@@ -430,6 +430,8 @@ Every field takes effect immediately — no publish needed. Empty string clears.
 
 - \`name\`: the URL slug (subdomain) — lowercase letters, digits, hyphens.
 - \`title\` / \`description\`: the fallback \`<title>\` and meta description for every page without its own \`seo\`. \`update_page\` can't reach them.
+- \`ogImage\`: the site-wide share image (https URL, 1200×630) — the og:image for every page without its own \`seo.ogImage\`. Unset, those pages get a generated text card. Set it once here instead of on each page.
+- \`crawlMode\`: \`public\` (indexed — the default for new sites), \`noindex\` (viewable by link, sent \`noindex, nofollow\` and left out of the sitemap) or \`private_preview\` (noindex plus a robots.txt \`Disallow: /\`). Set \`noindex\` BEFORE publishing a client's copy that isn't on its final domain yet, or search engines index it as a duplicate of their real site. Flip to \`public\` at domain cutover.
 - \`blockAiCrawlers\`: true adds a robots.txt Disallow for known AI crawlers (GPTBot, ClaudeBot, Google-Extended, PerplexityBot, …) and turns off /llms.txt + /llms-full.txt. Search engines are unaffected. Leaving it off also lets AI assistants read the site to answer questions or book on a visitor's behalf.
 - \`timezone\`: the business's IANA timezone, e.g. "America/Los_Angeles". Times in the site's form notification emails are shown in it; clearing it means UTC.
 

@@ -16,10 +16,19 @@ const {
 const { pickSiteMetaArgs, pickSiteMetaUpdates } = require("../helpers/extra-meta-args");
 
 const DEFAULT_BLANK_TEMPLATE = "acme";
+const CRAWL_MODES = ["public", "noindex", "private_preview"];
 
-/** One status line for a `/api/v1/sites/[id]` payload's `crawlPolicy.blockAi`. */
-function aiCrawlersLine(data) {
-  return `AI crawlers: ${data?.crawlPolicy?.blockAi ? "blocked" : "allowed"} (update_site blockAiCrawlers)`;
+/** Status lines for a `/api/v1/sites/[id]` payload's `crawlPolicy` mode + `blockAi`. */
+function crawlLines(data) {
+  return (
+    `Search indexing: ${data?.crawlPolicy?.mode || "public"} (update_site crawlMode)\n` +
+    `AI crawlers: ${data?.crawlPolicy?.blockAi ? "blocked" : "allowed"} (update_site blockAiCrawlers)`
+  );
+}
+
+/** One status line for a `/api/v1/sites/[id]` payload's site-wide `ogImage`. */
+function siteOgImageLine(data) {
+  return `Site share image: ${data?.ogImage || "(unset — pages without their own og:image get the generated card)"}`;
 }
 
 /** One status line for a `/api/v1/sites/[id]` payload's `timezone`. */
@@ -179,12 +188,13 @@ module.exports = {
       `Active site set to ${data.id} (${data.name || "unnamed"})`,
       `Site title: ${data.title ? JSON.stringify(data.title) : "(unset)"}`,
       `Site description: ${data.description ? JSON.stringify(data.description) : "(unset)"}`,
+      siteOgImageLine(data),
       `Published: ${data.published ? "yes" : "no"}${data.staticPublish ? " (turbo/static delivery)" : ""}`,
-      aiCrawlersLine(data),
+      crawlLines(data),
       timezoneLine(data),
       mountOriginLine(data),
       mountKeyLine(data, false),
-      `Change these two with update_site; per-page overrides go through update_page seo.`,
+      `Change these with update_site; per-page overrides go through update_page seo.`,
     ];
     return {
       content: [{ type: "text", text: lines.filter(Boolean).join("\n") + selectionNote({ type: "site", id: data.id }) }],
@@ -221,9 +231,9 @@ module.exports = {
   },
 
   /**
-   * Patch site-level metadata (name / title / description / crawler, timezone
+   * Patch site-level metadata (name / title / description / share image / crawler, timezone
    * and mount-origin settings).
-   * @param {object} args - { name?, title?, description?, blockAiCrawlers?, timezone?, mountOrigin?, rotateMountKey?, siteId? }
+   * @param {object} args - { name?, title?, description?, ogImage?, crawlMode?, blockAiCrawlers?, timezone?, mountOrigin?, rotateMountKey?, siteId? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async update_site(args = {}) {
@@ -231,10 +241,14 @@ module.exports = {
     if (target.type !== "site") throw new Error("update_site only works on sites, not templates.");
     const body = pickSiteMetaUpdates(args);
     // The v1 route keeps crawlPolicy fields that are omitted, so sending only
-    // `blockAi` leaves the site's mode and custom robots.txt untouched.
-    if (typeof args.blockAiCrawlers === "boolean") {
-      body.crawlPolicy = { blockAi: args.blockAiCrawlers };
+    // `mode` / `blockAi` leaves the rest (incl. custom robots.txt) untouched.
+    const crawlPolicy = {};
+    if (CRAWL_MODES.includes(args.crawlMode)) crawlPolicy.mode = args.crawlMode;
+    else if (args.crawlMode !== undefined) {
+      throw new Error(`crawlMode must be one of: ${CRAWL_MODES.join(", ")}.`);
     }
+    if (typeof args.blockAiCrawlers === "boolean") crawlPolicy.blockAi = args.blockAiCrawlers;
+    if (Object.keys(crawlPolicy).length) body.crawlPolicy = crawlPolicy;
     // "" clears it; the route validates the IANA name.
     if (typeof args.timezone === "string") body.timezone = args.timezone.trim();
     // "" clears it; the route validates the bare https origin + staticPublish.
@@ -242,7 +256,7 @@ module.exports = {
     if (args.rotateMountKey === true) body.rotateMountKey = true;
     if (Object.keys(body).length === 0) {
       throw new Error(
-        "update_site requires at least one of: name, title, description, blockAiCrawlers, timezone, mountOrigin, rotateMountKey."
+        "update_site requires at least one of: name, title, description, ogImage, crawlMode, blockAiCrawlers, timezone, mountOrigin, rotateMountKey."
       );
     }
     const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`, {
@@ -260,7 +274,8 @@ module.exports = {
             `Site ${target.id} updated (${changed}).\n` +
             `Site title: ${data?.title ? JSON.stringify(data.title) : "(unset)"}\n` +
             `Site description: ${data?.description ? JSON.stringify(data.description) : "(unset)"}\n` +
-            aiCrawlersLine(data) +
+            `${siteOgImageLine(data)}\n` +
+            crawlLines(data) +
             `\n${timezoneLine(data)}` +
             `\n${mountOriginLine(data)}` +
             (data?.mountKey ? `\n${mountKeyLine(data, true)}` : ""),
