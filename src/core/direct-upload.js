@@ -62,6 +62,8 @@ async function uploadBytesToSite({ siteId, bytes, contentType, filename, width, 
   // Confirm is what charges storage and registers the library entry. If it
   // fails the bytes are already at the CDN but uncounted and invisible in the
   // Media Manager, so surface it rather than reporting success.
+  // `ticket` is the sign step's signed sign→confirm binding — the API charges
+  // storage from it, and rejects a confirm without one.
   return apiFetch(path, {
     method: "POST",
     body: {
@@ -71,6 +73,7 @@ async function uploadBytesToSite({ siteId, bytes, contentType, filename, width, 
       contentType,
       destination: signed.destination,
       filename,
+      ...(signed.ticket ? { ticket: signed.ticket } : {}),
       ...(width ? { width } : {}),
       ...(height ? { height } : {}),
     },
