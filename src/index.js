@@ -107,7 +107,6 @@ const HTTP_TOOL_NAMES = new Set(Object.keys(handlers));
 
 // Tools excluded from the agent endpoint (auth handled per-request)
 const AGENT_EXCLUDED = new Set([
-  "register",
   // Large payload tool (manual/debug only; not for public agent flows)
   "pull_site",
   // Block library admin tools
