@@ -94,8 +94,8 @@ module.exports = {
    */
   async set_checkout(args = {}) {
     const siteId = requireActiveSite(args);
-    const slug = String(args.collection_slug || "").trim().toLowerCase();
-    if (!slug) throw new Error("collection_slug is required.");
+    const slug = String(args.collectionSlug || "").trim().toLowerCase();
+    if (!slug) throw new Error("collectionSlug is required.");
     const base = `/api/v1/sites/${encodeURIComponent(siteId)}/checkout`;
 
     if (args.remove) {
@@ -104,10 +104,10 @@ module.exports = {
     }
 
     const fieldMap = {};
-    if (args.price_id_field) fieldMap.priceId = args.price_id_field;
-    if (args.price_field) fieldMap.price = args.price_field;
-    if (args.inventory_field) fieldMap.inventory = args.inventory_field;
-    if (args.variants_field) fieldMap.variants = args.variants_field;
+    if (args.priceIdField) fieldMap.priceId = args.priceIdField;
+    if (args.priceField) fieldMap.price = args.priceField;
+    if (args.inventoryField) fieldMap.inventory = args.inventoryField;
+    if (args.variantsField) fieldMap.variants = args.variantsField;
 
     const { config } = await apiFetch(base, {
       method: "POST",

@@ -563,21 +563,21 @@ module.exports = {
 
   /**
    * Revoke a pending site invite by its id (from list_site_members). Owner-gated.
-   * @param {object} args - { invite_id, id? } — id defaults to active site.
+   * @param {object} args - { inviteId, id? } — id defaults to active site.
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async revoke_site_invite(args = {}) {
     const ctx = getContext();
     const siteId = args.id || ctx.activeSite?.id;
     if (!siteId) throw new Error("Site id is required (none provided and no active site set).");
-    if (!args.invite_id) throw new Error("invite_id is required (get it from list_site_members).");
+    if (!args.inviteId) throw new Error("inviteId is required (get it from list_site_members).");
     await apiFetch(
-      `/api/v1/sites/${encodeURIComponent(siteId)}/invites?inviteId=${encodeURIComponent(args.invite_id)}`,
+      `/api/v1/sites/${encodeURIComponent(siteId)}/invites?inviteId=${encodeURIComponent(args.inviteId)}`,
       { method: "DELETE" }
     );
     return {
       content: [
-        { type: "text", text: `Revoked pending invite ${args.invite_id} on site ${siteId}.` },
+        { type: "text", text: `Revoked pending invite ${args.inviteId} on site ${siteId}.` },
       ],
     };
   },

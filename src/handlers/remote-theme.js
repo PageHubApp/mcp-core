@@ -104,7 +104,7 @@ const ALLOWED_IMAGE_MIME = ["image/png", "image/jpeg", "image/webp", "image/gif"
  * Shared upload path for `upload_image` (image-only) and `upload_file` (any
  * plan-allowed type). POSTs to `/api/v1/sites/:id/media`, which routes images
  * to Cloudflare Images (`type: "cdn"`) and everything else to R2 (`type: "r2"`).
- * @param {object} args - { fileUrl?|imageUrl?, dataBase64?, mimeType?, filename?, id?/site_id? }
+ * @param {object} args - { fileUrl?|imageUrl?, dataBase64?, mimeType?, filename?, id? }
  * @param {{restrictToImages: boolean}} opts
  * @returns {Promise<{mediaId:string, type:string, url:string, contentType?:string}>}
  */

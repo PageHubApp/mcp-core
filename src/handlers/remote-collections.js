@@ -9,8 +9,8 @@ const { getContext } = require("../core/context");
 
 function activeSiteId(args) {
   const ctx = getContext();
-  const id = args?.site_id || args?.id || ctx.activeSite?.id;
-  if (!id) throw new Error("site_id is required (none provided and no active site set).");
+  const id = args?.id || ctx.activeSite?.id;
+  if (!id) throw new Error("Site id is required (none provided and no active site set).");
   return id;
 }
 
@@ -23,7 +23,7 @@ function fmtCollection(c) {
 module.exports = {
   /**
    * List all collections on the active site.
-   * @param {object} args - { site_id? }
+   * @param {object} args - { id? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async list_collections(args = {}) {
@@ -36,7 +36,7 @@ module.exports = {
 
   /**
    * Fetch one collection (schema + metadata) by slug.
-   * @param {object} args - { slug, site_id? }
+   * @param {object} args - { slug, id? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async get_collection(args = {}) {
@@ -60,7 +60,7 @@ module.exports = {
 
   /**
    * Create a new collection on the active site.
-   * @param {object} args - { name, slug, description?, schema?, source?, isPublic?, site_id? }
+   * @param {object} args - { name, slug, description?, schema?, source?, isPublic?, id? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async create_collection(args = {}) {
@@ -91,7 +91,7 @@ module.exports = {
 
   /**
    * Replace the schema of a collection.
-   * @param {object} args - { slug, schema, site_id? }
+   * @param {object} args - { slug, schema, id? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async update_collection_schema(args = {}) {
@@ -117,7 +117,7 @@ module.exports = {
 
   /**
    * Delete a collection (and all its rows) by slug.
-   * @param {object} args - { slug, site_id? }
+   * @param {object} args - { slug, id? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async delete_collection(args = {}) {
@@ -137,7 +137,7 @@ module.exports = {
 
   /**
    * List rows for a collection with cursor pagination.
-   * @param {object} args - { slug, limit?, cursor?, site_id? }
+   * @param {object} args - { slug, limit?, cursor?, id? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async list_collection_rows(args = {}) {
@@ -164,7 +164,7 @@ module.exports = {
 
   /**
    * Insert a row into a collection.
-   * @param {object} args - { slug, data, site_id? }
+   * @param {object} args - { slug, data, id? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async create_collection_row(args = {}) {
@@ -193,7 +193,7 @@ module.exports = {
    * Bulk-insert rows into a collection (server cap 500 per call). Each entry in
    * `rows` is a data object keyed by field key (or a `{ data }` wrapper), coerced
    * and validated against the schema. Plan-gated by maxRowsPerCollection.
-   * @param {object} args - { slug, rows, site_id? }
+   * @param {object} args - { slug, rows, id? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async create_collection_rows(args = {}) {
@@ -221,7 +221,7 @@ module.exports = {
    * Import CSV text into a collection. Columns are matched to schema field keys
    * by name; `mode` controls merge semantics. `upsert` keys on an `externalId`
    * (or `id`) CSV column. Plan-gated by maxRowsPerCollection.
-   * @param {object} args - { slug, csv, mode?, site_id? }
+   * @param {object} args - { slug, csv, mode?, id? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async import_collection_csv(args = {}) {
@@ -252,43 +252,43 @@ module.exports = {
 
   /**
    * Patch one row's data by id.
-   * @param {object} args - { slug, row_id, data, site_id? }
+   * @param {object} args - { slug, rowId, data, id? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async update_collection_row(args = {}) {
     const siteId = activeSiteId(args);
     if (!args.slug) throw new Error("slug is required.");
-    if (!args.row_id) throw new Error("row_id is required.");
+    if (!args.rowId) throw new Error("rowId is required.");
     if (!args.data || typeof args.data !== "object")
       throw new Error("data is required (must be an object).");
     await apiFetch(
       `/api/v1/sites/${encodeURIComponent(siteId)}/collections/${encodeURIComponent(
         args.slug
-      )}/rows/${encodeURIComponent(args.row_id)}`,
+      )}/rows/${encodeURIComponent(args.rowId)}`,
       { method: "PATCH", body: { data: args.data } }
     );
     return {
-      content: [{ type: "text", text: `Row ${args.row_id} updated in "${args.slug}".` }],
+      content: [{ type: "text", text: `Row ${args.rowId} updated in "${args.slug}".` }],
     };
   },
 
   /**
    * Delete one row by id.
-   * @param {object} args - { slug, row_id, site_id? }
+   * @param {object} args - { slug, rowId, id? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async delete_collection_row(args = {}) {
     const siteId = activeSiteId(args);
     if (!args.slug) throw new Error("slug is required.");
-    if (!args.row_id) throw new Error("row_id is required.");
+    if (!args.rowId) throw new Error("rowId is required.");
     await apiFetch(
       `/api/v1/sites/${encodeURIComponent(siteId)}/collections/${encodeURIComponent(
         args.slug
-      )}/rows/${encodeURIComponent(args.row_id)}`,
+      )}/rows/${encodeURIComponent(args.rowId)}`,
       { method: "DELETE" }
     );
     return {
-      content: [{ type: "text", text: `Row ${args.row_id} deleted from "${args.slug}".` }],
+      content: [{ type: "text", text: `Row ${args.rowId} deleted from "${args.slug}".` }],
     };
   },
 };

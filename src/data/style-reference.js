@@ -468,7 +468,7 @@ Anything else (chat widgets, A/B testing, CRMs, custom scripts): \`patch_site_no
 ## Stripe
 \`stripe_connect\` returns a single-use onboarding URL while setup is unfinished. Only the site owner can complete it: hand them the URL, then call \`stripe_connect\` again once they're done to confirm \`ready\`. \`set_checkout\` and the \`stripe_*\` lookups need that ready connection.
 
-\`set_checkout\` makes a collection sellable: Cart Buttons in a Data repeater bound to it then charge through Stripe. Without \`price_id_field\` each row charges its numeric \`price\` field in minor units (2500 = $25.00), so the collection needs that number field; with \`price_id_field\` each row holds a Stripe price id. \`remove: true\` stops selling; the rows stay.
+\`set_checkout\` makes a collection sellable: Cart Buttons in a Data repeater bound to it then charge through Stripe. Without \`priceIdField\` each row charges its numeric \`price\` field in minor units (2500 = $25.00), so the collection needs that number field; with \`priceIdField\` each row holds a Stripe price id. \`remove: true\` stops selling; the rows stay.
 
 ## Site emails
 After \`update_site_email\`, run \`preview_site_email\`: an email with errors sends the default instead, and the preview is where those errors show.`,
