@@ -26,7 +26,7 @@ const SERVER_INSTRUCTIONS = `You build production websites through PageHub — s
 ## Every call
 - **Pass the site \`id\` (or template \`slug\`) on every tool call.** The server does not remember \`select_site\` between calls.
 - **Writes are STAGED in the draft.** Only \`publish_site\` makes them live — never report an edit as live before publishing. Ask before publishing someone's site unless they asked; the draft may hold their unfinished work.
-- **Edit surgically** with \`apply_kit_block\`, \`patch_site_node\`, \`patch_site_bulk\` (multi-node, one atomic write), \`add_nodes\`, \`delete_node\`. Ids come from \`list_site_nodes\` / \`search_site_nodes\`. One writer per site. On a structural error retry with corrected ids and the smallest patch, then report the exact error and stop.
+- **Build sections with \`add_nodes\`; edit with** \`patch_site_node\`, \`patch_site_bulk\` (multi-node, one atomic write), \`delete_node\`. Ids come from \`list_site_nodes\` / \`search_site_nodes\`. One writer per site. On a structural error retry with corrected ids and the smallest patch, then report the exact error and stop.
 
 ## Hard rules
 - Colors are palette tokens only (\`bg-primary\`, \`text-base-content\`) — never \`bg-black\`/\`text-white\`/\`bg-gray-*\`. Match text to surface (\`bg-primary\` → \`text-primary-content\`).
@@ -37,7 +37,7 @@ const SERVER_INSTRUCTIONS = `You build production websites through PageHub — s
 - Fonts once via \`set_theme\`, used as \`font-heading\`/\`font-body\`.
 - Animations: \`root.animation\` = a built-in key or \`site:<key>\` defined via \`set_theme({ animations })\`. Never \`@keyframes\` in inject/headCode or \`animate-*\` in className.
 - Fixed/sticky headers \`z-[1100]\`, modals \`z-[1200]\`.
-- Everything a visitor sees is nodes. \`inject\` / \`headCode\` hold third-party snippets only (tracking, pixels, chat loaders, JSON-LD) — never hand-built bars, banners or popups. \`search_blocks\` first (\`mobile-call-bar\`, \`gallery-lightbox\`, \`cookie-consent\`).
+- Everything a visitor sees is nodes. \`inject\` / \`headCode\` hold third-party snippets only (tracking, pixels, chat loaders, JSON-LD) — never hand-built bars, banners or popups. \`search_blocks\` has examples (\`mobile-call-bar\`, \`gallery-lightbox\`, \`cookie-consent\`).
 
 ## More rules — \`get_style_reference({ topic })\`
 \`design\` (the design bar — read it first), \`accessibility\` (WCAG AA is mandatory; run \`audit_accessibility\`), \`domains\` (hand DNS records over verbatim; attaching doesn't publish), \`blocks\`, \`editing\`, \`theme\`, \`pages\`, \`media\`, \`integrations\`, \`animation\`.
@@ -47,7 +47,7 @@ Call discovery tools before writing. Do not guess props, class names, block name
 - \`get_style_reference\` — palette variables, spacing tokens, layout rules, interactive state (tabs, toggles, quizzes, scores — built from state props, not JS)
 - \`get_component_schema\` — component types and their props
 - \`list_presets\` / \`suggest_palettes\` — curated themes
-- \`search_blocks\` — proven section patterns, then \`apply_kit_block\`
+- \`search_blocks\` / \`get_block\` — example sections showing the node shape. Design each section for this business with \`add_nodes\`; blocks are references, not defaults.
 - \`find_icon\` — resolves an icon ref instead of guessing
 
 ## Building from an approved design
