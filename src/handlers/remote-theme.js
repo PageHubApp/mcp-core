@@ -126,6 +126,13 @@ async function uploadMediaToSite(args, { restrictToImages }) {
         "In the hosted agent, pass fileUrl (a public http(s) URL) or dataBase64 instead."
     );
   }
+  // Private files go up only by signed direct upload, which needs filePath.
+  // Without this the fileUrl / dataBase64 path would store them publicly.
+  if (args.private === true) {
+    throw new Error(
+      "private uploads need filePath, which only the local PageHub MCP server (stdio) supports."
+    );
+  }
   const srcUrl = args.fileUrl || args.imageUrl;
   if (!srcUrl && !args.dataBase64) {
     throw new Error("fileUrl or dataBase64 is required.");

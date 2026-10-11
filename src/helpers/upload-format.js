@@ -12,6 +12,11 @@
  */
 function formatUploadResult(data, opts = {}) {
   const head = opts.label ? `${opts.label}\n` : "";
+  if (data.type === "r2-private") {
+    return `${head}Uploaded privately.\n  mediaId: ${data.mediaId}\n  type: r2-private${
+      data.contentType ? `\n  contentType: ${data.contentType}` : ""
+    }\n\nNo public url — this file is only downloadable through a digital-download grant. It is not in the site's media library.`;
+  }
   const usage =
     data.type === "r2"
       ? `Stored on R2 (${data.contentType || "file"}).\n  • Video node: provider "r2", videoId "${data.mediaId}"\n  • Link / collection url field: use the url above\n  • Delete later with the editor Media Manager`

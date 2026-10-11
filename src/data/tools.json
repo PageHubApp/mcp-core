@@ -1636,8 +1636,56 @@
           "type": "string",
           "description": "Filename hint.",
           "maxLength": 512
+        },
+        "private": {
+          "type": "boolean",
+          "description": "Store privately for set_download (any type; no public url). Needs filePath."
         }
       }
+    }
+  },
+  {
+    "name": "list_downloads",
+    "description": "Site's hosted downloads: link, versions (★ = served), download count, plan allowance.",
+    "annotations": { "title": "List downloads", "readOnlyHint": true, "destructiveHint": false, "idempotentHint": true, "openWorldHint": false },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Site id.", "maxLength": 256 }
+      }
+    }
+  },
+  {
+    "name": "set_download",
+    "description": "Host a file behind a stable link (<site>/api/downloads/<id>); link to it from a Button. New: name + file. New version: downloadId + file (same link). Roll back: downloadId + currentVersionId. File = filePath (stdio) or mediaId of a private upload. Pro+; .exe/.dmg etc need Agency.",
+    "annotations": { "title": "Set download", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": false },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Site id.", "maxLength": 256 },
+        "downloadId": { "type": "string", "description": "Existing download; omit to create.", "maxLength": 40 },
+        "name": { "type": "string", "description": "Display name; required when creating.", "maxLength": 120 },
+        "filePath": { "type": "string", "description": "Local file (stdio only).", "maxLength": 4096 },
+        "mediaId": { "type": "string", "description": "From upload_file({ private: true }).", "maxLength": 100 },
+        "filename": { "type": "string", "description": "Saved-as name; required with mediaId.", "maxLength": 200 },
+        "label": { "type": "string", "description": "e.g. v1.2", "maxLength": 60 },
+        "notes": { "type": "string", "description": "Changelog.", "maxLength": 2000 },
+        "currentVersionId": { "type": "string", "description": "Serve this existing version.", "maxLength": 40 }
+      }
+    }
+  },
+  {
+    "name": "remove_download",
+    "description": "Remove a download (link then 404s) or one non-current version; unused files are deleted.",
+    "annotations": { "title": "Remove download", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Site id.", "maxLength": 256 },
+        "downloadId": { "type": "string", "description": "Download id.", "maxLength": 40 },
+        "versionId": { "type": "string", "description": "Only this version.", "maxLength": 40 }
+      },
+      "required": ["downloadId"]
     }
   },
   {

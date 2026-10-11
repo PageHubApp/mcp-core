@@ -20,16 +20,26 @@ const { apiFetch } = require("./api-fetch");
  * @param {string} [opts.filename] - Library display name.
  * @param {number} [opts.width] - Pixel dimensions, when already known.
  * @param {number} [opts.height]
- * @returns {Promise<{mediaId:string, type:string, url:string, contentType:string, registered:boolean}>}
+ * @param {boolean} [opts.private] - Store in the private bucket (digital downloads):
+ *   no public url, not added to the media library.
+ * @returns {Promise<{mediaId:string, type:string, url?:string, contentType:string, registered:boolean}>}
  */
-async function uploadBytesToSite({ siteId, bytes, contentType, filename, width, height }) {
+async function uploadBytesToSite({
+  siteId,
+  bytes,
+  contentType,
+  filename,
+  width,
+  height,
+  private: isPrivate,
+}) {
   const size = bytes.byteLength ?? bytes.length;
   if (!size) throw new Error("Refusing to upload an empty file.");
 
   const path = `/api/v1/sites/${encodeURIComponent(siteId)}/media`;
   const signed = await apiFetch(path, {
     method: "POST",
-    body: { step: "sign", size, contentType, filename },
+    body: { step: "sign", size, contentType, filename, ...(isPrivate ? { private: true } : {}) },
   });
 
   // Cloudflare Images takes a multipart POST with a `file` part; R2 takes a raw

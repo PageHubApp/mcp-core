@@ -6,4 +6,5 @@ module.exports = {
   ...require("./remote-stripe"),
   ...require("./remote-emails"),
   ...require("./remote-site-chat"),
+  ...require("./remote-downloads"),
 };
