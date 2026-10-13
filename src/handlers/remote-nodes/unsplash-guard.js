@@ -75,10 +75,10 @@ function assertNoImageSrcContentConflict(flat, nodeIds, patch) {
 function unsplashViolationMessage(hits) {
   const lines = hits.slice(0, 8).map(h => `  - ${h.nodeId}.${h.path}: ${h.value.slice(0, 100)}`);
   return (
-    `Error: hand-typed images.unsplash.com URL(s) rejected — these IDs are usually invented and 404 in production.\n` +
+    `Error: images.unsplash.com URL(s) can't go straight into a patch — guessed IDs 404 in production.\n` +
     `${lines.join("\n")}\n\n` +
-    `Call find_image({ q: "<descriptive query>", category: "<hero|product|background|avatar|...>" }) and use the URL it returns. ` +
-    `Do NOT guess Unsplash photo-<id>s; only URLs returned by find_image are verified.`
+    `Get a verified URL from find_image({ q: "<descriptive query>", category: "<hero|product|background|avatar|...>" }), ` +
+    `pass it to upload_image({ id, imageUrl }), then patch the returned mediaId as { src: "<mediaId>", type: "cdn" }.`
   );
 }
 

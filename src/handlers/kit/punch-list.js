@@ -94,25 +94,39 @@ function findUnrewrittenCopy(newNodes, contentOverrides, limit = 40) {
 }
 
 /**
+ * Snapshot each Image node's src as the block shipped it, before
+ * contentOverrides run, so `findUnreplacedImages` can tell a seed photo from
+ * one the agent already supplied.
+ */
+function collectSeedImageSrcs(newNodes) {
+  const seeds = {};
+  for (const [id, node] of Object.entries(newNodes || {})) {
+    if (node?.type?.resolvedName !== "Image") continue;
+    seeds[id] = String(node?.props?.src || "").trim();
+  }
+  return seeds;
+}
+
+/**
  * Find Image nodes in the kit that still carry the kit's default/seed src
  * (or no src at all). Without this list, agents skip image work entirely:
  * the model assumes "the kit shipped with images, those are fine" and the
  * visitor sees stock placeholder photos that have nothing to do with the
- * business. Surface them so the agent has a concrete action item to call
- * `find_image` against.
+ * business (a product grid of heels shipped showing a t-shirt and a hoodie).
+ * Images the agent already replaced via contentOverrides are left off, so the
+ * list stays a real to-do rather than noise the agent learns to skim.
  *
  * Returns up to `limit` entries: { nodeId, label, current }.
  */
-function findUnreplacedImages(newNodes, limit = 12) {
+function findUnreplacedImages(newNodes, seedSrcById = {}, limit = 12) {
   const out = [];
   for (const [id, node] of Object.entries(newNodes)) {
     const t = node?.type?.resolvedName;
     if (t !== "Image") continue;
     const props = node?.props || {};
     const src = String(props.src || "").trim();
+    if (src && id in seedSrcById && src !== seedSrcById[id]) continue;
     const label = node?.custom?.displayName || "(unnamed)";
-    // Always flag — the agent has no way to tell whether the kit's seed
-    // image suits the user's business; safer to ask it to swap every Image.
     out.push({
       nodeId: id,
       type: "Image",
@@ -144,9 +158,10 @@ function formatUnreplacedImagesPunchList(items) {
     `\n\nIMAGES TO REPLACE (kit ships with stock seed images — they will look wrong for the user's business):\n` +
     rows.join("\n") +
     `\n\nDO THIS IN ORDER:\n` +
-    `  STEP 1 — Call find_image({ q: "<descriptive query for THIS image's role>", category: "<hero|product|background|avatar|...>" }) ONCE PER Image above. The URL returned is the ONLY verified source.\n` +
-    `  STEP 2 — Issue patch_site_bulk to set { src: "<url returned by find_image>", type: "url", alt: "<descriptive>" } on each Image node. Bundle these into the SAME patch_site_bulk as any copy patches from the punch list above.\n` +
-    `NEVER hand-type images.unsplash.com URLs — invented photo IDs 404 in production and the server rejects the patch (wasted tool call). Only URLs returned by find_image are valid.`
+    `  STEP 1 — If the user already uploaded photos for this, patch their mediaIds straight in (skip STEP 2). Otherwise call find_image({ q: "<descriptive query for THIS image's role>", category: "<hero|product|background|avatar|...>" }) ONCE PER Image above.\n` +
+    `  STEP 2 — Call upload_image({ id, imageUrl: "<url from find_image or the user>" }) for each. It returns a mediaId.\n` +
+    `  STEP 3 — Issue ONE patch_site_bulk setting { src: "<mediaId>", type: "cdn", alt: "<descriptive>" } on each Image node, bundled with any copy patches from the list above.\n` +
+    `Patches that put an images.unsplash.com URL straight into src are rejected — upload first, then patch the mediaId. A product named for one thing must never show a photo of another.`
   );
 }
 
@@ -156,6 +171,7 @@ module.exports = {
   stripTextHtml,
   COPY_BEARING_TYPES,
   findUnrewrittenCopy,
+  collectSeedImageSrcs,
   findUnreplacedImages,
   formatUnrewrittenCopyPunchList,
   formatUnreplacedImagesPunchList,

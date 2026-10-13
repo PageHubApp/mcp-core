@@ -34,6 +34,7 @@ const { formatKitNodeIdManifest } = require("./manifest");
 const {
   stashKitLabelMap,
   findUnrewrittenCopy,
+  collectSeedImageSrcs,
   findUnreplacedImages,
   formatUnrewrittenCopyPunchList,
   formatUnreplacedImagesPunchList,
@@ -331,6 +332,7 @@ async function applyKitBlockBody(args) {
       `Internal error: node id "${colliding}" still collided after retries. Try a different block or report a bug.`
     );
   }
+  const seedImageSrcs = collectSeedImageSrcs(newNodes);
   const overrideWarnings = walkApplyKitOverrides(newNodes, rootId, co, po) || [];
 
   // ─── Collapse the kit's outer Container into an empty section skeleton ────
@@ -443,7 +445,7 @@ async function applyKitBlockBody(args) {
       ? `\n\nOverride warnings:\n${overrideWarnings.map(w => `  - ${w}`).join("\n")}`
       : "";
     const punchItems = findUnrewrittenCopy(newNodes, co);
-    const imageItems = findUnreplacedImages(newNodes);
+    const imageItems = findUnreplacedImages(newNodes, seedImageSrcs);
     // Stash pending punch-list ids on ctx so patch_site_bulk can prune as
     // patches arrive and surface "STILL MISSED" if the agent skips entries.
     stashPendingPunchList(ctx, [...punchItems, ...imageItems]);
@@ -477,7 +479,7 @@ async function applyKitBlockBody(args) {
     ? `\n\nOverride warnings:\n${overrideWarnings.map(w => `  - ${w}`).join("\n")}`
     : "";
   const punchItemsSaved = findUnrewrittenCopy(newNodes, co);
-  const imageItemsSaved = findUnreplacedImages(newNodes);
+  const imageItemsSaved = findUnreplacedImages(newNodes, seedImageSrcs);
   stashPendingPunchList(ctx, [...punchItemsSaved, ...imageItemsSaved]);
   const punchList = formatUnrewrittenCopyPunchList(punchItemsSaved);
   const imagePunchList = formatUnreplacedImagesPunchList(imageItemsSaved);
