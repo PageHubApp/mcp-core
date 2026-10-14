@@ -147,7 +147,7 @@ function assertInjectHtml(value, location) {
     throw new Error(
       `${location} has a script that builds visible page elements (${builtEl ? `createElement("${builtEl[1]}")` : "writes an HTML string into the page"}). ` +
         `That is a hand-built UI hidden in a script: the editor can't see or edit it, theme tokens don't reach it, and static export and SEO miss it. ` +
-        `Build it from nodes instead — search_blocks / apply_kit_block, or add_nodes (sticky mobile call bar: "mobile-call-bar"; ` +
+        `Build it from nodes instead with add_nodes — search_blocks has worked examples (sticky mobile call bar: "mobile-call-bar"; ` +
         `cookie notice: "cookie-consent"; click-to-enlarge photos: "gallery-lightbox"). Keep only tracking/loader code here.`
     );
   }
@@ -167,7 +167,7 @@ function assertInjectHtml(value, location) {
       `${location} contains a visible <${visible[1].toLowerCase()}> element. ` +
         `inject slots are for third-party snippets only — <script>, <style>, <link>, <meta>, <noscript>. ` +
         `Anything a visitor sees (bars, banners, buttons, popups, layout) must be built from nodes ` +
-        `so the editor, theme, SEO and static export all see it: search_blocks / apply_kit_block, or add_nodes. ` +
+        `so the editor, theme, SEO and static export all see it: add_nodes, with search_blocks for worked examples. ` +
         `A sticky mobile call bar is the "mobile-call-bar" block; a click-to-enlarge photo grid is "gallery-lightbox". ` +
         `A third-party widget that needs a mount element (Calendly inline, fb-root) goes in an Embed node where it should appear. ` +
         `Move the markup out and resend only the script/style parts.`

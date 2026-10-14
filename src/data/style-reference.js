@@ -332,6 +332,8 @@ Detach with \`clear_domain\` (removes both variants, resets redirectMode). \`set
 
   blocks: `# Blocks — search_blocks, apply_kit_block, list_blocks
 
+Blocks are reference material, not the default. Design each section for the business with \`add_nodes\`, using \`get_block\` to see how a proven layout is put together. Stamp with \`apply_kit_block\` only when a block already fits the design as-is.
+
 ## search_blocks
 - Returns **one page**. The header shows total N and page X of Y. If Y is 1, that is the complete result set. If Y > 1, call again with \`page: 2\` (same filters) or raise \`limit\` (max 100). \`list_blocks({ category })\` lists many slugs at once.
 - Pass \`categories\` / \`styles\` arrays to OR-match in one call instead of parallel searches.
@@ -352,7 +354,7 @@ Detach with \`clear_domain\` (removes both variants, resets redirectMode). \`set
 - Parallel section fill workers: omit \`sectionContainerId\`; the server pins the assigned section.
 
 ## Site build order
-\`set_theme\` → ROOT \`company\` vars (\`patch_site_node\`) → \`apply_kit_block(target: "header")\` → page sections → \`apply_kit_block(target: "footer")\` → \`update_page\` seo.title / seo.description on every page.`,
+\`set_theme\` → ROOT \`company\` vars (\`patch_site_node\`) → header → page sections (\`add_nodes\`, one section per call) → footer → \`update_page\` seo.title / seo.description on every page. Header and footer are built with \`add_nodes\` under \`hdr_root\` / \`ftr_root\`, or stamped with \`apply_kit_block(target: "header" | "footer")\` when a block fits.`,
 
   editing: `# Editing nodes — patch_site_node, patch_site_bulk, add_nodes, insert_node
 

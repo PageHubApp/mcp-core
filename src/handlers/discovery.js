@@ -96,7 +96,7 @@ module.exports = {
       content: [
         {
           type: "text",
-          text: `# Available Block Templates\n\nUse these slugs with apply_kit_block(slug).${noStyleWarn}\n${result.join("\n")}`,
+          text: `# Available Block Templates\n\nStudy a layout with get_block(slug), then build your own version with add_nodes. Stamp with apply_kit_block(slug) only when a block fits as-is.${noStyleWarn}\n${result.join("\n")}`,
         },
       ],
     };

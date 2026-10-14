@@ -2184,7 +2184,7 @@
   },
   {
     "name": "apply_kit_block",
-    "description": "Add a section: stamp a library block (`slug`) or clone a page section already on this site (`sourceNodeId`) — exactly one. `contentOverrides` sets the final copy in the same call, keyed by the block's lib_* ids. target \"header\" / \"footer\" replaces the site header/footer with a nav/footer block; heroes are page sections. Guide: get_style_reference({ topic: \"blocks\" }).",
+    "description": "Stamp a section as-is: a library block (`slug`) or a clone of a page section already on this site (`sourceNodeId`) — exactly one. A shortcut for when an existing pattern genuinely fits; to design a section for this business, use add_nodes with get_block as reference. `contentOverrides` sets the final copy in the same call, keyed by the block's lib_* ids. target \"header\" / \"footer\" replaces the site header/footer with a nav/footer block; heroes are page sections. Guide: get_style_reference({ topic: \"blocks\" }).",
     "annotations": { "title": "Apply kit block", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -2805,7 +2805,7 @@
   },
   {
     "name": "add_nodes",
-    "description": "Add a subtree: a flat map of new nodes plus the `rootNodeId` to attach under `parentId` (default page_home). Each node: type.resolvedName, isCanvas, props (className, custom.displayName), parent, nodes[], linkedNodes: {}. The map holds only new nodes; apply_kit_block covers standard sections. Contract: get_style_reference({ topic: \"editing\" }).",
+    "description": "Build a section: a flat map of new nodes plus the `rootNodeId` to attach under `parentId` (default page_home). The default way to design a section for this business. Each node: type.resolvedName, isCanvas, props (className, custom.displayName), parent, nodes[], linkedNodes: {}. The map holds only new nodes; get_block shows example shapes. Contract: get_style_reference({ topic: \"editing\" }).",
     "annotations": { "title": "Add nodes", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
