@@ -24,6 +24,10 @@ async function apiFetch(pathStr, opts = {}) {
   const headers = {
     Authorization: `Bearer ${apiKey}`,
     "Content-Type": "application/json",
+    // Which surface made the edit ("mcp", "ai"), so site history and admin
+    // activity can tell an agent's save from a direct API call. Attribution
+    // only — never trusted for access.
+    ...(ctx.client ? { "X-PageHub-Client": ctx.client } : {}),
     ...(opts.headers || {}),
   };
 
