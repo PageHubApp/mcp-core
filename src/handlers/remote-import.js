@@ -62,7 +62,7 @@ function formatImportStatus(body, base) {
     lines.push(
       `Site: ${body.siteId}`,
       `Editor: ${base}/build/${body.siteId}`,
-      `Preview: ${base}/view/${body.siteId}`,
+      `Preview: ${base}/view/${body.draftId}`,
       "The site is a draft. Nothing is published."
     );
   } else if (body.status === "failed") {
