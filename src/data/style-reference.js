@@ -113,16 +113,16 @@ Modifiers are reusable class compositions toggled on components. PREFER modifier
 
 | Component | Name | Expands To |
 |-----------|------|------------|
-| Container | section-wrapper | bg-base-100 text-base-content flex flex-col items-center w-full py-space-lg px-container-x |
+| Container | section-wrapper | flex flex-col items-center w-full py-space-lg px-container-x (layout only — pair with the band's bg-* + text-*-content) |
 | Container | section-wrapper-dark | bg-base-content text-base-100 flex flex-col items-center w-full py-space-lg px-container-x |
 | Container | card-surface | card bg-base-200 text-base-content rounded-box flex flex-col w-full overflow-hidden |
 | Container | icon-row | flex flex-row gap-space-xs items-center w-full |
 | Container | content-col | flex flex-col gap-space-md w-full max-w-page mx-auto |
 | Container | hero-content-centered | hero-content flex flex-col items-center gap-space-md text-center max-w-page mx-auto |
-| Text | body-text | text-neutral-content text-sm leading-relaxed |
+| Text | body-text | text-base-content/70 text-sm leading-relaxed |
 | Text | section-heading | font-bold leading-tight text-base-content text-3xl md:text-4xl font-heading |
 | Text | eyebrow | text-primary font-bold tracking-widest text-xs uppercase |
-| Text | subhead | text-neutral-content text-lg leading-relaxed max-w-2xl |
+| Text | subhead | text-base-content/70 text-lg leading-relaxed max-w-2xl |
 | Button | cta-responsive | btn btn-primary rounded-box px-space-md py-space-xs min-h-12 font-semibold w-full md:w-auto |
 | Button | cta-outline-responsive | btn btn-outline rounded-box px-space-md py-space-xs min-h-12 font-semibold border-base-content/30 text-base-content w-full md:w-auto |
 
