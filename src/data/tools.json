@@ -1269,6 +1269,7 @@
           "enum": [
             "order_receipt",
             "subscription_welcome",
+            "order_shipped",
             "gift_card_gifted",
             "gift_card_self",
             "customer_login",
@@ -1298,6 +1299,7 @@
           "enum": [
             "order_receipt",
             "subscription_welcome",
+            "order_shipped",
             "gift_card_gifted",
             "gift_card_self",
             "customer_login",
@@ -1345,6 +1347,7 @@
           "enum": [
             "order_receipt",
             "subscription_welcome",
+            "order_shipped",
             "gift_card_gifted",
             "gift_card_self",
             "customer_login",
