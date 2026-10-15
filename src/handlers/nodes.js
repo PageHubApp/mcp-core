@@ -16,6 +16,11 @@ const { collectSubtree } = require("../utils/node-utils");
 const { assertNodeMapAnimations } = require("../validation/site-animations");
 
 const PROTECTED_IDS = PROTECTED_NODE_IDS;
+const MAX_CLASS_REGEX_LENGTH = 200;
+// A group containing + or * that is itself followed by +, * or {n,}.
+const NESTED_QUANTIFIER = /\([^)]*[+*][^)]*\)\s*(?:[+*]|\{\d*,)/;
+// classNames are author-written; a regex only ever needs a class list's worth.
+const MAX_CLASSNAME_SCAN = 4000;
 
 module.exports = {
   async delete_node(args) {
@@ -275,6 +280,15 @@ async function searchSiteNodesMethod(args) {
   const classLower = className ? className.toLowerCase() : null;
   let classRe = null;
   if (classRegex) {
+    // The pattern and the classNames it runs on are both caller-written, and this
+    // runs on the shared hosted server: refuse long patterns and nested
+    // quantifiers like `(a+)+`, the shape that backtracks exponentially.
+    if (String(classRegex).length > MAX_CLASS_REGEX_LENGTH) {
+      throw new Error(`classRegex is too long (max ${MAX_CLASS_REGEX_LENGTH} characters).`);
+    }
+    if (NESTED_QUANTIFIER.test(String(classRegex))) {
+      throw new Error("classRegex can't repeat a group that already repeats, e.g. (a+)+.");
+    }
     try {
       classRe = new RegExp(classRegex, "i");
     } catch (e) {
@@ -304,7 +318,7 @@ async function searchSiteNodesMethod(args) {
       match = classNameStr.toLowerCase().includes(classLower);
     }
     if (classRe && match) {
-      match = classRe.test(classNameStr);
+      match = classRe.test(String(classNameStr).slice(0, MAX_CLASSNAME_SCAN));
     }
     if (match) {
       matches.push({
