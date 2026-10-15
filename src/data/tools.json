@@ -3618,5 +3618,44 @@
       },
       "required": ["slug", "csv"]
     }
+  },
+  {
+    "name": "import_site",
+    "description": "Turn a static HTML site (index.html + pages, CSS, JS, images) into a NEW editable multi-page PageHub site draft. Inputs, one per call: filePath (local folder or .zip; local server only); size (zip bytes) returns an upload URL, curl line and uploadKey; uploadKey, after the PUT, starts the import; files sends text files inline (≤3MB). Returns an importId for get_import_status.",
+    "annotations": { "title": "Import HTML site", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": true },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "filePath": { "type": "string", "description": "Local folder or .zip. Local stdio server only.", "maxLength": 4096 },
+        "size": { "type": "integer", "description": "Exact zip size in bytes → returns an upload URL.", "minimum": 1 },
+        "uploadKey": { "type": "string", "description": "From the size step, after the PUT succeeded → starts the import.", "maxLength": 256 },
+        "files": {
+          "type": "array",
+          "maxItems": 300,
+          "description": "Inline files: path relative to the site root.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": { "type": "string", "maxLength": 512 },
+              "content": { "type": "string" }
+            },
+            "required": ["path", "content"]
+          }
+        },
+        "name": { "type": "string", "description": "Site name (default: home page title).", "maxLength": 120 }
+      }
+    }
+  },
+  {
+    "name": "get_import_status",
+    "description": "Progress of an import_site run: status, page and media counts, warnings, redirects from the old page addresses. When status is ready it includes the new site id, editor link and preview link.",
+    "annotations": { "title": "Get import status", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "importId": { "type": "string", "description": "From import_site.", "maxLength": 64 }
+      },
+      "required": ["importId"]
+    }
   }
 ]

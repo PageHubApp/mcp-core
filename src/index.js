@@ -54,6 +54,7 @@ const { runWithContext, getContext } = require("./core/context");
 const { apiFetch, normalizeBaseUrl } = require("./core/api-fetch");
 const { uploadBytesToSite } = require("./core/direct-upload");
 const { formatUploadResult } = require("./helpers/upload-format");
+const { formatImportStatus, presignImport, startImport } = require("./handlers/remote-import");
 const { parseMaybeJson } = require("./helpers/args");
 const { runToolWithPublishTrailer } = require("./helpers/publish-state");
 const { applyNodePatches, normalizeNodePatchArgs } = require("./helpers/node-patch");
@@ -217,6 +218,9 @@ module.exports = {
   normalizeBaseUrl,
   uploadBytesToSite,
   formatUploadResult,
+  formatImportStatus,
+  presignImport,
+  startImport,
 
   // Helpers
   parseMaybeJson,
