@@ -45,6 +45,7 @@ const {
   runDesignValidation,
   formatDesignValidationReport,
   maybePreflightButton,
+  patchTouchesClassName,
   formatButtonPreflightReport,
 } = require("./remote-nodes/validation");
 const { resultMsg } = require("./remote-shared");
@@ -277,7 +278,9 @@ async function patchSiteNodeBody(args) {
   }
   applyNodePatches(flat, nodeId, patchArgs);
   assertNoImageSrcContentConflict(flat, nodeId, patchArgs);
-  const buttonReport = maybePreflightButton(flat, nodeId, buttonValidationMode);
+  const buttonReport = maybePreflightButton(flat, nodeId, buttonValidationMode, {
+    classNameTouched: patchTouchesClassName(patchArgs),
+  });
   const designReport = runDesignValidation(flat, [nodeId], designValidationMode, {
     staticPublish: !!siteData?.staticPublish,
   });
@@ -400,7 +403,9 @@ async function patchSiteBulkBody(args) {
     if (stripped.dropped.length) droppedByNode.push(`${nid}: ${stripped.dropped.join(", ")}`);
     applyNodePatches(flat, nid, bulkPatch);
     assertNoImageSrcContentConflict(flat, nid, bulkPatch);
-    const report = maybePreflightButton(flat, nid, buttonValidationMode);
+    const report = maybePreflightButton(flat, nid, buttonValidationMode, {
+      classNameTouched: patchTouchesClassName(bulkPatch),
+    });
     if (report) buttonReports.push(report);
     touched.push(nid);
   }

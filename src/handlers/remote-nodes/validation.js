@@ -139,10 +139,38 @@ function formatDesignValidationReport(rec) {
   return dropBlock ? `${body}\n\n${dropBlock}` : body;
 }
 
-function maybePreflightButton(flat, nodeId, mode) {
-  if (mode === "off") return null;
+/**
+ * True when a normalized node patch writes the class list: `classNamePatch`,
+ * `unsetClasses`, `className` in `propsPatch` or `unsetProps`, or a `typePatch`
+ * that turns the node into a Button (its classes are new to it).
+ */
+function patchTouchesClassName(patchArgs) {
+  if (!patchArgs) return false;
+  const { classNamePatch, unsetClasses, propsPatch, unsetProps, typePatch } = patchArgs;
+  if (typeof classNamePatch === "string" && classNamePatch.trim()) return true;
+  if (Array.isArray(unsetClasses) && unsetClasses.length > 0) return true;
+  if (propsPatch && typeof propsPatch === "object" && "className" in propsPatch) return true;
+  if (Array.isArray(unsetProps) && unsetProps.includes("className")) return true;
+  const typeName = typeof typePatch === "string" ? typePatch : typePatch?.resolvedName;
+  return typeName === "Button";
+}
+
+/**
+ * Button class preflight for one node.
+ *
+ * `opts.classNameTouched` is false when the call that reached this node left
+ * its className alone (a patch to `action`, `text`, `icon`). Rewriting classes
+ * then would restyle a button the caller never asked to restyle — it turned
+ * ghost icon buttons and dropdown rows into filled CTAs on an action-only bulk
+ * patch — so `fix` and `strict` both drop to `warn` and the node is untouched.
+ * New nodes (add_nodes, place_section_tree) leave it at the default `true`.
+ */
+function maybePreflightButton(flat, nodeId, requestedMode, opts = {}) {
+  if (requestedMode === "off") return null;
   const node = flat[nodeId];
   if (!node || node.type?.resolvedName !== "Button") return null;
+  const classNameTouched = opts.classNameTouched !== false;
+  const mode = classNameTouched ? requestedMode : "warn";
 
   const props = node.props || {};
   const result = validateButtonClasses({
@@ -176,6 +204,7 @@ function maybePreflightButton(flat, nodeId, mode) {
   return {
     nodeId,
     mode,
+    classNameTouched,
     ok: result.ok,
     issues: result.issues,
     appliedFixes: result.appliedFixes,
@@ -190,7 +219,9 @@ function formatButtonPreflightReport(records) {
   for (const rec of records) {
     const issueSummary = rec.issues.length > 0 ? rec.issues.map(i => i.code).join(", ") : "none";
     const fixSummary = rec.appliedFixes.length > 0 ? rec.appliedFixes.join(" | ") : "none";
-    lines.push(`- ${rec.nodeId} [${rec.mode}] issues: ${issueSummary}; fixes: ${fixSummary}`);
+    const modeLabel =
+      rec.classNameTouched === false ? `${rec.mode}, className not in this patch — left as-is` : rec.mode;
+    lines.push(`- ${rec.nodeId} [${modeLabel}] issues: ${issueSummary}; fixes: ${fixSummary}`);
   }
   return lines.join("\n");
 }
@@ -201,6 +232,7 @@ module.exports = {
   runDesignValidation,
   formatDesignValidationReport,
   maybePreflightButton,
+  patchTouchesClassName,
   formatButtonPreflightReport,
   warningMentionsNode,
 };

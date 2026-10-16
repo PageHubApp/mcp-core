@@ -54,6 +54,24 @@ function removeTokensByPredicate(tokens, predicate) {
   return tokens.filter(t => !predicate(t));
 }
 
+// DaisyUI style, colour and small-size modifiers. Any of them means the author
+// picked how the button looks, so it is not an unstyled CTA.
+const DELIBERATE_BTN_STYLE =
+  /^btn-(primary|secondary|accent|neutral|info|success|warning|error|ghost|link|soft|dash|circle|square|xs|sm)$/;
+
+/**
+ * A Button with no `btn` and no base fill that carries an interaction state
+ * (`hover:bg-base-200`) or a left-aligned row layout is a menu / drawer item,
+ * not a CTA that lost its classes.
+ */
+function looksLikeMenuItem(tokens) {
+  if (tokens.includes("btn")) return false;
+  if (hasBaseColorToken(tokens, "bg")) return false;
+  const hasStateStyle = tokens.some(t => /^(hover|focus|focus-visible|active):(bg|text)-/.test(t));
+  const isLeftRow = tokens.includes("text-left") || tokens.includes("justify-start");
+  return hasStateStyle || isLeftRow;
+}
+
 function detectHardcodedColorTokens(tokens) {
   const hardcoded = [];
   for (const t of tokens) {
@@ -164,7 +182,17 @@ function validateButtonClasses(args = {}) {
 
   const addIssue = (code, severity, message) => issues.push({ code, severity, message });
 
-  if (!hasToken(tokens, "btn")) {
+  const menuItemLike = looksLikeMenuItem(tokens);
+  if (!hasToken(tokens, "btn") && menuItemLike) {
+    // A row in a dropdown or nav drawer is a Button only for its action. `btn`
+    // would centre it, fix its height and pad it like a CTA, so it is named
+    // and left alone.
+    addIssue(
+      "missing-btn",
+      "warn",
+      "Button has no `btn` class but is styled as a menu item (hover state / left-aligned row) — left as-is."
+    );
+  } else if (!hasToken(tokens, "btn")) {
     addIssue("missing-btn", "error", "Button class is missing `btn` base class.");
     if (autoFix) {
       tokens.unshift("btn");
@@ -187,10 +215,16 @@ function validateButtonClasses(args = {}) {
   // supply the canonical class set. A border is the one honest signal of
   // outline intent — the secondary CTA in a primary/outline pair is the sibling
   // that carries one.
-  if (inferredVariant === "custom" && !variantHint) {
-    const hasFill = tokens.some(t => /^bg-/.test(t) || /^btn-(primary|secondary|accent|neutral)\b/.test(t));
+  //
+  // An explicit DaisyUI style or shape (`btn-ghost`, `btn-circle`, `btn-sm`, a
+  // colour) is a stated choice too — the icon button, the dropdown trigger, the
+  // text link — and is never promoted to a filled CTA. Nor is a menu item.
+  if (inferredVariant === "custom" && !variantHint && !menuItemLike) {
+    const hasFill = tokens.some(t => /^bg-/.test(t) || DELIBERATE_BTN_STYLE.test(t));
     if (!hasFill) {
-      const looksOutline = tokens.some(t => /^border(-|$)/.test(t));
+      const looksOutline = tokens.some(
+        t => /^border(-|$)/.test(t) && !/^border-(0|none|transparent)$/.test(t)
+      );
       addIssue(
         "no-fill",
         "error",
