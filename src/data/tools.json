@@ -1541,7 +1541,7 @@
   },
   {
     "name": "upload_image",
-    "description": "Upload an image to the site's media library. Returns a mediaId, which goes in an Image's `src` with type \"cdn\" (and in `content` when that is set, since src shadows content). Web images: `imageUrl`. `dataBase64` has a ~3MB cap and is costly in tokens. More: get_style_reference({ topic: \"media\" }).",
+    "description": "Upload an image to the site's media library. Returns a mediaId, which goes in an Image's `src` with type \"cdn\" (never `content`, which is deprecated). Web images: `imageUrl`. `dataBase64` has a ~3MB cap and is costly in tokens. More: get_style_reference({ topic: \"media\" }).",
     "annotations": { "title": "Upload image", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
@@ -1800,7 +1800,7 @@
   },
   {
     "name": "patch_site_node",
-    "description": "Patch one node (several: patch_site_bulk, one atomic write). classNamePatch merges Tailwind classes; propsPatch sets other props (objects like dataSource deep-merge, strings and arrays replace); typePatch swaps the component type; unsetProps (runs first) drops a key or branch. Image: src shadows content, so patch both. No children. Rules: get_style_reference({ topic: \"editing\" }).",
+    "description": "Patch one node (several: patch_site_bulk, one atomic write). classNamePatch merges Tailwind classes; propsPatch sets other props (objects like dataSource deep-merge, strings and arrays replace); typePatch swaps the component type; unsetProps (runs first) drops a key or branch. Image: write src only; writing content is rejected, and unsetProps [\"content\"] clears an old one. No children. Rules: get_style_reference({ topic: \"editing\" }).",
     "annotations": { "title": "Patch site node", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",

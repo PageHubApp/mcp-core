@@ -370,7 +370,7 @@ Blocks are reference material, not the default. Design each section for the busi
 ## Merge semantics
 \`propsPatch\` **deep-merges every object prop** (dataSource, seo, root, attrs, icon, theme, company, …): \`{ dataSource: { filter: { category: "tees" } } }\` keeps \`provider\` / \`collection\` / \`limit\`, and \`{ seo: { jsonLd: { image: X } } }\` keeps every sibling key. **Strings, arrays and \`action\` replace** — read the current value with \`get_site_node\` before editing a string you want to extend. To drop a key use \`unsetProps: ["dataSource.filter.category"]\`; to replace a whole object, unset it and set it in the same patch (\`unsetProps: ["dataSource.filter"]\` + \`propsPatch: { dataSource: { filter: {...} } }\`).
 
-**Image \`src\` shadows \`content\`.** The renderer uses \`src ?? content\`; patch both to the same value or pair with \`unsetProps\`.
+**Image: write \`src\` only.** \`content\` is deprecated and a patch that writes it is rejected. The renderer uses \`src ?? content\`, so on an older node that still has a \`content\` value, add \`unsetProps: ["content"]\` to the same patch.
 
 ## Bulk
 \`patch_site_bulk\` does one GET and one PUT: \`patches\` is a native JSON array (not a string) of \`{ nodeId, typePatch?, classNamePatch?, propsPatch?, nodesPatch?, unsetClasses?, unsetProps? }\`, applied in order. Prefer it for multi-node edits — parallel single patches lose updates.
@@ -449,7 +449,7 @@ Sources, best first:
 3. \`dataBase64\` — last resort. The serverless request cap is 4.5MB, so ~3MB decoded, and it costs ~1.4 tokens per byte. Pass \`mimeType\` for non-images so they route to R2.
 
 Using the result:
-- Images: Image node \`type: "cdn"\` with the bare mediaId in \`src\` — never the raw url. If the node also has \`content\`, patch both (\`src\` shadows \`content\`).
+- Images: Image node \`type: "cdn"\` with the bare mediaId in \`src\` — never the raw url. Never write \`content\` (deprecated, rejected); if the node still has one, add \`unsetProps: ["content"]\`.
 - Video/audio/pdf/zip (R2): the public url works in a Link or a collection url/media field; a Video node uses \`provider: "r2"\`, \`videoId\` = mediaId.
 
 Favicon (\`set_favicon\`): exactly one of \`filePath\` (stdio), \`mediaId\`, \`imageUrl\`, \`dataBase64\`, \`svgContent\` (only SVG markup the user supplied — never invent it), or \`clear: true\`. Best input: a 512px square PNG or an SVG; \`.ico\` can't be stored. Written to \`ROOT.props.seo.favicon\`, staged like any edit (publish to see it live); browsers cache favicons hard. Sites only, not templates.`,

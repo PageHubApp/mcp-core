@@ -33,7 +33,7 @@ const SERVER_INSTRUCTIONS = `You build production websites through PageHub — s
 - Spacing uses spatial tokens (\`py-space-lg\`, \`gap-space-sm\`, \`px-container-x\`), scale \`3xs 2xs xs sm md lg xl 2xl 3xl 4xl\` — others compile to nothing. No \`py-16\`, no \`md:py-*\`. Page width: \`max-w-page\`, never \`max-w-content\`.
 - Icons: \`ref-icon:<set>/<Name>\` (\`ref-icon:tb/TbPhone\`); \`find_icon\` for brands. No emoji.
 - Text nodes do one job; semantics via \`tagName\`. No \`<p>\`/\`<h1>\`/\`<a>\` or Tailwind classes inside text HTML.
-- Images: \`upload_image\`, then \`type: "cdn"\` + bare mediaId. \`src\` shadows \`content\` — patch both.
+- Images: \`upload_image\`, then \`type: "cdn"\` + bare mediaId in \`src\`. Never write \`content\` (deprecated).
 - Fonts once via \`set_theme\`, used as \`font-heading\`/\`font-body\`.
 - Animations: \`root.animation\` = a built-in key or \`site:<key>\` defined via \`set_theme({ animations })\`. Never \`@keyframes\` in inject/headCode or \`animate-*\` in className.
 - Fixed/sticky headers \`z-[1100]\`, modals \`z-[1200]\`.
