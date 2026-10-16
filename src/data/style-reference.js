@@ -171,6 +171,7 @@ Conditions shape: \`[{ logic: "all" | "any", conditions: [...] }]\`.
 1. Wrap every FormElement + the submit Button in one Container child of the Form: \`visibilityStateKey: "form:<formNodeId>:fields"\`.
 2. Add a sibling Container \`visibilityStateKey: "form:<formNodeId>:loading"\`, \`attrs: { role: "status", "aria-live": "polite" }\`, className starting \`hidden\`, holding "Sending...".
 3. Add a sibling Container \`visibilityStateKey: "form:<formNodeId>:loaded"\`, same attrs, className starting \`hidden\`, holding the thank-you copy (and any next-step links).
+In a block (ids change when it's applied) give the Form \`stateKey: "<name>"\` and use \`form:<name>:*\` instead of the node id.
 The Form's own \`loading\` / \`success\` / \`view\` props only feed slots the editor creates — they do nothing on a form you built with add_nodes.
 
 **Recipe — scored checklist (e.g. "5 / 9"):**
