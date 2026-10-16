@@ -15,6 +15,7 @@ const { withTargetSaveOrDraft } = require("../helpers/load-mutate-save");
 const { collectSubtree } = require("../utils/node-utils");
 const { assertNodeMapAnimations } = require("../validation/site-animations");
 const { assertNodeMapStateModifiers } = require("../validation/state-modifiers");
+const { assertNodeMapConditions } = require("../validation/conditions");
 
 const PROTECTED_IDS = PROTECTED_NODE_IDS;
 const MAX_CLASS_REGEX_LENGTH = 200;
@@ -94,6 +95,7 @@ async function insertNodeBody(args) {
   const nodeDef = parseMaybeJson(node) || node;
   const animationWarnings = assertNodeMapAnimations({ [nodeId]: nodeDef }, flat);
   assertNodeMapStateModifiers({ [nodeId]: nodeDef });
+  assertNodeMapConditions({ [nodeId]: nodeDef });
   nodeDef.parent = parentId;
   if (!nodeDef.linkedNodes) nodeDef.linkedNodes = {};
   if (!nodeDef.nodes) nodeDef.nodes = [];

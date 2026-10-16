@@ -19,6 +19,7 @@ const {
 const { getContext } = require("../../core/context");
 const { assertNodeAnimation } = require("../../validation/site-animations");
 const { assertStateModifiers } = require("../../validation/state-modifiers");
+const { assertNodeConditions } = require("../../validation/conditions");
 
 const INVALID_ID_HARD_STOP_THRESHOLD = 3;
 
@@ -243,6 +244,9 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
   if (propsPatch && "stateModifiers" in propsPatch) {
     assertStateModifiers(propsPatch.stateModifiers, nodeId);
   }
+  // conditionGroups / stateModifiers / action conditions the SDK would crash
+  // on (no key) or never match (unknown type, operator, field).
+  if (propsPatch) assertNodeConditions(propsPatch, nodeId);
   // unsetProps runs BEFORE propsPatch, so `unsetProps: ["dataSource.filter"]`
   // plus `propsPatch: { dataSource: { filter: {...} } }` replaces that branch
   // in one call instead of merging into it.
