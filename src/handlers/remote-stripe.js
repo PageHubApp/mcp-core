@@ -51,7 +51,7 @@ module.exports = {
 
     if (status?.mode === "raw_key") {
       return {
-        content: [{ type: "text", text: `Site ${siteId} is connected to Stripe with an API key. Ready to take payments.` }],
+        content: [{ type: "text", text: `Site ${siteId} is connected to Stripe with an API key. Ready to take payments. Products sync into the "products" collection; call refresh_products after changing them in Stripe.` }],
         structuredContent: { status: "ready", mode: "raw_key" },
       };
     }
@@ -63,7 +63,7 @@ module.exports = {
 
     if (status.readyToProcessPayments && status.onboardingComplete) {
       return {
-        content: [{ type: "text", text: `Stripe is connected on site ${siteId} and ready to take payments.` }],
+        content: [{ type: "text", text: `Stripe is connected on site ${siteId} and ready to take payments. Its products are syncing into the "products" collection in the background; call refresh_products to sync now and get the count.` }],
         structuredContent: { status: "ready", mode: "connect", connectedAccountId: status.connectedAccountId },
       };
     }
@@ -80,7 +80,7 @@ module.exports = {
             `Stripe setup for site ${siteId} needs the owner to finish on Stripe.`,
             `Give the user this link (single use, expires in a few minutes — call stripe_connect again for a fresh one):`,
             url,
-            `After they finish, call stripe_connect again to confirm it's ready.`,
+            `After they finish, call stripe_connect again to confirm it's ready — that also fills the site's "products" collection from Stripe.`,
           ].join("\n"),
         },
       ],
@@ -131,6 +131,31 @@ module.exports = {
         },
       ],
       structuredContent: { config, stripeReady: !!ready },
+    };
+  },
+
+  /**
+   * Sync the live Stripe catalog into the site's `products` collection — the
+   * same sync as the dashboard "Refresh products" button. The connect paths run
+   * it once on their own; this is for "I changed products in Stripe".
+   */
+  async refresh_products(args = {}) {
+    const siteId = requireActiveSite(args);
+    const data = await apiFetch(
+      `/api/v1/sites/${encodeURIComponent(siteId)}/stripe?action=refresh`,
+      { method: "POST", body: {} }
+    );
+    const count = data.productCount ?? 0;
+    return {
+      content: [
+        {
+          type: "text",
+          text: count
+            ? `Synced ${count} product(s) from Stripe into the "products" collection on site ${siteId} (${data.added} added, ${data.updated} updated, ${data.deleted} removed).`
+            : `Synced site ${siteId}: Stripe has no active products yet. Add them in Stripe, then call refresh_products again.`,
+        },
+      ],
+      structuredContent: data,
     };
   },
 

@@ -22,10 +22,10 @@ const { assertNodeAnimation } = require("../../validation/site-animations");
 const INVALID_ID_HARD_STOP_THRESHOLD = 3;
 
 /**
- * Recursive deep-merge for namespaced prop objects (seo, root, design, …).
+ * Recursive deep-merge for object props (dataSource, seo, root, attrs, …).
  * Plain objects recurse; arrays / primitives / null replace. Used so a patch
- * like { seo: { jsonLd: { image: X } } } doesn't nuke siblings of `image`
- * under `seo.jsonLd` (every key not in the patch would otherwise vanish).
+ * like { dataSource: { filter: X } } doesn't drop `provider` / `collection`
+ * (every key not in the patch would otherwise vanish).
  */
 function isPlainObject(v) {
   return !!v && typeof v === "object" && !Array.isArray(v);
@@ -182,8 +182,8 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
       unsetClasses
     );
   }
-  // propsPatch — shallow merge non-class props (text, src, href, alt, style, animation, etc.)
-  // Deep-merge `root` to preserve existing keys (animation, pattern, activeModifiers, etc.)
+  // propsPatch — non-class props (text, src, href, dataSource, root, …); see the
+  // merge rules where it is applied below.
   // Guard: propsPatch must be an object, never a string. A string here means parseMaybeJson
   // failed to parse malformed model JSON — spreading a string scatters chars as numeric keys.
   if (propsPatch && typeof propsPatch === "string") {
@@ -239,63 +239,12 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
   if (propsPatch && isPlainObject(propsPatch.root) && "animation" in propsPatch.root) {
     assertNodeAnimation(propsPatch.root.animation, flatMap, nodeId);
   }
-  if (propsPatch) {
-    // Reject raw CSS/JS dropped into inject.head / inject.footer without a
-    // <style>/<script> wrapper — the browser ignores it silently and every
-    // dependent class breaks. See assertInjectHtml.
-    if (propsPatch.inject && typeof propsPatch.inject === "object") {
-      assertInjectHtml(propsPatch.inject.head, `propsPatch.inject.head for node "${nodeId}"`);
-      assertInjectHtml(propsPatch.inject.footer, `propsPatch.inject.footer for node "${nodeId}"`);
-    }
-    // Recursive deep-merge for the typed nested namespaces so targeted
-    // updates preserve sibling fields at every depth. Without this,
-    // propsPatch: { seo: { jsonLd: { image: X } } } would nuke @context,
-    // @type, name, address, etc. under seo.jsonLd. Arrays / primitives /
-    // null still replace (you need a way to clear or swap a list).
-    // Use `unsetProps: ["seo.jsonLd"]` (dotted) to explicitly drop a branch.
-    const DEEP_MERGE_KEYS = [
-      "root",
-      "background",
-      "overflow",
-      "seo",
-      "design",
-      "inject",
-      "relation",
-      "richText",
-      // ROOT-level config bags. `theme` holds palette (array) + styleGuide +
-      // typography as siblings: a patch of { theme: { palette } } used to
-      // replace the whole object and silently drop the site's fonts. Arrays
-      // still replace, so swapping `palette` alone keeps working.
-      "theme",
-      "company",
-    ];
-    const rest = { ...propsPatch };
-    for (const key of DEEP_MERGE_KEYS) {
-      if (isPlainObject(rest[key])) {
-        flatMap[nodeId].props[key] = deepMergeProp(flatMap[nodeId].props[key] || {}, rest[key]);
-        delete rest[key];
-      }
-    }
-    flatMap[nodeId].props = { ...flatMap[nodeId].props, ...rest };
-  }
-  if (nodesPatch) {
-    const prevNodes = flatMap[nodeId].nodes;
-    if (!isSameChildIdMultiset(prevNodes, nodesPatch)) {
-      const prevJson = JSON.stringify(prevNodes || []);
-      const nextJson = JSON.stringify(nodesPatch);
-      throw new Error(
-        `nodesPatch must list the exact same child node ids as currently on "${nodeId}" (reorder only). ` +
-          `Existing: ${prevJson}. Received: ${nextJson}. ` +
-          `Do not use nodesPatch for design changes, "main areas", or partial lists — use classNamePatch and propsPatch. ` +
-          `To add/remove sections use add_nodes / delete_node.`
-      );
-    }
-    flatMap[nodeId].nodes = nodesPatch;
-  }
+  // unsetProps runs BEFORE propsPatch, so `unsetProps: ["dataSource.filter"]`
+  // plus `propsPatch: { dataSource: { filter: {...} } }` replaces that branch
+  // in one call instead of merging into it.
   if (Array.isArray(unsetProps)) {
     for (const k of unsetProps) {
       // Dotted paths drop a nested branch ("seo.jsonLd" → delete props.seo.jsonLd).
-      // Plain keys behave as before.
       if (typeof k === "string" && k.includes(".")) {
         const parts = k.split(".");
         let cur = flatMap[nodeId].props;
@@ -311,6 +260,48 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
         delete flatMap[nodeId].props[k];
       }
     }
+  }
+  if (propsPatch) {
+    // Reject raw CSS/JS dropped into inject.head / inject.footer without a
+    // <style>/<script> wrapper — the browser ignores it silently and every
+    // dependent class breaks. See assertInjectHtml.
+    if (propsPatch.inject && typeof propsPatch.inject === "object") {
+      assertInjectHtml(propsPatch.inject.head, `propsPatch.inject.head for node "${nodeId}"`);
+      assertInjectHtml(propsPatch.inject.footer, `propsPatch.inject.footer for node "${nodeId}"`);
+    }
+    // Every plain-object prop deep-merges, so targeted updates preserve
+    // sibling fields at every depth: { dataSource: { filter } } keeps
+    // provider/collection, { seo: { jsonLd: { image } } } keeps @type etc.,
+    // { theme: { palette } } keeps the fonts. Arrays / primitives / null
+    // replace (you need a way to clear or swap a list). `unsetProps` (dotted)
+    // drops a key or branch.
+    //
+    // `action` is excluded: it is NodeAction[] by contract, and a legacy
+    // single-object action is a union keyed by `type` — merging a new action
+    // into an old one would carry the previous type's fields along.
+    const REPLACE_OBJECT_KEYS = new Set(["action"]);
+    const props = flatMap[nodeId].props;
+    for (const key of Object.keys(propsPatch)) {
+      const next = propsPatch[key];
+      props[key] =
+        isPlainObject(next) && !REPLACE_OBJECT_KEYS.has(key)
+          ? deepMergeProp(props[key], next)
+          : next;
+    }
+  }
+  if (nodesPatch) {
+    const prevNodes = flatMap[nodeId].nodes;
+    if (!isSameChildIdMultiset(prevNodes, nodesPatch)) {
+      const prevJson = JSON.stringify(prevNodes || []);
+      const nextJson = JSON.stringify(nodesPatch);
+      throw new Error(
+        `nodesPatch must list the exact same child node ids as currently on "${nodeId}" (reorder only). ` +
+          `Existing: ${prevJson}. Received: ${nextJson}. ` +
+          `Do not use nodesPatch for design changes, "main areas", or partial lists — use classNamePatch and propsPatch. ` +
+          `To add/remove sections use add_nodes / delete_node.`
+      );
+    }
+    flatMap[nodeId].nodes = nodesPatch;
   }
 }
 

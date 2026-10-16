@@ -1200,7 +1200,7 @@
   },
   {
     "name": "screenshot_site",
-    "description": "Screenshot the DRAFT in a real browser — the only way to see compiled CSS, theme, state-driven UI and responsive layout. Shoot sections with `selector` (fullPage can miss late paint), at the design width and at 390.",
+    "description": "Screenshot the DRAFT in a real browser — the only way to see compiled CSS, theme, state-driven UI and responsive layout. Shoot sections with `selector` (full size, not scaled down), at the design width and at 390.",
     "annotations": { "title": "Screenshot site", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
@@ -1800,7 +1800,7 @@
   },
   {
     "name": "patch_site_node",
-    "description": "Patch one node (several: patch_site_bulk, one atomic write). classNamePatch merges Tailwind classes; propsPatch sets other props (namespaced objects deep-merge, strings and arrays replace); typePatch swaps the component type; unsetProps drops a branch. Image: src shadows content, so patch both. No children. Rules: get_style_reference({ topic: \"editing\" }).",
+    "description": "Patch one node (several: patch_site_bulk, one atomic write). classNamePatch merges Tailwind classes; propsPatch sets other props (objects like dataSource deep-merge, strings and arrays replace); typePatch swaps the component type; unsetProps (runs first) drops a key or branch. Image: src shadows content, so patch both. No children. Rules: get_style_reference({ topic: \"editing\" }).",
     "annotations": { "title": "Patch site node", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -1827,7 +1827,7 @@
         },
         "propsPatch": {
           "type": "object",
-          "description": "Non-class props (text, src, href, alt, tagName, action, root, …)."
+          "description": "Non-class props. Objects merge: { dataSource: { filter } } keeps provider."
         },
         "nodesPatch": {
           "type": "array",
@@ -1854,7 +1854,7 @@
             "maxLength": 128
           },
           "maxItems": 200,
-          "description": "Dotted prop paths to delete, e.g. \"seo.jsonLd\"."
+          "description": "Keys or dotted paths to delete, e.g. \"dataSource.filter\"."
         },
         "name": {
           "type": "string",
@@ -3188,7 +3188,7 @@
   },
   {
     "name": "stripe_connect",
-    "description": "Connect Stripe so the site can take payments. Returns the connection status and, while unfinished, a single-use onboarding URL that only the site owner can complete; the status reads 'ready' once they have. Owner-only.",
+    "description": "Connect Stripe so the site can take payments. Returns the connection status and, while unfinished, a single-use onboarding URL that only the site owner can complete; the status reads 'ready' once they have, and that call fills the `products` collection from Stripe. Owner-only.",
     "annotations": { "title": "Stripe: connect", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
@@ -3198,6 +3198,17 @@
           "description": "Site id.",
           "maxLength": 128
         }
+      }
+    }
+  },
+  {
+    "name": "refresh_products",
+    "description": "Sync the site's Stripe catalog into its `products` collection (creates it). Run after products change in Stripe. Returns the product count.",
+    "annotations": { "title": "Stripe: refresh products", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": true },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "siteId": { "type": "string", "description": "Site id.", "maxLength": 128 }
       }
     }
   },

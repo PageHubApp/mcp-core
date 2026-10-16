@@ -363,12 +363,12 @@ Blocks are reference material, not the default. Design each section for the busi
 - \`propsPatch\`: non-class props (text, src, href, alt, tagName, content, icon, style, animation, action, company…).
 - \`typePatch\`: swap \`type.resolvedName\` (e.g. Button → Text) without recreating the node; isCanvas follows.
 - \`unsetClasses\`: classes or prefixes; \`["gap-"]\` removes gap-4, md:gap-8… (prefix match, so \`text-4xl\` also removes \`md:text-4xl\`).
-- \`unsetProps\`: dotted prop paths to delete, e.g. \`["seo.jsonLd"]\`, \`["seo.favicon"]\`.
+- \`unsetProps\`: prop keys or dotted paths to delete, e.g. \`["seo.jsonLd"]\`, \`["dataSource.filter.category"]\`. Applied before \`propsPatch\`, so unsetting a branch and setting it in the same patch replaces it.
 - \`nodesPatch\`: REORDER ONLY — the exact same child ids in a new order. A wrong or partial list blanks the canvas.
 - Never send \`children\` or ad-hoc graphs. Patch a block's Buttons/Texts by the \`kit_*\` ids \`apply_kit_block\` returned.
 
 ## Merge semantics
-\`propsPatch\` shallow-merges flat props and **deep-merges** the namespaced objects: seo, root, background, overflow, design, inject, relation, richText, theme, company. \`{ seo: { jsonLd: { image: X } } }\` keeps every sibling key. **Strings and arrays replace** — read the current value with \`get_site_node\` before editing a string you want to extend.
+\`propsPatch\` **deep-merges every object prop** (dataSource, seo, root, attrs, icon, theme, company, …): \`{ dataSource: { filter: { category: "tees" } } }\` keeps \`provider\` / \`collection\` / \`limit\`, and \`{ seo: { jsonLd: { image: X } } }\` keeps every sibling key. **Strings, arrays and \`action\` replace** — read the current value with \`get_site_node\` before editing a string you want to extend. To drop a key use \`unsetProps: ["dataSource.filter.category"]\`; to replace a whole object, unset it and set it in the same patch (\`unsetProps: ["dataSource.filter"]\` + \`propsPatch: { dataSource: { filter: {...} } }\`).
 
 **Image \`src\` shadows \`content\`.** The renderer uses \`src ?? content\`; patch both to the same value or pair with \`unsetProps\`.
 
@@ -469,6 +469,8 @@ Anything else (chat widgets, A/B testing, CRMs, custom scripts): \`patch_site_no
 
 ## Stripe
 \`stripe_connect\` returns a single-use onboarding URL while setup is unfinished. Only the site owner can complete it: hand them the URL, then call \`stripe_connect\` again once they're done to confirm \`ready\`. \`set_checkout\` and the \`stripe_*\` lookups need that ready connection.
+
+Once Stripe is ready, the site's Stripe products sync into a \`products\` collection on their own (already sellable — no \`set_checkout\` needed). Bind the shop to it: \`Data\` with \`dataSource: { provider: "collection", collection: "products" }\`. The first sync runs in the background, so if \`list_collections\` doesn't show it yet, or products changed in Stripe since, call \`refresh_products\` (returns the product count).
 
 \`set_checkout\` makes a collection sellable: Cart Buttons in a Data repeater bound to it then charge through Stripe. Without \`priceIdField\` each row charges its numeric \`price\` field in minor units (2500 = $25.00), so the collection needs that number field; with \`priceIdField\` each row holds a Stripe price id. \`remove: true\` stops selling; the rows stay.
 
