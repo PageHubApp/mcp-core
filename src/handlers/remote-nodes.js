@@ -29,6 +29,7 @@ const { recordFillPatch } = require("../helpers/fill-patch-merge");
 
 const { validateNodes, formatValidationReport } = require("../validation/node-validation");
 const { assertNodeMapAnimations } = require("../validation/site-animations");
+const { assertNodeMapStateModifiers } = require("../validation/state-modifiers");
 const { collectSubtree, sanitizeNodes, findSectionRoot } = require("../utils/node-utils");
 
 const { consumePunchListAndFormatMissed } = require("./kit/punch-list-state");
@@ -122,6 +123,7 @@ async function addNodesBody(args) {
     knownNodeIds: new Set(Object.keys(flat)),
   });
   validation.warnings.push(...assertNodeMapAnimations(rawNodes, flat));
+  assertNodeMapStateModifiers(rawNodes);
   const validationReport = formatValidationReport(validation);
 
   // Sanitize: parse strings, validate types, rebuild parent↔children, reparent orphans

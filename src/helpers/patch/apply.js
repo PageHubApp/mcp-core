@@ -18,6 +18,7 @@ const {
 } = require("../../validation/node-validation");
 const { getContext } = require("../../core/context");
 const { assertNodeAnimation } = require("../../validation/site-animations");
+const { assertStateModifiers } = require("../../validation/state-modifiers");
 
 const INVALID_ID_HARD_STOP_THRESHOLD = 3;
 
@@ -238,6 +239,9 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
   // this tree's ROOT theme — any other string merges fine and never animates.
   if (propsPatch && isPlainObject(propsPatch.root) && "animation" in propsPatch.root) {
     assertNodeAnimation(propsPatch.root.animation, flatMap, nodeId);
+  }
+  if (propsPatch && "stateModifiers" in propsPatch) {
+    assertStateModifiers(propsPatch.stateModifiers, nodeId);
   }
   // unsetProps runs BEFORE propsPatch, so `unsetProps: ["dataSource.filter"]`
   // plus `propsPatch: { dataSource: { filter: {...} } }` replaces that branch
