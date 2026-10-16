@@ -474,6 +474,18 @@ Once Stripe is ready, the site's Stripe products sync into a \`products\` collec
 
 \`set_checkout\` makes a collection sellable: Cart Buttons in a Data repeater bound to it then charge through Stripe. Without \`priceIdField\` each row charges its numeric \`price\` field in minor units (2500 = $25.00), so the collection needs that number field; with \`priceIdField\` each row holds a Stripe price id. \`remove: true\` stops selling; the rows stay.
 
+## Build a shop
+Fastest: \`create_site({ template: "modern-store" })\` (apparel: search, facet filters, variants) or \`"moss-and-fern"\` (plant shop + a care-guide collection that ships with it), then \`stripe_connect\`. The owner's own products fill the shop. To build one, these are the parts:
+
+- **Shop page**: a \`Data\` on \`products\` with \`limit\`, \`bindingKey\`, \`stateInputs: { q: "url:q", category: "url:category", page: "url:page", sort: "url:sort" }\` and \`publishStateKeys\` (count text reads \`{{state.connector:<bindingKey>:totalCount}}\`). Search = a \`FormElement\` with \`stateBinding: { key: "url:q", debounceMs: 300 }\`. Facets = a second \`Data\` on \`products.facets\` with \`facetKeys\`. Pagination: \`increment-state\` / \`decrement-state\` on \`url:page\` with \`min: 1\`.
+- **Filter on product row fields** (\`categories\`, \`tags\`, \`subcategory\`, \`optionNamesCsv\`), never Stripe metadata — the sync doesn't copy metadata, so a metadata filter matches nothing.
+- **Product page**: page \`pathPattern: ":handle"\` with a \`Data\` filtered \`{ slug: "{{params.handle}}" }\`. Variant chips set \`pdp:current:axis:<Axis>\`; a \`computedStateBindings\` \`variant-match\` writes \`pdp:current:matching-variant\`. Add to Cart: \`[{ type: "add-to-cart", quantityField: "quantity", variantMatchStateKey: "pdp:current:matching-variant" }]\`. Buy Now: that same \`add-to-cart\` followed by \`cart-checkout\` in one action array — \`cart-checkout\` alone only checks out the existing cart.
+- **Cart drawer** and the **\`checkout-cancelled-banner\`** block: direct children of ROOT. Toggle with \`toggle-cart\`; badge \`{{state.cart:count}}\`.
+- **Order confirmed page**: the \`order-confirmed\` block (\`Data\` on provider \`order\`, collection \`session\`, \`stateInputs: { session: "url:session_id" }\`). Every \`cart-checkout\` action gets \`successHref: "ref:<that page id>"\`, or buyers return to the page they left.
+- **Account page** at \`/account\`: the \`customer-account\` block — magic-link sign-in (hidden \`returnTo\` field), then profile (provider \`customer\`, collection \`me\`) and order history (collection \`orders\`). Customer accounts need a paid plan.
+- Shipping rates, countries and Stripe Tax are the owner's call, set on the dashboard's Shop page — ask, don't invent rates.
+- Test on the static renderer (\`/view/<draft slug>\`) and after publishing; both renderers must work.
+
 ## Site emails
 After \`update_site_email\`, run \`preview_site_email\`: an email with errors sends the default instead, and the preview is where those errors show.`,
 
@@ -519,7 +531,7 @@ const STYLE_TOPIC_LABELS = {
   pages: "page SEO, headCode / bodyClass, hiding header/footer",
   site: "update_site fields: slug, fallback SEO, AI crawlers, timezone, Next.js mounts",
   media: "upload sources, using mediaIds, favicons",
-  integrations: "analytics ids, per-action conversions, Stripe setup + checkout, site emails",
+  integrations: "analytics ids, per-action conversions, Stripe setup + checkout, building a shop, site emails",
   animation: "built-in presets, site animations via set_theme, per-node timing",
   "section-tree": "place_section_tree shape (clone fill mode)",
 };
