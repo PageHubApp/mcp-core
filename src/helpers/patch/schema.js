@@ -15,12 +15,16 @@ const PATCH_BODY_KEYS = [
   "unsetClasses",
 ];
 
+/** Preflight modes the site-node handlers read (remote-nodes.js). */
+const VALIDATION_MODE_KEYS = ["buttonValidation", "designValidation"];
+
 /** Allowed top-level keys for patch_site_node. */
 const PATCH_SITE_NODE_ARG_KEYS = new Set([
   "id",
   "slug",
   "nodeId",
   ...PATCH_BODY_KEYS,
+  ...VALIDATION_MODE_KEYS,
   "name",
   "title",
   "description",
