@@ -46,7 +46,7 @@ export const AI_MODELS = [
   },
   {
     value: "alibaba/qwen3-coder-30b-a3b",
-    label: "Economy",
+    label: "Qwen3 Coder",
     vendor: "alibaba",
     group: "fast",
     pageCredits: 170,
