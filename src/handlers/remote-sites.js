@@ -156,7 +156,7 @@ module.exports = {
     const data = await apiFetch("/api/v1/sites");
     const lines = (data.sites || []).map(
       s =>
-        `• ${s._id} — ${s.name || "(unnamed)"}${s.domain ? ` [${s.domain}]` : ""} (updated ${s.updatedAt})`
+        `• ${s._id} — ${s.name || "(unnamed)"}${s.title ? ` "${s.title}"` : ""}${s.domain ? ` [${s.domain}]` : ""} (${s.published ? "published" : "not published"}, updated ${s.updatedAt})`
     );
     return {
       content: [{ type: "text", text: lines.length ? lines.join("\n") : "No sites found." }],
