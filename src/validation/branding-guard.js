@@ -1,6 +1,7 @@
 /**
  * Single source for ROOT company identity checks (AI agent + MCP patch_site_node).
- * brandingCommitted: set by editor when user merges build-intent company or saves Site Settings branding.
+ * brandingCommitted: set when /start creates the site with a business name or tagline
+ * (createSiteFromTemplate), or when the owner saves branding in Site Settings.
  */
 
 /** Acme-style template placeholders — disposable until user commits branding. */

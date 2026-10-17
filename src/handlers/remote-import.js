@@ -49,6 +49,9 @@ function formatImportStatus(body, base) {
   if (redirects.length) {
     lines.push(`Redirects from the old page addresses: ${redirects.length} (e.g. ${redirects[0].from} → ${redirects[0].to})`);
   }
+  if (body.pageCap) {
+    lines.push(`Page limit: imported ${body.pageCap.kept} of ${body.pageCap.total} pages. A bigger plan imports the rest.`);
+  }
   const warnings = body.warnings || [];
   if (warnings.length) {
     lines.push(`Warnings (${warnings.length}):`);
@@ -67,6 +70,11 @@ function formatImportStatus(body, base) {
     );
   } else if (body.status === "failed") {
     lines.push(`Error: ${body.error || "The import stopped without a reason."}`);
+    if (body.siteId) {
+      lines.push(
+        `The empty draft site ${body.siteId} is still there — delete_site it, or run import_site again.`
+      );
+    }
   } else if (body.status === "review") {
     lines.push("Waiting for the page review in the dashboard.");
   } else {
