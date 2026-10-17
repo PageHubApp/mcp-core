@@ -15,6 +15,20 @@ const {
 } = require("../helpers/index.js");
 const { pickSiteMetaArgs, pickSiteMetaUpdates } = require("../helpers/extra-meta-args");
 
+/**
+ * The name the dashboard shows for a site (mirrors the app's
+ * resolveSiteDisplayName): title, else name, else draft id, with slugs like
+ * "fast-donkey" shown as "Fast Donkey".
+ */
+function siteDisplayName(s) {
+  const raw = s.title || s.name || s.draftId || s._id;
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)+$/.test(raw)) return raw;
+  return raw
+    .split("-")
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
+}
+
 const DEFAULT_BLANK_TEMPLATE = "acme";
 const CRAWL_MODES = ["public", "noindex", "private_preview"];
 
@@ -148,16 +162,17 @@ module.exports = {
   },
 
   /**
-   * List all sites owned by the authenticated user.
+   * List all sites owned by the authenticated user, by the name the dashboard
+   * shows (title, else name, else draft id) so "the X site" matches.
    * @param {object} _args - (none)
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async list_sites() {
     const data = await apiFetch("/api/v1/sites");
-    const lines = (data.sites || []).map(
-      s =>
-        `• ${s._id} — ${s.name || "(unnamed)"}${s.title ? ` "${s.title}"` : ""}${s.domain ? ` [${s.domain}]` : ""} (${s.published ? "published" : "not published"}, updated ${s.updatedAt})`
-    );
+    const lines = (data.sites || []).map(s => {
+      const address = s.domain || (s.name ? `${s.name}.pagehub.dev` : null);
+      return `• ${s._id} — ${siteDisplayName(s)}${address ? ` [${address}]` : ""} (${s.published ? "published" : "not published"}, updated ${s.updatedAt})`;
+    });
     return {
       content: [{ type: "text", text: lines.length ? lines.join("\n") : "No sites found." }],
     };

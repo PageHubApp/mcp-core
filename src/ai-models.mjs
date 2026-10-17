@@ -45,14 +45,6 @@ export const AI_MODELS = [
     lockStyling: true,
   },
   {
-    value: "alibaba/qwen3-coder-30b-a3b",
-    label: "Qwen3 Coder",
-    vendor: "alibaba",
-    group: "fast",
-    pageCredits: 170,
-    lockStyling: true,
-  },
-  {
     value: "anthropic/claude-sonnet-5.5",
     label: "Sonnet 5.5",
     vendor: "anthropic",
