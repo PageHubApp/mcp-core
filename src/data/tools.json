@@ -551,7 +551,7 @@
         },
         "modifiers": {
           "type": "object",
-          "description": "{ Text: [{ name, classes, requires }], … } upserted into ROOT.props.modifiers. Only needed when className uses shortcut modifier names. See get_style_reference({ topic: \"editing\" })."
+          "description": "{ Text: [{ name, classes, requires }], … } upserted into ROOT.props.modifiers. Only for shortcut modifier names in className. See get_style_reference({ topic: \"editing\" })."
         }
       },
       "required": ["nodeId", "parentId", "node"]
@@ -1078,7 +1078,7 @@
   },
   {
     "name": "update_site",
-    "description": "Update the site's name (URL slug), title, description, ogImage, search indexing, AI-crawler blocking, timezone or mount origin/key — immediate, no publish. title/description/ogImage are the fallback <title>, description and og:image for pages without their own seo. Empty string clears. Details: get_style_reference({ topic: \"site\" }).",
+    "description": "Update the site's name (URL slug), title, description, ogImage, search indexing, AI-crawler blocking, timezone or mount origin/key — immediate, no publish. title/description/ogImage are the fallback for pages without their own seo. Empty string clears. Details: get_style_reference({ topic: \"site\" }).",
     "annotations": { "title": "Update site", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
@@ -2200,7 +2200,7 @@
   },
   {
     "name": "apply_kit_block",
-    "description": "Stamp a section as-is: a library block (`slug`) or a clone of a page section already on this site (`sourceNodeId`) — exactly one. A shortcut for when an existing pattern genuinely fits; to design a section for this business, use add_nodes with get_block as reference. `contentOverrides` sets the final copy in the same call, keyed by the block's lib_* ids. target \"header\" / \"footer\" replaces the site header/footer with a nav/footer block; heroes are page sections. Guide: get_style_reference({ topic: \"blocks\" }).",
+    "description": "Stamp a section as-is: a library block (`slug`) or a clone of a page section already on this site (`sourceNodeId`) — exactly one. To design a section for this business, use add_nodes with get_block as reference instead. `contentOverrides` sets the final copy in the same call, keyed by the block's lib_* ids. target \"header\"/\"footer\" swaps the site header/footer. Guide: get_style_reference({ topic: \"blocks\" }).",
     "annotations": { "title": "Apply kit block", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -2682,7 +2682,7 @@
   },
   {
     "name": "update_page",
-    "description": "Update a page: name (changes the slug), SEO, home/404/hidden flags, per-page headCode/bodyClass, hideHeader/hideFooter/hideChrome, pathPattern (dynamic detail-page URL). A page without seo.title / seo.description falls back to the site title (update_site), not its name. headCode holds third-party code, not page content. Guide: get_style_reference({ topic: \"pages\" }).",
+    "description": "Update a page: name (changes the slug), SEO, home/404/hidden flags, per-page headCode/bodyClass, hideHeader/hideFooter/hideChrome, pathPattern (dynamic detail-page URL). Without seo.title/description it uses the site's (update_site). headCode holds third-party code, not page content. Guide: get_style_reference({ topic: \"pages\" }).",
     "annotations": { "title": "Update page", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -2791,7 +2791,7 @@
         },
         "pathPattern": {
           "type": "string",
-          "description": "URL tail AFTER the page's own slug, for detail pages. Segments are literal or `:param`, no leading slash, no spaces: `:slug` on page \"Car\" serves /car/<slug>; `products/:handle` on \"Shop\" serves /shop/products/<handle>. Read captures in a Data node's dataSource as `{{params.<name>}}` (e.g. filter { slug: \"{{params.slug}}\" }). Empty string clears.",
+          "description": "URL tail AFTER the page's own slug, for detail pages. Segments: literal or `:param`, no leading slash: `:slug` on page \"Car\" serves /car/<slug>; `products/:handle` on \"Shop\" serves /shop/products/<handle>. Read captures in a Data node's dataSource as `{{params.<name>}}`. Empty string clears.",
           "maxLength": 512
         }
       },
@@ -2857,7 +2857,7 @@
         },
         "modifiers": {
           "type": "object",
-          "description": "{ Text: [{ name, classes, requires }], … } upserted into ROOT.props.modifiers. Only needed when className uses shortcut modifier names. See get_style_reference({ topic: \"editing\" })."
+          "description": "{ Text: [{ name, classes, requires }], … } upserted into ROOT.props.modifiers. Only for shortcut modifier names in className. See get_style_reference({ topic: \"editing\" })."
         }
       },
       "required": ["nodes", "rootNodeId"]
@@ -3428,7 +3428,7 @@
   },
   {
     "name": "update_collection_schema",
-    "description": "Replace a collection's whole field list (get_collection returns the current one). Existing rows keep stale keys until edited.",
+    "description": "Change a collection's fields or member gates. `schema` replaces all fields (get_collection first). `requiredPlans` gates every row. To lock single rows: add a text field keyed `requiredPlans`, write comma-separated plan slugs on those rows; non-members get them minus `memberFields`, with `locked: true`.",
     "annotations": { "title": "Update collection schema", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -3449,9 +3449,23 @@
           "items": {
             "type": "object"
           }
+        },
+        "requiredPlans": {
+          "type": "array",
+          "description": "Plan slugs whose members alone see the rows; [] clears.",
+          "items": { "type": "string", "maxLength": 48 }
+        },
+        "memberFields": {
+          "type": "array",
+          "description": "Fields hidden on locked rows.",
+          "items": { "type": "string", "maxLength": 64 }
+        },
+        "requiresCustomerLogin": {
+          "type": "boolean",
+          "description": "Signed-in visitors only."
         }
       },
-      "required": ["slug", "schema"]
+      "required": ["slug"]
     }
   },
   {
@@ -3648,7 +3662,7 @@
   },
   {
     "name": "import_site",
-    "description": "Turn a static HTML site (index.html + pages, CSS, JS, images) into a NEW editable multi-page PageHub site draft. Inputs, one per call: filePath (local folder or .zip; local server only); size (zip bytes) returns an upload URL, curl line and uploadKey; uploadKey, after the PUT, starts the import; files sends text files inline (≤3MB). Returns an importId for get_import_status.",
+    "description": "Turn a static HTML site (pages, CSS, JS, images) into a NEW editable PageHub site draft. Inputs, one per call: filePath (local folder or .zip; local server only); size (zip bytes) returns an upload URL, curl line and uploadKey; uploadKey, after the PUT, starts the import; files sends text files inline (≤3MB). Returns an importId for get_import_status.",
     "annotations": { "title": "Import HTML site", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": true },
     "inputSchema": {
       "type": "object",

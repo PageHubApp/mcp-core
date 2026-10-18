@@ -90,29 +90,42 @@ module.exports = {
   },
 
   /**
-   * Replace the schema of a collection.
-   * @param {object} args - { slug, schema, id? }
+   * Replace a collection's schema and/or set its membership gates
+   * (docs/features/memberships.md "SiteCollection gating"). The server
+   * validates plan slugs and field keys.
+   * @param {object} args - { slug, schema?, requiredPlans?, memberFields?, requiresCustomerLogin?, id? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async update_collection_schema(args = {}) {
     const siteId = activeSiteId(args);
     if (!args.slug) throw new Error("slug is required.");
-    if (!Array.isArray(args.schema)) throw new Error("schema must be an array.");
+    if (args.schema !== undefined && !Array.isArray(args.schema)) {
+      throw new Error("schema must be an array.");
+    }
+    const body = {};
+    for (const key of ["schema", "requiredPlans", "memberFields", "requiresCustomerLogin"]) {
+      if (args[key] !== undefined) body[key] = args[key];
+    }
+    if (!Object.keys(body).length) {
+      throw new Error("Pass schema, requiredPlans, memberFields or requiresCustomerLogin.");
+    }
     const list = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}/collections`);
     const col = (list.collections || []).find(c => c.slug === args.slug);
     if (!col) throw new Error(`Collection "${args.slug}" not found.`);
     const data = await apiFetch(
       `/api/v1/sites/${encodeURIComponent(siteId)}/collections/${encodeURIComponent(col._id)}`,
-      { method: "PATCH", body: { schema: args.schema } }
+      { method: "PATCH", body }
     );
-    return {
-      content: [
-        {
-          type: "text",
-          text: `Schema updated on "${args.slug}" (${args.schema.length} fields).`,
-        },
-      ],
-    };
+    const saved = data.collection || {};
+    const lines = [`Updated "${args.slug}".`];
+    if (body.schema) lines.push(`Fields: ${body.schema.length}.`);
+    lines.push(
+      `Plans that see the rows: ${(saved.requiredPlans || []).join(", ") || "any visitor"}.`,
+      `Sign-in required: ${saved.requiresCustomerLogin || (saved.requiredPlans || []).length ? "yes" : "no"}.`,
+      `Hidden on locked rows: ${(saved.memberFields || []).join(", ") || "none"}.`,
+      `Per-row plan field: ${(saved.schema || []).some(f => f.key === "requiredPlans") ? "yes" : "no"}.`
+    );
+    return { content: [{ type: "text", text: lines.join(" ") }] };
   },
 
   /**
