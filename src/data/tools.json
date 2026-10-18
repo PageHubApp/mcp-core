@@ -1660,7 +1660,7 @@
   },
   {
     "name": "set_download",
-    "description": "Host a file behind a stable link (<site>/api/downloads/<id>); link to it from a Button. New: name + file. New version: downloadId + file (same link). Roll back: downloadId + currentVersionId. File = filePath (stdio) or mediaId of a private upload. access makes it members-only. A Video (provider url) plays it with videoId \"/api/downloads/<id>?inline=1\". Pro+; .exe/.dmg etc need Agency.",
+    "description": "Host a file behind a stable link (<site>/api/downloads/<id>); link to it from a Button. New: name + file. New version: downloadId + file (same link). Roll back: downloadId + currentVersionId. File = filePath (stdio) or an upload's mediaId (a public upload, e.g. a chat attachment, is moved private). access makes it members-only. A Video (provider url) plays it with videoId \"/api/downloads/<id>?inline=1\". Pro+; .exe/.dmg etc need Agency.",
     "annotations": { "title": "Set download", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -1669,7 +1669,7 @@
         "downloadId": { "type": "string", "description": "Existing download; omit to create.", "maxLength": 40 },
         "name": { "type": "string", "description": "Display name; required when creating.", "maxLength": 120 },
         "filePath": { "type": "string", "description": "Local file (stdio only).", "maxLength": 4096 },
-        "mediaId": { "type": "string", "description": "From upload_file({ private: true }).", "maxLength": 100 },
+        "mediaId": { "type": "string", "description": "An uploaded file's mediaId (upload_file or a chat attachment); not images.", "maxLength": 100 },
         "filename": { "type": "string", "description": "Saved-as name; required with mediaId.", "maxLength": 200 },
         "label": { "type": "string", "description": "e.g. v1.2", "maxLength": 60 },
         "notes": { "type": "string", "description": "Changelog.", "maxLength": 2000 },
@@ -3631,7 +3631,7 @@
   },
   {
     "name": "import_collection_csv",
-    "description": "Import CSV text; header columns match field keys (unmatched ignored). mode: append (default), replace (deletes existing rows first), upsert (by an externalId or id column). ~8MB cap. Plan-gated.",
+    "description": "Import rows from CSV text or an uploaded CSV/TSV/XLSX file (exactly one of csv | mediaId); header columns match field keys (unmatched ignored). mode: append (default), replace (deletes existing rows first), upsert (by an externalId or id column). ~8MB cap. Plan-gated.",
     "annotations": { "title": "Import collection CSV", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -3651,13 +3651,18 @@
           "description": "CSV text with a header row.",
           "maxLength": 8388608
         },
+        "mediaId": {
+          "type": "string",
+          "description": "An uploaded CSV/TSV/XLSX file's mediaId (the agent gets this for attached files). Use this instead of csv when the data was uploaded — never retype rows.",
+          "maxLength": 100
+        },
         "mode": {
           "type": "string",
           "enum": ["append", "replace", "upsert"],
           "description": "Merge mode. Default append."
         }
       },
-      "required": ["slug", "csv"]
+      "required": ["slug"]
     }
   },
   {

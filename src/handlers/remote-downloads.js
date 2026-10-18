@@ -2,9 +2,10 @@
  * Hosted file downloads — wraps `/api/v1/sites/:id/downloads`.
  *
  * A download is a stable public link (`<site>/api/downloads/<id>`) that always
- * serves its current version. Files come from `upload_file({ filePath,
- * private: true })`; the local stdio server's `set_download` also takes a
- * `filePath` and does that upload itself.
+ * serves its current version. Files are R2 uploads by their mediaId —
+ * `upload_file({ filePath, private: true })`, or a public upload such as a file
+ * attached in chat, which the route moves to private storage. The local stdio
+ * server's `set_download` also takes a `filePath` and uploads it itself.
  */
 
 const { apiFetch } = require("../core/api-fetch");
@@ -57,7 +58,7 @@ async function setDownload(args = {}) {
     args.downloadId && !args.mediaId && (args.currentVersionId || args.access !== undefined || args.name);
   if (!isEdit && !args.mediaId) {
     throw new Error(
-      "mediaId is required — upload with upload_file({ filePath, private: true }) first, " +
+      "mediaId is required — the mediaId of an uploaded file (upload_file, or a file attached in chat), " +
         "or pass downloadId + currentVersionId / access / name to change an existing download."
     );
   }
@@ -105,7 +106,7 @@ module.exports = {
     if (args.filePath) {
       throw new Error(
         "filePath is only available in the local PageHub MCP server (stdio). " +
-          "Pass the mediaId of a private upload instead."
+          "Pass the mediaId of an uploaded file instead."
       );
     }
     return setDownload(args);

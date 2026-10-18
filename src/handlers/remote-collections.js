@@ -231,17 +231,21 @@ module.exports = {
   },
 
   /**
-   * Import CSV text into a collection. Columns are matched to schema field keys
-   * by name; `mode` controls merge semantics. `upsert` keys on an `externalId`
-   * (or `id`) CSV column. Plan-gated by maxRowsPerCollection.
-   * @param {object} args - { slug, csv, mode?, id? }
+   * Import rows into a collection from CSV text or an uploaded CSV/TSV/XLSX
+   * file (its mediaId). Columns are matched to schema field keys by name;
+   * `mode` controls merge semantics. `upsert` keys on an `externalId` (or
+   * `id`) column. Plan-gated by maxRowsPerCollection.
+   * @param {object} args - { slug, csv?, mediaId?, mode?, id? } — exactly one of csv | mediaId
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async import_collection_csv(args = {}) {
     const siteId = activeSiteId(args);
     if (!args.slug) throw new Error("slug is required.");
-    if (!args.csv || typeof args.csv !== "string" || !args.csv.trim())
-      throw new Error("csv is required (must be a non-empty CSV string).");
+    const csv = typeof args.csv === "string" && args.csv.trim() ? args.csv : null;
+    const mediaId = typeof args.mediaId === "string" && args.mediaId.trim() ? args.mediaId.trim() : null;
+    if (!csv && !mediaId)
+      throw new Error("Pass csv (CSV text with a header row) or mediaId (an uploaded CSV/TSV/XLSX file).");
+    if (csv && mediaId) throw new Error("Pass either csv or mediaId, not both.");
     const mode = String(args.mode || "append").toLowerCase();
     if (!["append", "replace", "upsert"].includes(mode))
       throw new Error('mode must be one of "append", "replace", "upsert".');
@@ -249,7 +253,7 @@ module.exports = {
       `/api/v1/sites/${encodeURIComponent(siteId)}/collections/${encodeURIComponent(
         args.slug
       )}/import?mode=${mode}`,
-      { method: "POST", body: { csv: args.csv } }
+      { method: "POST", body: mediaId ? { mediaId } : { csv } }
     );
     return {
       content: [
