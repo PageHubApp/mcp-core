@@ -1660,7 +1660,7 @@
   },
   {
     "name": "set_download",
-    "description": "Host a file behind a stable link (<site>/api/downloads/<id>); link to it from a Button. New: name + file. New version: downloadId + file (same link). Roll back: downloadId + currentVersionId. File = filePath (stdio) or mediaId of a private upload. Pro+; .exe/.dmg etc need Agency.",
+    "description": "Host a file behind a stable link (<site>/api/downloads/<id>); link to it from a Button. New: name + file. New version: downloadId + file (same link). Roll back: downloadId + currentVersionId. File = filePath (stdio) or mediaId of a private upload. access makes it members-only. A Video (provider url) plays it with videoId \"/api/downloads/<id>?inline=1\". Pro+; .exe/.dmg etc need Agency.",
     "annotations": { "title": "Set download", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -1673,7 +1673,15 @@
         "filename": { "type": "string", "description": "Saved-as name; required with mediaId.", "maxLength": 200 },
         "label": { "type": "string", "description": "e.g. v1.2", "maxLength": 60 },
         "notes": { "type": "string", "description": "Changelog.", "maxLength": 2000 },
-        "currentVersionId": { "type": "string", "description": "Serve this existing version.", "maxLength": 40 }
+        "currentVersionId": { "type": "string", "description": "Serve this existing version.", "maxLength": 40 },
+        "access": {
+          "type": "object",
+          "description": "Members-only: members true = any plan; plans = one of these. members false = public.",
+          "properties": {
+            "members": { "type": "boolean" },
+            "plans": { "type": "array", "items": { "type": "string", "maxLength": 48 }, "maxItems": 50 }
+          }
+        }
       }
     }
   },
@@ -1691,6 +1699,11 @@
       "required": ["downloadId"]
     }
   },
+  {"name": "list_membership_plans", "description": "Site's membership plans: slug, prices, access length, flags.", "annotations": {"title": "List membership plans", "readOnlyHint": true, "destructiveHint": false, "idempotentHint": true, "openWorldHint": false}, "inputSchema": {"type": "object", "properties": {"id": {"type": "string", "description": "Site id.", "maxLength": 256}}}},
+  {"name": "set_membership_plan", "description": "Create (new slug) or edit a plan; only passed fields change. Slug is permanent; gate with auth customer.plans.<slug> exists. Paid: stripePriceIds. Free: selfSignup. Pro+.", "annotations": {"title": "Set membership plan", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": true, "openWorldHint": false}, "inputSchema": {"type": "object", "properties": {"id": {"type": "string", "description": "Site id.", "maxLength": 256}, "slug": {"type": "string", "description": "a-z, 0-9, dashes.", "maxLength": 48}, "name": {"type": "string", "description": "Required when creating.", "maxLength": 120}, "description": {"type": "string", "maxLength": 2000}, "stripePriceIds": {"type": "array", "items": {"type": "string", "maxLength": 100}, "maxItems": 20, "description": "Stripe price ids or pd:<rowId>."}, "accessDays": {"type": "integer", "minimum": 1, "description": "One-time prices: days per purchase. Omit = lifetime."}, "selfSignup": {"type": "boolean", "description": "Free plan; only with no prices."}, "archived": {"type": "boolean", "description": "Stop selling; members keep it."}}, "required": ["slug"]}},
+  {"name": "list_members", "description": "Site customers with their plans, status and expiry. Filter by plan, status, q; paged.", "annotations": {"title": "List members", "readOnlyHint": true, "destructiveHint": false, "idempotentHint": true, "openWorldHint": false}, "inputSchema": {"type": "object", "properties": {"id": {"type": "string", "description": "Site id.", "maxLength": 256}, "plan": {"type": "string", "description": "Plan slug.", "maxLength": 48}, "status": {"type": "string", "enum": ["active", "past_due", "ended", "none", "blocked"]}, "q": {"type": "string", "description": "Email or name.", "maxLength": 200}, "cursor": {"type": "string", "description": "nextCursor from the last page.", "maxLength": 40}}}},
+  {"name": "set_member", "description": "add (email, plan?, sendInvite?), or grant/revoke/extend a plan, block/unblock, rename a member found by customerId or email. Applies on their next page load; never cancels Stripe billing.", "annotations": {"title": "Set member", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": true}, "inputSchema": {"type": "object", "properties": {"id": {"type": "string", "description": "Site id.", "maxLength": 256}, "action": {"type": "string", "enum": ["add", "grant", "revoke", "extend", "block", "unblock", "rename"]}, "customerId": {"type": "string", "maxLength": 40}, "email": {"type": "string", "maxLength": 254}, "name": {"type": "string", "maxLength": 120}, "plan": {"type": "string", "description": "Plan slug.", "maxLength": 48}, "expiresAt": {"type": "string", "description": "ISO date.", "maxLength": 40}, "note": {"type": "string", "maxLength": 500}, "sendInvite": {"type": "boolean", "description": "add: email a sign-in link."}}, "required": ["action"]}},
+  {"name": "remove_member", "description": "Delete a member (customerId or email); sign-in stops at once. Stripe billing continues.", "annotations": {"title": "Remove member", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false}, "inputSchema": {"type": "object", "properties": {"id": {"type": "string", "description": "Site id.", "maxLength": 256}, "customerId": {"type": "string", "maxLength": 40}, "email": {"type": "string", "maxLength": 254}}}},
   {
     "name": "find_image",
     "description": "Stock photos with verified, ready-to-use URLs (local bank, then Unsplash/Pexels).",

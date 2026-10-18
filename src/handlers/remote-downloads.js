@@ -35,7 +35,11 @@ function fmtDownload(d) {
         `    ${v.current ? "★" : "·"} ${v.label} — ${v.filename} (${fmtSize(v.size)}) [versionId: ${v.id}]`
     )
     .join("\n");
-  return `• ${d.name} [downloadId: ${d.id}]\n  url: ${d.url}\n  downloads: ${d.downloadCount}\n${versions}`;
+  const members = d.access?.members
+    ? `\n  members only: ${d.access.plans?.length ? `plans ${d.access.plans.join(", ")}` : "any active plan"}` +
+      `\n  as a members-only video: Video provider "url", videoId "/api/downloads/${d.id}?inline=1"`
+    : "";
+  return `• ${d.name} [downloadId: ${d.id}]\n  url: ${d.url}\n  downloads: ${d.downloadCount}${members}\n${versions}`;
 }
 
 const LINK_HINT =
@@ -45,15 +49,16 @@ const LINK_HINT =
 /**
  * Publish a download, or add a version to an existing one, from an already
  * uploaded private file.
- * @param {object} args - { id?, downloadId?, name?, mediaId, filename, label?, notes? }
+ * @param {object} args - { id?, downloadId?, name?, mediaId, filename, label?, notes?, currentVersionId?, access? }
  */
 async function setDownload(args = {}) {
   const siteId = activeSiteId(args);
-  const isSwitch = args.downloadId && args.currentVersionId && !args.mediaId;
-  if (!isSwitch && !args.mediaId) {
+  const isEdit =
+    args.downloadId && !args.mediaId && (args.currentVersionId || args.access !== undefined || args.name);
+  if (!isEdit && !args.mediaId) {
     throw new Error(
       "mediaId is required — upload with upload_file({ filePath, private: true }) first, " +
-        "or pass downloadId + currentVersionId to change which version is served."
+        "or pass downloadId + currentVersionId / access / name to change an existing download."
     );
   }
   if (!args.downloadId && !args.name) throw new Error("name is required for a new download.");
@@ -67,6 +72,7 @@ async function setDownload(args = {}) {
       label: args.label,
       notes: args.notes,
       currentVersionId: args.currentVersionId,
+      access: args.access,
     },
   });
   return {
