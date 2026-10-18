@@ -45,6 +45,8 @@ function resolveSentinels(node) {
   return node;
 }
 const tools = resolveSentinels(rawTools);
+const TOOLS_BY_NAME = new Map(tools.map(t => [t.name, t]));
+const { assertAiWriteAllowed } = require("./helpers/aiWriteGuard");
 const {
   isPlaceholderCompanyName,
   userExplicitlyRequestsBrandingChange,
@@ -186,7 +188,9 @@ function getAllTools() {
 async function executeTool(name, args) {
   const handler = handlers[name];
   if (!handler) throw new Error(`Unknown tool: ${name}`);
-  return runToolWithPublishTrailer(handler, args, getContext());
+  const ctx = getContext();
+  assertAiWriteAllowed(name, args, ctx, TOOLS_BY_NAME.get(name));
+  return runToolWithPublishTrailer(handler, args, ctx);
 }
 
 /**

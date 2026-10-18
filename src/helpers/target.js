@@ -19,8 +19,17 @@ function getActiveTarget(args = {}) {
   const ctx = getContext();
   // Explicit slug → template
   if (args.slug && !args.id) return { type: "template", id: args.slug };
-  // Explicit id → site
-  if (args.id) return { type: "site", id: args.id };
+  // Explicit id → site. The AI client is pinned to the chat's site: an id the
+  // model picked up from history or pasted text must not reach another site
+  // the user is also a member of (its draft would then be saved into this one).
+  if (args.id) {
+    if (ctx.client === "ai" && ctx.activeSite?.id && args.id !== ctx.activeSite.id) {
+      throw new Error(
+        `This chat works on site ${ctx.activeSite.id}; it can't touch ${args.id}. Switch to that site in the dashboard first.`
+      );
+    }
+    return { type: "site", id: args.id };
+  }
   // Context: activeTemplate takes priority when set
   if (ctx.activeTemplate) return { type: "template", id: ctx.activeTemplate.slug };
   if (ctx.activeSite) return { type: "site", id: ctx.activeSite.id };
