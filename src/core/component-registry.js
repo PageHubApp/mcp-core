@@ -39,7 +39,6 @@ const VALID_COMPONENTS = new Set([
   "Map",
   "MapPoint",
   "MapPath",
-  "ProductDisplay",
   "Text",
   "Video",
 ]);
@@ -56,7 +55,6 @@ const CANVAS_COMPONENTS = new Set([
   "Footer",
   "Form",
   "Header",
-  "ProductDisplay",
 ]);
 
 /**
