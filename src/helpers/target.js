@@ -69,7 +69,7 @@ function isTemplateTarget(args) {
 function getEditorUrl(siteId) {
   const ctx = getContext();
   const base = normalizeBaseUrl(ctx.apiBaseUrl) || "https://pagehub.dev";
-  return `${base}/build/${siteId}`;
+  return `${base}/dashboard/sites/${siteId}/design`;
 }
 
 function getTargetRevisionKey(targetType, targetId) {

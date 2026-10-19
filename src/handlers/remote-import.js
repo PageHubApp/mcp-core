@@ -16,6 +16,7 @@
 
 const { apiFetch, normalizeBaseUrl } = require("../core/api-fetch");
 const { getContext } = require("../core/context");
+const { getEditorUrl } = require("../helpers/target");
 
 const MAX_WARNINGS = 10;
 
@@ -64,7 +65,7 @@ function formatImportStatus(body, base) {
   if (body.status === "ready" && body.siteId) {
     lines.push(
       `Site: ${body.siteId}`,
-      `Editor: ${base}/build/${body.siteId}`,
+      `Editor: ${getEditorUrl(body.siteId)}`,
       `Preview: ${base}/view/${body.draftId}`,
       "The site is a draft. Nothing is published."
     );

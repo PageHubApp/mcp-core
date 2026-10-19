@@ -12,6 +12,7 @@ const {
   selectionNote,
   fetchTarget,
   decodeContentOrThrow,
+  getEditorUrl,
 } = require("../helpers/index.js");
 const { pickSiteMetaArgs, pickSiteMetaUpdates } = require("../helpers/extra-meta-args");
 
@@ -155,7 +156,7 @@ module.exports = {
       content: [
         {
           type: "text",
-          text: `New site ${data.id} created from "${slug}" (${Object.keys(content).length} nodes).\nActive site set. Editor: ${data.url || `${base}/build/${data.id}`}\nPreview: ${data.previewUrl || `${base}/view/${data.id}`}${selectionNote({ type: "site", id: data.id })}`,
+          text: `New site ${data.id} created from "${slug}" (${Object.keys(content).length} nodes).\nActive site set. Editor: ${data.url || `${getEditorUrl(data.id)}`}\nPreview: ${data.previewUrl || `${base}/view/${data.id}`}${selectionNote({ type: "site", id: data.id })}`,
         },
       ],
     };
@@ -368,7 +369,7 @@ module.exports = {
       content: [
         {
           type: "text",
-          text: `Site ${data.id} duplicated from ${data.sourceId}.\nActive site set. Editor: ${data.url || `${base}/build/${data.id}`}\nPreview: ${data.previewUrl || `${base}/view/${data.id}`}${selectionNote({ type: "site", id: data.id })}`,
+          text: `Site ${data.id} duplicated from ${data.sourceId}.\nActive site set. Editor: ${data.url || `${getEditorUrl(data.id)}`}\nPreview: ${data.previewUrl || `${base}/view/${data.id}`}${selectionNote({ type: "site", id: data.id })}`,
         },
       ],
     };

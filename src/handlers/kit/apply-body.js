@@ -9,7 +9,6 @@
 const crypto = require("crypto");
 
 const { resolveToolDefaultPageNodeId } = require("../../core/active-page");
-const { normalizeBaseUrl } = require("../../core/api-fetch");
 const { getContext } = require("../../core/context");
 
 const {
@@ -25,6 +24,7 @@ const {
   fetchTarget,
   decodeContentOrThrow,
   mergeBlockModifiersIntoRoot,
+  getEditorUrl,
 } = require("../../helpers/index.js");
 const { recordFillPatch } = require("../../helpers/fill-patch-merge");
 
@@ -474,7 +474,6 @@ async function applyKitBlockBody(args) {
   }
 
   const result = await saveTarget(target.id, target.type, flat);
-  const base = normalizeBaseUrl(ctx.apiBaseUrl) || "https://pagehub.dev";
   const warnText = overrideWarnings.length
     ? `\n\nOverride warnings:\n${overrideWarnings.map(w => `  - ${w}`).join("\n")}`
     : "";
@@ -490,7 +489,7 @@ async function applyKitBlockBody(args) {
   const msg =
     target.type === "template"
       ? `${verb} to template "${result.id}".${slotMismatchTail}${warnText}${punchList}${imagePunchList}`
-      : `${verb}.${slotMismatchTail}${warnText}${punchList}${imagePunchList}\nEditor: ${base}/build/${result.id}`;
+      : `${verb}.${slotMismatchTail}${warnText}${punchList}${imagePunchList}\nEditor: ${getEditorUrl(result.id)}`;
   if (!cloneMode) {
     ctx._appliedKitSlugs.add(slug);
     if (resolvedSlug && resolvedSlug !== slug) ctx._appliedKitSlugs.add(resolvedSlug);

@@ -1,6 +1,5 @@
 const sluggit = require("slug");
 
-const { normalizeBaseUrl } = require("../core/api-fetch");
 const { ROOT_NODE_ID } = require("../core/constants");
 const { getContext, withPendingMapLock } = require("../core/context");
 
@@ -10,6 +9,7 @@ const {
   fetchTarget,
   saveTarget,
   assertInjectHtml,
+  getEditorUrl,
 } = require("../helpers/index.js");
 const { buildPatch } = require("../helpers/patch/build");
 const {
@@ -219,12 +219,11 @@ async function addPageBody(args) {
       patch,
     };
   }
-  const base = normalizeBaseUrl(ctx.apiBaseUrl) || "https://pagehub.dev";
   return {
     content: [
       {
         type: "text",
-        text: `Page "${name}" created as ${pageId} (/${slug}).${homeMsg} To add blocks: apply_kit_block(slug, pageId: "${pageId}") — do NOT pass sectionContainerId.\nEditor: ${base}/build/${result.id}`,
+        text: `Page "${name}" created as ${pageId} (/${slug}).${homeMsg} To add blocks: apply_kit_block(slug, pageId: "${pageId}") — do NOT pass sectionContainerId.\nEditor: ${getEditorUrl(result.id)}`,
       },
     ],
     patch,
@@ -461,7 +460,7 @@ async function updatePageBody(args) {
   const label = target.type === "template" ? `template "${target.id}"` : `site`;
   const editorLine =
     target.type === "site"
-      ? `\nEditor: ${normalizeBaseUrl(getContext().apiBaseUrl) || "https://pagehub.dev"}/build/${result.id}`
+      ? `\nEditor: ${getEditorUrl(result.id)}`
       : "";
   return {
     content: [
@@ -535,12 +534,11 @@ async function deletePageBody(args) {
       patch,
     };
   }
-  const base = normalizeBaseUrl(getContext().apiBaseUrl) || "https://pagehub.dev";
   return {
     content: [
       {
         type: "text",
-        text: `Page "${pageName}" (${pageId}) deleted.${promoMsg}\nEditor: ${base}/build/${result.id}`,
+        text: `Page "${pageName}" (${pageId}) deleted.${promoMsg}\nEditor: ${getEditorUrl(result.id)}`,
       },
     ],
     patch,
