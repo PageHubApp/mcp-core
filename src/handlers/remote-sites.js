@@ -15,6 +15,14 @@ const {
   getEditorUrl,
 } = require("../helpers/index.js");
 const { pickSiteMetaArgs, pickSiteMetaUpdates } = require("../helpers/extra-meta-args");
+const {
+  crawlLines,
+  siteOgImageLine,
+  timezoneLine,
+  languageLine,
+  mountOriginLine,
+  mountKeyLine,
+} = require("../helpers/site-status-lines");
 
 /**
  * The name the dashboard shows for a site (mirrors the app's
@@ -32,44 +40,6 @@ function siteDisplayName(s) {
 
 const DEFAULT_BLANK_TEMPLATE = "acme";
 const CRAWL_MODES = ["public", "noindex", "private_preview"];
-
-/** Status lines for a `/api/v1/sites/[id]` payload's `crawlPolicy` mode + `blockAi`. */
-function crawlLines(data) {
-  return (
-    `Search indexing: ${data?.crawlPolicy?.mode || "public"} (update_site crawlMode)\n` +
-    `AI crawlers: ${data?.crawlPolicy?.blockAi ? "blocked" : "allowed"} (update_site blockAiCrawlers)`
-  );
-}
-
-/** One status line for a `/api/v1/sites/[id]` payload's site-wide `ogImage`. */
-function siteOgImageLine(data) {
-  return `Site share image: ${data?.ogImage || "(unset — pages without their own og:image get the generated card)"}`;
-}
-
-/** One status line for a `/api/v1/sites/[id]` payload's `timezone`. */
-function timezoneLine(data) {
-  return `Timezone: ${data?.timezone || "(unset — notification emails show UTC)"} (update_site timezone)`;
-}
-
-/** One status line for a `/api/v1/sites/[id]` payload's `mountOrigin`. */
-function mountOriginLine(data) {
-  return `Mount origin: ${data?.mountOrigin || "(unset — served on its own PageHub host)"} (update_site mountOrigin)`;
-}
-
-/**
- * The mount key line. Only an update_site that issued a key prints its value
- * (the PUT returns it once); otherwise it says whether one is set.
- */
-function mountKeyLine(data, issued) {
-  if (issued && data?.mountKey) {
-    return (
-      `Mount key: ${data.mountKey}\n` +
-      `Set it as PAGEHUB_MOUNT_KEY in the host app's environment (then redeploy it) so PageHub sees each visitor's real IP.`
-    );
-  }
-  if (!data?.mountOrigin) return null;
-  return `Mount key: ${data?.mountKey ? "set" : "(none)"} (update_site rotateMountKey: true issues a new one)`;
-}
 
 /**
  * Render a `/api/v1/sites/[id]/domain` payload (GET or PATCH — both carry
@@ -208,6 +178,7 @@ module.exports = {
       `Published: ${data.published ? "yes" : "no"}${data.staticPublish ? " (turbo/static delivery)" : ""}`,
       crawlLines(data),
       timezoneLine(data),
+      languageLine(data),
       mountOriginLine(data),
       mountKeyLine(data, false),
       `Change these with update_site; per-page overrides go through update_page seo.`,
@@ -249,7 +220,7 @@ module.exports = {
   /**
    * Patch site-level metadata (name / title / description / share image / crawler, timezone
    * and mount-origin settings).
-   * @param {object} args - { name?, title?, description?, ogImage?, crawlMode?, blockAiCrawlers?, timezone?, mountOrigin?, rotateMountKey?, siteId? }
+   * @param {object} args - { name?, title?, description?, ogImage?, crawlMode?, blockAiCrawlers?, timezone?, language?, mountOrigin?, rotateMountKey?, siteId? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async update_site(args = {}) {
@@ -267,12 +238,14 @@ module.exports = {
     if (Object.keys(crawlPolicy).length) body.crawlPolicy = crawlPolicy;
     // "" clears it; the route validates the IANA name.
     if (typeof args.timezone === "string") body.timezone = args.timezone.trim();
+    // "" clears it ("en"); the route validates the BCP 47 tag.
+    if (typeof args.language === "string") body.language = args.language.trim();
     // "" clears it; the route validates the bare https origin + staticPublish.
     if (typeof args.mountOrigin === "string") body.mountOrigin = args.mountOrigin.trim();
     if (args.rotateMountKey === true) body.rotateMountKey = true;
     if (Object.keys(body).length === 0) {
       throw new Error(
-        "update_site requires at least one of: name, title, description, ogImage, crawlMode, blockAiCrawlers, timezone, mountOrigin, rotateMountKey."
+        "update_site requires at least one of: name, title, description, ogImage, crawlMode, blockAiCrawlers, timezone, language, mountOrigin, rotateMountKey."
       );
     }
     const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`, {
@@ -293,6 +266,7 @@ module.exports = {
             `${siteOgImageLine(data)}\n` +
             crawlLines(data) +
             `\n${timezoneLine(data)}` +
+            (body.language !== undefined ? `\n${languageLine(data)}` : "") +
             `\n${mountOriginLine(data)}` +
             (data?.mountKey ? `\n${mountKeyLine(data, true)}` : ""),
         },

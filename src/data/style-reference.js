@@ -437,6 +437,7 @@ Every field takes effect immediately — no publish needed. Empty string clears.
 - \`crawlMode\`: \`public\` (indexed — the default for new sites), \`noindex\` (viewable by link, sent \`noindex, nofollow\` and left out of the sitemap) or \`private_preview\` (noindex plus a robots.txt \`Disallow: /\`). Set \`noindex\` BEFORE publishing a client's copy that isn't on its final domain yet, or search engines index it as a duplicate of their real site. Flip to \`public\` at domain cutover.
 - \`blockAiCrawlers\`: true adds a robots.txt Disallow for known AI crawlers (GPTBot, ClaudeBot, Google-Extended, PerplexityBot, …) and turns off /llms.txt + /llms-full.txt. Search engines are unaffected. Leaving it off also lets AI assistants read the site to answer questions or book on a visitor's behalf.
 - \`timezone\`: the business's IANA timezone, e.g. "America/Los_Angeles". Times in the site's form notification emails are shown in it; clearing it means UTC.
+- \`language\`: the BCP 47 tag the pages are written in ("uk", "es", "pt-BR"), sent as \`<html lang>\` on every page so browsers, screen readers and search engines read the right language. Unset means "en". Set it on every site that isn't in English.
 
 ## Mounting in your own Next.js app (@pagehub/next)
 - \`mountOrigin\`: the origin of the app that serves this site at its root, e.g. "https://app.example.com" — https, no path or trailing slash. Canonical URLs, og:url and the sitemap then use that origin, and the page's form, analytics and favicon calls go through the app's /_pagehub/ path. The site must have static delivery on (\`publish_site\` \`static: true\`). Setting it issues a mount key (returned once) that the app must send so PageHub sees each visitor's real IP; clearing it removes the key.
@@ -530,7 +531,7 @@ const STYLE_TOPIC_LABELS = {
   editing: "patch fields, merge semantics, custom code, add_nodes / insert_node shapes",
   theme: "set_theme palette names, styleGuide keys, fonts, company vars",
   pages: "page SEO, headCode / footerCode / bodyClass, hiding header/footer",
-  site: "update_site fields: slug, fallback SEO, AI crawlers, timezone, Next.js mounts",
+  site: "update_site fields: slug, fallback SEO, AI crawlers, timezone, language, Next.js mounts",
   media: "upload sources, using mediaIds, favicons",
   integrations: "analytics ids, per-action conversions, Stripe setup + checkout, building a shop, site emails",
   animation: "built-in presets, site animations via set_theme, per-node timing",

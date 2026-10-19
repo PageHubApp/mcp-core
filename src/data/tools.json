@@ -1101,7 +1101,7 @@
   },
   {
     "name": "update_site",
-    "description": "Update the site's name (URL slug), title, description, ogImage, search indexing, AI-crawler blocking, timezone or mount origin/key — immediate, no publish. title/description/ogImage are the fallback for pages without their own seo. Empty string clears. Details: get_style_reference({ topic: \"site\" }).",
+    "description": "Set the site's name (slug), title, description, ogImage, indexing, AI crawlers, timezone, language or mount origin/key — immediate, no publish. title/description/ogImage: fallbacks for pages without their own seo. \"\" clears. Details: get_style_reference({ topic: \"site\" }).",
     "annotations": { "title": "Update site", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
@@ -1118,12 +1118,12 @@
         },
         "title": {
           "type": "string",
-          "description": "Site-wide fallback <title>.",
+          "description": "Fallback <title>.",
           "maxLength": 200
         },
         "description": {
           "type": "string",
-          "description": "Site-wide fallback meta description.",
+          "description": "Fallback meta description.",
           "maxLength": 2000
         },
         "ogImage": {
@@ -1134,25 +1134,30 @@
         "crawlMode": {
           "type": "string",
           "enum": ["public", "noindex", "private_preview"],
-          "description": "public = indexed. noindex = viewable by link, kept out of search (use for a client copy not yet on its own domain). private_preview = noindex + robots.txt Disallow."
+          "description": "public = indexed. noindex = viewable by link, kept out of search (a client copy not yet on its domain). private_preview = noindex + robots.txt Disallow."
         },
         "blockAiCrawlers": {
           "type": "boolean",
-          "description": "true blocks known AI crawlers in robots.txt and turns off /llms.txt. Search engines unaffected."
+          "description": "true blocks AI crawlers in robots.txt and turns off /llms.txt; search engines unaffected."
         },
         "timezone": {
           "type": "string",
-          "description": "IANA timezone for form notification emails, e.g. \"America/Los_Angeles\". Empty string = UTC.",
+          "description": "IANA zone for notification emails, e.g. \"America/Los_Angeles\". \"\" = UTC.",
           "maxLength": 64
+        },
+        "language": {
+          "type": "string",
+          "description": "<html lang> tag: \"uk\", \"pt-BR\"… \"\" = en.",
+          "maxLength": 35
         },
         "mountOrigin": {
           "type": "string",
-          "description": "Origin of the Next.js app serving this site via @pagehub/next, e.g. \"https://app.example.com\". Needs publish_site static: true.",
+          "description": "Origin of the Next.js app serving it via @pagehub/next, e.g. \"https://app.example.com\". Needs publish_site static: true.",
           "maxLength": 256
         },
         "rotateMountKey": {
           "type": "boolean",
-          "description": "true issues a new mount key (returned once) and invalidates the old one."
+          "description": "true issues a new mount key (shown once), voiding the old one."
         }
       }
     }
