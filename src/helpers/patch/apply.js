@@ -20,6 +20,7 @@ const { getContext } = require("../../core/context");
 const { assertNodeAnimation } = require("../../validation/site-animations");
 const { assertStateModifiers } = require("../../validation/state-modifiers");
 const { assertNodeConditions } = require("../../validation/conditions");
+const { findTruncatedPropValue } = require("../long-props");
 
 const INVALID_ID_HARD_STOP_THRESHOLD = 3;
 
@@ -192,6 +193,14 @@ function applyNodePatches(flatMap, nodeId, patchArgs) {
     throw new Error(
       `propsPatch for node "${nodeId}" is a string (invalid JSON from model). ` +
         `propsPatch must be a JSON object, not a string. Raw value starts with: ${propsPatch.substring(0, 120)}…`
+    );
+  }
+  // A shortened get_site_node value written back would replace the real one.
+  const truncatedAt = propsPatch ? findTruncatedPropValue(propsPatch, "propsPatch") : null;
+  if (truncatedAt) {
+    throw new Error(
+      `${truncatedAt} on node "${nodeId}" contains a shortened get_site_node value. ` +
+        `Read the whole value with get_site_node({ nodeId: "${nodeId}", prop: "<path>" }) and patch with that.`
     );
   }
   // Sanitize tagName to prevent corrupted data from crashing createElement

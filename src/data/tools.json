@@ -559,7 +559,7 @@
   },
   {
     "name": "get_site_node",
-    "description": "Read one node's raw JSON. propsPatch replaces string props whole (e.g. ROOT.props.inject.head), so this is the current value to merge into.",
+    "description": "Read one node's raw JSON. Strings over 1,500 chars come back shortened (truncatedProps); `prop` reads one whole. propsPatch replaces strings whole (e.g. ROOT.props.inject.head).",
     "annotations": { "title": "Get site node", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -573,6 +573,15 @@
           "type": "string",
           "description": "Node id, e.g. ROOT, page_home.",
           "maxLength": 256
+        },
+        "prop": {
+          "type": "string",
+          "description": "Dot path, e.g. inject.head.",
+          "maxLength": 256
+        },
+        "full": {
+          "type": "boolean",
+          "description": "Shorten nothing."
         }
       },
       "required": ["nodeId"]
@@ -580,7 +589,7 @@
   },
   {
     "name": "list_site_nodes",
-    "description": "Lightweight node tree (id, displayName, type, child count) in DFS order, ~2KB. Use it to find ids and section order.",
+    "description": "Node tree (id, displayName, type, child count) in DFS order, to find ids and section order. Multi-page site: pass pageId.",
     "annotations": { "title": "List site nodes", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -589,6 +598,16 @@
           "type": "string",
           "description": "Site id.",
           "maxLength": 256
+        },
+        "pageId": {
+          "type": "string",
+          "description": "Page id (or any node id) to list; other pages fold.",
+          "maxLength": 256
+        },
+        "depth": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Levels to expand."
         }
       }
     }

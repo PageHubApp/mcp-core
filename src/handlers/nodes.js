@@ -13,6 +13,7 @@ const { assertFillModePatchAllowed } = require("../helpers/fill-mode");
 const { withTargetSaveOrDraft } = require("../helpers/load-mutate-save");
 
 const { collectSubtree } = require("../utils/node-utils");
+const { truncateLongProps, readPropPath } = require("../helpers/long-props");
 const { assertNodeMapAnimations } = require("../validation/site-animations");
 const { assertNodeMapStateModifiers } = require("../validation/state-modifiers");
 const { assertNodeMapConditions } = require("../validation/conditions");
@@ -132,43 +133,92 @@ async function insertNodeBody(args) {
   return { content: [{ type: "text", text: label + warnSuffix }], changedNodes };
 }
 
+// Above this many nodes, a whole-site listing ends with a hint to scope it by page.
+const LIST_NODES_SCOPE_HINT_AT = 200;
+
+function isHeaderOrFooter(node) {
+  const resolved = node?.type?.resolvedName;
+  const t = node?.props?.type;
+  return resolved === "Header" || resolved === "Footer" || t === "header" || t === "footer";
+}
+
 /**
- * Lightweight node summary — returns ID, displayName, component type, parent, children count.
- * ~2KB instead of 100KB+ from pull_site. Use this instead of pull_site for navigation/inspection.
+ * Lightweight node tree — id, component type, displayName, short text, child count.
+ * Whole site by default. `pageId` lists one subtree in full and folds the rest:
+ * header / footer to their direct children, other pages to one line each.
+ * `depth` caps how many levels below the starting node are expanded.
  */
 async function listSiteNodesMethod(args) {
   const { flat } = await fetchTarget(args);
+  const total = Object.keys(flat).length;
+  const requested = typeof args.pageId === "string" ? args.pageId.trim() : "";
+  const pageId = requested && requested !== ROOT_NODE_ID ? requested : null;
+  const maxDepth =
+    args.depth != null && Number.isFinite(Number(args.depth)) && Number(args.depth) >= 0
+      ? Math.floor(Number(args.depth))
+      : Infinity;
+  if (pageId && !flat[pageId]) {
+    throw new Error(`Node "${pageId}" not found. Page ids come from list_pages.`);
+  }
 
-  // Build DFS tree from ROOT
   const lines = [];
-  const visit = (id, depth) => {
+  let shown = 0;
+  const line = (id, indentLevel, folded) => {
     const node = flat[id];
-    if (!node) return;
     const type = node.type?.resolvedName || "?";
     const label = node.custom?.displayName || "";
     const childCount = (node.nodes || []).length;
-    const indent = "  ".repeat(depth);
     const text = node.props?.text
       ? ` text="${String(node.props.text)
           .replace(/<[^>]*>/g, "")
           .substring(0, 40)}"`
       : "";
+    const fold = folded && childCount > 0 ? ", folded" : "";
     lines.push(
-      `${indent}${id} | ${type}${label ? ` "${label}"` : ""}${text} (${childCount} children)`
+      `${"  ".repeat(indentLevel)}${id} | ${type}${label ? ` "${label}"` : ""}${text} (${childCount} children${fold})`
     );
-    for (const childId of node.nodes || []) visit(childId, depth + 1);
+    shown++;
+  };
+  // `levels` = how many levels below `id` to expand.
+  const visit = (id, indentLevel, levels) => {
+    if (!flat[id]) return;
+    const kids = flat[id].nodes || [];
+    line(id, indentLevel, levels <= 0);
+    if (levels <= 0) return;
+    for (const childId of kids) visit(childId, indentLevel + 1, levels - 1);
   };
 
-  // Start from ROOT → hdr_root, page_home, ftr_root
-  visit(ROOT_NODE_ID, 0);
+  let heading;
+  if (!pageId) {
+    visit(ROOT_NODE_ID, 0, maxDepth);
+    heading = `Site node tree (${total} nodes)`;
+  } else {
+    // Path from ROOT down to the requested node, so its place stays visible.
+    const path = [];
+    for (let cur = pageId; cur && flat[cur]; cur = flat[cur].parent) path.unshift(cur);
+    const rootChildOnPath = path[1];
+    if (path[0] !== ROOT_NODE_ID) visit(pageId, 0, maxDepth); // detached from ROOT
+    else line(ROOT_NODE_ID, 0, false);
+    for (const childId of path[0] === ROOT_NODE_ID ? flat[ROOT_NODE_ID].nodes || [] : []) {
+      if (!flat[childId]) continue;
+      if (childId === pageId) visit(childId, 1, maxDepth);
+      else if (childId === rootChildOnPath) {
+        // pageId sits deeper: walk the ancestors one line each, then expand it.
+        let level = 1;
+        for (const anc of path.slice(1, -1)) line(anc, level++, false);
+        visit(pageId, level, maxDepth);
+      } else if (isHeaderOrFooter(flat[childId])) visit(childId, 1, 1);
+      else line(childId, 1, true);
+    }
+    heading = `Site node tree (${total} nodes; showing ${pageId}${Number.isFinite(maxDepth) ? ` to depth ${maxDepth}` : ""}, header/footer top level, other pages folded — ${shown} lines)`;
+  }
 
+  const hint =
+    !pageId && total > LIST_NODES_SCOPE_HINT_AT
+      ? `\n\n(${total} nodes. Pass pageId (from list_pages) to list one page, or depth to fold deep levels.)`
+      : "";
   return {
-    content: [
-      {
-        type: "text",
-        text: `Site node tree (${Object.keys(flat).length} nodes):\n\n${lines.join("\n")}`,
-      },
-    ],
+    content: [{ type: "text", text: `${heading}:\n\n${lines.join("\n")}${hint}` }],
   };
 }
 
@@ -239,17 +289,32 @@ async function moveNodeBody(args) {
 }
 
 /**
- * Read one node's full payload (type, props, className, nodes, parent, custom).
- * Use this to inspect `props.inject.head` / `props.inject.footer` on ROOT, or any
- * other field that doesn't surface in `list_site_nodes` / `search_site_nodes`.
- * Required before patching a string-valued nested prop you don't want to overwrite.
+ * Read one node's payload (type, props, className, nodes, parent, custom).
+ * String props over LONG_PROP_CHARS (ROOT `inject.head` CSS, Embed `code`, …)
+ * come back as a short head plus a note; `prop: "inject.head"` returns that one
+ * value whole, `full: true` returns every prop whole. Required before patching
+ * a string-valued nested prop you don't want to overwrite.
  */
 async function getSiteNodeMethod(args) {
-  const { nodeId } = args;
+  const { nodeId, prop } = args;
   if (!nodeId) throw new Error("nodeId is required.");
   const { flat } = await fetchTarget(args);
   const node = flat[nodeId];
   if (!node) throw new Error(`Node "${nodeId}" not found.`);
+  if (typeof prop === "string" && prop.trim()) {
+    const path = prop.trim().replace(/^props\./, "");
+    const value = readPropPath(node.props || {}, path);
+    if (value === undefined) throw new Error(`Node "${nodeId}" has no prop "${path}".`);
+    return {
+      content: [
+        { type: "text", text: JSON.stringify({ id: nodeId, prop: path, value }, null, 2) },
+      ],
+    };
+  }
+  const full = args.full === true || args.full === "true";
+  const { props, truncated } = full
+    ? { props: node.props || {}, truncated: [] }
+    : truncateLongProps(node.props || {});
   const payload = {
     id: nodeId,
     type: node.type,
@@ -257,7 +322,10 @@ async function getSiteNodeMethod(args) {
     parent: node.parent,
     nodes: node.nodes || [],
     custom: node.custom || {},
-    props: node.props || {},
+    props,
+    ...(truncated.length
+      ? { truncatedProps: truncated.map(t => `${t.path} (${t.length} chars)`) }
+      : {}),
   };
   return {
     content: [
