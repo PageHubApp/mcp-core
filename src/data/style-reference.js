@@ -157,13 +157,17 @@ No custom JS. Everything is a shared key/value store driven by props:
 | Piece | Prop | Notes |
 |---|---|---|
 | Write state on click | \`action: [{ type: "set-state", key, value }]\` (Button, Container, Text) | Also \`toggle-state\`, \`clear-state\`, \`increment-state\`, \`decrement-state\`. |
-| Write on page load | same action + \`trigger: "load"\` | Seeds defaults / example answers. Fires once on mount, never on click. |
+| Counters | \`increment-state\` / \`decrement-state\` with \`step\`, \`min\` (number), \`max\`, \`wrap\` | \`max\` is a number or \`"state:<key>"\` (e.g. \`"state:connector:shop:totalPages"\`). \`"{{state.x}}"\` does NOT resolve — the bound silently disappears. Unset key starts at \`min\` (default 0). |
+| Write on page load | same action + \`trigger: "load"\`, on a **Container** | Seeds defaults / example answers. Fires once on mount, never on click. Load actions only run on Container. |
+| Timer | same action + \`trigger: "interval"\`, \`intervalMs: 5000\` (Container) | The prop is \`intervalMs\`, not \`interval\`. Does NOT run on statically rendered pages (staticPublish sites, the default /view preview); no pause-on-hover. Always add manual prev / next. |
+| Bind an input / select | FormElement \`stateBinding: { key: "url:q", debounceMs: 300 }\` (\`mode: "checked"\` for checkbox / radio) | The way to build search / filters / sort. No Form around them — a Form posts a submission unless it's \`submissionType: "custom"\` + \`method: "GET"\` + \`action\`. |
 | Derive a value | Container \`computedStateBindings: [{ key, from: [keys], compute }]\` | compute \`type\`: \`count\` (\`value?\` = only count keys equal to it), \`all-truthy\`, \`first-truthy\`, \`join\` (\`separator\`). |
 | Show a value | Text \`{{state.<key>}}\` (wrap: \`<span data-variable="state.<key>" class="variable-node">{{state.<key>}}</span>\`) | Also Button text / attrs. |
 | Style by state | \`stateModifiers: [{ conditions, modifiers: [names] }]\` | Modifier names must exist in ROOT.props.modifiers[Component] (\`{ name, classes }\`) — use \`!\`-prefixed classes so they beat base classes. |
-| Show/hide by state | \`conditionGroups\` with \`{ type: "state", key, operator, value }\` | operators: equals, not-equals, contains, not-contains, exists, not-exists. Or use stateModifiers to add \`!hidden\` / \`!flex\` when you need a guaranteed initial state. |
+| Show/hide by state | \`conditionGroups\` with \`{ type: "state", key, operator, value }\` | operators: equals, not-equals, contains, not-contains, exists, not-exists. Or use stateModifiers to add \`!hidden\` / \`!flex\` when you need a guaranteed initial state. **Unset keys:** React shows a node whose \`equals\` / \`not-equals\` reads an unset key, static hides it — seed the key with a load \`set-state\` and gate every variant with a positive \`equals\`; never make the default the \`not-equals\` branch. |
+| Signed-in gate | \`{ type: "auth", key: "status", operator: "equals", value: "logged-in" }\` | \`key: "status"\` is required; value \`logged-in\` / \`logged-out\`. Members: \`key: "customer.isMember"\` or \`"customer.plans.<slug>"\` (exists). |
 
-| Form sending / thank-you | Container \`visibilityStateKey: "form:<formNodeId>:fields" \\| ":loading" \\| ":loaded"\` | The Form writes these on submit (fields → hidden, loading → shown, then loaded → shown). **Required:** MCP-built forms have no confirmation otherwise. |
+| Form sending / thank-you | Container \`visibilityStateKey: "form:<formNodeId>:fields" \\| ":loading" \\| ":loaded"\` | The Form writes these on submit (fields → hidden, loading → shown, then loaded → shown). **Required:** MCP-built forms have no confirmation otherwise. These three are the only states: there is no \`:error\` state. |
 
 Conditions shape: \`[{ logic: "all" | "any", conditions: [...] }]\`.
 
