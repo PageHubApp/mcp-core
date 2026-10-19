@@ -422,7 +422,7 @@ Outline CTA pitfall: on minimal black-and-white themes keep Primary and Base Con
 - A page is a Container with \`props.type: "page"\` directly under ROOT (beside header and footer). The display name becomes the slug: "Our Services" → /our-services. The first page is home.
 - **Set \`seo.title\` and \`seo.description\` on every page.** A page without \`seo.title\` falls back to the site-level title — never to its display name — so every page ships the same \`<title>\`. The site-level title/description are edited with \`update_site\` and read with \`select_site\`.
 - \`seo.jsonLd\` is one schema.org object (FAQPage, Article, BreadcrumbList); \`seo.schema\` is an array, one \`<script type="application/ld+json">\` each.
-- \`headCode\`: raw HTML in this page's \`<head>\`, emitted server-side so scripts run at parse time. \`bodyClass\`: classes on \`<body>\` for this page. Empty string clears either. Third-party code only, never page content. Site-wide code → ROOT \`inject.head\` / \`inject.footer\`; analytics → \`set_integrations\`.
+- \`headCode\`: raw HTML in this page's \`<head>\`, emitted server-side so scripts run at parse time. \`footerCode\`: raw HTML at the end of this page's \`<body>\`, after its content (scripts that need the DOM). \`bodyClass\`: classes on \`<body>\` for this page. Empty string clears either. Third-party code only, never page content. Site-wide code → ROOT \`inject.head\` / \`inject.footer\`; analytics → \`set_integrations\`.
 - Chrome: \`hideHeader\` / \`hideFooter\` suppress the global header / footer. \`hideChrome\` strips ALL ROOT-level chrome (header, footer, sticky bars, floating CTAs, drawers) — the switch for ad landing pages.
 - \`isHidden\` pages are not reachable by URL. You can't delete the last page; deleting home promotes the next page.
 - \`pathPattern\` makes a detail page: the URL tail AFTER the page's slug, literal segments or \`:param\`, no leading slash. Page "Car" + \`:slug\` serves /car/<slug>; page "Shop" + \`products/:handle\` serves /shop/products/<handle>. The segment count must match exactly. Read captures only inside a Data node's \`dataSource\` as \`{{params.<name>}}\` (e.g. \`filter: { slug: "{{params.slug}}" }\`) — Text can't read \`params\` directly; show \`{{item.*}}\` from the matched row. A tail that doesn't fit, or a filter that matches no row, serves the 404 page. Link to it with \`href: "ref:page_car/{{item.slug}}"\`. Empty string clears.`,
@@ -529,7 +529,7 @@ const STYLE_TOPIC_LABELS = {
   blocks: "search_blocks + apply_kit_block usage, overrides, build order",
   editing: "patch fields, merge semantics, custom code, add_nodes / insert_node shapes",
   theme: "set_theme palette names, styleGuide keys, fonts, company vars",
-  pages: "page SEO, headCode / bodyClass, hiding header/footer",
+  pages: "page SEO, headCode / footerCode / bodyClass, hiding header/footer",
   site: "update_site fields: slug, fallback SEO, AI crawlers, timezone, Next.js mounts",
   media: "upload sources, using mediaIds, favicons",
   integrations: "analytics ids, per-action conversions, Stripe setup + checkout, building a shop, site emails",

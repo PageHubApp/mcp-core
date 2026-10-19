@@ -409,7 +409,7 @@ async function updatePageBody(args) {
   }
 
   const dropWarnings = [];
-  for (const key of ["headCode", "bodyClass"]) {
+  for (const key of ["headCode", "footerCode", "bodyClass"]) {
     if (args[key] != null) {
       const val = String(args[key]);
       if (val !== "") {
@@ -426,8 +426,8 @@ async function updatePageBody(args) {
         delete page.props[key];
         changes.push(`${key} → (cleared)`);
       } else {
-        if (key === "headCode") {
-          assertInjectHtml(val, `update_page.headCode for page "${page.props?.name || pageId}"`);
+        if (key === "headCode" || key === "footerCode") {
+          assertInjectHtml(val, `update_page.${key} for page "${page.props?.name || pageId}"`);
         }
         page.props[key] = val;
         const preview = val.length > 40 ? val.slice(0, 40) + "…" : val;
