@@ -3175,7 +3175,7 @@
   },
   {
     "name": "set_site_chat",
-    "description": "Change the site's chat bot settings; only the fields you pass change. The bot answers from the published pages and public collections and saves leads to Form Submissions as \"Chat\". Visitors see it only where the page has an AgentFloatingBubble (site-wide) or AgentChat node, and only while the owner has AI credits.",
+    "description": "Change the site's chat bot settings; only the fields you pass change. Leads save to Form Submissions as \"Chat\". Visitors see it only on pages with an AgentFloatingBubble or AgentChat node, while the owner has credits.",
     "annotations": { "title": "Set site chat", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
     "inputSchema": {
       "type": "object",
@@ -3195,7 +3195,8 @@
           "items": { "type": "string", "enum": ["name", "email", "phone", "message"] }
         },
         "leadCollectionSlug": { "type": "string", "description": "Also save each lead as a row in this collection. Empty stops.", "maxLength": 128 },
-        "notifyEmail": { "type": "string", "description": "Extra address emailed for each lead. Empty stops.", "maxLength": 200 }
+        "notifyEmail": { "type": "string", "description": "Extra address emailed for each lead. Empty stops.", "maxLength": 200 },
+        "dailyCreditCap": { "type": "integer", "description": "Credits per UTC day for all chats; 0 pauses chat. Omit for the plan default.", "minimum": 0 }
       }
     }
   },
