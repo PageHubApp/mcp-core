@@ -202,6 +202,7 @@ async function setThemeBody(args) {
     animations,
     removeAnimations,
     buildStyle: explicitBuildStyle,
+    daisyui,
   } = args;
   const target = getActiveTarget(args);
   const ctx = getContext();
@@ -315,6 +316,9 @@ async function setThemeBody(args) {
   } else if (Object.keys(existingStyleGuide).length) {
     rootProps.theme.styleGuide = existingStyleGuide;
   }
+
+  // DaisyUI component styles (btn, card, hero…); missing = on. HTML imports start off.
+  if (typeof daisyui === "boolean") rootProps.theme.daisyui = daisyui;
 
   // Presets often omit link tokens; merged styleGuide would keep starter blues. Tie links to palette.
   const themePalette = rootProps.theme.palette || [];

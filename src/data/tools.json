@@ -284,6 +284,10 @@
           "description": "Vibe override for block filtering. Rarely needed — preset sets it.",
           "maxLength": 128
         },
+        "daisyui": {
+          "type": "boolean",
+          "description": "DaisyUI component classes (btn, card…). Default on; HTML imports off."
+        },
         "title": {
           "type": "string",
           "description": "Title.",
