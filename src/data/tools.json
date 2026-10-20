@@ -2,7 +2,13 @@
   {
     "name": "list_blocks",
     "description": "List library blocks (up to ~200) grouped by category: slug, name, tags. A broad menu; search_blocks ranks and filters. `categories` / `styles` arrays OR-match in one call.",
-    "annotations": { "title": "List blocks", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "List blocks",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -44,7 +50,13 @@
   {
     "name": "get_component_schema",
     "description": "Full prop schemas for components (types, props, valid values). A comma list returns only those components. In parallel fill, responses are compact and `components` is required.",
-    "annotations": { "title": "Get component schema", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Get component schema",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -59,7 +71,13 @@
   {
     "name": "get_style_reference",
     "description": "Styling reference: palette variables, styleGuide tokens, spatial scale, modifiers, interactive state, form-confirmation recipe. Pass `topic` for a focused guide (design bar, accessibility, domains, per-tool usage).",
-    "annotations": { "title": "Get style reference", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Get style reference",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -87,7 +105,13 @@
   {
     "name": "generate_button_classes",
     "description": "Canonical Button className + activeModifiers from intent (variant, shape, size). A starting point; extra classes can be appended.",
-    "annotations": { "title": "Generate button classes", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Generate button classes",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -134,7 +158,13 @@
   {
     "name": "validate_button_classes",
     "description": "Check a Button className for variant conflicts and token misuse; optionally auto-fix it.",
-    "annotations": { "title": "Validate button classes", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Validate button classes",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -166,13 +196,21 @@
           "description": "false = hardcoded colors are errors, not warnings (default true)."
         }
       },
-      "required": ["className"]
+      "required": [
+        "className"
+      ]
     }
   },
   {
     "name": "list_presets",
     "description": "Curated theme presets (palette + fonts + tokens). compact: true returns id + name only. set_theme({ preset }) applies one.",
-    "annotations": { "title": "List presets", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "List presets",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -232,12 +270,25 @@
           "maxItems": 30
         }
       }
+    },
+    "annotations": {
+      "title": "Create template",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
     }
   },
   {
     "name": "set_theme",
     "description": "Write the site theme — preset, palette, darkPalette, styleGuide tokens, fonts, JSON-LD, site animations — into the draft, effective immediately. suggest_palettes / suggest_font_pairings only show options. ROOT `company` vars: patch_site_node. Palette names, styleGuide keys, workflow: get_style_reference({ topic: \"theme\" }).",
-    "annotations": { "title": "Set theme", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
+    "annotations": {
+      "title": "Set theme",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -325,7 +376,10 @@
                 "maxLength": 128
               }
             },
-            "required": ["name", "color"]
+            "required": [
+              "name",
+              "color"
+            ]
           },
           "description": "Complete palette — replaces the existing one. [{ name, color }] with DaisyUI names (Primary, Primary Content, Secondary, Accent, Neutral, Base 100/200/300, Base Content, …), never \"Background\"/\"Foreground\". Colors: hex, rgb, hsl or oklch().",
           "maxItems": 30
@@ -344,7 +398,10 @@
                 "maxLength": 128
               }
             },
-            "required": ["name", "color"]
+            "required": [
+              "name",
+              "color"
+            ]
           },
           "description": "Optional dark-mode palette with the same names. Enables dark mode.",
           "maxItems": 30
@@ -368,13 +425,46 @@
           "items": {
             "type": "object",
             "properties": {
-              "key": { "type": "string", "description": "Slug /^[a-z][a-z0-9-]{0,39}$/, no \"site:\" prefix.", "maxLength": 40 },
-              "label": { "type": "string", "maxLength": 60 },
-              "trigger": { "type": "string", "enum": ["scroll", "load", "continuous"] },
-              "duration": { "type": "number", "description": "Seconds, 0.05–30." },
-              "easing": { "type": "string", "description": "easeOut | easeIn | easeInOut | linear | spring | cubic-bezier() | steps()", "maxLength": 80 },
-              "iterations": { "type": "string", "description": "\"1\"–\"20\" or \"infinite\".", "maxLength": 8 },
-              "direction": { "type": "string", "enum": ["normal", "reverse", "alternate", "alternate-reverse"] },
+              "key": {
+                "type": "string",
+                "description": "Slug /^[a-z][a-z0-9-]{0,39}$/, no \"site:\" prefix.",
+                "maxLength": 40
+              },
+              "label": {
+                "type": "string",
+                "maxLength": 60
+              },
+              "trigger": {
+                "type": "string",
+                "enum": [
+                  "scroll",
+                  "load",
+                  "continuous"
+                ]
+              },
+              "duration": {
+                "type": "number",
+                "description": "Seconds, 0.05–30."
+              },
+              "easing": {
+                "type": "string",
+                "description": "easeOut | easeIn | easeInOut | linear | spring | cubic-bezier() | steps()",
+                "maxLength": 80
+              },
+              "iterations": {
+                "type": "string",
+                "description": "\"1\"–\"20\" or \"infinite\".",
+                "maxLength": 8
+              },
+              "direction": {
+                "type": "string",
+                "enum": [
+                  "normal",
+                  "reverse",
+                  "alternate",
+                  "alternate-reverse"
+                ]
+              },
               "keyframes": {
                 "type": "array",
                 "minItems": 2,
@@ -383,19 +473,39 @@
                 "items": {
                   "type": "object",
                   "properties": {
-                    "at": { "type": "number", "description": "Percent, 0–100." },
-                    "style": { "type": "object", "description": "Kebab-case CSS property → value, e.g. { \"clip-path\": \"inset(0 100% 0 0)\" }." }
+                    "at": {
+                      "type": "number",
+                      "description": "Percent, 0–100."
+                    },
+                    "style": {
+                      "type": "object",
+                      "description": "Kebab-case CSS property → value, e.g. { \"clip-path\": \"inset(0 100% 0 0)\" }."
+                    }
                   },
-                  "required": ["at", "style"]
+                  "required": [
+                    "at",
+                    "style"
+                  ]
                 }
               }
             },
-            "required": ["key", "label", "trigger", "duration", "easing", "iterations", "keyframes"]
+            "required": [
+              "key",
+              "label",
+              "trigger",
+              "duration",
+              "easing",
+              "iterations",
+              "keyframes"
+            ]
           }
         },
         "removeAnimations": {
           "type": "array",
-          "items": { "type": "string", "maxLength": 45 },
+          "items": {
+            "type": "string",
+            "maxLength": 45
+          },
           "maxItems": 50,
           "description": "Keys to delete from theme.animations."
         }
@@ -436,7 +546,16 @@
           "description": "Insert index in page's nodes. 0 = first section. Default: append to end."
         }
       },
-      "required": ["templateId"]
+      "required": [
+        "templateId"
+      ]
+    },
+    "annotations": {
+      "title": "Add block",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
     }
   },
   {
@@ -469,13 +588,29 @@
           "description": "Insert index in parent's nodes array. Default: append to end."
         }
       },
-      "required": ["sectionRootId", "nodes"]
+      "required": [
+        "sectionRootId",
+        "nodes"
+      ]
+    },
+    "annotations": {
+      "title": "Add custom block",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
     }
   },
   {
     "name": "delete_node",
     "description": "Delete a node and its subtree. ROOT, page_home, hdr_root and ftr_root can't be deleted.",
-    "annotations": { "title": "Delete node", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
+    "annotations": {
+      "title": "Delete node",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -490,13 +625,21 @@
           "maxLength": 256
         }
       },
-      "required": ["nodeId"]
+      "required": [
+        "nodeId"
+      ]
     }
   },
   {
     "name": "move_node",
     "description": "Move a node and its subtree to a new parent. Can't move ROOT or page_home, or into its own subtree.",
-    "annotations": { "title": "Move node", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Move node",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -520,13 +663,22 @@
           "description": "Index in the new parent (default: end)."
         }
       },
-      "required": ["nodeId", "newParentId"]
+      "required": [
+        "nodeId",
+        "newParentId"
+      ]
     }
   },
   {
     "name": "insert_node",
     "description": "Insert one node under an existing parent. `node` = { type: { resolvedName }, isCanvas, props: { className, …, custom: { displayName } }, nodes: [] }; parent and linkedNodes are set for you. Lists/tables: a Container with props.type \"ul\" | \"li\" | \"table\" | \"tr\" | \"td\" ….",
-    "annotations": { "title": "Insert node", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Insert node",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -558,13 +710,23 @@
           "description": "{ Text: [{ name, classes, requires }], … } upserted into ROOT.props.modifiers. Only for shortcut modifier names in className. See get_style_reference({ topic: \"editing\" })."
         }
       },
-      "required": ["nodeId", "parentId", "node"]
+      "required": [
+        "nodeId",
+        "parentId",
+        "node"
+      ]
     }
   },
   {
     "name": "get_site_node",
     "description": "Read one node's raw JSON. Strings over 1,500 chars come back shortened (truncatedProps); `prop` reads one whole. propsPatch replaces strings whole (e.g. ROOT.props.inject.head).",
-    "annotations": { "title": "Get site node", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Get site node",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -588,13 +750,21 @@
           "description": "Shorten nothing."
         }
       },
-      "required": ["nodeId"]
+      "required": [
+        "nodeId"
+      ]
     }
   },
   {
     "name": "list_site_nodes",
     "description": "Node tree (id, displayName, type, child count) in DFS order, to find ids and section order. Multi-page site: pass pageId.",
-    "annotations": { "title": "List site nodes", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "List site nodes",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -619,7 +789,13 @@
   {
     "name": "search_site_nodes",
     "description": "Find nodes by text/displayName/id (`q`), component `type`, or className substring/regex. className filters return the full className — use them for site-wide class audits.",
-    "annotations": { "title": "Search site nodes", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Search site nodes",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -668,6 +844,13 @@
           "maxLength": 256
         }
       }
+    },
+    "annotations": {
+      "title": "List example blocks",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
@@ -691,7 +874,16 @@
           "description": "If true, attempt to replace hardcoded years with {{year}} and flag hardcoded colors for manual palette mapping. Default: false."
         }
       },
-      "required": ["sectionRootId"]
+      "required": [
+        "sectionRootId"
+      ]
+    },
+    "annotations": {
+      "title": "Extract block",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
@@ -739,7 +931,19 @@
           "description": "Hierarchical section structure {type, props, children}. Output from extract_section or hand-crafted."
         }
       },
-      "required": ["category", "templateId", "name", "structure"]
+      "required": [
+        "category",
+        "templateId",
+        "name",
+        "structure"
+      ]
+    },
+    "annotations": {
+      "title": "Save as block template",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
     }
   },
   {
@@ -769,13 +973,28 @@
           "maxLength": 256
         }
       },
-      "required": ["sectionRootId"]
+      "required": [
+        "sectionRootId"
+      ]
+    },
+    "annotations": {
+      "title": "Shuffle block",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": false
     }
   },
   {
     "name": "audit_seo",
     "description": "Score a site or template page for SEO: meta, heading hierarchy, alt text, link text, content depth. Returns fixes with node ids.",
-    "annotations": { "title": "Audit SEO", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Audit SEO",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -800,7 +1019,13 @@
   {
     "name": "list_templates",
     "description": "List stock templates. Filter by category, tag or q.",
-    "annotations": { "title": "List templates", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "List templates",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -825,7 +1050,13 @@
   {
     "name": "pull_template",
     "description": "Download a stock template's decoded node tree.",
-    "annotations": { "title": "Pull template", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Pull template",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -835,7 +1066,9 @@
           "maxLength": 256
         }
       },
-      "required": ["slug"]
+      "required": [
+        "slug"
+      ]
     }
   },
   {
@@ -890,7 +1123,18 @@
           "maxItems": 30
         }
       },
-      "required": ["slug", "title", "content"]
+      "required": [
+        "slug",
+        "title",
+        "content"
+      ]
+    },
+    "annotations": {
+      "title": "Save template",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
     }
   },
   {
@@ -946,6 +1190,13 @@
           "maxLength": 256
         }
       }
+    },
+    "annotations": {
+      "title": "Publish site as template",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
     }
   },
   {
@@ -996,7 +1247,16 @@
           "maxItems": 30
         }
       },
-      "required": ["slug"]
+      "required": [
+        "slug"
+      ]
+    },
+    "annotations": {
+      "title": "Update template",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
@@ -1011,13 +1271,28 @@
           "maxLength": 256
         }
       },
-      "required": ["slug"]
+      "required": [
+        "slug"
+      ]
+    },
+    "annotations": {
+      "title": "Delete template",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "list_sites",
     "description": "List all sites belonging to the authenticated tenant (remote).",
-    "annotations": { "title": "List sites", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "List sites",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {}
@@ -1026,7 +1301,13 @@
   {
     "name": "select_site",
     "description": "Set the active site for this session and clear any active template. The hosted server doesn't keep it between calls — still pass `id` on every call.",
-    "annotations": { "title": "Select site", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Select site",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1036,13 +1317,21 @@
           "maxLength": 256
         }
       },
-      "required": ["id"]
+      "required": [
+        "id"
+      ]
     }
   },
   {
     "name": "select_template",
     "description": "Make a template the edit target for this session; editing tools then act on it (clears the active site). Admin or tenant owner/editor only.",
-    "annotations": { "title": "Select template", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Select template",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1052,7 +1341,9 @@
           "maxLength": 256
         }
       },
-      "required": ["slug"]
+      "required": [
+        "slug"
+      ]
     }
   },
   {
@@ -1067,12 +1358,25 @@
           "maxLength": 256
         }
       }
+    },
+    "annotations": {
+      "title": "Pull site",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "create_site",
     "description": "Create a site from a template (default \"acme\", the blank starter) and return its id. Takes no node map; the site is built up afterwards with the section and node tools.",
-    "annotations": { "title": "Create site", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Create site",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1102,7 +1406,13 @@
   {
     "name": "update_site",
     "description": "Set the site's name (slug), title, description, ogImage, indexing, AI crawlers, timezone, language or mount origin/key — immediate, no publish. title/description/ogImage: fallbacks for pages without their own seo. \"\" clears. Details: get_style_reference({ topic: \"site\" }).",
-    "annotations": { "title": "Update site", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": true },
+    "annotations": {
+      "title": "Update site",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1133,7 +1443,11 @@
         },
         "crawlMode": {
           "type": "string",
-          "enum": ["public", "noindex", "private_preview"],
+          "enum": [
+            "public",
+            "noindex",
+            "private_preview"
+          ],
           "description": "public = indexed. noindex = viewable by link, kept out of search (a client copy not yet on its domain). private_preview = noindex + robots.txt Disallow."
         },
         "blockAiCrawlers": {
@@ -1165,7 +1479,13 @@
   {
     "name": "publish_site",
     "description": "Publish the draft so it goes live. Every write is staged until this runs. `static` switches static delivery on/off (omit to leave it).",
-    "annotations": { "title": "Publish site", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": true },
+    "annotations": {
+      "title": "Publish site",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1184,7 +1504,13 @@
   {
     "name": "unpublish_site",
     "description": "Take the site offline.",
-    "annotations": { "title": "Unpublish site", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": true },
+    "annotations": {
+      "title": "Unpublish site",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1199,7 +1525,13 @@
   {
     "name": "duplicate_site",
     "description": "Copy a site you're a member of into a new site you own (content, title, description, portal, crawlPolicy). Domain and published state are not copied. The copy becomes active.",
-    "annotations": { "title": "Duplicate site", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Duplicate site",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1229,7 +1561,13 @@
   {
     "name": "screenshot_site",
     "description": "Screenshot the DRAFT in a real browser — the only way to see compiled CSS, theme, state-driven UI and responsive layout. Shoot sections with `selector` (full size, not scaled down), at the design width and at 390.",
-    "annotations": { "title": "Screenshot site", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": true },
+    "annotations": {
+      "title": "Screenshot site",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1266,7 +1604,13 @@
   {
     "name": "list_site_emails",
     "description": "List the site's transactional emails (receipt, welcome, gift card, sign-in link, downloads): customized or default, and whether each sends. Start here.",
-    "annotations": { "title": "List site emails", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "List site emails",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1281,10 +1625,18 @@
   {
     "name": "get_site_email",
     "description": "Read one site email: subject, preheader, node tree, allowed {{variables.*}} and EmailSlot nodes (keep required slots exactly once). Emails use only Container, Text, Button, Image, EmailSlot and email-safe classes (no btn/card/shadow/gradient/absolute).",
-    "annotations": { "title": "Get site email", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Get site email",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
-      "required": ["kind"],
+      "required": [
+        "kind"
+      ],
       "properties": {
         "id": {
           "type": "string",
@@ -1311,10 +1663,18 @@
   {
     "name": "update_site_email",
     "description": "Save a site email's subject, preheader and/or full flat node map, or reset: true. Validated: unknown variables, missing/duplicate required slots and unsupported classes are rejected. Theme and company data are injected at send time. preview_site_email renders the saved result.",
-    "annotations": { "title": "Update site email", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
+    "annotations": {
+      "title": "Update site email",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
-      "required": ["kind"],
+      "required": [
+        "kind"
+      ],
       "properties": {
         "id": {
           "type": "string",
@@ -1359,10 +1719,18 @@
   {
     "name": "preview_site_email",
     "description": "Render the saved email with sample data: subject, errors (an email with errors sends the default instead), warnings, plain text.",
-    "annotations": { "title": "Preview site email", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Preview site email",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
-      "required": ["kind"],
+      "required": [
+        "kind"
+      ],
       "properties": {
         "id": {
           "type": "string",
@@ -1389,7 +1757,13 @@
   {
     "name": "get_domain_status",
     "description": "Read the site's custom domain: redirect mode, apex/www Vercel state, and the exact DNS records the user needs to create. `check` preflights another domain without changes.",
-    "annotations": { "title": "Get domain status", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": true },
+    "annotations": {
+      "title": "Get domain status",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1409,7 +1783,13 @@
   {
     "name": "check_domain",
     "description": "Preflight a candidate domain (apex + www): free, attached or erroring, plus the DNS records it would need. Changes nothing.",
-    "annotations": { "title": "Check domain", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": true },
+    "annotations": {
+      "title": "Check domain",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1424,13 +1804,21 @@
           "maxLength": 253
         }
       },
-      "required": ["domain"]
+      "required": [
+        "domain"
+      ]
     }
   },
   {
     "name": "set_domain",
     "description": "Attach a custom domain (apex + www pair, or one subdomain) and return the DNS records to create, specific to this project. Doesn't publish; clear_domain detaches. 409 = a variant is on another Vercel project; 403 upgrade = plan domain limit. Details: get_style_reference({ topic: \"domains\" }).",
-    "annotations": { "title": "Set domain", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": true },
+    "annotations": {
+      "title": "Set domain",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1446,17 +1834,29 @@
         },
         "redirectMode": {
           "type": "string",
-          "enum": ["none", "to-apex", "to-www"],
+          "enum": [
+            "none",
+            "to-apex",
+            "to-www"
+          ],
           "description": "to-apex (default, www → apex 308) | to-www | none."
         }
       },
-      "required": ["domain"]
+      "required": [
+        "domain"
+      ]
     }
   },
   {
     "name": "clear_domain",
     "description": "Remove the custom domain from the active site. Detaches both apex and www variants from Vercel and resets redirectMode to none.",
-    "annotations": { "title": "Clear domain", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": true },
+    "annotations": {
+      "title": "Clear domain",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1471,7 +1871,13 @@
   {
     "name": "set_domain_redirect_mode",
     "description": "Switch the apex/www redirect pairing on an attached domain.",
-    "annotations": { "title": "Set domain redirect mode", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": true },
+    "annotations": {
+      "title": "Set domain redirect mode",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1482,17 +1888,29 @@
         },
         "redirectMode": {
           "type": "string",
-          "enum": ["none", "to-apex", "to-www"],
+          "enum": [
+            "none",
+            "to-apex",
+            "to-www"
+          ],
           "description": "New pairing."
         }
       },
-      "required": ["redirectMode"]
+      "required": [
+        "redirectMode"
+      ]
     }
   },
   {
     "name": "delete_site",
     "description": "Delete a site. Requires an explicit id.",
-    "annotations": { "title": "Delete site", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
+    "annotations": {
+      "title": "Delete site",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1502,13 +1920,21 @@
           "maxLength": 256
         }
       },
-      "required": ["id"]
+      "required": [
+        "id"
+      ]
     }
   },
   {
     "name": "invite_site_member",
     "description": "Invite someone to a site by email as owner, editor (default) or viewer. Owner-only. Re-inviting refreshes the link.",
-    "annotations": { "title": "Invite site member", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": true },
+    "annotations": {
+      "title": "Invite site member",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1520,7 +1946,11 @@
         "role": {
           "type": "string",
           "description": "Default editor.",
-          "enum": ["owner", "editor", "viewer"]
+          "enum": [
+            "owner",
+            "editor",
+            "viewer"
+          ]
         },
         "id": {
           "type": "string",
@@ -1528,13 +1958,21 @@
           "maxLength": 256
         }
       },
-      "required": ["email"]
+      "required": [
+        "email"
+      ]
     }
   },
   {
     "name": "list_site_members",
     "description": "List a site's members with roles, and pending invites with their ids. Owner-only.",
-    "annotations": { "title": "List site members", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "List site members",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1549,7 +1987,13 @@
   {
     "name": "revoke_site_invite",
     "description": "Revoke a pending invite by id (from list_site_members). Owner-only; existing members stay.",
-    "annotations": { "title": "Revoke site invite", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
+    "annotations": {
+      "title": "Revoke site invite",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1564,13 +2008,21 @@
           "maxLength": 256
         }
       },
-      "required": ["inviteId"]
+      "required": [
+        "inviteId"
+      ]
     }
   },
   {
     "name": "upload_image",
     "description": "Upload an image to the site's media library. Returns a mediaId, which goes in an Image's `src` with type \"cdn\" (never `content`, which is deprecated). Web images: `imageUrl`. `dataBase64` has a ~3MB cap and is costly in tokens. More: get_style_reference({ topic: \"media\" }).",
-    "annotations": { "title": "Upload image", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": true },
+    "annotations": {
+      "title": "Upload image",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1622,7 +2074,13 @@
   {
     "name": "upload_file",
     "description": "Upload any plan-allowed file. Images go to the CDN (type \"cdn\"); video/audio/pdf/zip go to R2 (type \"r2\" + public url) for a Link, a collection field, or a Video node (provider \"r2\", videoId = mediaId). Web files: `fileUrl`. `dataBase64` is a last resort (~3MB cap; pass mimeType for non-images).",
-    "annotations": { "title": "Upload file", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": true },
+    "annotations": {
+      "title": "Upload file",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1678,36 +2136,97 @@
   {
     "name": "list_downloads",
     "description": "Site's hosted downloads: link, versions (★ = served), download count, plan allowance.",
-    "annotations": { "title": "List downloads", "readOnlyHint": true, "destructiveHint": false, "idempotentHint": true, "openWorldHint": false },
+    "annotations": {
+      "title": "List downloads",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
-        "id": { "type": "string", "description": "Site id.", "maxLength": 256 }
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        }
       }
     }
   },
   {
     "name": "set_download",
     "description": "Host a file behind a stable link (<site>/api/downloads/<id>); link to it from a Button. New: name + file. New version: downloadId + file (same link). Roll back: downloadId + currentVersionId. File = filePath (stdio) or an upload's mediaId (a public upload, e.g. a chat attachment, is moved private). access makes it members-only. A Video (provider url) plays it with videoId \"/api/downloads/<id>?inline=1\". Pro+; .exe/.dmg etc need Agency.",
-    "annotations": { "title": "Set download", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Set download",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
-        "id": { "type": "string", "description": "Site id.", "maxLength": 256 },
-        "downloadId": { "type": "string", "description": "Existing download; omit to create.", "maxLength": 40 },
-        "name": { "type": "string", "description": "Display name; required when creating.", "maxLength": 120 },
-        "filePath": { "type": "string", "description": "Local file (stdio only).", "maxLength": 4096 },
-        "mediaId": { "type": "string", "description": "An uploaded file's mediaId (upload_file or a chat attachment); not images.", "maxLength": 100 },
-        "filename": { "type": "string", "description": "Saved-as name; required with mediaId.", "maxLength": 200 },
-        "label": { "type": "string", "description": "e.g. v1.2", "maxLength": 60 },
-        "notes": { "type": "string", "description": "Changelog.", "maxLength": 2000 },
-        "currentVersionId": { "type": "string", "description": "Serve this existing version.", "maxLength": 40 },
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "downloadId": {
+          "type": "string",
+          "description": "Existing download; omit to create.",
+          "maxLength": 40
+        },
+        "name": {
+          "type": "string",
+          "description": "Display name; required when creating.",
+          "maxLength": 120
+        },
+        "filePath": {
+          "type": "string",
+          "description": "Local file (stdio only).",
+          "maxLength": 4096
+        },
+        "mediaId": {
+          "type": "string",
+          "description": "An uploaded file's mediaId (upload_file or a chat attachment); not images.",
+          "maxLength": 100
+        },
+        "filename": {
+          "type": "string",
+          "description": "Saved-as name; required with mediaId.",
+          "maxLength": 200
+        },
+        "label": {
+          "type": "string",
+          "description": "e.g. v1.2",
+          "maxLength": 60
+        },
+        "notes": {
+          "type": "string",
+          "description": "Changelog.",
+          "maxLength": 2000
+        },
+        "currentVersionId": {
+          "type": "string",
+          "description": "Serve this existing version.",
+          "maxLength": 40
+        },
         "access": {
           "type": "object",
           "description": "Members-only: members true = any plan; plans = one of these. members false = public.",
           "properties": {
-            "members": { "type": "boolean" },
-            "plans": { "type": "array", "items": { "type": "string", "maxLength": 48 }, "maxItems": 50 }
+            "members": {
+              "type": "boolean"
+            },
+            "plans": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 48
+              },
+              "maxItems": 50
+            }
           }
         }
       }
@@ -1716,26 +2235,269 @@
   {
     "name": "remove_download",
     "description": "Remove a download (link then 404s) or one non-current version; unused files are deleted.",
-    "annotations": { "title": "Remove download", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
+    "annotations": {
+      "title": "Remove download",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
-        "id": { "type": "string", "description": "Site id.", "maxLength": 256 },
-        "downloadId": { "type": "string", "description": "Download id.", "maxLength": 40 },
-        "versionId": { "type": "string", "description": "Only this version.", "maxLength": 40 }
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "downloadId": {
+          "type": "string",
+          "description": "Download id.",
+          "maxLength": 40
+        },
+        "versionId": {
+          "type": "string",
+          "description": "Only this version.",
+          "maxLength": 40
+        }
       },
-      "required": ["downloadId"]
+      "required": [
+        "downloadId"
+      ]
     }
   },
-  {"name": "list_membership_plans", "description": "Site's membership plans: slug, prices, access length, flags.", "annotations": {"title": "List membership plans", "readOnlyHint": true, "destructiveHint": false, "idempotentHint": true, "openWorldHint": false}, "inputSchema": {"type": "object", "properties": {"id": {"type": "string", "description": "Site id.", "maxLength": 256}}}},
-  {"name": "set_membership_plan", "description": "Create (new slug) or edit a plan; only passed fields change. Slug is permanent; gate with auth customer.plans.<slug> exists. Paid: stripePriceIds. Free: selfSignup. Pro+.", "annotations": {"title": "Set membership plan", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": true, "openWorldHint": false}, "inputSchema": {"type": "object", "properties": {"id": {"type": "string", "description": "Site id.", "maxLength": 256}, "slug": {"type": "string", "description": "a-z, 0-9, dashes.", "maxLength": 48}, "name": {"type": "string", "description": "Required when creating.", "maxLength": 120}, "description": {"type": "string", "maxLength": 2000}, "stripePriceIds": {"type": "array", "items": {"type": "string", "maxLength": 100}, "maxItems": 20, "description": "Stripe price ids or pd:<rowId>."}, "accessDays": {"type": "integer", "minimum": 1, "description": "One-time prices: days per purchase. Omit = lifetime."}, "selfSignup": {"type": "boolean", "description": "Free plan; only with no prices."}, "archived": {"type": "boolean", "description": "Stop selling; members keep it."}}, "required": ["slug"]}},
-  {"name": "list_members", "description": "Site customers with their plans, status and expiry. Filter by plan, status, q; paged.", "annotations": {"title": "List members", "readOnlyHint": true, "destructiveHint": false, "idempotentHint": true, "openWorldHint": false}, "inputSchema": {"type": "object", "properties": {"id": {"type": "string", "description": "Site id.", "maxLength": 256}, "plan": {"type": "string", "description": "Plan slug.", "maxLength": 48}, "status": {"type": "string", "enum": ["active", "past_due", "ended", "none", "blocked"]}, "q": {"type": "string", "description": "Email or name.", "maxLength": 200}, "cursor": {"type": "string", "description": "nextCursor from the last page.", "maxLength": 40}}}},
-  {"name": "set_member", "description": "add (email, plan?, sendInvite?), or grant/revoke/extend a plan, block/unblock, rename a member found by customerId or email. Applies on their next page load; never cancels Stripe billing.", "annotations": {"title": "Set member", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": true}, "inputSchema": {"type": "object", "properties": {"id": {"type": "string", "description": "Site id.", "maxLength": 256}, "action": {"type": "string", "enum": ["add", "grant", "revoke", "extend", "block", "unblock", "rename"]}, "customerId": {"type": "string", "maxLength": 40}, "email": {"type": "string", "maxLength": 254}, "name": {"type": "string", "maxLength": 120}, "plan": {"type": "string", "description": "Plan slug.", "maxLength": 48}, "expiresAt": {"type": "string", "description": "ISO date.", "maxLength": 40}, "note": {"type": "string", "maxLength": 500}, "sendInvite": {"type": "boolean", "description": "add: email a sign-in link."}}, "required": ["action"]}},
-  {"name": "remove_member", "description": "Delete a member (customerId or email); sign-in stops at once. Stripe billing continues.", "annotations": {"title": "Remove member", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false}, "inputSchema": {"type": "object", "properties": {"id": {"type": "string", "description": "Site id.", "maxLength": 256}, "customerId": {"type": "string", "maxLength": 40}, "email": {"type": "string", "maxLength": 254}}}},
+  {
+    "name": "list_membership_plans",
+    "description": "Site's membership plans: slug, prices, access length, flags.",
+    "annotations": {
+      "title": "List membership plans",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        }
+      }
+    }
+  },
+  {
+    "name": "set_membership_plan",
+    "description": "Create (new slug) or edit a plan; only passed fields change. Slug is permanent; gate with auth customer.plans.<slug> exists. Paid: stripePriceIds. Free: selfSignup. Pro+.",
+    "annotations": {
+      "title": "Set membership plan",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "slug": {
+          "type": "string",
+          "description": "a-z, 0-9, dashes.",
+          "maxLength": 48
+        },
+        "name": {
+          "type": "string",
+          "description": "Required when creating.",
+          "maxLength": 120
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "stripePriceIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "maxItems": 20,
+          "description": "Stripe price ids or pd:<rowId>."
+        },
+        "accessDays": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "One-time prices: days per purchase. Omit = lifetime."
+        },
+        "selfSignup": {
+          "type": "boolean",
+          "description": "Free plan; only with no prices."
+        },
+        "archived": {
+          "type": "boolean",
+          "description": "Stop selling; members keep it."
+        }
+      },
+      "required": [
+        "slug"
+      ]
+    }
+  },
+  {
+    "name": "list_members",
+    "description": "Site customers with their plans, status and expiry. Filter by plan, status, q; paged.",
+    "annotations": {
+      "title": "List members",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "plan": {
+          "type": "string",
+          "description": "Plan slug.",
+          "maxLength": 48
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "active",
+            "past_due",
+            "ended",
+            "none",
+            "blocked"
+          ]
+        },
+        "q": {
+          "type": "string",
+          "description": "Email or name.",
+          "maxLength": 200
+        },
+        "cursor": {
+          "type": "string",
+          "description": "nextCursor from the last page.",
+          "maxLength": 40
+        }
+      }
+    }
+  },
+  {
+    "name": "set_member",
+    "description": "add (email, plan?, sendInvite?), or grant/revoke/extend a plan, block/unblock, rename a member found by customerId or email. Applies on their next page load; never cancels Stripe billing.",
+    "annotations": {
+      "title": "Set member",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "add",
+            "grant",
+            "revoke",
+            "extend",
+            "block",
+            "unblock",
+            "rename"
+          ]
+        },
+        "customerId": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "email": {
+          "type": "string",
+          "maxLength": 254
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "plan": {
+          "type": "string",
+          "description": "Plan slug.",
+          "maxLength": 48
+        },
+        "expiresAt": {
+          "type": "string",
+          "description": "ISO date.",
+          "maxLength": 40
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "sendInvite": {
+          "type": "boolean",
+          "description": "add: email a sign-in link."
+        }
+      },
+      "required": [
+        "action"
+      ]
+    }
+  },
+  {
+    "name": "remove_member",
+    "description": "Delete a member (customerId or email); sign-in stops at once. Stripe billing continues.",
+    "annotations": {
+      "title": "Remove member",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "customerId": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "email": {
+          "type": "string",
+          "maxLength": 254
+        }
+      }
+    }
+  },
   {
     "name": "find_image",
     "description": "Stock photos with verified, ready-to-use URLs (local bank, then Unsplash/Pexels).",
-    "annotations": { "title": "Find image", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": true },
+    "annotations": {
+      "title": "Find image",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1746,19 +2508,33 @@
         },
         "category": {
           "type": "string",
-          "enum": ["hero", "avatar", "product", "background", "team", "general"],
+          "enum": [
+            "hero",
+            "avatar",
+            "product",
+            "background",
+            "team",
+            "general"
+          ],
           "description": "hero/background = wide; avatar = faces; product = objects; team = groups.",
           "maxLength": 128
         },
         "orientation": {
           "type": "string",
-          "enum": ["landscape", "portrait", "square"],
+          "enum": [
+            "landscape",
+            "portrait",
+            "square"
+          ],
           "description": "Default landscape.",
           "maxLength": 128
         },
         "provider": {
           "type": "string",
-          "enum": ["unsplash", "pexels"],
+          "enum": [
+            "unsplash",
+            "pexels"
+          ],
           "description": "Default pexels.",
           "maxLength": 128
         },
@@ -1772,7 +2548,13 @@
   {
     "name": "find_video",
     "description": "Stock videos with direct MP4 URLs (Pexels) for Video nodes.",
-    "annotations": { "title": "Find video", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": true },
+    "annotations": {
+      "title": "Find video",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1783,7 +2565,11 @@
         },
         "orientation": {
           "type": "string",
-          "enum": ["landscape", "portrait", "square"],
+          "enum": [
+            "landscape",
+            "portrait",
+            "square"
+          ],
           "description": "Orientation filter.",
           "maxLength": 128
         },
@@ -1797,7 +2583,9 @@
         },
         "provider": {
           "type": "string",
-          "enum": ["pexels"],
+          "enum": [
+            "pexels"
+          ],
           "description": "Only pexels.",
           "maxLength": 128
         },
@@ -1811,7 +2599,13 @@
   {
     "name": "find_icon",
     "description": "Search every icon set; returns ranked `ref-icon:<set>/<Name>` refs for Icon nodes and Button/Link icon.value. Tabler (tb) lacks many brand logos; brands come from fa / si / … and appear in the results.",
-    "annotations": { "title": "Find icon", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Find icon",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1827,7 +2621,10 @@
         },
         "kind": {
           "type": "string",
-          "enum": ["brand", "ui"],
+          "enum": [
+            "brand",
+            "ui"
+          ],
           "description": "brand = logo sets; ui = Tabler only.",
           "maxLength": 128
         },
@@ -1836,13 +2633,21 @@
           "description": "Default 12, max 50."
         }
       },
-      "required": ["q"]
+      "required": [
+        "q"
+      ]
     }
   },
   {
     "name": "patch_site_node",
     "description": "Patch one node (several: patch_site_bulk, one atomic write). classNamePatch merges Tailwind classes; propsPatch sets other props (objects like dataSource deep-merge, strings and arrays replace); typePatch swaps the component type; unsetProps (runs first) drops a key or branch. Image: write src only; writing content is rejected, and unsetProps [\"content\"] clears an old one. No children. Rules: get_style_reference({ topic: \"editing\" }).",
-    "annotations": { "title": "Patch site node", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Patch site node",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1904,24 +2709,41 @@
         },
         "buttonValidation": {
           "type": "string",
-          "enum": ["off", "warn", "fix", "strict"],
+          "enum": [
+            "off",
+            "warn",
+            "fix",
+            "strict"
+          ],
           "description": "off | warn | fix (default) | strict, for touched Buttons.",
           "maxLength": 128
         },
         "designValidation": {
           "type": "string",
-          "enum": ["off", "warn", "strict"],
+          "enum": [
+            "off",
+            "warn",
+            "strict"
+          ],
           "description": "off | warn (default) | strict token checks on touched nodes.",
           "maxLength": 128
         }
       },
-      "required": ["nodeId"]
+      "required": [
+        "nodeId"
+      ]
     }
   },
   {
     "name": "patch_site_bulk",
     "description": "Apply many node patches in one atomic write (parallel single patches lose updates). `patches` is a real JSON array of { nodeId, typePatch?, classNamePatch?, propsPatch?, nodesPatch?, unsetClasses?, unsetProps? }. Same rules as patch_site_node.",
-    "annotations": { "title": "Patch site bulk", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Patch site bulk",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1982,7 +2804,9 @@
                 "description": "Dotted prop paths to delete, e.g. \"seo.jsonLd\"."
               }
             },
-            "required": ["nodeId"]
+            "required": [
+              "nodeId"
+            ]
           },
           "description": "Array (not a string), applied in order to one fetched document.",
           "maxItems": 1000
@@ -1994,24 +2818,41 @@
         },
         "buttonValidation": {
           "type": "string",
-          "enum": ["off", "warn", "fix", "strict"],
+          "enum": [
+            "off",
+            "warn",
+            "fix",
+            "strict"
+          ],
           "description": "off | warn | fix (default) | strict, for touched Buttons.",
           "maxLength": 128
         },
         "designValidation": {
           "type": "string",
-          "enum": ["off", "warn", "strict"],
+          "enum": [
+            "off",
+            "warn",
+            "strict"
+          ],
           "description": "off | warn (default) | strict token checks on touched nodes.",
           "maxLength": 128
         }
       },
-      "required": ["patches"]
+      "required": [
+        "patches"
+      ]
     }
   },
   {
     "name": "set_portal",
     "description": "Enable a portal UI around the published site (sales banner, client review, demo).",
-    "annotations": { "title": "Set portal", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
+    "annotations": {
+      "title": "Set portal",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2035,13 +2876,21 @@
           "description": "Extra portal config, merged in."
         }
       },
-      "required": ["type"]
+      "required": [
+        "type"
+      ]
     }
   },
   {
     "name": "get_portal",
     "description": "Fetch the current portal configuration for a site.",
-    "annotations": { "title": "Get portal", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Get portal",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2056,7 +2905,13 @@
   {
     "name": "remove_portal",
     "description": "Remove/disable the portal on a site (sets portal to null).",
-    "annotations": { "title": "Remove portal", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
+    "annotations": {
+      "title": "Remove portal",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2071,7 +2926,13 @@
   {
     "name": "audit_accessibility",
     "description": "WCAG audit of a site or template page: contrast, alt text, headings, ARIA, interactive elements. Returns violations by severity with node ids.",
-    "annotations": { "title": "Audit accessibility", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Audit accessibility",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2092,7 +2953,11 @@
         },
         "level": {
           "type": "string",
-          "enum": ["A", "AA", "AAA"],
+          "enum": [
+            "A",
+            "AA",
+            "AAA"
+          ],
           "description": "Default AA.",
           "maxLength": 128
         }
@@ -2102,7 +2967,13 @@
   {
     "name": "search_blocks",
     "description": "Search the block library; returns one page of slugs with descriptions and tags (full structure: get_block), plus sections on this site that can be cloned. `q` takes short layout phrases (\"split hero\"), `categories` / `styles` arrays OR-filter, `page` pages through. Guide: get_style_reference({ topic: \"blocks\" }).",
-    "annotations": { "title": "Search blocks", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Search blocks",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2170,7 +3041,10 @@
         },
         "blockType": {
           "type": "string",
-          "enum": ["section", "component"],
+          "enum": [
+            "section",
+            "component"
+          ],
           "description": "section (default) = page sections; component = patterns inside sections.",
           "maxLength": 128
         },
@@ -2197,7 +3071,13 @@
   {
     "name": "get_block",
     "description": "Get a library block's full tree by slug — reference for hand-building with add_nodes. Counts as a use.",
-    "annotations": { "title": "Get block", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Get block",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2207,13 +3087,21 @@
           "maxLength": 256
         }
       },
-      "required": ["slug"]
+      "required": [
+        "slug"
+      ]
     }
   },
   {
     "name": "list_block_nodes",
     "description": "List a library block's node ids (lib_*) and displayNames — the keys apply_kit_block's contentOverrides / propOverrides use. Counts as a use.",
-    "annotations": { "title": "List block nodes", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "List block nodes",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2223,13 +3111,21 @@
           "maxLength": 256
         }
       },
-      "required": ["slug"]
+      "required": [
+        "slug"
+      ]
     }
   },
   {
     "name": "apply_kit_block",
     "description": "Stamp a section as-is: a library block (`slug`) or a clone of a page section already on this site (`sourceNodeId`) — exactly one. To design a section for this business, use add_nodes with get_block as reference instead. `contentOverrides` sets the final copy in the same call, keyed by the block's lib_* ids. target \"header\"/\"footer\" swaps the site header/footer. Guide: get_style_reference({ topic: \"blocks\" }).",
-    "annotations": { "title": "Apply kit block", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Apply kit block",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2250,7 +3146,11 @@
         },
         "target": {
           "type": "string",
-          "enum": ["page", "header", "footer"],
+          "enum": [
+            "page",
+            "header",
+            "footer"
+          ],
           "description": "page (default) | header (replaces hdr_root) | footer (replaces ftr_root).",
           "maxLength": 128
         },
@@ -2360,7 +3260,19 @@
           "description": "Use this block as the representative preview/thumbnail for its category. Default: false."
         }
       },
-      "required": ["name", "slug", "category", "structure"]
+      "required": [
+        "name",
+        "slug",
+        "category",
+        "structure"
+      ]
+    },
+    "annotations": {
+      "title": "Save block",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
     }
   },
   {
@@ -2451,7 +3363,16 @@
           "description": "Toggle category preview thumbnail."
         }
       },
-      "required": ["slug"]
+      "required": [
+        "slug"
+      ]
+    },
+    "annotations": {
+      "title": "Update block",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
@@ -2512,7 +3433,17 @@
           "maxItems": 200
         }
       },
-      "required": ["slug", "nodeId"]
+      "required": [
+        "slug",
+        "nodeId"
+      ]
+    },
+    "annotations": {
+      "title": "Patch block",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
@@ -2578,13 +3509,25 @@
                 "maxItems": 200
               }
             },
-            "required": ["nodeId"]
+            "required": [
+              "nodeId"
+            ]
           },
           "description": "Non-empty array of per-node patches (same keys as patch_block).",
           "maxItems": 1000
         }
       },
-      "required": ["slug", "patches"]
+      "required": [
+        "slug",
+        "patches"
+      ]
+    },
+    "annotations": {
+      "title": "Patch block bulk",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
@@ -2599,13 +3542,28 @@
           "maxLength": 256
         }
       },
-      "required": ["slug"]
+      "required": [
+        "slug"
+      ]
+    },
+    "annotations": {
+      "title": "Delete block",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   },
   {
     "name": "list_pages",
     "description": "List the site's pages: node id, name, slug, home/404 flags. Use it to get page ids.",
-    "annotations": { "title": "List pages", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "List pages",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2620,7 +3578,13 @@
   {
     "name": "add_page",
     "description": "Create a page (a type \"page\" Container under ROOT; the first page is home). Returns the pageId that apply_kit_block and add_nodes take. seo.title + seo.description can be set here. Guide: get_style_reference({ topic: \"pages\" }).",
-    "annotations": { "title": "Add page", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Add page",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2705,13 +3669,21 @@
           }
         }
       },
-      "required": ["name"]
+      "required": [
+        "name"
+      ]
     }
   },
   {
     "name": "update_page",
     "description": "Update a page: name (changes the slug), SEO, home/404/hidden flags, per-page headCode/footerCode/bodyClass, hideHeader/hideFooter/hideChrome, pathPattern. Without seo.title/description it uses the site's (update_site). Code fields: third-party code only. Guide: get_style_reference({ topic: \"pages\" }).",
-    "annotations": { "title": "Update page", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
+    "annotations": {
+      "title": "Update page",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2828,13 +3800,21 @@
           "maxLength": 512
         }
       },
-      "required": ["pageId"]
+      "required": [
+        "pageId"
+      ]
     }
   },
   {
     "name": "delete_page",
     "description": "Delete a page and its content. The last page can't be deleted; deleting home promotes the next page.",
-    "annotations": { "title": "Delete page", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
+    "annotations": {
+      "title": "Delete page",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2849,13 +3829,21 @@
           "maxLength": 256
         }
       },
-      "required": ["pageId"]
+      "required": [
+        "pageId"
+      ]
     }
   },
   {
     "name": "add_nodes",
     "description": "Build a section: a flat map of new nodes plus the `rootNodeId` to attach under `parentId` (default page_home). The default way to design a section for this business. Each node: type.resolvedName, isCanvas, props (className, custom.displayName), parent, nodes[], linkedNodes: {}. The map holds only new nodes; get_block shows example shapes. Contract: get_style_reference({ topic: \"editing\" }).",
-    "annotations": { "title": "Add nodes", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Add nodes",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2870,7 +3858,12 @@
         },
         "buttonValidation": {
           "type": "string",
-          "enum": ["off", "warn", "fix", "strict"],
+          "enum": [
+            "off",
+            "warn",
+            "fix",
+            "strict"
+          ],
           "description": "off | warn | fix (default) | strict, for Buttons in the payload.",
           "maxLength": 128
         },
@@ -2893,13 +3886,22 @@
           "description": "{ Text: [{ name, classes, requires }], … } upserted into ROOT.props.modifiers. Only for shortcut modifier names in className. See get_style_reference({ topic: \"editing\" })."
         }
       },
-      "required": ["nodes", "rootNodeId"]
+      "required": [
+        "nodes",
+        "rootNodeId"
+      ]
     }
   },
   {
     "name": "place_section_tree",
     "description": "Clone-pipeline fill mode only (errors elsewhere). Submit the complete nested tree for your assigned section in one call; a second call replaces the first. `hierarchy` is an object: root Container, each node { type, props, children? }. Never invent Image.src; button URLs go in the action href. Shape: get_style_reference({ topic: \"section-tree\" }).",
-    "annotations": { "title": "Place section tree", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
+    "annotations": {
+      "title": "Place section tree",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2929,16 +3931,27 @@
               }
             }
           },
-          "required": ["type"]
+          "required": [
+            "type"
+          ]
         }
       },
-      "required": ["reason", "hierarchy"]
+      "required": [
+        "reason",
+        "hierarchy"
+      ]
     }
   },
   {
     "name": "suggest_palettes",
     "description": "Show 3 palette options for the user to pick from. Does NOT change the site; the chosen palette is applied separately with set_theme.",
-    "annotations": { "title": "Suggest palettes", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Suggest palettes",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2974,18 +3987,29 @@
                 "maxItems": 30
               }
             },
-            "required": ["name", "palette"]
+            "required": [
+              "name",
+              "palette"
+            ]
           },
           "maxItems": 10
         }
       },
-      "required": ["options"]
+      "required": [
+        "options"
+      ]
     }
   },
   {
     "name": "suggest_font_pairings",
     "description": "Show 3 font pairings (heading + body Google Fonts) for the user to pick from. Does NOT change the site; the chosen pairing is applied separately with set_theme.",
-    "annotations": { "title": "Suggest font pairings", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Suggest font pairings",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3028,7 +4052,10 @@
                     "maxLength": 512
                   }
                 },
-                "required": ["headingFontFamily", "bodyFontFamily"]
+                "required": [
+                  "headingFontFamily",
+                  "bodyFontFamily"
+                ]
               },
               "palette": {
                 "type": "array",
@@ -3048,18 +4075,29 @@
                 "maxItems": 30
               }
             },
-            "required": ["name", "styleGuide"]
+            "required": [
+              "name",
+              "styleGuide"
+            ]
           },
           "maxItems": 10
         }
       },
-      "required": ["options"]
+      "required": [
+        "options"
+      ]
     }
   },
   {
     "name": "set_favicon",
     "description": "Set or clear the site favicon. Exactly one source: `mediaId`, `imageUrl`, `svgContent` (user-supplied SVG), `dataBase64` (small icons, ~3MB cap), or `clear: true`. Best: a 512px square PNG or an SVG. Staged — publish to see it live. More: get_style_reference({ topic: \"media\" }).",
-    "annotations": { "title": "Set favicon", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": true },
+    "annotations": {
+      "title": "Set favicon",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3113,7 +4151,13 @@
   {
     "name": "set_integrations",
     "description": "Set analytics and verification ids, rendered as real tags on published pages: GA4, GTM, Search Console, Meta Pixel, Google Ads. Other third-party scripts go in ROOT inject.head/footer via patch_site_node. Per-action conversions: get_style_reference({ topic: \"integrations\" }).",
-    "annotations": { "title": "Set integrations", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
+    "annotations": {
+      "title": "Set integrations",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3153,7 +4197,13 @@
   {
     "name": "set_redirects",
     "description": "Replace the site's 301/302 redirect rules, evaluated server-side before render. Paths are site-relative; destinations may be absolute URLs.",
-    "annotations": { "title": "Set redirects", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
+    "annotations": {
+      "title": "Set redirects",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3183,18 +4233,29 @@
                 "description": "true = 301 (default), false = 302."
               }
             },
-            "required": ["from", "to"]
+            "required": [
+              "from",
+              "to"
+            ]
           },
           "maxItems": 500
         }
       },
-      "required": ["redirects"]
+      "required": [
+        "redirects"
+      ]
     }
   },
   {
     "name": "get_site_chat",
     "description": "Read the site's chat bot settings: on/off, assistant name, greeting, owner instructions, which details it asks visitors for, where leads go, and whether the owner has AI credits (no credits = bubble hidden).",
-    "annotations": { "title": "Get site chat", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Get site chat",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3209,7 +4270,13 @@
   {
     "name": "set_site_chat",
     "description": "Change the site's chat bot settings; only the fields you pass change. Leads save to Form Submissions as \"Chat\". Visitors see it only on pages with an AgentFloatingBubble or AgentChat node, while the owner has credits.",
-    "annotations": { "title": "Set site chat", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
+    "annotations": {
+      "title": "Set site chat",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3218,25 +4285,66 @@
           "description": "Site id.",
           "maxLength": 256
         },
-        "enabled": { "type": "boolean", "description": "Turn chat on or off." },
-        "assistantName": { "type": "string", "description": "Name shown in the chat header.", "maxLength": 60 },
-        "greeting": { "type": "string", "description": "First message visitors see.", "maxLength": 280 },
-        "instructions": { "type": "string", "description": "Owner guidance: tone, what to push, what to avoid. Empty clears.", "maxLength": 2000 },
+        "enabled": {
+          "type": "boolean",
+          "description": "Turn chat on or off."
+        },
+        "assistantName": {
+          "type": "string",
+          "description": "Name shown in the chat header.",
+          "maxLength": 60
+        },
+        "greeting": {
+          "type": "string",
+          "description": "First message visitors see.",
+          "maxLength": 280
+        },
+        "instructions": {
+          "type": "string",
+          "description": "Owner guidance: tone, what to push, what to avoid. Empty clears.",
+          "maxLength": 2000
+        },
         "leadFields": {
           "type": "array",
           "description": "Details to collect before saving a lead. Must include email or phone.",
-          "items": { "type": "string", "enum": ["name", "email", "phone", "message"] }
+          "items": {
+            "type": "string",
+            "enum": [
+              "name",
+              "email",
+              "phone",
+              "message"
+            ]
+          }
         },
-        "leadCollectionSlug": { "type": "string", "description": "Also save each lead as a row in this collection. Empty stops.", "maxLength": 128 },
-        "notifyEmail": { "type": "string", "description": "Extra address emailed for each lead. Empty stops.", "maxLength": 200 },
-        "dailyCreditCap": { "type": "integer", "description": "Credits per UTC day for all chats; 0 pauses chat. Omit for the plan default.", "minimum": 0 }
+        "leadCollectionSlug": {
+          "type": "string",
+          "description": "Also save each lead as a row in this collection. Empty stops.",
+          "maxLength": 128
+        },
+        "notifyEmail": {
+          "type": "string",
+          "description": "Extra address emailed for each lead. Empty stops.",
+          "maxLength": 200
+        },
+        "dailyCreditCap": {
+          "type": "integer",
+          "description": "Credits per UTC day for all chats; 0 pauses chat. Omit for the plan default.",
+          "minimum": 0
+        }
       }
     }
   },
   {
     "name": "stripe_connect",
     "description": "Connect Stripe so the site can take payments. Returns the connection status and, while unfinished, a single-use onboarding URL that only the site owner can complete; the status reads 'ready' once they have, and that call fills the `products` collection from Stripe. Owner-only.",
-    "annotations": { "title": "Stripe: connect", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": true },
+    "annotations": {
+      "title": "Stripe: connect",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3251,18 +4359,34 @@
   {
     "name": "refresh_products",
     "description": "Sync the site's Stripe catalog into its `products` collection (creates it). Run after products change in Stripe. Returns the product count.",
-    "annotations": { "title": "Stripe: refresh products", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": true },
+    "annotations": {
+      "title": "Stripe: refresh products",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
-        "siteId": { "type": "string", "description": "Site id.", "maxLength": 128 }
+        "siteId": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 128
+        }
       }
     }
   },
   {
     "name": "set_checkout",
     "description": "Make a collection sellable through Stripe (remove: true stops): Cart Buttons in a Data repeater bound to it charge each row's `price` (minor units) or its Stripe price id (priceIdField). Needs stripe_connect. Details: get_style_reference({ topic: \"integrations\" }).",
-    "annotations": { "title": "Set checkout", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
+    "annotations": {
+      "title": "Set checkout",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3301,13 +4425,21 @@
           "maxLength": 128
         }
       },
-      "required": ["collectionSlug"]
+      "required": [
+        "collectionSlug"
+      ]
     }
   },
   {
     "name": "stripe_search_products",
     "description": "Search the site's live Stripe products (id, title, price, image, metadata).",
-    "annotations": { "title": "Stripe: search products", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": true },
+    "annotations": {
+      "title": "Stripe: search products",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3341,7 +4473,13 @@
   {
     "name": "stripe_list_categories",
     "description": "Distinct metadata.category values in the site's Stripe catalog, with product counts and an image.",
-    "annotations": { "title": "Stripe: list categories", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": true },
+    "annotations": {
+      "title": "Stripe: list categories",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3356,7 +4494,13 @@
   {
     "name": "stripe_get_product",
     "description": "One Stripe product by id or metadata.slug: title, description, price(s), images, metadata.",
-    "annotations": { "title": "Stripe: get product", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": true },
+    "annotations": {
+      "title": "Stripe: get product",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3381,7 +4525,13 @@
   {
     "name": "list_collections",
     "description": "List the site's collections (headless CMS): id, name, slug, row and field counts, public flag.",
-    "annotations": { "title": "List collections", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "List collections",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3396,7 +4546,13 @@
   {
     "name": "get_collection",
     "description": "Read one collection's definition (schema fields, source, isPublic).",
-    "annotations": { "title": "Get collection", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Get collection",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3411,13 +4567,21 @@
           "maxLength": 60
         }
       },
-      "required": ["slug"]
+      "required": [
+        "slug"
+      ]
     }
   },
   {
     "name": "create_collection",
     "description": "Create a collection. schema = [{ key, label, type, required?, default?, help?, … }]; types: text, number, boolean, date, select, image, url, email, color, richText, media, json. Source defaults to manual. Plan-gated.",
-    "annotations": { "title": "Create collection", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Create collection",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3457,13 +4621,22 @@
           "type": "boolean"
         }
       },
-      "required": ["name", "slug"]
+      "required": [
+        "name",
+        "slug"
+      ]
     }
   },
   {
     "name": "update_collection_schema",
     "description": "Change a collection's fields or member gates. `schema` replaces all fields (get_collection first). `requiredPlans` gates every row. To lock single rows: add a text field keyed `requiredPlans`, write comma-separated plan slugs on those rows; non-members get them minus `memberFields`, with `locked: true`.",
-    "annotations": { "title": "Update collection schema", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
+    "annotations": {
+      "title": "Update collection schema",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3487,25 +4660,39 @@
         "requiredPlans": {
           "type": "array",
           "description": "Plan slugs whose members alone see the rows; [] clears.",
-          "items": { "type": "string", "maxLength": 48 }
+          "items": {
+            "type": "string",
+            "maxLength": 48
+          }
         },
         "memberFields": {
           "type": "array",
           "description": "Fields hidden on locked rows.",
-          "items": { "type": "string", "maxLength": 64 }
+          "items": {
+            "type": "string",
+            "maxLength": 64
+          }
         },
         "requiresCustomerLogin": {
           "type": "boolean",
           "description": "Signed-in visitors only."
         }
       },
-      "required": ["slug"]
+      "required": [
+        "slug"
+      ]
     }
   },
   {
     "name": "delete_collection",
     "description": "Delete a collection and all its rows. No undo.",
-    "annotations": { "title": "Delete collection", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
+    "annotations": {
+      "title": "Delete collection",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3520,13 +4707,21 @@
           "maxLength": 60
         }
       },
-      "required": ["slug"]
+      "required": [
+        "slug"
+      ]
     }
   },
   {
     "name": "list_collection_rows",
     "description": "Page through a collection's rows: rows, nextCursor, hasMore, totalCount.",
-    "annotations": { "title": "List collection rows", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "List collection rows",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3551,13 +4746,21 @@
           "description": "nextCursor from the previous page."
         }
       },
-      "required": ["slug"]
+      "required": [
+        "slug"
+      ]
     }
   },
   {
     "name": "create_collection_row",
     "description": "Create one row. `data` maps field key → value, validated against the schema. Plan-gated.",
-    "annotations": { "title": "Create collection row", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Create collection row",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3576,13 +4779,22 @@
           "description": "Field key → value."
         }
       },
-      "required": ["slug", "data"]
+      "required": [
+        "slug",
+        "data"
+      ]
     }
   },
   {
     "name": "create_collection_rows",
     "description": "Insert up to 500 rows (field key → value) in one call, validated all-or-nothing (errors name the rowIndex). Plan-gated. Big CSVs: import_collection_csv.",
-    "annotations": { "title": "Create collection rows", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Create collection rows",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3604,13 +4816,22 @@
           }
         }
       },
-      "required": ["slug", "rows"]
+      "required": [
+        "slug",
+        "rows"
+      ]
     }
   },
   {
     "name": "update_collection_row",
     "description": "Partially update one row by rowId; omitted fields keep their values.",
-    "annotations": { "title": "Update collection row", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
+    "annotations": {
+      "title": "Update collection row",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3634,13 +4855,23 @@
           "type": "object"
         }
       },
-      "required": ["slug", "rowId", "data"]
+      "required": [
+        "slug",
+        "rowId",
+        "data"
+      ]
     }
   },
   {
     "name": "delete_collection_row",
     "description": "Delete one row from a collection by rowId.",
-    "annotations": { "title": "Delete collection row", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true, "openWorldHint": false },
+    "annotations": {
+      "title": "Delete collection row",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3660,13 +4891,22 @@
           "maxLength": 24
         }
       },
-      "required": ["slug", "rowId"]
+      "required": [
+        "slug",
+        "rowId"
+      ]
     }
   },
   {
     "name": "import_collection_csv",
     "description": "Import rows from CSV text or an uploaded CSV/TSV/XLSX file (exactly one of csv | mediaId); header columns match field keys (unmatched ignored). mode: append (default), replace (deletes existing rows first), upsert (by an externalId or id column). ~8MB cap. Plan-gated.",
-    "annotations": { "title": "Import collection CSV", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Import collection CSV",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3692,23 +4932,47 @@
         },
         "mode": {
           "type": "string",
-          "enum": ["append", "replace", "upsert"],
+          "enum": [
+            "append",
+            "replace",
+            "upsert"
+          ],
           "description": "Merge mode. Default append."
         }
       },
-      "required": ["slug"]
+      "required": [
+        "slug"
+      ]
     }
   },
   {
     "name": "import_site",
     "description": "Turn a static HTML site (pages, CSS, JS, images) into a NEW editable PageHub site draft. Inputs, one per call: filePath (local folder or .zip; local server only); size (zip bytes) returns an upload URL, curl line and uploadKey; uploadKey, after the PUT, starts the import; files sends text files inline (≤3MB). Returns an importId for get_import_status.",
-    "annotations": { "title": "Import HTML site", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": true },
+    "annotations": {
+      "title": "Import HTML site",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
-        "filePath": { "type": "string", "description": "Local folder or .zip. Local stdio server only.", "maxLength": 4096 },
-        "size": { "type": "integer", "description": "Exact zip size in bytes → returns an upload URL.", "minimum": 1 },
-        "uploadKey": { "type": "string", "description": "From the size step, after the PUT succeeded → starts the import.", "maxLength": 256 },
+        "filePath": {
+          "type": "string",
+          "description": "Local folder or .zip. Local stdio server only.",
+          "maxLength": 4096
+        },
+        "size": {
+          "type": "integer",
+          "description": "Exact zip size in bytes → returns an upload URL.",
+          "minimum": 1
+        },
+        "uploadKey": {
+          "type": "string",
+          "description": "From the size step, after the PUT succeeded → starts the import.",
+          "maxLength": 256
+        },
         "files": {
           "type": "array",
           "maxItems": 300,
@@ -3716,26 +4980,50 @@
           "items": {
             "type": "object",
             "properties": {
-              "path": { "type": "string", "maxLength": 512 },
-              "content": { "type": "string" }
+              "path": {
+                "type": "string",
+                "maxLength": 512
+              },
+              "content": {
+                "type": "string"
+              }
             },
-            "required": ["path", "content"]
+            "required": [
+              "path",
+              "content"
+            ]
           }
         },
-        "name": { "type": "string", "description": "Site name (default: home page title).", "maxLength": 120 }
+        "name": {
+          "type": "string",
+          "description": "Site name (default: home page title).",
+          "maxLength": 120
+        }
       }
     }
   },
   {
     "name": "get_import_status",
     "description": "Progress of an import_site run: status, page and media counts, warnings, redirects from the old page addresses. When status is ready it includes the new site id, editor link and preview link.",
-    "annotations": { "title": "Get import status", "readOnlyHint": true, "destructiveHint": false, "openWorldHint": false },
+    "annotations": {
+      "title": "Get import status",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
-        "importId": { "type": "string", "description": "From import_site.", "maxLength": 64 }
+        "importId": {
+          "type": "string",
+          "description": "From import_site.",
+          "maxLength": 64
+        }
       },
-      "required": ["importId"]
+      "required": [
+        "importId"
+      ]
     }
   }
 ]
