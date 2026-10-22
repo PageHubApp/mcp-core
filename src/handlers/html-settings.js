@@ -1,9 +1,7 @@
 /**
- * `set_theme` / `set_favicon` on an HTML-first site: the theme is `theme.css` and the favicon is `site.json`
- * `favicon`, so both are written by the server (`PUT /api/v1/sites/:id/source-settings`), with the same generators
- * that wrote the file when the site was converted (app repo: docs/features/html-first-ai-mcp.md, "Theme").
- * handlers/remote-theme.js and handlers/site-config.js try the node-tree path first and come here when the site
- * answers `SITE_IS_HTML`.
+ * `set_theme` / `set_integrations` / `set_favicon`: the theme is `theme.css` and the favicon is `site.json`
+ * `favicon`, so both are written by the server (`PUT /api/v1/sites/:id/source-settings`) (app repo:
+ * docs/features/html-first-ai-mcp.md, "Theme"). handlers/remote-theme.js and handlers/site-config.js register them.
  *
  * The server sets custom properties one by one and leaves every other line of theme.css alone, so a partial call
  * (only `palette`, only `fonts`) changes only that.
@@ -29,7 +27,7 @@ const WEIGHTS = {
   "font-black": "900",
 };
 
-/** Not applicable on an HTML-first site, and what to do instead. */
+/** Not set_theme arguments, and what to do instead. */
 const REFUSED = {
   animations: "Site animations are CSS: add the @keyframes and the class to theme.css with edit_site_file.",
   removeAnimations: "Site animations are CSS: remove the @keyframes from theme.css with edit_site_file.",
@@ -105,7 +103,7 @@ module.exports = {
     }
     styleGuide = styleGuide ? { ...styleGuide } : undefined;
 
-    // A preset that sets no link colours ties them to the palette, as on a node-tree site.
+    // A preset that sets no link colours ties them to the palette.
     if (preset && palette?.length && preset.styleGuide && preset.styleGuide.linkColor == null) {
       const byName = n => palette.find(p => String(p.name || "").toLowerCase() === n);
       const link = (byName("accent") || byName("primary"))?.color;
@@ -155,7 +153,6 @@ module.exports = {
 
   async setFavicon(args) {
     const target = getActiveTarget(args);
-    if (target.type === "template") throw new Error("set_favicon is not supported for templates — favicons are per-site only.");
     if (args.filePath) {
       throw new Error("filePath is only available in the local PageHub MCP server (stdio). In the hosted agent, pass imageUrl, mediaId, or dataBase64 instead.");
     }

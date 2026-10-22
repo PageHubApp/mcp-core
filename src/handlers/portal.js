@@ -10,8 +10,6 @@ const { getActiveTarget } = require("../helpers/index.js");
 
 function requireSiteTarget(args) {
   const target = getActiveTarget(args);
-  if (target.type === "template")
-    throw new Error("Portal operations are only available for sites, not templates.");
   return target.id;
 }
 

@@ -20,7 +20,6 @@ const SETTABLE = [
 
 function chatPath(args, tool) {
   const target = getActiveTarget(args);
-  if (target.type !== "site") throw new Error(`${tool} only works on sites, not templates.`);
   return `/api/v1/sites/${encodeURIComponent(target.id)}/chat`;
 }
 

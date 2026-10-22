@@ -6,11 +6,7 @@
   "main": "src/index.js",
   "exports": {
     ".": "./src/index.js",
-    "./handlers/components": "./src/handlers/components.js",
     "./handlers/discovery": "./src/handlers/discovery.js",
-    "./handlers/kit": "./src/handlers/kit.js",
-    "./handlers/nodes": "./src/handlers/nodes.js",
-    "./handlers/pages": "./src/handlers/pages.js",
     "./handlers/portal": "./src/handlers/portal.js",
     "./handlers/remote": "./src/handlers/remote.js",
     "./handlers/remote-collections": "./src/handlers/remote-collections.js",

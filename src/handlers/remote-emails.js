@@ -10,7 +10,6 @@ const { getActiveTarget } = require("../helpers/index.js");
 /** Site id for an email tool; emails belong to sites, never templates. */
 function siteIdFor(args, tool) {
   const target = getActiveTarget(args);
-  if (target.type !== "site") throw new Error(`${tool} only works on sites, not templates.`);
   return encodeURIComponent(target.id);
 }
 

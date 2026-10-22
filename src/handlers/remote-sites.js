@@ -7,12 +7,7 @@
 const { apiFetch, normalizeBaseUrl } = require("../core/api-fetch");
 const { getContext } = require("../core/context");
 
-const {
-  getActiveTarget,
-  selectionNote,
-  fetchTarget,
-  getEditorUrl,
-} = require("../helpers/index.js");
+const { getActiveTarget, selectionNote, getEditorUrl } = require("../helpers/index.js");
 const { pickSiteMetaArgs, pickSiteMetaUpdates } = require("../helpers/extra-meta-args");
 const {
   crawlLines,
@@ -110,9 +105,6 @@ module.exports = {
 
     const ctx = getContext();
     ctx.activeSite = { id: data.id, name: data.name, draftId: data.draftId };
-    ctx.activeTemplate = null;
-    if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object")
-      ctx._targetRevisions = {};
 
     const base = normalizeBaseUrl(ctx.apiBaseUrl) || "https://pagehub.dev";
     return {
@@ -135,7 +127,7 @@ module.exports = {
     const data = await apiFetch("/api/v1/sites");
     const lines = (data.sites || []).map(s => {
       const address = s.domain || (s.name ? `${s.name}.pagehub.dev` : null);
-      return `• ${s._id} — ${siteDisplayName(s)}${address ? ` [${address}]` : ""} (${s.published ? "published" : "not published"}${s.format === "html" ? ", format: html" : ""}, updated ${s.updatedAt})`;
+      return `• ${s._id} — ${siteDisplayName(s)}${address ? ` [${address}]` : ""} (${s.published ? "published" : "not published"}, updated ${s.updatedAt})`;
     });
     return {
       content: [{ type: "text", text: lines.length ? lines.join("\n") : "No sites found." }],
@@ -152,13 +144,6 @@ module.exports = {
     const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(id)}`);
     const ctx = getContext();
     ctx.activeSite = { id: data.id, name: data.name, draftId: data.draftId };
-    if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object")
-      ctx._targetRevisions = {};
-    if (data.updatedAt) {
-      ctx._targetRevisions[`site:${data.id}`] = { expectedUpdatedAt: String(data.updatedAt) };
-    }
-    // Clear activeTemplate so site takes priority
-    ctx.activeTemplate = null;
     // Echo the document-level title/description. They are the site-wide
     // fallback every page's <title> and <meta name="description"> resolve to
     // when that page sets no per-page SEO, and no other tool reads them back —
@@ -168,48 +153,17 @@ module.exports = {
       `Site title: ${data.title ? JSON.stringify(data.title) : "(unset)"}`,
       `Site description: ${data.description ? JSON.stringify(data.description) : "(unset)"}`,
       siteOgImageLine(data),
-      `Published: ${data.published ? "yes" : "no"}${data.staticPublish ? " (turbo/static delivery)" : ""}`,
+      `Published: ${data.published ? "yes" : "no"}`,
       crawlLines(data),
       timezoneLine(data),
       languageLine(data),
       mountOriginLine(data),
       mountKeyLine(data, false),
       `Change these with update_site; per-page overrides go through update_page seo.`,
-      data.format === "html"
-        ? `Format: html — this site is HTML + Liquid files. Edit with list_site_files / read_site_file / edit_site_file (rules: get_style_reference({ topic: "liquid" })); node tools don't apply.`
-        : "",
+      `Edit with list_site_files / read_site_file / edit_site_file (rules: get_style_reference({ topic: "liquid" })).`,
     ];
     return {
       content: [{ type: "text", text: lines.filter(Boolean).join("\n") + selectionNote({ type: "site", id: data.id }) }],
-    };
-  },
-
-  /**
-   * Dump the full CraftJS flat node map for the active site/template.
-   * @param {object} args - { siteId?, templateSlug? }
-   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
-   */
-  async pull_site(args) {
-    const ctx = getContext();
-    const target = getActiveTarget(args);
-    let content;
-    if (ctx._pendingFlatMap) {
-      content = ctx._pendingFlatMap;
-    } else {
-      const fetched = await fetchTarget(args);
-      content = fetched?.flat;
-    }
-    if (!content)
-      throw new Error(`${target.type === "template" ? "Template" : "Site"} has no content.`);
-    const nodeCount = Object.keys(content).length;
-    const label = target.type === "template" ? `Template "${target.id}"` : `Site ${target.id}`;
-    return {
-      content: [
-        {
-          type: "text",
-          text: `${label} fetched (${nodeCount} nodes).\n\n\`\`\`json\n${JSON.stringify(content, null, 2)}\n\`\`\``,
-        },
-      ],
     };
   },
 
@@ -221,7 +175,6 @@ module.exports = {
    */
   async update_site(args = {}) {
     const target = getActiveTarget(args);
-    if (target.type !== "site") throw new Error("update_site only works on sites, not templates.");
     const body = pickSiteMetaUpdates(args);
     // The v1 route keeps crawlPolicy fields that are omitted, so sending only
     // `mode` / `blockAi` leaves the rest (incl. custom robots.txt) untouched.
@@ -236,7 +189,7 @@ module.exports = {
     if (typeof args.timezone === "string") body.timezone = args.timezone.trim();
     // "" clears it ("en"); the route validates the BCP 47 tag.
     if (typeof args.language === "string") body.language = args.language.trim();
-    // "" clears it; the route validates the bare https origin + staticPublish.
+    // "" clears it; the route validates the bare https origin.
     if (typeof args.mountOrigin === "string") body.mountOrigin = args.mountOrigin.trim();
     if (args.rotateMountKey === true) body.rotateMountKey = true;
     if (Object.keys(body).length === 0) {
@@ -272,28 +225,21 @@ module.exports = {
 
   /**
    * Mark the active site as published.
-   * @param {object} args - { siteId?, static? }
+   * @param {object} args - { id? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async publish_site(args = {}) {
     const target = getActiveTarget(args);
-    if (target.type !== "site") throw new Error("publish_site only works on sites, not templates.");
-    const body = { published: true };
-    if (args.static !== undefined) body.staticPublish = !!args.static;
     const put = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`, {
       method: "PUT",
-      body,
+      body: { published: true },
     });
-    const mode =
-      args.static === undefined
-        ? ""
-        : ` (turbo/static delivery ${args.static ? "on" : "off"})`;
     // Edits stage into the draft, so publishing is what promotes them. Say
     // whether that happened — "published" alone does not distinguish a promotion
     // from a no-op flag flip on a site that was already live.
     const promoted = put?.promoted ? " Staged draft promoted to live." : "";
     return {
-      content: [{ type: "text", text: `Site ${target.id} published${mode}.${promoted}` }],
+      content: [{ type: "text", text: `Site ${target.id} published.${promoted}` }],
     };
   },
 
@@ -304,8 +250,6 @@ module.exports = {
    */
   async unpublish_site(args) {
     const target = getActiveTarget(args);
-    if (target.type !== "site")
-      throw new Error("unpublish_site only works on sites, not templates.");
     await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`, {
       method: "PUT",
       body: { published: false },
@@ -330,9 +274,6 @@ module.exports = {
     });
 
     ctx.activeSite = { id: data.id, name: data.name, draftId: data.draftId };
-    ctx.activeTemplate = null;
-    if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object")
-      ctx._targetRevisions = {};
 
     const base = normalizeBaseUrl(ctx.apiBaseUrl) || "https://pagehub.dev";
     return {
@@ -353,8 +294,6 @@ module.exports = {
    */
   async get_domain_status(args = {}) {
     const target = getActiveTarget(args);
-    if (target.type !== "site")
-      throw new Error("get_domain_status only works on sites, not templates.");
     const qs = args.check ? `?check=${encodeURIComponent(args.check)}` : "";
     const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}/domain${qs}`);
     return { content: [{ type: "text", text: formatDomainReport(data) }] };
@@ -368,7 +307,6 @@ module.exports = {
    */
   async screenshot_site(args = {}) {
     const target = getActiveTarget(args);
-    if (target.type !== "site") throw new Error("screenshot_site only works on sites, not templates.");
     const { path, width, height, fullPage, selector } = args;
     const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}/screenshot`, {
       method: "POST",
@@ -400,7 +338,6 @@ module.exports = {
    */
   async set_domain(args = {}) {
     const target = getActiveTarget(args);
-    if (target.type !== "site") throw new Error("set_domain only works on sites, not templates.");
     if (!args.domain) throw new Error("domain is required. To remove a domain, use clear_domain.");
     const body = { domain: args.domain };
     if (args.redirectMode) body.domainRedirectMode = args.redirectMode;
@@ -435,7 +372,6 @@ module.exports = {
    */
   async clear_domain(args = {}) {
     const target = getActiveTarget(args);
-    if (target.type !== "site") throw new Error("clear_domain only works on sites, not templates.");
     const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}/domain`, {
       method: "DELETE",
     });
@@ -457,7 +393,6 @@ module.exports = {
    */
   async set_domain_redirect_mode(args = {}) {
     const target = getActiveTarget(args);
-    if (target.type !== "site") throw new Error("set_domain_redirect_mode only works on sites.");
     if (!args.redirectMode) throw new Error("redirectMode is required.");
     const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}/domain`, {
       method: "PATCH",

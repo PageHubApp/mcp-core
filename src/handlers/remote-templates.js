@@ -1,58 +1,32 @@
 /**
- * Template lifecycle tools — select / list / pull / save / update / delete /
- * publish-site-as-template. Wraps `/api/v1/templates/*` and keeps
- * `getContext().activeTemplate` in sync.
+ * Template tools — list / pull / save / update / publish-site-as-template / delete. Wraps `/api/v1/templates/*`.
+ * A template is a bundle of HTML + Liquid files and page rows (`SiteTemplate.html`). Every template tool takes the
+ * template `slug` explicitly (there is no "active template"). Saving, updating and deleting need admin or a tenant
+ * owner / editor.
  */
 
 const { apiFetch } = require("../core/api-fetch");
-const { getContext } = require("../core/context");
-
-const {
-  parseMaybeJson,
-  getActiveTarget,
-  selectionNote,
-  compressJsonToBase64Lz,
-  decodeContentOrThrow,
-} = require("../helpers/index.js");
-
-const { quickA11yAudit } = require("../validation/a11y-check");
-const { resolveSiteFormat } = require("../helpers/site-format");
+const { getActiveTarget } = require("../helpers/target");
+const { applyEdits } = require("../helpers/file-edits");
 const { pullTemplateLiquid } = require("../helpers/html-library");
 
-module.exports = {
-  /**
-   * Mark a template as the active target for subsequent tool calls.
-   * @param {object} args - { slug }
-   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
-   */
-  async select_template(args) {
-    const { slug } = args;
-    if (!slug) throw new Error("slug is required.");
-    const data = await apiFetch(`/api/v1/templates/${encodeURIComponent(slug)}`);
-    const ctx = getContext();
-    ctx.activeTemplate = { slug: data.slug, title: data.title };
-    if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object")
-      ctx._targetRevisions = {};
-    if (Number.isFinite(Number(data.version))) {
-      ctx._targetRevisions[`template:${data.slug}`] = { expectedVersion: Number(data.version) };
-    }
-    // Clear activeSite so template takes priority
-    ctx.activeSite = null;
-    // A template authored as files has no node tree: the node tools can't edit it, pull_template reads its Liquid.
-    const htmlNote =
-      data.format === "html"
-        ? '\nThis template is HTML + Liquid (no node tree): read it with pull_template({ slug, format: "liquid" }); node tools do not apply.'
-        : "";
-    return {
-      content: [
-        {
-          type: "text",
-          text: `Active template set to "${data.slug}" (${data.title || "untitled"})${htmlNote}${selectionNote({ type: "template", id: data.slug })}`,
-        },
-      ],
-    };
-  },
+const text = t => ({ content: [{ type: "text", text: t }] });
 
+/** The server's refusal as a sentence (`message`), else the thrown error. */
+async function call(url, opts) {
+  try {
+    return await apiFetch(url, opts);
+  } catch (err) {
+    const b = err?.body || {};
+    if (b.message) throw new Error(b.message);
+    throw err;
+  }
+}
+
+const META = ["title", "tagline", "description", "category", "tags", "hidden", "isPublic", "sortOrder"];
+const pick = (args, keys) => Object.fromEntries(keys.filter(k => args[k] !== undefined).map(k => [k, args[k]]));
+
+module.exports = {
   /**
    * Browse the template catalog with optional filters.
    * @param {object} args - { category?, tag?, q? }
@@ -78,187 +52,75 @@ module.exports = {
   },
 
   /**
-   * Fetch a template's full decoded node map by slug.
-   * @param {object} args - { slug }
+   * Read a stock template's HTML + Liquid files by slug (all of them, or one `path`).
+   * @param {object} args - { slug, path? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async pull_template(args) {
-    const { slug } = args;
-    // An HTML-first site, `format: "liquid"`, or a template with no node tree (authored as HTML) reads as files.
-    if (args.format === "liquid" || (await resolveSiteFormat({ id: args.id })).html) {
-      return pullTemplateLiquid(slug, args.path);
-    }
-    const data = await apiFetch(`/api/v1/templates/${encodeURIComponent(slug)}`);
-    if (!data.content) return pullTemplateLiquid(slug, args.path);
-    const ctx = getContext();
-    if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object")
-      ctx._targetRevisions = {};
-    if (Number.isFinite(Number(data.version))) {
-      ctx._targetRevisions[`template:${slug}`] = { expectedVersion: Number(data.version) };
-    }
-    const decodedContent = decodeContentOrThrow(data.content, `Template "${slug}" content`);
-    const nodeCount = Object.keys(decodedContent).length;
-    return {
-      content: [
-        {
-          type: "text",
-          text: `Template "${slug}" fetched (${nodeCount} nodes).\n\n\`\`\`json\n${JSON.stringify(decodedContent, null, 2)}\n\`\`\``,
-        },
-      ],
-    };
+    if (!args.slug) throw new Error("slug is required.");
+    return pullTemplateLiquid(args.slug, args.path);
   },
 
   /**
-   * Create a new template from a raw or compressed content payload.
-   * @param {object} args - { slug, title, description?, category?, tags?, content, hidden?, isPublic?, sortOrder? }
-   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   * Create a template from `files` (+ `pages`), or from an HTML-first site's draft (`fromSite`).
+   * @param {object} args - { slug, title, files?, pages?, fromSite?, tagline?, description?, category?, tags?, hidden?, isPublic?, sortOrder? }
    */
-  async save_template(args) {
-    const {
-      slug,
-      title,
-      description,
-      category,
-      tags,
-      content,
-      hidden,
-      isPublic,
-      sortOrder,
-    } = args;
-    if (!slug || !title || !content) {
-      throw new Error("slug, title, and content are required.");
-    }
-    const resolvedContent = parseMaybeJson(content) || content;
-    const encodedContent =
-      typeof resolvedContent === "string"
-        ? resolvedContent
-        : compressJsonToBase64Lz(resolvedContent);
-    const data = await apiFetch("/api/v1/templates", {
+  async save_template(args = {}) {
+    if (!args.slug || !args.title) throw new Error("slug and title are required.");
+    if (!args.files && !args.fromSite) throw new Error("files (or fromSite: a site id) is required: a template is its files.");
+    const body = { slug: args.slug, ...pick(args, META), ...pick(args, ["files", "pages", "fromSite"]) };
+    const data = await call("/api/v1/templates", { method: "POST", body });
+    return text(`Template saved: **${data.title}** (\`${data.slug}\`). Read it back with pull_template({ slug: "${data.slug}" }).`);
+  },
+
+  /**
+   * Snapshot the active site's draft files and pages into a new template.
+   * @param {object} args - { id?, slug?, title?, description?, category?, tags?, hidden?, isPublic?, sortOrder? }
+   */
+  async publish_site_as_template(args = {}) {
+    const siteId = getActiveTarget({ id: args.id }).id;
+    const site = await call(`/api/v1/sites/${encodeURIComponent(siteId)}`);
+    const slug = args.slug || site.name || siteId;
+    const title = args.title || site.title || site.name || slug;
+    const data = await call("/api/v1/templates", {
       method: "POST",
-      body: {
-        slug,
-        title,
-        description,
-        category,
-        tags,
-        content: encodedContent,
-        hidden,
-        isPublic,
-        sortOrder,
-      },
+      body: { slug, title, fromSite: siteId, ...pick(args, META.filter(k => k !== "title")) },
     });
-    const audit = typeof resolvedContent === "object" ? quickA11yAudit(resolvedContent) : null;
-    const auditText = audit ? `\n\n---\n${audit.summary}` : "";
-    return {
-      content: [
-        {
-          type: "text",
-          text: `Template saved: **${data.title}** (\`${data.slug}\`)${auditText}`,
-        },
-      ],
-    };
+    return text(`Site published as template: **${data.title}** (\`${data.slug}\`)`);
   },
 
   /**
-   * Snapshot the active site into a new template entry.
-   * @param {object} args - { slug?, title?, description?, category?, tags?, hidden?, isPublic?, sortOrder? }
-   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
+   * Change a template: metadata, whole files (`files`, merged over the current ones; `{ path, delete: true }` removes
+   * one), exact-text `edits` per file, page rows (`pages`), or everything from a site (`fromSite`).
+   * @param {object} args - { slug, title?, ..., files?, edits?: [{ path, edits: [{ oldText, newText }] }], pages?, fromSite?, replace? }
    */
-  async publish_site_as_template(args) {
-    const { slug, title, description, category, tags, hidden, isPublic, sortOrder } = args;
-    // `slug` here names the NEW template, so it must not select a target.
-    const target = getActiveTarget({ id: args.id });
-    if (target.type !== "site")
-      throw new Error("Active target must be a site. Use select_site first.");
-    const siteData = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`);
-    if (!siteData.content) throw new Error("Site has no content.");
-    const finalSlug = slug || siteData.slug || target.id;
-    const finalTitle = title || siteData.name || siteData.title || finalSlug;
-    const body = {
-      slug: finalSlug,
-      title: finalTitle,
-      content: compressJsonToBase64Lz(siteData.content),
-      ...(description && { description }),
-      ...(category && { category }),
-      ...(tags && { tags }),
-      ...(hidden !== undefined && { hidden }),
-      ...(isPublic !== undefined && { isPublic }),
-      ...(sortOrder !== undefined && { sortOrder }),
-    };
-    const data = await apiFetch("/api/v1/templates", { method: "POST", body });
-    const audit = quickA11yAudit(siteData.content);
-    const auditText = audit ? `\n\n---\n${audit.summary}` : "";
-    return {
-      content: [
-        {
-          type: "text",
-          text: `Site published as template: **${data.title}** (\`${data.slug}\`)${auditText}`,
-        },
-      ],
-    };
-  },
-
-  /**
-   * Patch an existing template (optimistic-concurrency on `version`).
-   * @param {object} args - { slug, title?, description?, category?, tags?, content?, hidden?, sortOrder? }
-   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
-   */
-  async update_template(args) {
-    const { slug } = args;
-    if (!slug) throw new Error("slug is required.");
-    const current = await apiFetch(`/api/v1/templates/${encodeURIComponent(slug)}`);
+  async update_template(args = {}) {
+    if (!args.slug) throw new Error("slug is required.");
+    const current = await call(`/api/v1/templates/${encodeURIComponent(args.slug)}`);
     const expectedVersion = Number(current?.version || 1);
-    const body = {};
-    for (const f of [
-      "title",
-      "description",
-      "category",
-      "tags",
-      "content",
-      "hidden",
-      "sortOrder",
-    ]) {
-      if (args[f] !== undefined) body[f] = args[f];
+    const body = { ...pick(args, META), ...pick(args, ["files", "pages", "fromSite", "replace"]) };
+    if (Array.isArray(args.edits) && args.edits.length) {
+      const pulled = await call(`/api/v1/templates/${encodeURIComponent(args.slug)}?format=liquid`);
+      const byPath = new Map(pulled.files.map(f => [f.path, f.text]));
+      const files = [...(Array.isArray(body.files) ? body.files : [])];
+      for (const e of args.edits) {
+        if (!e?.path || !byPath.has(e.path)) throw new Error(`Template "${args.slug}" has no file ${e?.path}. pull_template lists them.`);
+        files.push({ path: e.path, text: applyEdits(byPath.get(e.path), e.edits || [], e.path) });
+      }
+      body.files = files;
     }
-    if (body.content !== undefined) {
-      const resolvedContent = parseMaybeJson(body.content) || body.content;
-      body.content =
-        typeof resolvedContent === "string"
-          ? resolvedContent
-          : compressJsonToBase64Lz(resolvedContent);
-    }
-    if (Object.keys(body).length === 0) {
-      throw new Error("Nothing to update. Provide at least one field.");
-    }
-    const data = await apiFetch(`/api/v1/templates/${encodeURIComponent(slug)}`, {
-      method: "PUT",
-      body: { ...body, expectedVersion },
-    });
-    const parsedAuditContent = parseMaybeJson(args.content);
-    const audit =
-      parsedAuditContent && typeof parsedAuditContent === "object"
-        ? quickA11yAudit(parsedAuditContent)
-        : null;
-    const auditText = audit ? `\n\n---\n${audit.summary}` : "";
-    return {
-      content: [
-        {
-          type: "text",
-          text: `Template updated: **${data.title}** (\`${data.slug}\`)${auditText}`,
-        },
-      ],
-    };
+    if (!Object.keys(body).length) throw new Error("Nothing to update. Provide at least one field.");
+    const data = await call(`/api/v1/templates/${encodeURIComponent(args.slug)}`, { method: "PUT", body: { ...body, expectedVersion } });
+    return text(`Template updated: **${data.title}** (\`${data.slug}\`)`);
   },
 
   /**
    * Delete a template by slug.
    * @param {object} args - { slug }
-   * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
-  async delete_template(args) {
-    const { slug } = args;
-    if (!slug) throw new Error("slug is required.");
-    await apiFetch(`/api/v1/templates/${encodeURIComponent(slug)}`, { method: "DELETE" });
-    return { content: [{ type: "text", text: `Template "${slug}" deleted.` }] };
+  async delete_template(args = {}) {
+    if (!args.slug) throw new Error("slug is required.");
+    await call(`/api/v1/templates/${encodeURIComponent(args.slug)}`, { method: "DELETE" });
+    return text(`Template "${args.slug}" deleted.`);
   },
 };

@@ -81,15 +81,15 @@ await runWithContext({ apiKey: process.env.PAGEHUB_API_KEY }, () =>
 
 ## Tool catalog
 
-85 tools across 11 domains. The full schemas live in [`src/data/tools.json`](src/data/tools.json).
+About 90 tools across 11 domains. The full schemas live in [`src/data/tools.json`](src/data/tools.json).
 
 | Domain         | Examples                                                                      |
 | -------------- | ----------------------------------------------------------------------------- |
-| Sites          | `list_sites`, `create_site`, `pull_site`, `publish_site`, `unpublish_site`    |
-| Templates      | `list_templates`, `pull_template`, `select_template`                          |
+| Sites          | `list_sites`, `create_site`, `select_site`, `publish_site`, `unpublish_site`  |
+| Templates      | `list_templates`, `pull_template`, `save_template`, `update_template`         |
 | Pages          | `list_pages`, `add_page`, `update_page`, `delete_page`                        |
-| Nodes          | `add_nodes`, `patch_site_node`, `patch_site_bulk`, `move_node`, `delete_node` |
-| Blocks         | `search_blocks`, `get_block`, `save_block`, `apply_kit_block`                 |
+| Files          | `list_site_files`, `read_site_file`, `edit_site_file`, `edit_site_files`      |
+| Blocks         | `search_blocks`, `get_block`, `save_block`, `patch_block`, `apply_kit_block`  |
 | Theme & Design | `set_theme`, `suggest_palettes`, `suggest_font_pairings`, `set_favicon`       |
 | Stripe         | `set_integrations` (Stripe Connect), connector-aware product/category lookups |
 | Media          | `upload_image`, `find_image`, `find_video` (Pexels / Unsplash)                |
@@ -109,8 +109,8 @@ const {
   handlers, // raw handler map
 
   // Schemas
-  getAllTools, // 85 tools, MCP format ({inputSchema})
-  getAgentTools, // 67 tools, Claude API format ({input_schema}), public-agent safe
+  getAllTools, // every tool, MCP format ({inputSchema})
+  getAgentTools, // the public-agent-safe tools, Claude API format ({input_schema})
 
   // Sets
   HTTP_TOOL_NAMES,
@@ -120,8 +120,6 @@ const {
   // Helpers
   apiFetch,
   parseMaybeJson,
-  applyNodePatches,
-  normalizeNodePatchArgs,
 } = require("@pagehub/mcp-core");
 ```
 
@@ -130,12 +128,12 @@ const {
 For handler delegation patterns (e.g. wrapping individual tools), import handlers directly:
 
 ```js
-const kit = require("@pagehub/mcp-core/handlers/kit"); // { apply_kit_block }
+const site = require("@pagehub/mcp-core/handlers/site-config"); // { set_integrations, set_favicon, set_redirects }
 const seo = require("@pagehub/mcp-core/handlers/seo"); // { audit_seo, audit_accessibility }
 const ai = require("@pagehub/mcp-core/ai-models"); // ESM — AI model defaults
 ```
 
-Available subpaths: `handlers/{components,discovery,kit,nodes,pages,portal,remote,seo,site-config,stock-images,stock-videos}`, `ai-models`. Internals (`core/`, `helpers/`, `utils/`, `validation/`, `data/`, `codec/`, `lib/`) are not part of the public API.
+Available subpaths: `handlers/{discovery,portal,remote,remote-collections,seo,site-config,stock-images,stock-videos}`, `ai-models`. Internals (`core/`, `helpers/`, `utils/`, `validation/`, `data/`, `lib/`) are not part of the public API.
 
 ## Source layout
 
@@ -143,18 +141,14 @@ Available subpaths: `handlers/{components,discovery,kit,nodes,pages,portal,remot
 src/
 ├── index.js              ← public entry
 ├── ai-models.mjs         ← ESM: AI model defaults
-├── core/                 ← context, api-fetch, constants, component registry
+├── core/                 ← context, api-fetch, direct upload
 ├── handlers/             ← HTTP tool implementations (one file per domain)
-│   ├── kit/              ← split sub-modules for apply_kit_block
-│   ├── components/       ← block CRUD + search
-│   ├── remote-nodes/     ← node patch validation
-│   └── seo/              ← SEO + a11y audit
-├── helpers/              ← shared handler utilities (load/mutate/save, patch parsing)
-├── validation/           ← node, button, branding, a11y validators
-├── utils/                ← pure utilities (color, levenshtein, node walk)
-├── data/                 ← static data: tools.json, vibes, categories
-├── codec/                ← lzutf8 wrapper, structure ingest
-└── lib/                  ← third-party-adjacent helpers (theme-fonts)
+│   └── seo/              ← SEO + a11y audit (server-rendered draft page)
+├── helpers/              ← shared handler utilities (target, file edits, library, publish state)
+├── validation/           ← button, branding validators
+├── utils/                ← pure utilities (color)
+├── data/                 ← static data: tools.json, instructions, style reference, vibes, categories
+└── lib/                  ← theme-fonts
 ```
 
 See [`src/README.md`](src/README.md) for a per-folder breakdown.

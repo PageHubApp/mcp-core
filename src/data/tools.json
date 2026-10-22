@@ -14,7 +14,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "HTML-first site id: results are Liquid.",
+          "description": "Site id.",
           "maxLength": 256
         },
         "category": {
@@ -53,27 +53,6 @@
     }
   },
   {
-    "name": "get_component_schema",
-    "description": "Full prop schemas for components (types, props, valid values). A comma list returns only those components. In parallel fill, responses are compact and `components` is required.",
-    "annotations": {
-      "title": "Get component schema",
-      "readOnlyHint": true,
-      "destructiveHint": false,
-      "idempotentHint": true,
-      "openWorldHint": false
-    },
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "components": {
-          "type": "string",
-          "description": "Comma-separated names, e.g. \"Container,Text,Button\". Omit for all.",
-          "maxLength": 2048
-        }
-      }
-    }
-  },
-  {
     "name": "get_style_reference",
     "description": "Styling reference: palette variables, styleGuide tokens, spatial scale, modifiers, interactive state, form-confirmation recipe. Pass `topic` for a focused guide (design bar, accessibility, domains, per-tool usage).",
     "annotations": {
@@ -100,7 +79,6 @@
             "media",
             "integrations",
             "animation",
-            "section-tree",
             "liquid"
           ],
           "description": "Return one guide instead of the core reference."
@@ -237,57 +215,8 @@
     }
   },
   {
-    "name": "create_template",
-    "description": "Creates a new site from the acme base template with an empty page_home container. Saves to the API and auto-selects as active site.\n\nWorkflow: create_template → set_theme (includes company variables) → apply_kit_block(target:\"header\") → apply_kit_block (repeat for page sections) → apply_kit_block(target:\"footer\") → update_page (set SEO title/description)",
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "slug": {
-          "type": "string",
-          "description": "URL-safe name for the site (e.g. \"bookstore-jazz\", \"my-portfolio\"). Used as internal reference.",
-          "maxLength": 256
-        },
-        "title": {
-          "type": "string",
-          "description": "Human-readable title (e.g. \"Jazz Bookstore\").",
-          "maxLength": 512
-        },
-        "description": {
-          "type": "string",
-          "description": "Short description ≤75 chars (e.g. \"Cozy bookstore with jazz lounge vibes\").",
-          "maxLength": 16384
-        },
-        "hidden": {
-          "type": "boolean",
-          "description": "If true, hidden from public gallery. Default: false."
-        },
-        "category": {
-          "type": "string",
-          "description": "Template category (e.g. \"landing-page\", \"portfolio\", \"ecommerce\", \"blog\").",
-          "maxLength": 128
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "maxLength": 128
-          },
-          "description": "Tags for discovery (e.g. [\"modern\", \"dark\", \"restaurant\"]). Max 30.",
-          "maxItems": 30
-        }
-      }
-    },
-    "annotations": {
-      "title": "Create template",
-      "readOnlyHint": false,
-      "destructiveHint": false,
-      "idempotentHint": false,
-      "openWorldHint": false
-    }
-  },
-  {
     "name": "set_theme",
-    "description": "Write the site theme — preset, palette, darkPalette, styleGuide tokens, fonts, JSON-LD, site animations — into the draft. suggest_palettes / suggest_font_pairings only show options. ROOT `company` vars: patch_site_node. Palette names, styleGuide keys, workflow: get_style_reference({ topic: \"theme\" }). HTML-first: theme.css.",
+    "description": "Write the site theme into theme.css (draft): preset, palette, darkPalette, styleGuide tokens, fonts. suggest_palettes / suggest_font_pairings only show options. Company fields: site.json (edit_site_file). Palette names, styleGuide keys, workflow: get_style_reference({ topic: \"theme\" }).",
     "annotations": {
       "title": "Set theme",
       "readOnlyHint": false,
@@ -335,38 +264,9 @@
           "description": "Preset slug; loads palette, fonts and styleGuide. Explicit params override it.",
           "maxLength": 128
         },
-        "buildStyle": {
-          "type": "string",
-          "enum": "$VIBES",
-          "description": "Vibe override for block filtering. Rarely needed — preset sets it.",
-          "maxLength": 128
-        },
         "daisyui": {
           "type": "boolean",
           "description": "DaisyUI component classes (btn, card…). Default on; HTML imports off."
-        },
-        "title": {
-          "type": "string",
-          "description": "Title.",
-          "maxLength": 512
-        },
-        "description": {
-          "type": "string",
-          "description": "Short description (≤75 chars).",
-          "maxLength": 16384
-        },
-        "demo": {
-          "type": "string",
-          "description": "Demo URL.",
-          "maxLength": 2048
-        },
-        "homePage": {
-          "type": "boolean",
-          "description": "Home page flag (default true)."
-        },
-        "hidden": {
-          "type": "boolean",
-          "description": "Hide from the public gallery."
         },
         "palette": {
           "type": "array",
@@ -419,581 +319,13 @@
         "fonts": {
           "type": "object",
           "description": "Hint ({ url } or { families }) parsed into heading/body families when styleGuide omits them."
-        },
-        "jsonLd": {
-          "type": "object",
-          "description": "Schema.org JSON-LD object; {{company.*}} variables work inside it."
-        },
-        "animations": {
-          "type": "array",
-          "maxItems": 50,
-          "description": "Upserted by key into theme.animations; nodes then use root.animation \"site:<key>\". Only for motion no built-in preset covers. Rules + examples: get_style_reference({ topic: \"animation\" }).",
-          "items": {
-            "type": "object",
-            "properties": {
-              "key": {
-                "type": "string",
-                "description": "Slug /^[a-z][a-z0-9-]{0,39}$/, no \"site:\" prefix.",
-                "maxLength": 40
-              },
-              "label": {
-                "type": "string",
-                "maxLength": 60
-              },
-              "trigger": {
-                "type": "string",
-                "enum": [
-                  "scroll",
-                  "load",
-                  "continuous"
-                ]
-              },
-              "duration": {
-                "type": "number",
-                "description": "Seconds, 0.05–30."
-              },
-              "easing": {
-                "type": "string",
-                "description": "easeOut | easeIn | easeInOut | linear | spring | cubic-bezier() | steps()",
-                "maxLength": 80
-              },
-              "iterations": {
-                "type": "string",
-                "description": "\"1\"–\"20\" or \"infinite\".",
-                "maxLength": 8
-              },
-              "direction": {
-                "type": "string",
-                "enum": [
-                  "normal",
-                  "reverse",
-                  "alternate",
-                  "alternate-reverse"
-                ]
-              },
-              "keyframes": {
-                "type": "array",
-                "minItems": 2,
-                "maxItems": 12,
-                "description": "Stops incl. at 0 and at 100.",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "at": {
-                      "type": "number",
-                      "description": "Percent, 0–100."
-                    },
-                    "style": {
-                      "type": "object",
-                      "description": "Kebab-case CSS property → value, e.g. { \"clip-path\": \"inset(0 100% 0 0)\" }."
-                    }
-                  },
-                  "required": [
-                    "at",
-                    "style"
-                  ]
-                }
-              }
-            },
-            "required": [
-              "key",
-              "label",
-              "trigger",
-              "duration",
-              "easing",
-              "iterations",
-              "keyframes"
-            ]
-          }
-        },
-        "removeAnimations": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "maxLength": 45
-          },
-          "maxItems": 50,
-          "description": "Keys to delete from theme.animations."
         }
       }
-    }
-  },
-  {
-    "name": "add_block",
-    "description": "Appends a pre-built block template to the active site. Use list_blocks to see all available template IDs and their descriptions.\n\nOverrides let you customize content and styling without hand-crafting nodes. Keys in contentOverrides and propOverrides are matched by the node's custom.displayName (e.g. \"Title\", \"Subtitle\", \"CTA Button\", \"Image\").\n\nCall list_blocks first to see available IDs and their displayName targets.",
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Site id.",
-          "maxLength": 256
-        },
-        "templateId": {
-          "type": "string",
-          "description": "Block template ID. Use list_blocks to see all available IDs. Examples: \"hero-1\", \"hero-2\", \"header-1\", \"footer-1\", \"pricing-1\", \"services-1\", \"imagetext-1\", \"optin-1\", \"texts-1\", \"team-1\".",
-          "maxLength": 256
-        },
-        "contentOverrides": {
-          "type": "object",
-          "description": "Map of displayName → content patch. Patches the node's top-level props (text, url, src, alt, icon, etc.).\n\nExamples:\n  {\"Title\": {\"text\": \"Welcome to our store\"}, \"CTA Button\": {\"text\": \"Shop Now\", \"url\": \"/shop\"}, \"Image\": {\"src\": \"https://example.com/hero.jpg\"}}\n\nFor Text nodes: set \"text\" (plain text or inline HTML with <strong>, <em>, <br/>, <span>).\nFor Button nodes: set \"text\", \"url\", \"icon\".\nFor Image nodes: set \"src\" (URL), \"alt\", \"type\" (\"url\" for external images)."
-        },
-        "propOverrides": {
-          "type": "object",
-          "description": "Map of displayName → style patches. Each value can have { className, props } keys.\n\nExample:\n  {\"Section\": {\"className\": \"bg-primary py-space-xl\"}, \"Card\": {\"className\": \"rounded-xl shadow-lg\"}}"
-        },
-        "pageId": {
-          "type": "string",
-          "description": "Target page node ID to add the block to (e.g. \"page_about\"). Default: \"page_home\". Use list_pages to see available pages.",
-          "maxLength": 256
-        },
-        "position": {
-          "type": "number",
-          "description": "Insert index in page's nodes. 0 = first section. Default: append to end."
-        }
-      },
-      "required": [
-        "templateId"
-      ]
-    },
-    "annotations": {
-      "title": "Add block",
-      "readOnlyHint": false,
-      "destructiveHint": false,
-      "idempotentHint": false,
-      "openWorldHint": false
-    }
-  },
-  {
-    "name": "add_custom_block",
-    "description": "Merges a hand-crafted flat CraftJS node map into the active site and attaches blockRootId as a child of page_home (or parentNodeId). Use this when no pre-built block template fits your needs.\n\nUse get_component_schema to see all available component types and their props. Each node in the map must have: type.resolvedName, props (with className for Tailwind classes), parent, nodes[], and custom.displayName.\n\nThe blockRootId node should have type \"section\" and canDelete: true.",
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Site id.",
-          "maxLength": 256
-        },
-        "sectionRootId": {
-          "type": "string",
-          "description": "Node ID of the block root in your nodes map. This gets attached to page_home. Use descriptive IDs like \"sec_testimonials\", \"sec_gallery\".",
-          "maxLength": 256
-        },
-        "nodes": {
-          "type": "object",
-          "description": "Flat CraftJS node map: { nodeId: nodeDefinition, ... }. Each node definition must include:\n\n  {\n    \"type\": { \"resolvedName\": \"Container\" },  // Component type\n    \"isCanvas\": true,                          // true if it can have children\n    \"props\": {\n      \"canDelete\": true,\n      \"canEditName\": true,\n      \"type\": \"section\",                       // \"section\" for root, omit for children\n      \"className\": \"flex flex-col w-full py-space-lg px-container-x bg-primary\",\n      \"custom\": { \"displayName\": \"My Block\" }\n    },\n    \"parent\": \"page_home\",                     // parent node ID\n    \"nodes\": [\"child_id_1\", \"child_id_2\"],     // ordered child IDs\n    \"linkedNodes\": {}\n  }\n\nAll styling uses props.className — a single Tailwind class string. Mobile-first: unprefixed = base/mobile, md: = desktop, sm: = tablet.\n\nAvailable component types: Container, Text, Image, Button, Form, FormElement, Video, Audio, Embed, Map, MapPoint, MapPath, Icon, Link, Grid, Header, Footer, Data.\nFor semantic lists / tables use Container with props.type set to the HTML tag — \"ul\" / \"ol\" / \"li\" / \"table\" / \"thead\" / \"tbody\" / \"tfoot\" / \"tr\" / \"td\" / \"th\". Cell colSpan/rowSpan/scope go in props.attrs.\nUse get_component_schema for full prop details."
-        },
-        "parentNodeId": {
-          "type": "string",
-          "description": "Parent node to attach to. Default: \"page_home\". For multi-page sites, pass the target page ID (e.g. \"page_about\") to add sections to a specific page.",
-          "maxLength": 256
-        },
-        "position": {
-          "type": "number",
-          "description": "Insert index in parent's nodes array. Default: append to end."
-        }
-      },
-      "required": [
-        "sectionRootId",
-        "nodes"
-      ]
-    },
-    "annotations": {
-      "title": "Add custom block",
-      "readOnlyHint": false,
-      "destructiveHint": false,
-      "idempotentHint": false,
-      "openWorldHint": false
-    }
-  },
-  {
-    "name": "delete_node",
-    "description": "Delete a node and its subtree. ROOT, page_home, hdr_root and ftr_root can't be deleted.",
-    "annotations": {
-      "title": "Delete node",
-      "readOnlyHint": false,
-      "destructiveHint": true,
-      "idempotentHint": true,
-      "openWorldHint": false
-    },
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Site id.",
-          "maxLength": 256
-        },
-        "nodeId": {
-          "type": "string",
-          "description": "Node id (from list_site_nodes / search_site_nodes).",
-          "maxLength": 256
-        }
-      },
-      "required": [
-        "nodeId"
-      ]
-    }
-  },
-  {
-    "name": "move_node",
-    "description": "Move a node and its subtree to a new parent. Can't move ROOT or page_home, or into its own subtree.",
-    "annotations": {
-      "title": "Move node",
-      "readOnlyHint": false,
-      "destructiveHint": false,
-      "idempotentHint": true,
-      "openWorldHint": false
-    },
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Site id.",
-          "maxLength": 256
-        },
-        "nodeId": {
-          "type": "string",
-          "description": "Node to move.",
-          "maxLength": 256
-        },
-        "newParentId": {
-          "type": "string",
-          "description": "New parent id.",
-          "maxLength": 256
-        },
-        "position": {
-          "type": "number",
-          "description": "Index in the new parent (default: end)."
-        }
-      },
-      "required": [
-        "nodeId",
-        "newParentId"
-      ]
-    }
-  },
-  {
-    "name": "insert_node",
-    "description": "Insert one node under an existing parent. `node` = { type: { resolvedName }, isCanvas, props: { className, …, custom: { displayName } }, nodes: [] }; parent and linkedNodes are set for you. Lists/tables: a Container with props.type \"ul\" | \"li\" | \"table\" | \"tr\" | \"td\" ….",
-    "annotations": {
-      "title": "Insert node",
-      "readOnlyHint": false,
-      "destructiveHint": false,
-      "idempotentHint": false,
-      "openWorldHint": false
-    },
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Site id.",
-          "maxLength": 256
-        },
-        "nodeId": {
-          "type": "string",
-          "description": "New unique id, e.g. \"ftr_links\".",
-          "maxLength": 256
-        },
-        "parentId": {
-          "type": "string",
-          "description": "Parent id.",
-          "maxLength": 256
-        },
-        "position": {
-          "type": "number",
-          "description": "Index in the parent (default: end)."
-        },
-        "node": {
-          "type": "object",
-          "description": "Node definition (shape in the tool description)."
-        },
-        "modifiers": {
-          "type": "object",
-          "description": "{ Text: [{ name, classes, requires }], … } upserted into ROOT.props.modifiers. Only for shortcut modifier names in className. See get_style_reference({ topic: \"editing\" })."
-        }
-      },
-      "required": [
-        "nodeId",
-        "parentId",
-        "node"
-      ]
-    }
-  },
-  {
-    "name": "get_site_node",
-    "description": "Read one node's raw JSON. Strings over 1,500 chars come back shortened (truncatedProps); `prop` reads one whole. propsPatch replaces strings whole (e.g. ROOT.props.inject.head).",
-    "annotations": {
-      "title": "Get site node",
-      "readOnlyHint": true,
-      "destructiveHint": false,
-      "idempotentHint": true,
-      "openWorldHint": false
-    },
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Site id.",
-          "maxLength": 256
-        },
-        "nodeId": {
-          "type": "string",
-          "description": "Node id, e.g. ROOT, page_home.",
-          "maxLength": 256
-        },
-        "prop": {
-          "type": "string",
-          "description": "Dot path, e.g. inject.head.",
-          "maxLength": 256
-        },
-        "full": {
-          "type": "boolean",
-          "description": "Shorten nothing."
-        }
-      },
-      "required": [
-        "nodeId"
-      ]
-    }
-  },
-  {
-    "name": "list_site_nodes",
-    "description": "Node tree (id, displayName, type, child count) in DFS order, to find ids and section order. Multi-page site: pass pageId.",
-    "annotations": {
-      "title": "List site nodes",
-      "readOnlyHint": true,
-      "destructiveHint": false,
-      "idempotentHint": true,
-      "openWorldHint": false
-    },
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Site id.",
-          "maxLength": 256
-        },
-        "pageId": {
-          "type": "string",
-          "description": "Page id (or any node id) to list; other pages fold.",
-          "maxLength": 256
-        },
-        "depth": {
-          "type": "integer",
-          "minimum": 0,
-          "description": "Levels to expand."
-        }
-      }
-    }
-  },
-  {
-    "name": "search_site_nodes",
-    "description": "Find nodes by text/displayName/id (`q`), component `type`, or className substring/regex. className filters return the full className — use them for site-wide class audits.",
-    "annotations": {
-      "title": "Search site nodes",
-      "readOnlyHint": true,
-      "destructiveHint": false,
-      "idempotentHint": true,
-      "openWorldHint": false
-    },
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Site id.",
-          "maxLength": 256
-        },
-        "q": {
-          "type": "string",
-          "description": "Matches displayName, text and id (case-insensitive).",
-          "maxLength": 1024
-        },
-        "type": {
-          "type": "string",
-          "description": "Component type, e.g. Text, Button, Container.",
-          "maxLength": 128
-        },
-        "className": {
-          "type": "string",
-          "description": "Substring of props.className.",
-          "maxLength": 4096
-        },
-        "classRegex": {
-          "type": "string",
-          "description": "Regex over props.className, e.g. 'py-(8|12)'.",
-          "maxLength": 4096
-        }
-      }
-    }
-  },
-  {
-    "name": "list_example_blocks",
-    "description": "Lists all top-level blocks in a page, showing their node IDs, display names, component types, and descendant counts. Use this to find block root IDs before calling extract_block.",
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Site id.",
-          "maxLength": 256
-        },
-        "pageId": {
-          "type": "string",
-          "description": "Target page node ID (e.g. \"page_about\"). Default: page_home or first page found. Use list_pages to see available pages.",
-          "maxLength": 256
-        }
-      }
-    },
-    "annotations": {
-      "title": "List example blocks",
-      "readOnlyHint": true,
-      "destructiveHint": false,
-      "idempotentHint": true,
-      "openWorldHint": false
-    }
-  },
-  {
-    "name": "extract_block",
-    "description": "Extracts a block from a site and converts it to hierarchical block template format ({type, props, children}). This is the reverse of add_block — useful for mining existing sites into reusable templates.\n\nUse list_example_blocks first to find block root IDs. The output can be passed directly to save_as_block_template.",
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Site id.",
-          "maxLength": 256
-        },
-        "sectionRootId": {
-          "type": "string",
-          "description": "Node ID of the block root. Get this from list_example_blocks.",
-          "maxLength": 256
-        },
-        "templatize": {
-          "type": "boolean",
-          "description": "If true, attempt to replace hardcoded years with {{year}} and flag hardcoded colors for manual palette mapping. Default: false."
-        }
-      },
-      "required": [
-        "sectionRootId"
-      ]
-    },
-    "annotations": {
-      "title": "Extract block",
-      "readOnlyHint": true,
-      "destructiveHint": false,
-      "idempotentHint": true,
-      "openWorldHint": false
-    }
-  },
-  {
-    "name": "save_as_block_template",
-    "description": "Saves a block template structure into a category file in data/section-templates/. Creates the category file if it doesn't exist. Template IDs must be globally unique across all categories.\n\nWorkflow: list_example_blocks → extract_block → (review/edit) → save_as_block_template",
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "category": {
-          "type": "string",
-          "description": "Category ID (e.g. \"hero\", \"testimonials\", \"gallery\", \"contact\", \"cta\"). Maps to data/section-templates/{category}.json.",
-          "maxLength": 128
-        },
-        "categoryName": {
-          "type": "string",
-          "description": "Human-readable category name. Only needed when creating a new category file (e.g. \"Testimonials\", \"Contact Sections\").",
-          "maxLength": 512
-        },
-        "templateId": {
-          "type": "string",
-          "description": "Unique template ID (e.g. \"testimonials-1\", \"gallery-2\"). Must be globally unique across all categories.",
-          "maxLength": 256
-        },
-        "name": {
-          "type": "string",
-          "description": "Human-readable template name (e.g. \"Three-Card Testimonials Grid\").",
-          "maxLength": 512
-        },
-        "visual": {
-          "type": "string",
-          "description": "Prose description of what the rendered section looks like. Helps AI agents pick the right template.",
-          "maxLength": 16384
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "maxLength": 128
-          },
-          "description": "Search/filter tags (e.g. [\"testimonials\", \"cards\", \"three-column\", \"grid\"]).",
-          "maxItems": 30
-        },
-        "structure": {
-          "type": "object",
-          "description": "Hierarchical section structure {type, props, children}. Output from extract_section or hand-crafted."
-        }
-      },
-      "required": [
-        "category",
-        "templateId",
-        "name",
-        "structure"
-      ]
-    },
-    "annotations": {
-      "title": "Save as block template",
-      "readOnlyHint": false,
-      "destructiveHint": false,
-      "idempotentHint": false,
-      "openWorldHint": false
-    }
-  },
-  {
-    "name": "shuffle_block",
-    "description": "Swaps a block with an alternative template of the same type while preserving the user's content. Identifies the block's category (hero, pricing, testimonials, etc.) from its template origin, picks a different template from the same category, extracts text/image content from the old block, and re-applies it to the new layout.\n\nWorkflow: list_example_blocks → shuffle_block(sectionRootId) → done.\n\nIf targetTemplateId is omitted, picks a random alternative. Returns the list of remaining alternatives the user can try.",
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Site id.",
-          "maxLength": 256
-        },
-        "sectionRootId": {
-          "type": "string",
-          "description": "Node ID of the block root to replace. Get this from list_example_blocks.",
-          "maxLength": 256
-        },
-        "targetTemplateId": {
-          "type": "string",
-          "description": "Specific template ID to swap to (e.g. \"hero-3\"). If omitted, picks a random alternative from the same category.",
-          "maxLength": 256
-        },
-        "pageId": {
-          "type": "string",
-          "description": "Page node ID the section lives on. Default: page_home.",
-          "maxLength": 256
-        }
-      },
-      "required": [
-        "sectionRootId"
-      ]
-    },
-    "annotations": {
-      "title": "Shuffle block",
-      "readOnlyHint": false,
-      "destructiveHint": true,
-      "idempotentHint": false,
-      "openWorldHint": false
     }
   },
   {
     "name": "audit_seo",
-    "description": "Score a site or template page for SEO: meta, heading hierarchy, alt text, link text, content depth. Returns fixes with node ids.",
+    "description": "Score a page of the site's draft (or a stock template) for SEO: meta, heading hierarchy, alt text, link text, content depth. Returns fixes.",
     "annotations": {
       "title": "Audit SEO",
       "readOnlyHint": true,
@@ -1009,14 +341,14 @@
           "description": "Site id. Not with templateSlug.",
           "maxLength": 256
         },
-        "templateSlug": {
-          "type": "string",
-          "description": "Template to audit instead of a site.",
-          "maxLength": 256
-        },
         "pageId": {
           "type": "string",
           "description": "Page id (default page_home).",
+          "maxLength": 256
+        },
+        "templateSlug": {
+          "type": "string",
+          "description": "Template to audit instead of a site; pageId is then the page's url path, e.g. \"/about\".",
           "maxLength": 256
         }
       }
@@ -1055,7 +387,7 @@
   },
   {
     "name": "pull_template",
-    "description": "Download a stock template's decoded node tree, or its HTML + Liquid files (format liquid; always for an HTML-only template).",
+    "description": "Read a stock template's HTML + Liquid files (all, or one with path).",
     "annotations": {
       "title": "Pull template",
       "readOnlyHint": true,
@@ -1071,236 +403,15 @@
           "description": "Template slug to pull",
           "maxLength": 256
         },
-        "format": {
-          "type": "string",
-          "enum": [
-            "nodes",
-            "liquid"
-          ],
-          "description": "liquid for HTML-first sites.",
-          "maxLength": 16
-        },
         "path": {
           "type": "string",
-          "description": "liquid: one file's text.",
+          "description": "One file's text.",
           "maxLength": 512
         }
       },
       "required": [
         "slug"
       ]
-    }
-  },
-  {
-    "name": "save_template",
-    "description": "Save a new site template to the catalog. Creates a reusable template from a CraftJS flat node map. Requires admin or tenant owner/editor role.",
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "slug": {
-          "type": "string",
-          "description": "URL-safe unique slug (e.g. \"bakery-modern\")",
-          "maxLength": 256
-        },
-        "title": {
-          "type": "string",
-          "description": "Human-readable title",
-          "maxLength": 512
-        },
-        "description": {
-          "type": "string",
-          "description": "Short description",
-          "maxLength": 16384
-        },
-        "content": {
-          "type": "object",
-          "description": "Full CraftJS flat node map (same format as pull_site output)"
-        },
-        "hidden": {
-          "type": "boolean",
-          "description": "If true, hidden from public gallery. Default: false"
-        },
-        "isPublic": {
-          "type": "boolean",
-          "description": "Visible to all users. Default: true"
-        },
-        "sortOrder": {
-          "type": "number",
-          "description": "Catalog sort order (lower first; ties by title). Default: 0"
-        },
-        "category": {
-          "type": "string",
-          "description": "Template category (e.g. \"landing-page\", \"portfolio\", \"ecommerce\", \"blog\")",
-          "maxLength": 128
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "maxLength": 128
-          },
-          "description": "Tags for discovery (e.g. [\"modern\", \"dark\", \"restaurant\"]). Max 30.",
-          "maxItems": 30
-        }
-      },
-      "required": [
-        "slug",
-        "title",
-        "content"
-      ]
-    },
-    "annotations": {
-      "title": "Save template",
-      "readOnlyHint": false,
-      "destructiveHint": false,
-      "idempotentHint": false,
-      "openWorldHint": false
-    }
-  },
-  {
-    "name": "publish_site_as_template",
-    "description": "Copies the active site's full content into a new template in the catalog. No need to pass content — it reads from the site automatically. Use this after building a site to publish it as a reusable template.",
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "slug": {
-          "type": "string",
-          "description": "URL-safe unique slug for the template (defaults to site slug)",
-          "maxLength": 256
-        },
-        "title": {
-          "type": "string",
-          "description": "Human-readable title (defaults to site name)",
-          "maxLength": 512
-        },
-        "description": {
-          "type": "string",
-          "description": "Short description",
-          "maxLength": 16384
-        },
-        "category": {
-          "type": "string",
-          "description": "Template category (e.g. \"landing-page\", \"portfolio\")",
-          "maxLength": 128
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "maxLength": 128
-          },
-          "description": "Tags for discovery. Max 30.",
-          "maxItems": 30
-        },
-        "hidden": {
-          "type": "boolean",
-          "description": "If true, hidden from public gallery"
-        },
-        "isPublic": {
-          "type": "boolean",
-          "description": "Visible to all users. Default: true"
-        },
-        "sortOrder": {
-          "type": "number",
-          "description": "Catalog sort order (lower first; ties by title). Default: 0"
-        },
-        "id": {
-          "type": "string",
-          "description": "Site id.",
-          "maxLength": 256
-        }
-      }
-    },
-    "annotations": {
-      "title": "Publish site as template",
-      "readOnlyHint": false,
-      "destructiveHint": false,
-      "idempotentHint": false,
-      "openWorldHint": false
-    }
-  },
-  {
-    "name": "update_template",
-    "description": "Update an existing template you own (or any template if admin). Change title, description, content, category, tags, or visibility.",
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "slug": {
-          "type": "string",
-          "description": "Slug of the template to update",
-          "maxLength": 256
-        },
-        "title": {
-          "type": "string",
-          "description": "New title",
-          "maxLength": 512
-        },
-        "description": {
-          "type": "string",
-          "description": "New description",
-          "maxLength": 16384
-        },
-        "content": {
-          "type": "object",
-          "description": "Replacement CraftJS flat node map"
-        },
-        "hidden": {
-          "type": "boolean",
-          "description": "Toggle hidden status"
-        },
-        "sortOrder": {
-          "type": "number",
-          "description": "Catalog sort order (lower first; ties by title)"
-        },
-        "category": {
-          "type": "string",
-          "description": "New category",
-          "maxLength": 128
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "maxLength": 128
-          },
-          "description": "New tags array. Max 30.",
-          "maxItems": 30
-        }
-      },
-      "required": [
-        "slug"
-      ]
-    },
-    "annotations": {
-      "title": "Update template",
-      "readOnlyHint": false,
-      "destructiveHint": true,
-      "idempotentHint": true,
-      "openWorldHint": false
-    }
-  },
-  {
-    "name": "delete_template",
-    "description": "Delete a template you own (or any template if admin).",
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "slug": {
-          "type": "string",
-          "description": "Template slug to delete",
-          "maxLength": 256
-        }
-      },
-      "required": [
-        "slug"
-      ]
-    },
-    "annotations": {
-      "title": "Delete template",
-      "readOnlyHint": false,
-      "destructiveHint": true,
-      "idempotentHint": true,
-      "openWorldHint": false
     }
   },
   {
@@ -1343,53 +454,8 @@
     }
   },
   {
-    "name": "select_template",
-    "description": "Make a template the edit target for this session; editing tools then act on it (clears the active site). Admin or tenant owner/editor only.",
-    "annotations": {
-      "title": "Select template",
-      "readOnlyHint": true,
-      "destructiveHint": false,
-      "idempotentHint": true,
-      "openWorldHint": false
-    },
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "slug": {
-          "type": "string",
-          "description": "Template slug to set as active",
-          "maxLength": 256
-        }
-      },
-      "required": [
-        "slug"
-      ]
-    }
-  },
-  {
-    "name": "pull_site",
-    "description": "Fetches the FULL site content (100KB+). Prefer list_site_nodes (lightweight tree summary, ~2KB) or search_site_nodes (find nodes by name/type) for most tasks. Only use pull_site when you need the complete props/className of many nodes at once.",
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Site id.",
-          "maxLength": 256
-        }
-      }
-    },
-    "annotations": {
-      "title": "Pull site",
-      "readOnlyHint": true,
-      "destructiveHint": false,
-      "idempotentHint": true,
-      "openWorldHint": false
-    }
-  },
-  {
     "name": "create_site",
-    "description": "Create a site from a template (default \"acme\", the blank starter) and return its id. Takes no node map; the site is built up afterwards with the section and node tools.",
+    "description": "Create a site from a template (default \"acme\", the blank starter) and return its id. Then build it with the file tools.",
     "annotations": {
       "title": "Create site",
       "readOnlyHint": false,
@@ -1498,7 +564,7 @@
   },
   {
     "name": "publish_site",
-    "description": "Publish the draft so it goes live. Every write is staged until this runs. `static` switches static delivery on/off (omit to leave it).",
+    "description": "Publish the draft so it goes live. Every write is staged until this runs.",
     "annotations": {
       "title": "Publish site",
       "readOnlyHint": false,
@@ -1513,10 +579,6 @@
           "type": "string",
           "description": "Site id.",
           "maxLength": 256
-        },
-        "static": {
-          "type": "boolean",
-          "description": "true = static-export renderer, false = React renderer."
         }
       }
     }
@@ -2094,7 +1156,7 @@
   },
   {
     "name": "upload_file",
-    "description": "Upload any plan-allowed file. Images go to the CDN (type \"cdn\"); video/audio/pdf/zip go to R2 (type \"r2\" + public url) for a Link, a collection field, or a Video node (provider \"r2\", videoId = mediaId). Web files: `fileUrl`. `dataBase64` is a last resort (~3MB cap; pass mimeType for non-images).",
+    "description": "Upload any plan-allowed file. Images go to the CDN (type \"cdn\"); video/audio/pdf/zip go to R2 (type \"r2\" + public url) for a Link, a collection field, or a video/audio tag (file_url). Web files: `fileUrl`. `dataBase64` is a last resort (~3MB cap; pass mimeType for non-images).",
     "annotations": {
       "title": "Upload file",
       "readOnlyHint": false,
@@ -2568,7 +1630,7 @@
   },
   {
     "name": "find_video",
-    "description": "Stock videos with direct MP4 URLs (Pexels) for Video nodes.",
+    "description": "Stock videos with direct MP4 URLs (Pexels) for <video> tags.",
     "annotations": {
       "title": "Find video",
       "readOnlyHint": true,
@@ -2619,7 +1681,7 @@
   },
   {
     "name": "find_icon",
-    "description": "Search every icon set; returns ranked `ref-icon:<set>/<Name>` refs for Icon nodes and Button/Link icon.value. Tabler (tb) lacks many brand logos; brands come from fa / si / … and appear in the results.",
+    "description": "Search every icon set; returns ranked refs for the `icon` filter: {{ 'tb/TbPhone' | icon }}. Tabler (tb) lacks many brand logos; brands come from fa / si / … and appear in the results.",
     "annotations": {
       "title": "Find icon",
       "readOnlyHint": true,
@@ -2656,211 +1718,6 @@
       },
       "required": [
         "q"
-      ]
-    }
-  },
-  {
-    "name": "patch_site_node",
-    "description": "Patch one node (several: patch_site_bulk, one atomic write). classNamePatch merges Tailwind classes; propsPatch sets other props (objects like dataSource deep-merge, strings and arrays replace); typePatch swaps the component type; unsetProps (runs first) drops a key or branch. Image: write src only; writing content is rejected, and unsetProps [\"content\"] clears an old one. No children. Rules: get_style_reference({ topic: \"editing\" }).",
-    "annotations": {
-      "title": "Patch site node",
-      "readOnlyHint": false,
-      "destructiveHint": true,
-      "idempotentHint": true,
-      "openWorldHint": false
-    },
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Site id.",
-          "maxLength": 256
-        },
-        "nodeId": {
-          "type": "string",
-          "description": "Node id, e.g. ROOT, page_home.",
-          "maxLength": 256
-        },
-        "typePatch": {
-          "type": "string",
-          "description": "New type.resolvedName, e.g. \"Text\". isCanvas follows.",
-          "maxLength": 128
-        },
-        "classNamePatch": {
-          "type": "string",
-          "description": "Classes merged via twMerge. Mobile-first: unprefixed = mobile, md:/lg: up.",
-          "maxLength": 4096
-        },
-        "propsPatch": {
-          "type": "object",
-          "description": "Non-class props. Objects merge: { dataSource: { filter } } keeps provider."
-        },
-        "nodesPatch": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "maxLength": 256
-          },
-          "description": "REORDER ONLY: the exact same child ids in a new order. Anything else blanks the canvas.",
-          "maxItems": 1000
-        },
-        "unsetClasses": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "maxLength": 128
-          },
-          "description": "Classes or prefixes to remove; \"gap-\" also removes md:gap-*.",
-          "maxItems": 200
-        },
-        "unsetProps": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "maxLength": 128
-          },
-          "maxItems": 200,
-          "description": "Keys or dotted paths to delete, e.g. \"dataSource.filter\"."
-        },
-        "name": {
-          "type": "string",
-          "description": "Optional site rename.",
-          "maxLength": 512
-        },
-        "buttonValidation": {
-          "type": "string",
-          "enum": [
-            "off",
-            "warn",
-            "fix",
-            "strict"
-          ],
-          "description": "off | warn | fix (default) | strict, for touched Buttons.",
-          "maxLength": 128
-        },
-        "designValidation": {
-          "type": "string",
-          "enum": [
-            "off",
-            "warn",
-            "strict"
-          ],
-          "description": "off | warn (default) | strict token checks on touched nodes.",
-          "maxLength": 128
-        }
-      },
-      "required": [
-        "nodeId"
-      ]
-    }
-  },
-  {
-    "name": "patch_site_bulk",
-    "description": "Apply many node patches in one atomic write (parallel single patches lose updates). `patches` is a real JSON array of { nodeId, typePatch?, classNamePatch?, propsPatch?, nodesPatch?, unsetClasses?, unsetProps? }. Same rules as patch_site_node.",
-    "annotations": {
-      "title": "Patch site bulk",
-      "readOnlyHint": false,
-      "destructiveHint": true,
-      "idempotentHint": true,
-      "openWorldHint": false
-    },
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Site id.",
-          "maxLength": 256
-        },
-        "patches": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "nodeId": {
-                "type": "string",
-                "description": "Node id.",
-                "maxLength": 256
-              },
-              "typePatch": {
-                "type": "string",
-                "description": "New type.resolvedName.",
-                "maxLength": 128
-              },
-              "classNamePatch": {
-                "type": "string",
-                "description": "Classes merged via twMerge; mobile-first.",
-                "maxLength": 4096
-              },
-              "propsPatch": {
-                "type": "object",
-                "description": "Non-class props."
-              },
-              "nodesPatch": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "maxLength": 256
-                },
-                "description": "REORDER ONLY: exact same child ids.",
-                "maxItems": 1000
-              },
-              "unsetClasses": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "maxLength": 128
-                },
-                "description": "Classes/prefixes to remove.",
-                "maxItems": 200
-              },
-              "unsetProps": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "maxLength": 128
-                },
-                "maxItems": 200,
-                "description": "Dotted prop paths to delete, e.g. \"seo.jsonLd\"."
-              }
-            },
-            "required": [
-              "nodeId"
-            ]
-          },
-          "description": "Array (not a string), applied in order to one fetched document.",
-          "maxItems": 1000
-        },
-        "name": {
-          "type": "string",
-          "description": "Optional site rename.",
-          "maxLength": 512
-        },
-        "buttonValidation": {
-          "type": "string",
-          "enum": [
-            "off",
-            "warn",
-            "fix",
-            "strict"
-          ],
-          "description": "off | warn | fix (default) | strict, for touched Buttons.",
-          "maxLength": 128
-        },
-        "designValidation": {
-          "type": "string",
-          "enum": [
-            "off",
-            "warn",
-            "strict"
-          ],
-          "description": "off | warn (default) | strict token checks on touched nodes.",
-          "maxLength": 128
-        }
-      },
-      "required": [
-        "patches"
       ]
     }
   },
@@ -2946,7 +1803,7 @@
   },
   {
     "name": "audit_accessibility",
-    "description": "WCAG audit of a site or template page: contrast, alt text, headings, ARIA, interactive elements. Returns violations by severity with node ids.",
+    "description": "WCAG audit of a page of the site's draft (or a stock template): contrast, alt text, headings, ARIA, interactive elements. Returns violations by severity.",
     "annotations": {
       "title": "Audit accessibility",
       "readOnlyHint": true,
@@ -2960,11 +1817,6 @@
         "id": {
           "type": "string",
           "description": "Site id. Not with templateSlug.",
-          "maxLength": 256
-        },
-        "templateSlug": {
-          "type": "string",
-          "description": "Template to audit instead of a site.",
           "maxLength": 256
         },
         "pageId": {
@@ -2981,13 +1833,18 @@
           ],
           "description": "Default AA.",
           "maxLength": 128
+        },
+        "templateSlug": {
+          "type": "string",
+          "description": "Template to audit instead of a site; pageId is then the page's url path, e.g. \"/about\".",
+          "maxLength": 256
         }
       }
     }
   },
   {
     "name": "search_blocks",
-    "description": "Search the block library; returns one page of slugs with descriptions and tags (full structure: get_block), plus sections on this site that can be cloned. `q` takes short layout phrases (\"split hero\"), `categories` / `styles` arrays OR-filter, `page` pages through. Guide: get_style_reference({ topic: \"blocks\" }).",
+    "description": "Search the block library; returns one page of slugs with descriptions and tags (Liquid: get_block). `q` takes short layout phrases (\"split hero\"), `categories` / `styles` arrays OR-filter, `page` pages through. Guide: get_style_reference({ topic: \"blocks\" }).",
     "annotations": {
       "title": "Search blocks",
       "readOnlyHint": true,
@@ -3000,7 +1857,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "HTML-first site id: results are Liquid.",
+          "description": "Site id.",
           "maxLength": 256
         },
         "q": {
@@ -3096,7 +1953,7 @@
   },
   {
     "name": "get_block",
-    "description": "Get a library block's full tree by slug — reference for hand-building with add_nodes. Counts as a use.",
+    "description": "Get a library block's Liquid by slug — reference for writing a section. Counts as a use.",
     "annotations": {
       "title": "Get block",
       "readOnlyHint": true,
@@ -3109,7 +1966,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "HTML-first site id: results are Liquid.",
+          "description": "Site id.",
           "maxLength": 256
         },
         "slug": {
@@ -3124,32 +1981,8 @@
     }
   },
   {
-    "name": "list_block_nodes",
-    "description": "List a library block's node ids (lib_*) and displayNames — the keys apply_kit_block's contentOverrides / propOverrides use. Counts as a use.",
-    "annotations": {
-      "title": "List block nodes",
-      "readOnlyHint": true,
-      "destructiveHint": false,
-      "idempotentHint": true,
-      "openWorldHint": false
-    },
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "slug": {
-          "type": "string",
-          "description": "Block slug.",
-          "maxLength": 256
-        }
-      },
-      "required": [
-        "slug"
-      ]
-    }
-  },
-  {
     "name": "apply_kit_block",
-    "description": "Stamp a section as-is: a library block (`slug`) or a clone of a page section already on this site (`sourceNodeId`) — exactly one. To design a section for this business, use add_nodes with get_block as reference instead. `contentOverrides` sets the final copy in the same call, keyed by the block's lib_* ids. target \"header\"/\"footer\" swaps the site header/footer. Guide: get_style_reference({ topic: \"blocks\" }). HTML-first site: places the block's Liquid in a page file (pageId; before/after = exact text there; position 0 = top).",
+    "description": "Place a library block (`slug`) into a page file as a copy with fresh ids (pageId; before/after = exact text there; position 0 = top). To design a section for this business, write it with edit_site_file and use get_block as reference. Guide: get_style_reference({ topic: \"blocks\" }).",
     "annotations": {
       "title": "Apply kit block",
       "readOnlyHint": false,
@@ -3167,27 +2000,7 @@
         },
         "slug": {
           "type": "string",
-          "description": "Block slug from search_blocks. Not with sourceNodeId.",
-          "maxLength": 256
-        },
-        "sourceNodeId": {
-          "type": "string",
-          "description": "Page section on this site to deep-clone with fresh ids. Page target only.",
-          "maxLength": 256
-        },
-        "target": {
-          "type": "string",
-          "enum": [
-            "page",
-            "header",
-            "footer"
-          ],
-          "description": "page (default) | header (replaces hdr_root) | footer (replaces ftr_root).",
-          "maxLength": 128
-        },
-        "sectionContainerId": {
-          "type": "string",
-          "description": "Existing empty section to fill (skeleton fills). Omit otherwise.",
+          "description": "Block slug from search_blocks.",
           "maxLength": 256
         },
         "pageId": {
@@ -3195,380 +2008,21 @@
           "description": "Target page (default page_home).",
           "maxLength": 256
         },
-        "contentOverrides": {
-          "type": "string",
-          "description": "JSON object: node displayName → { text, url, alt, src, … }. Repeated names take an array, consumed in DFS order, e.g. { \"Heading\": { \"text\": \"Our Services\" }, \"Title\": [{ \"text\": \"SEO\" }, { \"text\": \"PPC\" }] }.",
-          "maxLength": 65536
-        },
-        "propOverrides": {
-          "type": "string",
-          "description": "JSON object: displayName → { className, replaceClassName?, props }. className merges unless replaceClassName: true. Arrays for repeated names.",
-          "maxLength": 65536
-        },
-        "position": {
-          "type": "number",
-          "description": "Index among the page's sections (default: end)."
-        },
         "before": {
           "type": "string",
-          "description": "HTML-first: exact page text to insert before.",
+          "description": "Exact page text to insert before.",
           "maxLength": 2000
         },
         "after": {
           "type": "string",
-          "description": "HTML-first: exact page text to insert after.",
+          "description": "Exact page text to insert after.",
           "maxLength": 2000
+        },
+        "position": {
+          "type": "number",
+          "description": "0 = top of the page body (default: end)."
         }
       }
-    }
-  },
-  {
-    "name": "save_block",
-    "description": "Save a new reusable block to the library. Use this after extracting or hand-crafting a UI block you want to reuse across templates.\n\nThe structure format is the same hierarchical {type, props, children} format used by block templates — NOT flat CraftJS node maps.",
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string",
-          "description": "Human-readable name (e.g. \"Testimonial Card with Stars\").",
-          "maxLength": 512
-        },
-        "slug": {
-          "type": "string",
-          "description": "URL-safe unique slug (e.g. \"testimonial-card-stars\"). Lowercase, hyphens only.",
-          "maxLength": 256
-        },
-        "description": {
-          "type": "string",
-          "description": "Short description of what the component is and when to use it.",
-          "maxLength": 16384
-        },
-        "visual": {
-          "type": "string",
-          "description": "Detailed visual description for AI search — what it looks like when rendered.",
-          "maxLength": 16384
-        },
-        "category": {
-          "type": "string",
-          "description": "Top-level category (any string). Common: \"hero\", \"features\", \"content\", \"cta\", \"testimonials\", \"team\", \"pricing\", \"contact\", \"faq\", \"commerce\", \"navigation\", \"social\".",
-          "maxLength": 128
-        },
-        "subcategory": {
-          "type": "string",
-          "description": "Subcategory within the category (e.g. \"testimonials\", \"payment-forms\", \"product-cards\"). Creates browsable groups.",
-          "maxLength": 128
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "maxLength": 128
-          },
-          "description": "Search tags (e.g. [\"testimonial\", \"review\", \"stars\", \"avatar\"]).",
-          "maxItems": 30
-        },
-        "preset": {
-          "type": "string",
-          "description": "Starter / bundle id this block belongs to (e.g. \"acme\", \"pagehub-library\"). Use for attribution when extracting from a template or preset.",
-          "maxLength": 128
-        },
-        "source": {
-          "type": "string",
-          "description": "Legacy field; prefer `preset`. Still accepted for older tooling.",
-          "maxLength": 128
-        },
-        "group": {
-          "type": "string",
-          "description": "Logical grouping name (e.g. \"acme-homepage-cards\"). Use to batch related components.",
-          "maxLength": 128
-        },
-        "style": {
-          "type": "string",
-          "enum": "$VIBES",
-          "description": "Vibe this block belongs to. Blocks with the same vibe mix well together; the site's `buildStyle` filters the library to this value.",
-          "maxLength": 128
-        },
-        "structure": {
-          "type": "object",
-          "description": "Hierarchical CraftJS structure: {type, props, children}. Same format as section templates."
-        },
-        "isPublic": {
-          "type": "boolean",
-          "description": "Make this block visible to all users. Default: false (private to your tenant)."
-        },
-        "isCategoryPreview": {
-          "type": "boolean",
-          "description": "Use this block as the representative preview/thumbnail for its category. Default: false."
-        }
-      },
-      "required": [
-        "name",
-        "slug",
-        "category",
-        "structure"
-      ]
-    },
-    "annotations": {
-      "title": "Save block",
-      "readOnlyHint": false,
-      "destructiveHint": false,
-      "idempotentHint": false,
-      "openWorldHint": false
-    }
-  },
-  {
-    "name": "update_block",
-    "description": "Update an existing block — change its category, name, tags, description, slug, or any other metadata. Use this to move blocks between categories, fix descriptions, or replace the entire structure.\n\nFor partial structure edits (text, styles, layout props on specific nodes), prefer list_block_nodes + patch_block or patch_block_bulk instead of hand-editing the full structure JSON.",
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "slug": {
-          "type": "string",
-          "description": "Current slug of the block to update.",
-          "maxLength": 256
-        },
-        "name": {
-          "type": "string",
-          "description": "New name.",
-          "maxLength": 512
-        },
-        "newSlug": {
-          "type": "string",
-          "description": "New slug (rename). Must be unique.",
-          "maxLength": 256
-        },
-        "description": {
-          "type": "string",
-          "description": "New description.",
-          "maxLength": 16384
-        },
-        "visual": {
-          "type": "string",
-          "description": "New visual description for AI search.",
-          "maxLength": 16384
-        },
-        "category": {
-          "type": "string",
-          "description": "Move to a different category (any string, no restrictions).",
-          "maxLength": 128
-        },
-        "subcategory": {
-          "type": "string",
-          "description": "Set or change subcategory (e.g. \"testimonials\", \"payment-forms\").",
-          "maxLength": 128
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "maxLength": 128
-          },
-          "description": "Replace tags array.",
-          "maxItems": 30
-        },
-        "preset": {
-          "type": "string",
-          "description": "Update starter / bundle id (e.g. \"acme\", \"pagehub-library\").",
-          "maxLength": 128
-        },
-        "source": {
-          "type": "string",
-          "description": "Update legacy `source` field; prefer `preset` for new values.",
-          "maxLength": 128
-        },
-        "group": {
-          "type": "string",
-          "description": "Update logical group.",
-          "maxLength": 128
-        },
-        "style": {
-          "type": "string",
-          "enum": "$VIBES",
-          "description": "Update the block's vibe.",
-          "maxLength": 128
-        },
-        "structure": {
-          "type": "object",
-          "description": "Replace the component structure."
-        },
-        "isPublic": {
-          "type": "boolean",
-          "description": "Toggle public visibility."
-        },
-        "isFeatured": {
-          "type": "boolean",
-          "description": "Toggle featured status."
-        },
-        "isCategoryPreview": {
-          "type": "boolean",
-          "description": "Toggle category preview thumbnail."
-        }
-      },
-      "required": [
-        "slug"
-      ]
-    },
-    "annotations": {
-      "title": "Update block",
-      "readOnlyHint": false,
-      "destructiveHint": true,
-      "idempotentHint": true,
-      "openWorldHint": false
-    }
-  },
-  {
-    "name": "patch_block",
-    "description": "Patch one node inside a library block's stored structure (GET, flatten, merge, PUT). Uses typePatch to change type.resolvedName, classNamePatch for Tailwind classes, propsPatch for non-class props. Node ids are lib_* from list_block_nodes for this slug — not kit_* (those only exist after apply_kit_block on a site). Does not create nodes; use update_block(structure: ...) for wholesale replacement.\n\nUseful when a block node must switch component type without replacing the whole block structure.",
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "slug": {
-          "type": "string",
-          "description": "Block slug (same string used in list_block_nodes).",
-          "maxLength": 256
-        },
-        "nodeId": {
-          "type": "string",
-          "description": "Flat node id from list_block_nodes (lib_*).",
-          "maxLength": 256
-        },
-        "typePatch": {
-          "type": "string",
-          "description": "Optional component type replacement for node.type.resolvedName (e.g. \"Button\", \"Text\", \"Image\"). Keeps node.isCanvas aligned automatically.",
-          "maxLength": 128
-        },
-        "classNamePatch": {
-          "type": "string",
-          "description": "Tailwind classes to merge into props.className. Mobile-first: unprefixed = base, md: = desktop.",
-          "maxLength": 4096
-        },
-        "propsPatch": {
-          "type": "object",
-          "description": "Non-class props: text, src, href, alt, style, animation, etc."
-        },
-        "nodesPatch": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "maxLength": 256
-          },
-          "description": "REORDER ONLY: exact same child ids as the node already has. Omit unless reordering.",
-          "maxItems": 1000
-        },
-        "unsetClasses": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "maxLength": 128
-          },
-          "description": "Classes/prefixes to remove from className.",
-          "maxItems": 200
-        },
-        "unsetProps": {
-          "type": "array",
-          "description": "Dotted prop paths to delete, e.g. \"seo.jsonLd\".",
-          "items": {
-            "type": "string",
-            "maxLength": 128
-          },
-          "maxItems": 200
-        }
-      },
-      "required": [
-        "slug",
-        "nodeId"
-      ]
-    },
-    "annotations": {
-      "title": "Patch block",
-      "readOnlyHint": false,
-      "destructiveHint": true,
-      "idempotentHint": true,
-      "openWorldHint": false
-    }
-  },
-  {
-    "name": "patch_block_bulk",
-    "description": "Same as patch_block but one GET and one PUT: patch many lib_* nodes atomically. patches MUST be a native JSON array. Each item: { nodeId, typePatch?, classNamePatch?, propsPatch?, nodesPatch?, unsetClasses?, unsetProps? }. Slug must match list_block_nodes.",
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "slug": {
-          "type": "string",
-          "description": "Block slug (same string used in list_block_nodes).",
-          "maxLength": 256
-        },
-        "patches": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "nodeId": {
-                "type": "string",
-                "description": "lib_* id from list_block_nodes",
-                "maxLength": 256
-              },
-              "typePatch": {
-                "type": "string",
-                "description": "Optional component type replacement for node.type.resolvedName.",
-                "maxLength": 128
-              },
-              "classNamePatch": {
-                "type": "string",
-                "description": "Tailwind classes to merge into props.className.",
-                "maxLength": 4096
-              },
-              "propsPatch": {
-                "type": "object",
-                "description": "Non-class props: text, src, href, alt, style, animation, etc."
-              },
-              "nodesPatch": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "maxLength": 256
-                },
-                "description": "REORDER ONLY: exact same child ids as the parent already has.",
-                "maxItems": 1000
-              },
-              "unsetClasses": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "maxLength": 128
-                },
-                "description": "Classes/prefixes to remove from className.",
-                "maxItems": 200
-              },
-              "unsetProps": {
-                "type": "array",
-                "description": "Dotted prop paths to delete, e.g. \"seo.jsonLd\".",
-                "items": {
-                  "type": "string",
-                  "maxLength": 128
-                },
-                "maxItems": 200
-              }
-            },
-            "required": [
-              "nodeId"
-            ]
-          },
-          "description": "Non-empty array of per-node patches (same keys as patch_block).",
-          "maxItems": 1000
-        }
-      },
-      "required": [
-        "slug",
-        "patches"
-      ]
-    },
-    "annotations": {
-      "title": "Patch block bulk",
-      "readOnlyHint": false,
-      "destructiveHint": true,
-      "idempotentHint": true,
-      "openWorldHint": false
     }
   },
   {
@@ -3597,7 +2051,7 @@
   },
   {
     "name": "list_pages",
-    "description": "List the site's pages: node id, name, slug, home/404 flags. Use it to get page ids.",
+    "description": "List the site's pages: id, name, url, file, home/404 flags. Use it to get page ids.",
     "annotations": {
       "title": "List pages",
       "readOnlyHint": true,
@@ -3618,7 +2072,7 @@
   },
   {
     "name": "add_page",
-    "description": "Create a page (a type \"page\" Container under ROOT; the first page is home). Returns the pageId that apply_kit_block and add_nodes take. seo.title + seo.description can be set here. Guide: get_style_reference({ topic: \"pages\" }).",
+    "description": "Create a page: pages/<slug>.liquid plus its record (the first page is home). `text` is the page's HTML + Liquid. Returns the pageId. seo.title + seo.description can be set here. Guide: get_style_reference({ topic: \"pages\" }).",
     "annotations": {
       "title": "Add page",
       "readOnlyHint": false,
@@ -3641,7 +2095,7 @@
         },
         "text": {
           "type": "string",
-          "description": "HTML-first sites (required there): the page's HTML + Liquid.",
+          "description": "The page's HTML + Liquid (required).",
           "maxLength": 2000000
         },
         "isHomePage": {
@@ -3651,10 +2105,6 @@
         "is404Page": {
           "type": "boolean",
           "description": "Serve it for unmatched routes."
-        },
-        "position": {
-          "type": "number",
-          "description": "Index among ROOT's children (default: before the footer)."
         },
         "seo": {
           "type": "object",
@@ -3716,13 +2166,14 @@
         }
       },
       "required": [
-        "name"
+        "name",
+        "text"
       ]
     }
   },
   {
     "name": "update_page",
-    "description": "Update a page: name (changes the slug), SEO, home/404/hidden flags, per-page headCode/footerCode/bodyClass, hideHeader/hideFooter/hideChrome, pathPattern. Without seo.title/description it uses the site's (update_site). Code fields: third-party code only. Guide: get_style_reference({ topic: \"pages\" }).",
+    "description": "Update a page record: name (changes the slug), SEO, home/404/hidden flags, pathPattern. Per-page head code, body classes and hiding the header/footer are edits to the page file. Without seo.title/description it uses the site's (update_site). Guide: get_style_reference({ topic: \"pages\" }).",
     "annotations": {
       "title": "Update page",
       "readOnlyHint": false,
@@ -3813,36 +2264,9 @@
             }
           }
         },
-        "headCode": {
-          "type": "string",
-          "description": "Raw HTML in this page's <head>. \"\" clears. Site-wide: ROOT.props.inject.head.",
-          "maxLength": 65536
-        },
-        "footerCode": {
-          "type": "string",
-          "description": "Raw HTML at the end of this page's <body>, after its content. \"\" clears. Site-wide: ROOT.props.inject.footer.",
-          "maxLength": 65536
-        },
-        "bodyClass": {
-          "type": "string",
-          "description": "Classes on <body> for this page. \"\" clears.",
-          "maxLength": 4096
-        },
-        "hideHeader": {
-          "type": "boolean",
-          "description": "Hide the site header here."
-        },
-        "hideFooter": {
-          "type": "boolean",
-          "description": "Hide the site footer here."
-        },
-        "hideChrome": {
-          "type": "boolean",
-          "description": "Hide all ROOT-level chrome (header, footer, sticky bars, drawers)."
-        },
         "pathPattern": {
           "type": "string",
-          "description": "URL tail AFTER the page's own slug, for detail pages. Segments: literal or `:param`, no leading slash: `:slug` on page \"Car\" serves /car/<slug>. Read captures in a Data node's dataSource as `{{params.<name>}}`. Empty string clears.",
+          "description": "URL tail AFTER the page's own slug, for detail pages. Segments: literal or `:param`, no leading slash: `:slug` on page \"Car\" serves /car/<slug>. Read captures as `request.params.<name>`. Empty string clears.",
           "maxLength": 512
         }
       },
@@ -3853,7 +2277,7 @@
   },
   {
     "name": "delete_page",
-    "description": "Delete a page and its content. The last page can't be deleted; deleting home promotes the next page.",
+    "description": "Delete a page and its file. The last page can't be deleted; deleting home promotes the next page.",
     "annotations": {
       "title": "Delete page",
       "readOnlyHint": false,
@@ -4028,6 +2452,74 @@
     }
   },
   {
+    "name": "edit_site_files",
+    "description": "Edit several files as ONE atomic write: each entry is a path plus exact-text edits (oldText once, or replaceAll). All land or none do. Use it when a change spans files (a partial plus the pages that render it). Linted on save. Stages in the draft.",
+    "annotations": {
+      "title": "Edit several site files",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "maxLength": 512
+              },
+              "edits": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "oldText": {
+                      "type": "string",
+                      "maxLength": 200000
+                    },
+                    "newText": {
+                      "type": "string",
+                      "maxLength": 200000
+                    },
+                    "replaceAll": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "oldText",
+                    "newText"
+                  ]
+                }
+              },
+              "baseVersion": {
+                "type": "string",
+                "description": "Version from read_site_file; refuses if the file changed since.",
+                "maxLength": 128
+              }
+            },
+            "required": [
+              "path",
+              "edits"
+            ]
+          }
+        }
+      },
+      "required": [
+        "files"
+      ]
+    }
+  },
+  {
     "name": "write_site_file",
     "description": "Create or replace a whole file of an HTML-first site. Replacing needs baseVersion from read_site_file; prefer edit_site_file for changes. New page? add_page.",
     "annotations": {
@@ -4178,114 +2670,6 @@
       },
       "required": [
         "component"
-      ]
-    }
-  },
-  {
-    "name": "add_nodes",
-    "description": "Build a section: a flat map of new nodes plus the `rootNodeId` to attach under `parentId` (default page_home). The default way to design a section for this business. Each node: type.resolvedName, isCanvas, props (className, custom.displayName), parent, nodes[], linkedNodes: {}. The map holds only new nodes; get_block shows example shapes. Contract: get_style_reference({ topic: \"editing\" }).",
-    "annotations": {
-      "title": "Add nodes",
-      "readOnlyHint": false,
-      "destructiveHint": false,
-      "idempotentHint": false,
-      "openWorldHint": false
-    },
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Site id.",
-          "maxLength": 256
-        },
-        "nodes": {
-          "type": "object",
-          "description": "Flat map { nodeId: node }."
-        },
-        "buttonValidation": {
-          "type": "string",
-          "enum": [
-            "off",
-            "warn",
-            "fix",
-            "strict"
-          ],
-          "description": "off | warn | fix (default) | strict, for Buttons in the payload.",
-          "maxLength": 128
-        },
-        "rootNodeId": {
-          "type": "string",
-          "description": "The single top-level node in `nodes` to attach.",
-          "maxLength": 256
-        },
-        "parentId": {
-          "type": "string",
-          "description": "Existing parent (default page_home).",
-          "maxLength": 256
-        },
-        "position": {
-          "type": "number",
-          "description": "Index in the parent (default: end)."
-        },
-        "modifiers": {
-          "type": "object",
-          "description": "{ Text: [{ name, classes, requires }], … } upserted into ROOT.props.modifiers. Only for shortcut modifier names in className. See get_style_reference({ topic: \"editing\" })."
-        }
-      },
-      "required": [
-        "nodes",
-        "rootNodeId"
-      ]
-    }
-  },
-  {
-    "name": "place_section_tree",
-    "description": "Clone-pipeline fill mode only (errors elsewhere). Submit the complete nested tree for your assigned section in one call; a second call replaces the first. `hierarchy` is an object: root Container, each node { type, props, children? }. Never invent Image.src; button URLs go in the action href. Shape: get_style_reference({ topic: \"section-tree\" }).",
-    "annotations": {
-      "title": "Place section tree",
-      "readOnlyHint": false,
-      "destructiveHint": true,
-      "idempotentHint": true,
-      "openWorldHint": false
-    },
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "reason": {
-          "type": "string",
-          "description": "One-line summary, e.g. \"hero split, form card right\".",
-          "maxLength": 1024
-        },
-        "hierarchy": {
-          "type": "object",
-          "description": "Nested tree; the root must be a Container.",
-          "properties": {
-            "type": {
-              "type": "string",
-              "description": "Component type; root is \"Container\".",
-              "maxLength": 128
-            },
-            "props": {
-              "type": "object",
-              "description": "Props (className, text, src, action, …)."
-            },
-            "children": {
-              "type": "array",
-              "description": "Child nodes, same shape (canvas components only).",
-              "items": {
-                "type": "object"
-              }
-            }
-          },
-          "required": [
-            "type"
-          ]
-        }
-      },
-      "required": [
-        "reason",
-        "hierarchy"
       ]
     }
   },
@@ -4497,7 +2881,7 @@
   },
   {
     "name": "set_integrations",
-    "description": "Set analytics and verification ids, rendered as real tags on published pages: GA4, GTM, Search Console, Meta Pixel, Google Ads. Other third-party scripts go in ROOT inject.head/footer via patch_site_node. Per-action conversions: get_style_reference({ topic: \"integrations\" }).",
+    "description": "Set analytics and verification ids, rendered as real tags on published pages: GA4, GTM, Search Console, Meta Pixel, Google Ads. Other third-party scripts go in site.json inject. Guide: get_style_reference({ topic: \"integrations\" }).",
     "annotations": {
       "title": "Set integrations",
       "readOnlyHint": false,
@@ -4616,7 +3000,7 @@
   },
   {
     "name": "set_site_chat",
-    "description": "Change the site's chat bot settings; only the fields you pass change. Leads save to Form Submissions as \"Chat\". Visitors see it only on pages with an AgentFloatingBubble or AgentChat node, while the owner has credits.",
+    "description": "Change the site's chat bot settings; only the fields you pass change. Leads save to Form Submissions as \"Chat\". Visitors see it while the owner has credits.",
     "annotations": {
       "title": "Set site chat",
       "readOnlyHint": false,
@@ -5371,6 +3755,615 @@
       "required": [
         "importId"
       ]
+    }
+  },
+  {
+    "name": "save_block",
+    "description": "Save a new reusable block to the library from Liquid `source`. Use it after hand-crafting a section you want to reuse across templates.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Human-readable name (e.g. \"Testimonial Card with Stars\").",
+          "maxLength": 512
+        },
+        "slug": {
+          "type": "string",
+          "description": "URL-safe unique slug (e.g. \"testimonial-card-stars\"). Lowercase, hyphens only.",
+          "maxLength": 256
+        },
+        "description": {
+          "type": "string",
+          "description": "Short description of what the component is and when to use it.",
+          "maxLength": 16384
+        },
+        "visual": {
+          "type": "string",
+          "description": "Detailed visual description for AI search — what it looks like when rendered.",
+          "maxLength": 16384
+        },
+        "category": {
+          "type": "string",
+          "description": "Top-level category (any string). Common: \"hero\", \"features\", \"content\", \"cta\", \"testimonials\", \"team\", \"pricing\", \"contact\", \"faq\", \"commerce\", \"navigation\", \"social\".",
+          "maxLength": 128
+        },
+        "subcategory": {
+          "type": "string",
+          "description": "Subcategory within the category (e.g. \"testimonials\", \"payment-forms\", \"product-cards\"). Creates browsable groups.",
+          "maxLength": 128
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "description": "Search tags (e.g. [\"testimonial\", \"review\", \"stars\", \"avatar\"]).",
+          "maxItems": 30
+        },
+        "preset": {
+          "type": "string",
+          "description": "Starter / bundle id this block belongs to (e.g. \"acme\", \"pagehub-library\"). Use for attribution when extracting from a template or preset.",
+          "maxLength": 128
+        },
+        "source": {
+          "type": "string",
+          "description": "The block's Liquid (HTML + Liquid snippet). Read an existing one with get_block.",
+          "maxLength": 200000
+        },
+        "group": {
+          "type": "string",
+          "description": "Logical grouping name (e.g. \"acme-homepage-cards\"). Use to batch related components.",
+          "maxLength": 128
+        },
+        "style": {
+          "type": "string",
+          "enum": "$VIBES",
+          "description": "Vibe this block belongs to. Blocks with the same vibe mix well together; the site's `buildStyle` filters the library to this value.",
+          "maxLength": 128
+        },
+        "isPublic": {
+          "type": "boolean",
+          "description": "Make this block visible to all users. Default: false (private to your tenant)."
+        },
+        "isCategoryPreview": {
+          "type": "boolean",
+          "description": "Use this block as the representative preview/thumbnail for its category. Default: false."
+        }
+      },
+      "required": [
+        "name",
+        "slug",
+        "category",
+        "source"
+      ]
+    },
+    "annotations": {
+      "title": "Save block",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "update_block",
+    "description": "Update a block: metadata (category, name, tags, description, newSlug) or replace its Liquid `source` (read it with get_block, edit, send it all back).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string",
+          "description": "Current slug of the block to update.",
+          "maxLength": 256
+        },
+        "name": {
+          "type": "string",
+          "description": "New name.",
+          "maxLength": 512
+        },
+        "newSlug": {
+          "type": "string",
+          "description": "New slug (rename). Must be unique.",
+          "maxLength": 256
+        },
+        "description": {
+          "type": "string",
+          "description": "New description.",
+          "maxLength": 16384
+        },
+        "visual": {
+          "type": "string",
+          "description": "New visual description for AI search.",
+          "maxLength": 16384
+        },
+        "category": {
+          "type": "string",
+          "description": "Move to a different category (any string, no restrictions).",
+          "maxLength": 128
+        },
+        "subcategory": {
+          "type": "string",
+          "description": "Set or change subcategory (e.g. \"testimonials\", \"payment-forms\").",
+          "maxLength": 128
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "description": "Replace tags array.",
+          "maxItems": 30
+        },
+        "preset": {
+          "type": "string",
+          "description": "Update starter / bundle id (e.g. \"acme\", \"pagehub-library\").",
+          "maxLength": 128
+        },
+        "source": {
+          "type": "string",
+          "description": "The block's Liquid (HTML + Liquid snippet). Read an existing one with get_block.",
+          "maxLength": 200000
+        },
+        "group": {
+          "type": "string",
+          "description": "Update logical group.",
+          "maxLength": 128
+        },
+        "style": {
+          "type": "string",
+          "enum": "$VIBES",
+          "description": "Update the block's vibe.",
+          "maxLength": 128
+        },
+        "isPublic": {
+          "type": "boolean",
+          "description": "Toggle public visibility."
+        },
+        "isFeatured": {
+          "type": "boolean",
+          "description": "Toggle featured status."
+        },
+        "isCategoryPreview": {
+          "type": "boolean",
+          "description": "Toggle category preview thumbnail."
+        }
+      },
+      "required": [
+        "slug"
+      ]
+    },
+    "annotations": {
+      "title": "Update block",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "patch_block",
+    "description": "Edit a library block's Liquid by exact-text replacement (oldText once, or replaceAll); `edits` covers several changes in one write. Like edit_site_file, for the library. Admin or tenant owner.",
+    "annotations": {
+      "title": "Patch block",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string",
+          "description": "Block slug.",
+          "maxLength": 256
+        },
+        "edits": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "oldText": {
+                "type": "string",
+                "maxLength": 200000
+              },
+              "newText": {
+                "type": "string",
+                "maxLength": 200000
+              },
+              "replaceAll": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "oldText",
+              "newText"
+            ]
+          }
+        }
+      },
+      "required": [
+        "slug",
+        "edits"
+      ]
+    }
+  },
+  {
+    "name": "save_template",
+    "description": "Create a template (admin or tenant owner/editor) from `files` (+ `pages`), or from a site's draft with `fromSite`. A template is the same files a site holds; sites made from it get a copy. Private unless an admin makes it public.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string",
+          "description": "URL-safe unique slug (e.g. \"bakery-modern\")",
+          "maxLength": 256
+        },
+        "title": {
+          "type": "string",
+          "description": "Human-readable title",
+          "maxLength": 512
+        },
+        "description": {
+          "type": "string",
+          "description": "Short description",
+          "maxLength": 16384
+        },
+        "category": {
+          "type": "string",
+          "description": "Template category (e.g. \"landing-page\", \"portfolio\", \"ecommerce\", \"blog\")",
+          "maxLength": 128
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "description": "Tags for discovery (e.g. [\"modern\", \"dark\", \"restaurant\"]). Max 30.",
+          "maxItems": 30
+        },
+        "hidden": {
+          "type": "boolean",
+          "description": "If true, hidden from public gallery. Default: false"
+        },
+        "isPublic": {
+          "type": "boolean",
+          "description": "Visible to all users. Default: true"
+        },
+        "sortOrder": {
+          "type": "number",
+          "description": "Catalog sort order (lower first; ties by title). Default: 0"
+        },
+        "files": {
+          "type": "array",
+          "description": "The template's files: pages/*.liquid, partials/*.liquid, theme.css, site.json.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "maxLength": 512
+              },
+              "text": {
+                "type": "string",
+                "maxLength": 2000000
+              },
+              "delete": {
+                "type": "boolean",
+                "description": "true removes the file (update_template)."
+              }
+            },
+            "required": [
+              "path"
+            ]
+          }
+        },
+        "pages": {
+          "type": "array",
+          "description": "Page rows { pageNodeId, sourcePath, displayName, pageSlug, isHomePage, is404Page, isHidden, pathPattern }. Omit to derive them from pages/*.liquid (index = home).",
+          "items": {
+            "type": "object",
+            "properties": {
+              "pageNodeId": {
+                "type": "string"
+              },
+              "sourcePath": {
+                "type": "string"
+              },
+              "displayName": {
+                "type": "string"
+              },
+              "pageSlug": {
+                "type": "string"
+              },
+              "isHomePage": {
+                "type": "boolean"
+              },
+              "is404Page": {
+                "type": "boolean"
+              },
+              "isHidden": {
+                "type": "boolean"
+              },
+              "pathPattern": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "pageNodeId",
+              "sourcePath"
+            ]
+          }
+        },
+        "fromSite": {
+          "type": "string",
+          "description": "Site id: copy that site's draft files and pages instead of sending files."
+        }
+      },
+      "required": [
+        "slug",
+        "title"
+      ]
+    },
+    "annotations": {
+      "title": "Save template",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "update_template",
+    "description": "Update a template: metadata, files (merged, or `replace`), exact-text `edits` to files, page rows, or everything from a site (`fromSite`). Read it first with pull_template.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string",
+          "description": "Template slug.",
+          "maxLength": 256
+        },
+        "title": {
+          "type": "string",
+          "description": "New title",
+          "maxLength": 512
+        },
+        "description": {
+          "type": "string",
+          "description": "New description",
+          "maxLength": 16384
+        },
+        "category": {
+          "type": "string",
+          "description": "New category",
+          "maxLength": 128
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "description": "New tags array. Max 30.",
+          "maxItems": 30
+        },
+        "hidden": {
+          "type": "boolean",
+          "description": "Toggle hidden status"
+        },
+        "sortOrder": {
+          "type": "number",
+          "description": "Catalog sort order (lower first; ties by title)"
+        },
+        "files": {
+          "type": "array",
+          "description": "Files to add or replace by path (merged over the current ones); { path, delete: true } removes one.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "maxLength": 512
+              },
+              "text": {
+                "type": "string",
+                "maxLength": 2000000
+              },
+              "delete": {
+                "type": "boolean",
+                "description": "true removes the file (update_template)."
+              }
+            },
+            "required": [
+              "path"
+            ]
+          }
+        },
+        "edits": {
+          "type": "array",
+          "description": "Exact-text edits per existing file, like edit_site_file: [{ path, edits: [{ oldText, newText }] }].",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "edits": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "oldText": {
+                      "type": "string"
+                    },
+                    "newText": {
+                      "type": "string"
+                    },
+                    "replaceAll": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "oldText",
+                    "newText"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "path",
+              "edits"
+            ]
+          }
+        },
+        "pages": {
+          "type": "array",
+          "description": "Page rows { pageNodeId, sourcePath, displayName, pageSlug, isHomePage, is404Page, isHidden, pathPattern }. Omit to derive them from pages/*.liquid (index = home).",
+          "items": {
+            "type": "object",
+            "properties": {
+              "pageNodeId": {
+                "type": "string"
+              },
+              "sourcePath": {
+                "type": "string"
+              },
+              "displayName": {
+                "type": "string"
+              },
+              "pageSlug": {
+                "type": "string"
+              },
+              "isHomePage": {
+                "type": "boolean"
+              },
+              "is404Page": {
+                "type": "boolean"
+              },
+              "isHidden": {
+                "type": "boolean"
+              },
+              "pathPattern": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "pageNodeId",
+              "sourcePath"
+            ]
+          }
+        },
+        "fromSite": {
+          "type": "string",
+          "description": "Site id: replace the template's files and pages with that site's draft."
+        },
+        "replace": {
+          "type": "boolean",
+          "description": "With files: replace all files instead of merging."
+        }
+      },
+      "required": [
+        "slug"
+      ]
+    },
+    "annotations": {
+      "title": "Update template",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "publish_site_as_template",
+    "description": "Snapshot a site's draft files and pages into a new template (slug defaults to the site's name).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "slug": {
+          "type": "string",
+          "description": "URL-safe unique slug for the template (defaults to site slug)",
+          "maxLength": 256
+        },
+        "title": {
+          "type": "string",
+          "description": "Human-readable title (defaults to site name)",
+          "maxLength": 512
+        },
+        "description": {
+          "type": "string",
+          "description": "Short description",
+          "maxLength": 16384
+        },
+        "category": {
+          "type": "string",
+          "description": "Template category (e.g. \"landing-page\", \"portfolio\")",
+          "maxLength": 128
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "description": "Tags for discovery. Max 30.",
+          "maxItems": 30
+        },
+        "hidden": {
+          "type": "boolean",
+          "description": "If true, hidden from public gallery"
+        },
+        "isPublic": {
+          "type": "boolean",
+          "description": "Visible to all users. Default: true"
+        },
+        "sortOrder": {
+          "type": "number",
+          "description": "Catalog sort order (lower first; ties by title). Default: 0"
+        }
+      },
+      "required": []
+    },
+    "annotations": {
+      "title": "Publish site as template",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "delete_template",
+    "description": "Delete a template by slug (admin or its tenant owner).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string",
+          "description": "Template slug.",
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "slug"
+      ]
+    },
+    "annotations": {
+      "title": "Delete template",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
     }
   }
 ]

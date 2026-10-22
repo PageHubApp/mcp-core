@@ -9,8 +9,6 @@
  * used by the in-app agent to forward streaming UI state.
  * @property {Array<{ type: 'text', text: string }>} content - Human/agent-readable result blocks.
  * @property {boolean} [isError] - True when the handler short-circuited with a recoverable error.
- * @property {Array<string>} [changedNodes] - Node IDs the handler mutated (for editor highlighting).
- * @property {object} [pendingContent] - In-flight flat node map / theme state for draft mode.
  *
  * @typedef {object} McpContext
  * Per-request context seeded by {@link runWithContext}. See `core/context.js`
@@ -18,10 +16,6 @@
  * @property {string} apiKey - PageHub API key used by `apiFetch`.
  * @property {string} apiBaseUrl - Normalized base URL for HTTP-backed handlers.
  * @property {{ id: string }} [activeSite] - Site selected for this request.
- * @property {{ slug: string }} [activeTemplate] - Template selected for this request.
- * @property {string} [activePageNodeId] - Active page node (in-app agent only).
- * @property {boolean} [draftMode] - When true, mutations accumulate in `_pendingFlatMap` instead of persisting.
- * @property {boolean} [fillMode] - When true, certain handlers route through the fill-mode patch merge.
  * @property {boolean} [stageFileEdits] - HTML-first review mode: file reads/writes use the staged AI draft (`X-PageHub-Stage`).
  */
 
@@ -48,11 +42,7 @@ function resolveSentinels(node) {
 const tools = resolveSentinels(rawTools);
 const TOOLS_BY_NAME = new Map(tools.map(t => [t.name, t]));
 const { assertAiWriteAllowed } = require("./helpers/aiWriteGuard");
-const {
-  isPlaceholderCompanyName,
-  userExplicitlyRequestsBrandingChange,
-  guardRootCompanyPropsPatch,
-} = require("./validation/branding-guard");
+const { isPlaceholderCompanyName, userExplicitlyRequestsBrandingChange } = require("./validation/branding-guard");
 const { runWithContext, getContext } = require("./core/context");
 const { apiFetch, normalizeBaseUrl } = require("./core/api-fetch");
 const { uploadBytesToSite } = require("./core/direct-upload");
@@ -60,55 +50,33 @@ const { formatUploadResult } = require("./helpers/upload-format");
 const { formatImportStatus, presignImport, startImport } = require("./handlers/remote-import");
 const { parseMaybeJson } = require("./helpers/args");
 const { runToolWithPublishTrailer } = require("./helpers/publish-state");
-const { applyNodePatches, normalizeNodePatchArgs } = require("./helpers/node-patch");
-const {
-  getActiveTarget,
-  getActiveSiteId,
-  isTemplateTarget,
-  getEditorUrl,
-  fetchTarget,
-  fetchSite,
-  saveTarget,
-  saveSite,
-} = require("./helpers/target");
-const { extractImageUrls, validateImageUrls, collectAllImageUrls } = require("./helpers/images");
-const { registerPluginComponents } = require("./core/component-registry");
+const { getActiveTarget, getActiveSiteId, getEditorUrl } = require("./helpers/target");
 const remoteHandlers = require("./handlers/remote");
-const kitHandlers = require("./handlers/kit");
-const componentHandlers = require("./handlers/components");
+const htmlPageHandlers = require("./handlers/html-pages");
 const portalHandlers = require("./handlers/portal");
-const pageHandlers = require("./handlers/pages");
-const nodeHandlers = require("./handlers/nodes");
 const siteConfigHandlers = require("./handlers/site-config");
 const discoveryHandlers = require("./handlers/discovery");
 const seoHandlers = require("./handlers/seo");
 const stockImageHandlers = require("./handlers/stock-images");
 const stockVideoHandlers = require("./handlers/stock-videos");
 const iconHandlers = require("./handlers/icons");
-const sectionTreeHandlers = require("./handlers/section-tree");
 const collectionsHandlers = require("./handlers/remote-collections");
 const fileHandlers = require("./handlers/remote-files");
 const libraryFormatHandlers = require("./handlers/library-format");
-const siteFormats = require("./data/site-formats");
 
 // All HTTP handlers merged into a single dispatch map
 const handlers = {
   ...remoteHandlers,
-  ...kitHandlers,
-  ...componentHandlers,
+  ...htmlPageHandlers,
   ...portalHandlers,
-  ...pageHandlers,
-  ...nodeHandlers,
   ...siteConfigHandlers,
   ...discoveryHandlers,
   ...seoHandlers,
   ...stockImageHandlers,
   ...stockVideoHandlers,
   ...iconHandlers,
-  ...sectionTreeHandlers,
   ...collectionsHandlers,
   ...fileHandlers,
-  // Last: wraps the block tools above so an HTML-first site gets Liquid (and adds the component tools).
   ...libraryFormatHandlers,
 };
 
@@ -117,13 +85,10 @@ const HTTP_TOOL_NAMES = new Set(Object.keys(handlers));
 
 // Tools excluded from the agent endpoint (auth handled per-request)
 const AGENT_EXCLUDED = new Set([
-  // Large payload tool (manual/debug only; not for public agent flows)
-  "pull_site",
   // Block library admin tools
   "save_block",
   "update_block",
   "patch_block",
-  "patch_block_bulk",
   "delete_block",
   // Template admin tools
   "save_template",
@@ -217,10 +182,8 @@ async function executeAgentTool(name, args) {
 }
 
 module.exports = {
-  // Branding (patch_site_node guardrails)
   isPlaceholderCompanyName,
   userExplicitlyRequestsBrandingChange,
-  guardRootCompanyPropsPatch,
 
   // Core
   runWithContext,
@@ -236,19 +199,9 @@ module.exports = {
   // Helpers
   parseMaybeJson,
   runToolWithPublishTrailer,
-  applyNodePatches,
-  normalizeNodePatchArgs,
   getActiveTarget,
   getActiveSiteId,
-  isTemplateTarget,
   getEditorUrl,
-  fetchTarget,
-  fetchSite,
-  saveTarget,
-  saveSite,
-  extractImageUrls,
-  validateImageUrls,
-  collectAllImageUrls,
 
   // Tools
   getAllTools,
@@ -256,14 +209,6 @@ module.exports = {
   executeTool,
   executeAgentTool,
   handlers,
-
-  // Runtime allowlist (host pushes plugin component names — P3 §4)
-  registerPluginComponents,
-
-  // Craft vs HTML-first sites: which tools fit which (data/site-formats.js)
-  toolFitsSiteFormat: siteFormats.toolFitsSiteFormat,
-  isSiteIsHtmlError: siteFormats.isSiteIsHtmlError,
-  SITE_IS_HTML_GUIDANCE: siteFormats.SITE_IS_HTML_GUIDANCE,
 
   // Constants
   HTTP_TOOL_NAMES,

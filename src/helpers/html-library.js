@@ -1,8 +1,8 @@
 /**
- * The block library, templates and reusable components for HTML-first sites (app repo:
+ * The block library, templates and reusable components (app repo:
  * docs/features/html-first-templates-blocks-components.md, docs/features/html-first-ai-mcp.md "Blocks and templates").
  *
- * On an HTML-first site a block is a Liquid snippet and a component is a partial, so:
+ * A block is a Liquid snippet and a component is a partial, so:
  *
  *   search_blocks / list_blocks / get_block   read the library as Liquid (`/api/v1/liquid-blocks`)
  *   apply_kit_block                           places a block into a page file (`POST /api/v1/sites/:id/blocks`)
@@ -10,15 +10,14 @@
  *   list_components / rename_component /      the site's partials and where they render
  *     delete_component                        (`/api/v1/sites/:id/components`)
  *
- * Not a tool module (its exports are not tools): `handlers/library-format.js` puts these in front of the node-tree
- * handlers, `handlers/html-components.js` wraps the component calls, `handlers/remote-templates.js` calls
- * `pullTemplateLiquid`.
+ * Not a tool module (its exports are not tools): `handlers/library-format.js` registers them as tools,
+ * `handlers/remote-templates.js` calls `pullTemplateLiquid`.
  */
 const { apiFetch } = require("../core/api-fetch");
 const { getContext } = require("../core/context");
 const { getActiveTarget, getEditorUrl } = require("./target");
-const { resolveSiteFormat } = require("./site-format");
 const { mergeStrList } = require("./args");
+const { applyEdits } = require("./file-edits");
 
 const text = t => ({ content: [{ type: "text", text: t }] });
 
@@ -35,14 +34,6 @@ async function call(url, opts) {
     if (b.message) throw new Error(b.message);
     throw err;
   }
-}
-
-/** Run the Liquid version on an HTML-first site, the node-tree handler otherwise. */
-function wrapForSiteFormat(craft, html) {
-  return async args => {
-    const { html: isHtml } = await resolveSiteFormat(args || {});
-    return isHtml ? html(args || {}) : craft(args);
-  };
 }
 
 const blockLine = b => {
@@ -86,9 +77,8 @@ async function listBlocksHtml(args) {
 async function getBlockHtml(args) {
   if (!args.slug) throw new Error("slug is required.");
   const { block: b } = await call(`/api/v1/liquid-blocks/${encodeURIComponent(args.slug)}`);
-  const notes = b.notes?.length ? `\n\n**Conversion notes:**\n${b.notes.map(n => `- ${n}`).join("\n")}` : "";
   return text(
-    `# ${b.name} (\`${b.slug}\`)\n\n**Category:** ${b.category}${b.subcategory ? `/${b.subcategory}` : ""}${b.styles?.length ? `\n**Styles:** ${b.styles.join(", ")}` : ""}${b.description ? `\n**Description:** ${b.description}` : ""}${notes}\n\n## Liquid\n\n\`\`\`liquid\n${b.source}\n\`\`\`\n\nThis is a starting point, not a link: apply_kit_block copies it into a page (fresh ids), then edit_site_file rewrites the copy. To reuse one thing in many places, make it a partial and {% render %} it.`
+    `# ${b.name} (\`${b.slug}\`)\n\n**Category:** ${b.category}${b.subcategory ? `/${b.subcategory}` : ""}${b.styles?.length ? `\n**Styles:** ${b.styles.join(", ")}` : ""}${b.description ? `\n**Description:** ${b.description}` : ""}\n\n## Liquid\n\n\`\`\`liquid\n${b.source}\n\`\`\`\n\nThis is a starting point, not a link: apply_kit_block copies it into a page (fresh ids), then edit_site_file rewrites the copy. To reuse one thing in many places, make it a partial and {% render %} it.`
   );
 }
 
@@ -96,13 +86,13 @@ async function applyBlockHtml(args) {
   const siteId = getActiveTarget({ id: args.id }).id;
   if (!args.slug) throw new Error("slug is required: the block to place (search_blocks lists them).");
   if (args.sourceNodeId) {
-    throw new Error("sourceNodeId clones a node-tree section and doesn't apply to an HTML-first site. Copy markup with read_site_file / edit_site_file, or place a block with slug.");
+    throw new Error("sourceNodeId is not a thing here: sections are markup. Copy markup with read_site_file / edit_site_file, or place a block with slug.");
   }
   if (args.target === "header" || args.target === "footer") {
     throw new Error(`The ${args.target} is the partial partials/${args.target}.liquid on an HTML-first site: read it with read_site_file and rewrite it with edit_site_file. Nothing was placed.`);
   }
   if (args.contentOverrides || args.propOverrides) {
-    throw new Error("contentOverrides / propOverrides are node-tree concepts. Place the block, then change its text with edit_site_file. Nothing was placed.");
+    throw new Error("contentOverrides / propOverrides do not exist: a block is Liquid text. Place the block, then change its text with edit_site_file. Nothing was placed.");
   }
   const body = { slug: args.slug };
   if (args.pageId) body.pageId = args.pageId;
@@ -133,18 +123,15 @@ async function pullTemplateLiquid(slug, path) {
   return text(`${head}\n\n${files.map(f => `## ${f.path}\n\n\`\`\`${f.path.endsWith(".css") ? "css" : f.path.endsWith(".json") ? "json" : "liquid"}\n${f.text}\n\`\`\``).join("\n\n")}`);
 }
 
-/** The HTML-first site a component tool works on; Craft sites have no partials. */
-async function requireHtmlSite(args) {
-  const siteId = getActiveTarget({ id: args.id }).id;
-  const { html } = await resolveSiteFormat({ id: siteId });
-  if (!html) throw new Error("Reusable components as partials exist on HTML-first sites. A node-tree site keeps its components in the dashboard.");
-  return siteId;
+/** The site a component tool works on. */
+function requireSite(args) {
+  return getActiveTarget({ id: args.id }).id;
 }
 
 const componentUrl = (siteId, name) => `/api/v1/sites/${encodeURIComponent(siteId)}/components${name ? `/${encodeURIComponent(name)}` : ""}`;
 
 async function listComponentsHtml(args) {
-  const siteId = await requireHtmlSite(args);
+  const siteId = requireSite(args);
   const { components } = await call(componentUrl(siteId));
   if (!components.length) return text("No components yet. A component is a partial: partials/<name>.liquid, rendered with {% render '<name>' %}.");
   const lines = components.map(c => {
@@ -155,7 +142,7 @@ async function listComponentsHtml(args) {
 }
 
 async function renameComponentHtml(args) {
-  const siteId = await requireHtmlSite(args);
+  const siteId = requireSite(args);
   if (!args.component || !args.name) throw new Error("component (its id from list_components) and name are required.");
   const { id } = await call(componentUrl(siteId, args.component), { method: "PATCH", body: { name: args.name } });
   getContext()._sourceFilesWritten = true;
@@ -163,15 +150,70 @@ async function renameComponentHtml(args) {
 }
 
 async function deleteComponentHtml(args) {
-  const siteId = await requireHtmlSite(args);
+  const siteId = requireSite(args);
   if (!args.component) throw new Error("component (its id from list_components) is required.");
   const { id } = await call(componentUrl(siteId, args.component), { method: "DELETE" });
   getContext()._sourceFilesWritten = true;
   return text(`Component "${id}" deleted (partials/${id}.liquid).`);
 }
 
+const BLOCK_FIELDS = ["name", "description", "visual", "category", "subcategory", "tags", "preset", "group", "isPublic", "isFeatured", "isCategoryPreview"];
+
+/** Create a library block from Liquid `source` (admin or tenant). */
+async function saveBlock(args) {
+  if (!args.name || !args.slug || !args.category || !args.source) throw new Error("name, slug, category and source (the block's Liquid) are required.");
+  const body = { source: args.source };
+  for (const f of BLOCK_FIELDS) if (args[f] !== undefined) body[f] = args[f];
+  body.slug = args.slug;
+  if (args.style) body.style = args.style;
+  const { component: c } = await call("/api/v1/components", { method: "POST", body });
+  return text(`Block saved: **${c.name}** (\`${c.slug}\`)\nPublic: ${c.isPublic}\nCategory: ${c.category}`);
+}
+
+/** Change a library block's metadata, or replace its Liquid `source` (read it with get_block, edit, send it back). */
+async function updateBlock(args) {
+  if (!args.slug) throw new Error("slug is required.");
+  const existing = await call(`/api/v1/components/${encodeURIComponent(args.slug)}`);
+  const expectedVersion = Number((existing.component || existing)?.version || 1);
+  const body = {};
+  for (const f of BLOCK_FIELDS) if (args[f] !== undefined) body[f] = args[f];
+  if (args.source !== undefined) body.source = args.source;
+  if (args.style !== undefined) body.style = args.style;
+  if (args.newSlug !== undefined) body.slug = args.newSlug;
+  if (!Object.keys(body).length) throw new Error("Nothing to update. Provide at least one field.");
+  const { component: c } = await call(`/api/v1/components/${encodeURIComponent(args.slug)}`, { method: "PUT", body: { ...body, expectedVersion } });
+  return text(`Block updated: **${c.name}** (\`${c.slug}\`)\nCategory: ${c.category}\nPublic: ${c.isPublic}`);
+}
+
+/**
+ * Exact-text edits to a library block's Liquid `source` (like edit_site_file), saved as one update. `edits[]` covers
+ * the bulk case; the block's version guards against a concurrent change.
+ */
+async function patchBlock(args) {
+  if (!args.slug) throw new Error("slug is required.");
+  const edits = Array.isArray(args.edits) ? args.edits : [];
+  if (!edits.length) throw new Error("edits is required: [{ oldText, newText }].");
+  const { block } = await call(`/api/v1/liquid-blocks/${encodeURIComponent(args.slug)}`);
+  const existing = await call(`/api/v1/components/${encodeURIComponent(args.slug)}`);
+  const expectedVersion = Number((existing.component || existing)?.version || 1);
+  const next = applyEdits(String(block.source), edits, `block ${args.slug}`);
+  if (next === block.source) return text(`No change: block "${args.slug}" already reads that way.`);
+  await call(`/api/v1/components/${encodeURIComponent(args.slug)}`, { method: "PUT", body: { source: next, expectedVersion } });
+  return text(`Block "${args.slug}" edited (${edits.length} change${edits.length > 1 ? "s" : ""}).`);
+}
+
+/** Delete a library block by slug (admin). */
+async function deleteBlock(args) {
+  if (!args.slug) throw new Error("slug is required.");
+  await call(`/api/v1/components/${encodeURIComponent(args.slug)}`, { method: "DELETE" });
+  return text(`Block "${args.slug}" deleted.`);
+}
+
 module.exports = {
-  wrapForSiteFormat,
+  patchBlock,
+  saveBlock,
+  updateBlock,
+  deleteBlock,
   pullTemplateLiquid,
   searchBlocksHtml,
   listBlocksHtml,

@@ -1,8 +1,8 @@
 /**
- * File tools for HTML-first sites: list, read, search, write, edit and delete the draft's HTML + Liquid files through
+ * File tools: list, read, search, write, edit and delete the draft's HTML + Liquid files through
  * `/api/v1/sites/:id/files` (app repo: docs/features/html-first-ai-mcp.md). Every write goes through the server's one
  * write seam (lint, sanitize, version check, maintenance freeze); an agent write is untrusted, so `on*` handlers it
- * adds are stripped. A Craft site answers `site_format_changed`, which these turn into "use the node tools".
+ * adds are stripped.
  *
  * A file's version is its content hash. `edit_site_file` reads the file, applies exact-text replacements and writes
  * against the version it read, so an edit can never silently overwrite someone else's change to the same file.
@@ -16,7 +16,6 @@ const text = t => ({ content: [{ type: "text", text: t }] });
 
 function siteOf(args) {
   const target = getActiveTarget(args);
-  if (target.type !== "site") throw new Error("File tools work on sites, not templates.");
   return target.id;
 }
 
@@ -26,9 +25,6 @@ const filesUrl = (siteId, path) =>
 /** Turn the files API's refusals into what the agent should do next. Rethrows anything else. */
 function explain(err, { path, sent }) {
   const body = err?.body || {};
-  if (body.error === "site_format_changed") {
-    throw new Error(`This site is not an HTML-first site (it has a node tree). Use list_site_nodes / patch_site_node instead of file tools.`);
-  }
   if (body.error === "lint") {
     const issues = (body.issues || [])
       .slice(0, 8)
@@ -160,6 +156,45 @@ module.exports = {
       } catch (err) {
         if (err?.body?.error === "version_conflict" && !args.baseVersion && attempt === 0) continue;
         return explain(err, { path: args.path, sent: next });
+      }
+    }
+  },
+
+  /**
+   * Several files edited as ONE atomic write: every file's edits are applied to the text just read and the batch is
+   * saved against those versions, so either all land or none do (the multi-file `patch_site_bulk`).
+   */
+  async edit_site_files(args = {}) {
+    const siteId = siteOf(args);
+    const files = Array.isArray(args.files) ? args.files : [];
+    if (!files.length) throw new Error("files is required: [{ path, edits: [{ oldText, newText }] }].");
+    const paths = files.map(f => f?.path);
+    if (paths.some(x => !x) || new Set(paths).size !== paths.length) throw new Error("Each entry needs its own path (no path twice).");
+    for (let attempt = 0; ; attempt++) {
+      const changes = [];
+      const baseVersions = {};
+      for (const f of files) {
+        const edits = Array.isArray(f.edits) ? f.edits : [];
+        if (!edits.length) throw new Error(`${f.path}: edits is required: [{ oldText, newText }].`);
+        const file = await readFile(siteId, f.path);
+        if (f.baseVersion && f.baseVersion !== file.version) {
+          throw new Error(`${f.path} changed since version ${f.baseVersion} (now ${file.version}). Nothing was saved. Read it again.`);
+        }
+        const next = applyEdits(String(file.text), edits, f.path);
+        if (next !== file.text) {
+          changes.push({ path: f.path, text: next });
+          baseVersions[f.path] = file.version;
+        }
+      }
+      if (!changes.length) return text("No change: every file already reads that way.");
+      try {
+        await apiFetch(filesUrl(siteId), { method: "POST", body: { changes, baseVersions } });
+        markWritten();
+        const done = `${changes.length} file${changes.length > 1 ? "s" : ""} (${changes.map(c => c.path).join(", ")})`;
+        return text(getContext().stageFileEdits ? whereNow(`Edit to ${done}`) : whereNow(`Edited ${done} in one write.`));
+      } catch (err) {
+        if (err?.body?.error === "version_conflict" && !files.some(f => f.baseVersion) && attempt === 0) continue;
+        return explain(err, { path: paths.join(", ") });
       }
     }
   },

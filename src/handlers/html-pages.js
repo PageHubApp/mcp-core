@@ -1,7 +1,6 @@
 /**
- * `list_pages` / `add_page` / `update_page` / `delete_page` on an HTML-first site: a page is a record (route, SEO,
- * flags) plus its file, served by `/api/v1/sites/:id/source-pages` (app repo: docs/features/html-first-ai-mcp.md).
- * handlers/pages.js tries the node-tree path first and comes here when the site answers `SITE_IS_HTML`.
+ * `list_pages` / `add_page` / `update_page` / `delete_page`: a page is a record (route, SEO, flags) plus its file,
+ * served by `/api/v1/sites/:id/source-pages` (app repo: docs/features/html-first-ai-mcp.md).
  */
 const { apiFetch } = require("../core/api-fetch");
 const { getContext } = require("../core/context");
@@ -11,7 +10,7 @@ const text = t => ({ content: [{ type: "text", text: t }] });
 const pagesUrl = (siteId, pageId) =>
   `/api/v1/sites/${encodeURIComponent(siteId)}/source-pages${pageId ? `/${encodeURIComponent(pageId)}` : ""}`;
 
-/** Node-tree-only fields of update_page, and what to do instead on an HTML-first site. */
+/** Fields of update_page that are page markup, and what to do instead. */
 const FILE_FIELDS = {
   headCode: "a tag in the page file's <head> (third-party code: site.json inject)",
   footerCode: "the end of the page file's <body>",
@@ -41,19 +40,19 @@ function line(p, i) {
 }
 
 module.exports = {
-  async list(args) {
+  async list_pages(args) {
     const siteId = getActiveTarget(args).id;
     const { pages } = await call(pagesUrl(siteId));
     if (!pages.length) return text("No pages yet. add_page creates one (with its HTML).");
     return text(`# Pages in site ${siteId}\n\n${pages.map(line).join("\n")}\n\nEdit a page's markup with read_site_file / edit_site_file on its file; its route and SEO with update_page.`);
   },
 
-  async add(args) {
+  async add_page(args) {
     const siteId = getActiveTarget(args).id;
     if (!args.name) throw new Error("Page name is required.");
     if (typeof args.text !== "string" || !args.text.trim()) {
       throw new Error(
-        "On an HTML-first site add_page needs `text`: the page's HTML + Liquid. Read an existing page (read_site_file pages/index.liquid) and follow its structure ({% render 'header' %} … {% render 'footer' %})."
+        "add_page needs `text`: the page's HTML + Liquid. Read an existing page (read_site_file pages/index.liquid) and follow its structure ({% render 'header' %} … {% render 'footer' %})."
       );
     }
     const { page } = await call(pagesUrl(siteId), {
@@ -67,12 +66,12 @@ module.exports = {
     return text(`Page "${page.name}" created as ${page.pageId} at ${page.url}, file ${page.file}.\nEditor: ${getEditorUrl(siteId)}`);
   },
 
-  async update(args) {
+  async update_page(args) {
     const siteId = getActiveTarget(args).id;
     if (!args.pageId) throw new Error("pageId is required.");
     const fileOnly = Object.keys(FILE_FIELDS).filter(k => args[k] !== undefined);
     if (fileOnly.length) {
-      throw new Error(`On an HTML-first site ${fileOnly.join(", ")} ${fileOnly.length > 1 ? "are" : "is"} markup: change ${fileOnly.map(k => FILE_FIELDS[k]).join("; ")} with edit_site_file. Nothing was changed.`);
+      throw new Error(`${fileOnly.join(", ")} ${fileOnly.length > 1 ? "are" : "is"} markup: change ${fileOnly.map(k => FILE_FIELDS[k]).join("; ")} with edit_site_file. Nothing was changed.`);
     }
     const body = {};
     if (args.name !== undefined) Object.assign(body, { name: args.name, slug: args.name });
@@ -84,7 +83,7 @@ module.exports = {
     return text(`Page ${page.pageId} updated: ${Object.keys(body).join(", ")}. It serves ${page.url}.`);
   },
 
-  async remove(args) {
+  async delete_page(args) {
     const siteId = getActiveTarget(args).id;
     if (!args.pageId) throw new Error("pageId is required.");
     const { page } = await call(pagesUrl(siteId, args.pageId), { method: "DELETE" });

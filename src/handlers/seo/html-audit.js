@@ -1,7 +1,6 @@
 /**
- * `audit_seo` / `audit_accessibility` on an HTML-first site: the server renders the draft page as `/view` shows it and
- * checks the HTML (`GET /api/v1/sites/:id/audit`, app repo utils/htmlFirst/htmlAudit.ts). Results have the same
- * shape as the node-tree checks, so seo.js formats both the same way.
+ * `audit_seo` / `audit_accessibility`: the server renders the draft page as `/view` shows it and checks the HTML
+ * (`GET /api/v1/sites/:id/audit`, app repo utils/htmlFirst/htmlAudit.ts); seo.js formats the results.
  */
 const { apiFetch } = require("../../core/api-fetch");
 const { getActiveTarget } = require("../../helpers/target");
@@ -16,8 +15,16 @@ async function pathOf(siteId, pageId) {
   return page.url;
 }
 
+/** A stock template's page by url (a template has no page ids to look up here). */
+async function auditTemplate(kind, args) {
+  const path = args.pageId ? String(args.pageId) : "/";
+  const data = await apiFetch(`/api/v1/templates/${encodeURIComponent(args.templateSlug)}/audit?${new URLSearchParams({ kind, path })}`);
+  return { label: `template:${args.templateSlug}`, page: path, results: data.results || [] };
+}
+
 /** @param {"seo" | "accessibility"} kind */
 async function auditHtmlSite(kind, args) {
+  if (args.templateSlug) return auditTemplate(kind, args);
   const siteId = getActiveTarget(args).id;
   const path = await pathOf(siteId, args.pageId);
   const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}/audit?${new URLSearchParams({ kind, path })}`);

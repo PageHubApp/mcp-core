@@ -10,7 +10,6 @@ const { getActiveTarget } = require("../helpers/index.js");
 
 function base(args, tool) {
   const target = getActiveTarget(args);
-  if (target.type !== "site") throw new Error(`${tool} only works on sites, not templates.`);
   return `/api/user/sites/${encodeURIComponent(target.id)}/memberships`;
 }
 
