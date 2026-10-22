@@ -26,6 +26,8 @@ const VALID_SEARCH_BLOCKS_KEYS = new Set([
   "limit",
   // routing/internal opts the wrapper accepts but doesn't forward as filters
   "siteId",
+  // The site whose format decides the result (Liquid on an HTML-first site); a node-tree site ignores it.
+  "id",
   "templateSlug",
   "active",
 ]);

@@ -12,6 +12,11 @@
     "inputSchema": {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "string",
+          "description": "HTML-first site id: results are Liquid.",
+          "maxLength": 256
+        },
         "category": {
           "type": "string",
           "enum": "$CATEGORIES",
@@ -1050,7 +1055,7 @@
   },
   {
     "name": "pull_template",
-    "description": "Download a stock template's decoded node tree.",
+    "description": "Download a stock template's decoded node tree, or its HTML + Liquid files (format liquid; always for an HTML-only template).",
     "annotations": {
       "title": "Pull template",
       "readOnlyHint": true,
@@ -1065,6 +1070,20 @@
           "type": "string",
           "description": "Template slug to pull",
           "maxLength": 256
+        },
+        "format": {
+          "type": "string",
+          "enum": [
+            "nodes",
+            "liquid"
+          ],
+          "description": "liquid for HTML-first sites.",
+          "maxLength": 16
+        },
+        "path": {
+          "type": "string",
+          "description": "liquid: one file's text.",
+          "maxLength": 512
         }
       },
       "required": [
@@ -2978,6 +2997,11 @@
     "inputSchema": {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "string",
+          "description": "HTML-first site id: results are Liquid.",
+          "maxLength": 256
+        },
         "q": {
           "type": "string",
           "description": "Short layout phrase, e.g. \"photo hero\"; sorts by relevance.",
@@ -3082,6 +3106,11 @@
     "inputSchema": {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "string",
+          "description": "HTML-first site id: results are Liquid.",
+          "maxLength": 256
+        },
         "slug": {
           "type": "string",
           "description": "Block slug.",
@@ -3119,7 +3148,7 @@
   },
   {
     "name": "apply_kit_block",
-    "description": "Stamp a section as-is: a library block (`slug`) or a clone of a page section already on this site (`sourceNodeId`) — exactly one. To design a section for this business, use add_nodes with get_block as reference instead. `contentOverrides` sets the final copy in the same call, keyed by the block's lib_* ids. target \"header\"/\"footer\" swaps the site header/footer. Guide: get_style_reference({ topic: \"blocks\" }).",
+    "description": "Stamp a section as-is: a library block (`slug`) or a clone of a page section already on this site (`sourceNodeId`) — exactly one. To design a section for this business, use add_nodes with get_block as reference instead. `contentOverrides` sets the final copy in the same call, keyed by the block's lib_* ids. target \"header\"/\"footer\" swaps the site header/footer. Guide: get_style_reference({ topic: \"blocks\" }). HTML-first site: places the block's Liquid in a page file (pageId; before/after = exact text there; position 0 = top).",
     "annotations": {
       "title": "Apply kit block",
       "readOnlyHint": false,
@@ -3178,6 +3207,16 @@
         "position": {
           "type": "number",
           "description": "Index among the page's sections (default: end)."
+        },
+        "before": {
+          "type": "string",
+          "description": "HTML-first: exact page text to insert before.",
+          "maxLength": 2000
+        },
+        "after": {
+          "type": "string",
+          "description": "HTML-first: exact page text to insert after.",
+          "maxLength": 2000
         }
       }
     }
@@ -4054,6 +4093,90 @@
       },
       "required": [
         "path"
+      ]
+    }
+  },
+  {
+    "name": "list_components",
+    "description": "HTML-first sites: reusable components (partials) and where each renders.",
+    "annotations": {
+      "title": "List components",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        }
+      }
+    }
+  },
+  {
+    "name": "rename_component",
+    "description": "HTML-first sites: rename a component; its file and every {% render %} of it follow.",
+    "annotations": {
+      "title": "Rename component",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "component": {
+          "type": "string",
+          "description": "Component id from list_components.",
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "component",
+        "name"
+      ]
+    }
+  },
+  {
+    "name": "delete_component",
+    "description": "HTML-first sites: delete an unused component (refused while anything renders it).",
+    "annotations": {
+      "title": "Delete component",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "component": {
+          "type": "string",
+          "description": "Component id from list_components.",
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "component"
       ]
     }
   },

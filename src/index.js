@@ -88,6 +88,7 @@ const iconHandlers = require("./handlers/icons");
 const sectionTreeHandlers = require("./handlers/section-tree");
 const collectionsHandlers = require("./handlers/remote-collections");
 const fileHandlers = require("./handlers/remote-files");
+const libraryFormatHandlers = require("./handlers/library-format");
 const siteFormats = require("./data/site-formats");
 
 // All HTTP handlers merged into a single dispatch map
@@ -107,6 +108,8 @@ const handlers = {
   ...sectionTreeHandlers,
   ...collectionsHandlers,
   ...fileHandlers,
+  // Last: wraps the block tools above so an HTML-first site gets Liquid (and adds the component tools).
+  ...libraryFormatHandlers,
 };
 
 // Tools that are HTTP-only (no filesystem / TemplateBuilder needed)

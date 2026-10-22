@@ -16,6 +16,8 @@ const {
 } = require("../helpers/index.js");
 
 const { quickA11yAudit } = require("../validation/a11y-check");
+const { resolveSiteFormat } = require("../helpers/site-format");
+const { pullTemplateLiquid } = require("../helpers/html-library");
 
 module.exports = {
   /**
@@ -36,11 +38,16 @@ module.exports = {
     }
     // Clear activeSite so template takes priority
     ctx.activeSite = null;
+    // A template authored as files has no node tree: the node tools can't edit it, pull_template reads its Liquid.
+    const htmlNote =
+      data.format === "html"
+        ? '\nThis template is HTML + Liquid (no node tree): read it with pull_template({ slug, format: "liquid" }); node tools do not apply.'
+        : "";
     return {
       content: [
         {
           type: "text",
-          text: `Active template set to "${data.slug}" (${data.title || "untitled"})${selectionNote({ type: "template", id: data.slug })}`,
+          text: `Active template set to "${data.slug}" (${data.title || "untitled"})${htmlNote}${selectionNote({ type: "template", id: data.slug })}`,
         },
       ],
     };
@@ -77,7 +84,12 @@ module.exports = {
    */
   async pull_template(args) {
     const { slug } = args;
+    // An HTML-first site, `format: "liquid"`, or a template with no node tree (authored as HTML) reads as files.
+    if (args.format === "liquid" || (await resolveSiteFormat({ id: args.id })).html) {
+      return pullTemplateLiquid(slug, args.path);
+    }
     const data = await apiFetch(`/api/v1/templates/${encodeURIComponent(slug)}`);
+    if (!data.content) return pullTemplateLiquid(slug, args.path);
     const ctx = getContext();
     if (!ctx._targetRevisions || typeof ctx._targetRevisions !== "object")
       ctx._targetRevisions = {};
