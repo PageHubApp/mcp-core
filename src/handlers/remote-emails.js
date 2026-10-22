@@ -1,12 +1,11 @@
 /**
- * Site email tools — the emails a site's visitors get (order receipt, gift
- * card, sign-in link, downloads), designed as PageHub node trees. All proxy
- * `/api/v1/sites/[id]/emails/*`. See docs/features/site-email-templates.md.
+ * Site email tools — the emails a site's visitors get (order receipt, gift card, sign-in link, downloads). Each is a
+ * Liquid file of the site (`emails/<kind>.liquid`, subject / preview text in `emails/<kind>.json`). All proxy
+ * `/api/v1/sites/[id]/emails/*`, which reads and writes those files. See docs/features/site-email-templates.md.
  */
 
 const { apiFetch } = require("../core/api-fetch");
-const { compressJsonToBase64Lz } = require("../codec/lz");
-const { getActiveTarget, decodeContentOrThrow } = require("../helpers/index.js");
+const { getActiveTarget } = require("../helpers/index.js");
 
 /** Site id for an email tool; emails belong to sites, never templates. */
 function siteIdFor(args, tool) {
@@ -21,6 +20,9 @@ function kindPath(args, tool) {
 }
 
 const text = t => ({ content: [{ type: "text", text: t }] });
+
+/** One issue as a line: Liquid issues point at a line of the source, not at a node. */
+const issueLine = i => `- ${i.nodeId ? `${i.nodeId}: ` : ""}${i.message}`;
 
 module.exports = {
   /**
@@ -38,23 +40,22 @@ module.exports = {
   },
 
   /**
-   * One email: subject, preheader, the node tree (decompressed; the default when
-   * not customized), its variables and slots.
+   * One email: subject, preheader, its Liquid source (the default when not customized), the objects it can use and
+   * its parts.
    * @param {object} args - { id?, kind }
    */
   async get_site_email(args = {}) {
     const data = await apiFetch(kindPath(args, "get_site_email"));
-    const nodes = decodeContentOrThrow(data.content || data.defaults.content, "email content");
     return text(
       JSON.stringify(
         {
-          customized: !!data.content,
+          customized: typeof data.source === "string",
           subject: data.subject,
           preheader: data.preheader,
           defaults: { subject: data.defaults.subject, preheader: data.defaults.preheader },
-          variables: data.variables.map(v => ({ token: `{{variables.${v.key}}}`, label: v.label })),
-          slots: data.slots,
-          nodes,
+          objects: data.variables.map(v => ({ token: `{{ ${v.key} }}`, label: v.label })),
+          parts: data.slots,
+          source: data.source ?? data.defaults.source,
         },
         null,
         2
@@ -63,8 +64,8 @@ module.exports = {
   },
 
   /**
-   * Save subject / preheader / node tree, or reset the email to the default.
-   * @param {object} args - { id?, kind, subject?, preheader?, nodes?, reset? }
+   * Save subject / preheader / Liquid source, or reset the email to the default.
+   * @param {object} args - { id?, kind, subject?, preheader?, source?, reset? }
    */
   async update_site_email(args = {}) {
     const path = kindPath(args, "update_site_email");
@@ -75,10 +76,10 @@ module.exports = {
     const body = {};
     if (args.subject !== undefined) body.subject = args.subject;
     if (args.preheader !== undefined) body.preheader = args.preheader;
-    if (args.nodes !== undefined) body.content = compressJsonToBase64Lz(args.nodes);
-    if (!Object.keys(body).length) throw new Error("Pass subject, preheader, nodes, or reset: true.");
+    if (args.source !== undefined) body.source = args.source;
+    if (!Object.keys(body).length) throw new Error("Pass subject, preheader, source, or reset: true.");
     const res = await apiFetch(path, { method: "PUT", body });
-    const warnings = (res.issues || []).map(i => `- ${i.nodeId}: ${i.message}`);
+    const warnings = (res.warnings || []).map(issueLine);
     return text(`${args.kind} saved.${warnings.length ? `\nWarnings:\n${warnings.join("\n")}` : ""}`);
   },
 
@@ -91,7 +92,7 @@ module.exports = {
       method: "POST",
       body: {},
     });
-    const list = items => items.map(i => `- ${i.nodeId ? `${i.nodeId}: ` : ""}${i.message}`).join("\n");
+    const list = items => items.map(issueLine).join("\n");
     const parts = [`Subject: ${data.subject}`];
     if (data.errors.length) parts.push(`Errors (the default email renders instead):\n${list(data.errors)}`);
     if (data.warnings.length) parts.push(`Warnings:\n${list(data.warnings)}`);

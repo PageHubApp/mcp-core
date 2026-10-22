@@ -1644,7 +1644,7 @@
   },
   {
     "name": "get_site_email",
-    "description": "Read one site email: subject, preheader, node tree, allowed {{variables.*}} and EmailSlot nodes (keep required slots exactly once). Emails use only Container, Text, Button, Image, EmailSlot and email-safe classes (no btn/card/shadow/gradient/absolute).",
+    "description": "Read one site email: subject, preheader, Liquid source (emails/<kind>.liquid, or the default), its objects ({{ order.total }}…) and parts (keep required ones, e.g. the order.lines loop). Use simple blocks (div, p, h1-h3, a, img) with Tailwind; no forms, buttons, video or runtime data-* attributes. A link with bg-* is sent as a button.",
     "annotations": {
       "title": "Get site email",
       "readOnlyHint": true,
@@ -1682,7 +1682,7 @@
   },
   {
     "name": "update_site_email",
-    "description": "Save a site email's subject, preheader and/or full flat node map, or reset: true. Validated: unknown variables, missing/duplicate required slots and unsupported classes are rejected. Theme and company data are injected at send time. preview_site_email renders the saved result.",
+    "description": "Save a site email's subject, preheader and/or full Liquid source, or reset: true. Unknown objects, a missing required part and elements inboxes can't show are rejected. preview_site_email renders the result.",
     "annotations": {
       "title": "Update site email",
       "readOnlyHint": false,
@@ -1725,9 +1725,10 @@
           "description": "Inbox preview text, ≤200 chars; empty = default.",
           "maxLength": 200
         },
-        "nodes": {
-          "type": "object",
-          "description": "Full flat node map (ROOT + every node)."
+        "source": {
+          "type": "string",
+          "description": "The whole Liquid source, as get_site_email returns it.",
+          "maxLength": 200000
         },
         "reset": {
           "type": "boolean",
