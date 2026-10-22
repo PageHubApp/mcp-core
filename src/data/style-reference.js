@@ -444,7 +444,7 @@ Every field takes effect immediately — no publish needed. Empty string clears.
 - \`language\`: the BCP 47 tag the pages are written in ("uk", "es", "pt-BR"), sent as \`<html lang>\` on every page so browsers, screen readers and search engines read the right language. Unset means "en". Set it on every site that isn't in English.
 
 ## Mounting in your own Next.js app (@pagehub/next)
-- \`mountOrigin\`: the origin of the app that serves this site at its root, e.g. "https://app.example.com" — https, no path or trailing slash. Canonical URLs, og:url and the sitemap then use that origin, and the page's form, analytics and favicon calls go through the app's /_pagehub/ path. The site must have static delivery on (\`publish_site\` \`static: true\`). Setting it issues a mount key (returned once) that the app must send so PageHub sees each visitor's real IP; clearing it removes the key.
+- \`mountOrigin\`: the origin of the app that serves this site at its root, e.g. "https://app.example.com" — https, no path or trailing slash. Canonical URLs, og:url and the sitemap then use that origin, and the page's form, analytics and favicon calls go through the app's /_pagehub/ path. Setting it issues a mount key (returned once) that the app must send so PageHub sees each visitor's real IP; clearing it removes the key.
 - \`rotateMountKey\`: true issues a new mount key and invalidates the old one (the site must have a mountOrigin). The new key is returned once — set it as \`PAGEHUB_MOUNT_KEY\` in the host app, or that app's visitors share one IP for rate limits and analytics until you do.`,
 
   media: `# Media — upload_image, upload_file, set_favicon

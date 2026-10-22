@@ -1486,7 +1486,7 @@
         },
         "mountOrigin": {
           "type": "string",
-          "description": "Origin of the Next.js app serving it via @pagehub/next, e.g. \"https://app.example.com\". Needs publish_site static: true.",
+          "description": "Origin of the Next.js app serving it via @pagehub/next, e.g. \"https://app.example.com\".",
           "maxLength": 256
         },
         "rotateMountKey": {
