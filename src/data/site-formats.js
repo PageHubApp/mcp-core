@@ -26,8 +26,6 @@ const CRAFT_ONLY_TOOLS = new Set([
   "place_section_tree",
   "pull_site",
   "get_component_schema",
-  "set_theme",
-  "set_favicon",
   // TODO(html-first blocks): docs/features/html-first-templates-blocks-components.md — once the Liquid block
   // functions exist in utils/htmlFirst/, these call them on HTML-first sites instead of refusing.
   "apply_kit_block",
@@ -56,7 +54,7 @@ const HTML_ONLY_TOOLS = new Set([
 const SITE_IS_HTML = "SITE_IS_HTML";
 
 const SITE_IS_HTML_GUIDANCE =
-  'This site is an HTML-first site: its pages are HTML + Liquid files, not a node tree. Use list_site_files, read_site_file, edit_site_file / write_site_file and search_site_files (the format: get_style_reference topic "liquid"). Pages: list_pages / add_page / update_page / delete_page. Theme: edit theme.css; company, lang and fonts: site.json.';
+  'This site is an HTML-first site: its pages are HTML + Liquid files, not a node tree. Use list_site_files, read_site_file, edit_site_file / write_site_file and search_site_files (the format: get_style_reference topic "liquid"). Pages: list_pages / add_page / update_page / delete_page. Theme: set_theme (or edit theme.css); favicon: set_favicon; company and lang: site.json.';
 
 /** @param {"craft" | "html"} format */
 function toolFitsSiteFormat(name, format) {

@@ -28,6 +28,9 @@ async function apiFetch(pathStr, opts = {}) {
     // activity can tell an agent's save from a direct API call. Attribution
     // only — never trusted for access.
     ...(ctx.client ? { "X-PageHub-Client": ctx.client } : {}),
+    // Review mode (the dashboard chat with the editor open): file reads show, and file writes go into, the staged AI
+    // draft the person keeps or discards (app repo: docs/features/html-first-ai-mcp.md). Only the files routes read it.
+    ...(ctx.stageFileEdits ? { "X-PageHub-Stage": "review" } : {}),
     ...(opts.headers || {}),
   };
 

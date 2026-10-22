@@ -18,6 +18,8 @@ const { resultMsg } = require("./remote-shared");
 const { mergeSiteAnimations } = require("../validation/site-animations");
 
 const { stripGoogleFontLinksFromHeader, finalizeRootThemeFonts } = require("../lib/theme-fonts.js");
+const { isSiteIsHtmlError } = require("../data/site-formats");
+const htmlSettings = require("./html-settings");
 
 // ── Build-style validation ───────────────────────────────────────────────────
 // `buildStyle` on ROOT.props must be one of the 6 canonical vibes
@@ -187,7 +189,13 @@ module.exports = {
   },
 
   async set_theme(args) {
-    return withPendingMapLock(() => setThemeBody(args));
+    try {
+      return await withPendingMapLock(() => setThemeBody(args));
+    } catch (err) {
+      // An HTML-first site's theme is its theme.css.
+      if (isSiteIsHtmlError(err)) return htmlSettings.setTheme(args);
+      throw err;
+    }
   },
 };
 

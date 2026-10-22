@@ -22,6 +22,7 @@
  * @property {string} [activePageNodeId] - Active page node (in-app agent only).
  * @property {boolean} [draftMode] - When true, mutations accumulate in `_pendingFlatMap` instead of persisting.
  * @property {boolean} [fillMode] - When true, certain handlers route through the fill-mode patch merge.
+ * @property {boolean} [stageFileEdits] - HTML-first review mode: file reads/writes use the staged AI draft (`X-PageHub-Stage`).
  */
 
 const rawTools = require("./data/tools.json");

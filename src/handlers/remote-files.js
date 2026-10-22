@@ -45,9 +45,22 @@ function explain(err, { path, sent }) {
   throw err;
 }
 
+/**
+ * Record that a file tool changed something. In review mode (`stageFileEdits`: the dashboard chat with the editor open)
+ * the server staged the edit for the person to keep or discard instead of writing the draft, which the turn's `done`
+ * event reports as `stagedForReview`.
+ */
 function markWritten() {
-  getContext()._sourceFilesWritten = true;
+  const ctx = getContext();
+  if (ctx.stageFileEdits) ctx._sourceFilesStaged = true;
+  else ctx._sourceFilesWritten = true;
 }
+
+/** The sentence that ends a write's reply: where the change is now. */
+const whereNow = (what, staged = getContext().stageFileEdits) =>
+  staged
+    ? `${what} staged for review: the person keeps or discards it, so it is not in the draft yet. read_site_file shows it.`
+    : `${what} Not live until publish_site.`;
 
 async function readFile(siteId, path) {
   try {
@@ -122,7 +135,7 @@ module.exports = {
     const siteId = siteOf(args);
     if (!args.path || typeof args.text !== "string") throw new Error("path and text are required.");
     const res = await putFile(siteId, args.path, args.text, args.baseVersion);
-    return text(`Saved ${args.path} to the draft (version ${res.version}). Not live until publish_site.`);
+    return text(getContext().stageFileEdits ? whereNow(`${args.path} (version ${res.version})`) : whereNow(`Saved ${args.path} to the draft (version ${res.version}).`));
   },
 
   async edit_site_file(args = {}) {
@@ -142,7 +155,8 @@ module.exports = {
       try {
         const res = await apiFetch(filesUrl(siteId, args.path), { method: "PUT", body: { text: next, baseVersion: file.version } });
         markWritten();
-        return text(`Edited ${args.path} (${edits.length} change${edits.length > 1 ? "s" : ""}); draft version ${res.version}. Not live until publish_site.`);
+        const done = `${args.path} (${edits.length} change${edits.length > 1 ? "s" : ""}; version ${res.version})`;
+        return text(getContext().stageFileEdits ? whereNow(`Edit to ${done}`) : whereNow(`Edited ${done}.`));
       } catch (err) {
         if (err?.body?.error === "version_conflict" && !args.baseVersion && attempt === 0) continue;
         return explain(err, { path: args.path, sent: next });
@@ -169,6 +183,7 @@ module.exports = {
       return explain(err, { path: args.path });
     }
     markWritten();
-    return text(`Deleted ${args.path} from the draft. Any {% render %} of it now renders nothing; search_site_files for its name to fix those.`);
+    const note = "Any {% render %} of it now renders nothing; search_site_files for its name to fix those.";
+    return text(getContext().stageFileEdits ? `${whereNow(`Deleting ${args.path}`)} ${note}` : `Deleted ${args.path} from the draft. ${note}`);
   },
 };

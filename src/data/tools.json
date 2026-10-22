@@ -282,7 +282,7 @@
   },
   {
     "name": "set_theme",
-    "description": "Write the site theme — preset, palette, darkPalette, styleGuide tokens, fonts, JSON-LD, site animations — into the draft, effective immediately. suggest_palettes / suggest_font_pairings only show options. ROOT `company` vars: patch_site_node. Palette names, styleGuide keys, workflow: get_style_reference({ topic: \"theme\" }).",
+    "description": "Write the site theme — preset, palette, darkPalette, styleGuide tokens, fonts, JSON-LD, site animations — into the draft. suggest_palettes / suggest_font_pairings only show options. ROOT `company` vars: patch_site_node. Palette names, styleGuide keys, workflow: get_style_reference({ topic: \"theme\" }). HTML-first: theme.css.",
     "annotations": {
       "title": "Set theme",
       "readOnlyHint": false,
@@ -4313,7 +4313,7 @@
   },
   {
     "name": "set_favicon",
-    "description": "Set or clear the site favicon. Exactly one source: `mediaId`, `imageUrl`, `svgContent` (user-supplied SVG), `dataBase64` (small icons, ~3MB cap), or `clear: true`. Best: a 512px square PNG or an SVG. Staged — publish to see it live. More: get_style_reference({ topic: \"media\" }).",
+    "description": "Set or clear the site favicon. Exactly one source: `mediaId`, `imageUrl`, `svgContent` (user-supplied SVG), `dataBase64` (small icons, ~3MB cap), or `clear: true`. Best: a 512px square PNG or an SVG. Staged — publish to see it live. HTML-first: site.json. More: get_style_reference({ topic: \"media\" }).",
     "annotations": {
       "title": "Set favicon",
       "readOnlyHint": false,

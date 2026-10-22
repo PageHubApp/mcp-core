@@ -9,7 +9,22 @@ const { ROOT_NODE_ID } = require("../core/constants");
 
 const { fetchTarget, saveTarget, getActiveTarget } = require("../helpers/index.js");
 
+const { isSiteIsHtmlError } = require("../data/site-formats");
+const htmlSettings = require("./html-settings");
+
 const FAVICON_MIME = ["image/png", "image/jpeg", "image/webp", "image/gif", "image/svg+xml"];
+
+/** The node-tree favicon handler; an HTML-first site (`SITE_IS_HTML`) gets the `site.json` version. */
+function orHtmlFavicon(craft) {
+  return async args => {
+    try {
+      return await craft(args);
+    } catch (err) {
+      if (isSiteIsHtmlError(err)) return htmlSettings.setFavicon(args);
+      throw err;
+    }
+  };
+}
 
 module.exports = {
   /**
@@ -55,7 +70,7 @@ module.exports = {
    * @param {object} args - { mediaId?, imageUrl?, dataBase64?, svgContent?, mimeType?, filename?, clear? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
-  async set_favicon(args) {
+  set_favicon: orHtmlFavicon(async args => {
     const target = getActiveTarget(args);
     if (target.type === "template") {
       throw new Error("set_favicon is not supported for templates — favicons are per-site only.");
@@ -130,7 +145,7 @@ module.exports = {
         },
       ],
     };
-  },
+  }),
 
   /**
    * Replace a site's redirect rules. For SITES these live in the page-scoped
