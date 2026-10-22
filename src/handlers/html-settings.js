@@ -133,6 +133,26 @@ module.exports = {
     );
   },
 
+  /** Integration ids merge over the site's `SiteIntegrations` row (the Settings sheet's home for them); a published site goes live at once. */
+  async setIntegrations(args) {
+    const siteId = getActiveTarget(args).id;
+    const integrations = {};
+    if (args.googleAnalytics) integrations.googleAnalytics = { measurementId: args.googleAnalytics };
+    if (args.googleTagManager) integrations.googleTagManager = { containerId: args.googleTagManager };
+    if (args.googleSearchConsole) integrations.googleSearchConsole = { verificationCode: args.googleSearchConsole };
+    if (args.metaPixel) integrations.metaPixel = { pixelId: args.metaPixel };
+    if (args.googleAds) integrations.googleAds = { conversionId: args.googleAds };
+    if (!Object.keys(integrations).length) {
+      throw new Error("Nothing to change: pass googleAnalytics, googleTagManager, googleSearchConsole, metaPixel or googleAds.");
+    }
+    const res = await put(siteId, { integrations });
+    return text(
+      `Integrations updated: ${Object.keys(integrations).join(", ")}.\n` +
+        (res.live === "released" ? "Live on the published site." : "Saved; they reach visitors when the site is published.") +
+        `\nEditor: ${getEditorUrl(siteId)}`
+    );
+  },
+
   async setFavicon(args) {
     const target = getActiveTarget(args);
     if (target.type === "template") throw new Error("set_favicon is not supported for templates — favicons are per-site only.");

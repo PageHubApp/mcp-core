@@ -14,17 +14,18 @@ const htmlSettings = require("./html-settings");
 
 const FAVICON_MIME = ["image/png", "image/jpeg", "image/webp", "image/gif", "image/svg+xml"];
 
-/** The node-tree favicon handler; an HTML-first site (`SITE_IS_HTML`) gets the `site.json` version. */
-function orHtmlFavicon(craft) {
+/** The node-tree handler; an HTML-first site (`SITE_IS_HTML`) gets the files / app-model version. */
+function orHtml(html, craft) {
   return async args => {
     try {
       return await craft(args);
     } catch (err) {
-      if (isSiteIsHtmlError(err)) return htmlSettings.setFavicon(args);
+      if (isSiteIsHtmlError(err)) return html(args);
       throw err;
     }
   };
 }
+const orHtmlFavicon = craft => orHtml(htmlSettings.setFavicon, craft);
 
 module.exports = {
   /**
@@ -32,7 +33,7 @@ module.exports = {
    * @param {object} args - { googleAnalytics?, googleTagManager?, googleSearchConsole?, metaPixel?, googleAds? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
-  async set_integrations(args) {
+  set_integrations: orHtml(htmlSettings.setIntegrations, async args => {
     const { targetId, targetType, flat } = await fetchTarget(args);
     if (!flat[ROOT_NODE_ID]?.props) throw new Error("ROOT node not found.");
     const integrations = {};
@@ -55,7 +56,7 @@ module.exports = {
         ? `Integrations updated in template "${targetId}": ${providers}.`
         : `Integrations updated: ${providers}.\nEditor: ${result.url}`;
     return { content: [{ type: "text", text: label }] };
-  },
+  }),
 
   /**
    * Set or clear the site favicon (accepts mediaId / imageUrl / dataBase64 /
@@ -156,31 +157,32 @@ module.exports = {
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async set_redirects(args) {
-    const { targetId, targetType, flat } = await fetchTarget(args);
     const redirects = (args.redirects || []).map(r => ({
       from: r.from,
       to: r.to,
       permanent: r.permanent !== false,
     }));
 
-    if (targetType === "template") {
-      if (!flat[ROOT_NODE_ID]?.props) throw new Error("ROOT node not found.");
-      flat[ROOT_NODE_ID].props.redirects = redirects.length ? redirects : undefined;
-      await saveTarget(targetId, targetType, flat);
+    // Sites keep redirects in the SiteRedirect model, so a site needs no node tree: this works on an HTML-first site too.
+    const target = getActiveTarget(args);
+    if (target.type !== "template") {
+      await apiFetch(`/api/plugins/redirects/rules/replace`, {
+        method: "POST",
+        body: { site: target.id, rules: redirects },
+      });
       return {
-        content: [
-          { type: "text", text: `${redirects.length} redirect rule(s) saved in template "${targetId}".` },
-        ],
+        content: [{ type: "text", text: `${redirects.length} redirect rule(s) saved.` }],
       };
     }
 
-    // Sites: write the SiteRedirect model via the plugin's bulk-replace endpoint.
-    await apiFetch(`/api/plugins/redirects/rules/replace`, {
-      method: "POST",
-      body: { site: targetId, rules: redirects },
-    });
+    const { targetId, targetType, flat } = await fetchTarget(args);
+    if (!flat[ROOT_NODE_ID]?.props) throw new Error("ROOT node not found.");
+    flat[ROOT_NODE_ID].props.redirects = redirects.length ? redirects : undefined;
+    await saveTarget(targetId, targetType, flat);
     return {
-      content: [{ type: "text", text: `${redirects.length} redirect rule(s) saved.` }],
+      content: [
+        { type: "text", text: `${redirects.length} redirect rule(s) saved in template "${targetId}".` },
+      ],
     };
   },
 };
