@@ -95,7 +95,8 @@
             "media",
             "integrations",
             "animation",
-            "section-tree"
+            "section-tree",
+            "liquid"
           ],
           "description": "Return one guide instead of the core reference."
         }
@@ -3598,6 +3599,11 @@
           "description": "Display name; becomes the slug (\"Our Services\" → /our-services).",
           "maxLength": 512
         },
+        "text": {
+          "type": "string",
+          "description": "HTML-first sites (required there): the page's HTML + Liquid.",
+          "maxLength": 2000000
+        },
         "isHomePage": {
           "type": "boolean",
           "description": "Make it the home page (unsets the current one)."
@@ -3831,6 +3837,223 @@
       },
       "required": [
         "pageId"
+      ]
+    }
+  },
+  {
+    "name": "list_site_files",
+    "description": "HTML-first sites (format: html): every draft file (pages/*.liquid, partials/, sections/, theme.css, site.json) and which page each serves. Format: get_style_reference({ topic: \"liquid\" }).",
+    "annotations": {
+      "title": "List site files",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        }
+      }
+    }
+  },
+  {
+    "name": "read_site_file",
+    "description": "Read one draft file of an HTML-first site, with its version. Read before you edit.",
+    "annotations": {
+      "title": "Read site file",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "path": {
+          "type": "string",
+          "description": "e.g. pages/index.liquid, partials/header.liquid, theme.css.",
+          "maxLength": 512
+        },
+        "startLine": {
+          "type": "number",
+          "description": "First line (1-based); with endLine for a slice of a long file."
+        },
+        "endLine": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "path"
+      ]
+    }
+  },
+  {
+    "name": "search_site_files",
+    "description": "Find text across an HTML-first site's draft files (plain, case-insensitive): path, line and the line's text.",
+    "annotations": {
+      "title": "Search site files",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "query": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "path": {
+          "type": "string",
+          "description": "Only paths starting with this, e.g. pages/.",
+          "maxLength": 512
+        }
+      },
+      "required": [
+        "query"
+      ]
+    }
+  },
+  {
+    "name": "edit_site_file",
+    "description": "Change an HTML-first site's file by exact-text replacement: each oldText must appear once (or set replaceAll). Smallest span; keep data-edit-* attributes. Linted on save; errors give the line. Stages in the draft.",
+    "annotations": {
+      "title": "Edit site file",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "path": {
+          "type": "string",
+          "maxLength": 512
+        },
+        "edits": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "oldText": {
+                "type": "string",
+                "maxLength": 200000
+              },
+              "newText": {
+                "type": "string",
+                "maxLength": 200000
+              },
+              "replaceAll": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "oldText",
+              "newText"
+            ]
+          }
+        },
+        "baseVersion": {
+          "type": "string",
+          "description": "Version from read_site_file; refuses if the file changed since.",
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "path",
+        "edits"
+      ]
+    }
+  },
+  {
+    "name": "write_site_file",
+    "description": "Create or replace a whole file of an HTML-first site. Replacing needs baseVersion from read_site_file; prefer edit_site_file for changes. New page? add_page.",
+    "annotations": {
+      "title": "Write site file",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "path": {
+          "type": "string",
+          "maxLength": 512
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 2000000
+        },
+        "baseVersion": {
+          "type": "string",
+          "description": "Omit only for a new file.",
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "path",
+        "text"
+      ]
+    }
+  },
+  {
+    "name": "delete_site_file",
+    "description": "Delete a partial, section or other non-page file of an HTML-first site (pages: delete_page).",
+    "annotations": {
+      "title": "Delete site file",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "path": {
+          "type": "string",
+          "maxLength": 512
+        },
+        "baseVersion": {
+          "type": "string",
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "path"
       ]
     }
   },

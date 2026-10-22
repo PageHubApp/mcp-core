@@ -144,13 +144,19 @@ module.exports = {
 
   async get_style_reference(args) {
     const topic = args?.topic;
+    // HTML-first sites: generated on the server from the renderer's own tag / filter / object catalogue, so it can't
+    // drift from what renders (app repo utils/htmlFirst/liquidReference.ts).
+    if (topic === "liquid") {
+      const { text } = await apiFetch("/api/v1/format/liquid");
+      return { content: [{ type: "text", text }] };
+    }
     if (!topic) {
       return { content: [{ type: "text", text: STYLE_REFERENCE + STYLE_TOPIC_INDEX }] };
     }
     const guide = STYLE_TOPICS[topic];
     if (!guide) {
       return {
-        content: [{ type: "text", text: `Unknown topic "${topic}". Valid topics: ${STYLE_TOPIC_NAMES.join(", ")}.` }],
+        content: [{ type: "text", text: `Unknown topic "${topic}". Valid topics: ${[...STYLE_TOPIC_NAMES, "liquid"].join(", ")}.` }],
         isError: true,
       };
     }

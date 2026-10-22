@@ -12,6 +12,8 @@ const {
   getEditorUrl,
 } = require("../helpers/index.js");
 const { buildPatch } = require("../helpers/patch/build");
+const { isSiteIsHtmlError } = require("../data/site-formats");
+const htmlPages = require("./html-pages");
 const {
   checkPropSupport,
   formatPropSupportReport,
@@ -51,49 +53,63 @@ function pageNodeSlug(node, nodeId) {
   );
 }
 
+/** Run the node-tree version; an HTML-first site (`SITE_IS_HTML`) gets the page-record version instead. */
+async function orHtml(args, craft, html) {
+  try {
+    return await craft(args);
+  } catch (err) {
+    if (isSiteIsHtmlError(err)) return html(args);
+    throw err;
+  }
+}
+
 module.exports = {
   async list_pages(args) {
-    const { targetId, targetType, flat } = await fetchTarget(args);
-    const pages = findPages(flat);
-
-    if (pages.length === 0) {
-      return { content: [{ type: "text", text: `No pages found in this ${targetType}.` }] };
-    }
-
-    const lines = pages.map((p, i) => {
-      const props = p.node.props || {};
-      const name = p.node.custom?.displayName || p.node.displayName || "(unnamed)";
-      const slug = pageNodeSlug(p.node, p.id);
-      const flags = [];
-      if (props.isHomePage) flags.push("HOME");
-      if (props.is404Page) flags.push("404");
-      if (props.isHidden || p.node.hidden) flags.push("HIDDEN");
-      const sectionCount = (p.node.nodes || []).length;
-      const flagStr = flags.length ? ` [${flags.join(", ")}]` : "";
-      return `${i + 1}. **${p.id}** — "${name}" (/${slug}, ${sectionCount} sections)${flagStr}`;
-    });
-
-    const label = targetType === "template" ? `template "${targetId}"` : `site ${targetId}`;
-    return {
-      content: [
-        {
-          type: "text",
-          text: `# Pages in ${label}\n\n${lines.join("\n")}\n\nUse pageId with add_section, add_custom_section, or update_page.`,
-        },
-      ],
-    };
+    return orHtml(args, listPagesBody, htmlPages.list);
   },
 
   async add_page(args) {
-    return withPendingMapLock(() => addPageBody(args));
+    return orHtml(args, a => withPendingMapLock(() => addPageBody(a)), htmlPages.add);
   },
   async update_page(args) {
-    return withPendingMapLock(() => updatePageBody(args));
+    return orHtml(args, a => withPendingMapLock(() => updatePageBody(a)), htmlPages.update);
   },
   async delete_page(args) {
-    return withPendingMapLock(() => deletePageBody(args));
+    return orHtml(args, a => withPendingMapLock(() => deletePageBody(a)), htmlPages.remove);
   },
 };
+
+async function listPagesBody(args) {
+  const { targetId, targetType, flat } = await fetchTarget(args);
+  const pages = findPages(flat);
+
+  if (pages.length === 0) {
+    return { content: [{ type: "text", text: `No pages found in this ${targetType}.` }] };
+  }
+
+  const lines = pages.map((p, i) => {
+    const props = p.node.props || {};
+    const name = p.node.custom?.displayName || p.node.displayName || "(unnamed)";
+    const slug = pageNodeSlug(p.node, p.id);
+    const flags = [];
+    if (props.isHomePage) flags.push("HOME");
+    if (props.is404Page) flags.push("404");
+    if (props.isHidden || p.node.hidden) flags.push("HIDDEN");
+    const sectionCount = (p.node.nodes || []).length;
+    const flagStr = flags.length ? ` [${flags.join(", ")}]` : "";
+    return `${i + 1}. **${p.id}** — "${name}" (/${slug}, ${sectionCount} sections)${flagStr}`;
+  });
+
+  const label = targetType === "template" ? `template "${targetId}"` : `site ${targetId}`;
+  return {
+    content: [
+      {
+        type: "text",
+        text: `# Pages in ${label}\n\n${lines.join("\n")}\n\nUse pageId with add_section, add_custom_section, or update_page.`,
+      },
+    ],
+  };
+}
 
 async function addPageBody(args) {
   const { name, isHomePage, is404Page, position } = args;

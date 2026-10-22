@@ -83,6 +83,8 @@ async function apiFetch(pathStr, opts = {}) {
       `${code}${json.error || `API ${resp.status}: ${resp.statusText}`}${detail}`
     );
     err.status = resp.status;
+    // The parsed answer, for callers that turn a structured refusal (a version conflict, lint issues) into guidance.
+    err.body = json;
     throw err;
   }
   return json;

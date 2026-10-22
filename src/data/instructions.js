@@ -27,6 +27,7 @@ const SERVER_INSTRUCTIONS = `You build production websites through PageHub — s
 - **Pass the site \`id\` (or template \`slug\`) on every tool call.** The server does not remember \`select_site\` between calls.
 - **Writes are STAGED in the draft.** Only \`publish_site\` makes them live — never report an edit as live before publishing. Ask before publishing someone's site unless they asked; the draft may hold their unfinished work.
 - **Build sections with \`add_nodes\`; edit with** \`patch_site_node\`, \`patch_site_bulk\` (multi-node, one atomic write), \`delete_node\`. Ids come from \`list_site_nodes\` / \`search_site_nodes\`. One writer per site. On a structural error retry with corrected ids and the smallest patch, then report the exact error and stop.
+- **HTML sites** (\`format: html\`): edit files (\`read_site_file\`, \`edit_site_file\`; rules: \`get_style_reference\` topic \`liquid\`), not nodes.
 
 ## Hard rules
 - Colors are palette tokens only (\`bg-primary\`, \`text-base-content\`) — never \`bg-black\`/\`text-white\`/\`bg-gray-*\`. Match text to surface (\`bg-primary\` → \`text-primary-content\`).
@@ -43,12 +44,12 @@ const SERVER_INSTRUCTIONS = `You build production websites through PageHub — s
 \`design\` (the design bar — read it first), \`accessibility\` (WCAG AA is mandatory; run \`audit_accessibility\`), \`domains\` (hand DNS records over verbatim; attaching doesn't publish), \`blocks\`, \`editing\`, \`theme\`, \`pages\`, \`media\`, \`integrations\`, \`animation\`.
 
 ## Start here
-Call discovery tools before writing. Do not guess props, class names, block names or palette tokens:
-- \`get_style_reference\` — palette variables, spacing tokens, layout rules, interactive state (tabs, toggles, quizzes, scores — built from state props, not JS)
+Call discovery tools before writing; don't guess props, classes, block names or tokens:
+- \`get_style_reference\` — palette, spacing tokens, layout rules, interactive state (built from state props, not JS)
 - \`get_component_schema\` — component types and their props
 - \`list_presets\` / \`suggest_palettes\` — curated themes
-- \`search_blocks\` / \`get_block\` — example sections showing the node shape. Design each section for this business with \`add_nodes\`; blocks are references, not defaults.
-- \`find_icon\` — resolves an icon ref instead of guessing
+- \`search_blocks\` / \`get_block\` — example sections (node shape); references, not defaults. Design for this business.
+- \`find_icon\` — icon refs
 
 ## Building from an approved design
 - Map every element to nodes/props first. If something can't be expressed, **stop and tell the user** — never ship an unapproved substitute.

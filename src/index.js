@@ -86,6 +86,8 @@ const stockVideoHandlers = require("./handlers/stock-videos");
 const iconHandlers = require("./handlers/icons");
 const sectionTreeHandlers = require("./handlers/section-tree");
 const collectionsHandlers = require("./handlers/remote-collections");
+const fileHandlers = require("./handlers/remote-files");
+const siteFormats = require("./data/site-formats");
 
 // All HTTP handlers merged into a single dispatch map
 const handlers = {
@@ -103,6 +105,7 @@ const handlers = {
   ...iconHandlers,
   ...sectionTreeHandlers,
   ...collectionsHandlers,
+  ...fileHandlers,
 };
 
 // Tools that are HTTP-only (no filesystem / TemplateBuilder needed)
@@ -252,6 +255,11 @@ module.exports = {
 
   // Runtime allowlist (host pushes plugin component names — P3 §4)
   registerPluginComponents,
+
+  // Craft vs HTML-first sites: which tools fit which (data/site-formats.js)
+  toolFitsSiteFormat: siteFormats.toolFitsSiteFormat,
+  isSiteIsHtmlError: siteFormats.isSiteIsHtmlError,
+  SITE_IS_HTML_GUIDANCE: siteFormats.SITE_IS_HTML_GUIDANCE,
 
   // Constants
   HTTP_TOOL_NAMES,

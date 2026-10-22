@@ -142,7 +142,7 @@ module.exports = {
     const data = await apiFetch("/api/v1/sites");
     const lines = (data.sites || []).map(s => {
       const address = s.domain || (s.name ? `${s.name}.pagehub.dev` : null);
-      return `• ${s._id} — ${siteDisplayName(s)}${address ? ` [${address}]` : ""} (${s.published ? "published" : "not published"}, updated ${s.updatedAt})`;
+      return `• ${s._id} — ${siteDisplayName(s)}${address ? ` [${address}]` : ""} (${s.published ? "published" : "not published"}${s.format === "html" ? ", format: html" : ""}, updated ${s.updatedAt})`;
     });
     return {
       content: [{ type: "text", text: lines.length ? lines.join("\n") : "No sites found." }],
@@ -182,6 +182,9 @@ module.exports = {
       mountOriginLine(data),
       mountKeyLine(data, false),
       `Change these with update_site; per-page overrides go through update_page seo.`,
+      data.format === "html"
+        ? `Format: html — this site is HTML + Liquid files. Edit with list_site_files / read_site_file / edit_site_file (rules: get_style_reference({ topic: "liquid" })); node tools don't apply.`
+        : "",
     ];
     return {
       content: [{ type: "text", text: lines.filter(Boolean).join("\n") + selectionNote({ type: "site", id: data.id }) }],

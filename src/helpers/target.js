@@ -1,6 +1,7 @@
 const { apiFetch, normalizeBaseUrl } = require("../core/api-fetch");
 const { getContext } = require("../core/context");
 const { compressJsonToBase64Lz, tryDecompressBase64LzToJson } = require("../codec/lz");
+const { siteIsHtmlError } = require("../data/site-formats");
 
 function decodeContentOrThrow(content, label = "content") {
   const decoded = tryDecompressBase64LzToJson(content);
@@ -144,6 +145,8 @@ async function fetchTarget(args) {
   // don't update sharedContent, so defaulting to content gives the agent
   // stale state and the next turn silently rebuilds from scratch.
   const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}?field=draft`);
+  // An HTML-first site has files, not a node tree: every node-tree tool lands here and refuses with guidance.
+  if (data.format === "html") throw siteIsHtmlError(target.id);
   if (!data.content || typeof data.content !== "object") {
     throw new Error("Site has no decoded content (empty or corrupt).");
   }

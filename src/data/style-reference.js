@@ -549,6 +549,7 @@ const STYLE_TOPIC_INDEX = `
 ## More guides — get_style_reference({ topic })
 
 ${STYLE_TOPIC_NAMES.map(t => `- \`${t}\` — ${STYLE_TOPIC_LABELS[t]}`).join("\n")}
+- \`liquid\` — HTML-first sites (\`format: html\`): files, HTML + Liquid tags, filters, data, lint rules
 `;
 
 module.exports = { STYLE_REFERENCE, STYLE_TOPICS, STYLE_TOPIC_NAMES, STYLE_TOPIC_INDEX };
