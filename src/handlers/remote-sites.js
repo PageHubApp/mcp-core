@@ -11,7 +11,6 @@ const {
   getActiveTarget,
   selectionNote,
   fetchTarget,
-  decodeContentOrThrow,
   getEditorUrl,
 } = require("../helpers/index.js");
 const { pickSiteMetaArgs, pickSiteMetaUpdates } = require("../helpers/extra-meta-args");
@@ -103,16 +102,10 @@ module.exports = {
    */
   async create_site(args = {}) {
     const slug = args.template || DEFAULT_BLANK_TEMPLATE;
-    const tpl = await apiFetch(`/api/v1/templates/${encodeURIComponent(slug)}`);
-    const content = decodeContentOrThrow(tpl.content, `Template "${slug}" content`);
-
+    // The server makes the site from the template itself (its stored files); nothing is downloaded or sent back.
     const data = await apiFetch("/api/v1/sites", {
       method: "POST",
-      body: {
-        content,
-        ...pickSiteMetaArgs(args),
-        sourceTemplate: { slug, ...(tpl.version ? { version: tpl.version } : {}) },
-      },
+      body: { template: slug, ...pickSiteMetaArgs(args) },
     });
 
     const ctx = getContext();
@@ -126,7 +119,7 @@ module.exports = {
       content: [
         {
           type: "text",
-          text: `New site ${data.id} created from "${slug}" (${Object.keys(content).length} nodes).\nActive site set. Editor: ${data.url || `${getEditorUrl(data.id)}`}\nPreview: ${data.previewUrl || `${base}/view/${data.id}`}${selectionNote({ type: "site", id: data.id })}`,
+          text: `New site ${data.id} created from "${slug}".\nActive site set. Editor: ${data.url || `${getEditorUrl(data.id)}`}\nPreview: ${data.previewUrl || `${base}/view/${data.id}`}${selectionNote({ type: "site", id: data.id })}`,
         },
       ],
     };

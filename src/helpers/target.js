@@ -127,6 +127,10 @@ async function fetchTarget(args) {
 
   if (target.type === "template") {
     const data = await apiFetch(`/api/v1/templates/${encodeURIComponent(target.id)}`);
+    // A template stored as HTML has no node tree: read it with pull_template({ slug, format: "liquid" }).
+    if (data.format === "html") {
+      throw new Error(`Template "${target.id}" is HTML + Liquid files with no node tree. Read it with pull_template({ slug: "${target.id}", format: "liquid" }); node tools do not apply.`);
+    }
     const decodedContent = decodeContentOrThrow(data.content, "Template content");
     const revision = extractTargetRevision(target.type, data);
     if (revision) {

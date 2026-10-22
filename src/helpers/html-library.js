@@ -126,7 +126,7 @@ async function pullTemplateLiquid(slug, path) {
   const total = files.reduce((n, f) => n + f.text.length, 0);
   const listing = files.map(f => `- ${f.path} (${f.text.length} chars)`).join("\n");
   const pages = (data.pages || []).map(p => `- ${p.displayName || p.pageSlug || "page"} → ${p.sourcePath}${p.isHomePage ? " (home)" : ""}`).join("\n");
-  const head = `Template "${slug}" as HTML + Liquid (${files.length} files, ${data.from === "converted" ? "converted from its node tree" : "authored as HTML"}).\n\n## Pages\n${pages || "(none)"}\n\n## Files\n${listing}`;
+  const head = `Template "${slug}" as HTML + Liquid (${files.length} files).\n\n## Pages\n${pages || "(none)"}\n\n## Files\n${listing}`;
   if (total > 60000) {
     return text(`${head}\n\nToo large to inline: pull_template({ slug: "${slug}", format: "liquid", path }) reads one file.`);
   }
