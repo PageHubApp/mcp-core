@@ -255,10 +255,11 @@ Blocks are Liquid snippets: reference material, not the default. Design each sec
 ## Rules
 - Read before you edit; change the smallest span. Keep every \`data-edit-*\` attribute you didn't mean to remove: they are the element ids history and comments use.
 - Liquid logic wraps WHOLE elements: no \`{% if %}\` inside a tag's attribute list. \`{{ value }}\` inside an attribute value is fine.
-- Well-formed HTML only: close every element you open. No inline JS (\`on*\`, \`<script>\`, \`javascript:\` are stripped from what you write).
+- Well-formed HTML only: close every element you open.
+- Behaviour: native HTML (\`<dialog>\`, \`popover\`, \`<details>\`) and \`data-*\` runtime attributes first. A site may carry its own JavaScript and nothing strips it: inline \`<script>\`, \`on*\` handlers, \`{% javascript %}…{% endjavascript %}\` in a section or partial (added once per page), or a file \`assets/<name>.js\` (write_site_file) linked with \`<script src="{{ 'app.js' | asset_url }}" defer></script>\`. It runs on the preview and the live site, never in the editor canvas: check it with screenshot_site or the preview link.
 - A lint error comes back as \`line L:C [rule] message\`: fix it in place. If it still fails, report the exact error and stop; never rebuild the page to recover.
 - Follow the site's own conventions: read a neighbouring page or partial first and reuse its classes and structure.
-- Site-wide code (third-party scripts, custom CSS, chat widgets, verification tags) goes in \`site.json\` inject — never page content. Analytics and pixels: \`set_integrations\`. Per-page head code: a tag in that page file's \`<head>\`.
+- Third-party snippets (vendor scripts, chat widgets, verification tags, custom CSS) go in \`site.json\` inject; the site's own code is a \`<script>\`, \`{% javascript %}\` or \`assets/*.js\` file. Analytics and pixels: \`set_integrations\`. Per-page head code: a tag in that page file's \`<head>\`.
 
 ## Files
 - \`pages/<slug>.liquid\` one per page (\`pages/index.liquid\` is home; \`pages/shop/[handle].liquid\` a detail page). Route, SEO and access live in the page record (list_pages / update_page).

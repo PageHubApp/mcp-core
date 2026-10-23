@@ -1,8 +1,8 @@
 /**
  * File tools: list, read, search, write, edit and delete the draft's HTML + Liquid files through
  * `/api/v1/sites/:id/files` (app repo: docs/features/html-first-ai-mcp.md). Every write goes through the server's one
- * write seam (lint, sanitize, version check, maintenance freeze); an agent write is untrusted, so `on*` handlers it
- * adds are stripped.
+ * write seam (lint, sanitize, version check, maintenance freeze). A site's JavaScript is kept; the in-app AI client
+ * never writes any (`helpers/aiWriteGuard.js`).
  *
  * A file's version is its content hash. `edit_site_file` reads the file, applies exact-text replacements and writes
  * against the version it read, so an edit can never silently overwrite someone else's change to the same file.

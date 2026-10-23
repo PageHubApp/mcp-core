@@ -35,7 +35,7 @@ const SERVER_INSTRUCTIONS = `You build production websites through PageHub — s
 - Icons: \`{{ 'tb/TbPhone' | icon }}\` (\`find_icon\` for refs, brands included). No emoji.
 - Images: \`upload_image\`, then \`{{ '<mediaId>' | image_tag: alt: '…' }}\`. Every image has alt text.
 - Fonts once via \`set_theme\`, used as \`font-heading\`/\`font-body\`.
-- Behaviour is native HTML (\`<dialog>\`, \`popover\`, \`<details>\`) or a \`data-*\` runtime attribute. No inline JS. Animations: \`data-animate="fade-up"\`.
+- Behaviour: native HTML (\`<dialog>\`, \`popover\`, \`<details>\`) or a \`data-*\` attribute first; own JS is allowed (see \`liquid\`). Animations: \`data-animate="fade-up"\`.
 - Fixed/sticky headers \`z-[1100]\`, dialogs \`z-[1200]\`.
 - Everything a visitor sees is markup in a page or partial. \`site.json\` inject holds third-party snippets only (tracking, pixels, chat loaders) — never hand-built bars, banners or popups. \`search_blocks\` has examples (\`mobile-call-bar\`, \`gallery-lightbox\`, \`cookie-consent\`).
 - Keep every \`data-edit-*\` attribute you did not mean to remove.
