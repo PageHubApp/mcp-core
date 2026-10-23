@@ -1,5 +1,5 @@
 /**
- * Single source for ROOT company identity checks (AI agent + MCP patch_site_node).
+ * Single source for ROOT company identity checks (AI agent + MCP site.json edits).
  * brandingCommitted: set when /start creates the site with a business name or tagline
  * (createSiteFromTemplate), or when the owner saves branding in Site Settings.
  */

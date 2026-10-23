@@ -234,12 +234,10 @@ module.exports = {
       method: "PUT",
       body: { published: true },
     });
-    // Edits stage into the draft, so publishing is what promotes them. Say
-    // whether that happened — "published" alone does not distinguish a promotion
-    // from a no-op flag flip on a site that was already live.
-    const promoted = put?.promoted ? " Staged draft promoted to live." : "";
+    // Edits stage into the draft, so publishing is what puts them live: say which release did.
+    const release = put?.release?.number ? ` Release ${put.release.number} is live.` : put?.release?.queued ? " The release is building." : "";
     return {
-      content: [{ type: "text", text: `Site ${target.id} published.${promoted}` }],
+      content: [{ type: "text", text: `Site ${target.id} published.${release}` }],
     };
   },
 
