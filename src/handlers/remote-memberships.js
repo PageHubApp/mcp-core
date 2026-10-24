@@ -96,7 +96,7 @@ module.exports = {
     const data = await apiFetch(`${base(args, "list_membership_plans")}/plans`);
     const plans = data.plans || [];
     const text = plans.length
-      ? `${plans.map(fmtPlan).join("\n")}\n\nGate content with auth conditions: customer.plans.<slug> exists.`
+      ? `${plans.map(fmtPlan).join("\n")}\n\nGate content in Liquid: {% assign me = customer.me | first %}{% if me.plans['<slug>'] %} (get_style_reference members).`
       : "No membership plans on this site yet. Create one with set_membership_plan.";
     return { content: [{ type: "text", text }], structuredContent: data };
   },

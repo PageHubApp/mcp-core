@@ -54,7 +54,7 @@
   },
   {
     "name": "get_style_reference",
-    "description": "Styling and authoring reference. No `topic`: palette variables, styleGuide tokens, spatial scale, class rules, section skeleton. Pass `topic` for a focused guide: liquid (files, tags, filters, runtime data-* attributes, site JavaScript, forms, dates), design, accessibility, domains, blocks, editing, theme, pages, site, media, integrations, animation.",
+    "description": "Styling and authoring reference. No `topic`: palette variables, styleGuide tokens, spatial scale, class rules, section skeleton. Pass `topic` for a focused guide: liquid (files, tags, filters, runtime data-* attributes, site JavaScript, forms, dates), design, accessibility, domains, blocks, editing, theme, pages, site, media, integrations, animation, collections, members, downloads, chat, redirects, emails.",
     "annotations": {
       "title": "Get style reference",
       "readOnlyHint": true,
@@ -79,6 +79,12 @@
             "media",
             "integrations",
             "animation",
+            "collections",
+            "members",
+            "downloads",
+            "chat",
+            "redirects",
+            "emails",
             "liquid"
           ],
           "description": "Return one guide instead of the core reference."
@@ -1590,7 +1596,7 @@
   },
   {
     "name": "set_membership_plan",
-    "description": "Create (new slug) or edit a plan; only passed fields change. Slug is permanent; gate with auth customer.plans.<slug> exists. Paid: stripePriceIds. Free: selfSignup. Pro+.",
+    "description": "Create (new slug) or edit a plan; only passed fields change. Slug is permanent; gate content in Liquid with customer.me | first, then me.plans['<slug>'] (get_style_reference members). Paid: stripePriceIds. Free: selfSignup. Pro+.",
     "annotations": {
       "title": "Set membership plan",
       "readOnlyHint": false,

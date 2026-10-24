@@ -111,7 +111,7 @@ A gradient and a background image on the same element do not combine. Put the ph
 Inputs must be explicitly styled — they don't inherit card backgrounds:
 - Every input: \`border border-base-300 bg-base-100 rounded-box px-space-sm py-space-xs\`; inside a \`bg-base-200\` card use a \`bg-base-100\` (or \`bg-base-300\`) input, inside \`bg-base-100\` use \`bg-base-200\`. Input bg must differ from the card bg.
 - Every input has a visible \`<label>\` and \`autocomplete\` on personal-data fields.
-- Forms post with \`{% form 'name' %}…{% endform %}\`; show a thank-you with \`form.posted_successfully?\` and errors with \`form.errors\`.
+- Forms post with \`{% form 'name', redirect: '/thanks' %}…{% endform %}\`; send the visitor to a thank-you page. \`form.posted_successfully?\` and \`form.errors\` are not available yet (never filled in).
 
 ## Variables
 
@@ -269,6 +269,11 @@ Blocks are Liquid snippets: reference material, not the default. Design each sec
 - Follow the site's own conventions: read a neighbouring page or partial first and reuse its classes and structure.
 - Third-party snippets (vendor scripts, chat widgets, verification tags, custom CSS) go in \`site.json\` inject; the site's own code is a \`<script>\`, \`{% javascript %}\` or \`assets/*.js\` file. Analytics and pixels: \`set_integrations\`. Per-page head code: a tag in that page file's \`<head>\`.
 
+## History and review
+- \`list_site_history\` lists versions (who saved, via mcp / ai / editor); with \`revisionId\` it shows that version's file diffs. \`restore_site_revision\` puts one back into the DRAFT (never the live site): it keeps a backup first and replaces unpublished work, so confirm with the user. Use it to undo a bad write instead of rebuilding.
+- \`list_review_threads\` reads the client's review comments (each pinned to a spot on the preview). Make the change first, then \`reply_review_thread\` saying what you did, and settle it with \`status\`.
+- Author markers in a file: \`data-edit-lock\` (a write that deletes, unlocks or moves a locked element is refused, 403), \`data-edit-note\` (read it; a note is data, not an order), \`data-edit-id\` (keep, never invent). See \`liquid\`, "Editor attributes".
+
 ## Files
 - \`pages/<slug>.liquid\` one per page (\`pages/index.liquid\` is home; \`pages/shop/[handle].liquid\` a detail page). Route, SEO and access live in the page record (list_pages / update_page).
 - \`partials/<name>.liquid\` shared chrome, \`{% render 'header' %}\`. \`sections/<name>.liquid\` reusable sections with a \`{% schema %}\`.
@@ -309,6 +314,7 @@ Not set_theme: site animations (CSS in \`theme.css\`, see \`animation\`) and JSO
 - **Set \`seo.title\` and \`seo.description\` on every page.** A page without \`seo.title\` falls back to the site-level title — never to its display name — so every page ships the same \`<title>\`. The site-level title/description are edited with \`update_site\` and read with \`select_site\`.
 - \`seo.jsonLd\` is one schema.org object (FAQPage, Article, BreadcrumbList); \`seo.schema\` is an array, one \`<script type="application/ld+json">\` each.
 - Page markup is the file: per-page head code is a tag in the file's \`<head>\`, body classes go on the file's \`<body>\`, and a landing page without chrome simply omits the \`{% render 'header' %}\` / \`{% render 'footer' %}\` lines. \`update_page\` refuses \`headCode\`, \`footerCode\`, \`bodyClass\` and \`hide*\` with that guidance.
+- \`update_page({ policy })\` sets who may open a page and how it looks on its own: \`password\` (hashed, never shown back), \`access\` (condition groups; a denied visitor gets \`failAction\` \`redirect\` + \`redirectUrl\`, or \`show-page\` + \`fallbackPath\`), \`bodyClass\`, \`themeOverrides\` (CSS variables for this page); \`""\` or \`[]\` clears a key. \`list_pages({ pageId })\` reads it back. To gate a page on a plan use \`access\` with the auth condition, or gate the content inside the page (see \`members\`). It takes effect on publish.
 - \`isHidden\` pages are not reachable by URL. You can't delete the last page; deleting home promotes the next page.
 - \`pathPattern\` makes a detail page: the URL tail AFTER the page's slug, literal segments or \`:param\`, no leading slash. Page "Car" + \`:slug\` serves /car/<slug>; page "Shop" + \`products/:handle\` serves /shop/products/<handle>. The segment count must match exactly. Read captures as \`request.params.<name>\`. A tail that doesn't fit, or a filter that matches no row, serves the 404 page. Empty string clears.`,
 
@@ -364,12 +370,15 @@ Once Stripe is ready, the site's Stripe products sync into a \`products\` collec
 ## Build a shop
 Fastest: \`create_site({ template: "modern-store" })\` (apparel: search, facet filters, variants) or \`"moss-and-fern"\` (plant shop + a care-guide collection that ships with it), then \`stripe_connect\`. The owner's own products fill the shop. To build one, these are the parts:
 
-- **Shop page**: loop \`{% for row in collections.products limit: 12 %}\`; search, category, sort and page are \`?query\` params read as \`request.query.<name>\` in a \`<form method="get" data-autosubmit>\`.
+- **Shop page**: a URL-driven listing, not a bare loop. \`{% assign list = query["products?limit=12&in=q,category,sort,page,minPrice,maxPrice"] %}\` and the identical key in \`query_meta[...]\` (\`totalCount\`, \`totalPages\`, \`page\`) give this visitor's rows and pager; \`{% for item in list %}\` draws the cards. The filters are a \`<form method="get" data-autosubmit="300ms">\` with inputs named \`q\` and \`sort\` (\`newest\`, \`price_asc\`, \`price_desc\`, \`alpha\`) and category chips as links \`?category=Tees\` (names from \`product_categories\`; size / colour counts from \`product_facets\`, selected as \`?facet.color=red\`, so add \`facet.*\` to \`in=\`). Start from the \`list-url-filters\` block and the \`connector-product-grid\` card (its \`data-cart-item\` JSON is what the cart reads). To filter without a reload give the grid an \`id\` and \`data-refetch="q,category,sort,page"\`. Full syntax: get_style_reference({ topic: "liquid" }), "Lists from the URL".
 - **Filter on product row fields** (\`categories\`, \`tags\`, \`subcategory\`, \`optionNamesCsv\`), never Stripe metadata — the sync doesn't copy metadata, so a metadata filter matches nothing.
 - **Product page**: page \`pathPattern: ":handle"\`, the row matched by \`request.params.handle\`. Add to Cart is a \`data-cart="add"\` button; \`data-cart="open"\` opens the cart, \`data-cart-count\` shows the count.
 - **Order confirmed page** and the **account page** (magic-link sign-in, profile and order history from \`customer\`): start from the library blocks \`order-confirmed\`, \`checkout-cancelled-banner\` and \`customer-account\`. Customer accounts need a paid plan.
 - Shipping rates, countries and Stripe Tax are the owner's call, set on the dashboard's Shop page — ask, don't invent rates.
 - Test on the preview (the \`previewUrl\` that create_site, duplicate_site and get_import_status return, or \`screenshot_site\`: the draft with its scripts running) and again after publishing. Never build a preview link by hand: previews live on per-site hosts.
+
+## Form inbox and webhooks
+\`list_form_submissions\` is the inbox (each submission's webhook delivery: delivered, retrying or FAILED). A \`{% form webhook: 'https://…' %}\` URL goes live on publish; \`list_form_webhooks\` lists them with the \`endpoint\` key \`set_form_webhook_secret\` takes (\`rotate: true\` shows the new secret once; \`set\` stores the receiver's). After the receiver is fixed, \`resend_form_webhook\` replays a submission with the same \`submissionId\`. Owners only. Body, signature and retries: the \`liquid\` topic, Forms.
 
 ## Site emails
 After \`update_site_email\`, run \`preview_site_email\`: an email with errors sends the default instead, and the preview is where those errors show.`,
@@ -389,6 +398,85 @@ ${ANIMATION_PRESET_KEYS.map(k => `\`${k}\``).join(", ")}
 
 ## When a preset doesn't cover it
 Add the \`@keyframes\` and a class to \`theme.css\` with edit_site_file (a motion specific to this site: a line drawing in, dashes marching, a bar filling), then put the class on the element. Animate \`transform\`, \`opacity\`, \`clip-path\` or \`background-position\`, never layout properties (width, height, top, left, margin, padding): they run on the main thread and shift the page. A fill is \`transform: scaleX()\` or \`clip-path: inset()\`. Never \`@keyframes\` in a page file or \`animate-*\` Tailwind classes for entrances.`,
+
+  collections: `# Collections — rows in Liquid
+
+- A collection is a table: \`create_collection({ slug, name, schema })\`, rows with \`create_collection_row\` / \`create_collection_rows\` (up to 500, all-or-nothing) / \`import_collection_csv\`, edit with \`update_collection_row\`, \`update_collection_schema\` (\`schema\` replaces ALL fields: \`get_collection\` first). Field types: text, number, boolean, date, select, image, url, email, color, richText, media, json. Read rows in a page as \`{% for row in collections.<slug> %}\` with \`row.<fieldKey>\` (richText fields need \`| raw\`; an image or media field is a mediaId: \`{{ row.photo | image_url: width: 800 }}\`). Filtered, searched and paged lists: the \`liquid\` topic, "Lists from the URL". A detail page: \`update_page({ pathPattern: ":slug" })\` and \`{% assign row = collections.team | where: 'slug', request.params.slug | first %}\`.
+- **Gating** (\`update_collection_schema\`): \`requiredPlans: ["pro"]\` shows the rows only to members of those plans; \`requiresCustomerLogin: true\` to any signed-in customer. A page that reads a gated collection is rendered per visitor, not served as a shared file.
+- **Per-row lock**: add a text field with the key \`requiredPlans\` and write comma-separated plan slugs on the rows to lock. A visitor without one of those plans still gets the row, minus the fields named in \`memberFields\` (keys of the schema; \`[]\` clears), with \`row.locked\` true: \`{% if row.locked %}<a href="/pricing">Join to watch</a>{% else %}{{ row.video }}{% endif %}\`.
+- **Webhook feed** (Business and up): \`set_collection_webhook({ slug })\` turns a manual collection into a feed (or pass \`source: { type: "webhook-feed" }\` to \`create_collection\`). \`get_collection\` then shows the ingest URL and how senders sign a POST; rows upsert by \`externalId\`. \`rotate: true\` mints a new secret (shown once; the old one stops working): hand it to the sender. A collection syncing from Sheets or Airtable can't be converted.`,
+
+  members: `# Members, plans and drip
+
+Members are the site's customers (visitors who sign in with an emailed link), not the team that edits the site (\`list_site_members\` / \`invite_site_member\` are that team).
+- Plans: \`list_membership_plans\`, \`set_membership_plan({ slug, name, … })\` (the slug is permanent). Paid: \`stripePriceIds\` (Stripe price ids or \`pd:<rowId>\`); \`accessDays\` limits a one-time price (omit = lifetime); free: \`selfSignup: true\` with no prices; \`archived\` stops selling but members keep it. Pro and up.
+- People: \`list_members\` (filter plan, status, q), \`set_member({ action })\` \`add\` (+ \`sendInvite\`), \`grant\`, \`revoke\`, \`extend\`, \`block\`, \`unblock\`, \`rename\`. Applies on their next page load; never cancels Stripe billing.
+- In a page the member is \`customer.me | first\`, never \`customer\` itself: \`me.plans['pro']\` is true while they hold the plan and \`me.planDays['pro']\` is the whole days since they got it (drip). Signed in at all is \`customer.signed_in\`.
+\`\`\`liquid
+{% assign member = customer.me | first %}
+{% if member.plans['pro'] %}
+  <h3>Lesson 1: Setting up</h3>
+  {% if member.planDays['pro'] >= 7 %}
+    <h3>Lesson 2: Going further</h3>
+  {% else %}
+    <p>Lesson 2 opens in {{ 7 | minus: member.planDays['pro'] }} days.</p>
+  {% endif %}
+{% elsif customer.signed_in %}
+  <a href="/pricing">See plans</a>
+{% else %}
+  <a href="/account">Sign in</a>
+{% endif %}
+\`\`\`
+- Whole pages: \`update_page({ policy: { access } })\` (see \`pages\`). Whole collections or single rows: see \`collections\`. Files: see \`downloads\`. Library blocks to start from: \`members-plan-gate\` and \`customer-account\` (the sign-in and account page). Customer accounts need a paid plan.`,
+
+  downloads: `# Hosted downloads
+
+\`set_download\` hosts a file behind one stable link, so a new version never breaks the pages that link to it.
+- New: \`set_download({ name, filePath | mediaId + filename })\` (\`filePath\` is stdio only; \`mediaId\` comes from \`upload_file\`, or a chat attachment, which is moved private). New version: \`downloadId\` + a file (same link; \`label\`, \`notes\` for the changelog). Roll back: \`downloadId\` + \`currentVersionId\`. \`list_downloads\` shows the link, versions (the served one starred) and download counts; \`remove_download\` removes it or one old version. Pro and up; \`.exe\` / \`.dmg\` and similar need Agency.
+- \`access\` makes it members-only: \`{ members: true }\` for any plan, \`{ plans: ["pro"] }\` for those, \`{ members: false }\` public.
+- Link to it with the id the tool returns: \`<a class="btn btn-primary" href="/api/downloads/<downloadId>" download>Get the guide</a>\`; a video plays from \`<video src="/api/downloads/<downloadId>?inline=1" controls></video>\`. For a plain public file (a PDF in an \`<a>\`, an \`<audio src>\`) \`{{ '<mediaId>' | file_url }}\` is enough.
+- Track clicks with \`data-track="ga4:guide_download"\` on the link. The delivery email is a site email (see \`emails\`).`,
+
+  chat: `# Site chat
+
+A chat bubble that answers from the site's own pages and collections and turns visitors into leads. Visitors see it while the owner has AI credits.
+- \`get_site_chat\` reads the settings, \`set_site_chat\` changes only the fields you pass: \`enabled\`, \`assistantName\`, \`greeting\`, \`instructions\` (tone, what to push or avoid), \`leadFields\` (\`name\`, \`email\`, \`phone\`, \`message\`; must include email or phone), \`leadCollectionSlug\` (also save leads as rows), \`notifyEmail\`, \`dailyCreditCap\` (0 pauses). Leads land in Form Submissions as "Chat".
+- The widget is markup in a page or partial (start from \`get_block({ slug: "site-chat-bubble" })\`):
+\`\`\`liquid
+<div class="contents" data-chat-bubble hidden>
+  <button class="btn btn-primary btn-circle fixed bottom-4 right-4 z-[1100]" type="button" popovertarget="site-chat-panel" aria-label="Chat with us">{{ 'tb/TbMessageCircle' | icon }}</button>
+  <div id="site-chat-panel" popover class="fixed inset-auto bottom-20 right-4 z-[1200] m-0 p-0 w-[min(24rem,calc(100vw-2rem))] bg-base-100 text-base-content rounded-box border border-base-300">
+    <div id="site-chat" data-chat hidden class="flex flex-col h-[28rem]">
+      <p class="px-space-sm py-space-xs font-semibold" data-state-text="site-chat:assistantName">Assistant</p>
+      <div class="flex-1 overflow-y-auto flex flex-col gap-space-xs p-space-sm" data-chat-turns aria-live="polite">
+        <template data-chat-role="user"><div class="self-end rounded-box bg-primary text-primary-content px-space-sm py-space-xs"><span data-turn-text></span></div></template>
+        <template data-chat-role="assistant"><div class="self-start rounded-box bg-base-200 text-base-content px-space-sm py-space-xs"><span data-turn-text></span></div></template>
+      </div>
+      <p class="px-space-sm text-sm text-error" role="alert" data-state-show="site-chat:hasError" data-state-text="site-chat:error" hidden></p>
+      <div class="flex items-end gap-space-xs p-space-sm border-t border-base-300">
+        <textarea class="flex-1 border border-base-300 bg-base-100 rounded-box px-space-sm py-space-xs min-h-12 resize-none" name="agentMessage" rows="1" aria-label="Your message"></textarea>
+        <button class="btn btn-primary min-h-12" type="button" data-chat-send="agentMessage">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+\`\`\`
+- \`data-chat-bubble\` and \`data-chat\` are \`hidden\` until chat is on. The widget's \`id\` prefixes its state keys: \`available\`, \`ended\`, \`sending\`, \`hasTurns\`, \`hasError\`, \`error\`, \`streamingText\`, \`assistantName\`, \`accentColor\` (read them with \`data-state-show\` / \`data-state-text\`, as above). Turns are drawn by cloning the \`data-chat-role\` templates and putting the message in \`[data-turn-text]\`.
+- \`data-chat-send="agentMessage"\` on a button or form sends the field named \`agentMessage\` (or, with no field, the element's own text, so a suggestion chip works: \`<button type="button" data-chat-send>Do you ship to Canada?</button>\`) and opens the panel.`,
+
+  redirects: `# Redirects — set_redirects
+
+\`set_redirects({ redirects: [{ from: "/old-page", to: "/new-page" }, { from: "/sale", to: "https://example.com/sale", permanent: false }] })\` REPLACES the whole list, so pass every rule you want to keep (read the current ones first). They run on the server before any page renders.
+- \`from\` is a site path; \`to\` is a path or a full URL. \`permanent\` is true (301) unless you pass false (302). Up to 500 rules.
+- Exact path match only: no wildcards or patterns (add a rule per URL), a trailing slash is ignored, the first matching rule wins. A redirect only applies once it is published.
+- Use it when a page's slug changes (\`update_page\` \`name\` changes the URL), a page is deleted, or a client's old site is replaced. Don't build a redirect out of a page file.`,
+
+  emails: `# Site emails — receipts, welcomes, sign-in links, gift cards, downloads
+
+- \`list_site_emails\` first: each kind, whether it is customised, and whether it sends. \`get_site_email({ kind })\` returns the subject, preheader, the Liquid source (\`emails/<kind>.liquid\`, or the default), the objects it can print (\`{{ order.total }}\`, \`{{ customer.name }}\`, \`{{ gift.code }}\`, \`{{ link.url }}\`) and its parts: keep the required ones (for a receipt, the \`order.lines\` loop).
+- \`update_site_email\` saves the subject, preheader and/or the full source, or \`reset: true\`. Then \`preview_site_email\`: an email with errors is not sent, the default goes out instead, and the preview is where the errors show. A saved email is live for the next customer (no publish).
+- Write email-safe markup: \`div\`, \`p\`, \`h1\`-\`h3\`, \`a\`, \`img\` with Tailwind and palette classes. No forms, buttons, video, dialogs or \`data-*\` runtime attributes (errors); \`hover:\`, \`focus:\`, \`dark:\` and \`group-*\` classes are ignored by mail clients (warnings). A link with a \`bg-*\` class is sent as a button.
+- A custom design needs a plan with custom email designs; the subject and preheader save on every plan.`,
 };
 
 const STYLE_TOPIC_LABELS = {
@@ -403,6 +491,12 @@ const STYLE_TOPIC_LABELS = {
   media: "upload sources, using mediaIds, favicons",
   integrations: "analytics ids, per-action events, Stripe setup + checkout, building a shop, site emails",
   animation: "data-animate presets, stagger, custom keyframes",
+  collections: "rows in Liquid, gating (requiredPlans, memberFields, per-row lock), webhook feeds",
+  members: "plans, members, set_member, plan gating and drip in Liquid",
+  downloads: "hosted files: set_download, versions, members-only, links",
+  chat: "site chat: set_site_chat and the widget markup",
+  redirects: "set_redirects rules",
+  emails: "site emails: list, edit and preview receipts, sign-in links",
 };
 
 // The enum on get_style_reference.topic in tools.json must list these names (plus "liquid").

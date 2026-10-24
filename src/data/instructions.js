@@ -42,7 +42,7 @@ const SERVER_INSTRUCTIONS = `You build production websites through PageHub — s
 - Preview links: share the \`previewUrl\` a tool returns; never build a \`/view/…\` link.
 
 ## More rules — \`get_style_reference({ topic })\`
-\`design\` (the design bar — read it first), \`accessibility\` (WCAG AA is mandatory; run \`audit_accessibility\`), \`domains\` (hand DNS records over verbatim; attaching doesn't publish), \`blocks\`, \`editing\`, \`theme\`, \`pages\`, \`site\`, \`media\`, \`integrations\`, \`animation\`, \`liquid\`.
+\`design\` (read first), \`accessibility\` (WCAG AA; run \`audit_accessibility\`), \`domains\` (DNS records verbatim), \`blocks\`, \`editing\`, \`theme\`, \`pages\`, \`site\`, \`media\`, \`integrations\`, \`animation\`, \`collections\`, \`members\`, \`downloads\`, \`chat\`, \`redirects\`, \`emails\`, \`liquid\`.
 
 ## Start here
 Call discovery tools before writing; don't guess classes, block names or tokens:
