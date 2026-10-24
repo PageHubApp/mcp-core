@@ -108,7 +108,7 @@ module.exports = {
     if (!body.policy) return text(head);
     // What is stored now (never the password), so the agent confirms what it set instead of assuming.
     const now = await call(pagesUrl(siteId, args.pageId));
-    const note = "A password or access rule reaches visitors when the site is published; the draft preview isn't gated.";
+    const note = "An access rule reaches visitors when the site is published. A page password also holds on the draft preview link (`/view/<site>`): anyone with the plain link gets the password form, while members of the site, opening the preview from PageHub, are let through.";
     return text(`${head}\n\nNow:\n${policyLines(now)}\n${note}`);
   },
 
