@@ -11,6 +11,7 @@ const { apiFetch } = require("../core/api-fetch");
 const { getContext } = require("../core/context");
 const { getActiveTarget } = require("../helpers/target");
 const { applyEdits, lineCol } = require("../helpers/file-edits");
+const { editNotesSummary } = require("../helpers/edit-notes");
 
 const text = t => ({ content: [{ type: "text", text: t }] });
 
@@ -38,6 +39,8 @@ function explain(err, { path, sent }) {
   if (body.error === "maintenance") {
     throw new Error(`PageHub is in maintenance, so edits are paused: ${body.message || "try again later"}. Nothing was saved; tell the user and stop.`);
   }
+  // The seam refused the write for a reason that isn't lint (a locked element, a bad path, too large): say why.
+  if (body.error === "rejected" && body.message) throw new Error(`${path || "The write"} was NOT saved: ${body.message}`);
   throw err;
 }
 
@@ -106,8 +109,9 @@ module.exports = {
     const end = Math.min(all.length, Number(args.endLine) || all.length);
     const ranged = start > 1 || end < all.length;
     const body = ranged ? all.slice(start - 1, end).join("\n") : file.text;
+    const notes = editNotesSummary(body, start);
     return text(
-      `${args.path} — version ${file.version}, ${all.length} lines${ranged ? `; showing lines ${start}–${end}` : ""}.\n\`\`\`liquid\n${body}\n\`\`\``
+      `${args.path} — version ${file.version}, ${all.length} lines${ranged ? `; showing lines ${start}–${end}` : ""}.\n\`\`\`liquid\n${body}\n\`\`\`${notes ? `\n${notes}` : ""}`
     );
   },
 
