@@ -1,6 +1,6 @@
 const { apiFetch } = require("../core/api-fetch");
 const { buildButtonClassFramework, validateButtonClasses } = require("../validation/button-system");
-const { STYLE_REFERENCE, STYLE_TOPICS, STYLE_TOPIC_NAMES, STYLE_TOPIC_INDEX } = require("../data/style-reference");
+const { STYLE_REFERENCE, STYLE_TOPICS, STYLE_TOPIC_NAMES, STYLE_TOPIC_INDEX, LIQUID_TOPIC_NAMES } = require("../data/style-reference");
 
 /* ── Handlers ── */
 
@@ -13,13 +13,18 @@ module.exports = {
       const { text } = await apiFetch("/api/v1/format/liquid");
       return { content: [{ type: "text", text }] };
     }
+    // A detail guide of the same reference: the app returns that one section.
+    if (LIQUID_TOPIC_NAMES.includes(topic)) {
+      const { text } = await apiFetch(`/api/v1/format/liquid?topic=${encodeURIComponent(topic)}`);
+      return { content: [{ type: "text", text }] };
+    }
     if (!topic) {
       return { content: [{ type: "text", text: STYLE_REFERENCE + STYLE_TOPIC_INDEX }] };
     }
     const guide = STYLE_TOPICS[topic];
     if (!guide) {
       return {
-        content: [{ type: "text", text: `Unknown topic "${topic}". Valid topics: ${[...STYLE_TOPIC_NAMES, "liquid"].join(", ")}.` }],
+        content: [{ type: "text", text: `Unknown topic "${topic}". Valid topics: ${[...STYLE_TOPIC_NAMES, "liquid", ...LIQUID_TOPIC_NAMES].join(", ")}.` }],
         isError: true,
       };
     }

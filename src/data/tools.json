@@ -54,7 +54,7 @@
   },
   {
     "name": "get_style_reference",
-    "description": "Styling and authoring reference. No `topic`: palette variables, styleGuide tokens, spatial scale, class rules, section skeleton. Pass `topic` for a focused guide: liquid (files, tags, filters, runtime data-* attributes, site JavaScript, forms, dates), design, accessibility, domains, blocks, editing, theme, pages, site, media, integrations, animation, collections, members, downloads, chat, redirects, emails.",
+    "description": "Styling and authoring reference. No `topic`: palette variables, styleGuide tokens, spatial scale, class rules, section skeleton. Pass `topic` for a focused guide: liquid (files, tags, filters, runtime data-* attributes, site JavaScript, forms, dates), design, accessibility, domains, blocks, editing, theme, pages, site, media, integrations, animation, collections, members, downloads, chat, redirects, emails; liquid-<lists|state|interactions|motion|forms|maps|data|sections>: one part of the liquid reference.",
     "annotations": {
       "title": "Get style reference",
       "readOnlyHint": true,
@@ -85,7 +85,15 @@
             "chat",
             "redirects",
             "emails",
-            "liquid"
+            "liquid",
+            "liquid-lists",
+            "liquid-state",
+            "liquid-interactions",
+            "liquid-motion",
+            "liquid-forms",
+            "liquid-maps",
+            "liquid-data",
+            "liquid-sections"
           ],
           "description": "Return one guide instead of the core reference."
         }

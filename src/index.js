@@ -23,6 +23,7 @@ const rawTools = require("./data/tools.json");
 const { VIBE_CODENAMES } = require("./data/vibes");
 const { SERVER_INSTRUCTIONS } = require("./data/instructions");
 const { CATEGORIES } = require("./data/categories");
+const { STYLE_TOPIC_LABELS, LIQUID_TOPIC_LABELS } = require("./data/style-reference");
 
 // Resolve schema sentinels (`"$VIBES"`, `"$CATEGORIES"`) wherever they appear in
 // `enum` fields with the live arrays. Keeps tools.json human-readable while
@@ -217,4 +218,6 @@ module.exports = {
   VIBE_CODENAMES,
   CATEGORIES,
   SERVER_INSTRUCTIONS,
+  STYLE_TOPIC_LABELS,
+  LIQUID_TOPIC_LABELS,
 };
