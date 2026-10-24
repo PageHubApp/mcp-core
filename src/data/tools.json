@@ -2791,13 +2791,18 @@
           "type": "string",
           "description": "Site id.",
           "maxLength": 256
+        },
+        "glob": {
+          "type": "string",
+          "description": "Only paths matching, e.g. partials/*.liquid or **/*.css.",
+          "maxLength": 200
         }
       }
     }
   },
   {
     "name": "read_site_file",
-    "description": "Read one draft file of an HTML-first site, with its version. Read before you edit.",
+    "description": "Read draft files of an HTML-first site, with versions. Read before you edit. `paths` reads up to 40 files in one call.",
     "annotations": {
       "title": "Read site file",
       "readOnlyHint": true,
@@ -2824,16 +2829,35 @@
         },
         "endLine": {
           "type": "number"
+        },
+        "paths": {
+          "type": "array",
+          "description": "Several files at once.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "maxLength": 512
+              },
+              "startLine": {
+                "type": "number"
+              },
+              "endLine": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "path"
+            ]
+          }
         }
-      },
-      "required": [
-        "path"
-      ]
+      }
     }
   },
   {
     "name": "search_site_files",
-    "description": "Find text across an HTML-first site's draft files (plain, case-insensitive): path, line and the line's text.",
+    "description": "Find text or a regex across draft files. Each hit is path:line:column plus the text around the match: copy oldText from it. `context` adds the lines around.",
     "annotations": {
       "title": "Search site files",
       "readOnlyHint": true,
@@ -2857,6 +2881,19 @@
           "type": "string",
           "description": "Only paths starting with this, e.g. pages/.",
           "maxLength": 512
+        },
+        "regex": {
+          "type": "boolean",
+          "description": "query is a JavaScript regex, case-insensitive."
+        },
+        "glob": {
+          "type": "string",
+          "description": "Only paths matching, e.g. **/*.liquid.",
+          "maxLength": 200
+        },
+        "context": {
+          "type": "number",
+          "description": "Lines around each hit (0-5)."
         }
       },
       "required": [
@@ -2865,8 +2902,45 @@
     }
   },
   {
+    "name": "outline_page",
+    "description": "Outline of a page of an HTML-first site: sections and headings with line ranges, and each {% render %} partial expanded in place, so you can place an edit without reading every file.",
+    "annotations": {
+      "title": "Outline page",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "page": {
+          "type": "string",
+          "description": "Page id, URL (/about) or file path.",
+          "maxLength": 512
+        },
+        "expand": {
+          "type": "boolean",
+          "description": "Expand partials in place (default true)."
+        },
+        "classes": {
+          "type": "boolean",
+          "description": "Full class strings (default: first three)."
+        }
+      },
+      "required": [
+        "page"
+      ]
+    }
+  },
+  {
     "name": "edit_site_file",
-    "description": "Change an HTML-first site's file by exact-text replacement: each oldText must appear once (or set replaceAll). Smallest span; keep data-edit-* attributes. Linted on save; errors give the line. Stages in the draft.",
+    "description": "Change a site file by exact text: oldText once (or replaceAll) becomes newText, or newText goes insertAfter / insertBefore an anchor. Smallest span; keep data-edit-*. Linted on save; errors give the line, a missing oldText gets the closest match. The reply shows how stored text differs from what you sent. Stages in the draft.",
     "annotations": {
       "title": "Edit site file",
       "readOnlyHint": false,
@@ -2895,6 +2969,16 @@
                 "type": "string",
                 "maxLength": 200000
               },
+              "insertAfter": {
+                "type": "string",
+                "description": "Instead of oldText: anchor text (once in the file); newText goes right after it.",
+                "maxLength": 200000
+              },
+              "insertBefore": {
+                "type": "string",
+                "description": "Instead of oldText: newText goes right before this anchor.",
+                "maxLength": 200000
+              },
               "newText": {
                 "type": "string",
                 "maxLength": 200000
@@ -2904,7 +2988,6 @@
               }
             },
             "required": [
-              "oldText",
               "newText"
             ]
           }
@@ -2923,7 +3006,7 @@
   },
   {
     "name": "edit_site_files",
-    "description": "Edit several files as ONE atomic write: each entry is a path plus exact-text edits (oldText once, or replaceAll). All land or none do. Use it when a change spans files (a partial plus the pages that render it). Linted on save. Stages in the draft.",
+    "description": "Edit several files as ONE atomic write: per entry a path plus edits (as edit_site_file), or `text` to create a file. A new pages/<slug>.liquid also creates its page, so a page plus its nav link is one call. All land or none. Linted on save. Stages in the draft.",
     "annotations": {
       "title": "Edit several site files",
       "readOnlyHint": false,
@@ -2957,6 +3040,16 @@
                       "type": "string",
                       "maxLength": 200000
                     },
+                    "insertAfter": {
+                      "type": "string",
+                      "description": "Instead of oldText: anchor text (once in the file); newText goes right after it.",
+                      "maxLength": 200000
+                    },
+                    "insertBefore": {
+                      "type": "string",
+                      "description": "Instead of oldText: newText goes right before this anchor.",
+                      "maxLength": 200000
+                    },
                     "newText": {
                       "type": "string",
                       "maxLength": 200000
@@ -2966,7 +3059,6 @@
                     }
                   },
                   "required": [
-                    "oldText",
                     "newText"
                   ]
                 }
@@ -2975,11 +3067,24 @@
                 "type": "string",
                 "description": "Version from read_site_file; refuses if the file changed since.",
                 "maxLength": 128
+              },
+              "text": {
+                "type": "string",
+                "description": "A new file's whole text, instead of edits.",
+                "maxLength": 2000000
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the page a new pages/ file creates (default from the file name).",
+                "maxLength": 512
+              },
+              "seo": {
+                "type": "object",
+                "description": "SEO of that page, as add_page's seo."
               }
             },
             "required": [
-              "path",
-              "edits"
+              "path"
             ]
           }
         }
@@ -2991,7 +3096,7 @@
   },
   {
     "name": "write_site_file",
-    "description": "Create or replace a whole file of an HTML-first site. Replacing needs baseVersion from read_site_file; prefer edit_site_file for changes. New page? add_page. A site's own JavaScript is a file `assets/<name>.js` (lowercase, flat), linked with <script src=\"{{ 'name.js' | asset_url }}\" defer></script>.",
+    "description": "Create or replace a whole file of an HTML-first site. Replacing needs baseVersion from read_site_file; prefer edit_site_file for changes. A new pages/<slug>.liquid also creates its page. A site's JavaScript is a file `assets/<name>.js` (lowercase, flat), linked with <script src=\"{{ 'name.js' | asset_url }}\" defer></script>.",
     "annotations": {
       "title": "Write site file",
       "readOnlyHint": false,

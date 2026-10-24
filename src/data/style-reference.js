@@ -254,10 +254,10 @@ Blocks are Liquid snippets: reference material, not the default. Design each sec
   editing: `# Editing files — read_site_file, edit_site_file, write_site_file, search_site_files
 
 ## Tools
-- \`list_site_files\` shows every draft path and which page each file serves. \`search_site_files\` is a plain-text, case-insensitive line search (no regex), optionally under a \`path\` prefix.
-- \`read_site_file\` returns the text and a version (a content hash); \`startLine\` / \`endLine\` read a slice of a long file.
-- \`edit_site_file\` takes \`edits: [{ oldText, newText, replaceAll? }]\`, applied to the text you just read and written against that version. \`oldText\` must match exactly once (or set \`replaceAll\`). A stale version or a missing / ambiguous \`oldText\` fails loudly: read the file again. \`baseVersion\` pins the edit to a version you read.
-- \`write_site_file\` creates a file, or replaces one with \`baseVersion\`. \`delete_site_file\` removes non-page files (pages: \`delete_page\`).
+- \`list_site_files\` shows every draft path and which page each file serves. \`search_site_files\` is a case-insensitive search (\`regex: true\` for a regular expression) under an optional \`glob\` or \`path\`; each hit is path:line:column with the text around the match, so copy \`oldText\` straight from it. \`outline_page\` shows a page's sections, headings and rendered partials with their line numbers, so you can place an edit without reading every file.
+- \`read_site_file\` returns the text and a version (a content hash); \`startLine\` / \`endLine\` read a slice of a long file; \`paths\` reads several files in one call.
+- \`edit_site_file\` takes \`edits: [{ oldText, newText, replaceAll? }]\`, applied to the text you just read and written against that version. \`oldText\` must match exactly once (or set \`replaceAll\`). \`insertAfter\` / \`insertBefore\` (instead of \`oldText\`) put \`newText\` next to an anchor that appears once. A stale version or a missing / ambiguous \`oldText\` fails loudly (a missing one names the closest match). \`baseVersion\` pins the edit to a version you read. If the server repaired or reformatted what you wrote, the reply shows the difference: use the stored text in your next \`oldText\`.
+- \`write_site_file\` creates a file, or replaces one with \`baseVersion\`. \`edit_site_files\` edits several files in one atomic write and can create files (\`text\` instead of \`edits\`); a new \`pages/<slug>.liquid\` also creates its page, so a page plus its nav link is one call. \`delete_site_file\` removes non-page files (pages: \`delete_page\`).
 - Edits to different files never conflict.
 
 ## Rules
