@@ -77,6 +77,23 @@ function typographyFrom(fonts, styleGuide) {
     .map(([name, fields]) => ({ name, ...fields }));
 }
 
+/**
+ * The type scale: `typography` tokens ({ name, fontSize, lineHeight, letterSpacing, fontWeight, fontFamily,
+ * textTransform }) merge over the Heading / Body tokens the fonts produced, by name, so `fonts` and a Heading
+ * `fontSize` can arrive in one call. Each token's fields become `--<name>-font-size` etc. in theme.css.
+ */
+function mergeTypography(fromFonts, given) {
+  if (given === undefined || given === null) return fromFonts;
+  if (!Array.isArray(given)) throw new Error('typography must be a list of tokens: [{ name: "Heading", fontSize: "3rem", lineHeight: "1.1" }].');
+  const byName = new Map(fromFonts.map(t => [String(t.name).toLowerCase(), { ...t }]));
+  for (const token of given) {
+    if (!token || typeof token.name !== "string") throw new Error('Every typography token needs a name, like "Heading", "Body" or "Display".');
+    const key = token.name.toLowerCase();
+    byName.set(key, { ...(byName.get(key) || {}), ...token });
+  }
+  return [...byName.values()];
+}
+
 async function presetFor(slug) {
   const data = await apiFetch(`/api/v1/presets/${encodeURIComponent(slug)}`);
   if (!data.preset) throw new Error(`Preset "${slug}" not found. Use list_presets to see all available preset slugs.`);
@@ -110,16 +127,18 @@ module.exports = {
       if (link) styleGuide = { ...styleGuide, linkColor: link, ...(preset.styleGuide.linkHoverColor == null ? { linkHoverColor: link } : {}) };
     }
 
-    const typography = typographyFrom(fonts, styleGuide);
+    const typography = mergeTypography(typographyFrom(fonts, styleGuide), parseMaybeJson(args.typography));
+    const breakpoints = parseMaybeJson(args.breakpoints);
     const theme = {
       ...(palette ? { palette: ensurePaletteOklch(palette) } : {}),
       ...(darkPalette ? { darkPalette: ensurePaletteOklch(darkPalette), darkModeEnabled: true } : {}),
       ...(styleGuide && Object.keys(styleGuide).length ? { styleGuide } : {}),
       ...(typography.length ? { typography } : {}),
+      ...(breakpoints && typeof breakpoints === "object" && Object.keys(breakpoints).length ? { breakpoints } : {}),
       ...(typeof args.daisyui === "boolean" ? { daisyui: args.daisyui } : {}),
     };
     if (!Object.keys(theme).length) {
-      throw new Error("Nothing to change: pass a preset, palette, darkPalette, styleGuide, fonts or daisyui.");
+      throw new Error("Nothing to change: pass a preset, palette, darkPalette, styleGuide, fonts, typography, breakpoints or daisyui.");
     }
 
     const res = await put(siteId, { theme });

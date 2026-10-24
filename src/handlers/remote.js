@@ -9,6 +9,9 @@ module.exports = {
   ...require("./remote-site-chat"),
   ...require("./remote-downloads"),
   ...require("./remote-memberships"),
+  ...require("./remote-history"),
+  ...require("./remote-review"),
+  ...require("./remote-submissions"),
   // Tools only — remote-import also exports helpers the stdio server reuses
   // (re-exported from ../index.js), which must not become tool names.
   import_site: importHandlers.import_site,

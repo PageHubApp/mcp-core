@@ -4,7 +4,8 @@
  * validation and human-readable response text.
  */
 
-const { apiFetch } = require("../core/api-fetch");
+const { randomBytes } = require("crypto");
+const { apiFetch, normalizeBaseUrl } = require("../core/api-fetch");
 const { getContext } = require("../core/context");
 
 function activeSiteId(args) {
@@ -12,6 +13,27 @@ function activeSiteId(args) {
   const id = args?.id || ctx.activeSite?.id;
   if (!id) throw new Error("Site id is required (none provided and no active site set).");
   return id;
+}
+
+/**
+ * A webhook-feed collection's ingest endpoint: senders POST rows signed with the collection's secret. The secret is the
+ * collection's own credential (stored on `source.secret`), so reads never print it.
+ */
+function webhookFeedInfo(col) {
+  const base = normalizeBaseUrl(getContext().apiBaseUrl) || "https://pagehub.dev";
+  return {
+    url: `${base}/api/collections/webhook/${col._id}`,
+    hasSecret: !!col.source?.secret,
+  };
+}
+
+function webhookFeedLines(info) {
+  return [
+    `Webhook feed: POST ${info.url}`,
+    `Signing secret: ${info.hasSecret ? "set" : "NOT set (every POST is refused until set_collection_webhook sets one)"}.`,
+    'Body: JSON — { "rows": [{ "externalId": "…", "data": { <field keys> } }] }, a bare array of rows, or one row. A row\'s externalId (or id) keys the upsert, so re-sending updates instead of duplicating.',
+    'Header: X-PageHub-Signature: sha256=<hex HMAC-SHA256 of the raw body with the secret>.',
+  ].join("\n");
 }
 
 function fmtCollection(c) {
@@ -48,14 +70,49 @@ module.exports = {
     const data = await apiFetch(
       `/api/v1/sites/${encodeURIComponent(siteId)}/collections/${encodeURIComponent(col._id)}`
     );
+    const collection = data.collection || data;
+    const isFeed = collection.source?.type === "webhook-feed";
+    const shown = isFeed ? { ...collection, source: { type: "webhook-feed", secret: collection.source.secret ? "(set)" : "" } } : collection;
     return {
       content: [
         {
           type: "text",
-          text: `\`\`\`json\n${JSON.stringify(data.collection || data, null, 2)}\n\`\`\``,
+          text: `\`\`\`json\n${JSON.stringify(shown, null, 2)}\n\`\`\`${isFeed ? `\n\n${webhookFeedLines(webhookFeedInfo(collection))}` : ""}`,
         },
       ],
     };
+  },
+
+  /**
+   * Make a collection a webhook feed, or set / rotate its signing secret (docs/features/collections.md, source
+   * `webhook-feed`). A minted secret is shown once, here.
+   * @param {object} args - { slug, rotate?, secret?, id? }
+   */
+  async set_collection_webhook(args = {}) {
+    const siteId = activeSiteId(args);
+    if (!args.slug) throw new Error("slug is required.");
+    const list = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}/collections`);
+    const found = (list.collections || []).find(c => c.slug === args.slug);
+    if (!found) throw new Error(`Collection "${args.slug}" not found.`);
+    const url = `/api/v1/sites/${encodeURIComponent(siteId)}/collections/${encodeURIComponent(found._id)}`;
+    const col = (await apiFetch(url)).collection;
+    const type = col.source?.type || "manual";
+    const isFeed = type === "webhook-feed";
+    if (!isFeed && type !== "manual") {
+      throw new Error(`"${args.slug}" syncs from ${type}. Making it a webhook feed would drop that source's settings: ask the user, then create a new collection with source { type: "webhook-feed" } instead.`);
+    }
+    if (args.secret !== undefined && (typeof args.secret !== "string" || args.secret.length < 16 || args.secret.length > 256 || /\s/.test(args.secret))) {
+      throw new Error("secret must be 16 to 256 characters with no spaces. Leave it out and pass rotate: true to have one made.");
+    }
+    if (isFeed && col.source.secret && !args.rotate && args.secret === undefined) {
+      return { content: [{ type: "text", text: `"${args.slug}" is already a webhook feed with a secret. Pass rotate: true for a new one (the old stops working), or secret to use the sender's own.\n\n${webhookFeedLines(webhookFeedInfo(col))}` }] };
+    }
+    const secret = args.secret !== undefined ? args.secret : randomBytes(32).toString("hex");
+    const data = await apiFetch(url, { method: "PATCH", body: { source: { type: "webhook-feed", secret } } });
+    const info = webhookFeedInfo(data.collection || col);
+    const shown = args.secret !== undefined ? "Secret stored as given." : `New signing secret (shown ONCE, give it to the user to put in the sender):\n${secret}`;
+    const lead = isFeed ? "Secret replaced: senders still using the old one are refused (401) until updated." : `"${args.slug}" is now a webhook feed.`;
+    return { content: [{ type: "text", text: `${lead}\n${shown}\n\n${webhookFeedLines(info)}` }] };
   },
 
   /**

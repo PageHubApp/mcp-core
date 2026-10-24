@@ -216,7 +216,7 @@
   },
   {
     "name": "set_theme",
-    "description": "Write the site theme into theme.css (draft): preset, palette, darkPalette, styleGuide tokens, fonts. suggest_palettes / suggest_font_pairings only show options. Company fields: site.json (edit_site_file). Palette names, styleGuide keys, workflow: get_style_reference({ topic: \"theme\" }).",
+    "description": "Write the site theme into theme.css (draft): preset, palette, darkPalette, styleGuide tokens (incl. spacingDensity, radii), fonts, typography (type scale), breakpoints. suggest_palettes / suggest_font_pairings only show options. Company fields: site.json (edit_site_file). Names, keys, workflow: get_style_reference({ topic: \"theme\" }).",
     "annotations": {
       "title": "Set theme",
       "readOnlyHint": false,
@@ -319,6 +319,74 @@
         "fonts": {
           "type": "object",
           "description": "Hint ({ url } or { families }) parsed into heading/body families when styleGuide omits them."
+        },
+        "typography": {
+          "type": "array",
+          "description": "Type scale tokens, merged by name over the ones fonts made: [{ name: \"Heading\", fontSize: \"3rem\", lineHeight: \"1.1\", letterSpacing: \"-0.02em\", fontWeight: \"700\", textTransform: \"none\" }]. Each field becomes --heading-font-size etc.; the `ph-heading` / `ph-body` classes read them.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Token name: Heading, Body, or your own.",
+                "maxLength": 40
+              },
+              "fontFamily": {
+                "type": "string",
+                "description": "Family.",
+                "maxLength": 128
+              },
+              "fontSize": {
+                "type": "string",
+                "description": "CSS size, e.g. 2.5rem or clamp(2rem, 5vw, 3.5rem).",
+                "maxLength": 128
+              },
+              "fontWeight": {
+                "type": "string",
+                "description": "100-900.",
+                "maxLength": 16
+              },
+              "lineHeight": {
+                "type": "string",
+                "description": "Unitless or CSS length.",
+                "maxLength": 32
+              },
+              "letterSpacing": {
+                "type": "string",
+                "description": "CSS length.",
+                "maxLength": 32
+              },
+              "textTransform": {
+                "type": "string",
+                "description": "none, uppercase, …",
+                "maxLength": 32
+              }
+            },
+            "required": [
+              "name"
+            ]
+          }
+        },
+        "breakpoints": {
+          "type": "object",
+          "description": "Responsive widths in px for the whole site (sm, md, lg, xl, 2xl; Tailwind's are 640, 768, 1024, 1280, 1536): { md: 800, lg: 1100 }. What sm:/md:/lg: classes switch at, in the published site.",
+          "properties": {
+            "sm": {
+              "type": "number"
+            },
+            "md": {
+              "type": "number"
+            },
+            "lg": {
+              "type": "number"
+            },
+            "xl": {
+              "type": "number"
+            },
+            "2xl": {
+              "type": "number"
+            }
+          }
         }
       }
     }
@@ -1371,6 +1439,156 @@
     }
   },
   {
+    "name": "list_form_submissions",
+    "description": "The site's form inbox (visitor answers), newest first: form, page, state, unread, answers, and each submission's webhook delivery (delivered / retrying / FAILED + HTTP status). With submissionId: one in full, with how the visitor arrived and its notes. Filter by state (default open), formName, q. Reading doesn't mark it read.",
+    "annotations": {
+      "title": "List form submissions",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "submissionId": {
+          "type": "string",
+          "description": "Read one submission.",
+          "maxLength": 64
+        },
+        "state": {
+          "type": "string",
+          "description": "open (default), done, archived or spam.",
+          "maxLength": 16,
+          "enum": [
+            "open",
+            "done",
+            "archived",
+            "spam"
+          ]
+        },
+        "formName": {
+          "type": "string",
+          "description": "Only this form.",
+          "maxLength": 200
+        },
+        "q": {
+          "type": "string",
+          "description": "Text anywhere in the answers.",
+          "maxLength": 200
+        },
+        "cursor": {
+          "type": "string",
+          "description": "nextCursor of the previous page.",
+          "maxLength": 64
+        },
+        "limit": {
+          "type": "number",
+          "description": "Max 100, default 50."
+        }
+      }
+    }
+  },
+  {
+    "name": "resend_form_webhook",
+    "description": "Resend a submission's webhook from the start (attempts reset), to the form's current URL, signed with the current secret; same submissionId so receivers dedupe. For a FAILED or stuck delivery, after fixing the receiver or the URL. Owners only. Check the result with list_form_submissions({ submissionId }).",
+    "annotations": {
+      "title": "Resend form webhook",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "submissionId": {
+          "type": "string",
+          "description": "Submission id from list_form_submissions.",
+          "maxLength": 64
+        }
+      },
+      "required": [
+        "submissionId"
+      ]
+    }
+  },
+  {
+    "name": "list_form_webhooks",
+    "description": "The webhook URLs the forms on the PUBLISHED site post to (a {% form webhook: 'https://…' %} tag, live after publish_site), the forms using each, and whether each has a signing secret. Returns the `endpoint` key set_form_webhook_secret takes. Owners only.",
+    "annotations": {
+      "title": "List form webhooks",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        }
+      }
+    }
+  },
+  {
+    "name": "set_form_webhook_secret",
+    "description": "Rotate or set the secret that signs a form webhook (X-PageHub-Signature, HMAC-SHA256). rotate: PageHub makes a new one, shown ONCE: give it to the user for the receiver; the old one stops working. set: store the secret the receiver issued (16-256 chars, no spaces). `endpoint` from list_form_webhooks. Owners only.",
+    "annotations": {
+      "title": "Set form webhook secret",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "endpoint": {
+          "type": "string",
+          "description": "The endpoint key from list_form_webhooks.",
+          "maxLength": 128
+        },
+        "action": {
+          "type": "string",
+          "description": "rotate or set.",
+          "maxLength": 8,
+          "enum": [
+            "rotate",
+            "set"
+          ]
+        },
+        "secret": {
+          "type": "string",
+          "description": "For set: the receiver's secret.",
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "endpoint",
+        "action"
+      ]
+    }
+  },
+  {
     "name": "set_membership_plan",
     "description": "Create (new slug) or edit a plan; only passed fields change. Slug is permanent; gate with auth customer.plans.<slug> exists. Paid: stripePriceIds. Free: selfSignup. Pro+.",
     "annotations": {
@@ -2051,7 +2269,7 @@
   },
   {
     "name": "list_pages",
-    "description": "List the site's pages: id, name, url, file, home/404 flags. Use it to get page ids.",
+    "description": "List the site's pages: id, name, url, file, home/404 flags. Use it to get page ids. With pageId: that page's access policy (password set?, access conditions, deny action), body class and theme overrides.",
     "annotations": {
       "title": "List pages",
       "readOnlyHint": true,
@@ -2065,6 +2283,11 @@
         "id": {
           "type": "string",
           "description": "Site id.",
+          "maxLength": 256
+        },
+        "pageId": {
+          "type": "string",
+          "description": "Show one page's settings.",
           "maxLength": 256
         }
       }
@@ -2173,7 +2396,7 @@
   },
   {
     "name": "update_page",
-    "description": "Update a page record: name (changes the slug), SEO, home/404/hidden flags, pathPattern. Per-page head code, body classes and hiding the header/footer are edits to the page file. Without seo.title/description it uses the site's (update_site). Guide: get_style_reference({ topic: \"pages\" }).",
+    "description": "Update a page record: name (changes the slug), SEO, home/404/hidden flags, pathPattern, and `policy`: a password, who may open it (access conditions and what a denied visitor gets), a body class, per-page CSS variable overrides. Head code and hiding the header/footer are edits to the page file. list_pages({ pageId }) shows a page's current policy. Takes effect for visitors on publish. Guide: get_style_reference({ topic: \"pages\" }).",
     "annotations": {
       "title": "Update page",
       "readOnlyHint": false,
@@ -2268,6 +2491,68 @@
           "type": "string",
           "description": "URL tail AFTER the page's own slug, for detail pages. Segments: literal or `:param`, no leading slash: `:slug` on page \"Car\" serves /car/<slug>. Read captures as `request.params.<name>`. Empty string clears.",
           "maxLength": 512
+        },
+        "policy": {
+          "type": "object",
+          "description": "Page policy; each key merges, and \"\" or [] clears it. password: text (stored hashed, never shown back). access: condition groups, OR'd, [{ logic: \"all\"|\"any\", conditions: [{ type: \"auth\", key: \"status\", operator: \"equals\", value: \"logged-in\" }] }]. failAction + redirectUrl | fallbackPath: what a denied visitor gets. bodyClass: classes for <body>. themeOverrides: [{ varName: \"primary\", value: \"oklch(...)\" }] CSS variables for this page.",
+          "properties": {
+            "password": {
+              "type": "string",
+              "description": "Page password; \"\" removes it.",
+              "maxLength": 200
+            },
+            "access": {
+              "type": "array",
+              "description": "Condition groups; [] removes the gate.",
+              "items": {
+                "type": "object"
+              }
+            },
+            "failAction": {
+              "type": "string",
+              "description": "What a denied visitor gets.",
+              "maxLength": 16,
+              "enum": [
+                "redirect",
+                "show-page",
+                ""
+              ]
+            },
+            "redirectUrl": {
+              "type": "string",
+              "description": "Where to send a denied visitor (failAction redirect).",
+              "maxLength": 2048
+            },
+            "fallbackPath": {
+              "type": "string",
+              "description": "Path of the page to show instead (failAction show-page), e.g. /login.",
+              "maxLength": 512
+            },
+            "bodyClass": {
+              "type": "string",
+              "description": "Extra classes on <body> for this page.",
+              "maxLength": 1024
+            },
+            "themeOverrides": {
+              "type": "array",
+              "description": "Per-page CSS variables.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "varName": {
+                    "type": "string",
+                    "description": "Variable name, with or without --.",
+                    "maxLength": 64
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "CSS value.",
+                    "maxLength": 256
+                  }
+                }
+              }
+            }
+          }
         }
       },
       "required": [
@@ -2301,6 +2586,177 @@
       },
       "required": [
         "pageId"
+      ]
+    }
+  },
+  {
+    "name": "list_site_history",
+    "description": "The site's version history, newest first: id, version, save/publish/restore, who (and via mcp/ai/editor), +added -removed ~changed, restorable. With revisionId: what changed in that version, file by file with line diffs (diff 'prev' = against the one before; path = one file in full). Read this before restore_site_revision.",
+    "annotations": {
+      "title": "List site history",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "revisionId": {
+          "type": "string",
+          "description": "A revision id from the list: show what changed in it.",
+          "maxLength": 64
+        },
+        "diff": {
+          "type": "string",
+          "description": "With revisionId: 'prev' (default) or another revision id to compare against.",
+          "maxLength": 64
+        },
+        "path": {
+          "type": "string",
+          "description": "With revisionId: only this file's diff, in full.",
+          "maxLength": 512
+        },
+        "page": {
+          "type": "number",
+          "description": "List page, from 1."
+        },
+        "pageSize": {
+          "type": "number",
+          "description": "Rows per page, max 100."
+        }
+      }
+    }
+  },
+  {
+    "name": "restore_site_revision",
+    "description": "Put a past version back into the DRAFT (never the live site; publish_site is separate). The current state is kept first (safety backup + a version in history), so it can be undone. scope 'site' (default) restores every file and page; 'page' one page (pageNodeId from list_site_history with revisionId). Unpublished work in the draft is replaced: confirm with the user first.",
+    "annotations": {
+      "title": "Restore site revision",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "revisionId": {
+          "type": "string",
+          "description": "Revision id from list_site_history.",
+          "maxLength": 64
+        },
+        "scope": {
+          "type": "string",
+          "description": "site (default) or page.",
+          "maxLength": 8,
+          "enum": [
+            "site",
+            "page"
+          ]
+        },
+        "pageNodeId": {
+          "type": "string",
+          "description": "Which page, for scope page.",
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "revisionId"
+      ]
+    }
+  },
+  {
+    "name": "list_review_threads",
+    "description": "Client review comments on the site: each pinned to a spot on the preview (the quoted text says where), with the conversation, author and status; counts of open/resolved. Filter by status or pageSlug. Clients leave them on the review link made in the dashboard's Review screen.",
+    "annotations": {
+      "title": "List review comments",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "status": {
+          "type": "string",
+          "description": "open, resolved or closed. Default all.",
+          "maxLength": 16,
+          "enum": [
+            "open",
+            "resolved",
+            "closed"
+          ]
+        },
+        "pageSlug": {
+          "type": "string",
+          "description": "One page's slug; \"\" is the home page. Default every page.",
+          "maxLength": 200
+        },
+        "page": {
+          "type": "number",
+          "description": "Page, from 1."
+        }
+      }
+    }
+  },
+  {
+    "name": "reply_review_thread",
+    "description": "Answer a review comment (body) and/or settle it (status resolved | closed | open). A reply emails the site's other owners and shows to the client on their link; it does not reopen a resolved comment. Make the change on the site first, then reply saying what you did.",
+    "annotations": {
+      "title": "Reply to review comment",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "threadId": {
+          "type": "string",
+          "description": "Thread id from list_review_threads.",
+          "maxLength": 64
+        },
+        "body": {
+          "type": "string",
+          "description": "The reply, up to 5000 characters.",
+          "maxLength": 5000
+        },
+        "status": {
+          "type": "string",
+          "description": "Set the status.",
+          "maxLength": 16,
+          "enum": [
+            "open",
+            "resolved",
+            "closed"
+          ]
+        }
+      },
+      "required": [
+        "threadId"
       ]
     }
   },
@@ -3276,7 +3732,7 @@
   },
   {
     "name": "get_collection",
-    "description": "Read one collection's definition (schema fields, source, isPublic).",
+    "description": "Read one collection's definition (schema fields, source, isPublic). A webhook-feed collection also shows its ingest URL and how to sign a POST; its secret is never printed.",
     "annotations": {
       "title": "Get collection",
       "readOnlyHint": true,
@@ -3475,6 +3931,44 @@
         "cursor": {
           "type": "string",
           "description": "nextCursor from the previous page."
+        }
+      },
+      "required": [
+        "slug"
+      ]
+    }
+  },
+  {
+    "name": "set_collection_webhook",
+    "description": "Make a collection a webhook feed, or rotate / set its signing secret. Senders POST rows to the ingest URL (shown, with how to sign) and they upsert by externalId. rotate:true mints a new secret (shown once; the old stops working); secret uses the sender's own. Owner or agency. A collection syncing from Sheets/Airtable isn't converted. get_collection shows the URL.",
+    "annotations": {
+      "title": "Set collection webhook",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "slug": {
+          "type": "string",
+          "description": "Collection slug.",
+          "maxLength": 60
+        },
+        "rotate": {
+          "type": "boolean",
+          "description": "Mint a new secret for an existing feed."
+        },
+        "secret": {
+          "type": "string",
+          "description": "The sender's own secret, 16-256 characters, no spaces.",
+          "maxLength": 256
         }
       },
       "required": [

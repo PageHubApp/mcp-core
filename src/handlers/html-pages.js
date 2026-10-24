@@ -4,6 +4,7 @@
  */
 const { apiFetch } = require("../core/api-fetch");
 const { getContext } = require("../core/context");
+const { parseMaybeJson } = require("../helpers/args");
 const { getActiveTarget, getEditorUrl } = require("../helpers/target");
 
 const text = t => ({ content: [{ type: "text", text: t }] });
@@ -14,7 +15,7 @@ const pagesUrl = (siteId, pageId) =>
 const FILE_FIELDS = {
   headCode: "a tag in the page file's <head> (third-party code: site.json inject)",
   footerCode: "the end of the page file's <body>",
-  bodyClass: "the class on the page file's <body>",
+  bodyClass: "the class on the page file's <body> (the dashboard's per-page body class is update_page({ policy: { bodyClass } }))",
   hideHeader: "removing {% render 'header' %} from the page file",
   hideFooter: "removing {% render 'footer' %} from the page file",
   hideChrome: "removing the {% render %} partials from the page file",
@@ -34,6 +35,20 @@ async function call(url, opts) {
   }
 }
 
+/** A page's access and look settings as one readable block. The password is never shown, only whether there is one. */
+function policyLines(data) {
+  const p = data.policy || {};
+  const lines = [];
+  lines.push(`  password: ${data.hasPassword ? "set" : "none"}`);
+  if (Array.isArray(p.access) && p.access.length) {
+    lines.push(`  access (groups are OR'd): ${JSON.stringify(p.access)}`);
+    lines.push(`  on a deny: ${p.failAction === "redirect" ? `redirect to ${p.redirectUrl || "(no url)"}` : p.failAction === "show-page" ? `show ${p.fallbackPath || "(no path)"}` : "the default"}`);
+  } else lines.push("  access conditions: none");
+  if (p.bodyClass) lines.push(`  body class: ${p.bodyClass}`);
+  if (Array.isArray(p.themeOverrides) && p.themeOverrides.length) lines.push(`  theme overrides: ${p.themeOverrides.map(o => `--${String(o.varName).replace(/^-+/, "")}: ${o.value}`).join("; ")}`);
+  return lines.join("\n");
+}
+
 function line(p, i) {
   const flags = [p.isHomePage && "HOME", p.is404Page && "404", p.isHidden && "HIDDEN"].filter(Boolean);
   return `${i + 1}. **${p.pageId}** — "${p.name || "(unnamed)"}" (${p.url}, file ${p.file || "none"})${flags.length ? ` [${flags.join(", ")}]` : ""}`;
@@ -42,6 +57,10 @@ function line(p, i) {
 module.exports = {
   async list_pages(args) {
     const siteId = getActiveTarget(args).id;
+    if (args.pageId) {
+      const data = await call(pagesUrl(siteId, args.pageId));
+      return text(`# ${data.page.name || data.page.pageId} (${data.page.pageId}, ${data.page.url})\n\nWho can open it and how it looks:\n${policyLines(data)}`);
+    }
     const { pages } = await call(pagesUrl(siteId));
     if (!pages.length) return text("No pages yet. add_page creates one (with its HTML).");
     return text(`# Pages in site ${siteId}\n\n${pages.map(line).join("\n")}\n\nEdit a page's markup with read_site_file / edit_site_file on its file; its route and SEO with update_page.`);
@@ -77,10 +96,20 @@ module.exports = {
     if (args.name !== undefined) Object.assign(body, { name: args.name, slug: args.name });
     for (const k of ["isHomePage", "is404Page", "isHidden", "seo"]) if (args[k] !== undefined) body[k] = args[k];
     if (args.pathPattern !== undefined) body.pathPattern = args.pathPattern || null;
-    if (!Object.keys(body).length) throw new Error("Nothing to update: pass name, seo, pathPattern or a flag.");
+    if (args.policy !== undefined) {
+      const policy = parseMaybeJson(args.policy);
+      if (!policy || typeof policy !== "object" || Array.isArray(policy)) throw new Error("policy must be an object: { password?, access?, failAction?, redirectUrl?, fallbackPath?, bodyClass?, themeOverrides? }.");
+      body.policy = policy;
+    }
+    if (!Object.keys(body).length) throw new Error("Nothing to update: pass name, seo, pathPattern, policy or a flag.");
     const { page } = await call(pagesUrl(siteId, args.pageId), { method: "PATCH", body });
     getContext()._sourceFilesWritten = true;
-    return text(`Page ${page.pageId} updated: ${Object.keys(body).join(", ")}. It serves ${page.url}.`);
+    const head = `Page ${page.pageId} updated: ${Object.keys(body).join(", ")}. It serves ${page.url}.`;
+    if (!body.policy) return text(head);
+    // What is stored now (never the password), so the agent confirms what it set instead of assuming.
+    const now = await call(pagesUrl(siteId, args.pageId));
+    const note = "A password or access rule reaches visitors when the site is published; the draft preview isn't gated.";
+    return text(`${head}\n\nNow:\n${policyLines(now)}\n${note}`);
   },
 
   async delete_page(args) {
