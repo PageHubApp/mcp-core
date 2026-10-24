@@ -112,7 +112,7 @@ A gradient and a background image on the same element do not combine. Put the ph
 Inputs must be explicitly styled — they don't inherit card backgrounds:
 - Every input: \`border border-base-300 bg-base-100 rounded-box px-space-sm py-space-xs\`; inside a \`bg-base-200\` card use a \`bg-base-100\` (or \`bg-base-300\`) input, inside \`bg-base-100\` use \`bg-base-200\`. Input bg must differ from the card bg.
 - Every input has a visible \`<label>\` and \`autocomplete\` on personal-data fields.
-- Forms post with \`{% form 'name', redirect: '/thanks' %}…{% endform %}\`; send the visitor to a thank-you page. \`form.posted_successfully?\` and \`form.errors\` are not available yet (never filled in).
+- Forms post with \`{% form 'name', redirect: '/thanks' %}…{% endform %}\`. Without \`redirect\` the post returns to the same page, once: \`form.posted_successfully?\` is true after a good post, \`form.errors\` is nil unless it failed (\`{{ form.errors | default_errors }}\`), \`form.values.<input name>\` refills the fields.
 
 ## Variables
 
@@ -255,7 +255,7 @@ Blocks are Liquid snippets: reference material, not the default. Design each sec
 
 ## Tools
 - \`list_site_files\` shows every draft path and which page each file serves. \`search_site_files\` is a case-insensitive search (\`regex: true\` for a regular expression) under an optional \`glob\` or \`path\`; each hit is path:line:column with the text around the match, so copy \`oldText\` straight from it. \`outline_page\` shows a page's sections, headings and rendered partials with their line numbers, so you can place an edit without reading every file.
-- \`read_site_file\` returns the text and a version (a content hash); \`startLine\` / \`endLine\` read a slice of a long file; \`paths\` reads several files in one call.
+- \`read_site_file\` returns the text and a version (a content hash); \`startLine\` / \`endLine\` read a slice of a long file; \`paths\` reads several files in one call. Stored \`.liquid\` files are formatted, one block-level element per line, so line ranges, search hits and lint line numbers point at a real element.
 - \`edit_site_file\` takes \`edits: [{ oldText, newText, replaceAll? }]\`, applied to the text you just read and written against that version. \`oldText\` must match exactly once (or set \`replaceAll\`). \`insertAfter\` / \`insertBefore\` (instead of \`oldText\`) put \`newText\` next to an anchor that appears once. A stale version or a missing / ambiguous \`oldText\` fails loudly (a missing one names the closest match). \`baseVersion\` pins the edit to a version you read. If the server repaired or reformatted what you wrote, the reply shows the difference: use the stored text in your next \`oldText\`.
 - \`write_site_file\` creates a file, or replaces one with \`baseVersion\`. \`edit_site_files\` edits several files in one atomic write and can create files (\`text\` instead of \`edits\`); a new \`pages/<slug>.liquid\` also creates its page, so a page plus its nav link is one call. \`delete_site_file\` removes non-page files (pages: \`delete_page\`).
 - Edits to different files never conflict.
@@ -302,7 +302,7 @@ Outline CTA pitfall: on minimal black-and-white themes keep Primary and Base Con
 - Size: \`sizeField\`, \`sizeSelector\` (0.25rem).
 - \`depth\` 0 | 1, \`noise\` 0 | 1, \`border\` ("1px").
 - \`buttonPadding\` ("0.75rem 1.5rem", Y X), \`containerPadding\` ("2rem 2rem"), \`contentWidth\` ("80rem", backs \`max-w-page\`).
-- \`shadowStyle\` ("0 1px 3px rgba(0,0,0,0.1)").
+- \`shadowStyle\` ("0 1px 3px rgba(0,0,0,0.1)"). \`spacingDensity\` (1.25) writes \`--spacing-density\` in \`:root\`, the multiplier every \`*-space-*\` token reads. \`breakpoints\` (px) write \`--ph-bp-sm|md|lg|xl|2xl\` in \`:root\`, the widths \`sm:\` / \`md:\` use; Tailwind's \`--breakpoint-*\` does nothing on a published site.
 - Inputs: \`inputBorderColor\`, \`inputBgColor\`, \`inputTextColor\`, \`inputPlaceholderColor\`, \`inputFocusRingColor\`. Links: \`linkColor\`, \`linkHoverColor\`.
 
 \`fonts\` (\`{ url }\` or \`{ families }\`) is only a hint parsed into heading/body families when styleGuide omits them. \`daisyui: false\` turns the DaisyUI component classes (btn, card…) off for the site.
@@ -328,7 +328,7 @@ Every field takes effect immediately — no publish needed. Empty string clears.
 - \`ogImage\`: the site-wide share image (https URL, 1200×630) — the og:image for every page without its own \`seo.ogImage\`. Unset, those pages get a generated text card. Set it once here instead of on each page.
 - \`crawlMode\`: \`public\` (indexed — the default for new sites), \`noindex\` (viewable by link, sent \`noindex, nofollow\` and left out of the sitemap) or \`private_preview\` (noindex plus a robots.txt \`Disallow: /\`). Set \`noindex\` BEFORE publishing a client's copy that isn't on its final domain yet, or search engines index it as a duplicate of their real site. Flip to \`public\` at domain cutover.
 - \`blockAiCrawlers\`: true adds a robots.txt Disallow for known AI crawlers (GPTBot, ClaudeBot, Google-Extended, PerplexityBot, …) and turns off /llms.txt + /llms-full.txt. Search engines are unaffected. Leaving it off also lets AI assistants read the site to answer questions or book on a visitor's behalf.
-- \`timezone\`: the business's IANA timezone, e.g. "America/Los_Angeles". Liquid dates (\`date\`, \`time_tag\`, \`'now' | date\`), \`{{ year }}\`, \`{{ site.timezone }}\` and the times in form notification emails use it; unset or unknown means UTC. A date-only string (\`2026-06-15\`) keeps its day.
+- \`timezone\`: the business's IANA timezone, e.g. "America/Los_Angeles". Liquid dates (\`date\`, \`time_tag\`, \`'now' | date\`), \`{{ year }}\`, \`{{ site.timezone }}\` and the times in form notification emails use it; unset or unknown means UTC. A date-only string (\`2026-06-15\`) keeps its day; a date-time with no offset (\`2026-06-15T10:00\`) is wall-clock time in this timezone.
 - \`language\`: the BCP 47 tag the pages are written in ("uk", "es", "pt-BR"), sent as \`<html lang>\` on every page so browsers, screen readers and search engines read the right language. Unset means "en". Set it on every site that isn't in English.
 
 ## Mounting in your own Next.js app (@pagehub/next)
