@@ -137,7 +137,7 @@ Company fields live in \`site.json\`; set them there with edit_site_file. Withou
 4. A mobile nav needs a toggle: a desktop nav \`hidden lg:flex\` is paired with a \`lg:hidden\` button and a \`popover\` / \`<dialog>\` drawer.
 5. Header AND footer always reserve a logo slot: an icon mark plus the wordmark, replaced by the uploaded logo (\`image_tag\`) once the site has one.
 6. Case-review, consultation and quote CTAs open a \`<dialog>\` form (\`commandfor\` + \`command="show-modal"\`), they do not scroll to a contact section.
-7. Long-lived behaviour is native HTML or a runtime attribute (\`get_style_reference({ topic: "liquid" })\`). Filters, sort, search and pagination are \`?query\` params read as \`request.query.<name>\`.
+7. Behaviour is native HTML or a runtime \`data-*\` attribute first (carousel, lightbox, show/hide, state, cart…); a site may also carry its own JavaScript. Both are documented with examples in \`get_style_reference({ topic: "liquid" })\`. Filters, sort, search and pagination are \`?query\` params read as \`request.query.<name>\`.
 
 **Verify it:** call \`screenshot_site\` with a \`selector\` after building, and again after changing values.
 `;
@@ -225,7 +225,7 @@ Detach with \`clear_domain\` (removes both variants, resets redirectMode). \`set
 
   blocks: `# Blocks — search_blocks, get_block, apply_kit_block, list_blocks
 
-Blocks are Liquid snippets: reference material, not the default. Design each section for the business, using \`get_block\` to see how a proven layout is put together. Place one with \`apply_kit_block\` only when it already fits the design as-is, then edit the copy.
+Blocks are Liquid snippets: reference material, not the default. Design each section for the business, using \`get_block\` to see how a proven layout is put together. Place one with \`apply_kit_block\` only when it already fits the design as-is, then edit the copy. Library blocks and templates carry no JavaScript (it is stripped when they are saved): a block's behaviour is native HTML or a \`data-*\` attribute, and a site you build may add JS on top.
 
 ## search_blocks
 - Returns **one page**. The header shows total N and page X of Y. If Y is 1, that is the complete result set. If Y > 1, call again with \`page: 2\` (same filters) or raise \`limit\` (max 100). \`list_blocks({ category })\` lists many slugs at once.
@@ -264,7 +264,7 @@ Blocks are Liquid snippets: reference material, not the default. Design each sec
 ## Files
 - \`pages/<slug>.liquid\` one per page (\`pages/index.liquid\` is home; \`pages/shop/[handle].liquid\` a detail page). Route, SEO and access live in the page record (list_pages / update_page).
 - \`partials/<name>.liquid\` shared chrome, \`{% render 'header' %}\`. \`sections/<name>.liquid\` reusable sections with a \`{% schema %}\`.
-- \`theme.css\` the design system (change it with set_theme or by editing the custom properties). \`site.json\` company, variables, \`lang\`, inject snippets, SEO defaults, favicon, fonts; it must stay valid JSON. \`emails/<kind>.liquid\` site emails.`,
+- \`theme.css\` the design system (change it with set_theme or by editing the custom properties). \`site.json\` company, variables, \`lang\`, inject snippets, SEO defaults, favicon, fonts; it must stay valid JSON. \`emails/<kind>.liquid\` site emails. \`assets/<name>.js\` the site's own scripts (flat, lowercase names); the editor's Scripts panel lists them, and \`partials/site-scripts.liquid\` is the partial that loads the ones marked "every page".`,
 
   theme: `# Theme — set_theme
 
@@ -311,7 +311,7 @@ Every field takes effect immediately — no publish needed. Empty string clears.
 - \`ogImage\`: the site-wide share image (https URL, 1200×630) — the og:image for every page without its own \`seo.ogImage\`. Unset, those pages get a generated text card. Set it once here instead of on each page.
 - \`crawlMode\`: \`public\` (indexed — the default for new sites), \`noindex\` (viewable by link, sent \`noindex, nofollow\` and left out of the sitemap) or \`private_preview\` (noindex plus a robots.txt \`Disallow: /\`). Set \`noindex\` BEFORE publishing a client's copy that isn't on its final domain yet, or search engines index it as a duplicate of their real site. Flip to \`public\` at domain cutover.
 - \`blockAiCrawlers\`: true adds a robots.txt Disallow for known AI crawlers (GPTBot, ClaudeBot, Google-Extended, PerplexityBot, …) and turns off /llms.txt + /llms-full.txt. Search engines are unaffected. Leaving it off also lets AI assistants read the site to answer questions or book on a visitor's behalf.
-- \`timezone\`: the business's IANA timezone, e.g. "America/Los_Angeles". Times in the site's form notification emails are shown in it; clearing it means UTC.
+- \`timezone\`: the business's IANA timezone, e.g. "America/Los_Angeles". Liquid dates (\`date\`, \`time_tag\`, \`'now' | date\`), \`{{ year }}\`, \`{{ site.timezone }}\` and the times in form notification emails use it; unset or unknown means UTC. A date-only string (\`2026-06-15\`) keeps its day.
 - \`language\`: the BCP 47 tag the pages are written in ("uk", "es", "pt-BR"), sent as \`<html lang>\` on every page so browsers, screen readers and search engines read the right language. Unset means "en". Set it on every site that isn't in English.
 
 ## Mounting in your own Next.js app (@pagehub/next)
@@ -359,7 +359,7 @@ Fastest: \`create_site({ template: "modern-store" })\` (apparel: search, facet f
 - **Product page**: page \`pathPattern: ":handle"\`, the row matched by \`request.params.handle\`. Add to Cart is a \`data-cart="add"\` button; \`data-cart="open"\` opens the cart, \`data-cart-count\` shows the count.
 - **Order confirmed page** and the **account page** (magic-link sign-in, profile and order history from \`customer\`): start from the library blocks \`order-confirmed\`, \`checkout-cancelled-banner\` and \`customer-account\`. Customer accounts need a paid plan.
 - Shipping rates, countries and Stripe Tax are the owner's call, set on the dashboard's Shop page — ask, don't invent rates.
-- Test on the preview (\`/view/<draft slug>\`) and after publishing.
+- Test on the preview (the \`previewUrl\` that create_site, duplicate_site and get_import_status return, or \`screenshot_site\`: the draft with its scripts running) and again after publishing. Never build a preview link by hand: previews live on per-site hosts.
 
 ## Site emails
 After \`update_site_email\`, run \`preview_site_email\`: an email with errors sends the default instead, and the preview is where those errors show.`,
@@ -374,7 +374,7 @@ ${ANIMATION_PRESET_KEYS.map(k => `\`${k}\``).join(", ")}
 ## Controls
 - \`data-animate-trigger="load"\` plays immediately instead of on scroll.
 - \`data-animate-stagger="80ms"\` on the PARENT delays each \`data-animate\` child by one step more (a row of cards).
-- \`data-animate-exit="fade-out"\` plays that preset when the element scrolls back out, and the entrance again on return.
+- \`data-animate-exit="fade-out"\` plays that exit preset when the element scrolls back out, and the entrance again on return. Exit presets: \`fade-out\`, \`fade-out-up\`, \`fade-out-down\`.
 - Reduced motion is automatic — visitors with prefers-reduced-motion get no animation. Don't add your own media query.
 
 ## When a preset doesn't cover it

@@ -37,7 +37,7 @@ module.exports = {
               className: out.className,
               activeModifiers: out.activeModifiers,
               variant: out.variant,
-              note: "Framework output: canonical starter classes + modifiers. You can append custom classes; run validate_button_classes before patch/save.",
+              note: "Framework output: canonical starter classes + modifiers. You can append custom classes; run validate_button_classes before writing it into a file.",
             },
             null,
             2

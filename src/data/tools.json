@@ -54,7 +54,7 @@
   },
   {
     "name": "get_style_reference",
-    "description": "Styling reference: palette variables, styleGuide tokens, spatial scale, modifiers, interactive state, form-confirmation recipe. Pass `topic` for a focused guide (design bar, accessibility, domains, per-tool usage).",
+    "description": "Styling and authoring reference. No `topic`: palette variables, styleGuide tokens, spatial scale, class rules, section skeleton. Pass `topic` for a focused guide: liquid (files, tags, filters, runtime data-* attributes, site JavaScript, forms, dates), design, accessibility, domains, blocks, editing, theme, pages, site, media, integrations, animation.",
     "annotations": {
       "title": "Get style reference",
       "readOnlyHint": true,
@@ -88,7 +88,7 @@
   },
   {
     "name": "generate_button_classes",
-    "description": "Canonical Button className + activeModifiers from intent (variant, shape, size). A starting point; extra classes can be appended.",
+    "description": "Canonical button class string (DaisyUI btn + spatial CTA classes) from intent (variant, shape, size), plus the responsive CTA modifier class names. A starting point; extra classes can be appended.",
     "annotations": {
       "title": "Generate button classes",
       "readOnlyHint": true,
@@ -141,7 +141,7 @@
   },
   {
     "name": "validate_button_classes",
-    "description": "Check a Button className for variant conflicts and token misuse; optionally auto-fix it.",
+    "description": "Check a button class string for variant conflicts and token misuse; optionally auto-fix it.",
     "annotations": {
       "title": "Validate button classes",
       "readOnlyHint": true,
@@ -154,7 +154,7 @@
       "properties": {
         "className": {
           "type": "string",
-          "description": "Button className.",
+          "description": "Button class string.",
           "maxLength": 4096
         },
         "activeModifiers": {
@@ -431,7 +431,7 @@
   },
   {
     "name": "select_site",
-    "description": "Set the active site for this session and clear any active template. The hosted server doesn't keep it between calls — still pass `id` on every call.",
+    "description": "Set the active site for this session and clear any active template. Returns the site's settings and its previewUrl. The hosted server doesn't keep it between calls — still pass `id` on every call.",
     "annotations": {
       "title": "Select site",
       "readOnlyHint": true,
@@ -455,7 +455,7 @@
   },
   {
     "name": "create_site",
-    "description": "Create a site from a template (default \"acme\", the blank starter) and return its id. Then build it with the file tools.",
+    "description": "Create a site from a template (default \"acme\", the blank starter) and return its id, editor link and previewUrl. Then build it with the file tools.",
     "annotations": {
       "title": "Create site",
       "readOnlyHint": false,
@@ -491,7 +491,7 @@
   },
   {
     "name": "update_site",
-    "description": "Set the site's name (slug), title, description, ogImage, indexing, AI crawlers, timezone, language or mount origin/key — immediate, no publish. title/description/ogImage: fallbacks for pages without their own seo. \"\" clears. Details: get_style_reference({ topic: \"site\" }).",
+    "description": "Set the site's name (slug), title, description, ogImage, indexing, AI crawlers, timezone, language or mount origin/key — immediate, no publish. title/description/ogImage: fallbacks for pages without their own seo. timezone: the zone Liquid dates and {{ year }} render in. \"\" clears. Details: get_style_reference({ topic: \"site\" }).",
     "annotations": {
       "title": "Update site",
       "readOnlyHint": false,
@@ -542,7 +542,7 @@
         },
         "timezone": {
           "type": "string",
-          "description": "IANA zone for notification emails, e.g. \"America/Los_Angeles\". \"\" = UTC.",
+          "description": "The business's IANA zone, e.g. \"America/Los_Angeles\". Liquid dates (date, time_tag), {{ year }}, {{ site.timezone }} and the times in notification emails use it. \"\" = UTC.",
           "maxLength": 64
         },
         "language": {
@@ -606,7 +606,7 @@
   },
   {
     "name": "duplicate_site",
-    "description": "Copy a site you're a member of into a new site you own (content, title, description, portal, crawlPolicy). Domain and published state are not copied. The copy becomes active.",
+    "description": "Copy a site you're a member of into a new site you own (content, title, description, portal, crawlPolicy). Domain and published state are not copied. The copy becomes active; the result has its editor link and previewUrl.",
     "annotations": {
       "title": "Duplicate site",
       "readOnlyHint": false,
@@ -642,7 +642,7 @@
   },
   {
     "name": "screenshot_site",
-    "description": "Screenshot the DRAFT in a real browser — the only way to see compiled CSS, theme, state-driven UI and responsive layout. Shoot sections with `selector` (full size, not scaled down), at the design width and at 390.",
+    "description": "Screenshot the DRAFT in a real browser (the preview, with the site's own JavaScript running) — the only way to see compiled CSS, theme, state-driven UI, scripts and responsive layout. Shoot sections with `selector` (full size, not scaled down), at the design width and at 390.",
     "annotations": {
       "title": "Screenshot site",
       "readOnlyHint": true,
@@ -1098,7 +1098,7 @@
   },
   {
     "name": "upload_image",
-    "description": "Upload an image to the site's media library. Returns a mediaId, which goes in an Image's `src` with type \"cdn\" (never `content`, which is deprecated). Web images: `imageUrl`. `dataBase64` has a ~3MB cap and is costly in tokens. More: get_style_reference({ topic: \"media\" }).",
+    "description": "Upload an image to the site's media library. Returns a mediaId: write it as {{ '<mediaId>' | image_tag: alt: '…' }} (a full <img> with srcset) or {{ '<mediaId>' | image_url: width: 800 }} (a URL). Web images: `imageUrl`. `dataBase64` has a ~3MB cap and is costly in tokens. More: get_style_reference({ topic: \"media\" }).",
     "annotations": {
       "title": "Upload image",
       "readOnlyHint": false,
@@ -1156,7 +1156,7 @@
   },
   {
     "name": "upload_file",
-    "description": "Upload any plan-allowed file. Images go to the CDN (type \"cdn\"); video/audio/pdf/zip go to R2 (type \"r2\" + public url) for a Link, a collection field, or a video/audio tag (file_url). Web files: `fileUrl`. `dataBase64` is a last resort (~3MB cap; pass mimeType for non-images).",
+    "description": "Upload any plan-allowed file. Images go to the CDN; video/audio/pdf/zip go to R2. Returns a mediaId: {{ '<mediaId>' | file_url }} works in an <a href>, <video src>, <audio src> or a collection url/media field (images: image_tag). Web files: `fileUrl`. `dataBase64` is a last resort (~3MB cap; pass mimeType for non-images).",
     "annotations": {
       "title": "Upload file",
       "readOnlyHint": false,
@@ -1239,7 +1239,7 @@
   },
   {
     "name": "set_download",
-    "description": "Host a file behind a stable link (<site>/api/downloads/<id>); link to it from a Button. New: name + file. New version: downloadId + file (same link). Roll back: downloadId + currentVersionId. File = filePath (stdio) or an upload's mediaId (a public upload, e.g. a chat attachment, is moved private). access makes it members-only. A Video (provider url) plays it with videoId \"/api/downloads/<id>?inline=1\". Pro+; .exe/.dmg etc need Agency.",
+    "description": "Host a file behind a stable link (<site>/api/downloads/<id>); link to it from an <a> or button. New: name + file. New version: downloadId + file (same link). Roll back: downloadId + currentVersionId. File = filePath (stdio) or an upload's mediaId (a public upload, e.g. a chat attachment, is moved private). access makes it members-only. A <video src=\"/api/downloads/<id>?inline=1\"> plays it. Pro+; .exe/.dmg etc need Agency.",
     "annotations": {
       "title": "Set download",
       "readOnlyHint": false,
@@ -1844,7 +1844,7 @@
   },
   {
     "name": "search_blocks",
-    "description": "Search the block library; returns one page of slugs with descriptions and tags (Liquid: get_block). `q` takes short layout phrases (\"split hero\"), `categories` / `styles` arrays OR-filter, `page` pages through. Guide: get_style_reference({ topic: \"blocks\" }).",
+    "description": "Search the block library; returns one page of slugs with descriptions and tags (Liquid: get_block). Blocks are copy-source examples, not defaults. `q` takes short layout phrases (\"split hero\"), `categories` / `styles` arrays OR-filter, `page` pages through. Guide: get_style_reference({ topic: \"blocks\" }).",
     "annotations": {
       "title": "Search blocks",
       "readOnlyHint": true,
@@ -1953,7 +1953,7 @@
   },
   {
     "name": "get_block",
-    "description": "Get a library block's Liquid by slug — reference for writing a section. Counts as a use.",
+    "description": "Get a library block's Liquid by slug — a reference for writing your own section, not a default to place. Counts as a use.",
     "annotations": {
       "title": "Get block",
       "readOnlyHint": true,
@@ -2306,7 +2306,7 @@
   },
   {
     "name": "list_site_files",
-    "description": "HTML-first sites (format: html): every draft file (pages/*.liquid, partials/, sections/, theme.css, site.json) and which page each serves. Format: get_style_reference({ topic: \"liquid\" }).",
+    "description": "HTML-first sites (format: html): every draft file (pages/*.liquid, partials/, sections/, theme.css, site.json, emails/, assets/*.js) and which page each serves. Format: get_style_reference({ topic: \"liquid\" }).",
     "annotations": {
       "title": "List site files",
       "readOnlyHint": true,
@@ -2521,7 +2521,7 @@
   },
   {
     "name": "write_site_file",
-    "description": "Create or replace a whole file of an HTML-first site. Replacing needs baseVersion from read_site_file; prefer edit_site_file for changes. New page? add_page.",
+    "description": "Create or replace a whole file of an HTML-first site. Replacing needs baseVersion from read_site_file; prefer edit_site_file for changes. New page? add_page. A site's own JavaScript is a file `assets/<name>.js` (lowercase, flat), linked with <script src=\"{{ 'name.js' | asset_url }}\" defer></script>.",
     "annotations": {
       "title": "Write site file",
       "readOnlyHint": false,
@@ -2881,7 +2881,7 @@
   },
   {
     "name": "set_integrations",
-    "description": "Set analytics and verification ids, rendered as real tags on published pages: GA4, GTM, Search Console, Meta Pixel, Google Ads. Other third-party scripts go in site.json inject. Guide: get_style_reference({ topic: \"integrations\" }).",
+    "description": "Set analytics and verification ids, rendered as real tags on published pages: GA4, GTM, Search Console, Meta Pixel, Google Ads. Third-party snippets go in site.json inject; the site's own code is a <script>, {% javascript %} or assets/*.js file. Guide: get_style_reference({ topic: \"integrations\" }).",
     "annotations": {
       "title": "Set integrations",
       "readOnlyHint": false,
@@ -3110,7 +3110,7 @@
   },
   {
     "name": "set_checkout",
-    "description": "Make a collection sellable through Stripe (remove: true stops): Cart Buttons in a Data repeater bound to it charge each row's `price` (minor units) or its Stripe price id (priceIdField). Needs stripe_connect. Details: get_style_reference({ topic: \"integrations\" }).",
+    "description": "Make a collection sellable through Stripe (remove: true stops): `data-cart=\"add\"` buttons inside a `{% for row in collections.<slug> %}` loop charge each row's `price` (minor units) or its Stripe price id (priceIdField). Needs stripe_connect. Details: get_style_reference({ topic: \"integrations\" }).",
     "annotations": {
       "title": "Set checkout",
       "readOnlyHint": false,
@@ -3735,7 +3735,7 @@
   },
   {
     "name": "get_import_status",
-    "description": "Progress of an import_site run: status, page and media counts, warnings, redirects from the old page addresses. When status is ready it includes the new site id, editor link and preview link.",
+    "description": "Progress of an import_site run: status, page and media counts, warnings, redirects from the old page addresses. When status is ready it includes the new site id, editor link and the site's previewUrl.",
     "annotations": {
       "title": "Get import status",
       "readOnlyHint": true,
@@ -3759,7 +3759,7 @@
   },
   {
     "name": "save_block",
-    "description": "Save a new reusable block to the library from Liquid `source`. Use it after hand-crafting a section you want to reuse across templates.",
+    "description": "Save a new reusable block to the library from Liquid `source`. Use it after writing a section you want to reuse across templates. Library blocks carry no JavaScript (<script>, on* handlers and {% javascript %} are stripped); native HTML and data-* attributes only.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -3993,7 +3993,7 @@
   },
   {
     "name": "save_template",
-    "description": "Create a template (admin or tenant owner/editor) from `files` (+ `pages`), or from a site's draft with `fromSite`. A template is the same files a site holds; sites made from it get a copy. Private unless an admin makes it public.",
+    "description": "Create a template (admin or tenant owner/editor) from `files` (+ `pages`), or from a site's draft with `fromSite`. A template is the same files a site holds; sites made from it get a copy. Private unless an admin makes it public. Template files carry no JavaScript: <script>, on* handlers and {% javascript %} are stripped on save.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -4119,7 +4119,7 @@
   },
   {
     "name": "update_template",
-    "description": "Update a template: metadata, files (merged, or `replace`), exact-text `edits` to files, page rows, or everything from a site (`fromSite`). Read it first with pull_template.",
+    "description": "Update a template: metadata, files (merged, or `replace`), exact-text `edits` to files, page rows, or everything from a site (`fromSite`). Read it first with pull_template. Template files carry no JavaScript: <script>, on* handlers and {% javascript %} are stripped on save.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -4281,7 +4281,7 @@
   },
   {
     "name": "publish_site_as_template",
-    "description": "Snapshot a site's draft files and pages into a new template (slug defaults to the site's name).",
+    "description": "Snapshot a site's draft files and pages into a new template (slug defaults to the site's name). Template files carry no JavaScript: <script>, on* handlers and {% javascript %} are stripped on save.",
     "inputSchema": {
       "type": "object",
       "properties": {

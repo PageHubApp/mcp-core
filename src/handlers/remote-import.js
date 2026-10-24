@@ -14,15 +14,10 @@
  * Spec: docs/import/shell-and-html-build-plan.md (P5.2)
  */
 
-const { apiFetch, normalizeBaseUrl } = require("../core/api-fetch");
-const { getContext } = require("../core/context");
+const { apiFetch } = require("../core/api-fetch");
 const { getEditorUrl } = require("../helpers/target");
 
 const MAX_WARNINGS = 10;
-
-function baseUrl() {
-  return normalizeBaseUrl(getContext().apiBaseUrl) || "https://pagehub.dev";
-}
 
 function text(t) {
   return { content: [{ type: "text", text: t }] };
@@ -37,10 +32,9 @@ function curlLine(uploadUrl, contentType) {
  * Human/agent-readable summary of `GET /api/import/status`
  * (`ImportStatusResponse`, utils/importers/importTypes.ts). Shared by the
  * hosted `get_import_status` and the local stdio `import_site`.
- * @param {object} body - ImportStatusResponse
- * @param {string} base - Site origin for the editor / preview links.
+ * @param {object} body - ImportStatusResponse (its `previewUrl` is the site's own preview link)
  */
-function formatImportStatus(body, base) {
+function formatImportStatus(body) {
   const p = body.progress || {};
   const lines = [`Import ${body.importId}: ${body.status}${p.phase ? ` (${p.phase})` : ""}`];
   if (p.pagesTotal) lines.push(`Pages: ${p.pagesDone || 0}/${p.pagesTotal}`);
@@ -66,7 +60,7 @@ function formatImportStatus(body, base) {
     lines.push(
       `Site: ${body.siteId}`,
       `Editor: ${getEditorUrl(body.siteId)}`,
-      `Preview: ${base}/view/${body.draftId}`,
+      ...(body.previewUrl ? [`Preview: ${body.previewUrl}`] : []),
       "The site is a draft. Nothing is published."
     );
   } else if (body.status === "failed") {
@@ -158,6 +152,6 @@ module.exports = {
   async get_import_status(args = {}) {
     if (!args.importId) throw new Error("importId is required.");
     const body = await apiFetch(`/api/import/status?importId=${encodeURIComponent(args.importId)}`);
-    return text(formatImportStatus(body, baseUrl()));
+    return text(formatImportStatus(body));
   },
 };

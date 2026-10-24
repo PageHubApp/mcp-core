@@ -4,7 +4,7 @@
  * proxy `/api/v1/sites/*` and keep `getContext().activeSite` in sync.
  */
 
-const { apiFetch, normalizeBaseUrl } = require("../core/api-fetch");
+const { apiFetch } = require("../core/api-fetch");
 const { getContext } = require("../core/context");
 
 const { getActiveTarget, selectionNote, getEditorUrl } = require("../helpers/index.js");
@@ -106,12 +106,11 @@ module.exports = {
     const ctx = getContext();
     ctx.activeSite = { id: data.id, name: data.name, draftId: data.draftId };
 
-    const base = normalizeBaseUrl(ctx.apiBaseUrl) || "https://pagehub.dev";
     return {
       content: [
         {
           type: "text",
-          text: `New site ${data.id} created from "${slug}".\nActive site set. Editor: ${data.url || `${getEditorUrl(data.id)}`}\nPreview: ${data.previewUrl || `${base}/view/${data.id}`}${selectionNote({ type: "site", id: data.id })}`,
+          text: `New site ${data.id} created from "${slug}".\nActive site set. Editor: ${data.url || `${getEditorUrl(data.id)}`}\nPreview: ${data.previewUrl}${selectionNote({ type: "site", id: data.id })}`,
         },
       ],
     };
@@ -154,6 +153,7 @@ module.exports = {
       `Site description: ${data.description ? JSON.stringify(data.description) : "(unset)"}`,
       siteOgImageLine(data),
       `Published: ${data.published ? "yes" : "no"}`,
+      data.previewUrl && `Preview: ${data.previewUrl}`,
       crawlLines(data),
       timezoneLine(data),
       languageLine(data),
@@ -273,12 +273,11 @@ module.exports = {
 
     ctx.activeSite = { id: data.id, name: data.name, draftId: data.draftId };
 
-    const base = normalizeBaseUrl(ctx.apiBaseUrl) || "https://pagehub.dev";
     return {
       content: [
         {
           type: "text",
-          text: `Site ${data.id} duplicated from ${data.sourceId}.\nActive site set. Editor: ${data.url || `${getEditorUrl(data.id)}`}\nPreview: ${data.previewUrl || `${base}/view/${data.id}`}${selectionNote({ type: "site", id: data.id })}`,
+          text: `Site ${data.id} duplicated from ${data.sourceId}.\nActive site set. Editor: ${data.url || `${getEditorUrl(data.id)}`}\nPreview: ${data.previewUrl}${selectionNote({ type: "site", id: data.id })}`,
         },
       ],
     };

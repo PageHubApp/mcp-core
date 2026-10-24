@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Node.js: 18+](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](https://nodejs.org/)
 
-The toolset that powers PageHub's AI integrations — 85 typed tools for building, editing, and publishing websites programmatically.
+The toolset that powers PageHub's AI integrations — 98 typed tools for building, editing, and publishing websites programmatically.
 
 This is the shared core: tool schemas (MCP-compatible), HTTP handlers against the PageHub API, request context, and validation helpers. It's consumed by:
 
@@ -14,7 +14,7 @@ This is the shared core: tool schemas (MCP-compatible), HTTP handlers against th
 
 ## What's PageHub?
 
-A visual + AI website builder. The MCP tools let an LLM create sites, place blocks, patch nodes, set themes, manage pages, run accessibility/SEO audits, search stock media, and publish — all against [pagehub.dev](https://pagehub.dev) via authenticated HTTP.
+A visual + AI website builder. The MCP tools let an LLM create sites, edit their HTML + Liquid files, place blocks, set themes, manage pages, run accessibility/SEO audits, search stock media, and publish — all against [pagehub.dev](https://pagehub.dev) via authenticated HTTP.
 
 ## Install
 
@@ -32,7 +32,7 @@ Node.js 18+.
 const { runWithContext, executeTool, getAllTools } = require("@pagehub/mcp-core");
 
 // 1. Inspect available tools (MCP schema)
-const tools = getAllTools(); // 85 tools
+const tools = getAllTools(); // 98 tools
 
 // 2. Run a tool inside a request context
 const result = await runWithContext(
@@ -81,7 +81,7 @@ await runWithContext({ apiKey: process.env.PAGEHUB_API_KEY }, () =>
 
 ## Tool catalog
 
-About 90 tools across 11 domains. The full schemas live in [`src/data/tools.json`](src/data/tools.json).
+About 100 tools across 11 domains. The full schemas live in [`src/data/tools.json`](src/data/tools.json).
 
 | Domain         | Examples                                                                      |
 | -------------- | ----------------------------------------------------------------------------- |
@@ -91,7 +91,7 @@ About 90 tools across 11 domains. The full schemas live in [`src/data/tools.json
 | Files          | `list_site_files`, `read_site_file`, `edit_site_file`, `edit_site_files`      |
 | Blocks         | `search_blocks`, `get_block`, `save_block`, `patch_block`, `apply_kit_block`  |
 | Theme & Design | `set_theme`, `suggest_palettes`, `suggest_font_pairings`, `set_favicon`       |
-| Stripe         | `set_integrations` (Stripe Connect), connector-aware product/category lookups |
+| Stripe         | `stripe_connect`, `set_checkout`, `refresh_products`, `stripe_search_products` |
 | Media          | `upload_image`, `find_image`, `find_video` (Pexels / Unsplash)                |
 | SEO            | `audit_seo`, `audit_accessibility`                                            |
 | Portal         | `set_portal`, `get_portal`, `remove_portal`                                   |

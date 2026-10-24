@@ -19,7 +19,7 @@ function siteOgImageLine(data) {
 
 /** One status line for a `/api/v1/sites/[id]` payload's `timezone`. */
 function timezoneLine(data) {
-  return `Timezone: ${data?.timezone || "(unset — notification emails show UTC)"} (update_site timezone)`;
+  return `Timezone: ${data?.timezone || "(unset — Liquid dates, {{ year }} and notification emails use UTC)"} (update_site timezone)`;
 }
 
 /** One status line for a `/api/v1/sites/[id]` payload's `language`. */
