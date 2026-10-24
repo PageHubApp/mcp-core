@@ -16,6 +16,7 @@ const {
   languageLine,
   mountOriginLine,
   mountKeyLine,
+  stylingLine,
 } = require("../helpers/site-status-lines");
 
 /**
@@ -154,6 +155,7 @@ module.exports = {
       siteOgImageLine(data),
       `Published: ${data.published ? "yes" : "no"}`,
       data.previewUrl && `Preview: ${data.previewUrl}`,
+      stylingLine(data),
       crawlLines(data),
       timezoneLine(data),
       languageLine(data),

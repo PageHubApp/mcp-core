@@ -12,6 +12,7 @@ const { getContext } = require("../core/context");
 const { getActiveTarget } = require("../helpers/target");
 const { applyEdits, lineCol } = require("../helpers/file-edits");
 const { editNotesSummary } = require("../helpers/edit-notes");
+const { stylingLine } = require("../helpers/site-status-lines");
 
 const text = t => ({ content: [{ type: "text", text: t }] });
 
@@ -61,6 +62,9 @@ const whereNow = (what, staged = getContext().stageFileEdits) =>
     ? `${what} staged for review: the person keeps or discards it, so it is not in the draft yet. read_site_file shows it.`
     : `${what} Not live until publish_site.`;
 
+/** A write's reply plus the server's warn-only notes (`advisories`: e.g. DaisyUI classes on a site with DaisyUI off). */
+const withAdvisories = (reply, res) => (Array.isArray(res?.advisories) && res.advisories.length ? `${reply}\n${res.advisories.join("\n")}` : reply);
+
 async function readFile(siteId, path) {
   try {
     return await apiFetch(filesUrl(siteId, path));
@@ -95,8 +99,9 @@ module.exports = {
       const page = byFile.get(p);
       return `${p}${page ? `  → page ${page.pageId} at ${page.url}${page.isHomePage ? " (home)" : ""}` : ""}`;
     });
+    const styling = stylingLine(listed);
     return text(
-      `Files of site ${siteId} (draft version ${listed.version}):\n${lines.join("\n")}\n\nread_site_file to read one; edit_site_file to change it. Format rules: get_style_reference({ topic: "liquid" }).`
+      `Files of site ${siteId} (draft version ${listed.version}):\n${lines.join("\n")}\n\n${styling ? `${styling}\n` : ""}read_site_file to read one; edit_site_file to change it. Format rules: get_style_reference({ topic: "liquid" }).`
     );
   },
 
@@ -135,7 +140,7 @@ module.exports = {
     const siteId = siteOf(args);
     if (!args.path || typeof args.text !== "string") throw new Error("path and text are required.");
     const res = await putFile(siteId, args.path, args.text, args.baseVersion);
-    return text(getContext().stageFileEdits ? whereNow(`${args.path} (version ${res.version})`) : whereNow(`Saved ${args.path} to the draft (version ${res.version}).`));
+    return text(withAdvisories(getContext().stageFileEdits ? whereNow(`${args.path} (version ${res.version})`) : whereNow(`Saved ${args.path} to the draft (version ${res.version}).`), res));
   },
 
   async edit_site_file(args = {}) {
@@ -156,7 +161,7 @@ module.exports = {
         const res = await apiFetch(filesUrl(siteId, args.path), { method: "PUT", body: { text: next, baseVersion: file.version } });
         markWritten();
         const done = `${args.path} (${edits.length} change${edits.length > 1 ? "s" : ""}; version ${res.version})`;
-        return text(getContext().stageFileEdits ? whereNow(`Edit to ${done}`) : whereNow(`Edited ${done}.`));
+        return text(withAdvisories(getContext().stageFileEdits ? whereNow(`Edit to ${done}`) : whereNow(`Edited ${done}.`), res));
       } catch (err) {
         if (err?.body?.error === "version_conflict" && !args.baseVersion && attempt === 0) continue;
         return explain(err, { path: args.path, sent: next });
@@ -192,10 +197,10 @@ module.exports = {
       }
       if (!changes.length) return text("No change: every file already reads that way.");
       try {
-        await apiFetch(filesUrl(siteId), { method: "POST", body: { changes, baseVersions } });
+        const res = await apiFetch(filesUrl(siteId), { method: "POST", body: { changes, baseVersions } });
         markWritten();
         const done = `${changes.length} file${changes.length > 1 ? "s" : ""} (${changes.map(c => c.path).join(", ")})`;
-        return text(getContext().stageFileEdits ? whereNow(`Edit to ${done}`) : whereNow(`Edited ${done} in one write.`));
+        return text(withAdvisories(getContext().stageFileEdits ? whereNow(`Edit to ${done}`) : whereNow(`Edited ${done} in one write.`), res));
       } catch (err) {
         if (err?.body?.error === "version_conflict" && !files.some(f => f.baseVersion) && attempt === 0) continue;
         return explain(err, { path: paths.join(", ") });

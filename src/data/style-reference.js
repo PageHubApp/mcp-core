@@ -184,8 +184,13 @@ const ANIMATION_PRESET_KEYS = [
   "tile-flip",
 ];
 
+/** Every class rule in these topics is for the default styling; `select_site` / `list_site_files` print the site's own. */
+const STYLING_MODES = `> These rules assume a Tailwind + DaisyUI site (\`Styling: tailwind-daisy\`, the default). \`select_site\` and \`list_site_files\` print the site's \`Styling:\` line. \`tailwind\`: DaisyUI is off, so \`btn\`, \`card\`, \`badge\`, \`hero\`, \`navbar\`… render as nothing; build them from utilities and palette tokens. \`own-css\` (an imported site): reuse the classes its \`theme.css\` and \`<style>\`s define; Tailwind compiles only classes that CSS doesn't define, and palette tokens and DaisyUI aren't its design system.`;
+
 const STYLE_TOPICS = {
   design: `# Design bar
+
+${STYLING_MODES}
 
 - **Typography hierarchy.** Every section needs an eyebrow or a headline. Four visible weight levels per page. If all the text is one size, the page is flat.
 - **Section rhythm.** Alternate backgrounds — default, \`bg-base-200\`, a \`bg-primary\` band. Never 4+ consecutive sections on the same background.
@@ -225,6 +230,8 @@ Detach with \`clear_domain\` (removes both variants, resets redirectMode). \`set
 
   blocks: `# Blocks — search_blocks, get_block, apply_kit_block, list_blocks
 
+${STYLING_MODES} Library blocks are written for \`tailwind-daisy\`: on the other two, rewrite their \`btn\` / \`card\` classes.
+
 Blocks are Liquid snippets: reference material, not the default. Design each section for the business, using \`get_block\` to see how a proven layout is put together. Place one with \`apply_kit_block\` only when it already fits the design as-is, then edit the copy. Library blocks and templates carry no JavaScript (it is stripped when they are saved): a block's behaviour is native HTML or a \`data-*\` attribute, and a site you build may add JS on top.
 
 ## search_blocks
@@ -255,6 +262,7 @@ Blocks are Liquid snippets: reference material, not the default. Design each sec
 ## Rules
 - Read before you edit; change the smallest span. Keep every \`data-edit-*\` attribute you didn't mean to remove: they are the element ids history and comments use.
 - Liquid logic wraps WHOLE elements: no \`{% if %}\` inside a tag's attribute list. \`{{ value }}\` inside an attribute value is fine.
+- One exception, the gated action (the editor's "only fire when"): ONE \`{% if <condition> %}…{% endif %}\` in the open tag, so the action is there only when the condition holds. Inside it only \`data-*\` attributes and the native action ones (\`href\`, \`target\`, \`rel\`, \`command\`, \`commandfor\`, \`action\`, \`download\`); no \`{% else %}\` / \`{% elsif %}\`, no other Liquid tag, no \`class\`, \`data-edit-*\` or \`javascript:\`. \`<button class="btn" {% if customer %}data-cart="add" data-cart-id="tee-1"{% endif %}>Buy</button>\`
 - Well-formed HTML only: close every element you open.
 - Behaviour: native HTML (\`<dialog>\`, \`popover\`, \`<details>\`) and \`data-*\` runtime attributes first. A site may carry its own JavaScript and nothing strips it: inline \`<script>\`, \`on*\` handlers, \`{% javascript %}…{% endjavascript %}\` in a section or partial (added once per page), or a file \`assets/<name>.js\` (write_site_file) linked with \`<script src="{{ 'app.js' | asset_url }}" defer></script>\`. It runs on the preview and the live site, never in the editor canvas: check it with screenshot_site or the preview link.
 - A lint error comes back as \`line L:C [rule] message\`: fix it in place. If it still fails, report the exact error and stop; never rebuild the page to recover.
@@ -267,6 +275,8 @@ Blocks are Liquid snippets: reference material, not the default. Design each sec
 - \`theme.css\` the design system (change it with set_theme or by editing the custom properties). \`site.json\` company, variables, \`lang\`, inject snippets, SEO defaults, favicon, fonts; it must stay valid JSON. \`emails/<kind>.liquid\` site emails. \`assets/<name>.js\` the site's own scripts (flat, lowercase names); the editor's Scripts panel lists them, and \`partials/site-scripts.liquid\` is the partial that loads the ones marked "every page".`,
 
   theme: `# Theme — set_theme
+
+${STYLING_MODES}
 
 - Call first on a new site, before blocks. It writes \`theme.css\` in the draft immediately. For "suggest / compare palettes" use \`suggest_palettes\`; for "pick fonts" use \`suggest_font_pairings\`. Those show choices the user applies.
 - \`preset\` loads palette, fonts and styleGuide; explicit params override. By fit: bakery/restaurant → restaurant-warm / warm-editorial / rustic; SaaS → modern-minimal / notion; luxury → luxury-dark.
@@ -326,7 +336,7 @@ Sources, best first:
 3. \`dataBase64\` — last resort. The serverless request cap is 4.5MB, so ~3MB decoded, and it costs ~1.4 tokens per byte. Pass \`mimeType\` for non-images so they route to R2.
 
 Using the result:
-- Images: \`{{ '<mediaId>' | image_url: width: 800 }}\` for a URL, \`{{ '<mediaId>' | image_tag: alt: '…' }}\` for a full \`<img>\` with srcset. Use the bare mediaId, never the raw url.
+- Images: \`{{ '<mediaId>' | image_url: width: 800 }}\` is the CDN URL (\`<img src="…">\`, a background \`style\`). \`image_tag\` turns a URL into an \`<img>\`, so it always comes after \`image_url\`: \`{{ '<mediaId>' | image_url: width: 800 | image_tag: alt: '…', class: '…' }}\` (it takes \`alt\`, \`class\`, \`width\`, \`height\`, \`loading\`, \`sizes\`, \`fetchpriority\`). A bare \`{{ '<mediaId>' | image_tag }}\` writes the id as the src: a broken image. Use the mediaId, never the raw url.
 - Video/audio/pdf/zip (R2): \`{{ '<mediaId>' | file_url }}\` works in an \`<a>\`, \`<video src>\`, \`<audio src>\` or a collection url/media field.
 
 Favicon (\`set_favicon\`): exactly one of \`filePath\` (stdio), \`mediaId\`, \`imageUrl\`, \`dataBase64\`, \`svgContent\` (only SVG markup the user supplied — never invent it), or \`clear: true\`. Best input: a 512px square PNG or an SVG; \`.ico\` can't be stored. Written to \`site.json\` \`favicon\`, staged like any edit (publish to see it live); browsers cache favicons hard.`,

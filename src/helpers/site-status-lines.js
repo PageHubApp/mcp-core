@@ -1,7 +1,7 @@
 /**
  * The status lines select_site / update_site print for a `/api/v1/sites/[id]`
  * payload — one per site-level setting, each naming the update_site field
- * that changes it.
+ * that changes it — and the "Styling:" line select_site and list_site_files print.
  */
 
 /** Status lines for a `/api/v1/sites/[id]` payload's `crawlPolicy` mode + `blockAi`. */
@@ -47,7 +47,24 @@ function mountKeyLine(data, issued) {
   return `Mount key: ${data?.mountKey ? "set" : "(none)"} (update_site rotateMountKey: true issues a new one)`;
 }
 
+/** What each `styling` mode (the app's `siteStyleMode`, read from theme.css) means for the markup an agent writes. */
+const STYLING_NOTES = {
+  "tailwind-daisy": "Tailwind + DaisyUI: the get_style_reference rules apply as written (palette and spatial tokens, btn, card)",
+  tailwind:
+    "Tailwind, DaisyUI off: btn, card, badge, hero, navbar… have no CSS here; build them from utilities and palette tokens (set_theme daisyui turns it on)",
+  "own-css":
+    "the site's own CSS (imported): reuse the classes theme.css and its <style>s define; Tailwind compiles only classes that CSS doesn't define; palette tokens and DaisyUI aren't its design system",
+};
+
+/** The "Styling:" line for a payload's `styling`, or null when the server didn't send one. */
+function stylingLine(data) {
+  const mode = data?.styling;
+  if (!mode) return null;
+  return `Styling: ${mode} (${STYLING_NOTES[mode] || "see theme.css"})`;
+}
+
 module.exports = {
+  stylingLine,
   crawlLines,
   siteOgImageLine,
   timezoneLine,

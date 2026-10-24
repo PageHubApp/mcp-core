@@ -1166,7 +1166,7 @@
   },
   {
     "name": "upload_image",
-    "description": "Upload an image to the site's media library. Returns a mediaId: write it as {{ '<mediaId>' | image_tag: alt: '…' }} (a full <img> with srcset) or {{ '<mediaId>' | image_url: width: 800 }} (a URL). Web images: `imageUrl`. `dataBase64` has a ~3MB cap and is costly in tokens. More: get_style_reference({ topic: \"media\" }).",
+    "description": "Upload an image to the site's media library. Returns a mediaId: write it as {{ '<mediaId>' | image_url: width: 800 }} (a URL) or {{ '<mediaId>' | image_url: width: 800 | image_tag: alt: '…' }} (an <img>; image_tag takes a URL, never a bare id). Web images: `imageUrl`. `dataBase64` has a ~3MB cap and is costly in tokens. More: get_style_reference({ topic: \"media\" }).",
     "annotations": {
       "title": "Upload image",
       "readOnlyHint": false,
@@ -1224,7 +1224,7 @@
   },
   {
     "name": "upload_file",
-    "description": "Upload any plan-allowed file. Images go to the CDN; video/audio/pdf/zip go to R2. Returns a mediaId: {{ '<mediaId>' | file_url }} works in an <a href>, <video src>, <audio src> or a collection url/media field (images: image_tag). Web files: `fileUrl`. `dataBase64` is a last resort (~3MB cap; pass mimeType for non-images).",
+    "description": "Upload any plan-allowed file. Images go to the CDN; video/audio/pdf/zip go to R2. Returns a mediaId: {{ '<mediaId>' | file_url }} works in an <a href>, <video src>, <audio src> or a collection url/media field (images: {{ '<mediaId>' | image_url: width: 800 }}). Web files: `fileUrl`. `dataBase64` is a last resort (~3MB cap; pass mimeType for non-images).",
     "annotations": {
       "title": "Upload file",
       "readOnlyHint": false,
