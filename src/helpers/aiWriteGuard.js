@@ -67,6 +67,9 @@ function findActiveContent(value, path) {
  */
 function assertAiWriteAllowed(toolName, args, ctx, tool) {
   if (!ctx || ctx.client !== "ai") return;
+  if (toolName === "set_integrations" && args?.googleTagManager) {
+    throw new Error("set_integrations refused: a Google Tag Manager container runs any script on the live site. PageHub AI never sets one; the user sets it in Site settings → Integrations.");
+  }
   if (tool?.annotations?.readOnlyHint) return;
   const hit = findActiveContent(args, "");
   if (!hit) return;
