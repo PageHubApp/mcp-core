@@ -10,11 +10,16 @@
  *                   path for a client with no filesystem and no shell.
  *   - `filePath`  → local stdio server only (packages/mcp zips the folder and
  *                   runs the size → PUT → uploadKey steps itself).
+ *   - `restOf`    → no upload: brings the pages a capped import left out into
+ *                   that import's site (after the owner upgraded).
+ * `pages` (archive paths) picks which pages fill the plan's page limit; the
+ * home page is always one of them.
  *
  * Spec: docs/import/shell-and-html-build-plan.md (P5.2)
  */
 
-const { apiFetch } = require("../core/api-fetch");
+const { apiFetch, normalizeBaseUrl } = require("../core/api-fetch");
+const { getContext } = require("../core/context");
 const { getEditorUrl } = require("../helpers/target");
 
 const MAX_WARNINGS = 10;
@@ -44,9 +49,7 @@ function formatImportStatus(body) {
   if (redirects.length) {
     lines.push(`Redirects from the old page addresses: ${redirects.length} (e.g. ${redirects[0].from} → ${redirects[0].to})`);
   }
-  if (body.pageCap) {
-    lines.push(`Page limit: imported ${body.pageCap.kept} of ${body.pageCap.total} pages. A bigger plan imports the rest.`);
-  }
+  lines.push(...pageCapLines(body));
   const warnings = body.warnings || [];
   if (warnings.length) {
     lines.push(`Warnings (${warnings.length}):`);
@@ -78,17 +81,57 @@ function formatImportStatus(body) {
   return lines.join("\n");
 }
 
-/** Start an import from an uploaded key or inline files. Returns `{ importId }`. */
-async function startImport({ uploadKey, files, name }) {
+/**
+ * What the plan's page cap left out, and the agent's next step: which pages, how to pick others (a new import with
+ * `pages`), and how to bring the rest into the same site after an upgrade (`import_site({ restOf })`).
+ */
+function pageCapLines(body) {
+  const cap = body.leftOut || body.pageCap;
+  if (!cap) return [];
+  const left = cap.total - cap.kept;
+  const lines = [
+    `Page limit: ${cap.kept} of ${cap.total} pages imported (the plan's limit). The home page is always included.`,
+  ];
+  const plan = body.plan || {};
+  const read = new Set((plan.pages || []).map(p => p.id));
+  const out = (plan.allPages || []).map(p => p.path).filter(p => !read.has(p));
+  if (out.length) {
+    lines.push(`Left out: ${out.slice(0, 20).join(", ")}${out.length > 20 ? `, …and ${out.length - 20} more` : ""}`);
+  }
+  if (body.status !== "ready") return lines;
+  if (body.leftOut?.canBring) {
+    lines.push(
+      `The plan now takes ${body.leftOut.maxPages} pages. To add the other ${left} to this same site, call import_site({ restOf: "${body.leftOut.importId}" }).`
+    );
+  } else if (body.leftOut) {
+    lines.push(
+      `To add the other ${left} to this same site, the owner upgrades at ${pricingUrl()}, then call import_site({ restOf: "${body.leftOut.importId}" }). ` +
+        "To pick which pages fill the limit instead, start a new import with pages: [archive paths] (it makes a new site)."
+    );
+  }
+  return lines;
+}
+
+function pricingUrl() {
+  return `${normalizeBaseUrl(getContext().apiBaseUrl) || "https://pagehub.dev"}/pricing`;
+}
+
+/** Start an import from an uploaded key or inline files. `pages` picks which pages fill the plan's limit. */
+async function startImport({ uploadKey, files, name, pages }) {
   return apiFetch("/api/import", {
     method: "POST",
     body: {
       source: "html",
       ...(uploadKey ? { fileKeys: [uploadKey] } : { inlineFiles: files }),
-      options: { siteName: name },
+      options: { siteName: name, ...(Array.isArray(pages) && pages.length ? { pagePaths: pages } : {}) },
       autoConfirm: true,
     },
   });
+}
+
+/** Bring the pages a capped import left out into the same site. Returns `{ importId, siteId }`. */
+async function startRestImport(restOf) {
+  return apiFetch("/api/import", { method: "POST", body: { restOf } });
 }
 
 /** Presign a private upload for a zip of `size` bytes. */
@@ -103,13 +146,22 @@ module.exports = {
   formatImportStatus,
   presignImport,
   startImport,
+  startRestImport,
 
   /**
-   * @param {object} args - exactly one of { filePath, size, uploadKey, files }, plus name?
+   * @param {object} args - exactly one of { filePath, size, uploadKey, files, restOf }, plus name?, pages?
    */
   async import_site(args = {}) {
-    const modes = ["filePath", "size", "uploadKey", "files"].filter(k => args[k] !== undefined && args[k] !== null);
-    if (modes.length !== 1) throw new Error("Pass one of filePath, size, uploadKey or files.");
+    const modes = ["filePath", "size", "uploadKey", "files", "restOf"].filter(k => args[k] !== undefined && args[k] !== null);
+    if (modes.length !== 1) throw new Error("Pass one of filePath, size, uploadKey, files or restOf.");
+
+    if (args.restOf !== undefined) {
+      const { importId, siteId } = await startRestImport(String(args.restOf));
+      return text(
+        `Bringing the rest of the pages into site ${siteId} (importId: ${importId}). ` +
+          "The site's own pages, header, footer and theme stay as they are. Call get_import_status every ~5 s until it says ready."
+      );
+    }
 
     if (args.filePath !== undefined) {
       throw new Error(
@@ -141,7 +193,12 @@ module.exports = {
     if (args.files !== undefined && !Array.isArray(args.files)) {
       throw new Error("files must be an array of { path, content }.");
     }
-    const { importId } = await startImport({ uploadKey: args.uploadKey, files: args.files, name: args.name });
+    const { importId } = await startImport({
+      uploadKey: args.uploadKey,
+      files: args.files,
+      name: args.name,
+      pages: args.pages,
+    });
     return text(
       `Import started (importId: ${importId}). It builds a new draft site. ` +
         "Call get_import_status every ~5 s until it says ready."

@@ -4291,7 +4291,7 @@
   },
   {
     "name": "import_site",
-    "description": "Turn a static HTML site (pages, CSS, JS, images) into a NEW editable PageHub site draft. Inputs, one per call: filePath (local folder or .zip; local server only); size (zip bytes) returns an upload URL, curl line and uploadKey; uploadKey, after the PUT, starts the import; files sends text files inline (≤3MB). Returns an importId for get_import_status.",
+    "description": "Turn a static HTML site (pages, CSS, JS, images) into a NEW editable PageHub site draft. Inputs, one per call: filePath (local folder or .zip; local server only); size (zip bytes) returns an upload URL, curl line and uploadKey; uploadKey, after the PUT, starts the import; files sends text files inline (≤3MB); restOf (an importId) brings the pages a plan's page limit left out into that import's same site, after an upgrade. Returns an importId for get_import_status.",
     "annotations": {
       "title": "Import HTML site",
       "readOnlyHint": false,
@@ -4342,13 +4342,27 @@
           "type": "string",
           "description": "Site name (default: home page title).",
           "maxLength": 120
+        },
+        "pages": {
+          "type": "array",
+          "maxItems": 2000,
+          "description": "Archive paths of the pages to import (e.g. about.html), when the plan's page limit can't take them all. The home page is always included; the limit still applies, in this order.",
+          "items": {
+            "type": "string",
+            "maxLength": 512
+          }
+        },
+        "restOf": {
+          "type": "string",
+          "description": "importId of a capped import: adds the pages it left out to that same site. Needs a plan that takes more pages (get_import_status says when).",
+          "maxLength": 64
         }
       }
     }
   },
   {
     "name": "get_import_status",
-    "description": "Progress of an import_site run: status, page and media counts, warnings, redirects from the old page addresses. When status is ready it includes the new site id, editor link and the site's previewUrl.",
+    "description": "Progress of an import_site run: status, page and media counts, warnings, redirects from the old page addresses, and the pages a plan's page limit left out with the next step to bring them in. When status is ready it includes the new site id, editor link and the site's previewUrl.",
     "annotations": {
       "title": "Get import status",
       "readOnlyHint": true,
