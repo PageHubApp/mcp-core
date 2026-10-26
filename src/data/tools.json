@@ -1220,7 +1220,7 @@
         },
         "dataBase64": {
           "type": "string",
-          "description": "Base64 or data URL. Last resort: ~3MB cap.",
+          "description": "Base64 of a real file's bytes, never base64 you write out (it arrives cut off). ~3MB cap; prefer imageUrl.",
           "maxLength": 16777216
         },
         "mimeType": {
@@ -1278,7 +1278,7 @@
         },
         "dataBase64": {
           "type": "string",
-          "description": "Base64 or data URL. Last resort: ~3MB cap.",
+          "description": "Base64 of a real file's bytes, never base64 you write out (it arrives cut off). ~3MB cap; prefer imageUrl.",
           "maxLength": 16777216
         },
         "mimeType": {
