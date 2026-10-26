@@ -128,10 +128,22 @@ function applyEdits(source, edits, path) {
   return out;
 }
 
+/**
+ * The edits of a call: `edits[]`, or one edit given at the top level (`{ oldText, newText }` beside `path`), which
+ * models often send for a single change.
+ */
+function editsOf(args = {}) {
+  if (Array.isArray(args.edits) && args.edits.length) return args.edits;
+  if (!ANCHORS.some(k => args[k] !== undefined)) return [];
+  const edit = { newText: args.newText };
+  for (const k of [...ANCHORS, "replaceAll"]) if (args[k] !== undefined) edit[k] = args[k];
+  return [edit];
+}
+
 /** 1-based `line:column` of an offset in `source`. */
 function lineCol(source, offset) {
   const lines = String(source).slice(0, Math.max(0, offset)).split("\n");
   return `${lines.length}:${lines[lines.length - 1].length + 1}`;
 }
 
-module.exports = { applyEdits, lineCol, closestMatch };
+module.exports = { applyEdits, editsOf, lineCol, closestMatch };

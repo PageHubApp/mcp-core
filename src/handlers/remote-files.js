@@ -14,7 +14,7 @@ const { createHash } = require("node:crypto");
 const { apiFetch } = require("../core/api-fetch");
 const { getContext } = require("../core/context");
 const { getActiveTarget } = require("../helpers/target");
-const { applyEdits, lineCol } = require("../helpers/file-edits");
+const { applyEdits, editsOf, lineCol } = require("../helpers/file-edits");
 const { lineDiff } = require("../helpers/line-diff");
 const { editNotesSummary } = require("../helpers/edit-notes");
 const { stylingLine } = require("../helpers/site-status-lines");
@@ -268,7 +268,7 @@ module.exports = {
   async edit_site_file(args = {}) {
     const siteId = siteOf(args);
     if (!args.path) throw new Error("path is required.");
-    const edits = Array.isArray(args.edits) ? args.edits : [];
+    const edits = editsOf(args);
     if (!edits.length) throw new Error("edits is required: [{ oldText, newText }].");
     // Retry once when the file moved on between our read and our write and no base was pinned by the caller:
     // the replacements are re-applied to the fresh text, so an unrelated change isn't lost.
@@ -317,7 +317,7 @@ module.exports = {
           if (PAGE_FILE.test(f.path)) pages.push({ path: f.path, ...(f.name ? { name: f.name } : {}), ...(f.seo ? { seo: f.seo } : {}) });
           continue;
         }
-        const edits = Array.isArray(f.edits) ? f.edits : [];
+        const edits = editsOf(f);
         if (!edits.length) throw new Error(`${f.path}: edits is required: [{ oldText, newText }] (or text, to create a new file).`);
         const file = await readFile(siteId, f.path);
         if (f.baseVersion && f.baseVersion !== file.version) {

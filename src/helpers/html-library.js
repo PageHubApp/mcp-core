@@ -17,7 +17,7 @@ const { apiFetch } = require("../core/api-fetch");
 const { getContext } = require("../core/context");
 const { getActiveTarget, getEditorUrl } = require("./target");
 const { mergeStrList } = require("./args");
-const { applyEdits } = require("./file-edits");
+const { applyEdits, editsOf } = require("./file-edits");
 
 const text = t => ({ content: [{ type: "text", text: t }] });
 
@@ -191,7 +191,7 @@ async function updateBlock(args) {
  */
 async function patchBlock(args) {
   if (!args.slug) throw new Error("slug is required.");
-  const edits = Array.isArray(args.edits) ? args.edits : [];
+  const edits = editsOf(args);
   if (!edits.length) throw new Error("edits is required: [{ oldText, newText }].");
   const { block } = await call(`/api/v1/liquid-blocks/${encodeURIComponent(args.slug)}`);
   const existing = await call(`/api/v1/components/${encodeURIComponent(args.slug)}`);
