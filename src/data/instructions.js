@@ -52,6 +52,6 @@ Call discovery tools before writing; don't guess classes, block names or tokens:
 ## Building from an approved design
 - Map every element to markup first. If something can't be expressed, **stop and tell the user** — never ship an unapproved substitute.
 - Use the design's **exact** values at its breakpoint (\`lg:text-[104px]\`), smaller responsive values below. Never round to the nearest token. Tailwind \`leading-normal\` is 1.5; CSS \`normal\` is \`leading-[normal]\`.
-- Verify with \`screenshot_site\` per section (\`selector\`) at the design's width and at 390. Fix or report every difference.`;
+- Verify with \`screenshot_site\`: one \`fullPage\` shot at the design's width and one at 390. Use \`selector\` only to check a section you just fixed. If your client has its own browser, open the draft preview link instead. Fix or report every difference.`;
 
 module.exports = { SERVER_INSTRUCTIONS };

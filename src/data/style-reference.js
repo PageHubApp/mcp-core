@@ -140,7 +140,7 @@ Company fields live in \`site.json\`; set them there with edit_site_file. Withou
 6. Case-review, consultation and quote CTAs open a \`<dialog>\` form (\`commandfor\` + \`command="show-modal"\`), they do not scroll to a contact section.
 7. Behaviour is native HTML or a runtime \`data-*\` attribute first (carousel, lightbox, show/hide, state, cart…); a site may also carry its own JavaScript. Both are documented with examples in \`get_style_reference({ topic: "liquid" })\`. Filters, sort, search and pagination are \`?query\` params read as \`request.query.<name>\`.
 
-**Verify it:** call \`screenshot_site\` with a \`selector\` after building, and again after changing values.
+**Verify it:** one \`screenshot_site\` with a \`selector\` after building it.
 `;
 
 const TECHNIQUE_TRANSFER_RULES = `
