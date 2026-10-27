@@ -3920,7 +3920,7 @@
         },
         "source": {
           "type": "object",
-          "description": "{ type: 'manual' } (default) | airtable | csv-upload | google-sheet | webhook-feed | external-db."
+          "description": "{ type: 'manual' } (default) | airtable | csv-upload | google-sheet | webhook-feed | external-db | hospitable."
         },
         "isPublic": {
           "description": "Visitors can read rows without auth.",
