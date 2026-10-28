@@ -3456,7 +3456,7 @@
   },
   {
     "name": "set_integrations",
-    "description": "Set analytics and verification ids, rendered as real tags on published pages: GA4, GTM, Search Console, Meta Pixel, Google Ads. Third-party snippets go in site.json inject; the site's own code is a <script>, {% javascript %} or assets/*.js file. Guide: get_style_reference({ topic: \"integrations\" }).",
+    "description": "Set analytics and verification ids, rendered as real tags on published pages: GA4, GTM, Search Console, Meta Pixel, Google Ads, TikTok, LinkedIn, Pinterest, Clarity, Hotjar, Plausible, Fathom, Umami, chat widgets. Third-party snippets go in site.json inject; the site's own code is a <script>, {% javascript %} or assets/*.js file. Guide: get_style_reference({ topic: \"integrations\" }).",
     "annotations": {
       "title": "Set integrations",
       "readOnlyHint": false,
@@ -3495,6 +3495,86 @@
         "googleAds": {
           "type": "string",
           "description": "AW-XXXXXXXXXX. Needed for per-action google-ads conversions.",
+          "maxLength": 128
+        },
+        "tiktokPixel": {
+          "type": "string",
+          "description": "TikTok Pixel id.",
+          "maxLength": 128
+        },
+        "linkedinInsight": {
+          "type": "string",
+          "description": "LinkedIn partner id.",
+          "maxLength": 128
+        },
+        "pinterestTag": {
+          "type": "string",
+          "description": "Pinterest Tag id.",
+          "maxLength": 128
+        },
+        "microsoftClarity": {
+          "type": "string",
+          "description": "Clarity project id.",
+          "maxLength": 128
+        },
+        "hotjar": {
+          "type": "string",
+          "description": "Hotjar site id.",
+          "maxLength": 128
+        },
+        "plausible": {
+          "type": "string",
+          "description": "Plausible id (after /js/pa-).",
+          "maxLength": 128
+        },
+        "plausibleHost": {
+          "type": "string",
+          "description": "Self-hosted Plausible server.",
+          "maxLength": 128
+        },
+        "fathom": {
+          "type": "string",
+          "description": "Fathom site id.",
+          "maxLength": 128
+        },
+        "umami": {
+          "type": "string",
+          "description": "Umami website id.",
+          "maxLength": 128
+        },
+        "umamiHost": {
+          "type": "string",
+          "description": "Self-hosted Umami server.",
+          "maxLength": 128
+        },
+        "crisp": {
+          "type": "string",
+          "description": "Crisp website id (chat).",
+          "maxLength": 128
+        },
+        "tidio": {
+          "type": "string",
+          "description": "Tidio public key (chat).",
+          "maxLength": 128
+        },
+        "tawk": {
+          "type": "string",
+          "description": "tawk.to propertyId/widgetId (chat).",
+          "maxLength": 256
+        },
+        "intercom": {
+          "type": "string",
+          "description": "Intercom app id (chat).",
+          "maxLength": 128
+        },
+        "intercomRegion": {
+          "type": "string",
+          "description": "us, eu or au. Default us.",
+          "maxLength": 128
+        },
+        "hubspotChat": {
+          "type": "string",
+          "description": "HubSpot hub id (chat).",
           "maxLength": 128
         }
       }

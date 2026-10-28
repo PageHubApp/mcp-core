@@ -100,6 +100,31 @@ async function presetFor(slug) {
   return data.preset;
 }
 
+/** Each `set_integrations` argument and the provider field it sets (the app's utils/integrationProviders.ts). */
+const INTEGRATION_ARGS = {
+  googleAnalytics: ["googleAnalytics", "measurementId"],
+  googleTagManager: ["googleTagManager", "containerId"],
+  googleSearchConsole: ["googleSearchConsole", "verificationCode"],
+  metaPixel: ["metaPixel", "pixelId"],
+  googleAds: ["googleAds", "conversionId"],
+  tiktokPixel: ["tiktokPixel", "pixelId"],
+  linkedinInsight: ["linkedinInsight", "partnerId"],
+  pinterestTag: ["pinterestTag", "tagId"],
+  microsoftClarity: ["microsoftClarity", "projectId"],
+  hotjar: ["hotjar", "siteId"],
+  plausible: ["plausible", "scriptId"],
+  plausibleHost: ["plausible", "host"],
+  fathom: ["fathom", "siteId"],
+  umami: ["umami", "websiteId"],
+  umamiHost: ["umami", "host"],
+  crisp: ["crisp", "websiteId"],
+  tidio: ["tidio", "publicKey"],
+  tawk: ["tawk", "widgetId"],
+  intercom: ["intercom", "appId"],
+  intercomRegion: ["intercom", "region"],
+  hubspotChat: ["hubspotChat", "hubId"],
+};
+
 module.exports = {
   async setTheme(args) {
     const siteId = getActiveTarget(args).id;
@@ -154,13 +179,11 @@ module.exports = {
   async setIntegrations(args) {
     const siteId = getActiveTarget(args).id;
     const integrations = {};
-    if (args.googleAnalytics) integrations.googleAnalytics = { measurementId: args.googleAnalytics };
-    if (args.googleTagManager) integrations.googleTagManager = { containerId: args.googleTagManager };
-    if (args.googleSearchConsole) integrations.googleSearchConsole = { verificationCode: args.googleSearchConsole };
-    if (args.metaPixel) integrations.metaPixel = { pixelId: args.metaPixel };
-    if (args.googleAds) integrations.googleAds = { conversionId: args.googleAds };
+    for (const [arg, [provider, field]] of Object.entries(INTEGRATION_ARGS)) {
+      if (args[arg]) (integrations[provider] ??= {})[field] = args[arg];
+    }
     if (!Object.keys(integrations).length) {
-      throw new Error("Nothing to change: pass googleAnalytics, googleTagManager, googleSearchConsole, metaPixel or googleAds.");
+      throw new Error(`Nothing to change: pass one of ${Object.keys(INTEGRATION_ARGS).join(", ")}.`);
     }
     const res = await put(siteId, { integrations });
     return text(
