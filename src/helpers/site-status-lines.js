@@ -12,9 +12,12 @@ function crawlLines(data) {
   );
 }
 
-/** One status line for a `/api/v1/sites/[id]` payload's site-wide `ogImage`. */
+/** The status lines for a `/api/v1/sites/[id]` payload's site-wide `ogImage` and `ogVideo`. */
 function siteOgImageLine(data) {
-  return `Site share image: ${data?.ogImage || "(unset — pages without their own og:image get the generated card)"}`;
+  return (
+    `Site share image: ${data?.ogImage || "(unset — pages without their own og:image get the generated card)"}\n` +
+    `Site animated preview: ${data?.ogVideo || "(unset — no og:video)"} (update_site ogVideo)`
+  );
 }
 
 /** One status line for a `/api/v1/sites/[id]` payload's `timezone`. */

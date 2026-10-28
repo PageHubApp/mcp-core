@@ -172,7 +172,7 @@ module.exports = {
   /**
    * Patch site-level metadata (name / title / description / share image / crawler, timezone
    * and mount-origin settings).
-   * @param {object} args - { name?, title?, description?, ogImage?, crawlMode?, blockAiCrawlers?, timezone?, language?, mountOrigin?, rotateMountKey?, siteId? }
+   * @param {object} args - { name?, title?, description?, ogImage?, ogVideo?, crawlMode?, blockAiCrawlers?, timezone?, language?, mountOrigin?, rotateMountKey?, siteId? }
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async update_site(args = {}) {
@@ -196,7 +196,7 @@ module.exports = {
     if (args.rotateMountKey === true) body.rotateMountKey = true;
     if (Object.keys(body).length === 0) {
       throw new Error(
-        "update_site requires at least one of: name, title, description, ogImage, crawlMode, blockAiCrawlers, timezone, language, mountOrigin, rotateMountKey."
+        "update_site requires at least one of: name, title, description, ogImage, ogVideo, crawlMode, blockAiCrawlers, timezone, language, mountOrigin, rotateMountKey."
       );
     }
     const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(target.id)}`, {
