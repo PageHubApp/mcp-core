@@ -78,5 +78,5 @@ function formatResults(videos) {
 
   return `Found ${videos.length} video${videos.length === 1 ? "" : "s"}:\n${lines.join(
     "\n\n"
-  )}\n\nUse in Video nodes: set provider to "url" and set videoId to the URL above.`;
+  )}\n\nUse in a page: <video src="<the URL above>" controls playsinline>.`;
 }

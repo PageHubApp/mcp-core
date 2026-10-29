@@ -109,10 +109,10 @@ function formatResults(images) {
   return (
     `Found ${images.length} image${images.length === 1 ? "" : "s"} — urls are full-resolution originals:\n` +
     `${lines.join("\n\n")}\n\n` +
-    `Next step: upload_image({ imageUrl: "<url>" }), then set the Image node to ` +
-    `{ "type": "cdn", "src": "<returned mediaId>" }. On the CDN the viewer serves a ` +
+    `Next step: upload_image({ imageUrl: "<url>" }), then put the returned mediaId in the page: ` +
+    `{{ '<mediaId>' | image_url: width: 800 | image_tag: alt: '…' }}. On the CDN the page serves a ` +
     `per-viewport srcset with format=auto (AVIF/WebP), sized from the original.\n` +
-    `Do NOT use { "type": "url" } against the provider — it pins one fixed size, skips ` +
+    `Do NOT link the provider's url in the page — it pins one fixed size, skips ` +
     `the srcset, and leaves the site depending on a third party staying up. Do NOT append ` +
     `?w= / &h= / q= before uploading: crop and display size are layout concerns the CDN ` +
     `resolves from the full-resolution original.`

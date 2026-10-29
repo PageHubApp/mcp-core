@@ -19,8 +19,8 @@ function formatUploadResult(data, opts = {}) {
   }
   const usage =
     data.type === "r2"
-      ? `Stored on R2 (${data.contentType || "file"}).\n  • Video node: provider "r2", videoId "${data.mediaId}"\n  • Link / collection url field: use the url above\n  • Delete later with the editor Media Manager`
-      : `Use in an Image node: { "type": "cdn", "src": "${data.mediaId}" } — the mediaId (NOT the url) so the viewer serves a responsive srcset + format=auto. Do NOT bake the full-size url as type:"url".`;
+      ? `Stored on R2 (${data.contentType || "file"}).\n  • In a page: {{ '${data.mediaId}' | file_url }} (e.g. a <video src> or a download link)\n  • Collection url field: use the url above`
+      : `Use in a page: {{ '${data.mediaId}' | image_url: width: 800 | image_tag: alt: '…' }} — the mediaId (NOT the url) so the page serves a responsive srcset + format=auto. Do NOT paste the full-size url.`;
   return `${head}Uploaded.\n  mediaId: ${data.mediaId}\n  type: ${data.type}${
     data.contentType ? `\n  contentType: ${data.contentType}` : ""
   }\n  url: ${data.url}\n\n${usage}`;
