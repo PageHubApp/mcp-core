@@ -451,7 +451,7 @@
       "properties": {
         "category": {
           "type": "string",
-          "description": "Filter by category (e.g. \"landing-page\", \"portfolio\").",
+          "description": "Filter by category (e.g. \"legal\", \"automotive\", \"portfolio\").",
           "maxLength": 128
         },
         "tag": {
@@ -4730,7 +4730,7 @@
         },
         "category": {
           "type": "string",
-          "description": "Template category (e.g. \"landing-page\", \"portfolio\", \"ecommerce\", \"blog\")",
+          "description": "Template category: legal, automotive, home-services, store, agency, saas, portfolio, education or starter",
           "maxLength": 128
         },
         "tags": {
@@ -5023,7 +5023,7 @@
         },
         "category": {
           "type": "string",
-          "description": "Template category (e.g. \"landing-page\", \"portfolio\")",
+          "description": "Template category: legal, automotive, home-services, store, agency, saas, portfolio, education or starter",
           "maxLength": 128
         },
         "tags": {
