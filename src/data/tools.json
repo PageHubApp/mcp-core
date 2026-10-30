@@ -1330,7 +1330,7 @@
     "annotations": {
       "title": "Set download",
       "readOnlyHint": false,
-      "destructiveHint": false,
+      "destructiveHint": true,
       "idempotentHint": false,
       "openWorldHint": false
     },
@@ -1613,7 +1613,7 @@
     "annotations": {
       "title": "Set membership plan",
       "readOnlyHint": false,
-      "destructiveHint": false,
+      "destructiveHint": true,
       "idempotentHint": true,
       "openWorldHint": false
     },
@@ -2953,7 +2953,7 @@
     "annotations": {
       "title": "Edit site file",
       "readOnlyHint": false,
-      "destructiveHint": false,
+      "destructiveHint": true,
       "idempotentHint": false,
       "openWorldHint": false
     },
@@ -3019,7 +3019,7 @@
     "annotations": {
       "title": "Edit several site files",
       "readOnlyHint": false,
-      "destructiveHint": false,
+      "destructiveHint": true,
       "idempotentHint": false,
       "openWorldHint": false
     },
@@ -4665,7 +4665,7 @@
     "annotations": {
       "title": "Patch block",
       "readOnlyHint": false,
-      "destructiveHint": false,
+      "destructiveHint": true,
       "idempotentHint": false,
       "openWorldHint": false
     },
