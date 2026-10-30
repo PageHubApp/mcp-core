@@ -579,7 +579,7 @@
       "readOnlyHint": false,
       "destructiveHint": true,
       "idempotentHint": true,
-      "openWorldHint": false
+      "openWorldHint": true
     },
     "inputSchema": {
       "type": "object",
@@ -1332,7 +1332,7 @@
       "readOnlyHint": false,
       "destructiveHint": true,
       "idempotentHint": false,
-      "openWorldHint": false
+      "openWorldHint": true
     },
     "inputSchema": {
       "type": "object",
@@ -1966,7 +1966,7 @@
       "readOnlyHint": false,
       "destructiveHint": true,
       "idempotentHint": true,
-      "openWorldHint": false
+      "openWorldHint": true
     },
     "inputSchema": {
       "type": "object",
@@ -2025,7 +2025,7 @@
       "readOnlyHint": false,
       "destructiveHint": true,
       "idempotentHint": true,
-      "openWorldHint": false
+      "openWorldHint": true
     },
     "inputSchema": {
       "type": "object",
@@ -3471,7 +3471,7 @@
       "readOnlyHint": false,
       "destructiveHint": true,
       "idempotentHint": true,
-      "openWorldHint": false
+      "openWorldHint": true
     },
     "inputSchema": {
       "type": "object",
@@ -3597,7 +3597,7 @@
       "readOnlyHint": false,
       "destructiveHint": true,
       "idempotentHint": true,
-      "openWorldHint": false
+      "openWorldHint": true
     },
     "inputSchema": {
       "type": "object",
@@ -3780,7 +3780,7 @@
       "readOnlyHint": false,
       "destructiveHint": true,
       "idempotentHint": true,
-      "openWorldHint": false
+      "openWorldHint": true
     },
     "inputSchema": {
       "type": "object",
@@ -3975,7 +3975,7 @@
       "readOnlyHint": false,
       "destructiveHint": false,
       "idempotentHint": false,
-      "openWorldHint": false
+      "openWorldHint": true
     },
     "inputSchema": {
       "type": "object",
@@ -4154,7 +4154,7 @@
       "readOnlyHint": false,
       "destructiveHint": true,
       "idempotentHint": false,
-      "openWorldHint": false
+      "openWorldHint": true
     },
     "inputSchema": {
       "type": "object",
