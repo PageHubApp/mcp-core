@@ -561,12 +561,12 @@
         "title": {
           "type": "string",
           "description": "<title>.",
-          "maxLength": 512
+          "maxLength": 60
         },
         "description": {
           "type": "string",
           "description": "Meta description.",
-          "maxLength": 16384
+          "maxLength": 160
         }
       }
     }
