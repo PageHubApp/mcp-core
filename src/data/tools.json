@@ -3490,6 +3490,10 @@
           "description": "Site id.",
           "maxLength": 256
         },
+        "privacy": {
+          "type": "object",
+          "description": "See the integrations guide."
+        },
         "googleAnalytics": {
           "type": "string",
           "description": "GA4 id, G-XXXXXXXXXX.",

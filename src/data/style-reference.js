@@ -351,6 +351,12 @@ Favicon (\`set_favicon\`): exactly one of \`filePath\` (stdio), \`mediaId\`, \`i
 
   integrations: `# Integrations — set_integrations
 
+Privacy: \`privacy: { consentMode, privacyUrl, builtInAnalytics, submissionRetentionDays }\`.
+- \`consentMode\`: \`off\`, \`eu\` (EU and UK visitors) or \`all\`. When on, the tags below wait for Accept. A page with the \`cookie-consent\` block asks through it, so design or translate that block for a custom banner; otherwise visitors get a plain English one. A footer link with \`data-cookie-settings\` lets them change their answer. Scripts you write yourself must check \`localStorage["ph-cookie-consent"]\`.
+- \`privacyUrl\`: the site's privacy page, linked from the plain banner.
+- \`builtInAnalytics\`: \`false\` removes PageHub's own analytics.
+- \`submissionRetentionDays\`: \`0\`, \`30\`, \`90\`, \`180\` or \`365\`. Older form submissions are deleted nightly. Ask the owner first: they can't be recovered.
+
 Providers (rendered as real tags on published pages):
 - \`googleAnalytics\`: GA4 id \`G-XXXXXXXXXX\` (Admin → Data Streams).
 - \`googleTagManager\`: \`GTM-XXXXXXX\`. With GTM, configure tags inside GTM and pass only the container id here.

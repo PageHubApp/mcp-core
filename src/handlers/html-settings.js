@@ -182,12 +182,16 @@ module.exports = {
     for (const [arg, [provider, field]] of Object.entries(INTEGRATION_ARGS)) {
       if (args[arg]) (integrations[provider] ??= {})[field] = args[arg];
     }
-    if (!Object.keys(integrations).length) {
-      throw new Error(`Nothing to change: pass one of ${Object.keys(INTEGRATION_ARGS).join(", ")}.`);
+    const privacy = parseMaybeJson(args.privacy) || {};
+    const hasIntegrations = Object.keys(integrations).length > 0;
+    const hasPrivacy = Object.keys(privacy).length > 0;
+    if (!hasIntegrations && !hasPrivacy) {
+      throw new Error(`Nothing to change: pass privacy or one of ${Object.keys(INTEGRATION_ARGS).join(", ")}.`);
     }
-    const res = await put(siteId, { integrations });
+    const privacyRes = hasPrivacy ? await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}/privacy`, { method: "PUT", body: privacy }) : null;
+    const res = hasIntegrations ? await put(siteId, { integrations }) : privacyRes;
     return text(
-      `Integrations updated: ${Object.keys(integrations).join(", ")}.\n` +
+      `${hasIntegrations ? "Integrations" : "Privacy settings"} updated: ${[...Object.keys(integrations), ...Object.keys(privacy)].join(", ")}.\n` +
         (res.live === "released" ? "Live on the published site." : "Saved; they reach visitors when the site is published.") +
         `\nEditor: ${getEditorUrl(siteId)}`
     );
