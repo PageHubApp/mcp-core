@@ -3835,6 +3835,90 @@
     }
   },
   {
+    "name": "list_promo_codes",
+    "description": "The site's promo codes from its own Stripe account: code, percent or amount off, uses, end date, on or off.",
+    "annotations": {
+      "title": "List promo codes",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "siteId": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "siteId"
+      ]
+    }
+  },
+  {
+    "name": "set_promo_code",
+    "description": "Make a promo code (code + percentOff 1-99, or amountOff in cents) or turn one off or on (promoCodeId + active). Works on the booking card and Stripe's page; tax is worked out on the price after the code.",
+    "annotations": {
+      "title": "Set promo code",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "siteId": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 128
+        },
+        "code": {
+          "type": "string",
+          "description": "New code: 3-32 letters, digits, dashes.",
+          "maxLength": 32
+        },
+        "percentOff": {
+          "type": "number",
+          "description": "Whole percent, 1-99."
+        },
+        "amountOff": {
+          "type": "number",
+          "description": "Cents off, in currency."
+        },
+        "currency": {
+          "type": "string",
+          "description": "With amountOff. Default usd.",
+          "maxLength": 3
+        },
+        "maxRedemptions": {
+          "type": "number",
+          "description": "Most uses. Omit for no limit."
+        },
+        "expiresAt": {
+          "type": "string",
+          "description": "ISO date the code ends.",
+          "maxLength": 40
+        },
+        "promoCodeId": {
+          "type": "string",
+          "description": "Existing code id (promo_...) to turn off or on.",
+          "maxLength": 64
+        },
+        "active": {
+          "type": "boolean",
+          "description": "With promoCodeId: false turns it off."
+        }
+      },
+      "required": [
+        "siteId"
+      ]
+    }
+  },
+  {
     "name": "stripe_search_products",
     "description": "Search the site's live Stripe products (id, title, price, image, metadata).",
     "annotations": {
