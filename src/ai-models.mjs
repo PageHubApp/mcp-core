@@ -102,7 +102,7 @@ const EVAL_MODEL_VALUES =
 
 export const ALLOWED_MODEL_VALUES = new Set([...AI_MODELS.map(m => m.value), ...EVAL_MODEL_VALUES]);
 
-const PLAN_RANK = { free: 0, pro: 1, business: 2, agency: 3 };
+const PLAN_RANK = { free: 0, pro: 1, rentals5: 1, rentals25: 1, rentals100: 1, business: 2, agency: 3 };
 
 function findModel(modelValue) {
   return AI_MODELS.find(m => m.value === modelValue);
