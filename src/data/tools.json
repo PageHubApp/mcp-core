@@ -772,7 +772,7 @@
   },
   {
     "name": "list_site_emails",
-    "description": "List the site's transactional emails: customized or default, and whether each sends. Start here.",
+    "description": "The site's transactional emails: customized or default, whether each sends. Start here.",
     "annotations": {
       "title": "List site emails",
       "readOnlyHint": true,
@@ -793,7 +793,7 @@
   },
   {
     "name": "get_site_email",
-    "description": "Read one site email: subject, preheader, Liquid source (emails/<kind>.liquid, or the default), its objects ({{ order.total }}…) and parts (keep required ones). Simple blocks (div, p, h1-h3, a, img) with Tailwind; no forms, buttons, video or data-*. A link with bg-* sends as a button.",
+    "description": "One site email: subject, preheader, Liquid source (emails/<kind>.liquid, or the default), its objects ({{ order.total }}…) and parts (keep required ones). Simple blocks (div, p, h1-h3, a, img) with Tailwind; no forms, buttons, video or data-*. A link with bg-* sends as a button.",
     "annotations": {
       "title": "Get site email",
       "readOnlyHint": true,
@@ -814,7 +814,7 @@
         },
         "kind": {
           "type": "string",
-          "description": "Kind from list_site_emails.",
+          "description": "See list_site_emails.",
           "enum": [
             "order_receipt",
             "subscription_welcome",
@@ -825,6 +825,8 @@
             "booking_balance",
             "booking_deposit",
             "booking_deposit_link",
+            "booking_agreement",
+            "booking_agreement_sign",
             "gift_card_gifted",
             "gift_card_self",
             "customer_login",
@@ -837,7 +839,7 @@
   },
   {
     "name": "update_site_email",
-    "description": "Save a site email's subject, preheader and/or full Liquid source, or reset: true. Unknown objects, a missing required part and elements inboxes can't show are rejected. Check with preview_site_email.",
+    "description": "Save a site email's subject, preheader and/or full Liquid source, or reset: true. Unknown objects, a missing required part and elements inboxes can't show are rejected.",
     "annotations": {
       "title": "Update site email",
       "readOnlyHint": false,
@@ -858,7 +860,7 @@
         },
         "kind": {
           "type": "string",
-          "description": "Kind from list_site_emails.",
+          "description": "See list_site_emails.",
           "enum": [
             "order_receipt",
             "subscription_welcome",
@@ -869,6 +871,8 @@
             "booking_balance",
             "booking_deposit",
             "booking_deposit_link",
+            "booking_agreement",
+            "booking_agreement_sign",
             "gift_card_gifted",
             "gift_card_self",
             "customer_login",
@@ -900,7 +904,7 @@
   },
   {
     "name": "preview_site_email",
-    "description": "Render the saved email with sample data: subject, errors (one with errors sends the default), warnings, plain text.",
+    "description": "Render the saved email with sample data: subject, errors (errors send the default), warnings, plain text.",
     "annotations": {
       "title": "Preview site email",
       "readOnlyHint": true,
@@ -921,7 +925,7 @@
         },
         "kind": {
           "type": "string",
-          "description": "Kind from list_site_emails.",
+          "description": "See list_site_emails.",
           "enum": [
             "order_receipt",
             "subscription_welcome",
@@ -932,6 +936,8 @@
             "booking_balance",
             "booking_deposit",
             "booking_deposit_link",
+            "booking_agreement",
+            "booking_agreement_sign",
             "gift_card_gifted",
             "gift_card_self",
             "customer_login",
@@ -1733,7 +1739,7 @@
   },
   {
     "name": "set_member",
-    "description": "add (email, plan?, sendInvite?), or grant/revoke/extend a plan, block/unblock, rename a member found by customerId or email. Applies on their next page load; never cancels Stripe billing.",
+    "description": "add (email, plan?, sendInvite?), or grant/revoke/extend a plan, block/unblock, rename a member found by customerId or email. Never cancels Stripe billing.",
     "annotations": {
       "title": "Set member",
       "readOnlyHint": false,
@@ -1799,7 +1805,7 @@
   },
   {
     "name": "remove_member",
-    "description": "Delete a member (customerId or email); sign-in stops at once. Stripe billing continues.",
+    "description": "Delete a member (customerId or email). Stripe billing continues.",
     "annotations": {
       "title": "Remove member",
       "readOnlyHint": false,
