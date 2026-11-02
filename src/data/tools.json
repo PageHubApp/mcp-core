@@ -772,7 +772,7 @@
   },
   {
     "name": "list_site_emails",
-    "description": "The site's transactional emails: customized or default, whether each sends. Start here.",
+    "description": "Transactional emails: customized or default, whether each sends.",
     "annotations": {
       "title": "List site emails",
       "readOnlyHint": true,
@@ -793,7 +793,7 @@
   },
   {
     "name": "get_site_email",
-    "description": "One site email: subject, preheader, Liquid source (emails/<kind>.liquid, or the default), its objects ({{ order.total }}…) and parts (keep required ones). Simple blocks (div, p, h1-h3, a, img) with Tailwind; no forms, buttons, video or data-*. A link with bg-* sends as a button.",
+    "description": "One site email: subject, preheader, Liquid source (emails/<kind>.liquid or default), objects ({{ order.total }}…), parts (keep required ones). Simple blocks (div, p, h1-h3, a, img) with Tailwind; no forms, buttons, video or data-*. A link with bg-* is a button.",
     "annotations": {
       "title": "Get site email",
       "readOnlyHint": true,
@@ -827,6 +827,7 @@
             "booking_deposit_link",
             "booking_agreement",
             "booking_agreement_sign",
+            "booking_abandoned",
             "gift_card_gifted",
             "gift_card_self",
             "customer_login",
@@ -839,7 +840,7 @@
   },
   {
     "name": "update_site_email",
-    "description": "Save a site email's subject, preheader and/or full Liquid source, or reset: true. Unknown objects, a missing required part and elements inboxes can't show are rejected.",
+    "description": "Save a site email's subject, preheader, Liquid source, or reset: true. Rejects unknown objects, a missing required part and elements inboxes can't show.",
     "annotations": {
       "title": "Update site email",
       "readOnlyHint": false,
@@ -873,6 +874,7 @@
             "booking_deposit_link",
             "booking_agreement",
             "booking_agreement_sign",
+            "booking_abandoned",
             "gift_card_gifted",
             "gift_card_self",
             "customer_login",
@@ -938,6 +940,7 @@
             "booking_deposit_link",
             "booking_agreement",
             "booking_agreement_sign",
+            "booking_abandoned",
             "gift_card_gifted",
             "gift_card_self",
             "customer_login",
