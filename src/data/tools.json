@@ -772,7 +772,7 @@
   },
   {
     "name": "list_site_emails",
-    "description": "List the site's transactional emails (receipt, welcome, gift card, sign-in link, downloads): customized or default, and whether each sends. Start here.",
+    "description": "List the site's transactional emails: customized or default, and whether each sends. Start here.",
     "annotations": {
       "title": "List site emails",
       "readOnlyHint": true,
@@ -814,7 +814,7 @@
         },
         "kind": {
           "type": "string",
-          "description": "Email kind from list_site_emails.",
+          "description": "Kind from list_site_emails.",
           "enum": [
             "order_receipt",
             "subscription_welcome",
@@ -823,6 +823,8 @@
             "booking_requested",
             "booking_declined",
             "booking_balance",
+            "booking_deposit",
+            "booking_deposit_link",
             "gift_card_gifted",
             "gift_card_self",
             "customer_login",
@@ -856,7 +858,7 @@
         },
         "kind": {
           "type": "string",
-          "description": "Email kind from list_site_emails.",
+          "description": "Kind from list_site_emails.",
           "enum": [
             "order_receipt",
             "subscription_welcome",
@@ -865,6 +867,8 @@
             "booking_requested",
             "booking_declined",
             "booking_balance",
+            "booking_deposit",
+            "booking_deposit_link",
             "gift_card_gifted",
             "gift_card_self",
             "customer_login",
@@ -884,7 +888,7 @@
         },
         "source": {
           "type": "string",
-          "description": "The whole Liquid source, as get_site_email returns it.",
+          "description": "Whole Liquid source.",
           "maxLength": 200000
         },
         "reset": {
@@ -896,7 +900,7 @@
   },
   {
     "name": "preview_site_email",
-    "description": "Render the saved email with sample data: subject, errors (an email with errors sends the default instead), warnings, plain text.",
+    "description": "Render the saved email with sample data: subject, errors (one with errors sends the default), warnings, plain text.",
     "annotations": {
       "title": "Preview site email",
       "readOnlyHint": true,
@@ -917,7 +921,7 @@
         },
         "kind": {
           "type": "string",
-          "description": "Email kind from list_site_emails.",
+          "description": "Kind from list_site_emails.",
           "enum": [
             "order_receipt",
             "subscription_welcome",
@@ -926,6 +930,8 @@
             "booking_requested",
             "booking_declined",
             "booking_balance",
+            "booking_deposit",
+            "booking_deposit_link",
             "gift_card_gifted",
             "gift_card_self",
             "customer_login",
