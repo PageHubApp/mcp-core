@@ -7,14 +7,15 @@
  * the customer's live domain. Executable content is therefore refused on the
  * AI client, whatever the model's reason: inject / head code / handlers props,
  * and `<script>`, `<iframe>`, inline event handlers or `javascript:` URLs in
- * any string. People add those themselves, in Site settings or the editor.
+ * any string. `<base>` (moves every relative script and link to another host) and `<meta http-equiv>` (redirects,
+ * cookies) are refused for the same reason. People add those themselves, in Site settings or the editor.
  */
 
 const ACTIVE_KEYS = new Set(["inject", "handlers", "headCode", "footerCode"]);
 // `{% javascript %}` is a site script block; an attribute starts after whitespace, `/` or a closing quote
 // (`<img/onerror=…>`, `<a href="x"onclick=…>`), and a scheme may carry entities or control characters.
 const ACTIVE_CONTENT_RE =
-  /<\s*(script|iframe|object|embed)\b|\{%-?\s*(javascript|endjavascript)\b|javascript:|vbscript:|data:text\/html|[\s/"'`]on[a-z]+\s*=|srcdoc\s*=/i;
+  /<\s*(script|iframe|object|embed|base|frame|frameset|applet|portal)\b|<\s*meta\b[^>]*\bhttp-equiv|\{%-?\s*(javascript|endjavascript)\b|javascript:|vbscript:|data:text\/html|[\s/"'`]on[a-z]+\s*=|srcdoc\s*=/i;
 /** A site script file (`assets/<name>.js`): plain JavaScript, so no markup pattern can see it. */
 const SCRIPT_PATH_RE = /^\s*\/?assets\/.*\.js\s*$/i;
 
