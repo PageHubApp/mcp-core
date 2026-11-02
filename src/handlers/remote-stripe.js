@@ -103,7 +103,11 @@ module.exports = {
       return { content: [{ type: "text", text: `Checkout removed from collection "${slug}".` }] };
     }
 
-    const fieldMap = {};
+    // A save replaces the map, so the owner's hold, cancellation policy and agreement go back with it.
+    const { configs = [] } = await apiFetch(base);
+    const current = configs.find(c => c.collectionSlug === slug)?.fieldMap ?? {};
+    const { priceId, price, inventory, variants, ...settings } = current;
+    const fieldMap = { ...settings };
     if (args.priceIdField) fieldMap.priceId = args.priceIdField;
     if (args.priceField) fieldMap.price = args.priceField;
     if (args.inventoryField) fieldMap.inventory = args.inventoryField;
