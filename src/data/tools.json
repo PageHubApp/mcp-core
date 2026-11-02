@@ -793,7 +793,7 @@
   },
   {
     "name": "get_site_email",
-    "description": "Read one site email: subject, preheader, Liquid source (emails/<kind>.liquid, or the default), its objects ({{ order.total }}…) and parts (keep required ones, e.g. the order.lines loop). Use simple blocks (div, p, h1-h3, a, img) with Tailwind; no forms, buttons, video or runtime data-* attributes. A link with bg-* is sent as a button.",
+    "description": "Read one site email: subject, preheader, Liquid source (emails/<kind>.liquid, or the default), its objects ({{ order.total }}…) and parts (keep required ones). Simple blocks (div, p, h1-h3, a, img) with Tailwind; no forms, buttons, video or data-*. A link with bg-* sends as a button.",
     "annotations": {
       "title": "Get site email",
       "readOnlyHint": true,
@@ -822,6 +822,7 @@
             "booking_confirmed",
             "booking_requested",
             "booking_declined",
+            "booking_balance",
             "gift_card_gifted",
             "gift_card_self",
             "customer_login",
@@ -834,7 +835,7 @@
   },
   {
     "name": "update_site_email",
-    "description": "Save a site email's subject, preheader and/or full Liquid source, or reset: true. Unknown objects, a missing required part and elements inboxes can't show are rejected. preview_site_email renders the result.",
+    "description": "Save a site email's subject, preheader and/or full Liquid source, or reset: true. Unknown objects, a missing required part and elements inboxes can't show are rejected. Check with preview_site_email.",
     "annotations": {
       "title": "Update site email",
       "readOnlyHint": false,
@@ -863,6 +864,7 @@
             "booking_confirmed",
             "booking_requested",
             "booking_declined",
+            "booking_balance",
             "gift_card_gifted",
             "gift_card_self",
             "customer_login",
@@ -923,6 +925,7 @@
             "booking_confirmed",
             "booking_requested",
             "booking_declined",
+            "booking_balance",
             "gift_card_gifted",
             "gift_card_self",
             "customer_login",
