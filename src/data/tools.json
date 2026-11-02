@@ -693,7 +693,7 @@
   },
   {
     "name": "duplicate_site",
-    "description": "Copy a site you're a member of into a new site you own (content, title, description, portal, crawlPolicy). Domain and published state are not copied. The copy becomes active; the result has its editor link and previewUrl.",
+    "description": "Copy a site (owner/agency) into a new site you own (content, title, description, portal, crawlPolicy). Domain and published state are not copied. The copy becomes active; the result has its editor link and previewUrl.",
     "annotations": {
       "title": "Duplicate site",
       "readOnlyHint": false,
