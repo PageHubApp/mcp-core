@@ -3,6 +3,7 @@
  */
 
 const { apiFetch } = require("../core/api-fetch");
+const { formatMoney } = require("../helpers/money");
 
 function path(args) {
   if (!args.siteId) throw new Error("siteId is required.");
@@ -10,7 +11,7 @@ function path(args) {
 }
 
 function fmt(p) {
-  const off = p.percentOff ? `${p.percentOff}% off` : `${(p.amountOff / 100).toFixed(2)} ${String(p.currency).toUpperCase()} off`;
+  const off = p.percentOff ? `${p.percentOff}% off` : `${formatMoney(p.amountOff, p.currency)} off`;
   const uses = `used ${p.timesRedeemed}${p.maxRedemptions ? ` of ${p.maxRedemptions}` : ""}`;
   const ends = p.expiresAt ? `, ends ${p.expiresAt.slice(0, 10)}` : "";
   return `• ${p.code} [promoCodeId: ${p.id}] — ${off}, ${uses}${ends}${p.active ? "" : " (OFF)"}`;

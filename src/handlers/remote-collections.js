@@ -7,13 +7,7 @@
 const { randomBytes } = require("crypto");
 const { apiFetch, normalizeBaseUrl } = require("../core/api-fetch");
 const { getContext } = require("../core/context");
-
-function activeSiteId(args) {
-  const ctx = getContext();
-  const id = args?.id || ctx.activeSite?.id;
-  if (!id) throw new Error("Site id is required (none provided and no active site set).");
-  return id;
-}
+const { activeSiteId, collectionBySlug, collectionPath } = require("../helpers/collections");
 
 /**
  * A webhook-feed collection's ingest endpoint: senders POST rows signed with the collection's secret. The secret is the
@@ -63,10 +57,7 @@ module.exports = {
    */
   async get_collection(args = {}) {
     const siteId = activeSiteId(args);
-    if (!args.slug) throw new Error("slug is required.");
-    const list = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}/collections`);
-    const col = (list.collections || []).find(c => c.slug === args.slug);
-    if (!col) throw new Error(`Collection "${args.slug}" not found.`);
+    const col = await collectionBySlug(siteId, args.slug);
     const data = await apiFetch(
       `/api/v1/sites/${encodeURIComponent(siteId)}/collections/${encodeURIComponent(col._id)}`
     );
@@ -89,12 +80,7 @@ module.exports = {
    * @param {object} args - { slug, rotate?, secret?, id? }
    */
   async set_collection_webhook(args = {}) {
-    const siteId = activeSiteId(args);
-    if (!args.slug) throw new Error("slug is required.");
-    const list = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}/collections`);
-    const found = (list.collections || []).find(c => c.slug === args.slug);
-    if (!found) throw new Error(`Collection "${args.slug}" not found.`);
-    const url = `/api/v1/sites/${encodeURIComponent(siteId)}/collections/${encodeURIComponent(found._id)}`;
+    const url = await collectionPath(args);
     const col = (await apiFetch(url)).collection;
     const type = col.source?.type || "manual";
     const isFeed = type === "webhook-feed";
@@ -154,7 +140,7 @@ module.exports = {
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async update_collection_schema(args = {}) {
-    const siteId = activeSiteId(args);
+    activeSiteId(args);
     if (!args.slug) throw new Error("slug is required.");
     if (args.schema !== undefined && !Array.isArray(args.schema)) {
       throw new Error("schema must be an array.");
@@ -166,11 +152,8 @@ module.exports = {
     if (!Object.keys(body).length) {
       throw new Error("Pass schema, requiredPlans, memberFields or requiresCustomerLogin.");
     }
-    const list = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}/collections`);
-    const col = (list.collections || []).find(c => c.slug === args.slug);
-    if (!col) throw new Error(`Collection "${args.slug}" not found.`);
     const data = await apiFetch(
-      `/api/v1/sites/${encodeURIComponent(siteId)}/collections/${encodeURIComponent(col._id)}`,
+      await collectionPath(args),
       { method: "PATCH", body }
     );
     const saved = data.collection || {};
@@ -191,13 +174,8 @@ module.exports = {
    * @returns {Promise<{content: Array<{type:'text', text:string}>}>}
    */
   async delete_collection(args = {}) {
-    const siteId = activeSiteId(args);
-    if (!args.slug) throw new Error("slug is required.");
-    const list = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}/collections`);
-    const col = (list.collections || []).find(c => c.slug === args.slug);
-    if (!col) throw new Error(`Collection "${args.slug}" not found.`);
     await apiFetch(
-      `/api/v1/sites/${encodeURIComponent(siteId)}/collections/${encodeURIComponent(col._id)}`,
+      await collectionPath(args),
       { method: "DELETE" }
     );
     return {

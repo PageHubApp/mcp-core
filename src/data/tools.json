@@ -3941,6 +3941,147 @@
     }
   },
   {
+    "name": "list_orders",
+    "description": "The site's orders and bookings from its own Stripe account, newest first: buyer, paid, refunds, booking, balance, deposit hold, agreement, shipping.",
+    "annotations": {
+      "title": "List orders",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "email": {
+          "type": "string",
+          "description": "Only this buyer's orders.",
+          "maxLength": 254
+        },
+        "cursor": {
+          "type": "string",
+          "description": "From the last page's More line.",
+          "maxLength": 255
+        }
+      },
+      "required": [
+        "id"
+      ]
+    }
+  },
+  {
+    "name": "get_order",
+    "description": "One order in full: items, shipping, cancellation terms, balance, deposit hold, signed agreement, the buyer's answers.",
+    "annotations": {
+      "title": "Get order",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "orderId": {
+          "type": "string",
+          "description": "From list_orders.",
+          "maxLength": 255
+        }
+      },
+      "required": [
+        "id",
+        "orderId"
+      ]
+    }
+  },
+  {
+    "name": "update_order",
+    "description": "Act on an order. Moves money on the site's own Stripe account: only for an order and amount the owner asked about. refund, approve, charge_balance, hold_deposit, keep_deposit need confirmAmount = the amount that moves (minor units); without it the tool says the amount to ask the owner about. unbook reopens the dates and never refunds.",
+    "annotations": {
+      "title": "Update order",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "orderId": {
+          "type": "string",
+          "description": "From list_orders.",
+          "maxLength": 255
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "ship",
+            "unship",
+            "refund",
+            "approve",
+            "decline",
+            "charge_balance",
+            "send_balance_link",
+            "hold_deposit",
+            "keep_deposit",
+            "release_deposit",
+            "send_deposit_link",
+            "unbook",
+            "remind_agreement",
+            "retry_guest_check"
+          ]
+        },
+        "amount": {
+          "type": "number",
+          "description": "Minor units. refund: part (omit for all that's left). keep_deposit: required."
+        },
+        "confirmAmount": {
+          "type": "number",
+          "description": "The amount that moves, in minor units, as the owner agreed."
+        },
+        "carrier": {
+          "type": "string",
+          "enum": [
+            "USPS",
+            "UPS",
+            "FedEx",
+            "DHL"
+          ],
+          "description": "ship."
+        },
+        "tracking": {
+          "type": "string",
+          "description": "ship.",
+          "maxLength": 100
+        },
+        "notifyBuyer": {
+          "type": "boolean",
+          "description": "ship: email the buyer."
+        }
+      },
+      "required": [
+        "id",
+        "orderId",
+        "action"
+      ]
+    }
+  },
+  {
     "name": "stripe_search_products",
     "description": "Search the site's live Stripe products (id, title, price, image, metadata).",
     "annotations": {
@@ -4296,6 +4437,307 @@
       },
       "required": [
         "slug"
+      ]
+    }
+  },
+  {
+    "name": "list_apps",
+    "description": "Apps that fill a collection: rental tools (Hospitable, Hostaway, Guesty), calendar links (Airbnb, Vrbo, Booking.com, Google, Outlook, Apple), feeds and shops (RSS, Notion, Shopify, Square…), Airtable. Shows what each needs (secret keys marked), whether the plan has it, what's connected with its last sync, and calendar links (feedId).",
+    "annotations": {
+      "title": "List apps",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "id"
+      ]
+    }
+  },
+  {
+    "name": "connect_app",
+    "description": "Connect an app from list_apps: makes or reuses its collection and runs the first sync. inputs = the keys list_apps shows. A key the user pastes is stored encrypted and never shown again; never ask for one they haven't offered, point them to the hint for where to make it.",
+    "annotations": {
+      "title": "Connect app",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "app": {
+          "type": "string",
+          "description": "The [app: …] value from list_apps.",
+          "maxLength": 40
+        },
+        "inputs": {
+          "type": "object",
+          "description": "Input key → value, as list_apps lists them."
+        },
+        "name": {
+          "type": "string",
+          "description": "Collection name, or the home's name for a calendar link.",
+          "maxLength": 120
+        },
+        "bookingUrl": {
+          "type": "string",
+          "description": "Rental tools and calendar links: the home's booking page there.",
+          "maxLength": 2048
+        }
+      },
+      "required": [
+        "id",
+        "app",
+        "inputs"
+      ]
+    }
+  },
+  {
+    "name": "sync_collection",
+    "description": "Read an app-fed collection's source again now (rows the source dropped are removed). Stripe products: refresh_products.",
+    "annotations": {
+      "title": "Sync collection",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "slug": {
+          "type": "string",
+          "description": "Collection slug.",
+          "maxLength": 60
+        }
+      },
+      "required": [
+        "id",
+        "slug"
+      ]
+    }
+  },
+  {
+    "name": "get_calendar",
+    "description": "Booked and closed dates across a collection's homes for up to 62 days (claimId on owner-closed dates), plus dates that haven't reached the rental tool yet (pushId).",
+    "annotations": {
+      "title": "Get calendar",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "slug": {
+          "type": "string",
+          "description": "Collection slug.",
+          "maxLength": 60
+        },
+        "from": {
+          "type": "string",
+          "description": "YYYY-MM-DD.",
+          "maxLength": 10
+        },
+        "to": {
+          "type": "string",
+          "description": "YYYY-MM-DD, at most 62 days after from.",
+          "maxLength": 10
+        }
+      },
+      "required": [
+        "id",
+        "slug",
+        "from",
+        "to"
+      ]
+    }
+  },
+  {
+    "name": "set_dates",
+    "description": "One of: close dates on homes (a booked date stops that home only), reopen dates the owner closed (rowId + claimId from get_calendar; an order's dates are freed with update_order unbook), or retry a date that didn't reach the rental tool.",
+    "annotations": {
+      "title": "Set dates",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "slug": {
+          "type": "string",
+          "description": "Collection slug.",
+          "maxLength": 60
+        },
+        "close": {
+          "type": "object",
+          "properties": {
+            "rowIds": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 24
+              },
+              "maxItems": 200
+            },
+            "from": {
+              "type": "string",
+              "description": "YYYY-MM-DD.",
+              "maxLength": 10
+            },
+            "to": {
+              "type": "string",
+              "description": "YYYY-MM-DD.",
+              "maxLength": 10
+            },
+            "note": {
+              "type": "string",
+              "maxLength": 200
+            }
+          },
+          "required": [
+            "rowIds",
+            "from",
+            "to"
+          ]
+        },
+        "reopen": {
+          "type": "object",
+          "properties": {
+            "rowId": {
+              "type": "string",
+              "maxLength": 24
+            },
+            "claimId": {
+              "type": "string",
+              "maxLength": 64
+            }
+          },
+          "required": [
+            "rowId",
+            "claimId"
+          ]
+        },
+        "retryPushId": {
+          "type": "string",
+          "description": "From get_calendar.",
+          "maxLength": 24
+        }
+      },
+      "required": [
+        "id",
+        "slug"
+      ]
+    }
+  },
+  {
+    "name": "share_calendar_link",
+    "description": "The link Airbnb, Vrbo or Booking.com imports so dates booked on the site close there too. No rowId: each home's link. rowId: make it (rotate: replace it; the old link stops working).",
+    "annotations": {
+      "title": "Share calendar link",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "slug": {
+          "type": "string",
+          "description": "Collection slug.",
+          "maxLength": 60
+        },
+        "rowId": {
+          "type": "string",
+          "maxLength": 24
+        },
+        "rotate": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "slug"
+      ]
+    }
+  },
+  {
+    "name": "remove_calendar_link",
+    "description": "Stop reading a calendar link (kind + feedId from list_apps). The rows it filled go with it.",
+    "annotations": {
+      "title": "Remove calendar link",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "availability",
+            "events"
+          ],
+          "description": "From list_apps."
+        },
+        "feedId": {
+          "type": "string",
+          "description": "From list_apps.",
+          "maxLength": 64
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "feedId"
       ]
     }
   },
