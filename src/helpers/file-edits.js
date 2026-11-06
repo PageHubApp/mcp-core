@@ -6,6 +6,12 @@
 /** The anchor keys of an edit: replace `oldText`, or insert `newText` right after / before an anchor that appears once. */
 const ANCHORS = ["oldText", "insertAfter", "insertBefore"];
 
+/**
+ * The anchor keys an edit actually sets. `""` counts as unset: strict tool-calling clients (the in-app AI) fill every
+ * optional field, so a real `oldText` arrives beside `insertAfter: ""` and `insertBefore: ""`.
+ */
+const anchorsOf = e => ANCHORS.filter(k => e?.[k] !== undefined && e[k] !== "");
+
 /** 1-based line of an offset in `source`. */
 const lineOfOffset = (source, offset) => source.slice(0, Math.max(0, offset)).split("\n").length;
 
@@ -105,8 +111,8 @@ function describeNoMatch(source, needle) {
 function applyEdits(source, edits, path) {
   let out = source;
   for (const [i, e] of edits.entries()) {
-    const given = ANCHORS.filter(k => e?.[k] !== undefined);
-    if (given.length !== 1 || typeof e[given[0]] !== "string" || !e[given[0]]) {
+    const given = anchorsOf(e);
+    if (given.length !== 1 || typeof e[given[0]] !== "string") {
       throw new Error(`edits[${i}].oldText is required (exact text from read_site_file), or insertAfter / insertBefore (text to insert next to). Give exactly one.`);
     }
     if (typeof e.newText !== "string") throw new Error(`edits[${i}].newText is required ("" deletes).`);
@@ -134,9 +140,11 @@ function applyEdits(source, edits, path) {
  */
 function editsOf(args = {}) {
   if (Array.isArray(args.edits) && args.edits.length) return args.edits;
-  if (!ANCHORS.some(k => args[k] !== undefined)) return [];
+  const given = anchorsOf(args);
+  if (!given.length) return [];
   const edit = { newText: args.newText };
-  for (const k of [...ANCHORS, "replaceAll"]) if (args[k] !== undefined) edit[k] = args[k];
+  for (const k of given) edit[k] = args[k];
+  if (args.replaceAll !== undefined) edit.replaceAll = args.replaceAll;
   return [edit];
 }
 
