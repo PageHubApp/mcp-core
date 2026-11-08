@@ -14,7 +14,7 @@ const STYLE_REFERENCE = `# PageHub Style Reference
 
 A site is HTML + Liquid files styled with Tailwind classes that read the palette and spacing tokens in \`theme.css\`.
 
-## Palette CSS Variables (set via set_theme palette array)
+## Palette variables (set with the set_theme palette)
 
 | Variable | Slot | Typical Use |
 |----------|------|-------------|
@@ -31,7 +31,7 @@ A site is HTML + Liquid files styled with Tailwind classes that read the palette
 | var(--base-200) | 10 | Alternate section backgrounds, cards, dividers |
 | var(--base-300) | 11 | Deeper alternates, heavy borders |
 
-## Style Guide CSS Variables (set via set_theme styleGuide)
+## Style guide variables (set with the set_theme styleGuide)
 
 | Variable | Key | Default |
 |----------|-----|---------|
@@ -49,25 +49,25 @@ A site is HTML + Liquid files styled with Tailwind classes that read the palette
 | --heading-font-family | headingFontFamily | (from Google Fonts) |
 | --body-font-family | bodyFontFamily | (from Google Fonts) |
 
-## Using Variables in class
+## Using variables in classes
 
-ALWAYS use CSS variables via Tailwind token syntax in \`class\` — never hardcode hex or named colors:
+Always use the palette and style tokens as Tailwind classes, never a hard-coded hex or named color:
 
   class="bg-primary text-primary-content border-base-200 rounded-box gap-container max-w-page"
 
-Exception: bg-transparent, bg-white/10 (opacity modifiers) are OK.
+Exceptions: \`bg-transparent\` and opacity modifiers such as \`bg-white/10\`.
 
-## Responsive Pattern (Mobile-First)
+## Responsive classes (mobile first)
 
-- Unprefixed = base/mobile styles
+- A class with no prefix applies at every width, phones first.
 - sm: 640px+ (2-column grids, side-by-side buttons), md: 768px+ (flex-row, larger text), lg: 1024px+ (4-column grids, split heroes)
 
 Example: class="flex flex-col gap-space-sm py-space-lg px-container-x bg-base-100 text-base-content md:flex-row"
 
-Spatial tokens (fluid clamp, NO md:py-* or md:gap-* needed):
+Spacing tokens grow with the screen on their own, so you never need \`md:py-*\` or \`md:gap-*\`:
   --space-xs (micro), --space-sm (element), --space-md (content), --space-lg (section), --space-xl (hero)
 
-## Common class Utilities
+## Common utility classes
 
 Layout: flex, flex-col, flex-row, grid, grid-cols-*, gap-space-*, items-*, justify-*,
   w-full, w-1/2, max-w-page, h-[400px], min-h-screen,
@@ -78,7 +78,7 @@ Surface: bg-primary, text-base-content, border, border-base-200,
 
 Typography: text-4xl, font-bold, leading-relaxed, tracking-widest, uppercase
 
-## Section Skeleton
+## Section skeleton
 
 \`\`\`liquid
 <section id="services" data-edit-name="Services" class="w-full bg-base-100 text-base-content py-space-lg px-container-x">
@@ -96,7 +96,7 @@ Typography: text-4xl, font-bold, leading-relaxed, tracking-widest, uppercase
 - Dividers are an element with \`border-t\` inside the section, never a 1px-tall box.
 - Exactly one h1 per page; sequential heading levels.
 
-## Background Image Overlays
+## Background image overlays
 
 A gradient and a background image on the same element do not combine. Put the photo on the section (\`bg-cover bg-center bg-no-repeat\`, or an \`<img>\`), then a child overlay \`<div class="absolute inset-0 z-[1] bg-linear-to-b from-primary/90 via-primary/60 to-primary/85" aria-hidden="true"></div>\` and give the content \`relative z-10\`. Never a flat \`bg-black/70\` overlay.
 
@@ -107,9 +107,9 @@ A gradient and a background image on the same element do not combine. Put the ph
 - Never a bare \`btn btn-primary\` without spatial padding; never \`px-8 py-3\`. A long label needs \`max-w-full whitespace-normal text-xs sm:text-sm\` to wrap on mobile.
 - \`generate_button_classes\` / \`validate_button_classes\` build and check a class string.
 
-## Form Styling
+## Form styling
 
-Inputs must be explicitly styled — they don't inherit card backgrounds:
+Style inputs explicitly: they don't inherit the card's background.
 - Every input: \`border border-base-300 bg-base-100 rounded-box px-space-sm py-space-xs\`; inside a \`bg-base-200\` card use a \`bg-base-100\` (or \`bg-base-300\`) input, inside \`bg-base-100\` use \`bg-base-200\`. Input bg must differ from the card bg.
 - Every input has a visible \`<label>\` and \`autocomplete\` on personal-data fields.
 - Forms post with \`{% form 'name', redirect: '/thanks' %}…{% endform %}\`. Without \`redirect\` the post returns to the same page, once: \`form.posted_successfully?\` is true after a good post, \`form.errors\` is nil unless it failed (\`{{ form.errors | default_errors }}\`), \`form.values.<input name>\` refills the fields.
@@ -130,7 +130,7 @@ Inputs must be explicitly styled — they don't inherit card backgrounds:
 
 Company fields live in \`site.json\`; set them there with edit_site_file. Without them \`{{ company.name }}\` shows "Acme Inc.".
 
-## Key Rules
+## Key rules
 
 1. Always match text color to background: bg-primary → text-primary-content; bg-base-100 → text-base-content. A \`bg-base-100\` band is paired with \`text-base-content\` in the same class list.
 2. **Palette (outline CTAs):** On minimal monochrome themes, Primary and Base Content must differ in lightness — not both the same near-black OKLCH. DaisyUI 5 btn-outline uses --btn-color for label/border; if primary ≈ base-content, canonical outline + text-base-content can collapse to illegible dark-on-dark.
@@ -140,7 +140,7 @@ Company fields live in \`site.json\`; set them there with edit_site_file. Withou
 6. Case-review, consultation and quote CTAs open a \`<dialog>\` form (\`commandfor\` + \`command="show-modal"\`), they do not scroll to a contact section.
 7. Behaviour is native HTML or a runtime \`data-*\` attribute first (carousel, lightbox, show/hide, state, cart…); a site may also carry its own JavaScript. Both are documented with examples in \`get_style_reference({ topic: "liquid" })\`. Filters, sort, search and pagination are \`?query\` params read as \`request.query.<name>\`.
 
-**Verify it:** one \`screenshot_site\` with a \`selector\` after building it.
+**Check it:** take one \`screenshot_site\` with a \`selector\` after building a section.
 `;
 
 const TECHNIQUE_TRANSFER_RULES = `
@@ -205,7 +205,7 @@ ${TECHNIQUE_TRANSFER_RULES}`,
 
   accessibility: `# Accessibility — mandatory, not polish
 
-WCAG 2.1 AA.
+Every page has to meet WCAG 2.1 AA:
 - Every image has \`alt\` (\`""\` if decorative; \`aria-hidden="true"\` on decorative icons and overlays).
 - Sequential headings, exactly one h1 per page.
 - Every form input has a \`<label>\`, and \`autocomplete\` on personal-data fields.
@@ -284,18 +284,20 @@ Blocks are Liquid snippets: reference material, not the default. Design each sec
 
 ${STYLING_MODES}
 
-- Call first on a new site, before blocks. It writes \`theme.css\` in the draft immediately. For "suggest / compare palettes" use \`suggest_palettes\`; for "pick fonts" use \`suggest_font_pairings\`. Those show choices the user applies.
+- Call it first on a new site, before adding blocks. It writes \`theme.css\` in the draft immediately. To compare palettes use \`suggest_palettes\`, and to pick fonts \`suggest_font_pairings\`: they show choices for the user to apply.
 - \`preset\` loads palette, fonts and styleGuide; explicit params override. By fit: bakery/restaurant → restaurant-warm / warm-editorial / rustic; SaaS → modern-minimal / notion; luxury → luxury-dark.
 - A partial call (only \`fonts\`, only \`palette\`) changes only that: set_theme sets custom properties one by one and leaves every other line of \`theme.css\` alone. Hand-written rules there are never touched.
 - Then set the company fields in \`site.json\` (name, tagline, phone, email, address, location, website, type) with edit_site_file. Without them \`{{ company.name }}\` shows "Acme Inc.".
 
-## palette
-Pass the **complete** list — it replaces the palette. \`[{ name, color }]\`, colors in hex / rgb / hsl / oklch(). Use DaisyUI 5 names: Primary, Primary Content, Secondary, Secondary Content, Accent, Accent Content, Neutral, Neutral Content, Base 100, Base 200, Base 300, Base Content, Error, Error Content, Info, Info Content, Success, Success Content, Warning, Warning Content, Ring. Not "Background" / "Foreground" / "Primary Text" — those don't bind to \`bg-base-100\` / \`text-base-content\`.
+## Palette
+\`palette\`: pass the **complete** list — it replaces the palette. \`[{ name, color }]\`, colors in hex / rgb / hsl / oklch(). Use DaisyUI 5 names: Primary, Primary Content, Secondary, Secondary Content, Accent, Accent Content, Neutral, Neutral Content, Base 100, Base 200, Base 300, Base Content, Error, Error Content, Info, Info Content, Success, Success Content, Warning, Warning Content, Ring. Not "Background" / "Foreground" / "Primary Text" — those don't bind to \`bg-base-100\` / \`text-base-content\`.
 \`darkPalette\`: same names, dark colors; enables dark mode.
 
 Outline CTA pitfall: on minimal black-and-white themes keep Primary and Base Content at clearly different lightness, or \`btn-outline\` + \`text-base-content\` reads dark-on-dark.
 
-## styleGuide (merged into the existing one; every key becomes a CSS var)
+## Style guide
+\`styleGuide\` is merged into the existing one, and every key becomes a CSS variable.
+
 - Fonts: \`headingFontFamily\`, \`bodyFontFamily\`, optional \`accentFontFamily\` (Google Font names). Any \`*FontFamily\` key creates a var (\`displayFontFamily\` → \`--display-font-family\`). Use \`font-heading\` / \`font-body\` / \`font-accent\` — never \`font-['Name']\`, never a font \`<link>\` in a page.
 - \`headingFont\` / \`bodyFont\`: weight class, e.g. "font-bold".
 - Radius: \`radiusBox\` (0.5rem; buttons, cards), \`radiusField\` (inputs), \`radiusSelector\` (checkboxes).
