@@ -578,7 +578,7 @@
       "title": "Update site",
       "readOnlyHint": false,
       "destructiveHint": true,
-      "idempotentHint": true,
+      "idempotentHint": false,
       "openWorldHint": true
     },
     "inputSchema": {
@@ -656,7 +656,7 @@
       "title": "Publish site",
       "readOnlyHint": false,
       "destructiveHint": true,
-      "idempotentHint": true,
+      "idempotentHint": false,
       "openWorldHint": true
     },
     "inputSchema": {
@@ -956,7 +956,7 @@
     "description": "Read the site's custom domain: redirect mode, apex/www Vercel state, and the exact DNS records the user needs to create. `check` preflights another domain without changes.",
     "annotations": {
       "title": "Get domain status",
-      "readOnlyHint": true,
+      "readOnlyHint": false,
       "destructiveHint": false,
       "idempotentHint": true,
       "openWorldHint": true
@@ -1106,7 +1106,7 @@
       "readOnlyHint": false,
       "destructiveHint": true,
       "idempotentHint": true,
-      "openWorldHint": false
+      "openWorldHint": true
     },
     "inputSchema": {
       "type": "object",
@@ -1128,7 +1128,7 @@
     "annotations": {
       "title": "Invite site member",
       "readOnlyHint": false,
-      "destructiveHint": false,
+      "destructiveHint": true,
       "idempotentHint": false,
       "openWorldHint": true
     },
@@ -1437,7 +1437,7 @@
       "readOnlyHint": false,
       "destructiveHint": true,
       "idempotentHint": true,
-      "openWorldHint": false
+      "openWorldHint": true
     },
     "inputSchema": {
       "type": "object",
@@ -2250,7 +2250,7 @@
     "annotations": {
       "title": "Apply kit block",
       "readOnlyHint": false,
-      "destructiveHint": true,
+      "destructiveHint": false,
       "idempotentHint": false,
       "openWorldHint": false
     },
@@ -2345,7 +2345,7 @@
     "annotations": {
       "title": "Add page",
       "readOnlyHint": false,
-      "destructiveHint": false,
+      "destructiveHint": true,
       "idempotentHint": false,
       "openWorldHint": false
     },
@@ -2772,7 +2772,7 @@
     "annotations": {
       "title": "Reply to review comment",
       "readOnlyHint": false,
-      "destructiveHint": false,
+      "destructiveHint": true,
       "idempotentHint": false,
       "openWorldHint": true
     },
@@ -3227,8 +3227,8 @@
     "annotations": {
       "title": "Rename component",
       "readOnlyHint": false,
-      "destructiveHint": false,
-      "idempotentHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
       "openWorldHint": false
     },
     "inputSchema": {
@@ -3887,7 +3887,7 @@
       "title": "Set promo code",
       "readOnlyHint": false,
       "destructiveHint": true,
-      "idempotentHint": false,
+      "idempotentHint": true,
       "openWorldHint": true
     },
     "inputSchema": {
@@ -4286,7 +4286,7 @@
       "readOnlyHint": false,
       "destructiveHint": true,
       "idempotentHint": true,
-      "openWorldHint": false
+      "openWorldHint": true
     },
     "inputSchema": {
       "type": "object",
@@ -4342,7 +4342,7 @@
       "readOnlyHint": false,
       "destructiveHint": true,
       "idempotentHint": true,
-      "openWorldHint": false
+      "openWorldHint": true
     },
     "inputSchema": {
       "type": "object",
@@ -4470,7 +4470,7 @@
     "annotations": {
       "title": "Connect app",
       "readOnlyHint": false,
-      "destructiveHint": false,
+      "destructiveHint": true,
       "idempotentHint": true,
       "openWorldHint": true
     },
@@ -4710,7 +4710,7 @@
       "readOnlyHint": false,
       "destructiveHint": true,
       "idempotentHint": true,
-      "openWorldHint": false
+      "openWorldHint": true
     },
     "inputSchema": {
       "type": "object",
@@ -4749,7 +4749,7 @@
       "readOnlyHint": false,
       "destructiveHint": false,
       "idempotentHint": false,
-      "openWorldHint": false
+      "openWorldHint": true
     },
     "inputSchema": {
       "type": "object",
@@ -4783,7 +4783,7 @@
       "readOnlyHint": false,
       "destructiveHint": false,
       "idempotentHint": false,
-      "openWorldHint": false
+      "openWorldHint": true
     },
     "inputSchema": {
       "type": "object",
@@ -4820,7 +4820,7 @@
       "readOnlyHint": false,
       "destructiveHint": true,
       "idempotentHint": true,
-      "openWorldHint": false
+      "openWorldHint": true
     },
     "inputSchema": {
       "type": "object",
@@ -4860,7 +4860,7 @@
       "readOnlyHint": false,
       "destructiveHint": true,
       "idempotentHint": true,
-      "openWorldHint": false
+      "openWorldHint": true
     },
     "inputSchema": {
       "type": "object",
@@ -4895,7 +4895,7 @@
       "readOnlyHint": false,
       "destructiveHint": true,
       "idempotentHint": false,
-      "openWorldHint": false
+      "openWorldHint": true
     },
     "inputSchema": {
       "type": "object",
