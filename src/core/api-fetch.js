@@ -7,6 +7,20 @@ function normalizeBaseUrl(url) {
   return s || null;
 }
 
+/** The plan page a capped account upgrades on. */
+function pricingUrl() {
+  return `${normalizeBaseUrl(getContext().apiBaseUrl) || "https://pagehub.dev"}/pricing`;
+}
+
+/**
+ * What the agent says after a plan cap refused a call (app: `code: "plan_required"` or `upgrade: true`), "" otherwise.
+ * Without it an agent quietly shrinks the request to fit the cap and the person never learns an upgrade lifts it.
+ */
+function upgradeHint(body) {
+  if (body?.code !== "plan_required" && body?.upgrade !== true) return "";
+  return ` Tell the user the site owner can upgrade at ${pricingUrl()} to lift this limit, and ask how to go on. Don't quietly cut what they asked for to fit.`;
+}
+
 /**
  * Authenticated fetch against the PageHub API.
  * Reads apiKey and apiBaseUrl from the per-request context.
@@ -83,7 +97,7 @@ async function apiFetch(pathStr, opts = {}) {
         ? ` (current: ${json.currentUpdatedAt || json.currentVersion})`
         : "";
     const err = new Error(
-      `${code}${json.error || `API ${resp.status}: ${resp.statusText}`}${detail}`
+      `${code}${json.error || `API ${resp.status}: ${resp.statusText}`}${detail}${upgradeHint(json)}`
     );
     err.status = resp.status;
     // The parsed answer, for callers that turn a structured refusal (a version conflict, lint issues) into guidance.
@@ -93,4 +107,4 @@ async function apiFetch(pathStr, opts = {}) {
   return json;
 }
 
-module.exports = { apiFetch, normalizeBaseUrl };
+module.exports = { apiFetch, normalizeBaseUrl, pricingUrl, upgradeHint };

@@ -18,8 +18,7 @@
  * Spec: docs/import/shell-and-html-build-plan.md (P5.2)
  */
 
-const { apiFetch, normalizeBaseUrl } = require("../core/api-fetch");
-const { getContext } = require("../core/context");
+const { apiFetch, pricingUrl } = require("../core/api-fetch");
 const { getEditorUrl } = require("../helpers/target");
 
 const MAX_WARNINGS = 10;
@@ -110,10 +109,6 @@ function pageCapLines(body) {
     );
   }
   return lines;
-}
-
-function pricingUrl() {
-  return `${normalizeBaseUrl(getContext().apiBaseUrl) || "https://pagehub.dev"}/pricing`;
 }
 
 /** Start an import from an uploaded key or inline files. `pages` picks which pages fill the plan's limit. */

@@ -11,7 +11,7 @@
  * reformat): the repairs and a short diff, so the agent's next `oldText` matches the stored text.
  */
 const { createHash } = require("node:crypto");
-const { apiFetch } = require("../core/api-fetch");
+const { apiFetch, upgradeHint } = require("../core/api-fetch");
 const { getContext } = require("../core/context");
 const { getActiveTarget } = require("../helpers/target");
 const { applyEdits, editsOf, lineCol } = require("../helpers/file-edits");
@@ -58,7 +58,7 @@ function explain(err, { path, sent }) {
   if (body.error === "rejected" && body.message) throw new Error(`${path || "The write"} was NOT saved: ${body.message}`);
   if (MESSAGE_ERRORS.has(body.error) && body.message) throw new Error(body.message);
   // The plan's page cap and the like: a message and a code, no error name.
-  if (err?.status === 403 && body.code && body.error) throw new Error(`${path || "The write"} was NOT saved: ${body.error}`);
+  if (err?.status === 403 && body.code && body.error) throw new Error(`${path || "The write"} was NOT saved: ${body.error}${upgradeHint(body)}`);
   throw err;
 }
 
