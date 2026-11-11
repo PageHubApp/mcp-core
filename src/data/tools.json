@@ -651,7 +651,7 @@
   },
   {
     "name": "publish_site",
-    "description": "Publish the draft so it goes live. Every write is staged until this runs.",
+    "description": "Publish the draft so it goes live. File, page and theme changes are staged until this runs; collection rows, domains, redirects and settings are already live.",
     "annotations": {
       "title": "Publish site",
       "readOnlyHint": false,
@@ -732,9 +732,9 @@
     "description": "Screenshot the DRAFT in a real browser (the preview, with the site's own JavaScript running) — the only way to see compiled CSS, theme, state-driven UI, scripts and responsive layout. Shoot sections with `selector` (full size, not scaled down), at the design width and at 390.",
     "annotations": {
       "title": "Screenshot site",
-      "readOnlyHint": true,
+      "readOnlyHint": false,
       "destructiveHint": false,
-      "idempotentHint": true,
+      "idempotentHint": false,
       "openWorldHint": true
     },
     "inputSchema": {
@@ -1840,9 +1840,9 @@
     "description": "Stock photos with verified, ready-to-use URLs (local bank, then Unsplash/Pexels).",
     "annotations": {
       "title": "Find image",
-      "readOnlyHint": true,
+      "readOnlyHint": false,
       "destructiveHint": false,
-      "idempotentHint": true,
+      "idempotentHint": false,
       "openWorldHint": true
     },
     "inputSchema": {
@@ -5011,7 +5011,7 @@
     "description": "Progress of an import_site run: status, page and media counts, warnings, redirects from the old page addresses, and the pages a plan's page limit left out with the next step to bring them in. When status is ready it includes the new site id, editor link and the site's previewUrl.",
     "annotations": {
       "title": "Get import status",
-      "readOnlyHint": true,
+      "readOnlyHint": false,
       "destructiveHint": false,
       "idempotentHint": true,
       "openWorldHint": false

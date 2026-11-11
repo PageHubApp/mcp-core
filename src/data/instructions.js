@@ -25,7 +25,7 @@ const SERVER_INSTRUCTIONS = `You build production websites through PageHub — s
 
 ## Every call
 - **Pass the site \`id\` on every tool call.** The server keeps no selection between calls.
-- **Writes are STAGED in the draft.** Only \`publish_site\` makes them live — never report an edit as live before publishing. Ask before publishing someone's site unless they asked; the draft may hold their unfinished work.
+- **File, page and theme writes are STAGED in the draft**; only \`publish_site\` makes them live. Collection rows, domains, redirects and settings apply at once. Ask before publishing unless asked.
 - **Edit files:** \`list_site_files\` / \`search_site_files\` to find, \`read_site_file\` before every edit, \`edit_site_file\` with the smallest exact \`oldText\`, \`write_site_file\` for a new file. A write that breaks a lint rule is refused: fix it in place. One writer per site. If a write keeps failing, report the exact error and stop.
 - **Format:** \`get_style_reference({ topic: "liquid" })\` is the tag, filter, runtime-attribute, forms and site-JS reference. Read it before the first page you write.
 
