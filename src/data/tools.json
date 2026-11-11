@@ -729,7 +729,7 @@
   },
   {
     "name": "screenshot_site",
-    "description": "Screenshot the DRAFT in a real browser (the preview, with the site's own JavaScript running) — the only way to see compiled CSS, theme, state-driven UI, scripts and responsive layout. Shoot sections with `selector` (full size, not scaled down), at the design width and at 390.",
+    "description": "Screenshot the DRAFT in a real browser (the preview, with the site's own JavaScript running) — the only way to see compiled CSS, theme, state-driven UI, scripts and responsive layout. Shoot sections with `selector` (full size, not scaled down), at the design width and 390, one call at a time.",
     "annotations": {
       "title": "Screenshot site",
       "readOnlyHint": false,
