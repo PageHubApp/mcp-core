@@ -42,7 +42,7 @@ async function main() {
     { apiKey: process.env.PAGEHUB_API_KEY, apiBaseUrl: "https://pagehub.dev" },
     () =>
       generateText({
-        model: anthropic("claude-sonnet-4-5"),
+        model: anthropic("claude-sonnet-5-5"),
         tools,
         prompt,
         stopWhen: stepCountIs(10),

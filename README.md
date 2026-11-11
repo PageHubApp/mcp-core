@@ -72,7 +72,7 @@ const aiTools = Object.fromEntries(
 
 await runWithContext({ apiKey: process.env.PAGEHUB_API_KEY }, () =>
   generateText({
-    model: gateway("anthropic/claude-sonnet-4-6"),
+    model: gateway("anthropic/claude-sonnet-5.5"),
     tools: aiTools,
     prompt: "Create a landing page for a coffee shop.",
   })
