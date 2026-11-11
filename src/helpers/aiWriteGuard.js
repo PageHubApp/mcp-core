@@ -9,6 +9,10 @@
  * and `<script>`, `<iframe>`, inline event handlers or `javascript:` URLs in
  * any string. `<base>` (moves every relative script and link to another host) and `<meta http-equiv>` (redirects,
  * cookies) are refused for the same reason. People add those themselves, in Site settings or the editor.
+ *
+ * One exception: an `<iframe>` from a trusted embed provider (`TRUSTED_IFRAMES`: YouTube, Vimeo, Google Maps,
+ * Calendly, Spotify, Loom). Its `src` must be a literal https URL on that host and path (no Liquid in it), and the
+ * tag may carry no handler or `srcdoc`. A hidden instruction can then only embed one of those players.
  */
 
 const ACTIVE_KEYS = new Set(["inject", "handlers", "headCode", "footerCode"]);
@@ -35,7 +39,42 @@ function decoded(s) {
 const safeChar = n => (Number.isFinite(n) && n >= 0 && n <= 0x10ffff ? String.fromCodePoint(n) : "");
 const SCHEME_GAP_RE = /(j\s*a\s*v\s*a\s*s\s*c\s*r\s*i\s*p\s*t|v\s*b\s*s\s*c\s*r\s*i\s*p\s*t)\s*:/i;
 
-const isActive = s => ACTIVE_CONTENT_RE.test(s) || (/[&\\\u0000-\u001f]/.test(s) && (ACTIVE_CONTENT_RE.test(decoded(s)) || SCHEME_GAP_RE.test(decoded(s))));
+/** Embed players PageHub AI may frame: exact host, and the path its embed URLs start with. */
+const TRUSTED_IFRAMES = [
+  ["www.youtube.com", "/embed/"],
+  ["youtube.com", "/embed/"],
+  ["www.youtube-nocookie.com", "/embed/"],
+  ["player.vimeo.com", "/video/"],
+  ["www.google.com", "/maps/embed"],
+  ["calendly.com", "/"],
+  ["open.spotify.com", "/embed/"],
+  ["www.loom.com", "/embed/"],
+];
+const IFRAME_OPEN_RE = /<\s*iframe\b([^>]*)>/gi;
+// `src` as its own attribute (whitespace before it), never `data-src`; one `src` only, since a browser reads the first.
+const IFRAME_SRC_RE = /(?:^|\s)src\s*=\s*(["'])https:\/\/([a-z0-9.-]+)(\/[^"'{}<>\s]*)\1/i;
+const IFRAME_SRC_COUNT_RE = /(?:^|\s)src\s*=/gi;
+const IFRAME_UNSAFE_ATTR_RE = /[\s/"'`]on[a-z]+\s*=|srcdoc\s*=|\{[{%]/i;
+
+function isTrustedIframe(attrs) {
+  for (const a of [attrs, decoded(attrs)]) {
+    if (IFRAME_UNSAFE_ATTR_RE.test(a)) return false;
+    if ((a.match(IFRAME_SRC_COUNT_RE) || []).length !== 1) return false;
+    const src = IFRAME_SRC_RE.exec(a);
+    if (!src) return false;
+    const host = src[2].toLowerCase();
+    if (!TRUSTED_IFRAMES.some(([h, p]) => host === h && src[3].startsWith(p))) return false;
+  }
+  return true;
+}
+
+/** `s` with every trusted embed iframe's opening tag removed, so the patterns below judge the rest. */
+const withoutTrustedIframes = s => (/<\s*iframe/i.test(s) ? s.replace(IFRAME_OPEN_RE, (tag, attrs) => (isTrustedIframe(attrs) ? "" : tag)) : s);
+
+const isActive = raw => {
+  const s = withoutTrustedIframes(raw);
+  return ACTIVE_CONTENT_RE.test(s) || (/[&\\\u0000-\u001f]/.test(s) && (ACTIVE_CONTENT_RE.test(decoded(s)) || SCHEME_GAP_RE.test(decoded(s))));
+};
 
 /** The path of the first executable key or string in `value`, or null. */
 function findActiveContent(value, path) {
@@ -79,4 +118,4 @@ function assertAiWriteAllowed(toolName, args, ctx, tool) {
   );
 }
 
-module.exports = { assertAiWriteAllowed, findActiveContent };
+module.exports = { assertAiWriteAllowed, findActiveContent, TRUSTED_IFRAMES };
