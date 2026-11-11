@@ -29,12 +29,13 @@ export const AI_MODEL_GROUPS = [
  */
 export const AI_MODELS = [
   {
-    value: "anthropic/claude-haiku-4.5",
-    label: "Haiku 4.5",
+    value: "anthropic/claude-haiku-5.5",
+    label: "Haiku 5.5",
     vendor: "anthropic",
     group: "fast",
-    pageCredits: 490,
+    pageCredits: 50,
     lockStyling: false,
+    temperature: false,
   },
   {
     value: "google/gemini-3.8-flash",
