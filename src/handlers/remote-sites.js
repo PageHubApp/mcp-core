@@ -238,8 +238,12 @@ module.exports = {
     });
     // Edits stage into the draft, so publishing is what puts them live: say which release did.
     const release = put?.release?.number ? ` Release ${put.release.number} is live.` : put?.release?.queued ? " The release is building." : "";
+    // Plan info stays informational (directory policy): no link, no price, nothing to buy here.
+    const badge = put?.showsBranding
+      ? `\n\nThis site shows a small "Made with PageHub" badge. The owner can remove it with a paid plan in the site's Plan settings.`
+      : "";
     return {
-      content: [{ type: "text", text: `Site ${target.id} published.${release}` }],
+      content: [{ type: "text", text: `Site ${target.id} published.${release}${badge}` }],
     };
   },
 
