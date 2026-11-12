@@ -21,7 +21,7 @@ export const AI_MODEL_GROUPS = [
  * group: picker section (AI_MODEL_GROUPS key).
  * pageCredits: rough credits for one full landing-page build, from a
  *   reference turn (~700k input tokens at ~80% cache reads, ~30k output) at
- *   list price × 1.4 markup. A guide only — re-measure from AiLog rawCost.
+ *   list price × 2 markup. A guide only — re-measure from AiLog rawCost.
  * minPlan: lowest plan that may use the model; omitted = every plan.
  * packUnlocks: buying any credit pack also unlocks the model below minPlan.
  * forcedToolChoice: false when the model 400s on toolChoice "required" / a named tool.
@@ -33,7 +33,7 @@ export const AI_MODELS = [
     label: "Haiku 5.5",
     vendor: "anthropic",
     group: "fast",
-    pageCredits: 50,
+    pageCredits: 70,
     lockStyling: false,
     temperature: false,
   },
@@ -42,7 +42,7 @@ export const AI_MODELS = [
     label: "Gemini 3.8 Flash",
     vendor: "google",
     group: "fast",
-    pageCredits: 360,
+    pageCredits: 510,
     lockStyling: true,
   },
   {
@@ -50,7 +50,7 @@ export const AI_MODELS = [
     label: "Sonnet 5.5",
     vendor: "anthropic",
     group: "standard",
-    pageCredits: 890,
+    pageCredits: 1270,
     lockStyling: false,
     forcedToolChoice: false,
     temperature: false,
@@ -60,7 +60,7 @@ export const AI_MODELS = [
     label: "GPT-5.6 Terra",
     vendor: "openai",
     group: "standard",
-    pageCredits: 1050,
+    pageCredits: 1500,
     lockStyling: true,
   },
   {
@@ -70,7 +70,7 @@ export const AI_MODELS = [
     group: "best",
     minPlan: "pro",
     packUnlocks: true,
-    pageCredits: 1780,
+    pageCredits: 2540,
     lockStyling: false,
     forcedToolChoice: false,
     temperature: false,
@@ -81,7 +81,7 @@ export const AI_MODELS = [
     vendor: "anthropic",
     group: "best",
     minPlan: "business",
-    pageCredits: 4260,
+    pageCredits: 6090,
     lockStyling: false,
     forcedToolChoice: false,
     temperature: false,
