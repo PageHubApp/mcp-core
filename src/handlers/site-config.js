@@ -24,10 +24,17 @@ module.exports = {
       permanent: r.permanent !== false,
     }));
     const target = getActiveTarget(args);
-    await apiFetch(`/api/plugins/redirects/rules/replace`, {
+    const res = await apiFetch(`/api/plugins/redirects/rules/replace`, {
       method: "POST",
       body: { site: target.id, rules: redirects },
     });
-    return { content: [{ type: "text", text: `${redirects.length} redirect rule(s) saved.` }] };
+    const live = res?.meta?.live;
+    const status =
+      live === "released"
+        ? "Live on the published site."
+        : live === "failed"
+          ? "They aren't live yet: updating the published site failed. Publish the site to make them live."
+          : "They go live when the site is published.";
+    return { content: [{ type: "text", text: `${redirects.length} redirect rule(s) saved. ${status}` }] };
   },
 };
