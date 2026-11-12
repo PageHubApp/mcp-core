@@ -101,10 +101,12 @@ async function runToolWithPublishTrailer(fn, args, ctx) {
 
 /**
  * A setting that applies to the live site at once (redirects, integrations, privacy) answers `live`: "released",
- * "failed" (the setting is saved, the live site didn't update), or why nothing was built (unpublished, …).
+ * "queued" (saved; the published site is rebuilding with it after the answer), "failed" (the setting is saved, the
+ * live site didn't update), or why nothing was built (unpublished, …).
  */
 function liveSettingLine(live) {
   if (live === "released") return "Live on the published site.";
+  if (live === "queued") return "Saved. The published site updates with it within a minute; no publish needed.";
   if (live === "failed") return "Saved, but the published site didn't update. Publish the site to make it live.";
   return "Saved; it goes live when the site is published.";
 }
