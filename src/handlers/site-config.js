@@ -7,6 +7,7 @@
 const { apiFetch } = require("../core/api-fetch");
 const { getActiveTarget } = require("../helpers/target");
 const htmlSettings = require("./html-settings");
+const { liveSettingLine } = require("../helpers/publish-state");
 
 module.exports = {
   set_integrations: htmlSettings.setIntegrations,
@@ -28,13 +29,6 @@ module.exports = {
       method: "POST",
       body: { site: target.id, rules: redirects },
     });
-    const live = res?.meta?.live;
-    const status =
-      live === "released"
-        ? "Live on the published site."
-        : live === "failed"
-          ? "They aren't live yet: updating the published site failed. Publish the site to make them live."
-          : "They go live when the site is published.";
-    return { content: [{ type: "text", text: `${redirects.length} redirect rule(s) saved. ${status}` }] };
+    return { content: [{ type: "text", text: `${redirects.length} redirect rule(s) saved. ${liveSettingLine(res?.meta?.live)}` }] };
   },
 };

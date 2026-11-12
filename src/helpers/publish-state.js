@@ -99,4 +99,14 @@ async function runToolWithPublishTrailer(fn, args, ctx) {
   return result;
 }
 
-module.exports = { formatPublishTrailer, relativeAge, runToolWithPublishTrailer };
+/**
+ * A setting that applies to the live site at once (redirects, integrations, privacy) answers `live`: "released",
+ * "failed" (the setting is saved, the live site didn't update), or why nothing was built (unpublished, …).
+ */
+function liveSettingLine(live) {
+  if (live === "released") return "Live on the published site.";
+  if (live === "failed") return "Saved, but the published site didn't update. Publish the site to make it live.";
+  return "Saved; it goes live when the site is published.";
+}
+
+module.exports = { formatPublishTrailer, liveSettingLine, relativeAge, runToolWithPublishTrailer };

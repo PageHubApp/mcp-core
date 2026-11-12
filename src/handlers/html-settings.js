@@ -9,6 +9,7 @@
 const { apiFetch } = require("../core/api-fetch");
 const { getContext } = require("../core/context");
 const { getActiveTarget, getEditorUrl } = require("../helpers/target");
+const { liveSettingLine } = require("../helpers/publish-state");
 const { parseMaybeJson } = require("../helpers/index.js");
 const { ensurePaletteOklch, validateContentColors } = require("../utils/color-utils");
 const { familyNamesFromGoogleFontsUrl } = require("../lib/theme-fonts.js");
@@ -192,7 +193,8 @@ module.exports = {
     const res = hasIntegrations ? await put(siteId, { integrations }) : privacyRes;
     return text(
       `${hasIntegrations ? "Integrations" : "Privacy settings"} updated: ${[...Object.keys(integrations), ...Object.keys(privacy)].join(", ")}.\n` +
-        (res.live === "released" ? "Live on the published site." : "Saved; they reach visitors when the site is published.") +
+        // With both, the integrations release is the later one and reads the privacy model too, so its answer covers both.
+        liveSettingLine(res.live) +
         `\nEditor: ${getEditorUrl(siteId)}`
     );
   },
