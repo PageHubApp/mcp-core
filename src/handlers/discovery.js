@@ -6,7 +6,9 @@ const { STYLE_REFERENCE, STYLE_TOPICS, STYLE_TOPIC_NAMES, STYLE_TOPIC_INDEX, LIQ
 
 module.exports = {
   async get_style_reference(args) {
-    const topic = args?.topic;
+    // A detail guide asked for by its bare name ("forms", "maps") is the `liquid-` guide of that name.
+    const asked = args?.topic;
+    const topic = !STYLE_TOPICS[asked] && LIQUID_TOPIC_NAMES.includes(`liquid-${asked}`) ? `liquid-${asked}` : asked;
     // Generated on the server from the renderer's own tag / filter / object catalogue, so it can't drift from what
     // renders (app repo utils/htmlFirst/liquidReference.ts).
     if (topic === "liquid") {
