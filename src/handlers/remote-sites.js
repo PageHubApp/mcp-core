@@ -86,6 +86,12 @@ function formatDomainReport(data) {
     lines.push("No DNS changes needed — every variant already resolves here.");
   }
 
+  // The domain runs through Cloudflare, which may block AI search bots by default. Pass the note on to the user.
+  if (data.cloudflare?.note) {
+    lines.push("");
+    lines.push(`Cloudflare: ${data.cloudflare.note}`);
+  }
+
   return lines.join("\n");
 }
 
