@@ -625,7 +625,7 @@
         },
         "blockAiCrawlers": {
           "type": "boolean",
-          "description": "true blocks AI crawlers in robots.txt and turns off /llms.txt; search engines unaffected."
+          "description": "true blocks AI training crawlers in robots.txt and turns off /llms.txt; search engines and AI search bots stay allowed."
         },
         "timezone": {
           "type": "string",

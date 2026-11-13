@@ -8,7 +8,7 @@
 function crawlLines(data) {
   return (
     `Search indexing: ${data?.crawlPolicy?.mode || "public"} (update_site crawlMode)\n` +
-    `AI crawlers: ${data?.crawlPolicy?.blockAi ? "blocked" : "allowed"} (update_site blockAiCrawlers)`
+    `AI training crawlers: ${data?.crawlPolicy?.blockAi ? "blocked" : "allowed"} (update_site blockAiCrawlers)`
   );
 }
 
