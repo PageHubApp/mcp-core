@@ -2422,7 +2422,7 @@
             },
             "jsonLd": {
               "type": "object",
-              "description": "One schema.org JSON-LD object (FAQPage, Article…)."
+              "description": "One schema.org JSON-LD object."
             },
             "schema": {
               "type": "array",
@@ -2526,7 +2526,7 @@
             },
             "jsonLd": {
               "type": "object",
-              "description": "One schema.org JSON-LD object (FAQPage, Article…)."
+              "description": "One schema.org JSON-LD object."
             },
             "schema": {
               "type": "array",
