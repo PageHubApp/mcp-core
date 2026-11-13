@@ -126,9 +126,11 @@ Style inputs explicitly: they don't inherit the card's background.
 | {{ company.phone }} | (555) 123-4567 |
 | {{ company.email }} | contact@acme.com |
 | {{ company.website }} | https://www.acme.com |
+| {{ company.hours }} | Mon–Fri 8am–6pm · Sat 9am–4pm · Sun closed |
+| {{ company.services }} | Smog checks · Brake repair |
 | {{ year }} | (current year) |
 
-Company fields live in \`site.json\`; set them there with edit_site_file. Without them \`{{ company.name }}\` shows "Acme Inc.".
+Company fields live in \`site.json\`; set them there with edit_site_file. Without them \`{{ company.name }}\` shows "Acme Inc.". \`hours\` and \`services\` are lists joined by " · " (\`{% assign hours = company.hours | split: ' · ' %}\`); the home page's LocalBusiness JSON-LD gets them as \`openingHoursSpecification\` and \`makesOffer\` on its own, so don't type them into \`seo.jsonLd\`. Hours go in only when every line reads as days + times ("Mon–Fri 8am–6pm", "Sun closed").
 
 ## Key rules
 
@@ -287,7 +289,7 @@ ${STYLING_MODES}
 - Call it first on a new site, before adding blocks. It writes \`theme.css\` in the draft immediately. To compare palettes use \`suggest_palettes\`, and to pick fonts \`suggest_font_pairings\`: they show choices for the user to apply.
 - \`preset\` loads palette, fonts and styleGuide; explicit params override. By fit: bakery/restaurant → restaurant-warm / warm-editorial / rustic; SaaS → modern-minimal / notion; luxury → luxury-dark.
 - A partial call (only \`fonts\`, only \`palette\`) changes only that: set_theme sets custom properties one by one and leaves every other line of \`theme.css\` alone. Hand-written rules there are never touched.
-- Then set the company fields in \`site.json\` (name, tagline, phone, email, address, location, website, type) with edit_site_file. Without them \`{{ company.name }}\` shows "Acme Inc.".
+- Then set the company fields in \`site.json\` (name, tagline, phone, email, address, location, website, type, hours, services) with edit_site_file. Without them \`{{ company.name }}\` shows "Acme Inc.".
 
 ## Palette
 \`palette\`: pass the **complete** list — it replaces the palette. \`[{ name, color }]\`, colors in hex / rgb / hsl / oklch(). Use DaisyUI 5 names: Primary, Primary Content, Secondary, Secondary Content, Accent, Accent Content, Neutral, Neutral Content, Base 100, Base 200, Base 300, Base Content, Error, Error Content, Info, Info Content, Success, Success Content, Warning, Warning Content, Ring. Not "Background" / "Foreground" / "Primary Text" — those don't bind to \`bg-base-100\` / \`text-base-content\`.
@@ -315,7 +317,7 @@ Not set_theme: site animations (CSS in \`theme.css\`, see \`animation\`) and JSO
 
 - A page is a record (route, SEO, flags) plus its file \`pages/<slug>.liquid\`. The display name becomes the slug: "Our Services" → /our-services. \`add_page\` needs \`text\`: the page's HTML + Liquid, shaped like an existing page (\`{% render 'header' %}\` … \`{% render 'footer' %}\`). The first page is home.
 - **Set \`seo.title\` and \`seo.description\` on every page.** A page without \`seo.title\` falls back to the site-level title — never to its display name — so every page ships the same \`<title>\`. The site-level title/description are edited with \`update_site\` and read with \`select_site\`.
-- \`seo.jsonLd\` is one schema.org object (LocalBusiness on home, Article, BreadcrumbList); \`seo.schema\` is an array, one \`<script type="application/ld+json">\` each. Mark up only what the page shows. No \`aggregateRating\` / \`review\` inside the business's own LocalBusiness or Organization (search engines ignore self-published review stars; show reviews as text). No HowTo; FAQPage only for a visible FAQ, and Google no longer shows FAQ rich results.
+- \`seo.jsonLd\` is one schema.org object (LocalBusiness on home, Article, BreadcrumbList); \`seo.schema\` is an array, one \`<script type="application/ld+json">\` each. Mark up only what the page shows. No \`aggregateRating\` / \`review\` inside the business's own LocalBusiness or Organization (search engines ignore self-published review stars, and a save with them is refused; show reviews as text). No HowTo; FAQPage only for a visible FAQ, and Google no longer shows FAQ rich results.
 - Search: real business facts (name, address, phone, hours, services) as visible text plus LocalBusiness JSON-LD; one page per service; a named About page with the people behind the business. Never near-identical "[service] in [town]" pages: a town page needs content true only of that town. AI answers (Google AI Overviews, ChatGPT, Perplexity) rank pages the normal way; llms.txt and "GEO" tricks don't change that.
 - Page markup is the file: per-page head code is a tag in the file's \`<head>\`, body classes go on the file's \`<body>\`, and a landing page without chrome simply omits the \`{% render 'header' %}\` / \`{% render 'footer' %}\` lines. \`update_page\` refuses \`headCode\`, \`footerCode\`, \`bodyClass\` and \`hide*\` with that guidance.
 - \`update_page({ policy })\` sets who may open a page and how it looks on its own: \`password\` (hashed, never shown back), \`access\` (condition groups; a denied visitor gets \`failAction\` \`redirect\` + \`redirectUrl\`, or \`show-page\` + \`fallbackPath\`), \`bodyClass\`, \`themeOverrides\` (CSS variables for this page); \`""\` or \`[]\` clears a key. \`list_pages({ pageId })\` reads it back. To gate a page on a plan use \`access\` with the auth condition, or gate the content inside the page (see \`members\`). It takes effect on publish.
