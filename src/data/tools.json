@@ -4225,7 +4225,7 @@
   },
   {
     "name": "create_collection",
-    "description": "Create a collection. schema = [{ key, label, type, required?, default?, help?, … }]; types: text, number, boolean, date, select, image, url, email, color, richText, media, json. Source defaults to manual. Plan-gated.",
+    "description": "Create a collection. schema = [{ key, label, type, required?, default?, help?, … }]; select needs options: [{ label, value }] (objects, not strings); types: text, number, boolean, date, select, image, url, email, color, richText, media, json. Source defaults to manual. Plan-gated.",
     "annotations": {
       "title": "Create collection",
       "readOnlyHint": false,
@@ -4260,7 +4260,42 @@
           "type": "array",
           "description": "Field definitions (shape in the tool description).",
           "items": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": "camelCase, no spaces (\"unitPrice\"); the display name goes in label."
+              },
+              "label": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "options": {
+                "type": "array",
+                "description": "select only; objects, not strings.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "label",
+                    "value"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "key",
+              "type"
+            ]
           }
         },
         "source": {
@@ -4280,7 +4315,7 @@
   },
   {
     "name": "update_collection_schema",
-    "description": "Change a collection's fields or member gates. `schema` replaces all fields (get_collection first). `requiredPlans` gates every row. To lock single rows: add a text field keyed `requiredPlans`, write comma-separated plan slugs on those rows; non-members get them minus `memberFields`, with `locked: true`.",
+    "description": "Change a collection's fields or member gates. `schema` replaces all fields (get_collection first); field shape as in create_collection (key is camelCase, select options are [{ label, value }]). `requiredPlans` gates every row. To lock single rows: add a text field keyed `requiredPlans`, write comma-separated plan slugs on those rows; non-members get them minus `memberFields`, with `locked: true`.",
     "annotations": {
       "title": "Update collection schema",
       "readOnlyHint": false,
@@ -4305,7 +4340,42 @@
           "type": "array",
           "description": "Full field list; replaces the old one.",
           "items": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": "camelCase, no spaces (\"unitPrice\"); the display name goes in label."
+              },
+              "label": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "options": {
+                "type": "array",
+                "description": "select only; objects, not strings.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "label",
+                    "value"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "key",
+              "type"
+            ]
           }
         },
         "requiredPlans": {
@@ -4889,7 +4959,7 @@
   },
   {
     "name": "import_collection_csv",
-    "description": "Import rows from CSV text or an uploaded CSV/TSV/XLSX file (exactly one of csv | mediaId); header columns match field keys (unmatched ignored). mode: append (default), replace (deletes existing rows first), upsert (by an externalId or id column). ~8MB cap. Plan-gated.",
+    "description": "Import rows from CSV text or an uploaded CSV/TSV/XLSX file (exactly one of csv | mediaId); headers match a field's key or label, ignoring case/spaces (unmatched ignored; add fields first with update_collection_schema). mode: append (default), replace (deletes existing rows first), upsert (by an externalId or id column). ~8MB cap. Plan-gated.",
     "annotations": {
       "title": "Import collection CSV",
       "readOnlyHint": false,
