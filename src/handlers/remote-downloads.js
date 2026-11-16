@@ -91,7 +91,7 @@ module.exports = {
     const data = await apiFetch(path(siteId));
     const list = data.downloads || [];
     const tier = {
-      files: "files (installers like .exe / .dmg need Agency)",
+      files: "files (installers like .exe / .dmg need Pro)",
       executables: "files and installers",
     }[data.fileDownloads];
     const cap = data.allowance?.limit != null ? `, ${data.allowance.used} of ${data.allowance.limit} downloads used` : "";
