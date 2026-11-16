@@ -40,7 +40,11 @@ function fmtDownload(d) {
     ? `\n  members only: ${d.access.plans?.length ? `plans ${d.access.plans.join(", ")}` : "any active plan"}` +
       `\n  as a members-only video: Video provider "url", videoId "/api/downloads/${d.id}?inline=1"`
     : "";
-  return `• ${d.name} [downloadId: ${d.id}]\n  url: ${d.url}\n  downloads: ${d.downloadCount}${members}\n${versions}`;
+  const sold = d.priceIds?.length
+    ? `\n  for sale: ${d.priceIds.join(", ")}${d.grantCount != null ? ` — ${d.grantCount} buyer(s)` : ""}` +
+      "\n  buyers get their own link by email; the plain url answers 404 without one"
+    : "";
+  return `• ${d.name} [downloadId: ${d.id}]\n  url: ${d.url}\n  downloads: ${d.downloadCount}${members}${sold}\n${versions}`;
 }
 
 const LINK_HINT =
@@ -50,16 +54,18 @@ const LINK_HINT =
 /**
  * Publish a download, or add a version to an existing one, from an already
  * uploaded private file.
- * @param {object} args - { id?, downloadId?, name?, mediaId, filename, label?, notes?, currentVersionId?, access? }
+ * @param {object} args - { id?, downloadId?, name?, mediaId, filename, label?, notes?, currentVersionId?, access?, priceIds? }
  */
 async function setDownload(args = {}) {
   const siteId = activeSiteId(args);
   const isEdit =
-    args.downloadId && !args.mediaId && (args.currentVersionId || args.access !== undefined || args.name);
+    args.downloadId &&
+    !args.mediaId &&
+    (args.currentVersionId || args.access !== undefined || args.priceIds !== undefined || args.name);
   if (!isEdit && !args.mediaId) {
     throw new Error(
       "mediaId is required — the mediaId of an uploaded file (upload_file, or a file attached in chat), " +
-        "or pass downloadId + currentVersionId / access / name to change an existing download."
+        "or pass downloadId + currentVersionId / access / priceIds / name to change an existing download."
     );
   }
   if (!args.downloadId && !args.name) throw new Error("name is required for a new download.");
@@ -74,6 +80,7 @@ async function setDownload(args = {}) {
       notes: args.notes,
       currentVersionId: args.currentVersionId,
       access: args.access,
+      priceIds: args.priceIds,
     },
   });
   return {

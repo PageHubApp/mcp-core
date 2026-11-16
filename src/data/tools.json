@@ -1353,7 +1353,7 @@
   },
   {
     "name": "set_download",
-    "description": "Host a file behind a stable link (<site>/api/downloads/<id>); link to it from an <a> or button. New: name + file. New version: downloadId + file (same link). Roll back: downloadId + currentVersionId. File = filePath (stdio) or an upload's mediaId (a public upload, e.g. a chat attachment, is moved private). access makes it members-only. A <video src=\"/api/downloads/<id>?inline=1\"> plays it. 5 per site on Free, 100 on Pro+; .exe/.dmg etc need Pro.",
+    "description": "Host a file at a stable link (<site>/api/downloads/<id>). New: name + file. New version: downloadId + file. Roll back: downloadId + currentVersionId. File = filePath (stdio) or a mediaId (public uploads move private). access: members-only; priceIds: sold, emailed to buyers. <video src=\"/api/downloads/<id>?inline=1\"> plays it. Free: 5 per site; Pro+: 100 + .exe/.dmg.",
     "annotations": {
       "title": "Set download",
       "readOnlyHint": false,
@@ -1408,6 +1408,14 @@
           "type": "string",
           "description": "Serve this existing version.",
           "maxLength": 40
+        },
+        "priceIds": {
+          "type": "array",
+          "description": "Stripe price ids / pd:<rowId>; [] = unsold.",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20
         },
         "access": {
           "type": "object",
@@ -3492,7 +3500,7 @@
   },
   {
     "name": "set_integrations",
-    "description": "Set analytics and verification ids, rendered as real tags on published pages: GA4, GTM, Search Console, Meta Pixel, Google Ads, TikTok, LinkedIn, Pinterest, Clarity, Hotjar, Plausible, Fathom, Umami, chat widgets. Third-party snippets go in site.json inject; the site's own code is a <script>, {% javascript %} or assets/*.js file. Guide: get_style_reference({ topic: \"integrations\" }).",
+    "description": "Set analytics and verification ids, rendered as real tags on published pages: GA4, GTM, Search Console, Meta Pixel, Google Ads, TikTok, LinkedIn, Pinterest, Clarity, Hotjar, Plausible, Fathom, Umami, chat widgets. Guide: get_style_reference({ topic: \"integrations\" }).",
     "annotations": {
       "title": "Set integrations",
       "readOnlyHint": false,
@@ -3762,6 +3770,43 @@
     }
   },
   {
+    "name": "paypal_connect",
+    "description": "PayPal for the site. No args: status. payeeEmail (only one the owner gave) connects it; mode \"partner\": a PayPal sign-in link for the owner; disconnect: true removes it. Pay button: data-cart-gateway=\"paypal\".",
+    "annotations": {
+      "title": "PayPal: connect",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Site id.",
+          "maxLength": 256
+        },
+        "payeeEmail": {
+          "type": "string",
+          "maxLength": 254
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "partner"
+          ]
+        },
+        "disconnect": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    }
+  },
+  {
     "name": "stripe_connect",
     "description": "Connect Stripe so the site can take payments. Returns the connection status and, while unfinished, a single-use onboarding URL that only the site owner can complete; the status reads 'ready' once they have, and that call fills the `products` collection from Stripe. Owner-only.",
     "annotations": {
@@ -3805,7 +3850,7 @@
   },
   {
     "name": "set_checkout",
-    "description": "Make a collection sellable through Stripe (remove: true stops): `data-cart=\"add\"` buttons inside a `{% for row in collections.<slug> %}` loop charge each row's `price` (minor units) or its Stripe price id (priceIdField). Needs stripe_connect. Details: get_style_reference({ topic: \"integrations\" }).",
+    "description": "Make a collection sellable (Stripe or PayPal) (remove: true stops): `data-cart=\"add\"` buttons inside a `{% for row in collections.<slug> %}` loop charge each row's `price` (minor units) or its Stripe price id (priceIdField). Needs stripe_connect or paypal_connect. Details: get_style_reference({ topic: \"integrations\" }).",
     "annotations": {
       "title": "Set checkout",
       "readOnlyHint": false,
@@ -3942,7 +3987,7 @@
   },
   {
     "name": "list_orders",
-    "description": "The site's orders and bookings from its own Stripe account, newest first: buyer, paid, refunds, booking, balance, deposit hold, agreement, shipping.",
+    "description": "The site's orders and bookings (Stripe and PayPal), newest first: buyer, paid, refunds, booking, balance, deposit hold, agreement, shipping.",
     "annotations": {
       "title": "List orders",
       "readOnlyHint": true,
@@ -5102,7 +5147,7 @@
   },
   {
     "name": "save_block",
-    "description": "Save a new reusable block to the library from Liquid `source`. Use it after writing a section you want to reuse across templates. Library blocks carry no JavaScript (<script>, on* handlers and {% javascript %} are stripped); native HTML and data-* attributes only.",
+    "description": "Save a new reusable block to the library from Liquid `source`. Use it after writing a section you want to reuse across templates. JavaScript is stripped on save.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -5336,7 +5381,7 @@
   },
   {
     "name": "save_template",
-    "description": "Create a template (admin or tenant owner/editor) from `files` (+ `pages`), or from a site's draft with `fromSite`. A template is the same files a site holds; sites made from it get a copy. Private unless an admin makes it public. Template files carry no JavaScript: <script>, on* handlers and {% javascript %} are stripped on save.",
+    "description": "Create a template (admin or tenant owner/editor) from `files` (+ `pages`), or from a site's draft with `fromSite`. A template is the same files a site holds; sites made from it get a copy. Private unless an admin makes it public. JavaScript is stripped on save.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -5462,7 +5507,7 @@
   },
   {
     "name": "update_template",
-    "description": "Update a template: metadata, files (merged, or `replace`), exact-text `edits` to files, page rows, or everything from a site (`fromSite`). Read it first with pull_template. Template files carry no JavaScript: <script>, on* handlers and {% javascript %} are stripped on save.",
+    "description": "Update a template: metadata, files (merged, or `replace`), exact-text `edits` to files, page rows, or everything from a site (`fromSite`). Read it first with pull_template. JavaScript is stripped on save.",
     "inputSchema": {
       "type": "object",
       "properties": {

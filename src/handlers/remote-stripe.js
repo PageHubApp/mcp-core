@@ -89,8 +89,8 @@ module.exports = {
   },
 
   /**
-   * Make a collection sellable (or stop selling it) through the site's Stripe
-   * connection. Wraps `/api/v1/sites/:id/checkout`.
+   * Make a collection sellable (or stop selling it) through the site's payment
+   * gateways (Stripe and / or PayPal). Wraps `/api/v1/sites/:id/checkout`.
    */
   async set_checkout(args = {}) {
     const siteId = requireActiveSite(args);
@@ -117,9 +117,13 @@ module.exports = {
       method: "POST",
       body: { collectionSlug: slug, provider: "stripe", fieldMap },
     });
-    const connect = await getConnectStatus(siteId);
-    const ready =
+    const [connect, paypal] = await Promise.all([
+      getConnectStatus(siteId),
+      apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}/paypal`).catch(() => null),
+    ]);
+    const stripeReady =
       connect?.mode === "raw_key" || (connect?.readyToProcessPayments && connect?.onboardingComplete);
+    const paypalReady = !!(paypal?.connected && paypal?.paymentsReceivable);
     return {
       content: [
         {
@@ -127,14 +131,16 @@ module.exports = {
           text: [
             `Checkout enabled on collection "${slug}" (${
               config.fieldMap?.priceId ? `charges Stripe price from "${config.fieldMap.priceId}"` : `charges the numeric "price" field`
-            }). Add-to-cart buttons on rows of this collection now sell through Stripe.`,
-            ready ? null : `Stripe isn't ready on this site yet — call stripe_connect before sending anyone to buy.`,
+            }). Add-to-cart buttons on rows of this collection now sell it.`,
+            stripeReady || paypalReady
+              ? null
+              : `No payments are connected yet: call stripe_connect or paypal_connect before sending anyone to buy.`,
           ]
             .filter(Boolean)
             .join("\n"),
         },
       ],
-      structuredContent: { config, stripeReady: !!ready },
+      structuredContent: { config, stripeReady: !!stripeReady, paypalReady },
     };
   },
 

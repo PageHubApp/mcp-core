@@ -1,5 +1,5 @@
 /**
- * Storefront orders and stays on the site's own Stripe account — wraps `/api/v1/sites/:id/orders*` (app repo:
+ * Storefront orders and stays, paid through Stripe or PayPal (each order's `gateway`) — wraps `/api/v1/sites/:id/orders*` (app repo:
  * docs/features/storefront-orders.md, docs/action-items/specs/mcp-apps-orders-rentals-tools.md). Owner / agency only,
  * checked by the routes.
  *
@@ -17,12 +17,14 @@ const orderPath = (siteId, orderId) => {
   return `${ordersPath(siteId)}/${encodeURIComponent(orderId)}`;
 };
 const text = t => ({ content: [{ type: "text", text: t }] });
+const GATEWAY_LABEL = { stripe: "Stripe", paypal: "PayPal" };
 
 /** One line per order: only the parts that apply. */
 function orderLine(o) {
   const $ = n => formatMoney(n, o.currency);
   const buyer = [o.buyer?.name, o.buyer?.email ? `<${o.buyer.email}>` : ""].filter(Boolean).join(" ") || "no name";
-  const parts = [`${$(o.paidTotal || o.amount)} ${o.payment.replace("_", " ")}`];
+  const via = o.gateway ? ` via ${GATEWAY_LABEL[o.gateway] || o.gateway}` : "";
+  const parts = [`${$(o.paidTotal || o.amount)} ${o.payment.replace("_", " ")}${via}`];
   if (o.amountRefunded) parts.push(`${$(o.amountRefunded)} refunded`);
   const count = o.items.reduce((n, i) => n + (i.quantity || 1), 0);
   parts.push(`${count} item${count === 1 ? "" : "s"}${o.moreItems ? "+" : ""}`);
@@ -80,8 +82,10 @@ module.exports = {
     if (args.email) qs.set("email", String(args.email));
     if (args.cursor) qs.set("cursor", String(args.cursor));
     const r = await apiFetch(`${ordersPath(activeSiteId(args))}${qs.size ? `?${qs}` : ""}`);
-    if (!r.stripeConnected) return text("No Stripe account is connected to this site: stripe_connect first.");
-    if (!r.orders.length) return text(args.email ? `No orders from ${args.email}.` : "No orders yet.");
+    if (!r.orders.length) {
+      if (args.email) return text(`No orders from ${args.email}.`);
+      return text(r.stripeConnected ? "No orders yet." : "No orders yet. To take payments: stripe_connect or paypal_connect.");
+    }
     return text([...r.orders.map(orderLine), ...(r.hasMore ? [`More: list_orders with cursor "${r.nextCursor}".`] : [])].join("\n"));
   },
 
@@ -99,7 +103,7 @@ module.exports = {
     );
     const $ = n => formatMoney(n, o.currency);
     const lines = [orderLine(o), "", "Items:", ...o.items.map(i => `• ${i.quantity} × ${i.description} — ${$(i.amount)}`)];
-    if (o.moreItems) lines.push("• … more in Stripe");
+    if (o.moreItems) lines.push(`• … more in ${GATEWAY_LABEL[o.gateway] || "Stripe"}`);
     if (o.shipping) lines.push("", `Ship to: ${o.shipping.name || ""}, ${o.shipping.address}`);
     if (o.cancellation) lines.push("", `Cancellation (${o.cancellation.name}, check-in ${o.cancellation.checkIn}): ${o.cancellation.sentence}`);
     if (o.balance) lines.push(`Balance: ${$(o.balance.amount)}, due ${o.balance.dueOn}, ${o.balance.state.replace("_", " ")}.`);

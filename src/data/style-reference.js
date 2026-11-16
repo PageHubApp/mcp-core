@@ -380,6 +380,9 @@ Once Stripe is ready, the site's Stripe products sync into a \`products\` collec
 
 \`set_checkout\` makes a collection sellable: \`data-cart="add"\` buttons on its rows then charge through Stripe. Without \`priceIdField\` each row charges its numeric \`price\` field in minor units (2500 = $25.00), so the collection needs that number field; with \`priceIdField\` each row holds a Stripe price id. \`remove: true\` stops selling; the rows stay.
 
+## PayPal
+A second way to take payments, beside or instead of Stripe. \`paypal_connect({ id })\` shows the status; \`paypal_connect({ id, payeeEmail })\` connects the PayPal account that email belongs to (only an email the owner gave you); \`paypal_connect({ id, mode: "partner" })\` returns a PayPal sign-in link for the owner, when that route is on. \`set_checkout\` collections sell through PayPal too; a PayPal button is \`<button data-cart="checkout" data-cart-gateway="paypal">Pay with PayPal</button>\` (next to the card one when both are connected). PayPal takes one-time purchases of collection rows: not Stripe price ids, held collections, stay part-pay or deposits, or codes. Never write a hand-made PayPal link or a \`YOUR_PAYPAL_LINK\` placeholder.
+
 Orders and bookings: \`list_orders\` (paid, refunds, booking, balance, deposit hold, agreement, shipping) and \`get_order\`. \`update_order\` ships, refunds, approves a held order, charges a stay's balance, places / keeps / releases a deposit hold, unbooks dates (never refunds) or resends a link. It moves the owner's money: only for an order and amount they asked about, with \`confirmAmount\` set to what they agreed.
 
 ## Build a shop
@@ -451,6 +454,7 @@ Members are the site's customers (visitors who sign in with an emailed link), no
 \`set_download\` hosts a file behind one stable link, so a new version never breaks the pages that link to it.
 - New: \`set_download({ name, filePath | mediaId + filename })\` (\`filePath\` is stdio only; \`mediaId\` comes from \`upload_file\`, or a chat attachment, which is moved private). New version: \`downloadId\` + a file (same link; \`label\`, \`notes\` for the changelog). Roll back: \`downloadId\` + \`currentVersionId\`. \`list_downloads\` shows the link, versions (the served one starred) and download counts; \`remove_download\` removes it or one old version. Free sites host 5 downloads, Pro and up 100; \`.exe\` / \`.dmg\` and similar need Pro.
 - \`access\` makes it members-only: \`{ members: true }\` for any plan, \`{ plans: ["pro"] }\` for those, \`{ members: false }\` public.
+- Sell it: \`set_download({ downloadId, priceIds: ["pd:<rowId>"] })\` (the \`pd:<rowId>\` a product row's \`data-cart-id\` carries) or Stripe price ids; \`[]\` stops selling. The page sells the row as usual, through Stripe or PayPal; once paid, the buyer gets an email with their own link, and the \`customer-account\` block lists it (\`customer.downloads\`). The plain link answers 404 without a buyer's link, so link the buy button, not the file. \`list_downloads\` shows the buyer count.
 - Link to it with the id the tool returns: \`<a class="btn btn-primary" href="/api/downloads/<downloadId>" download>Get the guide</a>\`; a video plays from \`<video src="/api/downloads/<downloadId>?inline=1" controls></video>\`. For a plain public file (a PDF in an \`<a>\`, an \`<audio src>\`) \`{{ '<mediaId>' | file_url }}\` is enough.
 - Track clicks with \`data-track="ga4:guide_download"\` on the link. The delivery email is a site email (see \`emails\`).`,
 
@@ -506,7 +510,7 @@ const STYLE_TOPIC_LABELS = {
   pages: "page SEO, pathPattern, per-page head code, hiding header/footer",
   site: "update_site fields: slug, fallback SEO, AI crawlers, timezone, language, Next.js mounts",
   media: "upload sources, using mediaIds, favicons",
-  integrations: "analytics ids, per-action events, Stripe setup + checkout, building a shop, site emails",
+  integrations: "analytics ids, per-action events, Stripe and PayPal setup + checkout, building a shop, site emails",
   animation: "data-animate presets, stagger, custom keyframes",
   collections: "rows in Liquid, gating (requiredPlans, memberFields, per-row lock), webhook feeds",
   members: "plans, members, set_member, plan gating and drip in Liquid",
