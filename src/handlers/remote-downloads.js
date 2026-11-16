@@ -91,11 +91,11 @@ module.exports = {
     const data = await apiFetch(path(siteId));
     const list = data.downloads || [];
     const tier = {
-      none: "not included on this plan (Pro or higher)",
       files: "files (installers like .exe / .dmg need Agency)",
       executables: "files and installers",
     }[data.fileDownloads];
-    const head = tier ? `Plan allows: ${tier}\n\n` : "";
+    const cap = data.allowance?.limit != null ? `, ${data.allowance.used} of ${data.allowance.limit} downloads used` : "";
+    const head = tier ? `Plan allows: ${tier}${cap}\n\n` : "";
     const text = list.length ? list.map(fmtDownload).join("\n\n") : "No downloads on this site.";
     return { content: [{ type: "text", text: head + text }] };
   },

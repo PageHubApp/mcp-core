@@ -1353,7 +1353,7 @@
   },
   {
     "name": "set_download",
-    "description": "Host a file behind a stable link (<site>/api/downloads/<id>); link to it from an <a> or button. New: name + file. New version: downloadId + file (same link). Roll back: downloadId + currentVersionId. File = filePath (stdio) or an upload's mediaId (a public upload, e.g. a chat attachment, is moved private). access makes it members-only. A <video src=\"/api/downloads/<id>?inline=1\"> plays it. Pro+; .exe/.dmg etc need Agency.",
+    "description": "Host a file behind a stable link (<site>/api/downloads/<id>); link to it from an <a> or button. New: name + file. New version: downloadId + file (same link). Roll back: downloadId + currentVersionId. File = filePath (stdio) or an upload's mediaId (a public upload, e.g. a chat attachment, is moved private). access makes it members-only. A <video src=\"/api/downloads/<id>?inline=1\"> plays it. 5 per site on Free, 100 on Pro+; .exe/.dmg etc need Agency.",
     "annotations": {
       "title": "Set download",
       "readOnlyHint": false,
