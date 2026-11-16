@@ -47,7 +47,12 @@ module.exports = {
     const data = await apiFetch(`/api/v1/sites/${encodeURIComponent(siteId)}/collections`);
     const cols = data.collections || [];
     const lines = cols.length ? cols.map(fmtCollection).join("\n") : "No collections on this site.";
-    return { content: [{ type: "text", text: lines }] };
+    const caps = [
+      data.allowance?.limit != null ? `${data.allowance.used} of ${data.allowance.limit} collections used` : "",
+      data.maxRowsPerCollection != null ? `up to ${data.maxRowsPerCollection} rows in each collection` : "",
+    ].filter(Boolean);
+    const head = caps.length ? `Plan allows: ${caps.join(", ")}\n\n` : "";
+    return { content: [{ type: "text", text: head + lines }] };
   },
 
   /**
