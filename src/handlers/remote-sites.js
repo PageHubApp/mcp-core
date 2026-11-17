@@ -45,6 +45,9 @@ const CRAWL_MODES = ["public", "noindex", "private_preview"];
  * and a subdomain needs a CNAME, and the values are per-project, so guessing
  * them client-side hands the user DNS that silently never verifies.
  */
+/** DNS host ids from the domain API (`utils/domainNotices/dnsHost.ts`), as the user knows them. */
+const DNS_HOST_NAMES = { squarespace: "Squarespace", godaddy: "GoDaddy", namecheap: "Namecheap", cloudflare: "Cloudflare" };
+
 function formatDomainReport(data) {
   const lines = [];
   if (data.domain) {
@@ -53,6 +56,23 @@ function formatDomainReport(data) {
     lines.push("No custom domain set.");
   }
   if (data.checked && data.checked !== data.domain) lines.push(`Checked: ${data.checked}`);
+  if (data.available === false && data.message) lines.push(`Can't connect: ${data.message}`);
+
+  // Whether anyone has bought the name, so "not connected" is never read as "for sale".
+  if (data.registered === true) {
+    lines.push("Registered: yes, someone owns this name (the user, if they bought it). Owning it is not the same as connecting it.");
+  } else if (data.registered === false) {
+    lines.push("Registered: no, nobody owns this name yet. The user buys it at a registrar first; no DNS setting connects it before that.");
+  }
+  const ns = data.dnsHost?.nameservers || [];
+  if (ns.length) {
+    const named = DNS_HOST_NAMES[data.dnsHost.host];
+    lines.push(
+      named
+        ? `DNS is edited at: ${named} (nameservers ${ns.join(", ")}).`
+        : `DNS is edited wherever these nameservers belong: ${ns.join(", ")}. Name that provider only from these; never guess a registrar.`
+    );
+  }
 
   const variants = data.variants || [];
   if (variants.length) {
@@ -63,7 +83,7 @@ function formatDomainReport(data) {
         const r = v.redirect ? ` → redirects to ${v.redirect} (${v.redirectStatusCode})` : "";
         lines.push(`  ${v.name}: attached to pagehub${r} — ${dns}`);
       } else if (v.available) {
-        lines.push(`  ${v.name}: available (or on another team) — ${dns}`);
+        lines.push(`  ${v.name}: not connected to any PageHub site yet, so it can be connected — ${dns}`);
       } else {
         lines.push(`  ${v.name}: ${v.error?.code || "unknown"} — ${v.error?.message || ""}`);
       }
