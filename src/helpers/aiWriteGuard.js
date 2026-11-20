@@ -13,6 +13,11 @@
  * One exception: an `<iframe>` from a trusted embed provider (`TRUSTED_IFRAMES`: YouTube, Vimeo, Google Maps,
  * Calendly, Spotify, Loom). Its `src` must be a literal https URL on that host and path (no Liquid in it), and the
  * tag may carry no handler or `srcdoc`. A hidden instruction can then only embed one of those players.
+ *
+ * Edits are judged by what they add. An edit's `oldText` and anchors are already in the file, so they aren't checked,
+ * and its `newText` may repeat a script, tag or handler from them word for word (`editAddsActiveContent`). An imported
+ * page keeps its own scripts; without this the AI could not touch any markup near one. A hidden instruction can then
+ * only copy code the site already runs.
  */
 
 const ACTIVE_KEYS = new Set(["inject", "handlers", "headCode", "footerCode"]);
@@ -76,8 +81,51 @@ const isActive = raw => {
   return ACTIVE_CONTENT_RE.test(s) || (/[&\\\u0000-\u001f]/.test(s) && (ACTIVE_CONTENT_RE.test(decoded(s)) || SCHEME_GAP_RE.test(decoded(s))));
 };
 
+// The executable pieces of markup, as they appear in the text: script and `{% javascript %}` blocks, active tags
+// (`<iframe …>`, `<base …>`), and attributes (`onclick="…"`, `href="javascript:…"`).
+const SCRIPT_BLOCK_RE = /<\s*script\b[^>]*>[\s\S]*?<\s*\/\s*script\s*>|\{%-?\s*javascript\s*-?%\}[\s\S]*?\{%-?\s*endjavascript\s*-?%\}/gi;
+const TAG_RE = /<[^<>]*>/g;
+const ATTR_RE = /[a-z_:][-a-z0-9_:.]*\s*=\s*(?:"[^"]*"|'[^']*'|`[^`]*`|[^\s"'`=<>]+)/gi;
+
+/** Every executable piece of `text`, longest first. */
+function activePieces(text) {
+  const pieces = new Set();
+  for (const m of text.match(SCRIPT_BLOCK_RE) || []) pieces.add(m);
+  for (const tag of text.replace(SCRIPT_BLOCK_RE, "").match(TAG_RE) || []) {
+    if (!isActive(tag)) continue;
+    pieces.add(tag);
+    for (const attr of tag.match(ATTR_RE) || []) if (isActive(` ${attr}`)) pieces.add(attr);
+  }
+  return [...pieces].sort((a, b) => b.length - a.length);
+}
+
+/**
+ * Whether an edit's `newText` adds executable content. Its `oldText` / `insertAfter` / `insertBefore` are already in
+ * the file, so a script, tag or handler copied from them word for word is not new: an imported gallery whose images
+ * carry `onclick="openLightbox(this)"` can gain an image like the others. Anything else executable is refused.
+ */
+function editAddsActiveContent(edit) {
+  const newText = typeof edit?.newText === "string" ? edit.newText : "";
+  if (!isActive(newText)) return false;
+  const existing = [edit.oldText, edit.insertAfter, edit.insertBefore].filter(s => typeof s === "string").join("\n");
+  let rest = newText;
+  for (const piece of activePieces(existing)) rest = rest.split(piece).join(" ");
+  return isActive(rest);
+}
+
 /** The path of the first executable key or string in `value`, or null. */
 function findActiveContent(value, path) {
+  if (path && /(^|\.)edits$/.test(path) && Array.isArray(value)) {
+    for (let i = 0; i < value.length; i++) {
+      const edit = value[i];
+      if (!edit || typeof edit !== "object") continue;
+      if (editAddsActiveContent(edit)) return `${path}[${i}].newText`;
+      const { oldText: _o, insertAfter: _a, insertBefore: _b, newText: _n, ...other } = edit;
+      const hit = findActiveContent(other, `${path}[${i}]`);
+      if (hit) return hit;
+    }
+    return null;
+  }
   if (typeof value === "string") {
     if (/(^|\.)(path|paths\[\d+\])$/.test(path || "") && SCRIPT_PATH_RE.test(value)) return path;
     return isActive(value) ? path || "value" : null;
@@ -113,8 +161,11 @@ function assertAiWriteAllowed(toolName, args, ctx, tool) {
   if (tool?.annotations?.readOnlyHint) return;
   const hit = findActiveContent(args, "");
   if (!hit) return;
+  const copyHint = hit.endsWith(".newText")
+    ? " A script, tag or handler the page already has may be repeated word for word: include the existing markup that carries it in oldText (or the anchor) and copy it exactly."
+    : "";
   throw new Error(
-    `${toolName} refused: "${hit}" carries a script, embed, event handler or inject/head code. PageHub AI never writes those; the user adds snippets in Site settings → Header / Footer code, or an Embed in the editor.`
+    `${toolName} refused: "${hit}" carries a script, embed, event handler or inject/head code. PageHub AI never writes those; the user adds snippets in Site settings → Header / Footer code, or an Embed in the editor.${copyHint}`
   );
 }
 
