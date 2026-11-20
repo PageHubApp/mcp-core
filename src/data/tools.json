@@ -3775,7 +3775,7 @@
     "annotations": {
       "title": "PayPal: connect",
       "readOnlyHint": false,
-      "destructiveHint": false,
+      "destructiveHint": true,
       "idempotentHint": false,
       "openWorldHint": true
     },
