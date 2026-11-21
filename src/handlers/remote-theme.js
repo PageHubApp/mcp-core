@@ -104,6 +104,43 @@ async function uploadMediaToSite(args, { restrictToImages }) {
   });
 }
 
+/**
+ * `files` holds ChatGPT chat attachments (`openai/fileParams`): `{ download_url, file_id, mime_type?, file_name? }`
+ * each. Every one goes up through the same fileUrl path, its own result or error per file; anything else is one upload.
+ */
+async function uploadResult(args, opts) {
+  const files = args.files == null ? [] : Array.isArray(args.files) ? args.files : [args.files];
+  if (!files.length) {
+    const data = await uploadMediaToSite(args, opts);
+    return { content: [{ type: "text", text: formatUploadResult(data) }] };
+  }
+  const blocks = [];
+  let failed = 0;
+  for (const [i, f] of files.entries()) {
+    const label = `[${i + 1}/${files.length}] ${f?.file_name || f?.file_id || "file"}`;
+    try {
+      if (!f?.download_url) throw new Error("ChatGPT sent no download_url for this file.");
+      const data = await uploadMediaToSite(
+        {
+          id: args.id,
+          fileUrl: f.download_url,
+          ...(f.mime_type ? { mimeType: f.mime_type } : {}),
+          ...(f.file_name ? { filename: f.file_name } : {}),
+        },
+        opts
+      );
+      blocks.push(formatUploadResult(data, { label }));
+    } catch (e) {
+      failed++;
+      blocks.push(`${label}\nFailed: ${e?.message || e}`);
+    }
+  }
+  return {
+    content: [{ type: "text", text: blocks.join("\n\n") }],
+    ...(failed === files.length ? { isError: true } : {}),
+  };
+}
+
 module.exports = {
   async suggest_palettes(args) {
     const options = parseMaybeJson(args.options) || [];
@@ -117,13 +154,11 @@ module.exports = {
   },
 
   async upload_image(args) {
-    const data = await uploadMediaToSite(args, { restrictToImages: true });
-    return { content: [{ type: "text", text: formatUploadResult(data) }] };
+    return uploadResult(args, { restrictToImages: true });
   },
 
   async upload_file(args) {
-    const data = await uploadMediaToSite(args, { restrictToImages: false });
-    return { content: [{ type: "text", text: formatUploadResult(data) }] };
+    return uploadResult(args, { restrictToImages: false });
   },
 
   /** The theme is the site's theme.css (handlers/html-settings.js). */

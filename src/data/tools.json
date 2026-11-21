@@ -1212,7 +1212,7 @@
   },
   {
     "name": "upload_image",
-    "description": "Upload an image to the site's media library. Returns a mediaId: write it as {{ '<mediaId>' | image_url: width: 800 }} (a URL) or {{ '<mediaId>' | image_url: width: 800 | image_tag: alt: '…' }} (an <img>; image_tag takes a URL, never a bare id). Web images: `imageUrl`. `dataBase64` has a ~3MB cap and is costly in tokens. More: get_style_reference({ topic: \"media\" }).",
+    "description": "Upload an image to the site's media library. Returns a mediaId: write it as {{ '<mediaId>' | image_url: width: 800 }} (a URL) or {{ '<mediaId>' | image_url: width: 800 | image_tag: alt: '…' }} (an <img>; image_tag takes a URL, never a bare id). Web images: `imageUrl`; ChatGPT attachments: `files`. `dataBase64` has a ~3MB cap and is costly in tokens. More: get_style_reference({ topic: \"media\" }).",
     "annotations": {
       "title": "Upload image",
       "readOnlyHint": false,
@@ -1245,6 +1245,33 @@
             }
           ]
         },
+        "files": {
+          "type": "array",
+          "description": "Images attached in this ChatGPT chat.",
+          "maxItems": 20,
+          "items": {
+            "type": "object",
+            "properties": {
+              "download_url": {
+                "type": "string"
+              },
+              "file_id": {
+                "type": "string"
+              },
+              "mime_type": {
+                "type": "string"
+              },
+              "file_name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "download_url",
+              "file_id"
+            ],
+            "additionalProperties": false
+          }
+        },
         "imageUrl": {
           "type": "string",
           "description": "Public URL of the ORIGINAL full-size image — no ?w= / h= / q= resize params.",
@@ -1266,11 +1293,16 @@
           "maxLength": 512
         }
       }
+    },
+    "_meta": {
+      "openai/fileParams": [
+        "files"
+      ]
     }
   },
   {
     "name": "upload_file",
-    "description": "Upload any plan-allowed file. Images go to the CDN; video/audio/pdf/zip go to R2. Returns a mediaId: {{ '<mediaId>' | file_url }} works in an <a href>, <video src>, <audio src> or a collection url/media field (images: {{ '<mediaId>' | image_url: width: 800 }}). Web files: `fileUrl`. `dataBase64` is a last resort (~3MB cap; pass mimeType for non-images).",
+    "description": "Upload any plan-allowed file. Images go to the CDN; video/audio/pdf/zip go to R2. Returns a mediaId: {{ '<mediaId>' | file_url }} works in an <a href>, <video src>, <audio src> or a collection url/media field (images: {{ '<mediaId>' | image_url: width: 800 }}). Web files: `fileUrl`; ChatGPT attachments: `files`. `dataBase64` is a last resort (~3MB cap; pass mimeType for non-images).",
     "annotations": {
       "title": "Upload file",
       "readOnlyHint": false,
@@ -1303,6 +1335,33 @@
             }
           ]
         },
+        "files": {
+          "type": "array",
+          "description": "Files attached in this ChatGPT chat.",
+          "maxItems": 20,
+          "items": {
+            "type": "object",
+            "properties": {
+              "download_url": {
+                "type": "string"
+              },
+              "file_id": {
+                "type": "string"
+              },
+              "mime_type": {
+                "type": "string"
+              },
+              "file_name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "download_url",
+              "file_id"
+            ],
+            "additionalProperties": false
+          }
+        },
         "fileUrl": {
           "type": "string",
           "description": "Public URL of the original file — no resize params.",
@@ -1328,6 +1387,11 @@
           "description": "Store privately for set_download (any type; no public url). Needs filePath."
         }
       }
+    },
+    "_meta": {
+      "openai/fileParams": [
+        "files"
+      ]
     }
   },
   {

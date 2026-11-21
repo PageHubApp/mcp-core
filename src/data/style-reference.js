@@ -345,8 +345,9 @@ Every field takes effect immediately — no publish needed. Empty string clears.
 
 Sources, best first:
 1. \`filePath\` — **local stdio server only** (the hosted server rejects it). Best for files on disk at any size: bytes go straight to the CDN, EXIF rotation applied, AVIF/HEIC become JPEG, wider than 2680px is downscaled. Pass an array to upload many.
-2. \`imageUrl\` / \`fileUrl\` — a public URL. Pass the ORIGINAL full-resolution URL, never one with \`?w=\` / \`h=\` / \`q=\` resize params (that stores a permanently downscaled copy).
-3. \`dataBase64\` — last resort. The serverless request cap is 4.5MB, so ~3MB decoded, and it costs ~1.4 tokens per byte. Pass \`mimeType\` for non-images so they route to R2.
+2. \`files\` — **ChatGPT only**: files the user attached or ChatGPT made in the chat. ChatGPT fills in each \`download_url\`; pass them all in one call. Never put a \`/mnt/data\` or \`sandbox:\` path in \`fileUrl\`.
+3. \`imageUrl\` / \`fileUrl\` — a public URL. Pass the ORIGINAL full-resolution URL, never one with \`?w=\` / \`h=\` / \`q=\` resize params (that stores a permanently downscaled copy).
+4. \`dataBase64\` — last resort. The serverless request cap is 4.5MB, so ~3MB decoded, and it costs ~1.4 tokens per byte. Pass \`mimeType\` for non-images so they route to R2.
 
 Using the result:
 - Images: \`{{ '<mediaId>' | image_url: width: 800 }}\` is the CDN URL (\`<img src="…">\`, a background \`style\`). \`image_tag\` turns a URL into an \`<img>\`, so it always comes after \`image_url\`: \`{{ '<mediaId>' | image_url: width: 800 | image_tag: alt: '…', class: '…' }}\` (it takes \`alt\`, \`class\`, \`width\`, \`height\`, \`loading\`, \`sizes\`, \`fetchpriority\`). A bare \`{{ '<mediaId>' | image_tag }}\` writes the id as the src: a broken image. Use the mediaId, never the raw url.
